@@ -1,0 +1,25 @@
+<block inc=header>
+<block inbed=content>
+	<main id="content" class="col-md-9 no-padding">
+		<item>
+			<print content=notes>
+		</item>
+		<loop>
+			<div id="l_<print content=id>" itemscope itemtype="http://schema.org/<print content=schemaType>">
+				<div class="item">
+					<div class="testimonials">
+						<img src="<print content=avatar>" alt="<print content=name>" class="img-circle img-responsive pull-left" />
+						<p class="col-md-offset-2" itemprop="description"><print content=notes><strong><small itemprop="name"> - <print content=name></small></strong></p>
+					</div>
+					<div id="controls_<print content=id>" class="pull-right">
+						<CONTROLS>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<hr>
+			</div>
+		</loop>
+	</main>
+	<inc file=side_menu>
+</block inbed=content>
+<block inc=footer>

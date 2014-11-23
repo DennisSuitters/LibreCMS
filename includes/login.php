@@ -1,0 +1,21 @@
+<?php
+if(!isset($act)){
+	$act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
+}
+if($act=='logout'){
+	$_SESSION=array();
+	$user=array('rank'=>0);
+}elseif($act=='login'||isset($_SESSION['username'])){
+	$username=isset($_POST['username'])?$_POST['username']:$_SESSION['username'];
+	$password=isset($_POST['password'])?$_POST['username']:$_SESSION['password'];
+	$q=$db->prepare("SELECT * FROM login WHERE username=:username");
+	$q->execute(array(':username'=>$username));
+	$user=$q->fetch(PDO::FETCH_ASSOC);
+	if(password_verify($password,$user['password'])){
+		$_SESSION['username']=$user['username'];
+		$_SESSION['uid']=$user['id'];
+		$_SESSION['password']=$password;
+	}
+}else{
+	$user=array('rank'=>0);
+}

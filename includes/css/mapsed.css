@@ -1,0 +1,353 @@
+
+/*
+ * Core styles (you always need these)
+*/
+	.mapsed-container {
+		width: 100%;
+		min-width: 200px;
+		max-width: 350px;
+		font-family: "Calibri", "Arial";
+		color: #000;
+		/* Fixes problem with scrollbars appearing the first time a tooltip is used on a marker */
+		line-height: 1; 
+	}
+	
+	.mapsed-address-entry { 
+		/* edit dialog needs to be a bit bigger */
+		min-width: 300px;
+	}
+	
+	.mapsed-container {
+		width: 95%;
+		margin: 3px;
+	}
+
+/*
+ * ToolTip styles (you probably always need these)
+*/
+	.mapsed-container h1, .mapsed-help h3 {
+		font-family: Calibri, Arial;
+		font-size: medium;
+		background-color: #eee;
+		color: #333;
+		border-radius: 5px;
+		padding-left: 5px;
+	}
+	.mapsed-container h1 {
+		margin-top: 0px;
+		margin-bottom: 10px;
+	}
+	.mapsed-view h1 {
+		cursor: help;
+	}
+
+
+	/* container for address details, phone, etc */
+	.mapsed-left {
+		vertical-align: top;
+	}
+
+		.mapsed-left address {
+			font-size: small;
+			margin-bottom: 10px;
+		}
+		
+		.mapsed-left a {
+			font-size: small;
+			color: #428bca;
+		}
+		.mapsed-left a:hover, .mapsed-left a:focus {
+			color: #2a6496;
+			text-decoration: underline;
+		}
+
+	.mapsed-right {
+		/* where the photo and select appears */
+		margin: 0;
+		padding: 0;
+		vertical-align: top;
+	}
+	
+	.mapsed-right img {
+		/* In case there's a "select" button underneath the photo image*/
+		margin-bottom: 10px;	
+		float: right;		
+	}
+	
+	/* container for address data entry */
+	.mapsed-address-entry {			
+	}
+		.mapsed-address-entry ul {
+			list-style-type: none;	
+			margin: 0 5px 0 5px;
+			padding: 0;
+		}
+		.mapsed-address-entry ul li {
+			margin: 5px 0px;
+		}
+		.mapsed-address-entry .mapsed-save-button {
+		}
+		.mapsed-address-entry label {
+			width: 100%;
+			display: inline-block;
+			float: left;
+		}
+		
+		.mapsed-address-entry label input {
+			display: inline-block;
+			width: 70%;	
+			float: right;
+			color: #333;
+			background-color: #fff;
+			border: solid 1px #ddd;
+			border-radius: 2px;
+		}
+		.mapsed-address-entry label, .mapsed-address-entry label input {
+			/* force vertical alignment */
+			height: 20px;
+			line-height: 20px;
+			margin-bottom: 5px;
+		}
+	
+	.mapsed-view .mapsed-website, .mapsed-view .mapsed-url {
+		
+	}
+
+		
+/*
+* Search styles (see "showSearch" property)
+*/
+	input.mapsed-searchbox {
+		background-color: #fff;
+		padding: 0 11px 0 13px;
+		width: 50%;
+		font-family: "Calibri", "Arial";
+		font-size: 15px;
+		font-weight: 300;
+		text-overflow: ellipsis;
+
+		margin-top: 28px;
+		height: 32px;
+		border: 1px solid #fff;
+		outline: none;
+		border-radius: 2px 0 0 2px;
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);		
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+	}
+	input.mapsed-searchbox:focus {
+		border-color: #4d90fe;
+		background-color: #fff;
+	}		
+
+	
+/*
+* Select styles, see "showSelect" property.
+*/
+	.mapsed-select-container {
+		clear: both;
+	}
+	button.mapsed-select-button {
+
+	}
+
+
+/*
+* Custom map control styles
+*/
+.mapsed-control-button {
+
+	border: solid 1px #888;
+	border-radius: 2px;
+	background-color: #fff;
+	box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+	padding: 1px 6px;
+	font-family: Calibri, Arial;
+	font-size: 12px;
+	color: #000;
+	text-decoration: none;
+	font-weight: 400;
+	
+	margin-right: 3px;
+	margin-top: 5px;
+	cursor: pointer;
+}
+
+:hover.mapsed-control-button {
+	background-color: #ddd;
+}
+
+button.mapsed-select-button, 
+button.mapsed-edit-button, 
+button.mapsed-save-button, 
+button.mapsed-delete-button, 
+button.mapsed-search-button, button.mapsed-more-button {
+	color: #fff;
+
+	padding: 5px 7px;
+
+	font-weight: bold;
+	margin: 5px 0 0 5px;
+	
+	background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
+	background-color: #4d90fe;
+	border: none;
+	border-radius: 0 2px 2px 0;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+	cursor: pointer;
+}
+.mapsed-error {
+	color: #880000;
+	margin-left: 10px;
+}
+
+button.mapsed-search-button, button.mapsed-more-button {
+	/* search button is a little bit different to the other button controls */
+	padding: 7px 20px;
+	font-size: 15px;
+	margin-left: 1%;
+	margin-top: 28px;
+	line-height: 1.3;
+}
+button.mapsed-more-button[disabled] {
+	background-image: -webkit-linear-gradient(top,#f5f9ff,#e9e9e9);
+	background-color: #d8d8d8;
+	color: silver;
+	cursor: auto;	/*so it doesn't look clickable*/
+}
+button.mapsed-geo-button {
+	margin-top: 28px;
+	margin-left: -10px;
+	height: 32px;
+	font-size: 20px;
+	color: #B60000;
+	padding: 0 7px;
+	background-color: #fff;
+	border: none;
+	border-radius: 0 2px 2px 0;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+	cursor: pointer;
+}
+button.mapsed-geo-button.is-active {
+	color: #0024B6;
+	font-weight: 300;
+}
+
+/*
+* Full window styles (just for making the generated div overlay)
+*/
+	.mapsed-full-window {
+		position: fixed !important;
+		top: 0; bottom: 0;
+		left: 0; right: 0;
+		/* Google places predictive results are on z-index 1000, so 1 below so they can appear */
+		z-index: 999;
+	}
+	
+/*
+* Help dialog styles
+*/
+	.mapsed-help {
+		margin: 0;
+		right: 10px;
+		padding: 5px;
+		background: #fff;
+		border: solid 1px #ddd;
+		border-radius: 2px;
+		box-shadow: 2px 2px 2px #aaa;
+		min-width: 250px;
+		color: #000;
+	}
+
+	.mapsed-help  h3 {
+		margin: 0;
+	}
+	
+	.mapsed-help ol {
+		padding-left: 25px;
+	}
+	.mapsed-help ol li, .mapsed-help ul li {
+		color: #000;
+		background-color: #fff;
+		margin: initial;
+		font-size: small;
+	}
+	.mapsed-help ol li {
+		list-style-type: decimal;
+	}
+	.mapsed-help ul li {
+		list-style-type: disc;
+	}
+	.mapsed-help-button.open {
+		background-color: #ccc;
+	}
+	
+	/* modal message support */
+	.mapsed-modal {
+		position: fixed;
+		top: 25%;
+		left: 25%;
+		width: 50%;
+		max-width: 630px;
+		min-width: 320px;
+		z-index: 2000;
+		height: auto;
+		font-family: "Calibri", "Arial";
+		display: none;
+		background: #e74c3c;
+		border-radius: 5px;
+		color: #fff;
+	}
+		.mapsed-modal {
+		}
+			.mapsed-modal > div {
+				margin: 10px;
+			}
+			.mapsed-modal h3 {
+				text-align: center;
+				padding: 10px;
+				margin: 0;
+				background-color: #BD4236;
+				font-weight: 300;
+				font-size: x-large;
+				opacity: 0.8;
+				border-radius: 5px 5px 0 0;
+			}			
+			.mapsed-modal-message {			
+			}
+			.mapsed-modal-button-bar {
+				margin-top: 20px;
+			}
+			.mapsed-modal-button-bar::after {
+				clear: both;
+				content: " ";
+			}
+				.mapsed-modal-button-bar .prompt {
+					float: left;
+					margin: 0;
+				}	
+				.mapsed-modal-buttons {
+					display: block;
+					float: right;
+					margin-bottom: 20px;
+				}
+					.mapsed-modal button {
+						padding: 5px 10px;
+						background: #c0392b;
+						border: none;
+						color: #fff;
+						letter-spacing: 1px;
+						text-transform: uppercase;
+						border-radius: 2px;
+						cursor: pointer;
+						opacity: 1;
+					}
+					.mapsed-modal button:hover {
+						background-color: #A5281B;
+					}
+
+	
+	
+	
+	

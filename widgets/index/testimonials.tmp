@@ -1,0 +1,19 @@
+<div class="testimonials">
+	<h2 class="page-header">Testimonials <small>Our Clients Love Us!</small></h2>
+	<div class="carousel slide" id="carousel-rotate" data-ride="carousel">
+		<div class="carousel-inner">
+			{carousel.loop.items}
+			<div class="item{carousel.item.active}" itemscope itemtype="http://schema.org/{schemaType}">
+				<div class="testimonials">
+					<img alt="{carousel.item.name}" src="{carousel.item.avatar}" class="img-circle img-responsive pull-left"/>
+					<p class="col-md-offset-1" itemprop="description">
+						{carousel.item.notes}
+						<small itemprop="name"> - {carousel.item.name}</small>
+					</p>
+				</div>
+			</div>
+			{/carousel.loop.items}
+		</div>
+	</div>
+	{carousel.controls}
+</div>

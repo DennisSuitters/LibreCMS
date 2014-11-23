@@ -1,0 +1,96 @@
+<block inc=header>
+<block inbed=content>
+	<print page=notes>
+	<main id="content" class="col-md-9 no-padding" itemscope itemtype="http://schema.org/Contact">
+		<form role="form" target="sp" method="post" action="includes/add_data.php">
+			<input type="hidden" name="act" value="add_booking">
+			<div class="form-group">
+				<label class="control-label col-sm-2">&nbsp;</label>
+				<div class="input-group col-sm-10 text-danger">
+					<div class="alert alert-danger">Highlighted Fields are Required</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="email" class="control-label col-md-2 col-xs-4 text-danger">Email</label>
+				<div class="input-group col-md-10 col-xs-8 has-error">
+					<input type="email" id="email" class="form-control" name="email" value="" placeholder="Enter an Email..." required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="name" class="control-label col-md-2 col-xs-4 text-danger">Name</label>
+				<div class="input-group col-md-10 col-xs-8 has-error">
+					<input type="text" id="name" class="form-control" name="name" value="" placeholder="Enter a Name..." required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="business" class="control-label col-md-2 col-xs-4">Business</label>
+				<div class="input-group col-md-10 col-xs-8">
+					<input type="text" id="business" class="form-control" name="business" value="" placeholder="Enter a Business...">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="phone" class="control-label col-md-2 col-xs-4">Phone</label>
+				<div class="input-group col-md-10 col-xs-8">
+					<input type="phone" id="phone" class="form-control" name="phone" value="" placeholder="Enter a Phone Number...">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="address" class="control-label col-md-2 col-xs-4">Address</label>
+				<div class="input-group col-md-10 col-xs-8">
+					<input type="text" id="address" class="form-control" name="address" value="" placeholder="Enter an Address...">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2 col-xs-4">Suburb</label>
+				<div class="input-group col-md-10 col-xs-8">
+					<input type="text" id="suburb" class="form-control" name="suburb" value="" placeholder="Enter a Suburb...">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2 col-xs-4">City</label>
+				<div class="input-group col-md-10 col-xs-8">
+					<input type="text" id="city" class="form-control" name="city" value="" placeholder="Enter a City...">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2 col-xs-4">State</label>
+				<div class="input-group col-md-10 col-xs-8">
+					<input type="text" id="state" class="form-control" name="state" value="" placeholder="Enter a State...">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2 col-xs-4">Postcode</label>
+				<div class="input-group col-md-10 col-xs-8">
+					<input type="text" id="postcode" class="form-control" name="postcode" value="" placeholder="Enter a Postcode...">
+				</div>
+			</div>
+			<print bookable>
+			<div class="form-group">
+				<label for="notes" class="control-label col-md-2 col-xs-4">Notes</label>
+				<div class="input-group col-md-10 col-xs-8">
+					<textarea id="notes" class="form-control" name="notes" placeholder="Enter some Notes..."></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="verification" class="control-label col-md-2 col-xs-4 text-danger">Verification</label>
+				<div class="input-group col-md-10 col-xs-8">
+					<div class="alert alert-danger text-center no-padding no-margin"><img src="includes/veri.php"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2 col-xs-4">&nbsp;</label>
+				<div class="input-group col-md-10 col-xs-8 has-error">
+					<input type="text" class="form-control" name="veri" value="" placeholder="Enter Verification Code...">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-md-2 col-xs-4">&nbsp;</label>
+				<div class="input-group col-md-10 col-xs-8">
+					<button type="submit" class="btn btn-success btn-lg btn-block">Make Booking</button>
+				</div>
+			</div>
+		</form>
+	</main>
+	<inc file=side_menu>
+</block inbed=content>
+<block inc=footer>
