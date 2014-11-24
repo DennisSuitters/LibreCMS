@@ -35,7 +35,7 @@ if($user['rank']>0){?>
 					<li>
 						<button class="btn btn-success dropdown-toggle" style="margin:7px 10px;" data-toggle="dropdown" data-placement="right">Add <i class="caret"></i></button>
 						<ul class="dropdown-menu multi-level pull-right">
-<?php	$sq=$db->query("SELECT * FROM menu WHERE active='1' AND contentType!='index' AND contentType!='contactus' AND contentType!='cart' ORDER BY ord ASC");
+<?php	$sq=$db->query("SELECT * FROM menu WHERE active='1' AND contentType!='index' AND contentType!='contactus' AND contentType!='cart' AND contentType!='tos' ORDER BY ord ASC");
 		while($sr=$sq->fetch(PDO::FETCH_ASSOC)){?>
 							<li><a href="<?php echo$sr['contentType'];?>/add"><?php echo$sr['title'];?></a></li>
 <?php	}?>
