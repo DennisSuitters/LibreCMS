@@ -21,7 +21,15 @@ if($user['rank']>899){
 			$theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);
 						$content.='<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">';
 							$content.='<div class="theme-chooser-item';if($config['theme']==$folder){$content.=' selected';}$content.='" data-theme="'.$folder.'">';
-								$content.='<img src="';if($theme['preview']=='none'){$content.='images/noimage.jpg';}else{$content.='layout/'.$folder.'/'.$theme['preview'];}$content.='" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="'.$theme['title'].'">';
+								$content.='<img src="';
+								if(file_exists('layout/'.$folder.'/theme.jpg')){
+									$content.='layout/'.$folder.'/theme.jpg';
+								}elseif(file_exists('layout/'.$folder.'/theme.png')){
+									$content.='layout/'.$folder.'/theme.png';
+								}else{
+									$content.='images/noimage.jpg';
+								}
+								$content.='" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="'.$theme['title'].'">';
 								$content.='<div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">';
 									$content.='<span class="title">'.$theme['title'].'</span>';
 									$content.='<small class="version">Version: v'.$theme['version'].'</small>';
