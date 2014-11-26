@@ -29,6 +29,7 @@ if($user['rank']>699){
 	$status="published";
 }
 $content='';
+require'view/account.php';
 if(file_exists(THEME.'/'.$view.'.html')){
 	$template=file_get_contents(THEME.'/'.$view.'.html');
 }elseif(file_exists(THEME.'/default.html')){
@@ -64,6 +65,5 @@ if($user['rank']>699){
 }else{
 	require'view/meta_head.php';
 }
-require'view/account.php';
-print$content;
-if($user['rank']>699)require'includes/meta_footer.php';else require'view/meta_footer.php';
+print $content;
+if($user['rank']>699)require'includes/meta_footer.php';else require'meta_footer.php';

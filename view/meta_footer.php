@@ -1,21 +1,19 @@
-<?php if($config['options']{2}==1)require'widgets/index/modal_login.php';?>
+<?php if($config['options']{2}==1)require'view/modal_login.php';?>
 		<div class='notifications center'></div>
 		<script src="includes/js/jquery-2.1.1.min.js"></script>
 		<script src="includes/js/bootstrap.min.js"></script>
 		<script src="includes/js/jquery.notifications.min.js"></script>
 		<script src="includes/js/masonry.pkgd.min.js"></script>
 		<script src="includes/js/intense.min.js"></script>
-		<script>/*<![CDATA[*/
-			window.onload=function(){
-				Intense(document.querySelectorAll('.intense'));
-			}
-		/*]]>*/</script>
 <?php if($view=='bookings'||$view=='contactus'||$view=='cart'){?>
 		<iframe id="sp" name="sp" class="hidden"></iframe>
 <?php if($view=='contactus'){?>
 		<script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
 		<script src="includes/js/mapsed.js"></script>
 		<script>/*<![CDATA[*/
+			window.onload=function(){
+				Intense(document.querySelectorAll('.intense'));
+			}
 <?php	if($config['geoLocation']!=''){
 			$geoloc=explode(',',$config['geoLocation']);?>
 			$("#map").mapsed({

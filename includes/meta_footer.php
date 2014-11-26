@@ -1,6 +1,6 @@
 <?php
 if($config['options']{2}==1){
-	require'widgets/index/modal_login.php';
+	require 'view/modal_login.php';
 }?>
 		<div class='notifications center'></div>
 		<script src="includes/js/jquery-2.1.1.min.js"></script>
