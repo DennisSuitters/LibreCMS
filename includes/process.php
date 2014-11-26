@@ -3,7 +3,9 @@ require'includes/db.php';
 $config=$this->getconfig($db);
 $ti=time();
 $html='';
+$head='';
 $content='';
+$foot='';
 $css=THEME.'/css/';
 $favicon=$this->favicon();
 $share_image=$favicon;
@@ -60,10 +62,8 @@ foreach($tag as$tag1){
 		$req=$inbed;
 	}
 }
-if($user['rank']>699){
-	require'includes/meta_head.php';
-}else{
-	require'view/meta_head.php';
-}
+if($user['rank']>699)require'includes/meta_head.php';else require'view/meta_head.php';
+if($user['rank']>699)require'includes/meta_footer.php';else require'view/meta_footer.php';
+print $head;
 print $content;
-if($user['rank']>699)require'includes/meta_footer.php';else require'meta_footer.php';
+print $foot;
