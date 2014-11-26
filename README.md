@@ -1,4 +1,4 @@
-# Libr8
+![Libr8](images/libr8.png)
  an easy to use Free Open Source Content Management System.
 
 ### Features
@@ -17,16 +17,14 @@ You can now get themes from our Themes GitHub Repository @ <https://github.com/S
 
 ### Dependencies
 * Bootstrap
-* jQuery+Bootstrap's Jquery Modules <http://jquery.com/> (Depends on Theme)
+* jQuery+Bootstrap's Jquery Modules (Depends on Theme)
 * PHP/PDO (Tested with MySQL)
 * mod_rewrite
 
 #### PHP Addons used:
-* PHPMailer <https://github.com/PHPMailer/PHPMailer>
-* TCPDF <http://www.tcpdf.org/>
-* Zebra_Image <https://github.com/stefangabos/Zebra_Image>
-
-jQuery Addons depend on Theme:
+* PHPMailer - <https://github.com/PHPMailer/PHPMailer>
+* TCPDF - <http://www.tcpdf.org/>
+* Zebra_Image - <https://github.com/stefangabos/Zebra_Image>
 
 ### Tested on:
 * Ubuntu 14.04 + Apache v2.4.7 + PHP v5.5.9-1 + MySQL v5.5.37
