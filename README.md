@@ -1,5 +1,6 @@
-![Libr8](images/libr8.png)
- an easy to use Free Open Source Content Management System.
+![Libr8](images/libr8.png)  
+a **Free** Open Source Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [Font Awesome](http://fortawesome.github.io/Font-Awesome/). Built to take advantage of HTML5 and CSS3, and injects necessary SEO attributes that fit in with Google's recommendations, and Microformats to help with Search Engine ranking.
+
 
 ### Features
 * Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs
@@ -13,7 +14,7 @@
 
 Please submit issue's here at GitHub, this is so we can track, and update issue's more efficiently.
 
-You can now get themes from our Themes GitHub Repository @ <https://github.com/StudioJunkyard/Libr8-themes>
+You can now get themes from our Themes GitHub Repository @ [Libr8-Themes](https://github.com/StudioJunkyard/Libr8-themes)
 
 ### Dependencies
 * Bootstrap
@@ -22,9 +23,9 @@ You can now get themes from our Themes GitHub Repository @ <https://github.com/S
 * mod_rewrite
 
 #### PHP Addons used:
-* PHPMailer - <https://github.com/PHPMailer/PHPMailer>
-* TCPDF - <http://www.tcpdf.org/>
-* Zebra_Image - <https://github.com/stefangabos/Zebra_Image>
+* [PHPMailer](https://github.com/PHPMailer/PHPMailer)
+* [TCPDF](http://www.tcpdf.org/)
+* [Zebra_Image](https://github.com/stefangabos/Zebra_Image)
 
 ### Tested on:
 * Ubuntu 14.04 + Apache v2.4.7 + PHP v5.5.9-1 + MySQL v5.5.37
