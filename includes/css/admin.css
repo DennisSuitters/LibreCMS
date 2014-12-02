@@ -3,14 +3,14 @@
 	top:0;
 	right:0;
 	left:0;
-	z-index:9;
+	z-index:10;
 	display:block;
-	background:#fff;
+	background:#fff
 }
 #seocontent{
 	overflow:hidden;
 	width:100%;
-	height:0;
+	height:0
 }
 .seoheight{
 	height:210px
@@ -21,11 +21,11 @@
 	-webkit-border-bottom-right-radius:10px;
 	-moz-border-radius-bottomright:10px;
 	border-bottom-right-radius:10px;
-	background-color:#fff;
+	background-color:#fff
 }
 #seodrop a{
 	padding:0 20px;
-	color:#000;
+	color:#000
 }
 #content.admin{
 	padding:20px
@@ -40,13 +40,13 @@
 	position:absolute;
 	top:2px;
 	left:-32px;
-	z-index:1000;
+	z-index:1000
 }
 .busycheck{
 	position:absolute;
 	top:-8px;
 	left:-32px;
-	z-index:1000;
+	z-index:1000
 }
 #block{
 	position:fixed;
@@ -57,7 +57,7 @@
 	z-index:2147483646;
 	display:none;
 	background:#000;
-	background:rgba(0,0,0,.75);
+	background:rgba(0,0,0,.75)
 }
 #block>i{
 	position:absolute;
@@ -77,7 +77,7 @@
 	display:none;
 	background:#000;
 	background:rgba(0,0,0,.5);
-	text-align:center;
+	text-align:center
 }
 #thumb,
 #file{
@@ -88,7 +88,7 @@
 #thumb img,
 #file img{
 	max-height:40px;
-	width:40px;
+	width:40px
 }
 .admin_logo{
 	position:absolute;
@@ -115,7 +115,7 @@
 	background-color:#fff;
 	color:#000;
 	opacity:1;
-	cursor:default;
+	cursor:default
 }
 .nav-tabs li.active a:hover,
 .nav-tabs li.active a:focus{
@@ -127,7 +127,7 @@
 }
 .selector{
 	overflow:auto;
-	height:150px;
+	height:150px
 }
 .selector .img-thumbnail{
 	position:relative;
@@ -151,12 +151,12 @@
 	left:0;
 	overflow:none;
 	height:20px;
-	text-align:center;
+	text-align:center
 }
 .btn-add{
 	position:absolute;
 	top:0;
-	right:0;
+	right:0
 }
 .no-padding{
 	padding:0
@@ -181,11 +181,11 @@
 	font-size:14px;
 	line-height:.9;
 	-o-border-radius:0;
-	-o-box-shadow:none;
+	-o-box-shadow:none
 }
 .invoice .header .well p{
 	margin:0;
-	padding:0;
+	padding:0
 }
 .invoice table{
 	margin-bottom:20px!important
@@ -210,8 +210,8 @@ textarea{
 .notifications .alert{
 	-webkit-box-shadow:2px 2px 15px #000;
 	-moz-box-shadow:2px 2px 15px #000;
-	box-shadow:2px 2px 15px #000;
 	-o-box-shadow:2px 2px 15px #000;
+	box-shadow:2px 2px 15px #000
 }
 .notifications>div{
 	position:relative;
@@ -439,36 +439,9 @@ li.sortable-placeholder{
 .thumbnail .indicator{
 	position:absolute;
 	top:-10px;
-	right:-10px;
-	display:inline-block;
-	margin-bottom:0;
-	padding:6px 12px;
-	border:1px solid transparent;
-	border-radius:4px;
-	background-image:none;
-	vertical-align:middle;
-	text-align:center;
-	white-space:nowrap;
-	font-weight:400;
-	font-size:14px;
-	line-height:1.42857143;
-	-webkit-user-select:none;
-	-moz-user-select:none;
-	-ms-user-select:none;
-	user-select:none
+	right:-10px
 }
-.thumbnail .indicator.published{
-	border-color:#4cae4c;
-	background-color:#5cb85c;
-	color:#fff
-}
-.thumbnail .indicator.unpublished{
-	border-color:#d58512;
-	background-color:#ec971f;
-	color:#fff
-}
-.thumbnail .indicator.delete{
-	border-color:#d43f3a;
-	background-color:#d9534f;
-	color:#fff
+.thumbnail .indicator.disabled{
+	filter:alpha(opacity=100);
+	opacity:1
 }

@@ -1,5 +1,5 @@
 <?php
-if(isset($view)&&$view=='index'){
+if($view=='index'){
 	preg_match('/<settings itemCount=(.*?)>/',$html,$matches);
 	$count=$matches[1];
 	$html=preg_replace('~<settings.*?>~is','',$html,1);

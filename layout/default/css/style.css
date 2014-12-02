@@ -223,3 +223,10 @@ img{
 main{
 	display:inline-table
 }
+.margin-left-10{
+	margin-left:10px
+}
+.side_menu_gallery{
+	max-width:75px;
+	max-height:75px;
+}

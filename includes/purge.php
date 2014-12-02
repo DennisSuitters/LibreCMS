@@ -15,8 +15,8 @@ if($tbl=='content'){
 	$q=$db->prepare("SELECT thumb,file FROM content WHERE id=:id");
 	$q->execute(array(':id'=>$id));
 	$r=$q->fetch();
-	if($r[thumb]!=''){unlink("../files/".$r[thumb]);}
-	if($r[file]!=''){unlink("../files/".$r[file]);}
+	if($r['thumb']!=''&&file_exists('../media/'.$r['thumb'])){unlink("../media/".$r['thumb']);}
+	if($r['file']!=''&&file_exists('../media/'.$r['file'])){unlink("../media/".$r['file']);}
 }
 $q=$db->prepare("DELETE FROM $tbl WHERE id=:id");
 $q->execute(array(':id'=>$id));

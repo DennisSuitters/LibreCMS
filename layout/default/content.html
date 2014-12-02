@@ -15,16 +15,17 @@
 						<h6><print content=categories></h6>
 						<h6><print content=brand></h6>
 						<h6><print content=tags></h6>
-						<p><print content=cost><print content=notes></p>
+						<print content=cost>
+                        <print content=notes>
 					</div>
 					<author>
 						<hr>
 						<aside class="vcard clearfix">
-							<h4 title="Article by <print user:name>" rel="author"><print user:name></h4>
+							<h4 title="Article by <print user:name>" rel="author"><print user=name></h4>
 							<p>
-								<img class="pull-left avatar img-thumbnail" alt="Author Avatar" src="<print user:avatar>">
-								This article was written by <span class="fn"><print user:name></span>. <print user:notes><br>
-								<print user:email> <print user:social>
+								<img class="pull-left avatar img-thumbnail" alt="<print user=name>" src="<print user=avatar>">
+								This article was written by <span class="fn"><print user=name></span>. <print user:notes><br>
+								<print user=email> <print user=social>
 							</p>
 						</aside>
 					</author>
@@ -45,11 +46,9 @@
 						<h6><print content=brand></h6>
 						<h6><print content=tags></h6>
 						<p><print content=cost><print content=notes></p>
-						<div id="controls_<print content=id>" class="text-right">
-							<CONTROLS>
-						</div>
+                        <CONTROLS>
 					</div>
-					<print indicator>
+					<print content=status>
 				</div>
 			</article>
 		</loop>

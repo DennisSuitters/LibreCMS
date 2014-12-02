@@ -58,12 +58,10 @@ foreach($tag as$tag1){
 		if($view=='messages')$inbed='messages';
 		if($view=='orders')$inbed='orders';
 		if($view=='preferences')$inbed='preferences';
-		require'view/'.$inbed.'.php';
+		require 'view/'.$inbed.'.php';
 		$req=$inbed;
 	}
 }
 if($user['rank']>699)require'includes/meta_head.php';else require'view/meta_head.php';
 if($user['rank']>699)require'includes/meta_footer.php';else require'view/meta_footer.php';
-print $head;
-print $content;
-print $foot;
+print $head.$content.$foot;

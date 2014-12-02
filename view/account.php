@@ -16,7 +16,7 @@ if($user['rank']>0){
 	   if($user['options']{0}==1){
            $content.='<li';if($view=='proofs'){$content.=' class="active"';}$content.='><a href="admin/proofs">Proofs</a></li>';
         }
-			$content.='<li';if($view=='messages'){$content.=' class="active"';}$content.='><a href="admin/messages">Messages</a></li>';
+		$content.='<li';if($view=='messages'){$content.=' class="active"';}$content.='><a href="admin/messages">Messages</a></li>';
         if($user['options']{4}==1||$user['options']{1}==1){
 			$content.='<li';if($view=='preferences'){$content.=' class="active"';}$content.='><a href="admin/preferences">Preferences</a></li>';
         }
@@ -24,12 +24,18 @@ if($user['rank']>0){
 			$content.='<li><button class="btn btn-success dropdown-toggle" style="margin:7px 10px;" data-toggle="dropdown" data-placement="right">Add <i class="caret"></i></button><ul class="dropdown-menu multi-level pull-right">';
            $sq=$db->query("SELECT * FROM menu WHERE active='1' AND contentType!='index' AND contentType!='contactus' AND contentType!='cart' AND contentType!='tos' ORDER BY ord ASC");
            while($sr=$sq->fetch(PDO::FETCH_ASSOC)){
-               $content.='<li><a href="'.$sr['contentType'].'>/add">'.$sr['title'].'</a></li>';
+               $content.='<li><a href="'.$sr['contentType'].'/add">'.$sr['title'].'</a></li>';
             }
-$content.='<li><a href="admin/proofs/add">Proofs</a></li><li><a href="admin/accounts/add">Account</a></li><li class="dropdown-submenu pull-left"><a href="#">Orders</a><ul class="dropdown-menu"><li><a href="admin/orders/addquote">Quote</a></li><li><a href="admin/orders/addinvoice">Invoice</a></li></ul></li></ul></li>';
+           $content.='<li><a href="admin/proofs/add">Proofs</a></li><li><a href="admin/accounts/add">Account</a></li><li class="dropdown-submenu pull-left"><a href="#">Orders</a><ul class="dropdown-menu"><li><a href="admin/orders/addquote">Quote</a></li><li><a href="admin/orders/addinvoice">Invoice</a></li></ul></li></ul></li>';
         }
 	}else{
-        $content.='<li';if($view=='proofs'){$content.=' class="active"';}$content.='><a href="proofs">Proofs</a></li><li';if($view=='orders'){$content.=' class="active"';}$content.='><a href="orders">Orders</a></li><li';if($view=='settings'){$content.=' class="active"';}$content.='><a href="settings">Settings</a></li>';
+        $content.='<li';
+        if($view=='proofs')$content.=' class="active"';
+        $content.='><a href="proofs">Proofs</a></li><li';
+        if($view=='orders')$content.=' class="active"';
+        $content.='><a href="orders">Orders</a></li><li';
+        if($view=='settings')$content.=' class="active"';
+        $content.='><a href="settings">Settings</a></li>';
     }
     $content.='</ul>';
  	if($user['gravatar']!=''){

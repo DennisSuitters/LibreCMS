@@ -23,16 +23,19 @@ if($ii>0){
                 if($i==0)$indicators.=' class="active"';
                 $indicators.='></li>';
             }
-            if($i==0){
+            if($i==0)
                 $item=str_replace('<print active>',' active',$item);
-            }else $item=str_replace('<print active>','',$item);
+            else
+                $item=str_replace('<print active>','',$item);
             if($r['options']{0}==1){
                 $cost='<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer"><meta itemprop="currency" content="AUD" /><span itemprop="price">&#36;'.$r['cost'].'</span></aside>';
                 $item=str_replace('<print content=cost>',$cost,$item);
-            }else $item=str_replace('<print content=cost>','',$item);
-            if($r['caption']!=''){
+            }else
+                $item=str_replace('<print content=cost>','',$item);
+            if($r['caption']!='')
                 $item=str_replace('<print content=caption>',$r['caption'],$item);
-            }else $item=str_replace('<print content=caption>',preg_replace('/\s+?(\S+)?$/','',substr(strip_tags($r['notes']),0,1149)),$item);
+            else
+                $item=str_replace('<print content=caption>',preg_replace('/\s+?(\S+)?$/','',substr(strip_tags($r['notes']),0,1149)),$item);
             $item=str_replace('<print link>',$r['contentType'].'/'.str_replace(' ','-',$r['title']),$item);
             $item=str_replace('<print content=file>','<img src="media/'.$r['file'].'" alt="'.$r['title'].'">',$item);
             $item=str_replace('<print content=schemaType>',$r['schemaType'],$item);
@@ -45,8 +48,8 @@ if($ii>0){
 	if($ii>1)$indicators.='</ol>';
 }
 if($i>1){
-    $html=preg_replace('~<carouselControls>~is','',$html,1);
-    $html=preg_replace('~</carouselControls>~is','',$html,1);
+    $html=str_replace('<carouselControls>','',$html);
+    $html=str_replace('</carouselControls>','',$html);
 }else{
     $html=preg_replace('~<carouselControls>.*?<\/carouselControls>~is','',$html,1);
     $indicators='';
