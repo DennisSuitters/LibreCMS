@@ -1,6 +1,6 @@
 <?php
 if($config['options']{2}==1)require'view/modal_login.php';
-$foot.='<div class="notifications center"></div><script src="includes/js/jquery-2.1.1.min.js"></script><script src="includes/js/bootstrap.min.js"></script><script src="includes/js/jquery.notifications.min.js"></script><script src="includes/js/masonry.pkgd.min.js"></script><script src="includes/js/intense.min.js"></script>';
+$foot.='<div class="notifications center"></div><script src="includes/js/jquery-2.1.1.min.js"></script><script src="includes/js/bootstrap.min.js"></script><script src="includes/js/jquery.notifications.min.js"></script><script src="includes/js/masonry.pkgd.min.js"></script><script src="includes/js/intense.min.js"></script><script>/*<![CDATA[*/ window.onload=function(){Intense(document.querySelectorAll(".intense"))}/*]]>*/</script>';
 if($view=='bookings'||$view=='contactus'||$view=='cart'){
 	$foot.='<iframe id="sp" name="sp" class="hidden"></iframe>';
     if($view=='contactus'){

@@ -1,5 +1,5 @@
 <?php
-$foot.='<div class="notifications center"></div><script src="includes/js/jquery-2.1.1.min.js"></script><script src="includes/js/bootstrap.min.js"></script><script src="includes/js/jquery.notifications.min.js"></script><script src="includes/js/masonry.pkgd.min.js"></script><script src="includes/js/intense.min.js"></script><script>/*<![CDATA[*/ window.onload=function(){Intense(document.querySelectorAll(".intense"));} /*]]>*/</script>';
+$foot.='<div class="notifications center"></div><script src="includes/js/jquery-2.1.1.min.js"></script><script src="includes/js/bootstrap.min.js"></script><script src="includes/js/jquery.notifications.min.js"></script><script src="includes/js/masonry.pkgd.min.js"></script><script src="includes/js/intense.min.js"></script><script>/*<![CDATA[*/ window.onload=function(){Intense(document.querySelectorAll(".intense"))}/*]]>*/</script>';
 if($user['rank']>99){
 	if($view=='bookings'){
 		$foot.='<script src="includes/js/moment.min.js"></script><script src="includes/js/fullcalendar.min.js"></script>';
