@@ -41,7 +41,6 @@ time{
 }
 .carousel .contentType{
 	position:relative;
-	margin-top:10px
 }
 .carousel img{
 	position:relative;
@@ -49,8 +48,8 @@ time{
 }
 .carousel .container{
 	position:absolute;
-	top:60px;
-	right:20px;
+	top:0;
+	left:0;
 	bottom:20px;
 	left:20px;
 	z-index:1;
@@ -80,33 +79,31 @@ time{
 }
 .contentType{
 	position:absolute;
-	top:0;
-	right:0;
-	float:right;
+	top:-5px;
+	left:-5px;
 	width:0;
 	height:0;
-	border-width:0 40px 100px 0;
+	border-width:2px 75px 15px 5px;
 	border-style:solid;
 	border-color:#000;
-	border-color:rgba(0,0,0,.5)
+	border-color:rgba(0,0,0,.5);
+	background-color:#000;
+	background-color:rgba(0,0,0,.5);
 }
 .carousel .contentType{
     position:absolute;
-	top:-70px;
+	top:0;
+	left:-20px;
 }
 .contentType div{
 	position:relative;
 	top:0;
-	right:-22px;
+	left:0;
 	color:#fff;
 	text-transform:capitalize;
 	white-space:nowrap;
 	font-weight:700;
-	font-size:12px;
-	-webkit-transform:rotate(90deg);
-	-ms-transform:rotate(90deg);
-	-o-transform: rotate(90deg);
-	transform:rotate(90deg)
+	font-size:9px
 }
 .contentType:empty{
 	display:none;
