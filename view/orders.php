@@ -1,7 +1,7 @@
 <?php
-$content.='<main id="content" class="col-md-12">';
-	$content.='<div class="panel panel-default">';
-		$content.='<div class="panel-body">';
+$content.='<main id="content" class="libr8-col-md-12">';
+	$content.='<div class="libr8-panel libr8-panel-default">';
+		$content.='<div class="libr8-panel-body">';
 if($user['rank']>299){
 		if(isset($_SESSION['uid'])){$uid=$_SESSION['uid'];}else{$uid=0;}
 		$error=0;
@@ -71,11 +71,11 @@ if($user['rank']>299){
 			$q->execute(array(':notes'=>$config['orderEmailNotes'],':id'=>$r['id']));
 		}
 		if($error==1){
-			$content.='<div class="alert alert-danger">'.$e[0].'</div>';
+			$content.='<div class="libr8-alert libr8-alert-danger">'.$e[0].'</div>';
 		}else{
 			$content.='<div class="invoice">';
-				$content.='<div class="row header">';
-					$content.='<div class="col-sm-4">';
+				$content.='<div class="libr8-row libr8-header">';
+					$content.='<div class="libr8-col-sm-4">';
 						$content.='<h2>From</h2>';
 						$content.='<p><strong>'.$config['business'].'</strong></p>';
 						$content.='<p>ABN: '.$config['abn'].'</p>';
@@ -85,7 +85,7 @@ if($user['rank']>299){
 						$content.='<p>Email: '.$config['email'].'</p>';
 						$content.='<p>Phone: '.$config['phone'].'</p>';
 					$content.='</div>';
-					$content.='<div class="col-sm-4">';
+					$content.='<div class="libr8-col-sm-4">';
 						$content.='<h2>To</h2>';
 						$content.='<div id="cdetails">';
 							$content.='<p><strong>'.$client['business'].'</strong></p>';
@@ -98,7 +98,7 @@ if($user['rank']>299){
 						$content.='</div>';
 			if($r['status']!='archived'&&$user['rank']>699){
 						$content.='<p>';
-							$content.='<select id="changeClient" class="relative form-control input-sm" onchange="changeClient($(this).val(),\''.$r['id'].'\');">';
+							$content.='<select id="changeClient" class="relative libr8-form-control libr8-input-sm" onchange="changeClient($(this).val(),\''.$r['id'].'\');">';
 								$content.='<option value="0"';if($r['cid']=='0'){$content.=' selected';}$content.='None</option>';
 				$q=$db->query("SELECT id,business,username,name FROM login WHERE status!='delete' AND status!='suspended' AND active!='0' AND id!='0'");
 				while($rs=$q->fetch(PDO::FETCH_ASSOC)){
@@ -108,17 +108,17 @@ if($user['rank']>299){
 						$content.='</p>';
 			}
 					$content.='</div>';
-					$content.='<div class="col-sm-4">';
+					$content.='<div class="libr8-col-sm-4">';
 						$content.='<h2>Details</h2>';
 						$content.='<p>Order #<strong>'.$r['qid'].$r['iid'].'</strong></p>';
 						$content.='<p>Order Date: <strong>'.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']).'</strong></p>';
-						$content.='<div class="form-inline">';
-							$content.='<p class="form-group">';
+						$content.='<div class="libr8-form-inline">';
+							$content.='<p class="libr8-form-group">';
 								$content.='Due Date: <strong id="due_ti">'.date($config['dateFormat'],$r['due_ti']).'</strong> &nbsp;';
 			if($r['status']!='archived'&&$user['rank']>699){
-								$content.='<div class="btn-group">';
-									$content.='<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">Add <span class="caret"></span></button>';
-									$content.='<ul class="dropdown-menu pull-right">';
+								$content.='<div class="libr8-btn-group">';
+									$content.='<button class="libr8-btn libr8-btn-default libr8-btn-xs libr8-dropdown-toggle" data-toggle="dropdown">Add <span class="caret"></span></button>';
+									$content.='<ul class="libr8-dropdown-menu libr8-pull-right">';
 										$content.='<li><a href="#" onclick="update(\''.$r['id'].'\',\'orders\',\'due_ti\',\'';$content.=$r['due_ti']+604800;$content.='\');return false;">7 Days</a></li>';
 										$content.='<li><a href="#" onclick="update(\''.$r['id'].'\',\'orders\',\'due_ti\',\'';$content.=$r['due_ti']+1209600;$content.='\');return false;">14 Days</a></li>';
 										$content.='<li><a href="#" onclick="update(\''.$r['id'].'\',\'orders\',\'due_ti\',\'';$content.=$r['due_ti']+1814400;$content.='\');return false;">21 Days</a></li>';
@@ -128,12 +128,12 @@ if($user['rank']>299){
 			}
 							$content.='</p>';
 						$content.='</div>';
-						$content.='<div class="form-inline">';
-							$content.='<p class="form-group">Status: ';
+						$content.='<div class="libr8-form-inline">';
+							$content.='<p class="libr8-form-group">Status: ';
 			if($r['status']=='archived'){
 								$content.='<strong>Archived</strong>';
 			}elseif($user['rank']>699){
-								$content.='<select id="status" class="form-control input-sm relative" onchange="update(\''.$r['id'].'\',\'orders\',\'status\',$(this).val());">';
+								$content.='<select id="status" class="libr8-form-control libr8-input-sm relative" onchange="update(\''.$r['id'].'\',\'orders\',\'status\',$(this).val());">';
 									$content.='<option value="pending"';if($r['status']=='pending'){$content.=' selected';}$content.='>Pending</option>';
 									$content.='<option value="overdue"';if($r['status']=='overdue'){$content.=' selected';}$content.='>Overdue</option>';
 									$content.='<option value="cancelled"';if($r['status']=='cancelled'){$content.=' selected';}$content.='>Cancelled</option>';
@@ -149,22 +149,22 @@ if($user['rank']>299){
 			}
 					$content.='</div>';
 				$content.='</div>';
-				$content.='<table class="table table-striped table-responsive">';
+				$content.='<table class="libr8-table libr8-table-striped libr8-table-responsive">';
 					$content.='<thead>';
 			if($r['status']!='archived'&&$user['rank']>699){
 						$content.='<tr>';
 							$content.='<th colspan="6">';
-								$content.='<div class="form-group">';
-									$content.='<div class="input-group col-sm-12">';
-										$content.='<select id="addItem" class="form-control">';
+								$content.='<div class="libr8-form-group">';
+									$content.='<div class="libr8-input-group libr8-col-sm-12">';
+										$content.='<select id="addItem" class="libr8-form-control">';
 											$content.='<option value="0">Add Empty Entry</option>';
 				$s=$db->query("SELECT id,contentType,code,cost,title FROM content WHERE contentType='inventory' OR contentType='service' OR contentType='events' ORDER BY code ASC");
 				while($i=$s->fetch(PDO::FETCH_ASSOC)){
 					$content.='<option value="'.$i['id'].'">'.ucfirst(rtrim($i['contentType'],'s')).$i['code'].':$'.$i['cost'].':'.$i['title'].'</option>';
 				}
 										$content.='</select>';
-										$content.='<span class="input-group-btn">';
-											$content.='<button class="btn btn-success" onclick="addOrderItem(\''.$r['id'].'\',$(\'#addItem\').val());">Add</button>';
+										$content.='<span class="libr8-input-group-btn">';
+											$content.='<button class="libr8-btn libr8-btn-success" onclick="addOrderItem(\''.$r['id'].'\',$(\'#addItem\').val());">Add</button>';
 										$content.='</span>';
 									$content.='</div>';
 								$content.='</div>';
@@ -174,10 +174,10 @@ if($user['rank']>299){
 						$content.='<tr>';
 							$content.='<th>Code</th>';
 							$content.='<th>Title</th>';
-							$content.='<th class="col-sm-1 text-center">Quantity</th>';
-							$content.='<th class="col-sm-1 text-center">Cost</th>';
-							$content.='<th class="col-sm-1 text-right">Total</th>';
-							$content.='<th class="col-sm-1"></th>';
+							$content.='<th class="libr8-col-sm-1 libr8-text-center">Quantity</th>';
+							$content.='<th class="libr8-col-sm-1 libr8-text-center">Cost</th>';
+							$content.='<th class="libr8-col-sm-1 libr8-text-right">Total</th>';
+							$content.='<th class="libr8-col-sm-1"></th>';
 						$content.='</tr>';
 					$content.='</thead>';
 					$content.='<tbody id="updateorder">';
@@ -189,14 +189,14 @@ if($user['rank']>299){
 				$is->execute(array(':id'=>$oi['iid']));
 				$i=$is->fetch(PDO::FETCH_ASSOC);
 						$content.='<tr>';
-							$content.='<td class="text-left">'.$i['code'].'</td>';
-							$content.='<td class="text-left">';
+							$content.='<td class="libr8-text-left">'.$i['code'].'</td>';
+							$content.='<td class="libr8-text-left">';
 				if($user['rank']>699){
 								$content.='<form target="sp" action="includes/update.php">';
 									$content.='<input type="hidden" name="id" value="'.$oi['id'].'">';
 									$content.='<input type="hidden" name="t" value="orderitems">';
 									$content.='<input type="hidden" name="c" value="title">';
-									$content.='<input type="text" class="form-control" name="da" value="';
+									$content.='<input type="text" class="libr8-form-control" name="da" value="';
 										if($oi['title']==''){
 											$content.=$i['title'];
 										}else{
@@ -208,13 +208,13 @@ if($user['rank']>299){
 					if($oi['title']==''){$content.=$i['title'];}else{$content.=$oi['title'];}
 				}
 							$content.='</td>';
-							$content.='<td class="col-md-1 text-center">';
+							$content.='<td class="libr8-col-md-1 libr8-text-center">';
 				if($oi['iid']!=0&&$user['rank']>699){
 								$content.='<form target="sp" action="includes/update.php">';
 									$content.='<input type="hidden" name="id" value="'.$oi['id'].'">';
 									$content.='<input type="hidden" name="t" value="orderitems">';
 									$content.='<input type="hidden" name="c" value="quantity">';
-									$content.='<input class="form-control text-center" name="da" value="'.$oi['quantity'].'"';if($r['status']=='archived'){$content.=' readonly';}$content.='>';
+									$content.='<input class="libr8-form-control libr8-text-center" name="da" value="'.$oi['quantity'].'"';if($r['status']=='archived'){$content.=' readonly';}$content.='>';
 								$content.='</form>';
 				}else{
 					if($oi['iid']!=0){
@@ -222,14 +222,14 @@ if($user['rank']>299){
 					}
 				}
 							$content.='</td>';
-							$content.='<td class="col-md-1 text-right">';
+							$content.='<td class="libr8-col-md-1 libr8-text-right">';
 				if($oi['iid']!=0&&$user['rank']>699){
 								$content.='<form target="sp" action="includes/update.php">';
 									$content.='<input type="hidden" name="id" value="'.$oi['id'].'">';
 									$content.='<input type="hidden" name="t" value="orderitems">';
 									$content.='<input type="hidden" name="c" value="cost">';
-									$content.='<div class="input-group">';
-										$content.='<input class="form-control text-center" name="da" value="'.$oi['cost'].'"';if($r['status']=='archived'){$content.=' readonly';}$content.='>';
+									$content.='<div class="libr8-input-group">';
+										$content.='<input class="libr8-form-control libr8-text-center" name="da" value="'.$oi['cost'].'"';if($r['status']=='archived'){$content.=' readonly';}$content.='>';
 									$content.='</div>';
 								$content.='</form>';
 				}else{
@@ -238,17 +238,17 @@ if($user['rank']>299){
 					}
 				}
 							$content.='</td>';
-							$content.='<td class="text-right">';
+							$content.='<td class="libr8-text-right">';
 				if($oi['iid']!=0){$content.=$oi['cost']*$oi['quantity'];}
 							$content.='</td>';
-							$content.='<td class="text-right">';
+							$content.='<td class="libr8-text-right">';
 				if($user['rank']>699){
                                 $content.='<form target="sp" action="includes/update.php">';
                                     $content.='<input type="hidden" name="id" value="'.$oi['id'].'">';
                                     $content.='<input type="hidden" name="t" value="orderitems">';
                                     $content.='<input type="hidden" name="c" value="quantity">';
                                     $content.='<input type="hidden" name="da" value="0">';
-                                    $content.='<button class="btn btn-danger"><i class="fa fa-trash"></i></button>';
+                                    $content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-trash"></i></button>';
                                 $content.='</form>';
 				}
 							$content.='</td>';
@@ -259,25 +259,25 @@ if($user['rank']>299){
 			}
 						$content.='<tr>';
 							$content.='<td colspan="3">&nbsp;</td>';
-							$content.='<td class="text-right"><strong>Total</strong></td>';
-							$content.='<td class="text-right"><strong>'.$total.'</strong></td>';
+							$content.='<td class="libr8-text-right"><strong>Total</strong></td>';
+							$content.='<td class="libr8-text-right"><strong>'.$total.'</strong></td>';
 							$content.='<td></td>';
 						$content.='</tr>';
 					$content.='</tbody>';
 					$content.='<tfoot>';
 						$content.='<tr>';
 							$content.='<td colspan="3">&nbsp;</td>';
-							$content.='<td colspan="2" class="text-right">';
-								$content.='<button class="btn btn-info" onclick="$(\'#sp\').load(\'includes/email_order.php?id='.$r['id'].'&act=print\');">Print</button> ';
+							$content.='<td colspan="2" class="libr8-text-right">';
+								$content.='<button class="libr8-btn libr8-btn-info" onclick="$(\'#sp\').load(\'includes/email_order.php?id='.$r['id'].'&act=print\');">Print</button> ';
 							$content.='</td>';
-							$content.='<td class="text-right">';
-								$content.='<button class="btn btn-info" onclick="$(\'#sp\').load(\'includes/email_order.php?id='.$r['id'].'&act=\');">Email</button>';
+							$content.='<td class="libr8-text-right">';
+								$content.='<button class="libr8-btn libr8-btn-info" onclick="$(\'#sp\').load(\'includes/email_order.php?id='.$r['id'].'&act=\');">Email</button>';
 							$content.='</td>';
 						$content.='</tr>';
 					$content.='</tfoot>';
 				$content.='</table>';
-				$content.='<div class="row">';
-					$content.='<div class="input-group col-lg-4 col-sm-5">';
+				$content.='<div class="libr8-row">';
+					$content.='<div class="libr8-input-group libr8-col-lg-4 libr8-col-sm-5">';
 			if($r['status']!='archived'&&$user['rank']>699){
 						$content.='<form target="sp" action="includes/update.php">';
 							$content.='<input type="hidden" name="id" value="'.$r['id'].'">';
@@ -286,7 +286,7 @@ if($user['rank']>299){
 							$content.='<textarea class="summernote" name="da">'.$r['notes'].'</textarea>';
 						$content.='</form>';
 			}else{
-						$content.='<div class="well">'.$r['notes'].'</div>';
+						$content.='<div class="libr8-well">'.$r['notes'].'</div>';
 			}
 					$content.='</div>';
 				$content.='</div>';
@@ -315,16 +315,16 @@ if($user['rank']>299){
 			$s=$db->prepare("SELECT * FROM orders WHERE aid!='' ORDER BY ti DESC");
 			$s->execute();
 		}
-				$content.='View <div class="btn-group">';
-					$content.='<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">'.ucfirst($args[0]).' <i class="caret"></i></button>';
-					$content.='<ul class="dropdown-menu">';
+				$content.='View <div class="libr8-btn-group">';
+					$content.='<button class="libr8-btn libr8-btn-default libr8-btn-xs libr8-dropdown-toggle" data-toggle="dropdown">'.ucfirst($args[0]).' <i class="libr8-caret"></i></button>';
+					$content.='<ul class="libr8-dropdown-menu">';
 						$content.='<li><a href="admin/orders/all">All</a></li>';
 						$content.='<li><a href="admin/orders/quotes">Quotes</a></li>';
 						$content.='<li><a href="admin/orders/invoices">Invoices</a></li>';
 						$content.='<li><a href="admin/orders/archived">Archived</a></li>';
 					$content.='</ul>';
 				$content.='</div>';
-				$content.='<table class="table">';
+				$content.='<table class="libr8-table">';
 					$content.='<thead>';
 						$content.='<tr>';
 							$content.='<th>Order #</th>';
@@ -332,17 +332,12 @@ if($user['rank']>299){
 							$content.='<th>Created</th>';
 							$content.='<th>Due</th>';
 							$content.='<th>Status</th>';
-							$content.='<th class="col-md-3 text-right">';
-								$content.='<div class="input-group" data-tooltip data-original-title="Enter text to filter out unwanted Orders below">';
-									$content.='<input class="form-control filter" type="text" placeholder="Enter Text to Filter...">';
-									$content.='<div class="input-group-addon"><i class="fa fa-filter"></i></div>';
-								$content.='</div>';
-							$content.='</th>';
+							$content.='<th class="libr8-col-md-3 libr8-text-right"></th>';
 						$content.='</tr>';
 					$content.='</thead>';
 					$content.='<tbody>';
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
-						$content.='<tr id="l_'.$r['id'].'"';if($r['status']=='delete'){$content.=' class="danger"';}$content.='>';
+						$content.='<tr id="l_'.$r['id'].'"';if($r['status']=='delete'){$content.=' class="libr8-danger"';}$content.='>';
 							$content.='<td>'.$r['qid'].$r['iid'];if($r['aid']!=''){$content.=' / '.$r['aid'];}$content.='</td>';
 							$content.='<td>';
 			$cs=$db->prepare("SELECT business,name FROM login WHERE id=:id");
@@ -353,18 +348,18 @@ if($user['rank']>299){
 							$content.='<td>'.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']).'</td>';
 							$content.='<td>'.date($config['dateFormat'],$r['due_ti']).'</td>';
 							$content.='<td>'.$r['status'].'</td>';
-							$content.='<td id="controls_'.$r['id'].'" class="text-right">';
+							$content.='<td id="controls_'.$r['id'].'" class="libr8-text-right">';
 			if($r['qid']!=''&&$r['aid']==''&&$user['rank']>699){
-								$content.='<a class="btn btn-info btn-xs';if($r['status']=='delete'){$content.=' hidden';}$content.='" href="admin/orders/to_invoice/'.$r['id'].'">Invoice</a> ';
+								$content.='<a class="libr8-btn libr8-btn-info libr8-btn-xs';if($r['status']=='delete'){$content.=' libr8-hidden';}$content.='" href="admin/orders/to_invoice/'.$r['id'].'">Invoice</a> ';
 			}
 			if($r['aid']==''&&$user['rank']>699){
-								$content.='<button class="btn btn-info btn-xs';if($r['status']=='delete'){$content.=' hidden';}$content.='" onclick="update(\''.$r['id'].'\',\'orders\',\'status\',\'archived\')">Archive</button> ';
+								$content.='<button class="libr8-btn libr8-btn-info libr8-btn-xs';if($r['status']=='delete'){$content.=' libr8-hidden';}$content.='" onclick="update(\''.$r['id'].'\',\'orders\',\'status\',\'archived\')">Archive</button> ';
 			}
-								$content.='<a class="btn btn-primary btn-xs';if($r['status']=='delete'){$content.=' hidden';}$content.='" href="admin/orders/view/'.$r['id'].'">View</a> ';
+								$content.='<a class="libr8-btn libr8-btn-primary libr8-btn-xs';if($r['status']=='delete'){$content.=' libr8-hidden';}$content.='" href="admin/orders/view/'.$r['id'].'">View</a> ';
 			if($user['rank']>699){
-								$content.='<button class="btn btn-primary btn-xs';if($r['status']!='delete'){$content.=' hidden';}$content.='" onclick="updateButtons(\''.$r['id'].'\',\'orders\',\'status\',\'\')">Restore</button> ';
-								$content.='<button class="btn btn-danger btn-xs';if($r['status']=='delete'){$content.=' hidden';}$content.='" onclick="updateButtons(\''.$r['id'].'\',\'orders\',\'status\',\'delete\')">Delete</button> ';
-								$content.='<button class="btn btn-warning btn-xs';if($r['status']!='delete'){$content.=' hidden';}$content.='" onclick="purge(\''.$r['id'].'\',\'orders\')">Purge</button>';
+								$content.='<button class="libr8-btn libr8-btn-primary libr8-btn-xs';if($r['status']!='delete'){$content.=' libr8-hidden';}$content.='" onclick="updateButtons(\''.$r['id'].'\',\'orders\',\'status\',\'\')">Restore</button> ';
+								$content.='<button class="libr8-btn libr8-btn-danger libr8-btn-xs';if($r['status']=='delete'){$content.=' libr8-hidden';}$content.='" onclick="updateButtons(\''.$r['id'].'\',\'orders\',\'status\',\'delete\')">Delete</button> ';
+								$content.='<button class="libr8-btn libr8-btn-warning libr8-btn-xs';if($r['status']!='delete'){$content.=' libr8-hidden';}$content.='" onclick="purge(\''.$r['id'].'\',\'orders\')">Purge</button>';
 			}
 							$content.='</td>';
 						$content.='</tr>';

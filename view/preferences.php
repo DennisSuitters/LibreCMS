@@ -1,13 +1,25 @@
 <?php
-$content.='<main id="content" class="col-md-12"><div class="panel panel-default"><div class="panel-body">';
+$content.='<main id="content" class="libr8-col-md-12"><div class="libr8-panel libr8-panel-default"><div class="libr8-panel-body">';
 if($user['rank']>899){
-	$content.='<ul class="nav nav-tabs"><li class="active"><a href="#theme" data-toggle="tab">Theme</a></li><li><a href="#home" data-toggle="tab">Pages</a></li><li><a href="#contact" data-toggle="tab">Contact</a></li><li><a href="#interface" data-toggle="tab">Interface</a></li><li><a href="#banking" data-toggle="tab">Banking</a></li><li><a href="#seo" data-toggle="tab">SEO</a></li><li><a href="#security" data-toggle="tab">Security</a></li></ul><div class="tab-content"><div id="theme" class="tab-pane fade in active"><div class="row form-group theme-chooser">';
+	$content.='<ul class="libr8-nav libr8-nav-tabs">';
+		$content.='<li class="libr8-active"><a href="#theme" data-toggle="tab">Theme</a></li>';
+		$content.='<li><a href="#home" data-toggle="tab">Pages</a></li>';
+		$content.='<li><a href="#contact" data-toggle="tab">Contact</a></li>';
+		$content.='<li><a href="#interface" data-toggle="tab">Interface</a></li>';
+		$content.='<li><a href="#banking" data-toggle="tab">Banking</a></li>';
+		$content.='<li><a href="#seo" data-toggle="tab">SEO</a></li>';
+		$content.='<li><a href="#security" data-toggle="tab">Security</a></li>';
+	$content.='</ul>';
+	$content.='<div class="libr8-tab-content">';
+		$content.='<div id="theme" class="libr8-tab-pane libr8-fade libr8-in libr8-active">';
+			$content.='<div class="libr8-row libr8-form-group libr8-theme-chooser">';
 	foreach(new DirectoryIterator('layout') as $folder){
 		if($folder->isDOT())continue;
 		if($folder->isDir()){
 			$theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);
-            $content.='<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"><div class="theme-chooser-item';
-            if($config['theme']==$folder){$content.=' selected';}
+				$content.='<div class="libr8-col-xs-12 libr8-col-sm-12 libr8-col-md-4 libr8-col-lg-4">';
+					$content.='<div class="libr8-theme-chooser-item';
+            if($config['theme']==$folder){$content.=' libr8-selected';}
             $content.='" data-theme="'.$folder.'"><img src="';
             if(file_exists('layout/'.$folder.'/theme.jpg')){
                 $content.='layout/'.$folder.'/theme.jpg';
@@ -16,37 +28,245 @@ if($user['rank']>899){
             }else{
                 $content.='images/noimage.jpg';
             }
-            $content.='" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="'.$theme['title'].'"><div class="col-xs-8 col-sm-8 col-md-12 col-lg-12"><span class="title">'.$theme['title'].'</span><small class="version">Version: v'.$theme['version'].'</small><small class="creator">Creator: <a target="_blank" href="'.$theme['creator_url'].'">'.$theme['creator'].'</a></small><small class="description">'.$theme['description'].'</small></div><div class="clear"></div></div></div>';
+					$content.='" class="libr8-img-rounded libr8-col-xs-4 libr8-col-sm-4 libr8-col-md-12 libr8-col-lg-12" alt="'.$theme['title'].'">';
+						$content.='<div class="libr8-col-xs-8 libr8-col-sm-8 libr8-col-md-12 libr8-col-lg-12">';
+							$content.='<span class="libr8-title">'.$theme['title'].'</span>';
+							$content.='<small class="libr8-version">Version: v'.$theme['version'].'</small>';
+							$content.='<small class="libr8-creator">Creator: <a target="_blank" href="'.$theme['creator_url'].'">'.$theme['creator'].'</a></small>';
+							$content.='<small class="libr8-description">'.$theme['description'].'</small>';
+						$content.='</div>';
+						$content.='<div class="libr8-clear"></div>';
+					$content.='</div>';
+				$content.='</div>';
 		}
 	}
-    $content.='</div></div><div id="home" class="tab-pane fade in">';
+			$content.='</div>';
+		$content.='</div>';
+	$content.='<div id="home" class="libr8-tab-pane libr8-fade libr8-in">';
 	$s=$db->query("SELECT * FROM menu ORDER BY menu DESC, ord ASC");
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
-        $content.='<div class="well"><h4 onclick="$(\'#menu'.$r['id'].'\').toggle(400);">'.$r['title'].'</h4><div id="menu'.$r['id'].'" style="display:none"><div class="form-group"><label for="menu'.$r['id'].'" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">Active</label><div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8"><input type="checkbox" id="menu'.$r['id'].'" data-dbid="'.$r['id'].'" data-dbt="menu" data-dbc="active" data-dbb="0"';
-        if($r['active']==1){$content.=' checked';}
-        $content.='></div></div><div class="form-group"><label for="seoTitle" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">Menu</label><div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8"><select class="form-control" onchange="update(\''.$r['id'].'\',\'menu\',\'menu\',$(this).val());"><option value="head"';
-        if($r['menu']=='head'){$content.=' selected';}
-        $content.='>Header</option><option value="footer"';
-        if($r['menu']=='footer'){$content.=' selected';}
-        $content.='>Footer</option></select></div></div><div class="form-group"><label for="seoTitle" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoTitle</label><div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8"><input type="text" id="seoTitle" class="form-control textinput" value="'.$r['seoTitle'].'" data-dbid="'.$r['id'].'" data-dbt="menu" data-dbc="seoTitle" placeholder="Enter a Page Title..."><div id="seoTitlesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="seoCaption" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoCaption</label><div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8"><input type="text" id="seoCaption" class="form-control textinput" value="'.$r['seoCaption'].'" data-dbid="'.$r['id'].'" data-dbt="menu" data-dbc="seoCaption" placeholder="Enter a Page Caption..."><div id="seoCaptionsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="seoDescription" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoDescription</label><div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8"><input type="text" id="seoDescription" class="form-control textinput" value="'.$r['seoDescription'].'" data-dbid="'.$r['id'].'" data-dbt="menu" data-dbc="seoDescription" placeholder="Enter a Page Description..."><div id="seoDescriptionsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="seoKeywords" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoKeywords</label><div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8"><input type="text" id="seoKeywords" class="form-control textinput" value="'.$r['seoKeywords'].'" data-dbid="'.$r['id'].'" data-dbt="menu" data-dbc="seoKeywords" placeholder="Enter Page Keywords..."><div id="seoKeywordssave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div></div></div>';
+        $content.='<div class="libr8-well">';
+			$content.='<h4 onclick="$(\'#menu'.$r['id'].'\').toggle(400);">'.$r['title'].'</h4>';
+			$content.='<div id="menu'.$r['id'].'" style="display:none">';
+				$content.='<div class="libr8-form-group">';
+					$content.='<label for="menu'.$r['id'].'" class="libr8-control-label libr8-col-lg-2 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Active</label>';
+					$content.='<div class="libr8-input-group libr8-col-lg-10 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+						$content.='<input type="checkbox" id="menu'.$r['id'].'" data-dbid="'.$r['id'].'" data-dbt="menu" data-dbc="active" data-dbb="0"';if($r['active']==1){$content.=' checked';}$content.='>';
+					$content.='</div>';
+				$content.='</div>';
+				$content.='<div class="libr8-form-group">';
+					$content.='<label for="seoTitle" class="libr8-control-label libr8-col-lg-2 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Menu</label>';
+					$content.='<div class="libr8-input-group libr8-col-lg-10 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+						$content.='<select class="libr8-form-control" onchange="update(\''.$r['id'].'\',\'menu\',\'menu\',$(this).val());">';
+							$content.='<option value="head"';if($r['menu']=='head'){$content.=' selected';}$content.='>Header</option>';
+							$content.='<option value="footer"';if($r['menu']=='footer'){$content.=' selected';}$content.='>Footer</option>';
+						$content.='</select>';
+					$content.='</div>';
+				$content.='</div>';
+				$content.='<div class="libr8-form-group">';
+					$content.='<label for="seoTitle" class="libr8-control-label libr8-col-lg-2 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">seoTitle</label>';
+					$content.='<div class="libr8-input-group libr8-col-lg-10 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+						$content.='<input type="text" id="seoTitle" class="libr8-form-control textinput" value="'.$r['seoTitle'].'" data-dbid="'.$r['id'].'" data-dbt="menu" data-dbc="seoTitle" placeholder="Enter a Page Title...">';
+						$content.='<div id="seoTitlesave" class="libr8-input-group-btn libr8-hidden">';
+							$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+						$content.='</div>';
+					$content.='</div>';
+				$content.='</div>';
+				$content.='<div class="libr8-form-group">';
+					$content.='<label for="seoCaption" class="libr8-control-label libr8-col-lg-2 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">seoCaption</label>';
+					$content.='<div class="libr8-input-group libr8-col-lg-10 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+						$content.='<input type="text" id="seoCaption" class="libr8-form-control libr8-textinput" value="'.$r['seoCaption'].'" data-dbid="'.$r['id'].'" data-dbt="menu" data-dbc="seoCaption" placeholder="Enter a Page Caption...">';
+						$content.='<div id="seoCaptionsave" class="libr8-input-group-btn libr8-hidden">';
+							$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+						$content.='</div>';
+					$content.='</div>';
+				$content.='</div>';
+				$content.='<div class="libr8-form-group">';
+					$content.='<label for="seoDescription" class="libr8-control-label libr8-col-lg-2 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">seoDescription</label>';
+					$content.='<div class="libr8-input-group libr8-col-lg-10 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+						$content.='<input type="text" id="seoDescription" class="libr8-form-control textinput" value="'.$r['seoDescription'].'" data-dbid="'.$r['id'].'" data-dbt="menu" data-dbc="seoDescription" placeholder="Enter a Page Description...">';
+						$content.='<div id="seoDescriptionsave" class="libr8-input-group-btn libr8-hidden">';
+							$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+						$content.='</div>';
+					$content.='</div>';
+				$content.='</div>';
+				$content.='<div class="libr8-form-group">';
+					$content.='<label for="seoKeywords" class="libr8-control-label libr8-col-lg-2 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">seoKeywords</label>';
+					$content.='<div class="libr8-input-group libr8-col-lg-10 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+						$content.='<input type="text" id="seoKeywords" class="libr8-form-control libr8-textinput" value="'.$r['seoKeywords'].'" data-dbid="'.$r['id'].'" data-dbt="menu" data-dbc="seoKeywords" placeholder="Enter Page Keywords...">';
+						$content.='<div id="seoKeywordssave" class="libr8-input-group-btn libr8-hidden">';
+							$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+						$content.='</div>';
+					$content.='</div>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
 	}
-    $content.='</div><div id="contact" class="tab-pane fade"><div class="form-group"><label for="options18" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right"><input type="checkbox" id="options18" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="18"';
-    if($config['options']{1}==1){$content.=' checked';}
-    $content.='></label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">Display Address and Phone Numbers on Contact Us Page</div></div><div class="form-group"><label for="business" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Business</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="business" class="form-control textinput" value="'.$config['business'].'" data-dbid="1" data-dbt="config" data-dbc="business" placeholder="Enter Business Name..."><div id="businesssave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="abn" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">ABN</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="abn" class="form-control textinput" value="'.$config['abn'].'" data-dbid="1" data-dbt="config" data-dbc="abn" placeholder="Enter an ABN..."><div id="abnsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="email" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Email</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="email" class="form-control textinput" value="'.$config['email'].'" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="Enter an Email..."><div id="emailsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="options0" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right"><input type="checkbox" id="options0" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="0"';
-    if($config['options']{0}==1){$content.=' checked';}
-    $content.='></label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">Display Phone and Mobile Numbers</div></div><div class="form-group"><label for="phone" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Phone</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="phone" class="form-control textinput" value="'.$config['phone'].'" data-dbid="1" data-dbt="config" data-dbc="phone" placeholder="Enter a Phone Number..."><div id="phonesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="mobile" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Mobile</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="mobile" class="form-control textinput" value="'.$config['mobile'].'" data-dbid="1" data-dbt="config" data-dbc="mobile" placeholder="Enter a Mobile Number..."><div id="mobilesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="well"><h4>Google Maps</h4><div class="form-group"><label for="geoLocation" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">GEO Location</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="geoLocation" class="form-control textinput" value="'.$config['geoLocation'].'" data-dbid="1" data-dbt="config" data-dbc="geoLocation" placeholder="Enter a GEO Location"><div id="geoLocationsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="geoReference" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Map Reference</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="geoReference" class="form-control textinput" value="'.$config['geoReference'].'" data-dbid="1" data-dbt="config" data-dbc="geoReference" placeholder="Enter a Map Reference..."><div id="geoReferencesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div></div><div class="form-group"><label for="options1" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right"><input type="checkbox" id="options1" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="1"';
-    if($config['options']{1}==1){$content.=' checked';}
-    $content.='></label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">Display Address on Site</div></div><div class="form-group"><label for="address" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Address</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="address" class="form-control textinput" value="'.$config['address'].'" data-dbid="1" data-dbt="config" data-dbc="address" placeholder="Enter an Address..."><div id="addresssave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Suburb</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="suburb" class="form-control textinput" value="'.$config['suburb'].'" data-dbid="1" data-dbt="config" data-dbc="suburb" placeholder="Enter a Suburb..."><div id="suburbsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="city" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">City</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="city" class="form-control textinput" value="'.$config['city'].'" data-dbid="1" data-dbt="config" data-dbc="city" placeholder="Enter a City..."><div id="citysave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="state" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">State</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="state" class="form-control textinput" value="'.$config['state'].'" data-dbid="1" data-dbt="config" data-dbc="state" placeholder="Enter a State..."><div id="statesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="postcode" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Postcode</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="postcode" class="form-control textinput" value="';
-    if($config['postcode']!=0){$content.=$config['postcode'];}
-    $content.='" data-dbid="1" data-dbt="config" data-dbc="postcode" placeholder="Enter a Postcode..."><div id="postcodesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="country" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Country</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="country" class="form-control textinput" value="'.$config['country'].'" data-dbid="1" data-dbt="config" data-dbc="country" placeholder="Enter a Country..."><div id="countrysave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div></div><div id="interface" class="tab-pane fade"><div class="form-group"><label for="login_type" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Login Type</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><select id="login_type" class="form-control" onchange="update(\'1\',\'config\',\'login_type\',$(this).val());"><option value="1"';
-    if($config['options']{2}==1){$content.=' selected';}
-    $content.='>Modal</option><option value="0"';
-    if($config['options']{2}==0){$content.=' selected';}
-    $content.='>Page</option></select></div></div><div class="form-group"><label for="options26" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right"><input type="checkbox" id="options26" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"';
-    if($config['options']{3}==1){$content.=' checked';}
-    $content.='></label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">Enable Account Sign Ups</div></div><div class="form-group"><label for="tooltips" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right"><input type="checkbox" id="tooltips0" data-dbid="1" data-dbt="config" data-dbc="tooltips" data-dbb="4"';
-    if($config['options']{4}==1){$content.=' checked';}
-    $content.='></label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">Enable Tooltips</div></div><div class="form-group"><div class="form-group"><label for="timezone" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Timezone</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><select id="timezone" class="form-control" onchange="update(\'1\',\'config\',\'timezone\',$(this).val());">';
+    $content.='</div>';
+    $content.='<div id="contact" class="libr8-tab-pane libr8-fade">';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="options18" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4 libr8-text-right">';
+				$content.='<input type="checkbox" id="options18" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="18"';if($config['options']{1}==1){$content.=' checked';}$content.='>';
+			$content.='</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">Display Address and Phone Numbers on Contact Us Page</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="business" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Business</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="business" class="libr8-form-control libr8-textinput" value="'.$config['business'].'" data-dbid="1" data-dbt="config" data-dbc="business" placeholder="Enter Business Name...">';
+				$content.='<div id="businesssave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="abn" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">ABN</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="abn" class="libr8-form-control libr8-textinput" value="'.$config['abn'].'" data-dbid="1" data-dbt="config" data-dbc="abn" placeholder="Enter an ABN...">';
+				$content.='<div id="abnsave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="email" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Email</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="email" class="libr8-form-control libr8-textinput" value="'.$config['email'].'" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="Enter an Email...">';
+				$content.='<div id="emailsave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="options0" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4 text-right">';
+				$content.='<input type="checkbox" id="options0" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="0"';if($config['options']{0}==1){$content.=' checked';}$content.='>';
+			$content.='</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">Display Phone and Mobile Numbers</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="phone" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Phone</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="phone" class="libr8-form-control textinput" value="'.$config['phone'].'" data-dbid="1" data-dbt="config" data-dbc="phone" placeholder="Enter a Phone Number...">';
+				$content.='<div id="phonesave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="mobile" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Mobile</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8"><input type="text" id="mobile" class="libr8-form-control textinput" value="'.$config['mobile'].'" data-dbid="1" data-dbt="config" data-dbc="mobile" placeholder="Enter a Mobile Number...">';
+			$content.='<div id="mobilesave" class="libr8-input-group-btn libr8-hidden">';
+				$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-well">';
+			$content.='<h4>Google Maps</h4>';
+			$content.='<div class="libr8-form-group">';
+				$content.='<label for="geoLocation" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">GEO Location</label>';
+				$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+					$content.='<input type="text" id="geoLocation" class="libr8-form-control libr8-textinput" value="'.$config['geoLocation'].'" data-dbid="1" data-dbt="config" data-dbc="geoLocation" placeholder="Enter a GEO Location">';
+					$content.='<div id="geoLocationsave" class="libr8-input-group-btn libr8-hidden">';
+						$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+					$content.='</div>';
+				$content.='</div>';
+			$content.='</div>';
+			$content.='<div class="libr8-form-group">';
+				$content.='<label for="geoReference" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Map Reference</label>';
+				$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+					$content.='<input type="text" id="geoReference" class="libr8-form-control textinput" value="'.$config['geoReference'].'" data-dbid="1" data-dbt="config" data-dbc="geoReference" placeholder="Enter a Map Reference...">';
+					$content.='<div id="geoReferencesave" class="libr8-input-group-btn libr8-hidden">';
+						$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+					$content.='</div>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="options1" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4 libr8-text-right">';
+				$content.='<input type="checkbox" id="options1" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="1"';if($config['options']{1}==1){$content.=' checked';}$content.='>';
+			$content.='</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">Display Address on Site</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="address" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Address</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="address" class="libr8-form-control textinput" value="'.$config['address'].'" data-dbid="1" data-dbt="config" data-dbc="address" placeholder="Enter an Address...">';
+				$content.='<div id="addresssave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Suburb</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="suburb" class="libr8-form-control textinput" value="'.$config['suburb'].'" data-dbid="1" data-dbt="config" data-dbc="suburb" placeholder="Enter a Suburb...">';
+				$content.='<div id="suburbsave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="city" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">City</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="city" class="libr8-form-control libr8-textinput" value="'.$config['city'].'" data-dbid="1" data-dbt="config" data-dbc="city" placeholder="Enter a City...">';
+				$content.='<div id="citysave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="state" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">State</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="state" class="libr8-form-control libr8-textinput" value="'.$config['state'].'" data-dbid="1" data-dbt="config" data-dbc="state" placeholder="Enter a State...">';
+				$content.='<div id="statesave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="postcode" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Postcode</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="postcode" class="libr8-form-control libr8-textinput" value="';if($config['postcode']!=0){$content.=$config['postcode'];}$content.='" data-dbid="1" data-dbt="config" data-dbc="postcode" placeholder="Enter a Postcode...">';
+				$content.='<div id="postcodesave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="country" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Country</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="country" class="libr8-form-control libr8-textinput" value="'.$config['country'].'" data-dbid="1" data-dbt="config" data-dbc="country" placeholder="Enter a Country...">';
+				$content.='<div id="countrysave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+	$content.='</div>';
+	$content.='<div id="interface" class="libr8-tab-pane libr8-fade">';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="login_type" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Login Type</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<select id="login_type" class="libr8-form-control" onchange="update(\'1\',\'config\',\'login_type\',$(this).val());">';
+					$content.='<option value="1"';if($config['options']{2}==1){$content.=' selected';}$content.='>Modal</option>';
+					$content.='<option value="0"';if($config['options']{2}==0){$content.=' selected';}$content.='>Page</option>';
+				$content.='</select>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="options26" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4 libr8-text-right">';
+				$content.='<input type="checkbox" id="options26" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"';if($config['options']{3}==1){$content.=' checked';}$content.='>';
+			$content.='</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">Enable Account Sign Ups</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="tooltips" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4 libr8-text-right">';
+				$content.='<input type="checkbox" id="tooltips0" data-dbid="1" data-dbt="config" data-dbc="tooltips" data-dbb="4"';if($config['options']{4}==1){$content.=' checked';}$content.='>';
+			$content.='</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">Enable Tooltips</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="timezone" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Timezone</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<select id="timezone" class="libr8-form-control" onchange="update(\'1\',\'config\',\'timezone\',$(this).val());">';
     function formatOffset($offset){
         $hours=$offset/3600;
         $remainder=$offset%3600;
@@ -67,7 +287,117 @@ if($user['rank']>899){
         if($tz==$config['timezone']){$content.=' selected';}
         $content.='>'.$tz.' ['.$abbr.' '.formatOffset($offset).']</option>';
     }
-    $content.='</select></div></div><div class="form-group"><label for="dateFormat" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">DateFormat</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="dateFormat" class="form-control textinput" value="'.$config['dateFormat'].'" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date Format..."><div id="dateFormatsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">&nbsp;</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><div class="well"><h4 onclick="$(\'#dateTimeOptions\').toggle(400);">Show Date/Time Options</h4><table id="dateTimeOptions" class="table table-striped" style="display:none"><thead><tr><th>format character</th><th>Description	Example</th><th>returned values</th></tr></thead><tbody><tr><td colspan="3" class="text-center"><strong>Day</strong></td></tr><tr><td>d</td><td>Day of the month, 2 digits with leading zeros</td><td>01 to 31</td></tr><tr><td>D</td><td>A textual representation of a day, three letters</td><td>Mon through Sun</td></tr><tr><td>j</td><td>Day of the month without leading zeros</td><td>1 to 31</td></tr><tr><td>l</td><td>A full textual representation of the day of the week</td><td>Sunday through Saturday</td></tr><tr><td>S</td><td>English ordinal suffix for the day of the month, 2 characters</td><td>st, nd, rd or th. Works well with j</td></tr><tr><td colspan="3" class="text-center"><strong>Month</strong></td></tr><tr><td>F</td><td>A full textual representation of a month, such as January or March</td><td>January through December</td></tr><tr><td>m</td><td>Numeric representation of a month, with leading zeros</td><td>01 through 12</td></tr><tr><td>M</td><td>A short textual representation of a month, three letters</td><td>Jan through Dec</td></tr><tr><td>n</td><td>Numeric representation of a month, without leading zeros</td><td>1 through 12</td></tr><tr><td colspan="3" class="text-center"><strong>Year</strong></td></tr><tr><td>L</td><td>Whether it\'s a leap year</td><td>1 if it is a leap year, 0 otherwise.</td></tr><tr><td>Y</td><td>A full numeric representation of a year, 4 digits</td><td>Examples: 1999 or 2003</td></tr><tr><td>y</td><td>A two digit representation of a year</td><td>Examples: 99 or 03</td></tr><tr><td colspan="3" class="text-center"><strong>Time</strong></td></tr><tr><td>a</td><td>Lowercase Ante meridiem and Post meridiem</td><td>am or pm</td></tr><tr><td>A</td><td>Uppercase Ante meridiem and Post meridiem</td><td>AM or PM</td></tr><tr><td>g</td><td>12-hour format of an hour without leading zeros</td><td>1 through 12</td></tr><tr><td>G</td><td>24-hour format of an hour without leading zeros</td><td>0 through 23</td></tr><tr><td>h</td><td>12-hour format of an hour with leading zeros</td><td>01 through 12</td></tr><tr><td>H</td><td>24-hour format of an hour with leading zeros</td><td>00 through 23</td></tr><tr><td>i</td><td>Minutes with leading zeros</td><td>00 to 59</td></tr><tr><td colspan="3" class="text-center"><strong>Timezone</strong></td></tr><tr><td>I</td><td>Whether or not the date is in daylight saving time</td><td>1 if Daylight Saving Time, 0 otherwise.</td></tr><tr><td colspan="3" class="text-center"><strong>Full Date/Time</strong></td></tr><tr><td>c</td><td>ISO 8601 date (added in PHP 5)</td><td>2004-02-12T15:19:21+00:00</td></tr><tr><td>r</td><td>RFC 2822 formatted date</td><td>Example: Thu, 21 Dec 2000 16:01:07 +0200</td></tr></tbody></table></div></div></div></div></div><div id="banking" class="tab-pane fade"><h4>Banking Details</h4><div class="form-group"><label for="bank" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Bank</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="bank" class="form-control textinput" value="'.$config['bank'].'" data-dbid="1" data-dbt="config" data-dbc="bank" placeholder="Enter Bank..."><div id="banksave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="bank_accname" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Account Name</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="bank_accname" class="form-control textinput" value="'.$config['bankAccountName'].'"data-dbid="1" data-dbt="config" data-dbc="bankAccountName" placeholder="Enter an Account Name..."><div id="bank_accnamesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="bank_accnumber" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Account Number</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="bank_accnumber" class="form-control textinput" value="'.$config['bankAccountNumber'].'" data-dbid="1" data-dbt="config" data-dbc="bankAccountNumber" placeholder="Enter an Account Number..."><div id="bank_accnumbersave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="bank_bsb" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">BSB</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="bank_bsb" class="form-control textinput" value="'.$config['bankBSB'].'" data-dbid="1" data-dbt="config" data-dbc="bankBSB" placeholder="Enter a BSB..."><div id="bank_bsbsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><h4>PayPal Details</h4><div class="form-group"><label for="paypal" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Account</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="paypal" class="form-control textinput" value="'.$config['bankPayPal'].'" data-dbid="1" data-dbt="config" data-dbc="bankPayPal" placeholder="Enter a PayPal Account..."><div id="paypalsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="ipn" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">IPN</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><input type="text" id="ipn" class="form-control" value="" readonly></div></div><h4>Order Processing</h4><div class="form-group"><label for="pay_ti" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Allow</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><select id="pay_ti" class="form-control" onchange="update(\'1\',\'config\',\'orderPayti\',$(this).val());"><option value="0"';
+				$content.='</select>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="dateFormat" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">DateFormat</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="dateFormat" class="libr8-form-control textinput" value="'.$config['dateFormat'].'" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date Format...">';
+				$content.='<div id="dateFormatsave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">&nbsp;</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<div class="libr8-well">';
+					$content.='<h4 onclick="$(\'#dateTimeOptions\').toggle(400);">Show Date/Time Options</h4>';
+					$content.='<table id="dateTimeOptions" class="libr8-table libr8-table-striped" style="display:none">';
+						$content.='<thead>';
+							$content.='<tr>';
+								$content.='<th>format character</th>';
+								$content.='<th>Description	Example</th>';
+								$content.='<th>returned values</th>';
+							$content.='</tr>';
+						$content.='</thead>';
+						$content.='<tbody>';
+							$content.='<tr><td colspan="3" class="libr8-text-center"><strong>Day</strong></td></tr>';
+							$content.='<tr><td>d</td><td>Day of the month, 2 digits with leading zeros</td><td>01 to 31</td></tr>';
+							$content.='<tr><td>D</td><td>A textual representation of a day, three letters</td><td>Mon through Sun</td></tr>';
+							$content.='<tr><td>j</td><td>Day of the month without leading zeros</td><td>1 to 31</td></tr>';
+							$content.='<tr><td>l</td><td>A full textual representation of the day of the week</td><td>Sunday through Saturday</td></tr>';
+							$content.='<tr><td>S</td><td>English ordinal suffix for the day of the month, 2 characters</td><td>st, nd, rd or th. Works well with j</td></tr>';
+							$content.='<tr><td colspan="3" class="libr8-text-center"><strong>Month</strong></td></tr>';
+							$content.='<tr><td>F</td><td>A full textual representation of a month, such as January or March</td><td>January through December</td></tr>';
+							$content.='<tr><td>m</td><td>Numeric representation of a month, with leading zeros</td><td>01 through 12</td></tr>';
+							$content.='<tr><td>M</td><td>A short textual representation of a month, three letters</td><td>Jan through Dec</td></tr>';
+							$content.='<tr><td>n</td><td>Numeric representation of a month, without leading zeros</td><td>1 through 12</td></tr>';
+							$content.='<tr><td colspan="3" class="libr8-text-center"><strong>Year</strong></td></tr>';
+							$content.='<tr><td>L</td><td>Whether it\'s a leap year</td><td>1 if it is a leap year, 0 otherwise.</td></tr>';
+							$content.='<tr><td>Y</td><td>A full numeric representation of a year, 4 digits</td><td>Examples: 1999 or 2003</td></tr>';
+							$content.='<tr><td>y</td><td>A two digit representation of a year</td><td>Examples: 99 or 03</td></tr>';
+							$content.='<tr><td colspan="3" class="libr8-text-center"><strong>Time</strong></td></tr>';
+							$content.='<tr><td>a</td><td>Lowercase Ante meridiem and Post meridiem</td><td>am or pm</td></tr>';
+							$content.='<tr><td>A</td><td>Uppercase Ante meridiem and Post meridiem</td><td>AM or PM</td></tr>';
+							$content.='<tr><td>g</td><td>12-hour format of an hour without leading zeros</td><td>1 through 12</td></tr>';
+							$content.='<tr><td>G</td><td>24-hour format of an hour without leading zeros</td><td>0 through 23</td></tr>';
+							$content.='<tr><td>h</td><td>12-hour format of an hour with leading zeros</td><td>01 through 12</td></tr>';
+							$content.='<tr><td>H</td><td>24-hour format of an hour with leading zeros</td><td>00 through 23</td></tr>';
+							$content.='<tr><td>i</td><td>Minutes with leading zeros</td><td>00 to 59</td></tr>';
+							$content.='<tr><td colspan="3" class="libr8-text-center"><strong>Timezone</strong></td></tr>';
+							$content.='<tr><td>I</td><td>Whether or not the date is in daylight saving time</td><td>1 if Daylight Saving Time, 0 otherwise.</td></tr>';
+							$content.='<tr><td colspan="3" class="libr8-text-center"><strong>Full Date/Time</strong></td></tr>';
+							$content.='<tr><td>c</td><td>ISO 8601 date (added in PHP 5)</td><td>2004-02-12T15:19:21+00:00</td></tr>';
+							$content.='<tr><td>r</td><td>RFC 2822 formatted date</td><td>Example: Thu, 21 Dec 2000 16:01:07 +0200</td></tr>';
+						$content.='</tbody>';
+					$content.='</table>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+	$content.='</div>';
+	$content.='<div id="banking" class="libr8-tab-pane libr8-fade">';
+		$content.='<h4>Banking Details</h4>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="bank" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Bank</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="bank" class="libr8-form-control libr8-textinput" value="'.$config['bank'].'" data-dbid="1" data-dbt="config" data-dbc="bank" placeholder="Enter Bank...">';
+				$content.='<div id="banksave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="bank_accname" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Account Name</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="bank_accname" class="libr8-form-control libr8-textinput" value="'.$config['bankAccountName'].'"data-dbid="1" data-dbt="config" data-dbc="bankAccountName" placeholder="Enter an Account Name...">';
+				$content.='<div id="bank_accnamesave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="bank_accnumber" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Account Number</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="bank_accnumber" class="libr8-form-control libr8-textinput" value="'.$config['bankAccountNumber'].'" data-dbid="1" data-dbt="config" data-dbc="bankAccountNumber" placeholder="Enter an Account Number...">';
+				$content.='<div id="bank_accnumbersave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="bank_bsb" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">BSB</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="bank_bsb" class="libr8-form-control libr8-textinput" value="'.$config['bankBSB'].'" data-dbid="1" data-dbt="config" data-dbc="bankBSB" placeholder="Enter a BSB...">';
+				$content.='<div id="bank_bsbsave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<h4>PayPal Details</h4>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="paypal" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">Account</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8">';
+				$content.='<input type="text" id="paypal" class="libr8-form-control textinput" value="'.$config['bankPayPal'].'" data-dbid="1" data-dbt="config" data-dbc="bankPayPal" placeholder="Enter a PayPal Account...">';
+				$content.='<div id="paypalsave" class="libr8-input-group-btn libr8-hidden">';
+					$content.='<button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button>';
+				$content.='</div>';
+			$content.='</div>';
+		$content.='</div>';
+		$content.='<div class="libr8-form-group">';
+			$content.='<label for="ipn" class="libr8-control-label libr8-col-lg-1 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">IPN</label>';
+			$content.='<div class="libr8-input-group libr8-col-lg-11 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8"><input type="text" id="ipn" class="libr8-form-control" value="" readonly></div></div><h4>Order Processing</h4><div class="libr8-form-group"><label for="pay_ti" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Allow</label><div class="input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><select id="pay_ti" class="libr8-form-control" onchange="update(\'1\',\'config\',\'orderPayti\',$(this).val());"><option value="0"';
     if($config['orderPayti']==0){$content.=' selected';}
     $content.='>0 Days</option><option value="604800"';
     if($config['orderPayti']==604800){$content.=' selected';}
@@ -77,24 +407,24 @@ if($user['rank']>899){
     if($config['orderPayti']==1814400){$content.=' selected';}
     $content.='>21 Days</option><option value="2592000"';
     if($config['orderPayti']==2592000){$content.=' selected';}
-    $content.='>30 Days</option></select><div class="input-group-addon">for Payments</div></div></div><div class="form-group"><label for="email_subject" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Email Subject</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="email_subject" class="form-control textinput" value="'.$config['orderEmailDefaultSubject'].'" data-dbid="1" data-dbt="config" data-dbc="orderEmailDefaultSubject"><div id="email_subjectsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div><span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number}</span></div></div><div class="form-group"><label for="order_email_layout" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Email Layout</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><form method="post" target="sp" action="includes/update.php"><input type="hidden" name="id" value="1"><input type="hidden" name="t" value="config"><input type="hidden" name="c" value="orderEmailLayout"><textarea id="order_email_layout" class="form-control summernote" name="da">'.$config['orderEmailLayout'].'</textarea></form><span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</span></div></div><div class="form-group"><label for="order_notes" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Order Notes</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><form method="post" target="sp" action="includes/update.php"><input type="hidden" name="id" value="1"><input type="hidden" name="t" value="config"><input type="hidden" name="c" value="orderEmailNotes"><textarea id="order_notes" class="form-control summernote" name="da">'.$config['orderEmailNotes'].'</textarea></form><span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</span></div></div></div><div id="seo" class="tab-pane fade"><h4>Analytics</h4><div class="form-group"><label for="configseoTitle" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoTitle</label><div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8"><input type="text" id="configseoTitle" class="form-control textinput" value="'.$config['seoTitle'].'" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="Enter a Page Title..."><div id="configseoTitlesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="configseoCaption" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoCaption</label><div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8"><input type="text" id="configseoCaption" class="form-control textinput" value="'.$config['seoCaption'].'" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="Enter a Page Caption..."><div id="configseoCaptionsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="configseoDescription" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoDescription</label><div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8"><input type="text" id="configseoDescription" class="form-control textinput" value="'.$config['seoDescription'].'" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="Enter a Page Description..."><div id="configseoDescriptionsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="configseoKeywords" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoKeywords</label><div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8"><input type="text" id="configseoKeywords" class="form-control textinput" value="'.$config['seoKeywords'].'" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Page Keywords..."><div id="configseoKeywordssave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="well"><h4>Google</h4><div class="form-group"><label for="sti" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Acquire Date</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><select id="sti" class="form-control" onchange="update(\'1\',\'config\',\'sti\',$(this).val())"><option value="0">Every Time</option><option value="3600"';
+    $content.='>30 Days</option></select><div class="libr8-input-group-addon">for Payments</div></div></div><div class="libr8-form-group"><label for="email_subject" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Email Subject</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="email_subject" class="libr8-form-control libr8-textinput" value="'.$config['orderEmailDefaultSubject'].'" data-dbid="1" data-dbt="config" data-dbc="orderEmailDefaultSubject"><div id="email_subjectsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div><span class="libr8-help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number}</span></div></div><div class="libr8-form-group"><label for="order_email_layout" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Email Layout</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><form method="post" target="sp" action="includes/update.php"><input type="hidden" name="id" value="1"><input type="hidden" name="t" value="config"><input type="hidden" name="c" value="orderEmailLayout"><textarea id="order_email_layout" class="libr8-form-control summernote" name="da">'.$config['orderEmailLayout'].'</textarea></form><span class="libr8-help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</span></div></div><div class="libr8-form-group"><label for="order_notes" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Order Notes</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><form method="post" target="sp" action="includes/update.php"><input type="hidden" name="id" value="1"><input type="hidden" name="t" value="config"><input type="hidden" name="c" value="orderEmailNotes"><textarea id="order_notes" class="libr8-form-control summernote" name="da">'.$config['orderEmailNotes'].'</textarea></form><span class="libr8-help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</span></div></div></div><div id="seo" class="libr8-tab-pane libr8-fade"><h4>Analytics</h4><div class="libr8-form-group"><label for="configseoTitle" class="libr8-control-label libr8-col-lg-2 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">seoTitle</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8"><input type="text" id="configseoTitle" class="libr8-form-control libr8-textinput" value="'.$config['seoTitle'].'" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="Enter a Page Title..."><div id="configseoTitlesave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="libr8-form-group"><label for="configseoCaption" class="libr8-control-label libr8-col-lg-2 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">seoCaption</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8"><input type="text" id="configseoCaption" class="libr8-form-control libr8-textinput" value="'.$config['seoCaption'].'" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="Enter a Page Caption..."><div id="configseoCaptionsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="libr8-form-group"><label for="configseoDescription" class="libr8-control-label libr8-col-lg-2 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">seoDescription</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8"><input type="text" id="configseoDescription" class="libr8-form-control libr8-textinput" value="'.$config['seoDescription'].'" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="Enter a Page Description..."><div id="configseoDescriptionsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="libr8-form-group"><label for="configseoKeywords" class="libr8-control-label libr8-col-lg-2 libr8-col-md-2 libr8-col-sm-2 libr8-col-xs-4">seoKeywords</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-10 libr8-col-sm-10 libr8-col-xs-8"><input type="text" id="configseoKeywords" class="libr8-form-control textinput" value="'.$config['seoKeywords'].'" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Page Keywords..."><div id="configseoKeywordssave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="libr8-well"><h4>Google</h4><div class="libr8-form-group"><label for="sti" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Acquire Date</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><select id="sti" class="libr8-form-control" onchange="update(\'1\',\'config\',\'sti\',$(this).val())"><option value="0">Every Time</option><option value="3600"';
     if($config['sti']==3600){$content.=' selected';}
     $content.='>Hourly</option><option value="86400"';
     if($config['sti']==86400){$content.=' selected';}
     $content.='>Daily</option><option value="2592000"';
     if($config['sti']==2592000){$content.=' selected';}
-    $content.='>Monthly</option></select></div></div><div class="form-group"><label for="google_verification" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Verification</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="google_verification" class="form-control textinput" value="'.$config['seoGoogleVerification'].'" data-dbid="1" data-dbt="config" data-dbc="seoGoogleVerification" placeholder="Enter Google Site Verification Code..."><div id="google_verificationsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="options6" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5 text-right"><input type="checkbox" id="options6" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="6"';
+    $content.='>Monthly</option></select></div></div><div class="libr8-form-group"><label for="google_verification" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Verification</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="google_verification" class="libr8-form-control textinput" value="'.$config['seoGoogleVerification'].'" data-dbid="1" data-dbt="config" data-dbc="seoGoogleVerification" placeholder="Enter Google Site Verification Code..."><div id="google_verificationsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="libr8-form-group"><label for="options6" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5 libr8-text-right"><input type="checkbox" id="options6" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="6"';
     if($config['options']{6}==1){$content.=' checked';}
-    $content.='></label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">Enable Analytics</div></div><div class="form-group"><label for="google_tracking" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5"><small>Domain</small></label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="google_domain" class="form-control textinput" value="'.$config['seoGoogleDomain'].'" data-dbid="1" data-dbt="config" data-dbc="seoGoogleDomain" placeholder="Enter the Domain as Provided by Google..."><div id="google_domainsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div></div><div class="well"><h4>Bing</h4><div class="form-group"><label for="bing_verification" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Verification</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="bing_verification" class="form-control textinput" value="'.$config['seoBingVerification'].'" data-dbid="1" data-dbt="config" data-dbc="seoBingVerification" placeholder="Enter Bing Site Verification Code..."><div id="bing_verificationsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div></div><div class="well"><h4>Pinterest</h4><div class="form-group"><label for="pinterest_verification" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Verification</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="pinterest_verification" class="form-control textinput" value="'.$config['seoPinterestVerification'].'" data-dbid="1" data-dbt="config" data-dbc="seoPinterestVerification" placeholder="Enter Pinterest Verification Code..."><div id="pinterest_verificationsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div></div></div><div id="security" class="tab-pane fade"><div class="form-group"><label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><div class="alert alert-info">To use project honey pot\'s spam traps you must sign up, and setup a trap with <a target="_blank" href="http://www.projecthoneypot.org/?rf=80644">Project Honey Pot</a></div></div></div><div class="form-group"><label for="project_honey_pot" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">PHP Page Links</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><select id="project_honey_pot" class="form-control" onchange="update(\'1\',\'config\',\'PHP\',$(this).val());"><option value=""';
+    $content.='></label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7">Enable Analytics</div></div><div class="libr8-form-group"><label for="google_tracking" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5"><small>Domain</small></label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="google_domain" class="libr8-form-control libr8-textinput" value="'.$config['seoGoogleDomain'].'" data-dbid="1" data-dbt="config" data-dbc="seoGoogleDomain" placeholder="Enter the Domain as Provided by Google..."><div id="google_domainsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div></div><div class="libr8-well"><h4>Bing</h4><div class="libr8-form-group"><label for="bing_verification" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Verification</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="bing_verification" class="libr8-form-control textinput" value="'.$config['seoBingVerification'].'" data-dbid="1" data-dbt="config" data-dbc="seoBingVerification" placeholder="Enter Bing Site Verification Code..."><div id="bing_verificationsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div></div><div class="libr8-well"><h4>Pinterest</h4><div class="libr8-form-group"><label for="pinterest_verification" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Verification</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="pinterest_verification" class="libr8-form-control libr8-textinput" value="'.$config['seoPinterestVerification'].'" data-dbid="1" data-dbt="config" data-dbc="seoPinterestVerification" placeholder="Enter Pinterest Verification Code..."><div id="pinterest_verificationsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div></div></div><div id="security" class="libr8-tab-pane libr8-fade"><div class="libr8-form-group"><label class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">&nbsp;</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><div class="libr8-alert libr8-alert-info">To use project honey pot\'s spam traps you must sign up, and setup a trap with <a target="_blank" href="http://www.projecthoneypot.org/?rf=80644">Project Honey Pot</a></div></div></div><div class="libr8-form-group"><label for="project_honey_pot" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">PHP Page Links</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><select id="project_honey_pot" class="libr8-form-control" onchange="update(\'1\',\'config\',\'PHP\',$(this).val());"><option value=""';
     if($config['PHP']==''){$content.=' selected';}
     $content.='>Do Not Use</option><option value="quick"';
     if($config['PHP']=='quick'){$content.=' selected';}
     $content.='>Use Quick Link</option><option value="random"';
     if($config['PHP']=='random'){$content.=' selected';}
-    $content.='>Use Random Link</option></select></div></div><div class="form-group"><label for="honey_pot_file" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Honey Pot File</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="honey_pot_file" class="form-control textinput" value="'.$config['PHPFile'].'" data-dbid="1" data-dbt="config" data-dbc="PHPFile" placeholder="This is the file uploaded to the server including folders..."><div id="honey_pot_filesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="honey_pot_quick" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Honey Pot Quick Link</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="honey_pot_quick" class="form-control textinput" value="'.$config['PHPQuickLink'].'" data-dbid="1" data-dbt="config" data-dbc="PHPQuickLink" placeholder="This is the Quick Link URL as provided..."><div id="honey_pot_quicksave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div id="backup" class="well" name="backup"><h4>Database Backup/Restore</h4><div class="form-group"><label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Backup</label><form target="sp" method="post" action="includes/backup.php"><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><div class="input-group-btn"><button type="submit" class="btn btn-default btn-block" onclick="$(\'#block\').css({\'display\':\'block\'});">Go</button></div></div></form></div><div class="form-group"><label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Restore</label><form target="sp" method="post" enctype="multipart/form-data" action="includes/restore.php"><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="file" id="fu" class="form-control filestyle" name="fu" data-icon="false" accept="application/x-gzip,application/sql"><div class="input-group-btn"><button type="submit" class="btn btn-default" onclick="$(\'#block\').css({\'display\':\'block\'});">Restore</button></div></div></form></div>';
+    $content.='>Use Random Link</option></select></div></div><div class="libr8-form-group"><label for="honey_pot_file" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Honey Pot File</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="honey_pot_file" class="libr8-form-control libr8-textinput" value="'.$config['PHPFile'].'" data-dbid="1" data-dbt="config" data-dbc="PHPFile" placeholder="This is the file uploaded to the server including folders..."><div id="honey_pot_filesave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="libr8-form-group"><label for="honey_pot_quick" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Honey Pot Quick Link</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="honey_pot_quick" class="libr8-form-control libr8-textinput" value="'.$config['PHPQuickLink'].'" data-dbid="1" data-dbt="config" data-dbc="PHPQuickLink" placeholder="This is the Quick Link URL as provided..."><div id="honey_pot_quicksave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div><div id="backup" class="libr8-well" name="backup"><h4>Database Backup/Restore</h4><div class="libr8-form-group"><label class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Backup</label><form target="sp" method="post" action="includes/backup.php"><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><div class="libr8-input-group-btn"><button type="submit" class="libr8-btn libr8-btn-default libr8-btn-block" onclick="$(\'#block\').css({\'display\':\'block\'});">Go</button></div></div></form></div><div class="libr8-form-group"><label class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Restore</label><form target="sp" method="post" enctype="multipart/form-data" action="includes/restore.php"><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="file" id="fu" class="libr8-form-control" name="fu" data-icon="false" accept="application/x-gzip,application/sql"><div class="libr8-input-group-btn"><button type="submit" class="libr8-btn libr8-btn-default" onclick="$(\'#block\').css({\'display\':\'block\'});">Restore</button></div></div></form></div>';
 	foreach(glob("media/backup/backup_*") as $file){
 		$file=ltrim($file,'media/backup/');
-        $content.='<div id="l_'.str_replace('.','',$file).'" class="form-group"><label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><a class="btn btn-default btn-block" href="media/'.$file.'">'.$file.'</a><div class="input-group-btn"><button class="btn btn-danger" onclick="removeMedia(\''.$file.'\')">Delete</button></div></div></div>';
+        $content.='<div id="l_'.str_replace('.','',$file).'" class="libr8-form-group"><label class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">&nbsp;</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><a class="libr8-btn libr8-btn-default libr8-btn-block" href="media/'.$file.'">'.$file.'</a><div class="libr8-input-group-btn"><button class="libr8-btn libr8-btn-danger" onclick="removeMedia(\''.$file.'\')">Delete</button></div></div></div>';
 	}
     $content.='</div></div></div>';
 }else{

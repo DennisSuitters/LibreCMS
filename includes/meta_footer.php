@@ -1,12 +1,18 @@
 <?php
-$foot.='<div class="notifications center"></div><script src="includes/js/jquery-2.1.1.min.js"></script><script src="includes/js/bootstrap.min.js"></script><script src="includes/js/jquery.notifications.min.js"></script><script src="includes/js/masonry.pkgd.min.js"></script><script src="includes/js/intense.min.js"></script><script>/*<![CDATA[*/ window.onload=function(){Intense(document.querySelectorAll(".intense"))}/*]]>*/</script>';
+$foot.='<div class="notifications center"></div>';
+$foot.='<script src="includes/js/jquery-2.1.1.min.js"></script>';
+$foot.='<script src="includes/js/bootstrap.min.js"></script>';
+$foot.='<script src="includes/js/jquery.notifications.min.js"></script>';
+//$foot.='<script src="includes/js/masonry.pkgd.min.js"></script>';
+//$foot.='<script src="includes/js/intense.min.js"></script>';
+//$foot.='<script>/*<![CDATA[*/ window.onload=function(){Intense(document.querySelectorAll(".intense"))}/*]]>*/</script>';
 if($user['rank']>99){
 	if($view=='bookings'){
 		$foot.='<script src="includes/js/moment.min.js"></script><script src="includes/js/fullcalendar.min.js"></script>';
     }
 	$foot.='<script src="includes/js/summernote.js"></script><script src="includes/js/bootstrap-datetimepicker.min.js"></script><script src="includes/js/js.js"></script><script>/*<![CDATA[*/$(document).ready(function(){$(".summernote").summernote();$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});$("#seodrop").click(function(){$("#seocontent").toggle(function(){$("#seocontent").animate({height:0},200)},function(){$("#seocontent").animate({height:600},200)});return false});';
     if($view=='preferences'){
-        $foot.='$("div.theme-chooser").not(".disabled").find("div.theme-chooser-item").on("click",function(){$(this).parent().parent().find("div.theme-chooser-item").removeClass("selected");$(this).addClass("selected");update("1","config","theme",escape($(this).attr("data-theme")))});';
+        $foot.='$("div.libr8-theme-chooser").not(".disabled").find("div.libr8-theme-chooser-item").on("click",function(){$(this).parent().parent().find("div.theme-chooser-item").removeClass("libr8-selected");$(this).addClass("libr8-selected");update("1","config","theme",escape($(this).attr("data-theme")))});';
     }
     if($view=='bookings'){
         $foot.='$(\'#calendar\').fullCalendar({header:{left:\'prev,next\',center:\'title\',right:\'month,basicWeek,basicDay\'},editable:false,events:[';

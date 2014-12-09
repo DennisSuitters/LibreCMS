@@ -151,7 +151,7 @@ if($show=='categories'){
 						$indicator='warning';
 						$r['status']='unpublished';
 				}
-				$items=str_replace('<print content=status>','<div class="indicator btn btn-default btn-xs disabled"><span class="text-'.$indicator.'">'.ucfirst($r['status']).'</span></div>',$items);
+				$items=str_replace('<print content=status>','<div class="libr8-indicator libr8-btn libr8-btn-default libr8-btn-xs libr8-disabled"><span class="libr8-text-'.$indicator.'">'.ucfirst($r['status']).'</span></div>',$items);
 			}else $items=str_replace('<print content=status>','',$items);
 			$items=str_replace('<print content=schemaType>',$r['schemaType'],$items);
 			$items=str_replace('<print content=dateCreated>','Created: '.date($config['dateFormat'],$r['ti']),$items);
@@ -207,23 +207,23 @@ if($show=='categories'){
 			if($r['contentType']=='testimonials'&&$user['rank']<700){
 				$controls='';
 			}else{
-				$controls='<a class="btn btn-info btn-xs" href="'.$r['contentType'].'/'.strtolower(str_replace(' ','-',$r['title'])).'">View</a>';
+				$controls='<a class="btn btn-info" href="'.$r['contentType'].'/'.strtolower(str_replace(' ','-',$r['title'])).'">View</a>';
 			}
 			if($user['rank']<699){
-				if($r['bookable']==1)$controls.=' <a class="btn btn-success btn-xs" href="bookings/'.$r['id'].'">Book '.ucfirst(rtrim($view,'s')).'</a>';
+				if($r['bookable']==1)$controls.=' <a class="libr8-btn libr8-btn-success" href="bookings/'.$r['id'].'">Book '.ucfirst(rtrim($view,'s')).'</a>';
 				else{
 					if($view=='inventory'){
-						$controls.=' <button class="btn btn-success btn-xs" onclick="$(\'#cart\').load(\'includes/add_cart.php?id='.$r['id'].'\');">Add to Cart</button>';
+						$controls.=' <button class="libr8-btn libr8-btn-success" onclick="$(\'#cart\').load(\'includes/add_cart.php?id='.$r['id'].'\');">Add to Cart</button>';
 					}
 				}
 			}
 			if($user['rank']>699){
-				$controls.=' <button class="btn btn-primary btn-xs';
-                if($r['status']!='delete')$controls.=' hidden';
-                $controls.='" onclick="updateButtons(\''.$r['id'].'\',\'content\',\'status\',\'\')">Restore</button> <button class="btn btn-danger btn-xs';
-                if($r['status']=='delete')$controls.=' hidden';
-                $controls.='" onclick="updateButtons(\''.$r['id'].'\',\'content\',\'status\',\'delete\')">Delete</button> <button class="btn btn-warning btn-xs';
-                if($r['status']!='delete')$controls.=' hidden';
+				$controls.=' <button class="libr8-btn libr8-btn-primary';
+                if($r['status']!='delete')$controls.=' libr8-hidden';
+                $controls.='" onclick="updateButtons(\''.$r['id'].'\',\'content\',\'status\',\'\')">Restore</button> <button class="libr8-btn libr8-btn-danger';
+                if($r['status']=='delete')$controls.=' libr8-hidden';
+                $controls.='" onclick="updateButtons(\''.$r['id'].'\',\'content\',\'status\',\'delete\')">Delete</button> <button class="libr8-btn libr8-btn-warning';
+                if($r['status']!='delete')$controls.=' libr8-hidden';
                 $controls.='" onclick="purge(\''.$r['id'].'\',\'content\')">Purge</button>';
 			}
 			$items=str_replace('<CONTROLS>','<div id="controls_'.$r['id'].'" class="text-right">'.$controls.'</div>',$items);
@@ -264,14 +264,14 @@ if($show=='item'){
 	}else $item=str_replace('<print content=image>','',$item);
 	$edit='';
 	if(isset($user['rank'])&&$user['rank']>699){
-		$title='<div class="form-group"><label for="title" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Title</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" class="form-control textinput" value="'.$r['title'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="title"><div id="titlesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+		$title='<div class="libr8-form-group"><label for="title" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Title</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" class="libr8-form-control libr8-textinput" value="'.$r['title'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="title"><div id="titlesave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		$item=str_replace('<print content=title>',$title,$item);
 	}else{
 		$item=str_replace('<print content=title>',$r['title'],$item);
 	}
 	if(isset($user['rank'])&&$user['rank']>699){
 		if($view=='article'||$view=='gallery'||$view=='inventory'||$view=='services'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'){
-			$edit.='<div class="form-group"><label for="published" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Status</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><select id="status" class="form-control" onchange="update(\''.$r['id'].'\',\'content\',\'status\',$(this).val());"><option value="published"';
+			$edit.='<div class="libr8-form-group"><label for="published" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Status</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><select id="status" class="libr8-form-control" onchange="update(\''.$r['id'].'\',\'content\',\'status\',$(this).val());"><option value="published"';
             if($r['status']=='unpublished')$edit.=' selected';
             $edit.='>Unpublished</option><option value="delete"';
             if($r['status']=='published')$edit.=' selected';
@@ -279,8 +279,8 @@ if($show=='item'){
             if($r['status']=='delete')$edit.=' selected';
             $edit.='>Delete</option></select></div></div>';
 		}
-		$edit.='<div class="form-group"><label for="ti" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Created</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="ti" class="form-control" value="'.date($config['dateFormat'],$r['ti']).'" readonly></div></div>';
-		$edit.='<div class="form-group"><label for="contentType" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Content Type</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><select id="contentType" class="form-control" onchange="update(\''.$r['id'].'\',\'content\',\'contentType\',$(this).val());"><option value="article"';
+		$edit.='<div class="libr8-form-group"><label for="ti" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Created</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="ti" class="libr8-form-control" value="'.date($config['dateFormat'],$r['ti']).'" readonly></div></div>';
+		$edit.='<div class="libr8-form-group"><label for="contentType" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Content Type</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 col-xs-7"><select id="contentType" class="libr8-form-control" onchange="update(\''.$r['id'].'\',\'content\',\'contentType\',$(this).val());"><option value="article"';
         if($r['contentType']=='article')$edit.=' selected';
         $edit.='>Article</option><option value="portfolio"';
         if($r['contentType']=='portfolio')$edit.=' selected';
@@ -301,7 +301,7 @@ if($show=='item'){
         $edit.='>Gallery</option><option value="proofs"';
         if($r['contentType']=='proofs')$edit.=' selected';
         $edit.='>Proofs</option></select></div></div>';
-		$edit.='<div class="form-group"><label for="schemaType" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Schema Type</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><select id="schemaType" class="form-control" onchange="update(\''.$r['id'].'\',\'content\',\'schemaType\',$(this).val());"><option value="blogPost"';
+		$edit.='<div class="libr8-form-group"><label for="schemaType" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Schema Type</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><select id="schemaType" class="libr8-form-control" onchange="update(\''.$r['id'].'\',\'content\',\'schemaType\',$(this).val());"><option value="blogPost"';
         if($r['schemaType']=='blogPost')$edit.=' selected';
         $edit.='>blogPost -> for Articles</option><option value="Product"';
         if($r['schemaType']=='Product')$edit.=' selected';
@@ -317,9 +317,9 @@ if($show=='item'){
         if($r['schemaType']=='Event')$edit.=' selected';
         $edit.='>Event -> for Events</option><option value="CreativeWork"';
         if($r['schemaType']=='CreativeWork')$edit.=' selected';
-        $edit.='>CreativeWork -> for Portfolio/Proofs</option></select><span class="help-block">Libr8 chooses the appropriate SchemaType when adding Content as defined by <a target="_blank" href="http://www.schema.org/">www.schema.org</a></span></div></div>';
+        $edit.='>CreativeWork -> for Portfolio/Proofs</option></select><span class="libr8-help-block">Libr8 chooses the appropriate SchemaType when adding Content as defined by <a target="_blank" href="http://www.schema.org/">www.schema.org</a></span></div></div>';
 		if($view=='proofs'){
-			$edit.='<div class="form-group"><label for="cid" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Client</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><select id="cid" class="form-control" onchange="update(\''.$r['id'].'\',\'content\',\'cid\',$(this).val());"><option value="0">Select a Client...</option>';
+			$edit.='<div class="libr8-form-group"><label for="cid" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Client</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><select id="cid" class="libr8-form-control" onchange="update(\''.$r['id'].'\',\'content\',\'cid\',$(this).val());"><option value="0">Select a Client...</option>';
             $cs=$db->query("SELECT * FROM login ORDER BY name ASC, username ASC");
             while($cr=$cs->fetch(PDO::FETCH_ASSOC)){
                 $edit.='<option value="'.$cr['id'].'"';
@@ -329,7 +329,7 @@ if($show=='item'){
             $edit.='</select></div></div>';
 		}
 		if($view=='article'){
-			$edit.='<div class="form-group"><label for="author" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Author</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><select id="uid" class="form-control" onchange="update(\''.$r['id'].'\',\'content\',\'uid\',$(this).val());">';
+			$edit.='<div class="libr8-form-group"><label for="author" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Author</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><select id="uid" class="libr8-form-control" onchange="update(\''.$r['id'].'\',\'content\',\'uid\',$(this).val());">';
             $su=$db->query("SELECT id,username,name FROM login WHERE username!='' AND status!='delete' ORDER BY username ASC, name ASC");
             while($ru=$su->fetch(PDO::FETCH_ASSOC)){
                 $edit.='<option value="'.$ru['id'].'"';
@@ -339,7 +339,7 @@ if($show=='item'){
             $edit.='</select></div></div>';
 		}
         if($view=='article'||$view=='gallery'||$view=='inventory'||$view=='portfolio'||$view=='proofs'||$view=='services'){
-			$edit.='<form method="post" target="sp" enctype="multipart/form-data"action="includes/add_data.php"><input type="hidden" name="id" value="'.$r['id'].'"><input type="hidden" name="act" value="add_image"><input type="hidden" name="t" value="content"><input type="hidden" name="c" value="file"><div class="form-group relative"><label for="file" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Image</label><div class="input-group col-lg-9 col-md-8 col-sm-8 col-xs-6"><input type="file" name="fu" class="form-control filestyle" data-icon="false"><div class="input-group-btn"><button class="btn btn-default" onclick="$(\'#block\').css({\'display\':\'block\'});">Upload</button></div></div><div id="file"><img src="';
+			$edit.='<form method="post" target="sp" enctype="multipart/form-data"action="includes/add_data.php"><input type="hidden" name="id" value="'.$r['id'].'"><input type="hidden" name="act" value="add_image"><input type="hidden" name="t" value="content"><input type="hidden" name="c" value="file"><div class="libr8-form-group libr8-relative"><label for="file" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Image</label><div class="libr8-input-group libr8-col-lg-9 libr8-col-md-8 libr8-col-sm-8 libr8-col-xs-6"><input type="file" name="fu" class="libr8-form-control" data-icon="false"><div class="libr8-input-group-btn"><button class="libr8-btn libr8-btn-default" onclick="$(\'#block\').css({\'display\':\'block\'});">Upload</button></div></div><div id="file"><img src="';
             if($r['file']!=''&&file_exists('media/'.$r['file'])){
                 $edit.='media/'.$r['file'];
             }else{
@@ -348,7 +348,7 @@ if($show=='item'){
             $edit.='"></div></div></form>';
         }
 		if($view=='article'||$view=='gallery'||$view=='inventory'||$view=='portfolio'||$view=='proofs'||$view=='services'){
-			$edit.='<form method="post" target="sp" enctype="multipart/form-data" action="includes/add_data.php"><input type="hidden" name="id" value="'.$r['id'].'"><input type="hidden" name="act" value="add_image"><input type="hidden" name="t" value="content"><input type="hidden" name="c" value="thumb"><div class="form-group relative"><label for="thumb" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Thumb</label><div class="input-group col-lg-9 col-md-8 col-sm-8 col-xs-6"><input type="file" name="fu" class="form-control filestyle" data-icon="false"><div class="input-group-btn"><button class="btn btn-default" onclick="$(\'#block\').css({\'display\':\'block\'});">Upload</button></div></div><div id="thumb"><img src="';
+			$edit.='<form method="post" target="sp" enctype="multipart/form-data" action="includes/add_data.php"><input type="hidden" name="id" value="'.$r['id'].'"><input type="hidden" name="act" value="add_image"><input type="hidden" name="t" value="content"><input type="hidden" name="c" value="thumb"><div class="libr8-form-group libr8-relative"><label for="thumb" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Thumb</label><div class="libr8-input-group libr8-col-lg-9 libr8-col-md-8 libr8-col-sm-8 libr8-col-xs-6"><input type="file" name="fu" class="libr8-form-control" data-icon="false"><div class="libr8-input-group-btn"><button class="libr8-btn libr8-btn-default" onclick="$(\'#block\').css({\'display\':\'block\'});">Upload</button></div></div><div id="thumb"><img src="';
             if($r['thumb']!=''&&file_exists('media/'.$r['thumb'])){
                 $edit.='media/'.$r['thumb'];
             }else{
@@ -357,37 +357,37 @@ if($show=='item'){
             $edit.='"></div></div></form>';
 		}
 		if($view=='inventory'||$view=='services'||$view=='events'||$view=='news'){
-			$edit.='<div class="form-group"><label for="code" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Code</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="code" class="form-control textinput" value="'.$r['code'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="code" placeholder="Enter a Code..."><div id="codesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="code" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Code</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="code" class="libr8-form-control libr8-textinput" value="'.$r['code'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="code" placeholder="Enter a Code..."><div id="codesave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='inventory'){
-			$edit.='<div class="form-group"><label for="brand" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Brand</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="brand" class="form-control textinput" value="'.$r['brand'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="brand" placeholder="Enter a Brand..."><div id="brandsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="brand" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Brand</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="brand" class="libr8-form-control libr8-textinput" value="'.$r['brand'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="brand" placeholder="Enter a Brand..."><div id="brandsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='messages'){
-			$edit.='<div class="form-group"><label for="subject" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Subject</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="subject" class="form-control" value="'.$r['subject'].'" readonly></div></div><div class="form-group"><label for="email" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">From</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="email" class="form-control" value="'.$r['name'].' <'.$r['email'].'>" readonly></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="subject" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Subject</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="subject" class="libr8-form-control" value="'.$r['subject'].'" readonly></div></div><div class="libr8-form-group"><label for="email" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">From</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="email" class="libr8-form-control" value="'.$r['name'].' <'.$r['email'].'>" readonly></div></div>';
 		}
 		if($view=='bookings'||$view=='events'){
-			$edit.='<div class="form-group"><label for="tis" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">';if($view=='events'){$edit.='Event Start';}else{$edit.='Booked For';}$edit.='</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="tis" class="form-control" data-tooltip data-original-title="';if($r['tis']==0){$edit.='Select a Date...';}else{$edit.=date($config['dateFormat'],$r['tis']);}$edit.='" value="';if($r['tis']!=0){$edit.=date('Y-m-d h:m',$r['tis']);}$edit.='" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="tis" placeholder="Select a Date..."><div id="tissave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="tie" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">';if($view=='events'){$edit.='Event End';}else{$edit.='Booking End';}$edit.='</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="tie" class="form-control" data-tooltip data-original-title="';if($r['tie']==''||$r['tie']==0){$edit.='Select a Date...';}else{$edit.=date($config['dateFormat'],$r['tie']);}$edit.='" value="';if($r['tie']!=0){$edit.=date('Y-m-d h:m',$r['tie']);}$edit.='" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="tie" placeholder="Select a Date..."><div id="tiesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="tis" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">';if($view=='events'){$edit.='Event Start';}else{$edit.='Booked For';}$edit.='</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="tis" class="libr8-form-control" data-tooltip data-original-title="';if($r['tis']==0){$edit.='Select a Date...';}else{$edit.=date($config['dateFormat'],$r['tis']);}$edit.='" value="';if($r['tis']!=0){$edit.=date('Y-m-d h:m',$r['tis']);}$edit.='" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="tis" placeholder="Select a Date..."><div id="tissave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="libr8-form-group"><label for="tie" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">';if($view=='events'){$edit.='Event End';}else{$edit.='Booking End';}$edit.='</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="tie" class="libr8-form-control" data-tooltip data-original-title="';if($r['tie']==''||$r['tie']==0){$edit.='Select a Date...';}else{$edit.=date($config['dateFormat'],$r['tie']);}$edit.='" value="';if($r['tie']!=0){$edit.=date('Y-m-d h:m',$r['tie']);}$edit.='" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="tie" placeholder="Select a Date..."><div id="tiesave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='bookings'||$view=='testimonials'){
-			$edit.='<div class="form-group"><label for="email" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Email</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="email" class="form-control textinput" value="'.$r['email'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="email" placeholder="Enter an Email..."><div id="emailsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="email" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Email</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="email" class="libr8-form-control libr8-textinput" value="'.$r['email'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="email" placeholder="Enter an Email..."><div id="emailsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='bookings'||$view=='testimonials'||$view=='news'){
-			$edit.='<div class="form-group"><label for="name" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Name</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="name" class="form-control textinput" value="'.$r['name'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="name" placeholder="Enter a Name..."><div id="namesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="name" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Name</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="name" class="libr8-form-control libr8-textinput" value="'.$r['name'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="name" placeholder="Enter a Name..."><div id="namesave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='testimonials'||$view=='news'){
-			$edit.='<div class="form-group"><label for="url" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">URL</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="url" class="form-control textinput" value="'.$r['url'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="url" placeholder="Enter a URL..."><div id="urlsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="url" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">URL</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="url" class="libr8-form-control libr8-textinput" value="'.$r['url'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="url" placeholder="Enter a URL..."><div id="urlsave" class="libr8-input-group-btn libr8-hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='bookings'||$view=='accounts'||$view=='news'||$view=='proofs'){
-			$edit.='<div class="form-group"><label for="business" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Business</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="business" class="form-control textinput" value="'.$r['business'].'" data-dbid="'.$r['id'].'" data-dbt="<?php echo$table;?>" data-dbc="business" placeholder="Enter a Business..."><div id="businesssave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="business" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Business</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="business" class="libr8-form-control libr8-textinput" value="'.$r['business'].'" data-dbid="'.$r['id'].'" data-dbt="<?php echo$table;?>" data-dbc="business" placeholder="Enter a Business..."><div id="businesssave" class="libr8-input-group-btn libr8-hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='bookings'||$view=='messages'){
-			$edit.='<div class="form-group"><label for="phone" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Phone</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="phone" class="form-control textinput" value="'.$r['phone'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="phone" placeholder="Enter Phone Number..."><div id="phonesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="phone" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Phone</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="phone" class="libr8-form-control libr8-textinput" value="'.$r['phone'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="phone" placeholder="Enter Phone Number..."><div id="phonesave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='messages'){
-			$edit.='<div class="form-group"><label for="ip" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">IP</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="ip" class="form-control" value="'.$r['ip'].'" readonly></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="ip" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">IP</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="ip" class="libr8-form-control" value="'.$r['ip'].'" readonly></div></div>';
 		}
 		if($view=='gallery'||$view=='news'){
-			$edit.='<div class="form-group"><label for="assoc" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Link</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><select class="form-control" onchange="update(\''.$r['id'].'\',\'content\',\'assoc\',$(this).val());"><option value="">Select an Article...</option>';
+			$edit.='<div class="libr8-form-group"><label for="assoc" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Link</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><select class="libr8-form-control" onchange="update(\''.$r['id'].'\',\'content\',\'assoc\',$(this).val());"><option value="">Select an Article...</option>';
             $sa=$db->query("SELECT title FROM content WHERE contentType='article'");
             while($ra=$sa->fetch(PDO::FETCH_ASSOC)){
                 $edit.='<option value="'.strtolower(str_replace(' ','-',$ra['title'])).'"';
@@ -397,43 +397,43 @@ if($show=='item'){
             $edit.='</select></div></div>';
 		}
 		if($view=='article'||$view=='portfolio'||$view=='gallery'||$view=='inventory'||$view=='services'||$view=='events'||$view=='news'){
-			$edit.='<div class="form-group"><label for="category_1" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Category 1</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" class="form-control textinput" id="category_1" value="'.$r['category_1'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="category_1" placeholder="Enter a Category..."><div class="input-group-addon"><i class="fa fa-long-arrow-left"></i></div><select class="form-control" onchange="$(\'#category_1\').val($(this).val());update(\''.$r['id'].'\',\'content\',\'category_1\',$(this).val());"><option value="">Select a Category...</option>';
+			$edit.='<div class="libr8-form-group"><label for="category_1" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Category 1</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" class="libr8-form-control textinput" id="category_1" value="'.$r['category_1'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="category_1" placeholder="Enter a Category..."><div class="libr8-input-group-addon"><i class="fa fa-long-arrow-left"></i></div><select class="libr8-form-control" onchange="$(\'#category_1\').val($(this).val());update(\''.$r['id'].'\',\'content\',\'category_1\',$(this).val());"><option value="">Select a Category...</option>';
             $s=$db->query("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");
             while($rs=$s->fetch(PDO::FETCH_ASSOC)){
                 $edit.='<option value="'.$rs['category_1'].'">'.$rs['category_1'].'</option>';
             }
-            $edit.='</select><div id="category_1save" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+            $edit.='</select><div id="category_1save" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='article'||$view=='portfolio'||$view=='gallery'||$view=='inventory'||$view=='services'||$view=='events'||$view=='news'){
-			$edit.='<div class="form-group"><label for="category_2" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Category 2</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" class="form-control textinput" id="category_2" value="'.$r['category_2'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="category_2" placeholder="Enter a Category..."><div class="input-group-addon"><i class="fa fa-long-arrow-left"></i></div><select class="form-control" onchange="$(\'#category_2\').val($(this).val());update(\''.$r['id'].'\',\'content\',\'category_2\',$(this).val());"><option value="">Select a Category...</option>';
+			$edit.='<div class="libr8-form-group"><label for="category_2" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Category 2</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" class="libr8-form-control libr8-textinput" id="category_2" value="'.$r['category_2'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="category_2" placeholder="Enter a Category..."><div class="libr8-input-group-addon"><i class="fa fa-long-arrow-left"></i></div><select class="libr8-form-control" onchange="$(\'#category_2\').val($(this).val());update(\''.$r['id'].'\',\'content\',\'category_2\',$(this).val());"><option value="">Select a Category...</option>';
             $s=$db->query("SELECT DISTINCT category_2 FROM content WHERE category_2!='' ORDER BY category_2 ASC");
             while($rs=$s->fetch(PDO::FETCH_ASSOC)){
                 $edit.='<option value="'.$rs['category_2'].'">'.$rs['category_2'].'</option>';
             }
-            $edit.='</select><div id="category_2save" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+            $edit.='</select><div id="category_2save" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='inventory'||$view=='services'){
-			$edit.='<div class="form-group"><label for="cost" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Cost</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><div class="input-group-addon">$</div><input type="text" id="cost" class="form-control textinput" value="'.$r['cost'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="cost" placeholder="Enter a Cost..."><div id="costsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
-			$edit.='<div class="form-group"><label for="options0" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Show Cost</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="checkbox" id="options0" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="options" data-dbb="0"';if($r['options']{0}==1){$edit.=' checked';}$edit.='></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="cost" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Cost</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><div class="libr8-input-group-addon">$</div><input type="text" id="cost" class="libr8-form-control libr8-textinput" value="'.$r['cost'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="cost" placeholder="Enter a Cost..."><div id="costsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="options0" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Show Cost</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="checkbox" id="options0" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="options" data-dbb="0"';if($r['options']{0}==1){$edit.=' checked';}$edit.='></div></div>';
 		}
 		if($view=='inventory'){
-			$edit.='<div class="form-group"><label for="quantity" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Quantity</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="quantity" class="form-control textinput" value="'.$r['quantity'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="quantity" placeholder="Enter a Quantity..."><div id="quantitysave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="quantity" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Quantity</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="quantity" class="libr8-form-control libr8-textinput" value="'.$r['quantity'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="quantity" placeholder="Enter a Quantity..."><div id="quantitysave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='article'||$view=='portfolio'||$view=='inventory'||$view=='services'||$view=='gallery'||$view=='events'||$view=='news'){
-			$edit.='<div class="form-group"><label for="content_keywords" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Keywords</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="content_keywords" class="form-control textinput" value="'.$r['keywords'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="keywords" placeholder="Enter Keywords.."><div id="content_keywordssave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
-			$edit.='<div class="form-group"><label for="tags" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Tags</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="tags" class="form-control textinput" value="'.$r['tags'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="tags" placeholder="Enter Tags..."><div id="tagssave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="content_keywords" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Keywords</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="content_keywords" class="libr8-form-control libr8-textinput" value="'.$r['keywords'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="keywords" placeholder="Enter Keywords.."><div id="content_keywordssave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="tags" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Tags</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="tags" class="libr8-form-control libr8-textinput" value="'.$r['tags'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="tags" placeholder="Enter Tags..."><div id="tagssave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
 		if($view=='article'||$view=='gallery'||$view=='events'){
-			$edit.='<div class="well"><h4>Google Maps</h4><div class="form-group"><label for="geoLocation" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">GEO Location</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="geoLocation" class="form-control textinput" value="'.$r['geoLocation'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="geoLocation" placeholder="Enter a Geo Location"><div id="geoLocationsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="form-group"><label for="geoReference" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">GEO Reference</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="geoReference" class="form-control textinput" value="'.$r['geoReference'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="geoReference" placeholder="Enter a GEO Reference"><div id="geoReferencesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div></div>';
+			$edit.='<div class="libr8-well"><h4>Google Maps</h4><div class="libr8-form-group"><label for="geoLocation" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">GEO Location</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="geoLocation" class="libr8-form-control libr8-textinput" value="'.$r['geoLocation'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="geoLocation" placeholder="Enter a Geo Location"><div id="geoLocationsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div><div class="libr8-form-group"><label for="geoReference" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">GEO Reference</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="geoReference" class="libr8-form-control libr8-textinput" value="'.$r['geoReference'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="geoReference" placeholder="Enter a GEO Reference"><div id="geoReferencesave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div></div>';
 		}
-		$edit.='<div class="form-group"><label for="internal" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Internal</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="checkbox" id="internal0" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="internal" data-dbb="0"';if($r['internal']==1){$edit.=' checked';}$edit.='></div></div>';
+		$edit.='<div class="libr8-form-group"><label for="internal" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Internal</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="checkbox" id="internal0" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="internal" data-dbb="0"';if($r['internal']==1){$edit.=' checked';}$edit.='></div></div>';
 		if($view=='events'||$view=='services'){
-			$edit.='<div class="form-group"><label for="bookable" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Bookable</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="checkbox" id="bookable0" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="bookable" data-dbb="0"';if($r['bookable']==1){$edit.=' checked';}$edit.='></div></div>';
+			$edit.='<div class="libr8-form-group"><label for="bookable" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Bookable</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="checkbox" id="bookable0" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="bookable" data-dbb="0"';if($r['bookable']==1){$edit.=' checked';}$edit.='></div></div>';
 		}
 		if($view=='article'||$view=='gallery'||$view=='services'||$view=='inventory'||$view=='portfolio'||$view=='events'||$view=='news'){
-			$edit.='<div class="form-group"><label for="featured" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Featured</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><div class="input-group-addon"><input type="checkbox" id="featured0" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="featured" data-dbb="0"';
+			$edit.='<div class="libr8-form-group"><label for="featured" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Featured</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><div class="libr8-input-group-addon"><input type="checkbox" id="featured0" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="featured" data-dbb="0"';
             if($r['featured']==1)$edit.=' checked';
-            $edit.='></div><div class="input-group-addon">for</div><select id="fti" class="form-control" onchange="update(\''.$r['id'].'\',\'content\',\'fti\',$(this).val());"><option value="0">Until Disabled</option><option value="86400"';
+            $edit.='></div><div class="libr8-input-group-addon">for</div><select id="fti" class="libr8-form-control" onchange="update(\''.$r['id'].'\',\'content\',\'fti\',$(this).val());"><option value="0">Until Disabled</option><option value="86400"';
             if($r['fti']==86400)$edit.=' selected';
             $edit.='>1 Day</option><option value="604800"';
             if($r['fti']==604800)$edit.=' selected';
@@ -445,17 +445,17 @@ if($show=='item'){
             if($r['fti']==15552000)$edit.=' selected';
             $edit.='>6 Months</option><option value="31104000"';
             if($r['fti']==31101000)$edit.=' selected';
-            $edit.='>1 Year</option></select></div></div><div class="form-group"><label for="caption" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Caption</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" id="caption" class="form-control textinput" value="'.$r['caption'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="caption" placeholder="Enter a Caption..."><div id="captionsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
+            $edit.='>1 Year</option></select></div></div><div class="libr8-form-group"><label for="caption" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Caption</label><div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="text" id="caption" class="libr8-form-control libr8-textinput" value="'.$r['caption'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="caption" placeholder="Enter a Caption..."><div id="captionsave" class="libr8-input-group-btn libr8-hidden"><button class="libr8-btn libr8-btn-danger"><i class="fa fa-save"></i></button></div></div></div>';
 		}
-		$edit.='<form method="post" target="sp" action="includes/update.php"><input type="hidden" name="id" value="'.$r['id'].'"><input type="hidden" name="t" value="content"><input type="hidden" name="c" value="notes"><textarea id="notes" class="form-control summernote" name="da">'.$r['notes'].'</textarea></form>';
+		$edit.='<form method="post" target="sp" action="includes/update.php"><input type="hidden" name="id" value="'.$r['id'].'"><input type="hidden" name="t" value="content"><input type="hidden" name="c" value="notes"><textarea id="notes" class="libr8-form-control summernote" name="da">'.$r['notes'].'</textarea></form>';
 		if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
-			$edit.='<div class="form-group"><label for="options1" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Comments</label>';
+			$edit.='<div class="libr8-form-group"><label for="options1" class="libr8-control-label libr8-col-lg-2 libr8-col-md-3 libr8-col-sm-3 libr8-col-xs-5">Comments</label>';
 			if($view!='proofs'){
-				$edit.='<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="checkbox" id="options1" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="options" data-dbb="1"';
+				$edit.='<div class="libr8-input-group libr8-col-lg-10 libr8-col-md-9 libr8-col-sm-9 libr8-col-xs-7"><input type="checkbox" id="options1" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="options" data-dbb="1"';
                 if($r['options']{1}==1)$edit.=' checked';
                 $edit.='></div>';
 			}
-			$edit.='</div><div class="clearfix"></div>';
+			$edit.='</div><div class="libr8-clearfix"></div>';
 		}
 		$item=str_replace('<print content=notes>',$edit,$item);
 		$item=preg_replace('~<author>.*?<\/author>~is','',$item,1);
@@ -594,25 +594,43 @@ if($show=='item'){
 			}else{
 				$avatar='images/noavatar.jpg';
 			}
-			$item.='<img class="commentavatar img-thumbnail" src="'.$avatar.'">';
-$item.='</div><div class="media-body"><div class="well"><h5 class="media-heading">Name: '.$rc['name'].'</h5><time><small class="text-muted">'.date($config['dateFormat'],$rc['ti']).'</small></time>'.strip_tags($rc['notes']);
+					$item.='<img class="commentavatar img-thumbnail" src="'.$avatar.'">';
+				$item.='</div>';
+				$item.='<div class="media-body">';
+					$item.='<div class="well">';
+						$item.='<h5 class="media-heading">Name: '.$rc['name'].'</h5>';
+						$item.='<time><small class="text-muted">'.date($config['dateFormat'],$rc['ti']).'</small></time>'.strip_tags($rc['notes']);
 			if($user['rank']>699){
-				$item.='<div id="controls-'.$rc['id'].'" class="pull-right"><button id="approve_'.$rc['id'].'" class="btn btn-success btn-xs';if($rc['status']!='unapproved'){$item.=' hidden';}$item.='" onclick="update(\''.$rc['id'].'\',\'comments\',\'status\',\'\')">Approve</button> <button class="btn btn-danger btn-xs" onclick="purge(\''.$rc['id'].'\',\'comments\')">Delete</button></div>';
+						$item.='<div id="controls-'.$rc['id'].'" class="pull-right">';
+							$item.='<button id="approve_'.$rc['id'].'" class="btn btn-success btn-xs';if($rc['status']!='unapproved'){$item.=' hidden';}$item.='" onclick="update(\''.$rc['id'].'\',\'comments\',\'status\',\'\')">Approve</button> ';
+							$item.='<button class="btn btn-danger btn-xs" onclick="purge(\''.$rc['id'].'\',\'comments\')">Delete</button>';
+						$item.='</div>';
 			}
-				$item.='</div></div>';
+					$item.='</div>';
+				$item.='</div>';
 		}
-		$item.='</div>';
+			$item.='</div>';
 		if($r['options']{1}==1||$user['rank']>0){
-			$item.='<div class="media"><div class="media-body col-lg-12 col-md-12 col-sm-12 col-xs-12"><iframe name="comments" id="comments" class="hidden"></iframe><form role="form" target="comments" method="post" action="includes/add_data.php"><input type="hidden" name="act" value="add_comment"><input type="hidden" name="rid" value="'.$r['id'].'"><input type="hidden" name="contentType" value="'.$r['contentType'].'"><div class="form-group">';
+			$item.='<div class="media">';
+				$item.='<div class="media-body col-lg-12 col-md-12 col-sm-12 col-xs-12">';
+					$item.='<iframe name="comments" id="comments" class="hidden"></iframe>';
+					$item.='<form role="form" target="comments" method="post" action="includes/add_data.php">';
+						$item.='<input type="hidden" name="act" value="add_comment">';
+						$item.='<input type="hidden" name="rid" value="'.$r['id'].'">';
+						$item.='<input type="hidden" name="contentType" value="'.$r['contentType'].'">';
+						$item.='<div class="form-group">';
 			if($user['rank']>0&&$user['email']!=''){
-				$item.='<input type="hidden" name="email" value="'.$user['email'].'">';
+							$item.='<input type="hidden" name="email" value="'.$user['email'].'">';
 			}else{
-				$item.='<label for="email" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Email</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" class="form-control" name="email" value="" placeholder="Enter an Email..." required></div>';
+							$item.='<label for="email" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Email</label>';
+							$item.='<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">';
+								$item.='<input type="text" class="form-control" name="email" value="" placeholder="Enter an Email..." required>';
+							$item.='</div>';
 			}
 			if($user['rank']>0&&$user['name']!=''){
-				$item.='<input type="hidden" name="name" value="'.$user['name'].'">';
+							$item.='<input type="hidden" name="name" value="'.$user['name'].'">';
 			}else{
-				$item.='<label for="name" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Name</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" class="form-control" name="name" value="" placeholder="Enter a Name..." required></div>';
+							$item.='<label for="name" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Name</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" class="form-control" name="name" value="" placeholder="Enter a Name..." required></div>';
 			}
 			$item.='<label for="da" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Comment</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><textarea id="da" class="form-control" name="da" placeholder="Enter a Comment..." required></textarea></div><label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><button class="btn btn-success btn-xs btn-block">Add Comment</button></div></div></form></div></div>';
 		}
