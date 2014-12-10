@@ -90,7 +90,7 @@ if($view=='bookings'&&$user['rank']<700){
 		$bookable='';
 		$sql=$db->query("SELECT id,contentType,code,title FROM content WHERE bookable='1' AND title!='' AND status='published' AND internal!='1' ORDER BY code ASC, title ASC");
 		if($sql->rowCount()>0){
-			$bookable.='<div class="form-group"><label for="rid" class="control-label col-md-2 col-xs-4">Event/Service</label><div class="input-group col-md-10 col-xs-8"><select id="rid" class="form-control" name="rid"><option value="0">Select an Item...</option>';
+			$bookable.='<div class="libr8-form-group"><label for="rid" class="libr8-control-label libr8-col-md-2 libr8-col-xs-4">Event/Service</label><div class="libr8-input-group libr8-col-md-10 libr8-col-xs-8"><select id="rid" class="libr8-form-control" name="rid"><option value="0">Select an Item...</option>';
 			while($row=$sql->fetch(PDO::FETCH_ASSOC)){
 						$bookable.='<option value="'.$row['id'].'"';
 						if($id==$row['id']){
@@ -108,7 +108,7 @@ if($view=='bookings'&&$user['rank']<700){
 	}
 }
 if($view=='bookings'&&$user['rank']>699){
-	$html='<main id="content" class="col-md-12"><div class="content"><div id="calendar"></div></div></main>';
+	$html='<main id="content" class="libr8-col-md-12"><div class="libr8-content"><div id="calendar"></div></div></main>';
 }
 if($show=='categories'){
 	if(stristr($html,'<settings')){
