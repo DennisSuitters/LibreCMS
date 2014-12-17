@@ -24,7 +24,7 @@ $seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['
 $seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
 $seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
 require'includes/login.php';
-require'view/cart_quantity.php';
+require'includes/cart_quantity.php';
 if($user['rank']>699){
 	$status="%";
 }else{
@@ -51,17 +51,12 @@ foreach($tag as$tag1){
 	if($inbed!=''){
 		preg_match('/<block inbed='.$inbed.'>([\w\W]*?)<\/block inbed='.$inbed.'>/',$template,$matches);
 		$html=$matches[1];
-		if($view=='accounts')$inbed='accounts';
 		if($view=='cart')$inbed='cart';
 		if($view=='sitemap')$inbed='sitemap';
-		if($view=='media')$inbed='media';
-		if($view=='messages')$inbed='messages';
-		if($view=='orders')$inbed='orders';
-		if($view=='preferences')$inbed='preferences';
 		require 'view/'.$inbed.'.php';
 		$req=$inbed;
 	}
 }
-if($user['rank']>699)require'includes/meta_head.php';else require'view/meta_head.php';
-if($user['rank']>699)require'includes/meta_footer.php';else require'view/meta_footer.php';
+require'view/meta_head.php';
+require'view/meta_footer.php';
 print $head.$content.$foot;

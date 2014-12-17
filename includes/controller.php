@@ -28,7 +28,63 @@ class internal{
 		return $favicon;
 	}
 }
-class p_ublic{
+class admin{
+	function getconfig($db){
+		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+		return $config;
+	}
+	function favicon(){
+		$favicon='images/favicon.jpg';
+		return $favicon;
+	}
+	function noimage(){
+		$noimage='images/noimage.jpg';
+		return $noimage;
+	}
+	function noavatar(){
+		$noavatar='images/noavatar.jpg';
+		return $noavatar;
+	}
+
+	function accounts($args=false){
+		$view='accounts';
+		require'admin.php';
+	}
+	function content($args=false){
+		$view='content';
+		require'admin.php';
+	}
+	function media($args=false){
+		$view='media';
+		require'admin.php';
+	}
+	function messages($args=false){
+		$view='messages';
+		require'admin.php';
+	}
+	function orders($args=false){
+		$view='orders';
+		require'admin.php';
+	}
+	function preferences($args=false){
+		$view='preferences';
+		require'admin.php';
+	}
+	function proofs($args=false){
+		$view='proofs';
+		require'admin.php';
+	}
+	function search($args=false){
+		$view='search';
+		require'admin.php';
+	}
+	function statistics($args=false){
+		$view='statistics';
+		print_r($args);
+		require'admin.php';
+	}
+}
+class front{
 	function getconfig($db){
 		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 		return $config;
@@ -260,27 +316,4 @@ class p_ublic{
 		$view='tos';
 		require'process.php';
 	}
-
-	/* Admin */
-	function accounts($args=false){
-		$view='accounts';
-		require'process.php';
-	}
-	function media($args=false){
-		$view='media';
-		require'process.php';
-	}
-	function messages($args=false){
-		$view='messages';
-		require'process.php';
-	}
-	function orders($args=false){
-		$view='orders';
-		require'process.php';
-	}
-	function preferences($args=false){
-		$view='preferences';
-		require'process.php';
-	}
 }
-

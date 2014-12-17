@@ -5,5 +5,6 @@ require'password.php';
 define('SESSIONID',session_id());
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 define('THEME','layout/'.$config['theme']);
+define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url']);
 define('UNICODE','UTF-8');
 require'login.php';

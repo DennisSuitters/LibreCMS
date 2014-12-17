@@ -1,32 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en-AU" class="libr8">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<title>Libr8 - Administration</title>
+		<base href="<?php echo URL;?>/" />
+		<meta http-equiv="X-FRAME-OPTIONS" content="DENY">
+		<link rel="alternate" media="handheld" href="'.URL.'" />
+		<link rel="alternate" hreflang="x-default" href="'.URL.'" />
+		<link rel="alternate" hreflang="en-AU" href="'.URL.'" />
+		<link rel="icon" href="'.URL.'/'.$favicon.'" />
+		<link rel="apple-touch-icon" href="'.URL.'/'.$favicon.'" />
+		<meta name="viewport" content="width=400,initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="includes/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="includes/css/font-awesome.min.css" />
+<?php if($view=='bookings'||$view=='events'){?>
+		<link rel="stylesheet" type="text/css" href="includes/css/fullcalendar.min.css" />
+		<link rel="stylesheet" type="text/css" href="includes/css/bootstrap-datetimepicker.min.css" />
+<?php }?>
+		<link rel="stylesheet" type="text/css" href="includes/css/summernote.css" />
+		<link rel="stylesheet" type="text/css" href="includes/css/admin.css" />
+	</head>
+	<body>
+		<div id="top" class="hidden"></div>
 <?php
-$head.='<!DOCTYPE HTML>';
-$head.='<html lang="en-AU">';
-$head.='<head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />';
-$head.='<title>Libr8 - Administration</title>';
-$head.='<base href="'.PROTOCOL.$_SERVER['HTTP_HOST'].$config['url'].'" />';
-$head.='<meta http-equiv="X-FRAME-OPTIONS" content="DENY">';
-$head.='<link rel="alternate" media="handheld" href="'.PROTOCOL.$_SERVER['HTTP_HOST'].$config['url'].'" />';
-$head.='<link rel="alternate" hreflang="x-default" href="'.PROTOCOL.$_SERVER['HTTP_HOST'].$config['url'].'" />';
-$head.='<link rel="alternate" hreflang="en-AU" href="'.PROTOCOL.$_SERVER['HTTP_HOST'].$config['url'].'" />';
-$head.='<link rel="icon" href="'.PROTOCOL.$_SERVER['HTTP_HOST'].$config['url'].$favicon.'" />';
-$head.='<link rel="apple-touch-icon" href="'.PROTOCOL.$_SERVER['HTTP_HOST'].$config['url'].$favicon.'" />';
-$head.='<meta name="viewport" content="width=400,initial-scale=1.0" />';
-$head.='<link rel="stylesheet" type="text/css" href="includes/css/bootstrap.min.css" />';
-$head.='<link rel="stylesheet" type="text/css" href="'.THEME.'/css/bootstrap.min.css" />';
-$head.='<link rel="stylesheet" type="text/css" href="includes/css/font-awesome.min.css" />';
-if($view=='contactus')
-	$head.='<link rel="stylesheet" type="text/css" href="'.THEME.'/css/mapsed.css" />';
-$head.='<link rel="stylesheet" type="text/css" href="'.THEME.'/css/style.css" />';
-if($user['rank']>699){
-	if($view=='bookings'||$view=='events'){
-		$head.='<link rel="stylesheet" type="text/css" href="includes/css/fullcalendar.min.css" />';
-		$head.='<link rel="stylesheet" type="text/css" href="includes/css/bootstrap-datetimepicker.min.css" />';
-	}
-	$head.='<link rel="stylesheet" type="text/css" href="includes/css/summernote.css" />';
-}
-$head.='<link rel="stylesheet" type="text/css" href="includes/css/admin.css" />';
-$head.='</head><body><div id="top" class="hidden"></div>';
-if($user['rank']>699){
+/*
+ if($user['rank']>699){
 	if($view=='index'||$view=='article'||$view=='portfolio'||$view=='bookings'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery'||$view=='contactus'||$view=='tos'||$view=='search'){
 	$head.='<div id="seohead">';
 		$head.='<div id="seocontent">';
@@ -86,3 +84,4 @@ if($user['rank']>699){
 	$head.='</div>';
 	}
 }
+*/

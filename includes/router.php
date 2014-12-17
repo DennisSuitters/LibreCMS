@@ -1,45 +1,48 @@
 <?php
 $routes=array(
-	'error'				=>	array('p_ublic','error'),
-	''					=>	array('p_ublic','index'),
-	'index'				=>	array('p_ublic','index'),
-	'article'			=>	array('p_ublic','article'),
-	'portfolio'			=>	array('p_ublic','portfolio'),
-	'bookings'			=>	array('p_ublic','bookings'),
-	'events'			=>	array('p_ublic','events'),
-	'news'				=>	array('p_ublic','news'),
-	'testimonials'		=>	array('p_ublic','testimonials'),
-	'inventory'			=>	array('p_ublic','inventory'),
-	'services'			=>	array('p_ublic','services'),
-	'gallery'			=>	array('p_ublic','gallery'),
-	'contactus'			=>	array('p_ublic','contactus'),
-	'cart'				=>	array('p_ublic','cart'),
-	'sitemap'			=>	array('p_ublic','sitemap'),
-	'tos'				=>	array('p_ublic','tos'),
-	'login'				=>	array('p_ublic','login'),
-	'logout'			=>	array('p_ublic','logout'),
-	'orders'			=>	array('p_ublic','orders'),
-	'proofs'			=>	array('p_ublic','proofs'),
-	'search'			=>	array('p_ublic','search'),
-	'sitemap'			=>	array('p_ublic','sitemap'),
-	'settings'			=>	array('p_ublic','settings'),
-	'admin/messages'	=>	array('p_ublic','messages'),
-	'admin/orders'		=>	array('p_ublic','orders'),
-	'admin/media'		=>	array('p_ublic','media'),
-	'admin/accounts'	=>	array('p_ublic','accounts'),
-	'admin/proofs'		=>	array('p_ublic','proofs'),
-	'admin/preferences'	=>	array('p_ublic','preferences'),
+	'error'				=>	array('front','error'),
+	''					=>	array('front','index'),
+	'index'				=>	array('front','index'),
+	'article'			=>	array('front','article'),
+	'portfolio'			=>	array('front','portfolio'),
+	'bookings'			=>	array('front','bookings'),
+	'events'			=>	array('front','events'),
+	'news'				=>	array('front','news'),
+	'testimonials'		=>	array('front','testimonials'),
+	'inventory'			=>	array('front','inventory'),
+	'services'			=>	array('front','services'),
+	'gallery'			=>	array('front','gallery'),
+	'contactus'			=>	array('front','contactus'),
+	'cart'				=>	array('front','cart'),
+	'sitemap'			=>	array('front','sitemap'),
+	'tos'				=>	array('front','tos'),
+	'login'				=>	array('front','login'),
+	'logout'			=>	array('front','logout'),
+	'proofs'			=>	array('front','proofs'),
+	'search'			=>	array('front','search'),
+	'sitemap'			=>	array('front','sitemap'),
+	'settings'			=>	array('front','settings'),
+	'admin/accounts'	=>	array('admin','accounts'),
+	'admin/content'		=>	array('admin','content'),
+	'admin/media'		=>	array('admin','media'),
+	'admin/messages'	=>	array('admin','messages'),
+	'admin/orders'		=>	array('admin','orders'),
+	'admin/preferences'	=>	array('admin','preferences'),
+	'admin/proofs'		=>	array('admin','proofs'),
+	'admin/search'		=>	array('admin','search'),
+	'admin/statistics'	=>	array('admin','statistics'),
+	'admin'				=>	array('admin','statistics'),
 	'sitemap.xml'		=>	array('internal','sitemap'),
 	'robots.txt'		=>	array('internal','robots'),
 	'rss'				=>	array('internal','rss')
 );
-$route=new libr8_router();
+$route=new router();
 $route->setRoutes($routes);
 $route->routeURL(preg_replace("|/$|","",filter_input(INPUT_GET,'url',FILTER_SANITIZE_URL)));
 function minify($txt){
 	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
 }
-class libr8_router{
+class router{
 	protected $route_match=false;
 	protected $route_call=false;
 	protected $route_call_args=false;

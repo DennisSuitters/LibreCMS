@@ -1,0 +1,20 @@
+<?php
+require'includes/db.php';
+$config=$this->getconfig($db);
+$ti=time();
+$favicon=$this->favicon();
+$share_image=$favicon;
+$noimage=$this->noimage();
+$noavatar=$this->noavatar();
+$sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
+$sp->execute(array(':contentType'=>$view));
+require'includes/login.php';
+if($user['rank']>0){
+	require'includes/layout/meta_head.php';
+	require'includes/layout/header.php';
+	require'includes/layout/'.$view.'.php';
+	require'includes/layout/footer.php';
+	require'includes/layout/meta_footer.php';
+}else{
+	require'includes/layout/login.php';
+}

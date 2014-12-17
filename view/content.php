@@ -108,7 +108,7 @@ if($view=='bookings'&&$user['rank']<700){
 	}
 }
 if($view=='bookings'&&$user['rank']>699){
-	$html='<main id="content" class="libr8-col-md-12"><div class="libr8-content"><div id="calendar"></div></div></main>';
+	$html='<main id="content" class="libr8 libr8-col-md-12"><div class="libr8-content"><div id="calendar"></div></div></main>';
 }
 if($show=='categories'){
 	if(stristr($html,'<settings')){
