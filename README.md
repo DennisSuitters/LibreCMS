@@ -1,6 +1,6 @@
 We are currently in a broken State, as we make alterations to seperate the Administration Styling, and make adjustments to allow the ability to use other CSS Frameworks on the Front End.
 
-![Libr8](images/libr8.png)  
+![Libr8](includes/images/librecms.png)  
 a **Free** Open Source Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [Font Awesome](http://fortawesome.github.io/Font-Awesome/). Built to take advantage of HTML5 and CSS3, and injects necessary SEO attributes that fit in with Google's recommendations, and Microformats to help with Search Engine ranking.
 
 
