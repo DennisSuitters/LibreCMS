@@ -36,7 +36,7 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 * Windows 7 + WAMP + PHP 5.5 + MySQL
 
 ### Setup:
-LibreCMS uses PHP's PDO for Database integration. So all you need to do, is use a Database Engine that's compatible with PDO. Then import the "libre.sql" file found in the root folder, then edit the "config.ini" file in the "includes/" folder.
+LibreCMS uses PHP's PDO for Database integration. So all you need to do, is use a Database Engine that's compatible with PDO. Then import the "libre.sql" file found in the "includes/" folder, then edit the "config.ini" file in the "includes/" folder.
 Remember to set the appropriate file and folder permissions for security purposes, and make sure "media" uses 0755 so files can be uploaded when editing or creating content.
 
 ### NOTE:
