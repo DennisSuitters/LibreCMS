@@ -16,7 +16,7 @@ a **Free** Open Source Content Management System, that is built utilising [PHP](
 
 Please submit issue's here at GitHub, this is so we can track, and update issue's more efficiently.
 
-You can now get themes from our Themes GitHub Repository @ [Libr8-Themes](https://github.com/StudioJunkyard/Libr8-themes)
+You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](https://github.com/StudioJunkyard/LibreCMS-themes)
 
 ### Dependencies
 * Bootstrap
@@ -36,9 +36,9 @@ You can now get themes from our Themes GitHub Repository @ [Libr8-Themes](https:
 * Windows 7 + WAMP + PHP 5.5 + MySQL
 
 ### Setup:
-Libr8 uses PHP's PDO for Database integration. So all you need to do, is use a Database Engine that's compatible with PDO. Then import the "libr8.sql" file found in the root folder, then edit the "config.ini" file in the "includes/" folder.
+LibreCMS uses PHP's PDO for Database integration. So all you need to do, is use a Database Engine that's compatible with PDO. Then import the "libre.sql" file found in the root folder, then edit the "config.ini" file in the "includes/" folder.
 Remember to set the appropriate file and folder permissions for security purposes, and make sure "media" uses 0755 so files can be uploaded when editing or creating content.
 
 ### NOTE:
-* This is currently a work in progress, and being converted to an MVC System. If you download and use Libr8 in a Production Environment, you do so at your own risk.
+* This is currently a work in progress, and being converted to an MVC System. If you download and use LibreCMS in a Production Environment, you do so at your own risk.
 * We openly welcome help with MVC Conversion, and bug squashing.
