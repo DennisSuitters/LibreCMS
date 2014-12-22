@@ -1,17 +1,22 @@
 function purge(id,t){
-	$('#busy').css({'display':'inline-block'});$('#sp').load('includes/purge.php?id='+id+'&t='+t)
+	$('#busy').css({'display':'inline-block'});
+	$('#sp').load('includes/purge.php?id='+id+'&t='+t)
 }
 function makeClient(id){
-	$('#busy').css({'display':'inline-block'});$('#sp').load('includes/add_data.php?id='+id+'&act=make_client')
+	$('#busy').css({'display':'inline-block'});
+	$('#sp').load('includes/add_data.php?id='+id+'&act=make_client')
 }
 function changeClient(id,oid){
-	$('#changeClient').before('<i class="libr8-busy fa fa-cog fa-spin');$('#sp').load('includes/change_client.php?id='+id+'&oid='+oid)
+	$('#changeClient').before('<i class="busy fa fa-cog fa-spin');
+	$('#sp').load('includes/change_client.php?id='+id+'&oid='+oid)
 }
 function addOrderItem(oid,iid){
-	$('#busy').css({'display':'inline-block'});$('#sp').load('includes/add_data.php?act=add_orderitem&oid='+oid+'&iid='+iid)
+	$('#busy').css({'display':'inline-block'});
+	$('#sp').load('includes/add_data.php?act=add_orderitem&oid='+oid+'&iid='+iid)
 }
 function getClient(email){
-	$('#busy').css({'display':'inline-block'});$('#sp').load('includes/get_client.php?email='+email)
+	$('#busy').css({'display':'inline-block'});
+	$('#sp').load('includes/get_client.php?email='+email)
 }
 function associated(id,el,a){
 	var assoc=a.split('|');
@@ -30,7 +35,7 @@ function associated(id,el,a){
 		update(id,'bookings','service',assoc[0])
 	}
 }
-$(".libr8-textinput").on({
+$(".textinput").on({
 	keydown:function(event){
 		var id=$(this).data("dbid");
 		var t=$(this).data("dbt");
@@ -55,7 +60,13 @@ $(".libr8-textinput").on({
 		var t=$(this).data("dbt");
 		var c=$(this).data("dbc");
 		var da=$(this).val();
-		$('#'+c+'save').removeClass('libr8-hidden');
+		if(t=='menu'){
+			$('#'+c+id+'save').remove();
+			$('#'+c+id).after('<div id="'+c+id+'save" class="input-group-btn"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>');
+		}else{
+			$('#'+c+'save').remove();
+			$('#'+c).after('<div id="'+c+'save" class="input-group-btn"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>');
+		}
 		if(event.which==13){
 			update(id,t,c,da);
 			event.preventDefault()
@@ -75,7 +86,7 @@ $("#content input[type=checkbox]").on({
 		var t=$(this).data("dbt");
 		var c=$(this).data("dbc");
 		var b=$(this).data("dbb");
-		$('#'+c+b).before('<i id="'+t+c+b+'" class="libr8-busy fa fa-cog fa-spin"></i>');
+		$('#'+c+b).before('<i id="'+t+c+b+'" class="busy fa fa-cog fa-spin"></i>');
 		$('#sp').load('includes/toggle.php?id='+id+'&t='+t+'&c='+c+'&b='+b)
 	}
 });
@@ -85,7 +96,7 @@ function update(id,t,c,da){
 			$('#approve_'+id).remove()
 		}
 	}else{
-		$('#'+c).before('<i id="'+c+'" class="libr8-busy fa fa-cog fa-spin"></i>')
+		$('#'+c).before('<i id="'+c+'" class="busy fa fa-cog fa-spin"></i>')
 	}
 	$.ajax({
 		type:"GET",
@@ -93,11 +104,33 @@ function update(id,t,c,da){
 		data:{id:id,t:t,c:c,da:da}
 	}).done(function(msg){
 		if(t!='comments'){
+			if(t=='menu'){
+				$('#'+c+id+'save').remove();
+			}else{
+				$('#'+c+'save').remove();
+			}
 			$('#'+c).remove();
-			$('#'+c+'save').addClass('libr8-hidden')
 		}
 	})
 }
-function updateButtons(id,t,c,da){$('#sp').load('includes/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da))}
-function removeMedia(id){$('#sp').load('includes/removemedia.php?id='+id)}
-function showDetails(id,c){if($('#show'+id).hasClass('libr8-hidden')){$('#show'+id).load('includes/show_details.php?id='+id,function(){$(this).removeClass('libr8-hidden')})}else{$('#show'+id).addClass('libr8-hidden')}}
+function updateButtons(id,t,c,da){
+	$('#sp').load('includes/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da))
+}
+function removeMedia(id){
+	$('#sp').load('includes/removemedia.php?id='+id)
+}
+function showDetails(id,c){
+	if($('#show'+id).hasClass('hidden')){
+		$('#show'+id).load('includes/show_details.php?id='+id,function(){
+			$(this).removeClass('hidden')
+		})
+	}else{
+		$('#show'+id).addClass('hidden')
+	}
+}
+function statsContent(content){
+	$('#new'+content)
+		.html('<div class="panel-footer text-center"><i class="fa fa-spinner fa-spin"></i></div>')
+		.load('includes/stats_'+content+'.php');
+	return false;	
+}

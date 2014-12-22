@@ -2,7 +2,7 @@
 <html lang="en-AU">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-		<title>Libr8 - Administration</title>
+		<title>LibreCMS - Administration</title>
 		<base href="<?php echo URL;?>/" />
 		<meta http-equiv="X-FRAME-OPTIONS" content="DENY">
 		<link rel="alternate" media="handheld" href="<?php echo URL;?>/" />
@@ -15,7 +15,7 @@
 		<link rel="stylesheet" type="text/css" href="includes/css/admin.css" />
 	</head>
 	<body>
-		<div class="panel panel-default col-sm-4 loginbox">
+		<main class="panel panel-default col-sm-4 loginbox">
 			<div class="panel-body">
 				<h4>Login</h4>
 				<form method="post" action="" accept-charset="UTF-8">
@@ -40,16 +40,14 @@
 					</div>
 				</form>
 			</div>
-		</div>
-		<footer class="clearfix relative">
-			<div class="logo"><img src="images/librecms.png"></div>
-			<nav class="navbar navbar-default">
-				<ul class="nav navbar-nav pull-right">
-					<li><a target="_blank" href="https://github.com/StudioJunkyard/Libr8/wiki"><small>Help</small></a></li>
-					<li><a target="_blank" href="https://github.com/StudioJunkyard/Libr8"><small>GitHub</small></a></li>
-					<li><a href="<?php echo URL;?>/"><small>Front</small></a></li>
-				</ul>
-			</nav>
+		</main>
+		<footer class="clearfix navbar navbar-default navbar-fixed-bottom">
+			<div class="logo"><img src="includes/images/librecms.png"></div>
+			<ul class="nav navbar-nav pull-right">
+				<li><a target="_blank" href="https://github.com/StudioJunkyard/Libr8/wiki"><small>Help</small></a></li>
+				<li><a target="_blank" href="https://github.com/StudioJunkyard/Libr8"><small>GitHub</small></a></li>
+				<li><a href="<?php echo URL;?>/"><small>Front</small></a></li>
+			</ul>
 		</footer>
 	</body>
 </html>

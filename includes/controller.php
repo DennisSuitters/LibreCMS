@@ -23,7 +23,7 @@ class internal{
 		}elseif(file_exists(THEME.'/images/favicon.ico')){
 			$favicon=THEME.'/images/favicon.ico';
 		}else{
-			$favicon='images/favicon.jpg';
+			$favicon='includes/images/favicon.png';
 		}
 		return $favicon;
 	}
@@ -34,24 +34,68 @@ class admin{
 		return $config;
 	}
 	function favicon(){
-		$favicon='images/favicon.jpg';
+		$favicon='includes/images/favicon.png';
 		return $favicon;
 	}
 	function noimage(){
-		$noimage='images/noimage.jpg';
+		$noimage='includes/images/noimage.jpg';
 		return $noimage;
 	}
 	function noavatar(){
-		$noavatar='images/noavatar.jpg';
+		$noavatar='includes/images/noavatar.jpg';
 		return $noavatar;
 	}
 
+	function add($args=false){
+		$view='add';
+		require'admin.php';
+	}
 	function accounts($args=false){
 		$view='accounts';
 		require'admin.php';
 	}
+	function bookings($args=false){
+		$view='bookings';
+		require'admin.php';
+	}
 	function content($args=false){
 		$view='content';
+		require'admin.php';
+	}
+	function article($args=false){
+		$view='article';
+		require'admin.php';
+	}
+	function portfolio($args=false){
+		$view='portfolio';
+		require'admin.php';
+	}
+	function events($args=false){
+		$view='events';
+		require'admin.php';
+	}
+	function news($args=false){
+		$view='news';
+		require'admin.php';
+	}
+	function testimonials($args=false){
+		$view='testimonials';
+		require'admin.php';
+	}
+	function inventory($args=false){
+		$view='inventory';
+		require'admin.php';
+	}
+	function services($args=false){
+		$view='services';
+		require'admin.php';
+	}
+	function gallery($args=false){
+		$view='article';
+		require'admin.php';
+	}
+	function proofs($args=false){
+		$view='proofs';
 		require'admin.php';
 	}
 	function media($args=false){
@@ -70,17 +114,12 @@ class admin{
 		$view='preferences';
 		require'admin.php';
 	}
-	function proofs($args=false){
-		$view='proofs';
-		require'admin.php';
-	}
 	function search($args=false){
 		$view='search';
 		require'admin.php';
 	}
 	function statistics($args=false){
 		$view='statistics';
-		print_r($args);
 		require'admin.php';
 	}
 }
@@ -99,7 +138,7 @@ class front{
 		}elseif(file_exists(THEME.'/images/favicon.ico')){
 			$favicon=THEME.'/images/favicon.ico';
 		}else{
-			$favicon='images/favicon.jpg';
+			$favicon='includes/images/favicon.png';
 		}
 		return $favicon;
 	}
@@ -111,7 +150,7 @@ class front{
 		}elseif(file_exists(THEME.'/images/noimage.jpg')){
 			$noimage=THEME.'/images/noimage.jpg';
 		}else{
-			$noimage='images/noimage.jpg';
+			$noimage='includes/images/noimage.jpg';
 		}
 		return $noimage;
 	}
@@ -123,7 +162,7 @@ class front{
 		}elseif(file_exists(THEME.'/images/noavatar.jpg')){
 			$noavatar=THEME.'/images/noavatar.jpg';
 		}else{
-			$noavatar='images/noavatar.jpg';
+			$noavatar='includes/images/noavatar.jpg';
 		}
 		return $noavatar;
 	}

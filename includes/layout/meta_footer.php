@@ -4,7 +4,8 @@
 		<script src="includes/js/jquery.notifications.min.js"></script>
 <?php if($user['rank']>699){
 	if($view=='bookings'){?>
-		<script src="includes/js/moment.min.js"></script><script src="includes/js/fullcalendar.min.js"></script>
+		<script src="includes/js/moment.min.js"></script>
+		<script src="includes/js/fullcalendar.min.js"></script>
 <?php }?>
 		<script src="includes/js/summernote.js"></script>
 		<script src="includes/js/bootstrap-datetimepicker.min.js"></script>
@@ -13,7 +14,7 @@
 			$(document).ready(function(){
 				$(".summernote").summernote();
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});
-		$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
+				$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
 /*		$("#seodrop").click(function(){
 			$("#seocontent").toggle(function(){
 				$("#seocontent").animate({height:0},200)
@@ -42,9 +43,9 @@
 			$bs->execute(array(':id'=>$r['rid']));
 			$br=$bs->fetch(PDO::FETCH_ASSOC);?>
 				{
-					id:'.$r['id'].',
+					id:'<?php echo$r['id'];?>',
 					title:'<?php if($br['contentType']=='events'){?>Event: <?php echo$br['title'];}else{echo ucfirst(rtrim($br['contentType'],'s')).': '.$br['title'];}?>',
-					start:'<?php if($br['contentType']=='events'){echo date("Y-m-d H:i:s",$r['ti']);}else{$foot.=date("Y-m-d H:i:s",$r['tis']);}?>',
+					start:'<?php if($br['contentType']=='events'){echo date("Y-m-d H:i:s",$r['ti']);}else{echo date("Y-m-d H:i:s",$r['tis']);}?>',
 <?php		if($br['contentType']=='services'){
 				if($r['tie']>$r['tis']){
                     echo'end:\''.date("Y-m-d H:i:s",$r['tie']).'\',';
@@ -66,7 +67,7 @@
 					if(event.status=="unconfirmed"){
 						layer+='<span id="cbut'+event.id+'" class="btn btn-success btn-xs"><i class="fa fa-check"></i></span> ';
 					}
-					layer+='<span id="edbut\'+event.id+\'" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></span> <span id="delbut'+event.id+'" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></span></div>';
+					layer+='<span id="edbut'+event.id+'" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></span> <span id="delbut'+event.id+'" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></span></div>';
 					var content='Start:'+$.fullCalendar.formatDate(event.start,'dS MMM, yyyy at HH:mm');
 					if(event.end>event.start){
 						content+='<br>End:'+$.fullCalendar.formatDate(event.end,'dS MMM, yyyy at HH:mm');

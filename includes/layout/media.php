@@ -1,21 +1,17 @@
-<main id="content" class="col-md-12">
-	<div class="panel panel-default">
-		<div class="panel-body">
-<?php if($user['rank']>699){?>
-			<div class="btn-add col-md-4">
-				<form method="post" target="sp" enctype="multipart/form-data" action="includes/add_data.php">
-					<div class="form-group">
-						<div class="input-group">
-							<input type="file" name="file[]" class="form-control" multiple data-classButton="btn btn-success" data-input="false">
-							<input type="hidden" name="act" value="add_media">
-							<div class="input-group-btn">
-								<button class="btn btn-success" onclick="$('#block').css({'display':'block'});">Upload</button>
-							</div>
-						</div>
-					</div>
-				</form>
+<div class="btn-add col-md-4">
+	<form method="post" target="sp" enctype="multipart/form-data" action="includes/add_data.php">
+		<div class="form-group">
+			<div class="input-group">
+				<input type="file" name="file[]" class="form-control" multiple data-classButton="btn btn-success" data-input="false">
+				<input type="hidden" name="act" value="add_media">
+				<div class="input-group-btn">
+					<button class="btn btn-success" onclick="$('#block').css({'display':'block'});">Upload</button>
+				</div>
 			</div>
-			<ul id="media" class="sortable grid">
+		</div>
+	</form>
+</div>
+<ul id="media" class="sortable grid">
 <?php $path='media/';
 	$upload_dir='media/';
 	$handle=opendir($upload_dir);
@@ -47,19 +43,13 @@
 			}else{
 				$img='<a title="'.$file.'" href="media/'.$file.'" data-lightbox-gallery="'.$view.'" rel="'.$view.'"><img src="media/'.$file.'" class="img-thumbnail"></a>';
 			}?>
-				<li id="l_<?php echo str_replace('.','',$file);?>" class="gallery">
-				<?php echo $img;?>
-					<div id="controls_<?php echo str_replace('.','',$file);?>" class="controls">
-						<button class="btn btn-danger btn-xs" onclick="removeMedia('<?php echo $file;?>')"><i class="fa fa-trash"></i></button> 
-					</div>
-					<div class="title"><?php echo $file;?></div>
-				</li>
-<?php 	}?>
-			</ul>
-<?php }
-}else{
-	include'includes/noaccess.php';
-}?>
+	<li id="l_<?php echo str_replace('.','',$file);?>" class="gallery">
+		<?php echo $img;?>
+		<div id="controls_<?php echo str_replace('.','',$file);?>" class="controls">
+			<button class="btn btn-danger btn-xs" onclick="removeMedia('<?php echo $file;?>')"><i class="fa fa-trash"></i></button> 
 		</div>
-	</div>
-</main>
+		<div class="title"><?php echo $file;?></div>
+	</li>
+<?php 	}?>
+</ul>
+<?php }
