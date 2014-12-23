@@ -5,7 +5,6 @@ if($view=='add'){
 	$q->execute(array(':ti'=>$ti,':tis'=>$ti));
 	$view='bookings';
 }?>
-<div id="calendar" class="col-md-9"></div>
-<div class="col-md-3">
-	Here
-</div>
+<link rel="stylesheet" type="text/css" href="includes/css/fullcalendar.min.css" />
+<link rel="stylesheet" type="text/css" href="includes/css/bootstrap-datetimepicker.min.css" />
+<div id="calendar"></div>

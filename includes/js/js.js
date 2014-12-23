@@ -129,7 +129,7 @@ function showDetails(id,c){
 	}
 }
 function statsContent(content){
-	$('#new'+content)
+	$('#stats_'+content)
 		.html('<div class="panel-footer text-center"><i class="fa fa-spinner fa-spin"></i></div>')
 		.load('includes/stats_'+content+'.php');
 	return false;	

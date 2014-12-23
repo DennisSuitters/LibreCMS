@@ -21,7 +21,7 @@ footer .logo img{
 	margin-bottom:100px;
 }
 .panel .panel{
-	margin-bottom:0;
+	margin-bottom:20px;
 }
 .relative{
 	position:relative
@@ -117,9 +117,5 @@ div.theme-chooser div.theme-chooser-item input{position:absolute;top:0;left:0;vi
 #avatar{position:absolute;max-width:30px;max-height:30px;top:10px;right:5px;}
 .commentavatar{max-width:75px;max-height:75px;}
 #sp{display:none}
-.huge {
-    font-size: 40px;
-}
-.table-responsive{
-	overflow:visible;
-}
+.huge{font-size:50px}
+.table-responsive{overflow:visible}

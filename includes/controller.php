@@ -166,13 +166,13 @@ class front{
 		}
 		return $noavatar;
 	}
-/*	function tracker(){
+	function tracker(){
 		$ip=$_SERVER['REMOTE_ADDR'];
-		$http_referer=$_SERVER['HTTP_REFERER'];
-		$http_user_agent=$_SERVER['HTTP_USER_AGENT'];
-		$page_name=$view;
-		$query_string=$_SERVER['QUERY_STRING'];
-		$current_page=$view.'/'.$show;
+		$httpReferer=$_SERVER['HTTP_REFERER'];
+		$httpUserAgent=$_SERVER['HTTP_USER_AGENT'];
+		$pageName=$view;
+		$queryString=$_SERVER['QUERY_STRING'];
+		$currentPage=$view.'/'.$show;
 		$bot=is_bot();
 		$browser=getBrowser();
 		$ti=time();
@@ -180,14 +180,14 @@ class front{
 		if($act!='logout'){
 			if(isset($_SESSION['tracker'])){
 				$vid=isset($_SESSION['vid'])?$_SESSION['vid']:0;
-				if($_SESSION['current_page']!=$current_page){
-					$q=$db->prepare("INSERT INTO tracker (vid,content_type,ip,page_name,query_string,http_referer,http_user_agent,bot,browser,os,ti) VALUES (:vid,:content_type,:ip,:page_name,:query_string,:http_referer,:http_user_agent,:bot,:browser,:os,:ti)");
-					$q->execute(array(':vid'=>$vid,':content_type'=>$view,':ip'=>$ip,':page_name'=>$page_name,':query_string'=>$query_string,':http_referer'=>$http_referer,':http_user_agent'=>$http_user_agent,':bot'=>$bot,':browser'=>$browser['name'],':os'=>$browser['platform'],':ti'=>$ti));
-					$_SESSION['current_page']=$current_page;
+				if($_SESSION['currentPage']!=$current_page){
+					$q=$db->prepare("INSERT INTO tracker (vid,contentType,ip,pageName,queryString,httpReferer,httpUserAgent,bot,browser,os,ti) VALUES (:vid,:contentType,:ip,:pageName,:queryString,:httpReferer,:httpUserAgent,:bot,:browser,:os,:ti)");
+					$q->execute(array(':vid'=>$vid,':contentType'=>$view,':ip'=>$ip,':pageName'=>$pageName,':queryString'=>$queryString,':httpReferer'=>$httpReferer,':httpUserAgent'=>$httpUserAgent,':bot'=>$bot,':browser'=>$browser['name'],':os'=>$browser['platform'],':ti'=>$ti));
+					$_SESSION['currentPage']=$currentPage;
 				}
 			}else{
-				$q=$db->prepare("INSERT INTO tracker (vid,content_type,ip,page_name,query_string,http_referer,http_user_agent,bot,browser,os,ti) VALUES (:vid,:content_type,:ip,:page_name,:query_string,:http_referer,:http_user_agent,:bot,:browser,:os,:ti)");
-				$q->execute(array(':vid'=>$vid,':content_type'=>$view,':ip'=>$ip,':page_name'=>$page_name,':query_string'=>$query_string,':http_referer'=>$http_referer,':http_user_agent'=>$http_user_agent,':bot'=>$bot,':browser'=>$browser['name'],':os'=>$browser['platform'],':ti'=>$ti));
+				$q=$db->prepare("INSERT INTO tracker (vid,contentType,ip,pageName,queryString,httpReferer,httpUserAgent,bot,browser,os,ti) VALUES (:vid,:contentType,:ip,:pageName,:queryString,:httpReferer,:httpUserAgent,:bot,:browser,:os,:ti)");
+				$q->execute(array(':vid'=>$vid,':contentType'=>$view,':ip'=>$ip,':pageName'=>$pageName,':query_string'=>$queryString,':httpReferer'=>$httpReferer,':httpUserAgent'=>$httpUserAgent,':bot'=>$bot,':browser'=>$browser['name'],':os'=>$browser['platform'],':ti'=>$ti));
 				$e=$db->errorInfo();
 				if(!is_null($e[2])){
 					$_SESSION['tracker']=false;
@@ -203,7 +203,7 @@ class front{
 					$q=$db->prepare("UPDATE tracker SET vid=:vid WHERE id=:id");
 					$q->execute(array(':vid'=>$l,':id'=>$lid));
 					$_SESSION['vid']=$l;
-					$_SESSION['current_page']=$current_page;
+					$_SESSION['currentPage']=$currentPage;
 				}
 			}
 		}
@@ -233,7 +233,7 @@ class front{
 			if(preg_match('/linux/i',$uagent))
 				$platform='linux';
 			elseif(preg_match('/macintosh|mac os x/i',$uagent))
-				$platform='mac';
+				$platform='apple';
 			elseif(preg_match('/windows|win32/i',$uagent))
 				$platform='windows';
 			if(preg_match('/MSIE/i',$uagent)&&!preg_match('/Opera/i',$uagent)){
@@ -272,7 +272,7 @@ class front{
 				'platform'=>$platform,	'pattern'=>$pattern
 			);
 		}
-	} */
+	}
 	function article($args=false){
 		$view='article';
 		require'process.php';
