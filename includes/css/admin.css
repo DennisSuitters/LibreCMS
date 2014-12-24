@@ -119,3 +119,20 @@ div.theme-chooser div.theme-chooser-item input{position:absolute;top:0;left:0;vi
 #sp{display:none}
 .huge{font-size:50px}
 .table-responsive{overflow:visible}
+
+.sortable{margin:0;padding:0;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+.sortable.grid{overflow:hidden}
+.sortable li{list-style:none}
+.sortable.grid li{float:left;margin:5px 10px 20px 10px;width:150px;height:150px;text-align:center}
+.handle{cursor:move}
+.sortable.connected{float:left}
+li.sortable-placeholder{width:150px;border:1px dashed #888;background-color:#eee}
+.gallery{position:relative;display:inline-block;background-color:#fff}
+.gallery.danger img{background-color:#f00;background-color:rgba(255,0,0,.5);opacity:.5filter:alpha(opacity=50)}
+.gallery.unpublished img{opacity:.25;filter:alpha(opacity=25)}
+.gallery .controls{position:absolute;top:5px;right:-15px}
+.gallery img{float:left;margin:10px;padding-bottom:20px;width:100%;height:100%}
+.gallery .title{position:absolute;right:-5px;bottom:-5px;left:15px;overflow:hidden;color:#000;text-align:center;font-size:9px}
+.gallery .handle{position:absolute;top:5px;left:5px}
+.gallery span.filetype{margin-top:10px;width:150px;height:150px;color:#000}
+.gallery .filetype i{margin-top:25px}
