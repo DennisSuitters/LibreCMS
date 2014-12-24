@@ -2,7 +2,7 @@
 	<form method="post" target="sp" enctype="multipart/form-data" action="includes/add_data.php">
 		<div class="form-group">
 			<div class="input-group">
-				<input type="file" name="file[]" class="form-control" multiple data-classButton="btn btn-success" data-input="false">
+				<input type="file" name="file[]" class="form-control" multiple>
 				<input type="hidden" name="act" value="add_media">
 				<div class="input-group-btn">
 					<button class="btn btn-success" onclick="$('#block').css({'display':'block'});">Upload</button>

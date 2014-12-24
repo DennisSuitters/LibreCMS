@@ -228,7 +228,7 @@ if($show=='item'){
 	<div class="form-group relative">
 		<label for="file" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Image</label>
 		<div class="input-group col-lg-9 col-md-8 col-sm-8 col-xs-6">
-			<input type="file" name="fu" class="form-control" data-icon="false">
+			<input type="file" name="fu" class="form-control">
 			<div class="input-group-btn">
 				<button class="btn btn-default" onclick="$('#block').css({'display':'block'});">Upload</button>
 			</div>
@@ -248,7 +248,7 @@ if($show=='item'){
 	<div class="form-group relative">
 		<label for="thumb" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Thumb</label>
 		<div class="input-group col-lg-9 col-md-8 col-sm-8 col-xs-6">
-			<input type="file" name="fu" class="form-control" data-icon="false">
+			<input type="file" name="fu" class="form-control">
 			<div class="input-group-btn">
 				<button class="btn btn-default" onclick="$('#block').css({'display':'block'});">Upload</button>
 			</div>
@@ -412,12 +412,17 @@ if($show=='item'){
 	</div>
 </div>
 <?php }?>
-<form method="post" target="sp" action="includes/update.php">
-	<input type="hidden" name="id" value="<?php echo$r['id'];?>">
-	<input type="hidden" name="t" value="content">
-	<input type="hidden" name="c" value="notes">
-	<textarea id="notes" class="form-control summernote" name="da"><?php echo$r['notes'];?></textarea>
-</form>
+<div class="form-group">
+	<label for="notes" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label>
+	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+		<form method="post" target="sp" action="includes/update.php">
+			<input type="hidden" name="id" value="<?php echo$r['id'];?>">
+			<input type="hidden" name="t" value="content">
+			<input type="hidden" name="c" value="notes">
+			<textarea id="notes" class="form-control summernote" name="da"><?php echo$r['notes'];?></textarea>
+		</form>
+	</div>
+</div>
 <?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){?>
 <div class="form-group">
 	<label for="options1" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Comments</label>

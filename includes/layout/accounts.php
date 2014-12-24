@@ -114,7 +114,7 @@ if($args[0]=='edit'){
 		<div class="form-group">
 			<label for="avatar" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Avatar</label>
 			<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
-				<input type="file" name="fu" class="form-control" data-icon="false">
+				<input type="file" name="fu" class="form-control">
 				<div class="input-group-btn">
 					<button class="btn btn-default" type="submit">Upload</button>
 				</div>
