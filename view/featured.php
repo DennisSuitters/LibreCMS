@@ -12,8 +12,8 @@ $s=$db->prepare("SELECT * FROM content WHERE featured='1' AND file!='' AND conte
 $s->execute(array(':contentType'=>$contentType));
 $indicators='';
 $ii=$s->rowCount();
+$i=0;
 if($ii>0){
-	$i=0;
     if($ii>1)$indicators='<ol class="carousel-indicators">';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
         if(file_exists('media/'.$r['file'])){
