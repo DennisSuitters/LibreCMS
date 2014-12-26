@@ -14,5 +14,8 @@ if(isset($user['rank'])&&$user['rank']>0){
 		$link='<a href="login/"><small>Login'.$link_x.'</small></a>';
 	}
 }
+$theme=parse_ini_file(THEME.'/theme.ini',true);
+$html=str_replace('<print theme=title>',$theme['title'],$html);
+$html=str_replace('<print theme=creator>','<a target="_blank" href="'.$theme['creator_url'].'">'.$theme['creator'].'</a>',$html);
 $html=str_replace('<login>',$link,$html);
 $content.=$html;

@@ -129,6 +129,11 @@ if($sc->rowCount()>0){?>
 <?php }
 if($show=='item'){
 	$r=$s->fetch(PDO::FETCH_ASSOC);?>
+<div class="form-group clearfix">
+	<div class="input-group pull-right">
+		<a class="btn btn-success" href="<?php echo URL.'/admin/content/type/'.$r['contentType'];?>">Back</a>
+	</div>
+</div>
 <div class="form-group">
 	<label for="title" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Title</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">

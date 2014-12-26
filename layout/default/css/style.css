@@ -227,3 +227,28 @@ main{
 	max-width:75px;
 	max-height:75px;
 }
+.theme{
+	display:block;
+	margin:0 auto;
+	padding-top:15px;
+	width:320px;
+	height:53px;
+	text-align:center;
+	vertical-align:middle;
+	background:transparent url(../images/themebg.png) no-repeat center center;
+	font-size:12px;
+	color:#000;
+}
+.theme a{
+	color:inherit;
+}
+.theme a:hover{
+	color:inherit;
+	text-decoration:underline;
+}
+.theme a .libre{
+	color:#18a303;
+}
+.theme a .cms{
+	color:#000;
+}
