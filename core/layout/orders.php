@@ -183,7 +183,7 @@ if($args[0]=='view'){
 				<td class="text-left"><?php echo$i['code'];?></td>
 				<td class="text-left">
 <?php			if($user['rank']>699){?>
-					<form target="sp" action="includes/update.php">
+					<form target="sp" action="core/update.php">
 						<input type="hidden" name="id" value="<?php echo$oi['id'];?>">
 						<input type="hidden" name="t" value="orderitems">
 						<input type="hidden" name="c" value="title">
@@ -195,7 +195,7 @@ if($args[0]=='view'){
 				</td>
 				<td class="col-md-1 text-center">
 <?php			if($oi['iid']!=0&&$user['rank']>699){?>
-					<form target="sp" action="includes/update.php">
+					<form target="sp" action="core/update.php">
 						<input type="hidden" name="id" value="<?php echo$oi['id'];?>">
 						<input type="hidden" name="t" value="orderitems">
 						<input type="hidden" name="c" value="quantity">
@@ -209,7 +209,7 @@ if($args[0]=='view'){
 				</td>
 				<td class="col-md-1 text-right">
 <?php			if($oi['iid']!=0&&$user['rank']>699){?>
-					<form target="sp" action="includes/update.php">
+					<form target="sp" action="core/update.php">
 						<input type="hidden" name="id" value="<?php echo$oi['id'];?>">
 						<input type="hidden" name="t" value="orderitems">
 						<input type="hidden" name="c" value="cost">
@@ -226,7 +226,7 @@ if($args[0]=='view'){
 				<td class="text-right"><?php if($oi['iid']!=0){echo$oi['cost']*$oi['quantity'];}?></td>
 				<td class="text-right">
 <?php			if($user['rank']>699){?>
-					<form target="sp" action="includes/update.php">
+					<form target="sp" action="core/update.php">
 						<input type="hidden" name="id" value="<?php echo$oi['id'];?>">
 						<input type="hidden" name="t" value="orderitems">
 						<input type="hidden" name="c" value="quantity">
@@ -251,10 +251,10 @@ if($args[0]=='view'){
 			<tr>
 				<td colspan="3">&nbsp;</td>
 				<td colspan="2" class="text-right">
-					<button class="btn btn-info" onclick="$('#sp').load('includes/email_order.php?id=<?php echo$r['id'];?>&act=print');">Print</button> 
+					<button class="btn btn-info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');">Print</button> 
 				</td>
 				<td class="text-right">
-					<button class="btn btn-info" onclick="$('#sp').load('includes/email_order.php?id=<?php echo$r['id'];?>&act=');">Email</button>
+					<button class="btn btn-info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');">Email</button>
 				</td>
 			</tr>
 		</tfoot>
@@ -262,7 +262,7 @@ if($args[0]=='view'){
 	<div class="row">
 		<div class="input-group col-lg-4 col-sm-5">
 <?php		if($r['status']!='archived'&&$user['rank']>699){?>
-			<form target="sp" action="includes/update.php">
+			<form target="sp" action="core/update.php">
 				<input type="hidden" name="id" value="<?php echo$r['id'];?>">
 				<input type="hidden" name="t" value="orders">
 				<input type="hidden" name="c" value="notes">

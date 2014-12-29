@@ -11,8 +11,8 @@
 		<link rel="icon" href="<?php echo URL.'/'.$favicon;?>" />
 		<link rel="apple-touch-icon" href="<?php echo URL.'/'.$favicon;?>" />
 		<meta name="viewport" content="width=400,initial-scale=1.0" />
-		<link rel="stylesheet" type="text/css" href="includes/css/bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="includes/css/admin.css" />
+		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="core/css/admin.css" />
 	</head>
 	<body>
 		<div class="container">
@@ -46,7 +46,7 @@
 			<div class="col-lg-4 col-md-4"></div>
 		</div>
 		<footer class="clearfix navbar navbar-default navbar-fixed-bottom">
-			<div class="logo"><img src="includes/images/librecms.png"></div>
+			<div class="logo"><img src="core/images/librecms.png"></div>
 			<ul class="nav navbar-nav pull-right">
 				<li><a target="_blank" href="https://github.com/StudioJunkyard/Libr8/wiki"><small>Help</small></a></li>
 				<li><a target="_blank" href="https://github.com/StudioJunkyard/Libr8"><small>GitHub</small></a></li>

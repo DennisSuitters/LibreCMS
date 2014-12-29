@@ -1,5 +1,5 @@
 <?php
-require'includes/db.php';
+require'core/db.php';
 $config=$this->getconfig($db);
 $ti=time();
 $html='';
@@ -23,8 +23,8 @@ if($view=='index')$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['
 $seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
 $seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
 $seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
-require'includes/login.php';
-require'includes/cart_quantity.php';
+require'core/login.php';
+require'core/cart_quantity.php';
 if($user['rank']>699){
 	$status="%";
 }else{
@@ -53,7 +53,7 @@ foreach($tag as$tag1){
 		$html=$matches[1];
 		if($view=='cart')$inbed='cart';
 		if($view=='sitemap')$inbed='sitemap';
-		require 'view/'.$inbed.'.php';
+		require'view/'.$inbed.'.php';
 		$req=$inbed;
 	}
 }

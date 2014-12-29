@@ -1,22 +1,22 @@
 function purge(id,t){
 	$('#busy').css({'display':'inline-block'});
-	$('#sp').load('includes/purge.php?id='+id+'&t='+t)
+	$('#sp').load('core/purge.php?id='+id+'&t='+t)
 }
 function makeClient(id){
 	$('#busy').css({'display':'inline-block'});
-	$('#sp').load('includes/add_data.php?id='+id+'&act=make_client')
+	$('#sp').load('core/add_data.php?id='+id+'&act=make_client')
 }
 function changeClient(id,oid){
 	$('#changeClient').before('<i class="busy fa fa-cog fa-spin');
-	$('#sp').load('includes/change_client.php?id='+id+'&oid='+oid)
+	$('#sp').load('core/change_client.php?id='+id+'&oid='+oid)
 }
 function addOrderItem(oid,iid){
 	$('#busy').css({'display':'inline-block'});
-	$('#sp').load('includes/add_data.php?act=add_orderitem&oid='+oid+'&iid='+iid)
+	$('#sp').load('core/add_data.php?act=add_orderitem&oid='+oid+'&iid='+iid)
 }
 function getClient(email){
 	$('#busy').css({'display':'inline-block'});
-	$('#sp').load('includes/get_client.php?email='+email)
+	$('#sp').load('core/get_client.php?email='+email)
 }
 function associated(id,el,a){
 	var assoc=a.split('|');
@@ -26,7 +26,7 @@ function associated(id,el,a){
 		})
 	}else{
 		$(el).slideUp(500,function(){
-			$(this).load('includes/associated.php?id='+id+'&a='+assoc[1],function(){
+			$(this).load('core/associated.php?id='+id+'&a='+assoc[1],function(){
 				$(this).slideDown(200)
 			})
 		})
@@ -87,7 +87,7 @@ $("#content input[type=checkbox]").on({
 		var c=$(this).data("dbc");
 		var b=$(this).data("dbb");
 		$('#'+c+b).before('<i id="'+t+c+b+'" class="busy fa fa-cog fa-spin"></i>');
-		$('#sp').load('includes/toggle.php?id='+id+'&t='+t+'&c='+c+'&b='+b)
+		$('#sp').load('core/toggle.php?id='+id+'&t='+t+'&c='+c+'&b='+b)
 	}
 });
 function update(id,t,c,da){
@@ -100,7 +100,7 @@ function update(id,t,c,da){
 	}
 	$.ajax({
 		type:"GET",
-		url:"includes/update.php",
+		url:"core/update.php",
 		data:{id:id,t:t,c:c,da:da}
 	}).done(function(msg){
 		if(t!='comments'){
@@ -114,14 +114,14 @@ function update(id,t,c,da){
 	})
 }
 function updateButtons(id,t,c,da){
-	$('#sp').load('includes/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da))
+	$('#sp').load('core/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da))
 }
 function removeMedia(id){
-	$('#sp').load('includes/removemedia.php?id='+id)
+	$('#sp').load('core/removemedia.php?id='+id)
 }
 function showDetails(id,c){
 	if($('#show'+id).hasClass('hidden')){
-		$('#show'+id).load('includes/show_details.php?id='+id,function(){
+		$('#show'+id).load('core/show_details.php?id='+id,function(){
 			$(this).removeClass('hidden')
 		})
 	}else{
@@ -131,6 +131,6 @@ function showDetails(id,c){
 function statsContent(content){
 	$('#stats_'+content)
 		.html('<div class="panel-footer text-center"><i class="fa fa-spinner fa-spin"></i></div>')
-		.load('includes/stats_'+content+'.php');
-	return false;	
+		.load('core/stats_'+content+'.php');
+	return false;
 }

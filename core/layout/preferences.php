@@ -16,7 +16,7 @@
 			$theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);?>
 			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 				<div class="theme-chooser-item<?php if($config['theme']==$folder){echo' selected';}?>" data-theme="<?php echo$folder;?>">
-					<img src="<?php if(file_exists('layout/'.$folder.'/theme.jpg')){echo'layout/'.$folder.'/theme.jpg';}elseif(file_exists('layout/'.$folder.'/theme.png')){echo'layout/'.$folder.'/theme.png';}else{echo'images/noimage.jpg';}?>" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="<?php echo$theme['title'];?>">
+					<img src="<?php if(file_exists('layout/'.$folder.'/theme.jpg')){echo'layout/'.$folder.'/theme.jpg';}elseif(file_exists('layout/'.$folder.'/theme.png')){echo'layout/'.$folder.'/theme.png';}else{echo'core/images/noimage.jpg';}?>" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="<?php echo$theme['title'];?>">
 					<div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
 						<span class="title"><?php echo$theme['title'];?></span>
 						<small class="version">Version: v<?php echo$theme['version'];?></small>
@@ -420,7 +420,7 @@
 		<div class="form-group">
 			<label for="orderEmailLayout" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Email Layout</label>
 			<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-				<form method="post" target="sp" action="includes/update.php">
+				<form method="post" target="sp" action="core/update.php">
 					<input type="hidden" name="id" value="1">
 					<input type="hidden" name="t" value="config">
 					<input type="hidden" name="c" value="orderEmailLayout">
@@ -432,7 +432,7 @@
 		<div class="form-group">
 			<label for="orderEmailNotes" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Order Notes</label>
 			<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-				<form method="post" target="sp" action="includes/update.php">
+				<form method="post" target="sp" action="core/update.php">
 					<input type="hidden" name="id" value="1">
 					<input type="hidden" name="t" value="config">
 					<input type="hidden" name="c" value="orderEmailNotes">
@@ -474,7 +474,7 @@
 			<h4>Database Backup/Restore</h4>
 			<div class="form-group">
 				<label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Backup</label>
-				<form target="sp" method="post" action="includes/backup.php">
+				<form target="sp" method="post" action="core/backup.php">
 					<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 						<div class="input-group-btn">
 							<button type="submit" class="btn btn-default btn-block" onclick="$('#block').css({'display':'block'});">Go</button>
@@ -484,7 +484,7 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Restore</label>
-				<form target="sp" method="post" enctype="multipart/form-data" action="includes/restore.php">
+				<form target="sp" method="post" enctype="multipart/form-data" action="core/restore.php">
 					<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 						<input type="file" id="fu" class="form-control" name="fu" data-icon="false" accept="application/x-gzip,application/sql">
 							<div class="input-group-btn">

@@ -1,6 +1,6 @@
 <?php
-if(file_exists('includes/config.ini')){
-	$settings=parse_ini_file('includes/config.ini',TRUE);
+if(file_exists('core/config.ini')){
+	$settings=parse_ini_file('core/config.ini',TRUE);
 }else{
 	$settings=parse_ini_file('config.ini',TRUE);
 }

@@ -191,9 +191,9 @@ if($act!=''){
 				if($c['gravatar']!=''){
 					$avatar='http://www.gravatar.com/avatar/'.md5($c['gravatar']);
 				}elseif($c['avatar']!=''&&file_exists('../media/'.$c['avatar'])){
-					$avatar='../media/'.$c['avatar'];
+					$avatar='media/'.$c['avatar'];
 				}else{
-					$avatar='images/noavatar.jpg';
+					$avatar='core/images/noavatar.jpg';
 				}
 				$html='<div id="l_'.$id.'" class="media bg-danger"><div class="media-object pull-left"><img class="commentavatar img-thumbnail" alt="User" src="'.$avatar.'"></div><div class="media-body"><h4 class="media-heading">Name</h4>'.$da.'</div><hr></div>';?>
 	window.top.window.$('.notifications').notify({type:'success',icon:'',message:{text:'New comment Added, Awaiting Approval'}}).show();

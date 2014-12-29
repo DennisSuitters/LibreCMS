@@ -225,7 +225,7 @@ if($show=='item'){
 </div>
 <?php }
 	if($r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='inventory'||$r['contentType']=='portfolio'||$r['contentType']=='proofs'||$r['contentType']=='services'){?>
-<form method="post" target="sp" enctype="multipart/form-data" action="includes/add_data.php">
+<form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
 	<input type="hidden" name="id" value="<?php echo$r['id'];?>">
 	<input type="hidden" name="act" value="add_image">
 	<input type="hidden" name="t" value="content">
@@ -249,7 +249,7 @@ if($show=='item'){
 </form>
 <?php }
 	if($r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='inventory'||$r['contentType']=='portfolio'||$r['contentType']=='proofs'||$r['contentType']=='services'){?>
-<form method="post" target="sp" enctype="multipart/form-data" action="includes/add_data.php">
+<form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
 	<input type="hidden" name="id" value="<?php echo$r['id'];?>">
 	<input type="hidden" name="act" value="add_image">
 	<input type="hidden" name="t" value="content">
@@ -429,7 +429,7 @@ if($show=='item'){
 	<label for="notes" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Notes</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 <?php if($user['options']{1}==1){?>
-		<form method="post" target="sp" action="includes/update.php">
+		<form method="post" target="sp" action="core/update.php">
 			<input type="hidden" name="id" value="<?php echo$r['id'];?>">
 			<input type="hidden" name="t" value="content">
 			<input type="hidden" name="c" value="notes">
@@ -493,7 +493,7 @@ if($show=='item'){
 	<div class="media">
 		<div class="media-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<iframe name="comments" id="comments" class="hidden"></iframe>
-			<form role="form" target="comments" method="post" action="includes/add_data.php">
+			<form role="form" target="comments" method="post" action="core/add_data.php">
 				<input type="hidden" name="act" value="add_comment">
 				<input type="hidden" name="rid" value="<?php echo$r['id'];?>">
 				<input type="hidden" name="contentType" value="<?php echo$r['contentType'];?>">

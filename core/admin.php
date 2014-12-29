@@ -1,5 +1,5 @@
 <?php
-require'includes/db.php';
+require'core/db.php';
 $config=$this->getconfig($db);
 $ti=time();
 $favicon=$this->favicon();
@@ -8,27 +8,27 @@ $noimage=$this->noimage();
 $noavatar=$this->noavatar();
 $sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
 $sp->execute(array(':contentType'=>$view));
-require'includes/login.php';
+require'core/login.php';
 if($user['rank']>399){
-	require'includes/layout/meta_head.php';
-	require'includes/layout/header.php';?>
+	require'core/layout/meta_head.php';
+	require'core/layout/header.php';?>
 <main id="content" class="col-md-12">
 	<div class="panel panel-default">
 		<div class="panel-body">
 <?php if($view=='add'){
 		if($args[0]=='bookings'){
-			require'includes/layout/bookings.php';
+			require'core/layout/bookings.php';
 		}else{
-			require'includes/layout/content.php';
+			require'core/layout/content.php';
 		}
 }else{
-	require'includes/layout/'.$view.'.php';
+	require'core/layout/'.$view.'.php';
 }?>
 		</div>
 	</div>
 </main>
-<?php require'includes/layout/footer.php';
-	require'includes/layout/meta_footer.php';
+<?php require'core/layout/footer.php';
+	require'core/layout/meta_footer.php';
 }else{
-	require'includes/layout/login.php';
+	require'core/layout/login.php';
 }

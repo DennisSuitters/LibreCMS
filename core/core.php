@@ -1,7 +1,7 @@
 <?php
 /* Config */
 session_start();
-require_once'includes/db.php';
+require_once'core/db.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443) define('PROTOCOL','https://'); else define('PROTOCOL','http://');
 require'password.php';
 define('SESSIONID',session_id());
@@ -17,13 +17,13 @@ class internal{
 		return $config;
 	}
 	function sitemap($args=false){
-		require'includes/sitemap.php';
+		require'core/sitemap.php';
 	}
 	function robots($args=false){
-		require'includes/robots.php';
+		require'core/robots.php';
 	}
 	function rss($args=false){
-		require'includes/rss.php';
+		require'core/rss.php';
 	}
 	function favicon(){
 		if(file_exists(THEME.'/images/favicon.png')){
@@ -35,7 +35,7 @@ class internal{
 		}elseif(file_exists(THEME.'/images/favicon.ico')){
 			$favicon=THEME.'/images/favicon.ico';
 		}else{
-			$favicon='includes/images/favicon.png';
+			$favicon='core/images/favicon.png';
 		}
 		return $favicon;
 	}
@@ -46,15 +46,15 @@ class admin{
 		return $config;
 	}
 	function favicon(){
-		$favicon='includes/images/favicon.png';
+		$favicon='core/images/favicon.png';
 		return $favicon;
 	}
 	function noimage(){
-		$noimage='includes/images/noimage.jpg';
+		$noimage='core/images/noimage.jpg';
 		return $noimage;
 	}
 	function noavatar(){
-		$noavatar='includes/images/noavatar.jpg';
+		$noavatar='core/images/noavatar.jpg';
 		return $noavatar;
 	}
 
@@ -154,7 +154,7 @@ class front{
 		}elseif(file_exists(THEME.'/images/favicon.ico')){
 			$favicon=THEME.'/images/favicon.ico';
 		}else{
-			$favicon='includes/images/favicon.png';
+			$favicon='core/images/favicon.png';
 		}
 		return $favicon;
 	}
@@ -166,7 +166,7 @@ class front{
 		}elseif(file_exists(THEME.'/images/noimage.jpg')){
 			$noimage=THEME.'/images/noimage.jpg';
 		}else{
-			$noimage='includes/images/noimage.jpg';
+			$noimage='core/images/noimage.jpg';
 		}
 		return $noimage;
 	}
@@ -178,7 +178,7 @@ class front{
 		}elseif(file_exists(THEME.'/images/noavatar.jpg')){
 			$noavatar=THEME.'/images/noavatar.jpg';
 		}else{
-			$noavatar='includes/images/noavatar.jpg';
+			$noavatar='core/images/noavatar.jpg';
 		}
 		return $noavatar;
 	}

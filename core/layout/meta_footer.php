@@ -1,16 +1,16 @@
 		<div class="notifications center"></div>
-		<script src="includes/js/jquery-2.1.1.min.js"></script>
-		<script src="includes/js/bootstrap.min.js"></script>
-		<script src="includes/js/jquery.notifications.min.js"></script>
-		<script src="includes/js/featherlight.min.js"></script>
+		<script src="core/js/jquery-2.1.1.min.js"></script>
+		<script src="core/js/bootstrap.min.js"></script>
+		<script src="core/js/jquery.notifications.min.js"></script>
+		<script src="core/js/featherlight.min.js"></script>
 <?php if($user['rank']>399){
 	if($view=='bookings'){?>
-		<script src="includes/js/moment.min.js"></script>
-		<script src="includes/js/fullcalendar.min.js"></script>
+		<script src="core/js/moment.min.js"></script>
+		<script src="core/js/fullcalendar.min.js"></script>
 <?php }?>
-		<script src="includes/js/summernote.js"></script>
-		<script src="includes/js/bootstrap-datetimepicker.min.js"></script>
-		<script src="includes/js/js.js"></script>
+		<script src="core/js/summernote.js"></script>
+		<script src="core/js/bootstrap-datetimepicker.min.js"></script>
+		<script src="core/js/js.js"></script>
 		<script>/*<![CDATA[*/
 			$(document).ready(function(){
 				$(".summernote").summernote();
@@ -85,7 +85,7 @@
 					});
 					$("#edbut"+event.id).click(function(){
 						$(".bookings").modal("toggle");
-						$.get("includes/booking.php?id="+event.id,function(data){
+						$.get("core/booking.php?id="+event.id,function(data){
 							$(".bookings").find(".modal-content").html(data);
 						})
 					});
