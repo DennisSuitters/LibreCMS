@@ -12,9 +12,11 @@
 		<link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>" />
 		<meta name="viewport" content="width=400,initial-scale=1.0" />
 		<link rel="stylesheet" type="text/css" href="includes/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="includes/css/bootstrap-datetimepicker.min.css" />
 		<link rel="stylesheet" type="text/css" href="includes/css/font-awesome.min.css" />
 		<link rel="stylesheet" type="text/css" href="includes/css/browser.css" />
 		<link rel="stylesheet" type="text/css" href="includes/css/summernote.css" />
+		<link rel="stylesheet" type="text/css" href="includes/css/featherlight.min.css" />
 		<link rel="stylesheet" type="text/css" href="includes/css/admin.css" />
 	</head>
 	<body>

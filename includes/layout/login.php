@@ -15,8 +15,8 @@
 		<link rel="stylesheet" type="text/css" href="includes/css/admin.css" />
 	</head>
 	<body>
-		<div class="col-sm-4"></div>
-		<main class="panel panel-default col-sm-4 loginbox">
+		<div class="container">
+		<main class="panel panel-default col-lg-5 col-lg-offset-7 col-md-5 col-mf-offset-7 loginbox">
 			<div class="panel-body">
 				<h4>Login</h4>
 				<form method="post" action="" accept-charset="UTF-8">
@@ -42,7 +42,7 @@
 				</form>
 			</div>
 		</main>
-		<div class="col-sm-4"></div>
+		</div>
 		<footer class="clearfix navbar navbar-default navbar-fixed-bottom">
 			<div class="logo"><img src="includes/images/librecms.png"></div>
 			<ul class="nav navbar-nav pull-right">

@@ -2,7 +2,8 @@
 		<script src="includes/js/jquery-2.1.1.min.js"></script>
 		<script src="includes/js/bootstrap.min.js"></script>
 		<script src="includes/js/jquery.notifications.min.js"></script>
-<?php if($user['rank']>699){
+		<script src="includes/js/featherlight.min.js"></script>
+<?php if($user['rank']>399){
 	if($view=='bookings'){?>
 		<script src="includes/js/moment.min.js"></script>
 		<script src="includes/js/fullcalendar.min.js"></script>
@@ -15,14 +16,6 @@
 				$(".summernote").summernote();
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});
 				$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
-/*		$("#seodrop").click(function(){
-			$("#seocontent").toggle(function(){
-				$("#seocontent").animate({height:0},200)
-			},function(){
-				$("#seocontent").animate({height:600},200)
-			});
-			return false
-		}); */
 <?php   if($view=='preferences'){?>
 			$("div.libr8-theme-chooser").not(".disabled").find("div.libr8-theme-chooser-item").on("click",function(){
 				$(this).parent().parent().find("div.theme-chooser-item").removeClass("libr8-selected");

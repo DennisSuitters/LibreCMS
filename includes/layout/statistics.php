@@ -6,12 +6,12 @@
 					<div class="col-xs-3">
 						<i class="fa fa-comments fa-5x"></i>
 					</div>
-					<div class="col-xs-9 text-right">
-						<div class="huge">
+					<div class="col-xs-9 text-right stats">
+						<div class="number">
 <?php $r=$db->query("SELECT COUNT(status) AS cnt FROM comments WHERE status='unapproved'")->fetch(PDO::FETCH_ASSOC);
 echo$r['cnt'];?>
 						</div>
-						<div>New Comments!</div>
+						<div class="stat">New Comments!</div>
 					</div>
 				</div>
 			</div>
@@ -33,12 +33,12 @@ echo$r['cnt'];?>
 					<div class="col-xs-3">
 						<i class="fa fa-envelope fa-5x"></i>
 					</div>
-					<div class="col-xs-9 text-right">
-						<div class="huge">
+					<div class="col-xs-9 text-right stats">
+						<div class="number">
 <?php $r=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE contentType='message_primary' AND status='unread'")->fetch(PDO::FETCH_ASSOC);
 echo$r['cnt'];?>
 						</div>
-						<div>New Messages!</div>
+						<div class="stat">New Messages!</div>
 					</div>
 				</div>
 			</div>
@@ -61,12 +61,12 @@ echo$r['cnt'];?>
 					<div class="col-xs-3">
 						<i class="fa fa-shopping-cart fa-5x"></i>
 					</div>
-					<div class="col-xs-9 text-right">
-						<div class="huge">
+					<div class="col-xs-9 text-right stats">
+						<div class="number">
 <?php $r=$db->query("SELECT COUNT(status) AS cnt FROM orders WHERE status='pending'")->fetch(PDO::FETCH_ASSOC);
 echo$r['cnt'];?>
 						</div>
-						<div>Pending Orders!</div>
+						<div class="stat">Pending Orders!</div>
 					</div>
 				</div>
 			</div>
@@ -86,12 +86,12 @@ echo$r['cnt'];?>
 					<div class="col-xs-3">
 						<i class="fa fa-calendar fa-5x"></i>
 					</div>
-					<div class="col-xs-9 text-right">
-						<div class="huge">
+					<div class="col-xs-9 text-right stats">
+						<div class="number">
 <?php $r=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE status='unconfirmed'")->fetch(PDO::FETCH_ASSOC);
 echo$r['cnt'];?>
 						</div>
-						<div>New Bookings!</div>
+						<div class="stat">New Bookings!</div>
 					</div>
 				</div>
 			</div>
@@ -113,12 +113,12 @@ echo$r['cnt'];?>
 					<div class="col-xs-3">
 						<i class="fa fa-line-chart fa-5x"></i>
 					</div>
-					<div class="col-xs-9 text-right">
-						<div class="huge">
+					<div class="col-xs-9 text-right stats">
+						<div class="number">
 <?php $r=$db->query("SELECT COUNT(DISTINCT vid) as cnt FROM tracker")->fetch(PDO::FETCH_ASSOC);
 echo$r['cnt'];?>
 						</div>
-						<div>Total Visits!</div>
+						<div class="stat">Total Visits!</div>
 					</div>
 				</div>
 			</div>
@@ -179,12 +179,12 @@ echo$r['cnt'];?>
 					<div class="col-xs-3">
 						<i class="fa fa-line-chart fa-5x"></i>
 					</div>
-					<div class="col-xs-9 text-right">
-						<div class="huge">
+					<div class="col-xs-9 text-right stats">
+						<div class="number">
 <?php $r=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser!='Unknown'")->fetch(PDO::FETCH_ASSOC);
 echo$r['cnt'];?>
 						</div>
-						<div>Unique Browser Visitors!</div>
+						<div class="stat">Unique Browser Visitors!</div>
 					</div>
 				</div>
 			</div>
@@ -205,13 +205,13 @@ echo$r['cnt'];?>
 					<div class="col-xs-3">
 						<i class="fa fa-line-chart fa-5x"></i>
 					</div>
-					<div class="col-xs-9 text-right">
-						<div class="huge">
+					<div class="col-xs-9 text-right stats">
+						<div class="number">
 <?php $s=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE os!='Unknown'");
 $r=$s->fetch(PDO::FETCH_ASSOC);
 echo$r['cnt'];?>
 						</div>
-						<div>Unique Operating System Visitors!</div>
+						<div class="stat">Unique Operating System Visitors!</div>
 					</div>
 				</div>
 			</div>

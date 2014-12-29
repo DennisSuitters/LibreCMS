@@ -73,7 +73,6 @@ div.theme-chooser div.theme-chooser-item input{position:absolute;top:0;left:0;vi
 #avatar{position:absolute;max-width:30px;max-height:30px;top:10px;right:5px}
 .commentavatar{max-width:75px;max-height:75px}
 #sp{display:none}
-.huge{font-size:50px}
 .table-responsive{overflow:visible}
 .sortable{margin:0;padding:0;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 .sortable.grid{overflow:hidden}
@@ -91,6 +90,54 @@ li.sortable-placeholder{width:150px;border:1px dashed #888;background-color:#eee
 .gallery .handle{position:absolute;top:5px;left:5px}
 .gallery span.filetype{margin-top:10px;width:150px;height:150px;color:#000}
 .gallery .filetype i{margin-top:10px}
-.fa-6x{font-size:6em}
-.fa-7x{font-size:7em}
-.fa-8x{font-size:8em}
+.fa-5x{
+	font-size:5em
+}
+.stats{
+
+}
+.stats .number{
+	font-size:4em
+}
+.stats .stat{
+	font-size:16px;
+}
+@media only screen 
+and (max-width : 1024px) {
+
+}
+/* SMARTPHONES PORTRAIT */
+@media only screen and (min-width: 300px) {
+
+
+}
+
+/* SMARTPHONES LANDSCAPE */
+@media only screen and (min-width: 480px) {
+
+
+}
+
+/* TABLETS PORTRAIT */
+@media only screen and (min-width: 768px) {
+
+
+}
+
+
+/* TABLET LANDSCAPE / DESKTOP */
+@media only screen and (max-width: 1024px) {
+	.fa-5x{
+		font-size:3.5em
+	}
+	.stats{
+
+	}
+	.stats .number{
+		font-size:2.75em
+	}
+	.stats .stat{
+		font-size:12px;
+	}
+
+}  

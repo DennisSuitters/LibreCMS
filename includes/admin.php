@@ -9,7 +9,7 @@ $noavatar=$this->noavatar();
 $sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
 $sp->execute(array(':contentType'=>$view));
 require'includes/login.php';
-if($user['rank']>699){
+if($user['rank']>399){
 	require'includes/layout/meta_head.php';
 	require'includes/layout/header.php';?>
 <main id="content" class="col-md-12">

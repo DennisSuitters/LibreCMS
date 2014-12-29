@@ -62,7 +62,7 @@ if($args[0]=='edit'){
 			<input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1){echo' checked';}?>>
 		</label>
 		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
-			<strong>Add Content</strong>
+			<strong>Add/Remove Content</strong>
 		</div>
 	</div>
 	<div class="form-group">
@@ -70,7 +70,7 @@ if($args[0]=='edit'){
 			<input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1){echo' checked';}?>>
 		</label>
 		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
-			<strong>SEO Viewing/Editing</strong>
+			<strong>Edit Content</strong>
 		</div>
 	</div>
 	<div class="form-group">
@@ -78,7 +78,7 @@ if($args[0]=='edit'){
 			<input type="checkbox" id="options2" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="2"<?php if($r['options']{2}==1){echo' checked';}?>>
 		</label>
 		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
-			<strong>Message Viewing/Editing</strong>
+			<strong>Add/Edit Bookings</strong>
 		</div>
 	</div>
 	<div class="form-group">
@@ -86,7 +86,7 @@ if($args[0]=='edit'){
 			<input type="checkbox" id="options3" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="3"<?php if($r['options']{3}==1){echo' checked';}?>>
 		</label>
 		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
-			<strong>Orders Viewing/Editing</strong>
+			<strong>Message Viewing/Editing</strong>
 		</div>
 	</div>
 	<div class="form-group">
@@ -94,7 +94,7 @@ if($args[0]=='edit'){
 			<input type="checkbox" id="options4" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="4"<?php if($r['options']{4}==1){echo' checked';}?>>
 		</label>
 		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
-			<strong>Administration Viewing/Editing</strong>
+			<strong>Orders Viewing/Editing</strong>
 		</div>
 	</div>
 	<div class="form-group">
@@ -103,6 +103,22 @@ if($args[0]=='edit'){
 		</label>
 		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
 			<strong>User Accounts Viewing/Editing</strong>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="options6" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
+			<input type="checkbox" id="options6" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="6"<?php if($r['options']{6}==1){echo' checked';}?>>
+		</label>
+		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+			<strong>SEO Viewing/Editing</strong>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="options7" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
+			<input type="checkbox" id="options7" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="7"<?php if($r['options']{7}==1){echo' checked';}?>>
+		</label>
+		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+			<strong>Preferences Viewing/Editing</strong>
 		</div>
 	</div>
 </div>
@@ -290,20 +306,78 @@ if($args[0]=='edit'){
 				<th>Name</th>
 				<th>Email</th>
 				<th class="col-sm-2">Rank</th>
-				<th class="col-sm-3"></th>
-				<th></th>
+				<th class="col-sm-3 text-right">
+					Show <div class="btn-group">
+						<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><?php if(!isset($args[1])||$args[1]==''){echo'All';}else{echo ucfirst($args[1]);}?> <i class="caret"></i></button>
+						<ul class="dropdown-menu pull-right">
+							<li><a href="<?php echo URL.'admin/accounts';?>">All</a></li>
+							<li><a href="<?php echo URL.'admin/accounts/type/subscriber';?>">Subscriber</a></li>
+							<li><a href="<?php echo URL.'admin/accounts/type/member';?>">Member</a></li>
+							<li><a href="<?php echo URL.'admin/accounts/type/client';?>">Client</a></li>
+							<li><a href="<?php echo URL.'admin/accounts/type/contributor';?>">Contributor</a></li>
+							<li><a href="<?php echo URL.'admin/accounts/type/moderator';?>">Moderator</a></li>
+							<li><a href="<?php echo URL.'admin/accounts/type/author';?>">Author</a></li>
+							<li><a href="<?php echo URL.'admin/accounts/type/editor';?>">Editor</a></li>
+							<li><a href="<?php echo URL.'admin/accounts/type/manager';?>">Manager</a></li>
+							<li><a href="<?php echo URL.'admin/accounts/type/administrator';?>">Administrator</a></li>
+						</ul>
+					</div>
+				</th>
 			</tr>
 		</thead>
 		<tbody id="sort">
-<?php $s=$db->prepare("SELECT * FROM login WHERE rank<:rank ORDER BY ti ASC");
+<?php 
+if($args[0]=='type'){
+	if(isset($args[1])){
+		$rank=0;
+		if($args[1]=='subscriber')$rank=100;
+		if($args[1]=='member')$rank=200;
+		if($args[1]=='client')$rank==300;
+		if($args[1]=='contributor')$rank=400;
+		if($args[1]=='moderator')$rank=500;
+		if($args[1]=='author')$rank=600;
+		if($args[1]=='editor')$rank=700;
+		if($args[1]=='manager')$rank=800;
+		if($args[1]=='administrator')$rank=900;
+	}
+	$s=$db->prepare("SELECT * FROM login WHERE rank=:rank ORDER BY ti ASC");
+	$s->execute(array(':rank'=>$rank));
+}else{
+	$s=$db->prepare("SELECT * FROM login WHERE rank<:rank ORDER BY ti ASC");
 	$s->execute(array(':rank'=>$user['rank']+1));
+}
+	
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		if($user['rank']>900&&$r['status']=='delete')continue;?>
 			<tr id="l_<?php echo$r['id'];?>" class="placeholder<?php if($r['status']=='delete'){echo' danger';}?>">
 				<td><?php echo$r['username'];?></td>
 				<td><?php echo$r['name'];?></td>
 				<td><a href="mailto:<?php echo$r['email'];?>"><?php echo$r['email'];?></a></td>
-				<td><?php echo$r['rank'];?></td>
+				<td>
+<?php	if($r['rank']==100){
+			echo'Subscriber';
+		}elseif($r['rank']==200){
+			echo'Member';
+		}elseif($r['rank']==300){
+			echo'Client';
+		}elseif($r['rank']==400){
+			echo'Contributor';
+		}elseif($r['rank']==500){
+			echo'Moderator';
+		}elseif($r['rank']==600){
+			echo'Author';
+		}elseif($r['rank']==700){
+			echo'Editor';
+		}elseif($r['rank']==800){
+			echo'Manager';
+		}elseif($r['rank']==900){
+			echo'Administrator';
+		}elseif($r['rank']==1000){
+			echo'Developer';
+		}else{
+			echo'Visitor';
+		}?>
+				</td>
 				<td id="controls_<?php echo$r['id'];?>" class="text-right">
 					<a class="btn btn-primary btn-xs<?php if($r['status']=='delete'){echo' hidden';}?>" href="admin/accounts/edit/<?php echo$r['id'];?>">View</a> 
 					<button class="btn btn-primary btn-xs<?php if($r['status']!='delete'){echo' hidden';}?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','')">Restore</button> 

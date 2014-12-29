@@ -1,4 +1,4 @@
-<?php if($user['rank']>699){?>
+<?php if($user['rank']>399){?>
 <div id="libr8_admin_header">
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
@@ -14,14 +14,26 @@
 			<div class="collapse navbar-collapse" id="admin-collapse">
 				<ul class="nav navbar-nav pull-right relative">
 					<li<?php if($view=='statistics'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/statistics">Statistics</a></li>
+					<li<?php if($view=='pages'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/pages">Pages</a></li>
 					<li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/content">Content</a></li>
+<?php if($user['rank']==1000||$user['options']{1}==1){?>
 					<li<?php if($view=='bookings'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/bookings">Bookings</a></li>
+<?php }
+if($user['rank']==1000||$user['options']{2}==1){?>
 					<li<?php if($view=='orders'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/orders/all">Orders</a></li>
+<?php }
+if($user['rank']==1000||$user['options']{3}==1){?>
 					<li<?php if($view=='media'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/media">Media</a></li>
+<?php }?>
 					<li<?php if($view=='accounts'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/accounts">Accounts</a></li>
+<?php if($user['rank']==1000||$user['options']{5}==1){?>
 					<li<?php if($view=='messages'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/messages">Messages</a></li>
+<?php }
+if($user['rank']==1000||$user['options']{6}==1){?>
 					<li<?php if($view=='preferences'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/preferences">Preferences</a></li>
+<?php }?>
 					<li>
+<?php if($user['rank']==1000||$user['options']{0}==1){?>
 						<button class="btn btn-success dropdown-toggle" style="margin:7px 10px;" data-toggle="dropdown" data-placement="right">Add <i class="caret"></i></button>
 						<ul class="dropdown-menu multi-level pull-right">
 							<li><a href="<?php echo URL;?>admin/add/article">Article</a></li>
@@ -44,6 +56,7 @@
 							</li>
 						</ul>
 					</li>
+<?php }?>
 				</ul>
 <?php if($user['gravatar']!=''){
 		$avatar='http://www.gravatar.com/avatar/'.md5($user['gravatar']);
