@@ -1,5 +1,5 @@
 		<div class="notifications center"></div>
-		<script src="core/js/jquery-2.1.1.min.js"></script>
+		<script src="core/js/jquery-2.1.3.min.js"></script>
 		<script src="core/js/bootstrap.min.js"></script>
 		<script src="core/js/jquery.notifications.min.js"></script>
 		<script src="core/js/featherlight.min.js"></script>
@@ -29,7 +29,10 @@
 					center:'title',
 					right:'month,basicWeek,basicDay'
 				},
-				editable:false,events:[
+				eventLimit: true,
+				selectable: true,
+				editable: false,
+				events:[
 <?php       $s=$db->query("SELECT * FROM content WHERE contentType='booking'");
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
 			$bs=$db->prepare("SELECT contentType,title,tis,tie,ti FROM content WHERE id=:id");
@@ -54,16 +57,15 @@
 				},
 <?php	}?>
 				],
-				timeFormat:'H(:mm)',
-				eventMouseover:function(event,domEvent){
+				eventMouseover:function(event,domEvent,view){
 					var layer='<div id="events-layer" class="fc-transparent">';
 					if(event.status=="unconfirmed"){
 						layer+='<span id="cbut'+event.id+'" class="btn btn-success btn-xs"><i class="fa fa-check"></i></span> ';
 					}
 					layer+='<span id="edbut'+event.id+'" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></span> <span id="delbut'+event.id+'" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></span></div>';
-					var content='Start:'+$.fullCalendar.formatDate(event.start,'dS MMM, yyyy at HH:mm');
+					var content='Start: '+$.fullCalendar.moment(event.start).format('HH:mm');
 					if(event.end>event.start){
-						content+='<br>End:'+$.fullCalendar.formatDate(event.end,'dS MMM, yyyy at HH:mm');
+						content+='<br>End: '+$.fullCalendar.moment(event.end).format('HH:mm');
 					}
 					if(event.description!=''){
 						content+='<br>'+event.description;
@@ -84,10 +86,11 @@
 						window.top.window.$(".popover").remove();
 					});
 					$("#edbut"+event.id).click(function(){
-						$(".bookings").modal("toggle");
 						$.get("core/booking.php?id="+event.id,function(data){
 							$(".bookings").find(".modal-content").html(data);
 						})
+						$(".summernote2").destroy();
+						$(".bookings").modal("toggle");
 					});
 					$(this).popover({
 						title:event.title,

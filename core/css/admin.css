@@ -58,7 +58,9 @@ div.theme-chooser div.theme-chooser-item .creator{display:block;margin:2px 0 2px
 div.theme-chooser div.theme-chooser-item span.description{display:inline-block;overflow:hidden;height:50px;vertical-align:top;font-size:12px}
 div.theme-chooser div.theme-chooser-item input{position:absolute;top:0;left:0;visibility:hidden}
 .fa-red{color:#f00}
-#events-layer{position:absolute;top:-1px;z-index:100;width:100%;height:100%;text-align:right}
+#events-layer{position:absolute;background-color:#000;top:16px;right:0;z-index:100;width:65px;height:17px;text-align:right;padding-right:5px;}
+#events-layer .btn{padding:0}
+#events-layer .btn-xs{width:15px;height:15px;}
 .dropdown-submenu{position:relative}
 .dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px;border-radius:0 6px 6px 6px}
 .dropdown-submenu:hover>.dropdown-menu{display:block}
@@ -88,54 +90,14 @@ li.sortable-placeholder{width:150px;border:1px dashed #888;background-color:#eee
 .gallery .handle{position:absolute;top:5px;left:5px}
 .gallery span.filetype{margin-top:10px;width:150px;height:150px;color:#000}
 .gallery .filetype i{margin-top:10px}
-.fa-5x{
-	font-size:5em
+.stats .number{font-size:4em}
+.stats .stat{font-size:16px}
+@media only screen and(max-width:1024px){}
+@media only screen and(min-width:300px){/* SMARTPHONES PORTRAIT */}
+@media only screen and(min-width:480px){/* SMARTPHONES LANDSCAPE */}
+@media only screen and(min-width:768px){/* TABLETS PORTRAIT */}
+@media only screen and(max-width:1024px){/* TABLET LANDSCAPE / DESKTOP */
+	.fa-5x{font-size:3.5em}
+	.stats .number{font-size:2.75em}
+	.stats .stat{font-size:12px}
 }
-.stats{
-
-}
-.stats .number{
-	font-size:4em
-}
-.stats .stat{
-	font-size:16px;
-}
-@media only screen 
-and (max-width : 1024px) {
-
-}
-/* SMARTPHONES PORTRAIT */
-@media only screen and (min-width: 300px) {
-
-
-}
-
-/* SMARTPHONES LANDSCAPE */
-@media only screen and (min-width: 480px) {
-
-
-}
-
-/* TABLETS PORTRAIT */
-@media only screen and (min-width: 768px) {
-
-
-}
-
-
-/* TABLET LANDSCAPE / DESKTOP */
-@media only screen and (max-width: 1024px) {
-	.fa-5x{
-		font-size:3.5em
-	}
-	.stats{
-
-	}
-	.stats .number{
-		font-size:2.75em
-	}
-	.stats .stat{
-		font-size:12px;
-	}
-
-}  
