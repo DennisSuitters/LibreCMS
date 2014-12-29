@@ -3,8 +3,6 @@ body{background:#f4f4f4}
 .navbar-brand img{height:20px}
 footer .logo{position:absolute;top:-90px;right:20px;z-index:-1;height:120px}
 footer .logo img{height:76px}
-.panel{margin-bottom:100px}
-.panel .panel{margin-bottom:20px}
 .relative{position:relative}
 .no-padding{padding:0}
 .no-margin{margin:0}

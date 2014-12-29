@@ -16,32 +16,34 @@
 	</head>
 	<body>
 		<div class="container">
-		<main class="panel panel-default col-lg-5 col-lg-offset-7 col-md-5 col-mf-offset-7 loginbox">
-			<div class="panel-body">
-				<h4>Login</h4>
-				<form method="post" action="" accept-charset="UTF-8">
-					<input type="hidden" name="act" value="login">
-					<div class="form-group">
-						<label for="username" class="control-label col-sm-4">Username</label>
-						<div class="input-group col-sm-8">
-							<input type="text" id="username" class="form-control" name="username" value="" placeholder="Enter a Username..." autofocus>
+			<div class="col-lg-4 col-md-4"></div>
+			<main class="panel panel-default col-lg-4 col-md-5 loginbox">
+				<div class="panel-body">
+					<h4>Login</h4>
+					<form method="post" action="" accept-charset="UTF-8">
+						<input type="hidden" name="act" value="login">
+						<div class="form-group">
+							<label for="username" class="control-label col-sm-4">Username</label>
+							<div class="input-group col-sm-8">
+								<input type="text" id="username" class="form-control" name="username" value="" placeholder="Enter a Username..." autofocus>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="password" class="control-label col-sm-4">Password</label>
-						<div class="input-group col-sm-8">
-							<input type="password" id="password" class="form-control" name="password" placeholder="Enter a Password..." autocomplete="off">
+						<div class="form-group">
+							<label for="password" class="control-label col-sm-4">Password</label>
+							<div class="input-group col-sm-8">
+								<input type="password" id="password" class="form-control" name="password" placeholder="Enter a Password..." autocomplete="off">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-4">&nbsp;</label>
-						<div class="input-group col-sm-8">
-							<button class="btn btn-success btn-large btn-block">Login</button>
+						<div class="form-group">
+							<label class="control-label col-sm-4">&nbsp;</label>
+							<div class="input-group col-sm-8">
+								<button class="btn btn-success btn-large btn-block">Login</button>
+							</div>
 						</div>
-					</div>
-				</form>
-			</div>
-		</main>
+					</form>
+				</div>
+			</main>
+			<div class="col-lg-4 col-md-4"></div>
 		</div>
 		<footer class="clearfix navbar navbar-default navbar-fixed-bottom">
 			<div class="logo"><img src="includes/images/librecms.png"></div>
