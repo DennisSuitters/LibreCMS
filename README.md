@@ -6,21 +6,21 @@ a **Free** Open Source Content Management System, that is built utilising [PHP](
 
 ### Features
 * Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs
-* Integration of External Services, such as Google Analytics, Pinterest Verification, Bing Verification, and so on.
 * Messaging - Whenever a message is created via the Contact Us page, it is stored in the Messages system as well as emailed.
 * Orders - Create Quotes, Invoices, and recurring Orders. Client viewing of Orders.
 * Media - Upload and manage various types of files for addition into content.
 * Accounts - Create Accounts for co-workers with Account Types for Administrators, Editors (especially good for SEO and Copywriters), Client's, and Visitors.
 * Client Proofs and Commenting
 * Easy Theme Selector
+* Live Front End Theme Engine processing that allows the use of any CSS or Javascript Framework.
+* Front End integration uses Vanilla Javascript for backend processing for Form Submission and Event Notices.
+* Administration uses jQuery, Modified Bootstrap, Font Awesome, and other jQuery Addons.
 
 Please submit issue's here at GitHub, this is so we can track, and update issue's more efficiently.
 
 You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](https://github.com/StudioJunkyard/LibreCMS-themes)
 
 ### Dependencies
-* Bootstrap
-* jQuery+Bootstrap's Jquery Modules (Depends on Theme)
 * PHP/PDO (Tested with MySQL)
 * mod_rewrite
 
@@ -36,9 +36,11 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 * Windows 7 + WAMP + PHP 5.5 + MySQL
 
 ### Setup:
-LibreCMS uses PHP's PDO for Database integration. So all you need to do, is use a Database Engine that's compatible with PDO. Then import the "libre.sql" file found in the "includes/" folder, then edit the "config.ini" file in the "includes/" folder.
+LibreCMS uses PHP's PDO for Database integration. So all you need to do, is use a Database Engine that's compatible with PDO. Then import the "libre.sql" file found in the "core/" folder, then edit the "config.ini" file in the "core/" folder.
 Remember to set the appropriate file and folder permissions for security purposes, and make sure "media" uses 0755 so files can be uploaded when editing or creating content.
 
+### LEGAL:
+By downloading LibreCMS you hereby agree not to hold Studio Junkyard liable for any damages that your usage of LibreCMS may cause to your system, or persons. LibreCMS is Licensed under GPLv3. We request that if you modify, and hopefully enhance LibreCMS, that you take part in maintaining, and contributing to it's code base here at GitHub.
+
 ### NOTE:
-* This is currently a work in progress, and being converted to an MVC System. If you download and use LibreCMS in a Production Environment, you do so at your own risk.
-* We openly welcome help with MVC Conversion, and bug squashing.
+* We are currently overhauling parts of the Administration Area, and will soon be making changes to the Layout (Front End) area.
