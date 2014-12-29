@@ -1,5 +1,6 @@
 <?php
 /* Config */
+session_start();
 require_once'includes/db.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443) define('PROTOCOL','https://'); else define('PROTOCOL','http://');
 require'password.php';
