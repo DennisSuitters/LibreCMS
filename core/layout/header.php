@@ -9,7 +9,6 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<?php echo URL.'admin';?>"><img src="core/images/librecms.png"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="admin-collapse">
 				<ul class="nav navbar-nav pull-right relative">

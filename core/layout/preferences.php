@@ -1,6 +1,5 @@
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#theme" data-toggle="tab">Theme</a></li>
-	<li><a href="#home" data-toggle="tab">Pages</a></li>
 	<li><a href="#contact" data-toggle="tab">Contact</a></li>
 	<li><a href="#interface" data-toggle="tab">Interface</a></li>
 	<li><a href="#banking" data-toggle="tab">Banking</a></li>
@@ -29,55 +28,6 @@
 <?php	}
 	}?>
 		</div>
-	</div>
-	<div id="home" class="tab-pane fade in">
-<?php $s=$db->query("SELECT * FROM menu ORDER BY menu DESC, ord ASC");
-	while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-		<div class="well">
-			<h4 onclick="$('#drop<?php echo$r['id'];?>').toggle(400);"><?php echo$r['title'];?></h4>
-			<div id="drop<?php echo$r['id'];?>" style="display:none">
-				<div class="form-group">
-					<label for="active<?php echo$r['id'];?>" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">Active</label>
-					<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
-						<input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1){echo' checked';}?>>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="menu<?php echo$r['id'];?>" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">Menu</label>
-					<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
-						<select id="menu<?php echo$r['id'];?>" class="form-control" onchange="update('<?php echo$r['id'];?>','menu','menu',$(this).val());">
-							<option value="head"<?php if($r['menu']=='head'){echo' selected';}?>>Header</option>
-							<option value="footer"<?php if($r['menu']=='footer'){echo' selected';}?>>Footer</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="seoTitle<?php echo$r['id'];?>" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoTitle</label>
-					<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
-						<input type="text" id="seoTitle<?php echo$r['id'];?>" class="form-control textinput" value="<?php echo$r['seoTitle'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoTitle" placeholder="Enter a Page Title...">
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="seoCaption<?php echo$r['id'];?>" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoCaption</label>
-					<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
-						<input type="text" id="seoCaption<?php echo$r['id'];?>" class="form-control textinput" value="<?php echo$r['seoCaption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoCaption" placeholder="Enter a Page Caption...">
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="seoDescription<?php echo$r['id'];?>" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoDescription</label>
-					<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
-						<input type="text" id="seoDescription<?php echo$r['id'];?>" class="form-control textinput" value="<?php echo$r['seoDescription'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoDescription" placeholder="Enter a Page Description...">
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="seoKeywords<?php echo$r['id'];?>" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoKeywords</label>
-					<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
-						<input type="text" id="seoKeywords<?php echo$r['id'];?>" class="form-control textinput" value="<?php echo$r['seoKeywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoKeywords" placeholder="Enter Page Keywords...">
-					</div>
-				</div>
-			</div>
-		</div>
-<?php }?>
 	</div>
 	<div id="contact" class="tab-pane fade in">
 		<div class="form-group">
@@ -443,7 +393,8 @@
 		</div>
 	</div>
 	<div id="seo" class="tab-pane fade in">
-		<h4>Analytics</h4>
+		<h4> Default Analytics</h4>
+		<span class="help-block">(these will be used if Page Seo Fields are empty)</span>
 		<div class="form-group">
 			<label for="seoTitle" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoTitle</label>
 			<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
@@ -486,7 +437,7 @@
 				<label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Restore</label>
 				<form target="sp" method="post" enctype="multipart/form-data" action="core/restore.php">
 					<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-						<input type="file" id="fu" class="form-control" name="fu" data-icon="false" accept="application/x-gzip,application/sql">
+						<input type="file" id="fu" class="form-control" name="fu" accept="application/x-gzip,application/sql">
 							<div class="input-group-btn">
 								<button type="submit" class="btn btn-default" onclick="$('#block').css({'display':'block'});">Restore</button>
 							</div>

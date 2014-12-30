@@ -14,39 +14,38 @@
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="core/css/admin.css" />
 	</head>
-	<body>
+	<body class="login">
 		<div class="container">
-			<div class="col-lg-4 col-md-4"></div>
-			<main class="panel panel-default col-lg-4 col-md-5 loginbox">
+			<div class="col-lg-4 col-md-4 col-sm-3"></div>
+			<main class="panel panel-default col-lg-4 col-md-5 col-sm-6 loginbox">
 				<div class="panel-body">
-					<h4>Login</h4>
 					<form method="post" action="" accept-charset="UTF-8">
 						<input type="hidden" name="act" value="login">
 						<div class="form-group">
-							<label for="username" class="control-label col-sm-4">Username</label>
-							<div class="input-group col-sm-8">
+							<label for="username" class="control-label col-lg-4 col-md-4 col-sm-4">Username</label>
+							<div class="input-group col-lg-8 col-md-8 col-sm-8">
 								<input type="text" id="username" class="form-control" name="username" value="" placeholder="Enter a Username..." autofocus>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="password" class="control-label col-sm-4">Password</label>
-							<div class="input-group col-sm-8">
+							<label for="password" class="control-label col-lg-4 col-md-4 col-sm-4">Password</label>
+							<div class="input-group col-lg-8 col-md-8 col-sm-8">
 								<input type="password" id="password" class="form-control" name="password" placeholder="Enter a Password..." autocomplete="off">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-4">&nbsp;</label>
-							<div class="input-group col-sm-8">
+							<label class="control-label col-lg-4 col-md-4 col-sm-4">&nbsp;</label>
+							<div class="input-group col-lg-8 col-md-8 col-sm-8">
 								<button class="btn btn-success btn-large btn-block">Login</button>
 							</div>
 						</div>
 					</form>
 				</div>
 			</main>
-			<div class="col-lg-4 col-md-4"></div>
+			<div class="col-lg-4 col-md-4 col-sm-3"></div>
 		</div>
-		<footer class="clearfix navbar navbar-default navbar-fixed-bottom">
-			<div class="logo"><img src="core/images/librecms.png"></div>
+		<footer class="clearfix navbar navbar-default navbar-fixed-bottom login">
+			<div class="logo"><img src="core/images/librecms.png" alt="LibreCMS"></div>
 			<ul class="nav navbar-nav pull-right">
 				<li><a target="_blank" href="https://github.com/StudioJunkyard/Libr8/wiki"><small>Help</small></a></li>
 				<li><a target="_blank" href="https://github.com/StudioJunkyard/Libr8"><small>GitHub</small></a></li>

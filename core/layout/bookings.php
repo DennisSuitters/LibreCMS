@@ -6,4 +6,4 @@ if($view=='add'){
 	$view='bookings';
 }?>
 <link rel="stylesheet" type="text/css" href="core/css/fullcalendar.min.css" />
-<div id="calendar"></div>
+<div id="calendar" class="col-lg-9 col-md-9"></div>
