@@ -1,6 +1,7 @@
 body{background:#f4f4f4}
-.loginbox{margin:10% auto}
-.loginbox .panel-body{margin:20px 0 0 0}
+.login-panel {
+    margin-top: 25%;
+}
 .navbar-brand img{height:20px}
 footer .logo{position:absolute;top:-90px;right:20px;z-index:-1;height:120px}
 footer .logo img{height:76px}
@@ -93,79 +94,18 @@ li.sortable-placeholder{width:150px;border:1px dashed #888;background-color:#eee
 .gallery .filetype i{margin-top:10px}
 .stats .number{font-size:4em}
 .stats .stat{font-size:16px}
-@media (min-width:320px){
-	body.login{
-		background-image:none;
-	}
-	.loginbox{margin:5% auto}
-	.loginbox .panel-body{margin:7.5px 0 0 0}
-	.loginbox .col-md-4{float:left;width:15%}
-	.loginbox .col-md-8{float:right;width:60%}
-	footer.login{
-		display:block;
-	}
-	footer.login .logo{position:absolute;top:-60px;right:15px;z-index:-1;height:50px}
-	footer.login .logo img{height:48px}
-	footer.login ul{margin-right:5px}
-	footer.login li{float:left}
-	footer ul{margin-right:5px}
-	footer li{float:left}
+@media(width:320px)and(height:480px){
 }
-@media (max-width:480px) and (max-height:320px){
-	body.login{
-		background:#f4f4f4 url(../images/librecms.png) no-repeat;
-		background-size:30%;
-		background-position:5% 5%;
-	}
-	.loginbox{margin:0}
-	.loginbox .panel-body{margin:0}
-	.loginbox .col-md-4{float:left;width:15%}
-	.loginbox .col-md-8{float:right;width:60%}
-	footer.login{
-		display:none
-	}
-
-	footer ul{margin-right:5px}
-	footer li{float:left}
+@media(width:480px)and(height:320px){
 }
-@media (max-width:600px){
-	.loginbox{margin:10% auto}
-	.loginbox .panel-body{margin:20px 0 0 0}
-	.loginbox .col-md-4{float:left;width:33.33333333%}
-	.loginbox .col-md-8{float:left;width:66.66666667%}
+@media(width:600px)and(height:800px){
 }
-@media (max-width:800px) and (max-height:600px){
-	.loginbox{margin:10% auto}
-	.loginbox .panel-body{margin:0 0 0 0}
-	.loginbox .col-md-4{float:left;width:33.33333333%}
-	.loginbox .col-md-8{float:left;width:66.66666667%}
-	#libr8_admin_header .nav a{font-size:10px;}
+@media(width:800px)and(height:600px){
 }
-@media(min-width:768px){
-	body.login{
-		background-image:none;
-		background-size:50%;
-		background-position:5% 5%;
-	}
-	.loginbox .col-md-4{width:25%}
-	.loginbox .col-md-8{float:left;width:75%}
-	#libr8_admin_header .nav a{font-size:10px;}
-	footer.login{
-		display:block;
-	}
-	footer.login .logo{position:absolute;top:-60px;right:15px;z-index:-1;height:60px}
-	footer.login .logo img{height:54px}
-	footer.login ul{margin-right:5px;}
-	footer.login li{float:left;}
-}
-@media(min-height:768px){
+@media(width:768px)and(height:1024px){
 
 }
-@media(min-width:1024px){
-	.loginbox{margin:15%  auto}
-	.loginbox .panel-body{margin:20px 0}
-	.loginbox .col-md-4{width:33.33333333%}
-	.loginbox .col-md-8{float:left;width:66.66666667%}
+@media(width:1024px)and(height:768px){
 	.fa-5x{font-size:3.5em}
 	.stats .number{font-size:2.75em}
 	.stats .stat{font-size:12px}
