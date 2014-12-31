@@ -15,6 +15,9 @@ if($act=='logout'){
 		$_SESSION['username']=$user['username'];
 		$_SESSION['uid']=$user['id'];
 		$_SESSION['password']=$password;
+		$login=true;
+	}else{
+		$login=false;
 	}
 }else{
 	$user=array('rank'=>0);
