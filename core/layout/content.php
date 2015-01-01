@@ -96,14 +96,14 @@ if($show=='categories'){
 	</table>
 </div>
 <div class="col-lg-2 col-md-3">
-<?php $sc=$db->prepare("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");
-$sc->execute();
-if($sc->rowCount()>0){?>
 	<div class="list-group">
 		<div class="list-group-item">
 			<h4 class="list-group-item-heading">Categories</h4>
 		</div>
-<?php while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
+<?php $sc=$db->prepare("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");
+$sc->execute();
+if($sc->rowCount()>0){
+	while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
 		<a class="list-group-item" href="<?php echo URL.'/admin/content/'.strtolower(str_replace(' ','-',$rc['category_1']));?>">
 			<h5 class="list-group-item-heading">
 <?php 	echo substr($rc['category_1'],0,30);
@@ -123,8 +123,8 @@ if($sc->rowCount()>0){?>
 <?php			}
 			}
 		}?>
-	</div>
 <?php }?>
+	</div>
 </div>
 <?php }
 if($show=='item'){
