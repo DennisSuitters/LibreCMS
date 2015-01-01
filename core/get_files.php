@@ -11,11 +11,13 @@ while($file=readdir($handle)){
 		}
 	}
 }
-sort($docs);
-foreach($docs as $key=>$file){
-		$array[]=array(
-			'file'=>$upload_dir.$file,
-			'title'=>$file
-		);
+if($docs){
+	sort($docs);
+	foreach($docs as $key=>$file){
+			$array[]=array(
+				'file'=>$upload_dir.$file,
+				'title'=>$file
+			);
+	}
+	echo stripslashes(json_encode($array));
 }
-echo stripslashes(json_encode($array));

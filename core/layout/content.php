@@ -97,14 +97,14 @@ if($show=='categories'){
 </div>
 <div class="col-lg-2 col-md-3">
 	<div class="list-group">
-		<div class="list-group-item">
+		<a class="list-group-item" href="<?php echo URL.'admin/content';?>">
 			<h4 class="list-group-item-heading">Categories</h4>
-		</div>
+		</a>
 <?php $sc=$db->prepare("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");
 $sc->execute();
 if($sc->rowCount()>0){
 	while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
-		<a class="list-group-item" href="<?php echo URL.'/admin/content/'.strtolower(str_replace(' ','-',$rc['category_1']));?>">
+		<a class="list-group-item" href="<?php echo URL.'admin/content/'.strtolower(str_replace(' ','-',$rc['category_1']));?>">
 			<h5 class="list-group-item-heading">
 <?php 	echo substr($rc['category_1'],0,30);
 		if(strlen($r['category_1'])>30)echo'...';?>
@@ -114,7 +114,7 @@ if($sc->rowCount()>0){
 		$scc->execute(array(':category_1'=>$rc['category_1']));
 		if($scc->rowCount()>0){
 			while($rcc=$scc->fetch(PDO::FETCH_ASSOC)){?>
-		<a class="list-group-item" href="<?php echo URL.'/admin/content/'.strtolower(str_replace(" ","-",$rc['category_1'].'/'.$rcc['category_2']));?>">
+		<a class="list-group-item" href="<?php echo URL.'admin/content/'.strtolower(str_replace(" ","-",$rc['category_1'].'/'.$rcc['category_2']));?>">
 			<h6 class="list-group-item-heading margin-left-20">
 <?php	echo substr($rcc['category_2'],0,30);
 		if(strlen($rcc['category_2'])>30)echo'...';?>
@@ -242,7 +242,7 @@ if($show=='item'){
 <?php	if($r['file']!=''&&file_exists('media/'.$r['file'])){?>
 			<a href="media/<?php echo$r['file'];?>" data-featherlight-gallery><img src="media/<?php echo$r['file'];?>"></a>
 <?php	}else{?>
-			<img src="includes/images/noimage.jpg">
+			<img src="core/images/noimage.jpg">
 <?php	}?>
 		</div>
 	</div>
@@ -266,7 +266,7 @@ if($show=='item'){
 <?php	if($r['thumb']!=''&&file_exists('media/'.$r['thumb'])){?>
 			<a href="media/<?php echo$r['thumb'];?>" data-featherlight-gallery><img src="media/<?php echo$r['thumb'];?>"></a>
 <?php	}else{?>
-			<img src="includes/images/noimage.jpg">
+			<img src="core/images/noimage.jpg">
 <?php	}?>
 		</div>
 	</div>
@@ -338,9 +338,9 @@ if($show=='item'){
 <div class="form-group">
 	<label for="category_1" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Category 1</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<input type="text" class="form-control textinput" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_1" placeholder="Enter a Category..."<?php if($user['options']{1}==0){echo' readonly';}?>>
+		<input id="category_1" type="text" class="form-control textinput" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_1" placeholder="Enter a Category..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 		<div class="input-group-addon"><i class="fa fa-long-arrow-left"></i></div>
-		<select id="category_1" class="form-control" onchange="$('#category_1').val($(this).val());update('<?php echo$r['id'];?>','content','category_1',$(this).val());"<?php if($user['options']{1}==0){echo' readonly';}?>>
+		<select class="form-control" onchange="$('#category_1').val($(this).val());update('<?php echo$r['id'];?>','content','category_1',$(this).val());"<?php if($user['options']{1}==0){echo' readonly';}?>>
 			<option value="">Select a Category...</option>
 <?php	$s=$db->query("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");
 		while($rs=$s->fetch(PDO::FETCH_ASSOC)){?>
@@ -354,9 +354,9 @@ if($show=='item'){
 <div class="form-group">
 	<label for="category_2" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Category 2</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<input type="text" class="form-control textinput" value="<?php echo$r['category_2'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_2" placeholder="Enter a Category..."<?php if($user['options']{1}==0){echo' readonly';}?>>
+		<input id="category_2" type="text" class="form-control textinput" value="<?php echo$r['category_2'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_2" placeholder="Enter a Category..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 		<div class="input-group-addon"><i class="fa fa-long-arrow-left"></i></div>
-		<select id="category_2" class="form-control" onchange="$('#category_2').val($(this).val());update('<?php echo$r['id'];?>','content','category_2',$(this).val());"<?php if($user['options']{1}==0){echo' readonly';}?>>
+		<select class="form-control" onchange="$('#category_2').val($(this).val());update('<?php echo$r['id'];?>','content','category_2',$(this).val());"<?php if($user['options']{1}==0){echo' readonly';}?>>
 			<option value="">Select a Category...</option>
 <?php	$s=$db->query("SELECT DISTINCT category_2 FROM content WHERE category_2!='' ORDER BY category_2 ASC");
 		while($rs=$s->fetch(PDO::FETCH_ASSOC)){?>

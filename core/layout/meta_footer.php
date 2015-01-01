@@ -17,9 +17,10 @@
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});
 				$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
 <?php   if($view=='preferences'){?>
-			$("div.libr8-theme-chooser").not(".disabled").find("div.libr8-theme-chooser-item").on("click",function(){
-				$(this).parent().parent().find("div.theme-chooser-item").removeClass("libr8-selected");
-				$(this).addClass("libr8-selected");update("1","config","theme",escape($(this).attr("data-theme")))
+			$("div.theme-chooser").not(".disabled").find("div.theme-chooser-item").on("click",function(){
+				$(this).parent().parent().find("div.theme-chooser-item").removeClass("selected");
+				$(this).addClass("selected");
+				update("1","config","theme",escape($(this).attr("data-theme")))
 			});
 <?php	}
     if($view=='bookings'){?>
