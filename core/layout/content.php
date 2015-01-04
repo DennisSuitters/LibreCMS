@@ -80,12 +80,12 @@ if($show=='categories'){
 				<td class="text-center"><a class="btn btn-default btn-xs" href="<?php echo URL.'/admin/content/type/'.$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a></td>
 				<td class="text-center"><small><?php echo date($config['dateFormat'],$r['ti']);?></small></td>
 				<td><small><?php echo$r['title'];?></small></a>
-				<td class="text-center"><small><?php echo$r['status'];?></small></td>
+				<td class="text-center"><small class="label label-<?php if($r['status']=='published'){echo'success';}elseif($r['status']=='unpublished'){echo'warning';}else{echo'danger';}?>"><?php echo$r['status'];?></small></td>
 				<td class="text-center"><small><?php echo$r['views'];?></small></td>
 				<td id="controls_<?php echo$r['id'];?>" class="text-right">
 					<a class="btn btn-primary btn-xs<?php if($r['status']=='delete'){echo' hidden';}?>" href="admin/content/edit/<?php echo$r['id'];?>">View</a> 
 <?php		if($user['rank']==1000||$user['options']{0}==1){?>
-					<button class="btn btn-primary btn-xs<?php if($r['status']!='delete'){echo' hidden';}?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','')">Restore</button> 
+					<button class="btn btn-primary btn-xs<?php if($r['status']!='delete'){echo' hidden';}?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')">Restore</button> 
 					<button class="btn btn-danger btn-xs<?php if($r['status']=='delete'){echo' hidden';}?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')">Delete</button> 
 					<button class="btn btn-warning btn-xs<?php if($r['status']!='delete'){echo' hidden';}?>" onclick="purge('<?php echo$r['id'];?>','content')">Purge</button>
 <?php		}?>
