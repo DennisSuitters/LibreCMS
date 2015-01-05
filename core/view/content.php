@@ -92,13 +92,13 @@ if($view=='bookings'&&$user['rank']<700){
 		if($sql->rowCount()>0){
 			$bookable.='<div class="libr8-form-group"><label for="rid" class="libr8-control-label libr8-col-md-2 libr8-col-xs-4">Event/Service</label><div class="libr8-input-group libr8-col-md-10 libr8-col-xs-8"><select id="rid" class="libr8-form-control" name="rid"><option value="0">Select an Item...</option>';
 			while($row=$sql->fetch(PDO::FETCH_ASSOC)){
-						$bookable.='<option value="'.$row['id'].'"';
-						if($id==$row['id']){
-							$bookable.=' selected';
-						}
-						$bookable.='>'.ucfirst($row['contentType']);
-						if($row['code']!=''){$bookable.=':'.$row['code'];}
-						$bookable.=':'.$row['title'].'</option>';
+				$bookable.='<option value="'.$row['id'].'"';
+				if($id==$row['id']){
+					$bookable.=' selected';
+				}
+				$bookable.='>'.ucfirst($row['contentType']);
+				if($row['code']!=''){$bookable.=':'.$row['code'];}
+				$bookable.=':'.$row['title'].'</option>';
 			}
             $bookable.='</select></div></div>';
 		}else{
@@ -231,82 +231,82 @@ if($show=='item'){
 	$edit='';
 	$item=str_replace('<print content=title>',$r['title'],$item);
 
-//        preg_match_all('/<print[^>]+>/i',$item,$result);
-        $doc=new DOMDocument();
-        @$doc->loadHTML($item);
-        $tags=$doc->getElementsByTagName('print');
-        foreach($tags as $tag){
-            $print=$tag->getAttribute('content');
-        //    preg_match_all('/(content)=([^]*)/i',$print,$tag);
-            if($print!=''){
-                switch($print){
-                case'categories':
-                    $categories='';
-                    if($r['category_1']!=''){
-                        $categories='Category: <a href="'.$view.'/'.str_replace(' ','-',$r['category_1']).'">'.$r['category_1'].'</a>';
-                        if($r['category_2']!=''){
-                            $categories.=' / <a href="'.$view.'/'.str_replace(' ','-',$r['category_1'].'/'.$r['category_2']).'">'.$r['category_2'].'</a>';
-                        }
-                    }
-                    $item=str_replace('<print content=categories>',$categories,$item);
-                    break;
-                case'tags':
-                    if($r['tags']!=''){
-                        $tags=explode(',',$r['tags']);
-                        $tagged='';
-                        foreach($tags as $tag){
-                            $tagged.='<a href="search/'.$tag.'">#'.$tag.'</a> ';
-                        }
-                        $item=str_replace('<print content=tags>','Tags: '.$tagged,$item);
-                    }else{
-                        $item=str_replace('<print content=brand>','',$item);	
-                    }
-                    break;
-                case'dateCreated':
-                    $dateCreated='';
-                    $dateCreated='Created: '.date($config['dateFormat'],$r['ti']);
-                    $item=str_replace('<print content=dateCreated>',$dateCreated,$item);
-                    break;
-                case'datePublished':
-                    $datePublished='';
-                    if($r['tis']!=0){
-                        $datePublished='Published: '.date($config['dateFormat'],$r['tis']);
-                    }else{
-                        $datePublished='Published: '.date($config['dateFormat'],$r['ti']);
-                    }
-                    $item=str_replace('<print content=datePublished>',$datePublished,$item);
-                    break;
-                case'dateEvent':
-                    $dateEvent='';
-                    if($r['tis']!=0){
-                        $dateEvent.='Event Date: '.date($config['dateFormat'],$r['tis']);
-                        if($r['tie']!=0){
-                            $dateEvent.=' to '.date($config['dateFormat'],$r['tie']);
-                        }
-                    }
-                    $item=str_replace('<print content=dateEvent>',$dateEvent,$item);
-                    break;
-                case'cost':
-                    $cost='';
-                    if($r['options']{0}==1){
-                        $cost='<aside class="price text-right" itemprop="offerDetails" itemscope 	itemtype="http://schema.org/Offer"><meta itemprop="currency" content="AUD" /><h4 itemprop="price">&#36;'.$r['cost'].'</h4>';
-                        if($user['rank']<699){
-                            if($view=='inventory'){
-                                $cost.=' <button class="btn btn-success btn-xs" onclick="$(\'#cart\').load(\'includes/add_cart.php?id='.$r['id'].'\');">Add to Cart</button>';
-                            }
-                            if($view=='services'){
-                                $cost.=' <a class="btn btn-success btn-xs" href="bookings/'.$r['id'].'">Book Service</a>';
-                            }
-                        }
-                        $cost.='</aside>';
-                    }
-                    $item=str_replace('<print content=cost>',$cost,$item);
-                    break;
-                default:
-                    $item=str_replace('<print content='.$print.'>',$r[$print],$item);
-                }
-            }
-        }
+//		preg_match_all('/<print[^>]+>/i',$item,$result);
+	$doc=new DOMDocument();
+	@$doc->loadHTML($item);
+	$tags=$doc->getElementsByTagName('print');
+	foreach($tags as $tag){
+		$print=$tag->getAttribute('content');
+//		preg_match_all('/(content)=([^]*)/i',$print,$tag);
+		if($print!=''){
+			switch($print){
+				case'categories':
+					$categories='';
+					if($r['category_1']!=''){
+						$categories='Category: <a href="'.$view.'/'.str_replace(' ','-',$r['category_1']).'">'.$r['category_1'].'</a>';
+						if($r['category_2']!=''){
+							$categories.=' / <a href="'.$view.'/'.str_replace(' ','-',$r['category_1'].'/'.$r['category_2']).'">'.$r['category_2'].'</a>';
+						}
+					}
+					$item=str_replace('<print content=categories>',$categories,$item);
+					break;
+				case'tags':
+					if($r['tags']!=''){
+						$tags=explode(',',$r['tags']);
+						$tagged='';
+						foreach($tags as$tag){
+							$tagged.='<a href="search/'.$tag.'">#'.$tag.'</a> ';
+						}
+						$item=str_replace('<print content=tags>','Tags: '.$tagged,$item);
+					}else{
+						$item=str_replace('<print content=brand>','',$item);	
+					}
+					break;
+				case'dateCreated':
+					$dateCreated='';
+					$dateCreated='Created: '.date($config['dateFormat'],$r['ti']);
+					$item=str_replace('<print content=dateCreated>',$dateCreated,$item);
+					break;
+				case'datePublished':
+					$datePublished='';
+					if($r['tis']!=0){
+						$datePublished='Published: '.date($config['dateFormat'],$r['tis']);
+					}else{
+						$datePublished='Published: '.date($config['dateFormat'],$r['ti']);
+					}
+					$item=str_replace('<print content=datePublished>',$datePublished,$item);
+					break;
+				case'dateEvent':
+					$dateEvent='';
+					if($r['tis']!=0){
+						$dateEvent.='Event Date: '.date($config['dateFormat'],$r['tis']);
+						if($r['tie']!=0){
+							$dateEvent.=' to '.date($config['dateFormat'],$r['tie']);
+						}
+					}
+					$item=str_replace('<print content=dateEvent>',$dateEvent,$item);
+					break;
+				case'cost':
+					$cost='';
+					if($r['options']{0}==1){
+						$cost='<aside class="price text-right" itemprop="offerDetails" itemscope 	itemtype="http://schema.org/Offer"><meta itemprop="currency" content="AUD" /><h4 itemprop="price">&#36;'.$r['cost'].'</h4>';
+						if($user['rank']<699){
+							if($view=='inventory'){
+								$cost.=' <button class="btn btn-success btn-xs" onclick="$(\'#cart\').load(\'includes/add_cart.php?id='.$r['id'].'\');">Add to Cart</button>';
+							}
+							if($view=='services'){
+								$cost.=' <a class="btn btn-success btn-xs" href="bookings/'.$r['id'].'">Book Service</a>';
+							}
+						}
+						$cost.='</aside>';
+					}
+					$item=str_replace('<print content=cost>',$cost,$item);
+					break;
+				default:
+					$item=str_replace('<print content='.$print.'>',$r[$print],$item);
+				}
+			}
+		}
 		$authorHTML='';
 		if(stristr($item,'<author')&&$view=='article'&&$r['uid']!=0){
 			$saD=$db->prepare("SELECT * FROM login WHERE id=:id");
@@ -402,7 +402,7 @@ if($show=='item'){
 			}else{
 							$item.='<label for="name" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Name</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><input type="text" class="form-control" name="name" value="" placeholder="Enter a Name..." required></div>';
 			}
-			$item.='<label for="da" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Comment</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><textarea id="da" class="form-control" name="da" placeholder="Enter a Comment..." required></textarea></div><label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><button class="btn btn-success btn-xs btn-block">Add Comment</button></div></div></form></div></div>';
+			$item.='<label for="da" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Comment</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><textarea id="da" class="form-control" name="da" placeholder="Enter a Comment..." required></textarea></div><label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label><div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7"><button class="btn btn-success btn-block">Add Comment</button></div></div></form></div></div>';
 		}
 		$item.='</div>';
 	}
