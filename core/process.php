@@ -40,16 +40,17 @@ if(file_exists(THEME.'/'.$view.'.html')){
 $newDom=new DOMDocument();
 @$newDom->loadHTML($template);
 $tag=$newDom->getElementsByTagName('block');
-foreach($tag as$tag1){
-	$inc=$tag1->getAttribute('inc');
+foreach($tag as $tag1){
+	$inc=$tag1->getAttribute('include');
 	$inbed=$tag1->getAttribute('inbed');
 	if($inc!=''){
+		$inc=rtrim($inc,'.html');
 		$html=file_get_contents(THEME.'/'.$inc.'.html');
 		require'view/'.$inc.'.php';
 		$req=$inc;
 	}
 	if($inbed!=''){
-		preg_match('/<block inbed='.$inbed.'>([\w\W]*?)<\/block inbed='.$inbed.'>/',$template,$matches);
+		preg_match('/<block inbed="'.$inbed.'">([\w\W]*?)<\/block inbed="'.$inbed.'">/',$template,$matches);
 		$html=$matches[1];
 		if($view=='cart')$inbed='cart';
 		if($view=='sitemap')$inbed='sitemap';
@@ -57,9 +58,7 @@ foreach($tag as$tag1){
 		$req=$inbed;
 	}
 }
-require'view/meta_head.php';
-require'view/meta_footer.php';
-print $head.$content.$foot;
+print$content;
 # Here goes the ungainly, and over cumbersome Analytics Data Collection
 $ip=$_SERVER['REMOTE_ADDR'];
 $httpReferer=$_SERVER['HTTP_REFERER'];

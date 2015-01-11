@@ -132,4 +132,5 @@ if($sm->rowCount()>0){
 	$categories.='</div>';
 }
 $side_menu=str_replace('<sideMenu content>',$categories,$side_menu);
-$html=str_replace('<inc file=side_menu>',$side_menu,$html);
+$html=str_replace('<block include="side_menu.html">',$side_menu,$html);
+$content.=$side_menu;

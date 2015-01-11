@@ -1,6 +1,6 @@
-<print meta_head>
-<block inc=header>
-<block inbed=content>
+<block include="meta_head.html">
+<block include="header.html">
+<block inbed="content">
 	<main id="content" class="col-md-9" itemscope itemtype="http://schema.org/Contact">
 		<address class="thumbnail item mini-map col-md-12">
 			<div class="col-md-6">
@@ -76,6 +76,7 @@
 			</form>
 		</div>
 	</main>
-	<inc file=side_menu>
-</block inbed=content>
-<block inc=footer>
+</block inbed="content">
+<block include="side_menu.html">
+<block include="footer.html">
+<block include="meta_footer.html">

@@ -1,40 +1,8 @@
 <?php
 $rank=0;
 $show='categories';
-if(isset($args[0])&&$args[0]=='add'){
-	$ti=time();
-	if($view=="bookings"){
-		$q=$db->prepare("INSERT INTO content (contentType,status,ti,tis) VALUES ('booking','unconfirmed',:ti,:tis)");
-		$q->execute(array(':ti'=>$ti,':tis'=>$ti));
-	}else{
-		$schema='';
-		$comments=0;
-		if($view=='article'){$schema='blogPost';}
-		if($view=='inventory'){$schema='Product';}
-		if($view=='service'){$schema='Service';}
-		if($view=='gallery'){$schema='ImageGallery';}
-		if($view=='testimonials'){$schema='Review';}
-		if($view=='news'){$schema='NewsArticle';}
-		if($view=='events'){$schema='Event';}
-		if($view=='portfolio'){$schema='CreativeWork';}
-		if($view=='proofs'){$schema='CreativeWork';$comments=1;}
-		$q=$db->prepare("INSERT INTO content (options,uid,contentType,schemaType,status,active,ti) VALUES ('00000000',:uid,:contentType,:schemaType,'unpublished','1',:ti)");
-		if(isset($user['id'])){
-            $uid=$user['id'];
-        }else{
-            $uid=0;
-        }
-		$q->execute(array(':contentType'=>$view,':uid'=>$uid,':schemaType'=>$schema,':ti'=>$ti));
-	}
-	$id=$db->lastInsertId();
-	$args[0]=ucfirst($view).' '.$id;
-	$q=$db->prepare("UPDATE content SET title=:title WHERE id=:id");
-	$q->execute(array(':title'=>$args[0],':id'=>$id));
-	if($view!='bookings')$show='item';
-	$rank=0;
-}
 if($view=='index'){
-	preg_match('/<settings itemCount=([\w\W]*?) contentType=([\w\W]*?)>/',$html,$matches);
+	preg_match('/<settings itemCount="([\w\W]*?)" contentType="([\w\W]*?)">/',$html,$matches);
 	$itemCount=$matches[1];
 	if($itemCount==0)$itemCount=10;
 	$contentType=$matches[2];
@@ -69,23 +37,18 @@ if($view=='index'){
 		$show='item';
 	}
 }else{
-	if($user['rank']>699){
-		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType ORDER BY ti DESC");
-		$s->execute(array(':contentType'=>$view));
+	if($view=='proofs'){
+		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND cid=:cid ORDER BY ti DESC");
+		$s->execute(array(':contentType'=>$view,':cid'=>$user['id']));
 	}else{
-		if($view=='proofs'){
-			$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND cid=:cid ORDER BY ti DESC");
-			$s->execute(array(':contentType'=>$view,':cid'=>$user['id']));
-		}else{
-			$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND status LIKE :status AND internal!='1' ORDER BY ti DESC");
-			$s->execute(array(':contentType'=>$view,':status'=>$status));
-		}
+		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND status LIKE :status AND internal!='1' ORDER BY ti DESC");
+		$s->execute(array(':contentType'=>$view,':status'=>$status));
 	}
 }
 if($view=='testimonials'){
 	$s=$db->query("SELECT * FROM content WHERE contentType='testimonials'");
 }
-if($view=='bookings'&&$user['rank']<700){
+if($view=='bookings'){
 	if(stristr($html,'<print bookable>')){
 		$bookable='';
 		$sql=$db->query("SELECT id,contentType,code,title FROM content WHERE bookable='1' AND title!='' AND status='published' AND internal!='1' ORDER BY code ASC, title ASC");
@@ -109,7 +72,7 @@ if($view=='bookings'&&$user['rank']<700){
 }
 if($show=='categories'){
 	if(stristr($html,'<settings')){
-		$matches=preg_match_all('/<settings items=(.*?) contentType=(.*?)>/',$html,$matches);
+		$matches=preg_match_all('/<settings items="(.*?)" contentType="(.*?)">/',$html,$matches);
 		$count=$matches[1];
 		$html=preg_replace('~<settings.*?>~is','',$html,1);
 	}else $count=1;
@@ -304,82 +267,87 @@ if($show=='item'){
 					break;
 				default:
 					$item=str_replace('<print content='.$print.'>',$r[$print],$item);
-				}
 			}
 		}
-		$authorHTML='';
-		if(stristr($item,'<author')&&$view=='article'&&$r['uid']!=0){
-			$saD=$db->prepare("SELECT * FROM login WHERE id=:id");
-			$saD->execute(array(':id'=>$r['uid']));
-			$authorData=$saD->fetch(PDO::FETCH_ASSOC);
-			if($saD->rowCount()>0){
-				preg_match('/<author>([\w\W]*?)<\/author>/',$item,$matches);
-				$authorHTML=$matches[0];
-				if(stristr($item,'<print user=avatar>')){
-					if($authorData['avatar']&&file_exists('media/'.$authorData['avatar'])){
-						$authorHTML=str_replace('<print user=avatar>','media/'.$authorData['avatar'],$authorHTML);
-					}elseif($authorData['gravatar']){
-						$authorHTML=str_replace('<print user=avatar>','http://www.gravatar.com/avatar/'.md5($authorData['gravatar']).'',$authorHTML);
-					}else{
-						$authorHTML=str_replace('<print user=avatar>','images/noavatar.jpg',$authorHTML);
-					}
-				}
-				$authorHTML=str_replace('<print user=name>',$authorData['name'],$authorHTML);
-				$authorHTML=str_replace('<print user=notes>',$authorData['notes'],$authorHTML);
-				if(stristr($item,'<print user=email')) $authorHTML=str_replace('<print user=email>','<a href="mailto:'.$authorData['email'].'"><i class="fa fa-envelope-square fa-2x"></i></a>',$authorHTML);
-				if(stristr($item,'<print user=social')){
-					$authorSocial='';
-					$saS=$db->prepare("SELECT * FROM choices WHERE uid=:uid");
-					$saS->execute(array(':uid'=>$r['uid']));
-					while($saR=$saS->fetch(PDO::FETCH_ASSOC)){
-						$authorSocial.='<a target="_blank" href="'.$saR['url'].'"><i class="fa fa-'.$saR['icon'].' fa-2x"></i></a> ';
-					}
-					$authorHTML=str_replace('<print user=social>',$authorSocial,$authorHTML);
+	}
+	$authorHTML='';
+	if(stristr($item,'<author')&&$view=='article'&&$r['uid']!=0){
+		$saD=$db->prepare("SELECT * FROM login WHERE id=:id");
+		$saD->execute(array(':id'=>$r['uid']));
+		$authorData=$saD->fetch(PDO::FETCH_ASSOC);
+		if($saD->rowCount()>0){
+			preg_match('/<author>([\w\W]*?)<\/author>/',$item,$matches);
+			$authorHTML=$matches[0];
+			if(stristr($item,'<print user=avatar>')){
+				if($authorData['avatar']&&file_exists('media/'.$authorData['avatar'])){
+					$authorHTML=str_replace('<print user=avatar>','media/'.$authorData['avatar'],$authorHTML);
+				}elseif($authorData['gravatar']){
+					$authorHTML=str_replace('<print user=avatar>','http://www.gravatar.com/avatar/'.md5($authorData['gravatar']).'',$authorHTML);
+				}else{
+					$authorHTML=str_replace('<print user=avatar>','images/noavatar.jpg',$authorHTML);
 				}
 			}
+			$authorHTML=str_replace('<print user=name>',$authorData['name'],$authorHTML);
+			$authorHTML=str_replace('<print user=notes>',$authorData['notes'],$authorHTML);
+			if(stristr($item,'<print user=email')) $authorHTML=str_replace('<print user=email>','<a href="mailto:'.$authorData['email'].'"><i class="fa fa-envelope-square fa-2x"></i></a>',$authorHTML);
+			if(stristr($item,'<print user=social')){
+				$authorSocial='';
+				$saS=$db->prepare("SELECT * FROM choices WHERE uid=:uid");
+				$saS->execute(array(':uid'=>$r['uid']));
+				while($saR=$saS->fetch(PDO::FETCH_ASSOC)){
+					$authorSocial.='<a target="_blank" href="'.$saR['url'].'"><i class="fa fa-'.$saR['icon'].' fa-2x"></i></a> ';
+				}
+				$authorHTML=str_replace('<print user=social>',$authorSocial,$authorHTML);
+			}
 		}
-		$item=preg_replace('~<author>.*?<\/author>~is',$authorHTML,$item,1);
-		$seoTitle=$r['title'].' - '.$config['seoTitle'];
-		$seoKeywords=$r['keywords'];
-		$seoDescription=$r['caption'];
+	}
+	$item=preg_replace('~<author>.*?<\/author>~is',$authorHTML,$item,1);
+	$seoTitle=$r['title'].' - '.$config['seoTitle'];
+	$seoKeywords=$r['keywords'];
+	$seoDescription=$r['caption'];
     
 	if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
-		$item.='<div id="comments" class="clearfix"><h3>Discussion</h3>';
 		if($user['rank']>699){
 			$sc=$db->prepare("SELECT * FROM comments WHERE contentType=:contentType AND rid=:rid ORDER BY ti ASC");
 		}else{
 			$sc=$db->prepare("SELECT * FROM comments WHERE contentType=:contentType AND rid=:rid AND status!='unapproved' ORDER BY ti ASC");
 		}
 		$sc->execute(array(':contentType'=>$view,':rid'=>$r['id']));
-		while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
-			$item.='<div id="l_'.$rc['id'].'" class="media';if($rc['status']=='delete'){$item.=' danger';}if($rc['status']=='unapproved'){$item.=' warning';}$item.='">';
+		if($sc->rowCount()>0){
+			$item.='<div id="comments" class="clearfix"><h3>Discussion</h3>';
+			while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
+				$item.='<div id="l_'.$rc['id'].'" class="media';
+				if($rc['status']=='delete')$item.=' danger';
+				if($rc['status']=='unapproved')$item.=' warning';
+				$item.='">';
 				$item.='<div class="media-object pull-left">';
-			$su=$db->prepare("SELECT * FROM login WHERE id=:id");
-			$su->execute(array(':id'=>$rc['uid']));
-			$ru=$su->fetch(PDO::FETCH_ASSOC);
-			if($ru['gravatar']!=''){
-				$avatar=$ru['gravatar'];
-			}elseif($ru['avatar']!=''&&file_exists('files/'.$ru['avatar'])){
-				$avatar='files/'.$ru['avatar'];
-			}else{
-				$avatar='images/noavatar.jpg';
-			}
-					$item.='<img class="commentavatar img-thumbnail" src="'.$avatar.'">';
+				$su=$db->prepare("SELECT * FROM login WHERE id=:id");
+				$su->execute(array(':id'=>$rc['uid']));
+				$ru=$su->fetch(PDO::FETCH_ASSOC);
+				if($ru['gravatar']!=''){
+					$avatar=$ru['gravatar'];
+				}elseif($ru['avatar']!=''&&file_exists('files/'.$ru['avatar'])){
+					$avatar='files/'.$ru['avatar'];
+				}else{
+					$avatar='images/noavatar.jpg';
+				}
+				$item.='<img class="commentavatar img-thumbnail" src="'.$avatar.'">';
 				$item.='</div>';
 				$item.='<div class="media-body">';
-					$item.='<div class="well">';
-						$item.='<h5 class="media-heading">Name: '.$rc['name'].'</h5>';
-						$item.='<time><small class="text-muted">'.date($config['dateFormat'],$rc['ti']).'</small></time>'.strip_tags($rc['notes']);
-			if($user['rank']>699){
-						$item.='<div id="controls-'.$rc['id'].'" class="pull-right">';
-							$item.='<button id="approve_'.$rc['id'].'" class="btn btn-success btn-xs';if($rc['status']!='unapproved'){$item.=' hidden';}$item.='" onclick="update(\''.$rc['id'].'\',\'comments\',\'status\',\'\')">Approve</button> ';
-							$item.='<button class="btn btn-danger btn-xs" onclick="purge(\''.$rc['id'].'\',\'comments\')">Delete</button>';
-						$item.='</div>';
-			}
+				$item.='<div class="well">';
+				$item.='<h5 class="media-heading">Name: '.$rc['name'].'</h5>';
+				$item.='<time><small class="text-muted">'.date($config['dateFormat'],$rc['ti']).'</small></time>'.strip_tags($rc['notes']);
+				if($user['rank']>699){
+					$item.='<div id="controls-'.$rc['id'].'" class="pull-right">';
+					$item.='<button id="approve_'.$rc['id'].'" class="btn btn-success btn-xs';if($rc['status']!='unapproved'){$item.=' hidden';}$item.='" onclick="update(\''.$rc['id'].'\',\'comments\',\'status\',\'\')">Approve</button> ';
+					$item.='<button class="btn btn-danger btn-xs" onclick="purge(\''.$rc['id'].'\',\'comments\')">Delete</button>';
 					$item.='</div>';
+				}
 				$item.='</div>';
-		}
+				$item.='</div>';
+			}
 			$item.='</div>';
+		}
 		if($r['options']{1}==1||$user['rank']>0){
 			$item.='<div class="media">';
 				$item.='<div class="media-body col-lg-12 col-md-12 col-sm-12 col-xs-12">';
@@ -411,18 +379,5 @@ if($show=='item'){
 	$html=preg_replace('~<settings.*?>~is','',$html,1);
 	$html=preg_replace('~<loop>.*?<\/loop>~is','',$html,1);
 	$html=str_replace('<print page=notes>','',$html);
-	if(stristr($html,'<inc file=')){
-		$newDom2=new DOMDocument();
-		@$newDom2->loadHTML($html);
-		$int=$newDom2->getElementsByTagName('inc');
-		foreach($int as $int1){
-			$inbed2=$int1->getAttribute('file');
-			if($inbed2!=''){
-				require$inbed2.'.php';
-			}
-		}
-		preg_match_all('/<loop>([\w\W]*?)<\/loop>/',$html,$matches);
-		$item=$matches[1];
-	}
 }
 $content.=$html;

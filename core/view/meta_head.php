@@ -1,12 +1,11 @@
 <?php
 $meta='';
-if(stristr($template,'<print meta_head>')){
+if(stristr($template,'<block include="meta_head.html">')){
 	$meta=file_get_contents(THEME.'/meta_head.html');
 }elseif(stristr($template,'</head>')){
 	preg_match('/<head>([\w\W]*?)<\/head>/',$template,$matches);
 	$meta=$matches[1];
 }else{
-	echo$template;
 	echo'You MUST include a meta_head template, or inbed a meta head section';
 }
 $meta=str_replace('<print seoTitle>',$seoTitle,$meta);
@@ -20,4 +19,4 @@ else $meta=str_replace('<print seoCaption>',$seoCaption,$meta);
 $meta=str_replace('<print shareImage>',$share_image,$meta);
 $meta=str_replace('<print favicon>',$favicon,$meta);
 $meta=str_replace('<print dateAtom>',date(DATE_ATOM,time()),$meta);
-$head.=$meta;
+$content.=$meta;

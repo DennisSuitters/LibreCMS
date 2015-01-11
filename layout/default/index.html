@@ -1,11 +1,11 @@
-<print meta_head>
-<block inc=header>
-<block inc=featured>
-<block inbed=content>
-	<main id="content" class="col-md-12 no-padding js-masonry" data-masonry-options='{"containerStyle":"null","itemSelector":"article"}'>
-		<settings itemCount=20 contentType=all>
+<block include="meta_head.html">
+<block include="header.html">
+<block include="featured.html">
+<block inbed="content">
+	<main id="content" class="col-md-12 no-padding">
+		<settings itemCount="20" contentType="all">
 		<loop>
-			<article id="l_<print content=:id>" class="col-md-3" itemscope itemtype="http://schema.org/<print content:schemaType>">
+			<article class="col-md-3" itemscope itemtype="http://schema.org/<print content:schemaType>">
 				<div class="thumbnail">
 					<div class="contentType"><print content=contentType></div>
 					<print content=image>
@@ -15,7 +15,7 @@
 						<h6><print content=brand></h6>
 						<h6><print content=tags></h6>
 						<p><print content=cost><print content=notes></p>
-						<div id="controls_<print content=id>" class="text-right">
+						<div class="text-right">
 							<CONTROLS>
 						</div>
 					</div>
@@ -23,9 +23,9 @@
 			</article>
 		</loop>
 	</main>
-</block inbed=content>
-<block inbed=testimonials>
-	<settings itemCount=5>
+</block inbed="content">
+<block inbed="testimonials">
+	<settings itemCount="5">
 	<div class="testimonials row">
 		<h2 class="page-header">Testimonials <small>Our Clients Love Us!</small></h2>
 		<div class="carousel slide" id="testimonials" data-ride="carousel">
@@ -42,5 +42,6 @@
 		</div>
 		<CONTROLS>
 	</div>
-</block inbed=testimonials>
-<block inc=footer>
+</block inbed="testimonials">
+<block include="footer.html">
+<block include="meta_footer.html">

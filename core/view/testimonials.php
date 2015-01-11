@@ -1,6 +1,6 @@
 <?php
 if($view=='index'){
-	preg_match('/<settings itemCount=(.*?)>/',$html,$matches);
+	preg_match('/<settings itemCount="(.*?)">/',$html,$matches);
 	$count=$matches[1];
 	$html=preg_replace('~<settings.*?>~is','',$html,1);
 	preg_match('/<loop>([\w\W]*?)<\/loop>/',$html,$matches);
