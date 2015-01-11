@@ -129,6 +129,13 @@
 			<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">Enable Tooltips</div>
 		</div>
 		<div class="form-group">
+			<label for="itemCount" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Item Count</label>
+			<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+				<input type="text" id="itemCount" class="form-control textinput" value="<?php echo$config['itemCount'];?>" data-dbid="1" data-dbt="config" data-dbc="itemCount" placeholder="Enter an Item Count...">
+				<span class="help-block">This is the number of items that will be displayed before Pagination occurs. Setting to '0' equals unlimited, and no pagination.</span>
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="timezone" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Timezone</label>
 			<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
 				<select id="timezone" class="form-control" onchange="update('1','config','timezone',$(this).val());">

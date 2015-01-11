@@ -25,7 +25,7 @@
 	</main>
 </block inbed="content">
 <block inbed="testimonials">
-	<settings itemCount="5">
+	<settings itemcount="5">
 	<div class="testimonials row">
 		<h2 class="page-header">Testimonials <small>Our Clients Love Us!</small></h2>
 		<div class="carousel slide" id="testimonials" data-ride="carousel">
@@ -34,7 +34,10 @@
 					<div class="item<print content=active>" itemscope itemtype="http://schema.org/<print content=schemaType>">
 						<div class="testimonials">
 							<img src="<print content=avatar>" alt="<print content=name>" class="img-circle pull-left" />
-							<p class="col-md-offset-2" itemprop="description"><print content=notes><strong><small itemprop="name"> - <print content=name></small></strong></p>
+							<div class="col-md-offset-2" itemprop="description">
+								<print content=notes>
+								<strong><small itemprop="name"> - <print content=name></small></strong>
+							</div>
 						</div>
 					</div>
 				</loop>
