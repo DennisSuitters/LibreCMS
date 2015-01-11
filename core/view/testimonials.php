@@ -1,7 +1,10 @@
 <?php
 if($view=='index'){
-	preg_match('/<settings itemCount="(.*?)">/',$html,$matches);
-	$count=$matches[1];
+	$count=$config['itemCount'];
+	if(stristr($html,'<settings'){
+		preg_match('/<settings itemcount="(.*?)">/',$html,$matches);
+		$count=$matches[1];
+	}else $count=$config['itemCount'];
 	$html=preg_replace('~<settings.*?>~is','',$html,1);
 	preg_match('/<loop>([\w\W]*?)<\/loop>/',$html,$matches);
 	$item=$matches[1];
@@ -17,8 +20,8 @@ if($view=='index'){
 			if($r['email']){
 				$items=str_replace('<print content=avatar>','http://gravatar.com/avatar/'.md5($r['email']).'?s=100&amp;d=mm',$items);
 			}else $items=str_replace('<print content=avatar>',$noavatar,$items);
-			$items=str_replace('<print content=notes>',$r['notes'],$items);
-			$items=str_replace('<print content=name>',$r['name'],$items);
+			$items=str_replace('<print content="notes">',$r['notes'],$items);
+			$items=str_replace('<print content="name">',$r['name'],$items);
 			$testitems.=$items;
 			$i++;
 		}

@@ -45,9 +45,9 @@ if($view=='index'){
 		$s->execute(array(':contentType'=>$view,':status'=>$status));
 	}
 }
-if($view=='testimonials'){
-	$s=$db->query("SELECT * FROM content WHERE contentType='testimonials'");
-}
+//if($view=='testimonials'){
+//	$s=$db->query("SELECT * FROM content WHERE contentType='testimonials'");
+//}
 if($view=='bookings'){
 	if(stristr($html,'<print bookable>')){
 		$bookable='';
@@ -143,7 +143,7 @@ if($show=='categories'){
 				$cost='<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer"><meta itemprop="currency" content="AUD"><h4 itemprop="price">&#36;'.$r['cost'].'</h4></aside>';
 				$items=str_replace('<print content=cost>',$cost,$items);
 			}else $items=str_replace('<print content=cost>','',$items);
-			$items=str_replace('<print content=notes>',preg_replace('/\s+?(\S+)?$/','',substr(strip_tags($r['notes']),0,201)),$items);
+			$items=str_replace('<print content=notes>',substr(strip_tags($r['notes']),0,201),$items);
 			if($r['contentType']=='testimonials'){
 				$controls='';
 			}else{
