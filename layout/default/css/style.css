@@ -131,7 +131,13 @@ article,
 .cover{
 	width:100%
 }
-article,
+article{
+	width:100%
+}
+.thumbnail .cover{
+	height:150px;
+	overflow:hidden
+}
 .thumbnail img{
 	width:100%
 }

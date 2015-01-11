@@ -136,13 +136,16 @@ if($show=='categories'){
 				if($r['email'])$items=str_replace('<print content=avatar>','http://gravatar.com/avatar/'.md5($r['email']).'?s=100&amp;d=mm',$items);
 					else $items=str_replace('<print content=avatar>',$noavatar,$items);
 			}
-			if($r['file']&&file_exists('media/'.$r['file']))$items=str_replace('<print content=image>','<div class="cover"><img src="media/'.$r['file'].'" alt="'.$r['title'].'"></div>',$items);
-				else $items=str_replace('<print content=image>','',$items);
+			if($r['file']&&file_exists('media/'.$r['file']))
+					$items=str_replace('<print content=image>','media/'.$r['file'],$items);
+				else
+					$items=str_replace('<print content=image>','core/images/noimage.jpg',$items);
 			$items=str_replace('<print content=title>',$r['title'],$items);
 			if($r['options']{0}==1){
-				$cost='<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer"><meta itemprop="currency" content="AUD"><h4 itemprop="price">&#36;'.$r['cost'].'</h4></aside>';
-				$items=str_replace('<print content=cost>',$cost,$items);
-			}else $items=str_replace('<print content=cost>','',$items);
+				$items=str_replace('<cost>','',$items);
+				$items=str_replace('</cost>','',$items);
+				$items=str_replace('<print content=cost>',$r['cost'],$items);
+			}else $items=preg_replace('~<cost>.*?<\/cost>~is','',$items,1);
 			$items=str_replace('<print content=notes>',substr(strip_tags($r['notes']),0,201),$items);
 			if($r['contentType']=='testimonials'){
 				$controls='';

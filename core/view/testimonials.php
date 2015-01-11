@@ -29,9 +29,10 @@ if($s->rowCount()>0){
 		$i++;
 	}
 	if($i>1){
-		$html=str_replace('<CONTROLS>','<div class="pull-right"><a class="left" href="#testimonials" data-slide="prev"><span class="fa fa-chevron-left fa-2x"></span></a><a class="right" href="#testimonials" data-slide="next"><span class="fa fa-chevron-right fa-2x"></span></a></div>',$html);
+		$html=str_replace('<controls>','',$html);
+		$html=str_replace('</controls>','',$html);
 	}else{
-		$html=str_replace('<CONTROLS>','',$html);
+		$html=preg_replace('~<controls>.*?<\/controls>~is','',$html,1);
 	}
 	$html=preg_replace('~<loop>.*?<\/loop>~is',$testitems,$html,1);
 	$content.=$html;

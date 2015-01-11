@@ -8,15 +8,25 @@
 			<article class="col-md-3" itemscope itemtype="http://schema.org/<print content:schemaType>">
 				<div class="thumbnail">
 					<div class="contentType"><print content=contentType></div>
-					<print content=image>
+					<div class="cover"><img src="<print content=image>" alt="<print content=title>"></div>
 					<div class="caption">
 						<h4 class="text-center"><print content=title></h4>
 						<h6><print content=categories></h6>
 						<h6><print content=brand></h6>
 						<h6><print content=tags></h6>
-						<p><print content=cost><print content=notes></p>
+						<p>
+							<cost>
+								<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+									<meta itemprop="currency" content="AUD">
+									<h4 itemprop="price">&#36;<print content=cost></h4>
+								</aside>
+							</cost>
+							<print content=notes>
+						</p>
 						<div class="text-right">
-							<CONTROLS>
+							<controls>
+								<view></view>
+							</controls>
 						</div>
 					</div>
 				</div>
@@ -43,7 +53,9 @@
 				</loop>
 			</div>
 		</div>
-		<CONTROLS>
+		<controls>
+			<div class="pull-right"><a class="left" href="#testimonials" data-slide="prev"><span class="fa fa-chevron-left fa-2x"></span></a><a class="right" href="#testimonials" data-slide="next"><span class="fa fa-chevron-right fa-2x"></span></a></div>
+		</controls>
 	</div>
 </block inbed="testimonials">
 <block include="footer.html">
