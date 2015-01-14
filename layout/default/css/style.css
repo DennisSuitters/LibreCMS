@@ -49,9 +49,9 @@ time{
 .carousel .container{
 	position:absolute;
 	top:0;
+	right:0;
+	bottom:0;
 	left:0;
-	bottom:20px;
-	left:20px;
 	z-index:1;
 	color:#fff;
 	text-shadow:0 0 3px #000,1px 3px 4px #000
@@ -108,19 +108,24 @@ time{
 .contentType:empty{
 	display:none;
 }
+.notes{
+	height:100px;
+}
 .price{
-	position:relative;
+	position:absolute;
 	display:block;
-	float:right;
-	margin:10px 30px 5px 20px;
-	min-width:75px
+	top:0;
+	right:0;
+	padding:10px 15px 0 15px;
+	background:#fff;
+	background:rgba(255,255,255,.5);
 }
 .price:before{
 	position:absolute;
-	top:-15px;
-	left:-10px;
+	top:0;
+	left:5px;
 	content:'Price:';
-	font-size:12px
+	font-size:14px
 }
 article,
 .thumbnail{
@@ -171,51 +176,11 @@ article .vcard .avatar{
 textarea{
 	resize:vertical
 }
-.js-masonry{
-	padding:0;
-}
-.notifications{
-	position:fixed;
-	z-index:99999
-}
-.notifications .alert{
-	-webkit-box-shadow:2px 2px 15px #000;
-	-moz-box-shadow:2px 2px 15px #000;
-	box-shadow:2px 2px 15px #000;
-	-o-box-shadow:2px 2px 15px #000
-}
-.notifications>div{
-	position:relative;
-	z-index:99999;
-	margin:5px 0
-}
-.notifications.center{
-	top:20%;
-	left:0;
-	width:100%
-}
-.notifications.center>div{
-	margin:5px auto;
-	width:50%;
-	text-align:center
-}
 #cart{
 	position:absolute;
 	top:5px;
 	right:0;
 	background:#f00
-}
-.mini-map{
-	height:300px
-}
-.small-map{
-	margin:0 auto 30px auto;
-	width:90%;
-	height:400px;
-	box-shadow:10px 10px 15px 0 #ccc
-}
-.map-container{
-	margin:20px
 }
 img{
 	color:transparent

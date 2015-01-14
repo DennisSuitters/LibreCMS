@@ -56,11 +56,13 @@ if($show=='categories'){
 		<thead>
 			<tr>
 				<th class="col-sm-1 text-center">contentType</th>
-				<th class="col-sm-3 text-center">Created</th>
+				<th class="col-sm-2 text-center">Created</th>
 				<th class="text-center">Title</th>
 				<th class="col-sm-1 text-center">Status</th>
 				<th class="col-sm-1 text-center">Views</th>
-				<th class="col-sm-3 text-right">
+				<th class="col-sm-1 text-center">Featured</th>
+				<th class="col-sm-1 text-center">Internal</th>
+				<th class="col-sm-2 text-right">
 					Show <div class="btn-group">
 						<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><?php if(!isset($args[1])||$args[1]==''){echo'All';}else{echo ucfirst($args[1]);}?> <i class="caret"></i></button>
 						<ul class="dropdown-menu pull-right">
@@ -82,6 +84,8 @@ if($show=='categories'){
 				<td><small><?php echo$r['title'];?></small></a>
 				<td class="text-center"><small class="label label-<?php if($r['status']=='published'){echo'success';}elseif($r['status']=='unpublished'){echo'warning';}else{echo'danger';}?>"><?php echo$r['status'];?></small></td>
 				<td class="text-center"><small><?php echo$r['views'];?></small></td>
+				<td class="text-center"><i class="fa fa-<?php if($r['featured']{0}==1){echo'check text-success';}else{echo'close text-muted';}?>"></i></td>
+				<td class="text-center"><i class="fa fa-<?php if($r['internal']{0}==1){echo'check text-success';}else{echo'close text-muted';}?>"></i></td>
 				<td id="controls_<?php echo$r['id'];?>" class="text-right">
 					<a class="btn btn-primary btn-xs<?php if($r['status']=='delete'){echo' hidden';}?>" href="admin/content/edit/<?php echo$r['id'];?>">View</a> 
 <?php		if($user['rank']==1000||$user['options']{0}==1){?>
@@ -388,8 +392,47 @@ if($show=='item'){
 		<input type="text" id="quantity" class="form-control textinput" value="<?php echo$r['quantity'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="quantity" placeholder="Enter a Quantity..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
-<?php }
-	if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='inventory'||$r['contentType']=='services'||$r['contentType']=='gallery'||$r['contentType']=='events'||$r['contentType']=='news'){?>
+<?php }?>
+<div class="form-group">
+	<label for="featured0" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Featured</label>
+	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+		<input type="checkbox" id="featured0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="featured" data-dbb="0"<?php if($r['featured']{0}==1){echo' checked';}?><?php if($user['options']{1}==0){echo' readonly';}?>>
+	</div>
+</div>
+<div class="form-group">
+	<label for="featuredBackgroundColor" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Featured Background</label>
+	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+		<select id="featuredBackgroundColor" class="form-control" onchange="update('<?php echo$r['id'];?>','content','featuredBackgroundColor',$(this).val());"<?php if($user['options']{1}==0){echo' disabled';}?>>
+			<option value="#000000"<?php if($r['featuredBackgroundColor']=='#000000'){echo' selected';}?>>#000000</option>
+			<option value="#ffffff"<?php if($r['featuredBackgroundColor']=='#ffffff'){echo' selected';}?>>#ffffff</option>
+			<option value="#ac725e"<?php if($r['featuredBackgroundColor']=='#ac725e'){echo' selected';}?>>#ac725e</option>
+			<option value="#d06b64"<?php if($r['featuredBackgroundColor']=='#d06b64'){echo' selected';}?>>#d06b64</option>
+			<option value="#f83a22"<?php if($r['featuredBackgroundColor']=='#f83a22'){echo' selected';}?>>#f83a22</option>
+			<option value="#fa573c"<?php if($r['featuredBackgroundColor']=='#fa573c'){echo' selected';}?>>#fa573c</option>
+			<option value="#ff7537"<?php if($r['featuredBackgroundColor']=='#ff7537'){echo' selected';}?>>#ff7537</option>
+			<option value="#ffad46"<?php if($r['featuredBackgroundColor']=='#ffad46'){echo' selected';}?>>#ffad46</option>
+			<option value="#42d692"<?php if($r['featuredBackgroundColor']=='#42d692'){echo' selected';}?>>#42d692</option>
+			<option value="#16a765"<?php if($r['featuredBackgroundColor']=='#16a765'){echo' selected';}?>>#16a765</option>
+			<option value="#7bd148"<?php if($r['featuredBackgroundColor']=='#7bd148'){echo' selected';}?>>#7bd148</option>
+			<option value="#b3dc6c"<?php if($r['featuredBackgroundColor']=='#b3dc6c'){echo' selected';}?>>#b3dc6c</option>
+			<option value="#fbe983"<?php if($r['featuredBackgroundColor']=='#fbe983'){echo' selected';}?>>#fbe983</option>
+			<option value="#fad165"<?php if($r['featuredBackgroundColor']=='#fad165'){echo' selected';}?>>#fad165</option>
+			<option value="#92e1c0"<?php if($r['featuredBackgroundColor']=='#92e1c0'){echo' selected';}?>>#92e1c0</option>
+			<option value="#9fe1e7"<?php if($r['featuredBackgroundColor']=='#9fe1e7'){echo' selected';}?>>#9fe1e7</option>
+			<option value="#9fc6e7"<?php if($r['featuredBackgroundColor']=='#9fc6e7'){echo' selected';}?>>#9fc6e7</option>
+			<option value="#4986e7"<?php if($r['featuredBackgroundColor']=='#4986e7'){echo' selected';}?>>#4986e7</option>
+			<option value="#9a9cff"<?php if($r['featuredBackgroundColor']=='#9a9cff'){echo' selected';}?>>#9a9cff</option>
+			<option value="#b99aff"<?php if($r['featuredBackgroundColor']=='#b99aff'){echo' selected';}?>>#b99aff</option>
+			<option value="#c2c2c2"<?php if($r['featuredBackgroundColor']=='#c2c2c2'){echo' selected';}?>>#c2c2c2</option>
+			<option value="#cabdbf"<?php if($r['featuredBackgroundColor']=='#cabdbf'){echo' selected';}?>>#cabdbf</option>
+			<option value="#cca6ac"<?php if($r['featuredBackgroundColor']=='#cca6ac'){echo' selected';}?>>#cca6ac</option>
+			<option value="#f691b2"<?php if($r['featuredBackgroundColor']=='#f691b2'){echo' selected';}?>>#f691b2</option>
+			<option value="#cd74e6"<?php if($r['featuredBackgroundColor']=='#cd74e6'){echo' selected';}?>>#cd74e6</option>
+			<option value="#a47ae2"<?php if($r['featuredBackgroundColor']=='#a47ae2'){echo' selected';}?>>#a47ae2</option>
+		</select>
+	</div>
+</div>
+<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='inventory'||$r['contentType']=='services'||$r['contentType']=='gallery'||$r['contentType']=='events'||$r['contentType']=='news'){?>
 <div class="form-group">
 	<label for="content_keywords" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Keywords</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">

@@ -8,7 +8,7 @@ if($contentType=='all')$contentType='%';
 preg_match('/<loop>([\w\W]*?)<\/loop>/',$html,$matches);
 $it=$matches[1];
 $items='';
-$s=$db->prepare("SELECT * FROM content WHERE featured='1' AND file!='' AND contentType LIKE :contentType ORDER BY ti DESC");
+$s=$db->prepare("SELECT * FROM content WHERE featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY ti DESC");
 $s->execute(array(':contentType'=>$contentType));
 $indicators='';
 $ii=$s->rowCount();
@@ -19,7 +19,7 @@ if($ii>0){
         if(file_exists('media/'.$r['file'])){
             $item=$it;
             if($ii>1){
-                $indicators.='<li data-target="#libr8Carousel" data-slide-to="'.$i.'"';
+                $indicators.='<li data-target="#featured" data-slide-to="'.$i.'"';
                 if($i==0)$indicators.=' class="active"';
                 $indicators.='></li>';
             }
@@ -36,6 +36,7 @@ if($ii>0){
                 $item=str_replace('<print content=caption>',$r['caption'],$item);
             else
                 $item=str_replace('<print content=caption>',preg_replace('/\s+?(\S+)?$/','',substr(strip_tags($r['notes']),0,1149)),$item);
+			$item=str_replace('<print content=featuredBackgroundColor>',ltrim($r['featuredBackgroundColor'],'#'),$item);
             $item=str_replace('<print link>',$r['contentType'].'/'.str_replace(' ','-',$r['title']),$item);
             $item=str_replace('<print content=file>','<img src="media/'.$r['file'].'" alt="'.$r['title'].'">',$item);
             $item=str_replace('<print content=schemaType>',$r['schemaType'],$item);

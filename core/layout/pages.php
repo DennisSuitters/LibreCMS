@@ -25,13 +25,7 @@ if($show=='pages'){
 			<tr id="l_<?php echo$r['id'];?>">
 				<td class="text-center"><small><?php echo ucfirst($r['menu']);?></small></td>
 				<td><small><?php echo$r['title'];?></small></td>
-				<td class="text-center">
-<?php		if($r['active']==1){?>
-					<i class="fa fa-check text-success"></i>
-<?php		}else{?>
-					<i class="fa fa-times text-danger"></i>
-<?php		}?>
-				</td>
+				<td class="text-center"><i class="fa fa-<?php if($r['active']==1){echo'check text-success';}else{echo'close text-muted';}?>"></i></td>
 				<td id="controls_<?php echo$r['id'];?>" class="text-right">
 					<a class="btn btn-primary btn-xs" href="admin/pages/edit/<?php echo$r['id'];?>">View</a> 
 				</td>

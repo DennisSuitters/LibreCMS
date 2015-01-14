@@ -1,13 +1,14 @@
 <?php
 $rank=0;
 $show='categories';
+$status='published';
 if($view=='index'){
 	preg_match('/<settings itemCount="([\w\W]*?)" contentType="([\w\W]*?)">/',$html,$matches);
 	$itemCount=$matches[1];
 	if($itemCount==0)$itemCount=10;
 	$contentType=$matches[2];
 	if($contentType=='all')$contentType='%';
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND contentType NOT LIKE 'message%' AND contentType!='testimonials' AND contentType!='proofs' AND status LIKE :status ORDER BY ti DESC LIMIT $itemCount");
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND contentType NOT LIKE 'message%' AND contentType!='testimonials' AND contentType!='proofs' AND status LIKE :status AND internal!='1' ORDER BY ti DESC LIMIT $itemCount");
 	$s->execute(array(':contentType'=>$contentType,':status'=>$status));
 }elseif($view=='search'){
 	$search='%';
@@ -16,24 +17,19 @@ if($view=='index'){
     }else{
         $search='%'.str_replace('-',' ',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING)).'%';
     }
-	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(keywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(caption) LIKE LOWER(:caption) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' ORDER BY ti DESC");
+	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(keywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(caption) LIKE LOWER(:caption) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' ORDER BY ti DESC");
 	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':notes'=>$search));
 }elseif($view=='bookings'){
 	if(isset($args[0]))$id=(int)$args[0];else $id=0;
 }elseif(isset($args[1])){
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND LOWER(category_2) LIKE LOWER(:category_2) AND status LIKE :status ORDER BY ti DESC");
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND LOWER(category_2) LIKE LOWER(:category_2) AND status LIKE :status AND internal!='1' ORDER BY ti DESC");
 	$s->execute(array(':contentType'=>$view,':category_1'=>str_replace('-',' ',$args[0]),':category_2'=>str_replace('-',' ',$args[1]),':status'=>$status));
 }elseif(isset($args[0])){
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND status LIKE :status ORDER BY ti DESC");
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND status LIKE :status AND internal!='1' ORDER BY ti DESC");
 	$s->execute(array(':contentType'=>$view,':category_1'=>str_replace('-',' ',$args[0]),':status'=>$status));
 	if($s->rowCount()<1){
-		if($user['rank']>699){
-			$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(title) LIKE LOWER(:title) ORDER BY ti DESC");
-			$s->execute(array(':contentType'=>$view,':title'=>str_replace('-',' ',$args[0])));
-		}else{
-			$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(title) LIKE LOWER(:title) AND status LIKE :status ORDER BY ti DESC");
-			$s->execute(array(':contentType'=>$view,':title'=>str_replace('-',' ',$args[0]),':status'=>$status));
-		}
+		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(title) LIKE LOWER(:title) AND status LIKE :status AND internal!='1' ORDER BY ti DESC");
+		$s->execute(array(':contentType'=>$view,':title'=>str_replace('-',' ',$args[0]),':status'=>$status));
 		$show='item';
 	}
 }else{
@@ -49,30 +45,28 @@ if($view=='index'){
 //	$s=$db->query("SELECT * FROM content WHERE contentType='testimonials'");
 //}
 if($view=='bookings'){
-	if(stristr($html,'<print bookable>')){
+	$sql=$db->query("SELECT id,contentType,code,title FROM content WHERE bookable='1' AND title!='' AND status='published' AND internal!='1' ORDER BY code ASC, title ASC");
+	if($sql->rowCount()>0){
 		$bookable='';
-		$sql=$db->query("SELECT id,contentType,code,title FROM content WHERE bookable='1' AND title!='' AND status='published' AND internal!='1' ORDER BY code ASC, title ASC");
-		if($sql->rowCount()>0){
-			$bookable.='<div class="libr8-form-group"><label for="rid" class="libr8-control-label libr8-col-md-2 libr8-col-xs-4">Event/Service</label><div class="libr8-input-group libr8-col-md-10 libr8-col-xs-8"><select id="rid" class="libr8-form-control" name="rid"><option value="0">Select an Item...</option>';
-			while($row=$sql->fetch(PDO::FETCH_ASSOC)){
-				$bookable.='<option value="'.$row['id'].'"';
-				if($id==$row['id']){
-					$bookable.=' selected';
-				}
-				$bookable.='>'.ucfirst($row['contentType']);
-				if($row['code']!=''){$bookable.=':'.$row['code'];}
-				$bookable.=':'.$row['title'].'</option>';
+		while($row=$sql->fetch(PDO::FETCH_ASSOC)){
+			$bookable.='<option value="'.$row['id'].'"';
+			if($id==$row['id']){
+				$bookable.=' selected';
 			}
-            $bookable.='</select></div></div>';
-		}else{
-			$bookable='<input type="hidden" name="service" value="0">';
+			$bookable.='>'.ucfirst($row['contentType']);
+			if($row['code']!=''){$bookable.=':'.$row['code'];}
+			$bookable.=':'.$row['title'].'</option>';
 		}
-		$html=str_replace('<print bookable>',$bookable,$html);
+		$html=str_replace('<serviceoptions>',$bookable,$html);
+		$html=str_replace('<bookservices>','',$html);
+		$html=str_replace('</bookservices>','',$html);
+	}else{
+		$html=preg_replace('~<bookservices>.*?<\/bookservices>~is','<input type="hidden" name="service" value="0">',$html,1);
 	}
 }
 if($show=='categories'){
 	if(stristr($html,'<settings')){
-		$matches=preg_match_all('/<settings items="(.*?)" contentType="(.*?)">/',$html,$matches);
+		$matches=preg_match_all('/<settings items="(.*?)" contenttype="(.*?)">/',$html,$matches);
 		$count=$matches[1];
 		$html=preg_replace('~<settings.*?>~is','',$html,1);
 	}else $count=1;
@@ -136,10 +130,16 @@ if($show=='categories'){
 				if($r['email'])$items=str_replace('<print content=avatar>','http://gravatar.com/avatar/'.md5($r['email']).'?s=100&amp;d=mm',$items);
 					else $items=str_replace('<print content=avatar>',$noavatar,$items);
 			}
-			if($r['file']&&file_exists('media/'.$r['file']))
-					$items=str_replace('<print content=image>','media/'.$r['file'],$items);
-				else
-					$items=str_replace('<print content=image>','core/images/noimage.jpg',$items);
+			if($r['file']&&file_exists('media/'.$r['file'])){
+				$items=str_replace('<print coverimage>','<img src="media/'.$r['file'].'" alt="'.$r['title'].'">',$items);
+			}else{
+				$items=str_replace('<print content=featuredBackgroundColor>',ltrim($r['featuredBackgroundColor'],'#'),$items);
+				if($r['featuredBackgroundColor']==''){
+					$items=str_replace('<print coverimage>','<img src="core/images/noimage.jpg" alt="'.$r['title'].'">',$items);
+				}else{
+					$items=str_replace('<print coverimage>','',$items);
+				}
+			}
 			$items=str_replace('<print content=title>',$r['title'],$items);
 			if($r['options']{0}==1){
 				$items=str_replace('<cost>','',$items);
@@ -148,17 +148,37 @@ if($show=='categories'){
 			}else $items=preg_replace('~<cost>.*?<\/cost>~is','',$items,1);
 			$items=str_replace('<print content=notes>',substr(strip_tags($r['notes']),0,201),$items);
 			if($r['contentType']=='testimonials'){
+				if(stristr($items,'<controls>'))
+				$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
 				$controls='';
 			}else{
-				$controls='<a class="btn btn-info" href="'.$r['contentType'].'/'.strtolower(str_replace(' ','-',$r['title'])).'">View</a>';
-			}
-			if($r['bookable']==1)$controls.=' <a class="libr8-btn libr8-btn-success" href="bookings/'.$r['id'].'">Book '.ucfirst(rtrim($view,'s')).'</a>';
-			else{
-				if($view=='inventory'){
-					$controls.=' <button class="libr8-btn libr8-btn-success" onclick="$(\'#cart\').load(\'includes/add_cart.php?id='.$r['id'].'\');">Add to Cart</button>';
+				if(stristr($items,'<view>')){
+					$items=str_replace('<print content=linktitle>',URL.$r['contentType'].'/'.str_replace(' ','-',$r['title']),$items);
+					$items=str_replace('<view>','',$items);
+					$items=str_replace('</view>','',$items);
 				}
+				if($r['contentType']=='services'){
+					if($r['bookable']==1){
+						if(stristr($items,'<service>')){
+							$items=str_replace('<print content=bookservice>',URL.'bookings/'.$r['id'],$items);
+							$items=str_replace('<service>','',$items);
+							$items=str_replace('</service>','',$items);
+							$items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
+						}
+					}
+				}else $items=preg_replace('~<service>.*?<\/service>~is','',$items,1);
+				if($r['contentType']=='inventory'){
+					if(stristr($items,'<inventory>')){
+						$items=str_replace('<inventory>','',$items);
+						$items=str_replace('</inventory>','',$items);
+						$items=preg_replace('~<service>.*?<\/service>~is','',$items,1);
+					}elseif(stristr($items,'<inventory>')&&$r['contentType']!='inventory'){
+						$items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
+					}
+				}else $items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
+				$items=str_replace('<controls>','',$items);
+				$items=str_replace('</controls>','',$items);
 			}
-			$items=str_replace('<CONTROLS>','<div id="controls_'.$r['id'].'" class="text-right">'.$controls.'</div>',$items);
 			$output.=$items;
 		}
 		$html=preg_replace('~<loop>.*?<\/loop>~is',$output,$html,1);

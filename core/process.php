@@ -31,7 +31,6 @@ if($user['rank']>699){
 	$status="published";
 }
 $content='';
-require'view/account.php';
 if(file_exists(THEME.'/'.$view.'.html')){
 	$template=file_get_contents(THEME.'/'.$view.'.html');
 }elseif(file_exists(THEME.'/default.html')){
@@ -58,7 +57,17 @@ foreach($tag as $tag1){
 		$req=$inbed;
 	}
 }
-print$content;
+$meta=str_replace('<print seoTitle>',$seoTitle,$meta);
+$meta=str_replace('<print urlSEOTitle>',str_replace(' ','-',$seoTitle),$meta);
+$meta=str_replace('<print config:url>',URL,$meta);
+$meta=str_replace('<print view>',$view,$meta);
+$meta=str_replace('<print seoKeywords>',$seoKeywords,$meta);
+if($view=='index'&&$seoDescription!='')$meta=str_replace('<print seoCaption>',$seoDescription,$meta);
+else $meta=str_replace('<print seoCaption>',$seoCaption,$meta);
+$meta=str_replace('<print shareImage>',$share_image,$meta);
+$meta=str_replace('<print favicon>',$favicon,$meta);
+$meta=str_replace('<print dateAtom>',date(DATE_ATOM,time()),$meta);
+print$meta.$content;
 # Here goes the ungainly, and over cumbersome Analytics Data Collection
 $ip=$_SERVER['REMOTE_ADDR'];
 $httpReferer=$_SERVER['HTTP_REFERER'];

@@ -17,6 +17,7 @@
 		<link rel="stylesheet" type="text/css" href="core/css/browser.css" />
 		<link rel="stylesheet" type="text/css" href="core/css/summernote.css" />
 		<link rel="stylesheet" type="text/css" href="core/css/featherlight.min.css" />
+		<link rel="stylesheet" type="text/css" href="core/css/jquery.simplecolorpicker.css" />
 		<link rel="stylesheet" type="text/css" href="core/css/admin.css" />
 	</head>
 	<body>

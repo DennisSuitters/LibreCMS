@@ -1,9 +1,9 @@
 <settings itemCount=4 contentType=all>
-<div id="libr8Carousel" class="carousel slide" data-ride="carousel" data-pause="">
+<div id="featured" class="carousel slide" data-ride="carousel" data-pause="">
 	<carouselIndicators>
 	<div class="carousel-inner">
 		<loop>
-			<div class="item<print active>">
+			<div class="item featured-background-<print content=featuredBackgroundColor><print active>">
 				<print content=file>
 				<div class="container">
 					<div class="contentType"><print content=contentType></div>
@@ -15,7 +15,13 @@
 		</loop>
 	</div>
     <carouselControls>
-        <a class="left carousel-control" href="#libr8Carousel" role="button" data-slide="prev">&nbsp;</a>
-        <a class="right carousel-control" href="#libr8Carousel" role="button" data-slide="next">&nbsp;</a>
+        <a class="left carousel-control" href="#featured" role="button" data-slide="prev">
+			<span class="fa fa-chevron-left fa-3x" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+        <a class="right carousel-control" href="#featured" role="button" data-slide="next">
+			<span class="fa fa-chevron-right fa-3x" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
     </carouselControls>
 </div>

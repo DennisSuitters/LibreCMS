@@ -3,29 +3,37 @@
 <block include="featured.html">
 <block inbed="content">
 	<main id="content" class="col-md-12 no-padding">
-		<settings itemCount="20" contentType="all">
+		<settings itemCount="4" contentType="all">
 		<loop>
 			<article class="col-md-3" itemscope itemtype="http://schema.org/<print content:schemaType>">
 				<div class="thumbnail">
 					<div class="contentType"><print content=contentType></div>
-					<div class="cover"><img src="<print content=image>" alt="<print content=title>"></div>
+					<div class="cover featured-background-<print content=featuredBackgroundColor>"><print coverimage></div>
+					<cost>
+						<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+							<meta itemprop="currency" content="AUD">
+							<h4 itemprop="price">&#36;<print content=cost></h4>
+						</aside>
+					</cost>
 					<div class="caption">
 						<h4 class="text-center"><print content=title></h4>
 						<h6><print content=categories></h6>
 						<h6><print content=brand></h6>
 						<h6><print content=tags></h6>
-						<p>
-							<cost>
-								<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
-									<meta itemprop="currency" content="AUD">
-									<h4 itemprop="price">&#36;<print content=cost></h4>
-								</aside>
-							</cost>
+						<p class="notes">
 							<print content=notes>
 						</p>
 						<div class="text-right">
 							<controls>
-								<view></view>
+								<view>
+									<a class="btn btn-info" href="<print content=linktitle>">View</a>
+								</view>
+								<service>
+									<a class="btn btn-success" href="<print content=bookservice>">Book Service</a>
+								</service>
+								<inventory>
+									<button class="btn btn-success" onclick="$('#cart').load('core/add_cart.php?id=<print content=id>');">Add to Cart</button>
+								</inventory>
 							</controls>
 						</div>
 					</div>

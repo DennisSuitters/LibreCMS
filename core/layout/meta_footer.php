@@ -10,10 +10,12 @@
 <?php }?>
 		<script src="core/js/summernote.js"></script>
 		<script src="core/js/bootstrap-datetimepicker.min.js"></script>
+		<script src="core/js/jquery.simplecolorpicker.js"></script>
 		<script src="core/js/js.js"></script>
 		<script>/*<![CDATA[*/
 			$(document).ready(function(){
 				$(".summernote").summernote();
+				$("#featuredBackgroundColor").simplecolorpicker();
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});
 				$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
 <?php   if($view=='preferences'){?>
