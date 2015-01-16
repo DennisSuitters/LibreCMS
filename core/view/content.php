@@ -3,11 +3,20 @@ $rank=0;
 $show='categories';
 $status='published';
 if($view=='index'){
-	preg_match('/<settings itemCount="([\w\W]*?)" contentType="([\w\W]*?)">/',$html,$matches);
-	$itemCount=$matches[1];
-	if($itemCount==0)$itemCount=10;
-	$contentType=$matches[2];
-	if($contentType=='all')$contentType='%';
+	if(stristr($html,'<settings')){
+		preg_match('/<settings itemCount="([\w\W]*?)" contentType="([\w\W]*?)">/',$html,$matches);
+		if(isset($matches[1]))
+			$itemCount=$matches[1];
+		else $itemCount=$config['itemCount'];
+		if($itemCount==0)$itemCount=10;
+		if(isset($matches[2])){
+			$contentType=$matches[2];
+			if($contentType=='all'||$contentType==0)$contentType='%';
+		}else $contenType='%';
+	}else{
+		$itemCount=$config['itemCount'];
+		$contentType='%';
+	}
 	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND contentType NOT LIKE 'message%' AND contentType!='testimonials' AND contentType!='proofs' AND status LIKE :status AND internal!='1' ORDER BY ti DESC LIMIT $itemCount");
 	$s->execute(array(':contentType'=>$contentType,':status'=>$status));
 }elseif($view=='search'){

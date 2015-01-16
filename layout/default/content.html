@@ -1,9 +1,9 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="content">
-	<main id="content" class="col-lg-9 col-md-9 col-sm-9 col-xs-9 js-masonry" data-masonry-options='{"containerStyle":"null","itemSelector":".masonry"}'>
+	<main id="content" class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
 		<print page=notes>
-		<settings items="10" contentType="all">
+		<settings itemCount="10">
 		<item>
 			<article id="l_<print content=id>" class="article" itemscope itemtype="http://schema.org/<print content:schemaType>">
 				<div class="thumbnail">
@@ -34,7 +34,7 @@
 			</article>
 		</item>
 		<loop>
-			<article id="l_<print content=id>" class="masonry col-md-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
+			<article id="l_<print content=id>" class="col-md-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
 				<div class="thumbnail articles">
 					<div class="contentType"><print content=contentType></div>
 					<print content=image>

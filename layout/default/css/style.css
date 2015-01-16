@@ -7,6 +7,9 @@
 .no-margin{
 	margin:0
 }
+.margin-bottom-20{
+	margin-bottom:20px;
+}
 .clearfix{
 	clear:both
 }
