@@ -10,6 +10,9 @@
 .margin-bottom-20{
 	margin-bottom:20px;
 }
+.margin-left-20{
+	margin-left:20px
+}
 .clearfix{
 	clear:both
 }
@@ -33,52 +36,32 @@ time{
 	width:100px
 }
 .carousel{
-	position:relative;
-	z-index:0;
-	overflow:hidden;
 	margin-top:-20px;
 	margin-bottom:20px;
-	padding:0;
 	width:100%;
 	height:600px
 }
-.carousel .contentType{
-	position:relative;
+.carousel .item{
+	height:600px
 }
-.carousel img{
-	position:relative;
-	width:100%
-}
-.carousel .container{
-	position:absolute;
+.carousel-caption{
 	top:0;
-	right:0;
-	bottom:0;
-	left:0;
-	z-index:1;
-	color:#fff;
-	text-shadow:0 0 3px #000,1px 3px 4px #000
+	text-shadow:0 0 25px #000,0 0 20px #000,0 0 15px #000,0 0 10px #000;
 }
-.carousel .btn{
-	text-shadow:0 0 0
+.carousel-caption>p{
+	position:relative;
 }
-.carousel h1,
-.carousel h2,
-.carousel h3,
-.carousel h4,
-.carousel h5,
-.carousel h6,
-.carousel p,
-.carousel aside{
-	z-index:10;
-	color:#fff
+.carousel-price{
+	position:absolute;
+	top:10px;
+	right:10px
 }
-.carousel p{
-	text-align:justify
+.carousel-price h4{
+	font-size:30px
 }
-.carousel .price{
-	font-weight:700;
-	font-size:24px;
+.carousel .left .fa,
+.carousel .right .fa{
+	margin-top:100%;
 }
 .contentType{
 	position:absolute;
@@ -92,11 +75,6 @@ time{
 	border-color:rgba(0,0,0,.5);
 	background-color:#000;
 	background-color:rgba(0,0,0,.5);
-}
-.carousel .contentType{
-    position:absolute;
-	top:0;
-	left:-20px;
 }
 .contentType div{
 	position:relative;
@@ -193,9 +171,6 @@ img{
 }
 main{
 	display:inline-table
-}
-.margin-left-20{
-	margin-left:20px
 }
 .side_menu_gallery{
 	max-width:75px;

@@ -400,35 +400,35 @@ if($show=='item'){
 	</div>
 </div>
 <div class="form-group">
-	<label for="featuredBackgroundColor" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Featured Background</label>
+	<label for="backgroundColor" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Featured Background</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<select id="featuredBackgroundColor" class="form-control" onchange="update('<?php echo$r['id'];?>','content','featuredBackgroundColor',$(this).val());"<?php if($user['options']{1}==0){echo' disabled';}?>>
-			<option value="#000000"<?php if($r['featuredBackgroundColor']=='#000000'){echo' selected';}?>>#000000</option>
-			<option value="#ffffff"<?php if($r['featuredBackgroundColor']=='#ffffff'){echo' selected';}?>>#ffffff</option>
-			<option value="#ac725e"<?php if($r['featuredBackgroundColor']=='#ac725e'){echo' selected';}?>>#ac725e</option>
-			<option value="#d06b64"<?php if($r['featuredBackgroundColor']=='#d06b64'){echo' selected';}?>>#d06b64</option>
-			<option value="#f83a22"<?php if($r['featuredBackgroundColor']=='#f83a22'){echo' selected';}?>>#f83a22</option>
-			<option value="#fa573c"<?php if($r['featuredBackgroundColor']=='#fa573c'){echo' selected';}?>>#fa573c</option>
-			<option value="#ff7537"<?php if($r['featuredBackgroundColor']=='#ff7537'){echo' selected';}?>>#ff7537</option>
-			<option value="#ffad46"<?php if($r['featuredBackgroundColor']=='#ffad46'){echo' selected';}?>>#ffad46</option>
-			<option value="#42d692"<?php if($r['featuredBackgroundColor']=='#42d692'){echo' selected';}?>>#42d692</option>
-			<option value="#16a765"<?php if($r['featuredBackgroundColor']=='#16a765'){echo' selected';}?>>#16a765</option>
-			<option value="#7bd148"<?php if($r['featuredBackgroundColor']=='#7bd148'){echo' selected';}?>>#7bd148</option>
-			<option value="#b3dc6c"<?php if($r['featuredBackgroundColor']=='#b3dc6c'){echo' selected';}?>>#b3dc6c</option>
-			<option value="#fbe983"<?php if($r['featuredBackgroundColor']=='#fbe983'){echo' selected';}?>>#fbe983</option>
-			<option value="#fad165"<?php if($r['featuredBackgroundColor']=='#fad165'){echo' selected';}?>>#fad165</option>
-			<option value="#92e1c0"<?php if($r['featuredBackgroundColor']=='#92e1c0'){echo' selected';}?>>#92e1c0</option>
-			<option value="#9fe1e7"<?php if($r['featuredBackgroundColor']=='#9fe1e7'){echo' selected';}?>>#9fe1e7</option>
-			<option value="#9fc6e7"<?php if($r['featuredBackgroundColor']=='#9fc6e7'){echo' selected';}?>>#9fc6e7</option>
-			<option value="#4986e7"<?php if($r['featuredBackgroundColor']=='#4986e7'){echo' selected';}?>>#4986e7</option>
-			<option value="#9a9cff"<?php if($r['featuredBackgroundColor']=='#9a9cff'){echo' selected';}?>>#9a9cff</option>
-			<option value="#b99aff"<?php if($r['featuredBackgroundColor']=='#b99aff'){echo' selected';}?>>#b99aff</option>
-			<option value="#c2c2c2"<?php if($r['featuredBackgroundColor']=='#c2c2c2'){echo' selected';}?>>#c2c2c2</option>
-			<option value="#cabdbf"<?php if($r['featuredBackgroundColor']=='#cabdbf'){echo' selected';}?>>#cabdbf</option>
-			<option value="#cca6ac"<?php if($r['featuredBackgroundColor']=='#cca6ac'){echo' selected';}?>>#cca6ac</option>
-			<option value="#f691b2"<?php if($r['featuredBackgroundColor']=='#f691b2'){echo' selected';}?>>#f691b2</option>
-			<option value="#cd74e6"<?php if($r['featuredBackgroundColor']=='#cd74e6'){echo' selected';}?>>#cd74e6</option>
-			<option value="#a47ae2"<?php if($r['featuredBackgroundColor']=='#a47ae2'){echo' selected';}?>>#a47ae2</option>
+		<select id="backgroundColor" class="form-control" onchange="update('<?php echo$r['id'];?>','content','backgroundColor',$(this).val());"<?php if($user['options']{1}==0){echo' disabled';}?>>
+			<option value="#000000"<?php if($r['backgroundColor']=='#000000'){echo' selected';}?>>#000000</option>
+			<option value="#ffffff"<?php if($r['backgroundColor']=='#ffffff'){echo' selected';}?>>#ffffff</option>
+			<option value="#ac725e"<?php if($r['backgroundColor']=='#ac725e'){echo' selected';}?>>#ac725e</option>
+			<option value="#d06b64"<?php if($r['backgroundColor']=='#d06b64'){echo' selected';}?>>#d06b64</option>
+			<option value="#f83a22"<?php if($r['backgroundColor']=='#f83a22'){echo' selected';}?>>#f83a22</option>
+			<option value="#fa573c"<?php if($r['backgroundColor']=='#fa573c'){echo' selected';}?>>#fa573c</option>
+			<option value="#ff7537"<?php if($r['backgroundColor']=='#ff7537'){echo' selected';}?>>#ff7537</option>
+			<option value="#ffad46"<?php if($r['backgroundColor']=='#ffad46'){echo' selected';}?>>#ffad46</option>
+			<option value="#42d692"<?php if($r['backgroundColor']=='#42d692'){echo' selected';}?>>#42d692</option>
+			<option value="#16a765"<?php if($r['backgroundColor']=='#16a765'){echo' selected';}?>>#16a765</option>
+			<option value="#7bd148"<?php if($r['backgroundColor']=='#7bd148'){echo' selected';}?>>#7bd148</option>
+			<option value="#b3dc6c"<?php if($r['backgroundColor']=='#b3dc6c'){echo' selected';}?>>#b3dc6c</option>
+			<option value="#fbe983"<?php if($r['backgroundColor']=='#fbe983'){echo' selected';}?>>#fbe983</option>
+			<option value="#fad165"<?php if($r['backgroundColor']=='#fad165'){echo' selected';}?>>#fad165</option>
+			<option value="#92e1c0"<?php if($r['backgroundColor']=='#92e1c0'){echo' selected';}?>>#92e1c0</option>
+			<option value="#9fe1e7"<?php if($r['backgroundColor']=='#9fe1e7'){echo' selected';}?>>#9fe1e7</option>
+			<option value="#9fc6e7"<?php if($r['backgroundColor']=='#9fc6e7'){echo' selected';}?>>#9fc6e7</option>
+			<option value="#4986e7"<?php if($r['backgroundColor']=='#4986e7'){echo' selected';}?>>#4986e7</option>
+			<option value="#9a9cff"<?php if($r['backgroundColor']=='#9a9cff'){echo' selected';}?>>#9a9cff</option>
+			<option value="#b99aff"<?php if($r['backgroundColor']=='#b99aff'){echo' selected';}?>>#b99aff</option>
+			<option value="#c2c2c2"<?php if($r['backgroundColor']=='#c2c2c2'){echo' selected';}?>>#c2c2c2</option>
+			<option value="#cabdbf"<?php if($r['backgroundColor']=='#cabdbf'){echo' selected';}?>>#cabdbf</option>
+			<option value="#cca6ac"<?php if($r['backgroundColor']=='#cca6ac'){echo' selected';}?>>#cca6ac</option>
+			<option value="#f691b2"<?php if($r['backgroundColor']=='#f691b2'){echo' selected';}?>>#f691b2</option>
+			<option value="#cd74e6"<?php if($r['backgroundColor']=='#cd74e6'){echo' selected';}?>>#cd74e6</option>
+			<option value="#a47ae2"<?php if($r['backgroundColor']=='#a47ae2'){echo' selected';}?>>#a47ae2</option>
 		</select>
 	</div>
 </div>

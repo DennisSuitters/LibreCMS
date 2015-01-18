@@ -70,7 +70,8 @@ $meta=str_replace('<print dateAtom>',date(DATE_ATOM,time()),$meta);
 print$meta.$content;
 # Here goes the ungainly, and over cumbersome Analytics Data Collection
 $ip=$_SERVER['REMOTE_ADDR'];
-$httpReferer=$_SERVER['HTTP_REFERER'];
+if(isset($_SERVER['HTTP_REFERER']))$httpReferer=$_SERVER['HTTP_REFERER'];
+else$httpReferer='';
 $httpUserAgent=$_SERVER['HTTP_USER_AGENT'];
 $pageName=$view;
 $queryString=$_SERVER['QUERY_STRING'];

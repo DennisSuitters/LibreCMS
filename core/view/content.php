@@ -22,10 +22,10 @@ if($view=='index'){
 }elseif($view=='search'){
 	$search='%';
 	if(isset($args[0])){
-        $search='%'.str_replace('-',' ',$args[0]).'%';
-    }else{
-        $search='%'.str_replace('-',' ',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING)).'%';
-    }
+		$search='%'.str_replace('-',' ',$args[0]).'%';
+	}else{
+		$search='%'.str_replace('-',' ',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING)).'%';
+	}
 	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(keywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(caption) LIKE LOWER(:caption) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' ORDER BY ti DESC");
 	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':notes'=>$search));
 }elseif($view=='bookings'){
@@ -80,14 +80,18 @@ if($show=='categories'){
 		$html=preg_replace('~<settings.*?>~is','',$html,1);
 	}else $count=1;
 	$html=str_replace('<print page=notes>',$page['notes'],$html);
-	if($config['business'])$html=str_replace('<print content=seoTitle>',$config['business'],$html);
-		else $html=str_replace('<print content=seoTitle>',$config['seoTitle'],$html);
+	if($config['business'])
+		$html=str_replace('<print content=seoTitle>',$config['business'],$html);
+	else
+		$html=str_replace('<print content=seoTitle>',$config['seoTitle'],$html);
 	$html=str_replace('<print config=address>',$config['address'],$html);
 	$html=str_replace('<print config=suburb>',$config['suburb'],$html);
 	$html=str_replace('<print config=state>',$config['state'],$html);
 	$html=str_replace('<print config=country>',$config['country'],$html);
-	if($config['postcode']!=0)$html=str_replace('<print config=postcode>',$config['postcode'],$html);
-		else $html=str_replace('<print config=postcode>','',$html);
+	if($config['postcode']!=0)
+		$html=str_replace('<print config=postcode>',$config['postcode'],$html);
+	else
+		$html=str_replace('<print config=postcode>','',$html);
 	$html=str_replace('<print config=phone>',$config['phone'],$html);
 	$html=str_replace('<print config=mobile>',$config['mobile'],$html);
 	if(stristr($html,'<loop>')){
@@ -142,8 +146,8 @@ if($show=='categories'){
 			if($r['file']&&file_exists('media/'.$r['file'])){
 				$items=str_replace('<print coverimage>','<img src="media/'.$r['file'].'" alt="'.$r['title'].'">',$items);
 			}else{
-				$items=str_replace('<print content=featuredBackgroundColor>',ltrim($r['featuredBackgroundColor'],'#'),$items);
-				if($r['featuredBackgroundColor']==''){
+				$items=str_replace('<print content=backgroundColor>',ltrim($r['backgroundColor'],'#'),$items);
+				if($r['backgroundColor']==''){
 					$items=str_replace('<print coverimage>','<img src="core/images/noimage.jpg" alt="'.$r['title'].'">',$items);
 				}else{
 					$items=str_replace('<print coverimage>','',$items);
@@ -337,7 +341,7 @@ if($show=='item'){
 	$seoTitle=$r['title'].' - '.$config['seoTitle'];
 	$seoKeywords=$r['keywords'];
 	$seoDescription=$r['caption'];
-    
+	
 	if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
 		if($user['rank']>699){
 			$sc=$db->prepare("SELECT * FROM comments WHERE contentType=:contentType AND rid=:rid ORDER BY ti ASC");

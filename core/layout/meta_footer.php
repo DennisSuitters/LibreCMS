@@ -15,7 +15,7 @@
 		<script>/*<![CDATA[*/
 			$(document).ready(function(){
 				$(".summernote").summernote();
-				$("#featuredBackgroundColor").simplecolorpicker();
+				$("#backgroundColor").simplecolorpicker();
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});
 				$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
 <?php   if($view=='preferences'){?>

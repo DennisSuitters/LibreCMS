@@ -5,7 +5,7 @@
 		<print page=notes>
 		<settings itemCount="10">
 		<item>
-			<article id="l_<print content=id>" class="article" itemscope itemtype="http://schema.org/<print content:schemaType>">
+			<article id="l_<print content=id>" class="article" itemscope itemtype="http://schema.org/<print content=schemaType>">
 				<div class="thumbnail">
 					<print content=image>
 					<div class="caption">
@@ -16,7 +16,12 @@
 						<h6><print content=categories></h6>
 						<h6><print content=brand></h6>
 						<h6><print content=tags></h6>
-						<print content=cost>
+						<cost>
+							<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+								<meta itemprop="currency" content="AUD">
+								<h4 itemprop="price">&#36;<print content=cost></h4>
+							</aside>
+						</cost>
                         <print content=notes>
 					</div>
 					<author>

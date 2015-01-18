@@ -2,11 +2,11 @@
 <block include="header.html">
 <block include="featured.html">
 <block inbed="content">
-	<main id="content" class="col-md-12 no-padding">
+	<main id="content" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
 		<print page=notes>
 		<settings itemCount="4" contentType="all">
 		<loop>
-			<article class="col-md-3" itemscope itemtype="http://schema.org/<print content:schemaType>">
+			<article class="col-lg-3 col-md-3 col-sm-4 col-xs-6" itemscope itemtype="http://schema.org/<print content:schemaType>">
 				<div class="thumbnail">
 					<div class="contentType"><print content=contentType></div>
 					<div class="cover featured-background-<print content=featuredBackgroundColor>"><print coverimage></div>
@@ -23,6 +23,12 @@
 						<h6><print content=tags></h6>
 						<p class="notes">
 							<print content=notes>
+							<cost>
+								<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+									<meta itemprop="currency" content="AUD">
+									<h4 itemprop="price">&#36;<print content=cost></h4>
+								</aside>
+							</cost>
 						</p>
 						<div class="text-right">
 							<controls>
