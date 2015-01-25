@@ -14,15 +14,14 @@ $noavatar=$this->noavatar();
 $sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
 $sp->execute(array(':contentType'=>$view));
 $page=$sp->fetch(PDO::FETCH_ASSOC);
-/*
-	So for home page I'd say yes, brand first then tag line. For category pages,
-	I'd say category first then brand name, for product pages,
-	I'd say full product name and don't worry about the brand.
-*/
-if($view=='index')$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];else $seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'];
+if($view=='index')
+	$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
+else
+	$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'];
 $seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
 $seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
 $seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
+$canonical=URL.$view.'/';
 require'core/login.php';
 require'core/cart_quantity.php';
 if($user['rank']>699){
@@ -31,11 +30,12 @@ if($user['rank']>699){
 	$status="published";
 }
 $content='';
-if(file_exists(THEME.'/'.$view.'.html')){
+if(file_exists(THEME.'/'.$view.'.html'))
 	$template=file_get_contents(THEME.'/'.$view.'.html');
-}elseif(file_exists(THEME.'/default.html')){
+elseif(file_exists(THEME.'/default.html'))
 	$template=file_get_contents(THEME.'/default.html');
-}else $template=file_get_contents(THEME.'/content.html');
+else
+	$template=file_get_contents(THEME.'/content.html');
 $newDom=new DOMDocument();
 @$newDom->loadHTML($template);
 $tag=$newDom->getElementsByTagName('block');
@@ -57,17 +57,19 @@ foreach($tag as $tag1){
 		$req=$inbed;
 	}
 }
-$meta=str_replace('<print seoTitle>',$seoTitle,$meta);
-$meta=str_replace('<print urlSEOTitle>',str_replace(' ','-',$seoTitle),$meta);
-$meta=str_replace('<print config:url>',URL,$meta);
-$meta=str_replace('<print view>',$view,$meta);
-$meta=str_replace('<print seoKeywords>',$seoKeywords,$meta);
-if($view=='index'&&$seoDescription!='')$meta=str_replace('<print seoCaption>',$seoDescription,$meta);
-else $meta=str_replace('<print seoCaption>',$seoCaption,$meta);
-$meta=str_replace('<print shareImage>',$share_image,$meta);
-$meta=str_replace('<print favicon>',$favicon,$meta);
-$meta=str_replace('<print dateAtom>',date(DATE_ATOM,time()),$meta);
-print$meta.$content;
+$head=str_replace('<print seoTitle>',$seoTitle,$head);
+$head=str_replace('<print canonical>',$canonical,$head);
+$head=str_replace('<print config:url>',URL,$head);
+$head=str_replace('<print view>',$view,$head);
+$head=str_replace('<print seoKeywords>',$seoKeywords,$head);
+if($view=='index'&&$seoDescription!='')
+	$head=str_replace('<print seoCaption>',$seoDescription,$head);
+else
+	$head=str_replace('<print seoCaption>',$seoCaption,$head);
+$head=str_replace('<print shareImage>',$share_image,$head);
+$head=str_replace('<print favicon>',$favicon,$head);
+$head=str_replace('<print dateAtom>',date(DATE_ATOM,time()),$head);
+print$head.$content;
 # Here goes the ungainly, and over cumbersome Analytics Data Collection
 $ip=$_SERVER['REMOTE_ADDR'];
 if(isset($_SERVER['HTTP_REFERER']))$httpReferer=$_SERVER['HTTP_REFERER'];
@@ -93,9 +95,9 @@ if($act!='logout'){
 		$q=$db->prepare("INSERT INTO tracker (vid,contentType,ip,pageName,queryString,httpReferer,httpUserAgent,bot,browser,os,ti) VALUES (:vid,:contentType,:ip,:pageName,:queryString,:httpReferer,:httpUserAgent,:bot,:browser,:os,:ti)");
 		$q->execute(array(':vid'=>$vid,':contentType'=>$view,':ip'=>$ip,':pageName'=>$pageName,':queryString'=>$queryString,':httpReferer'=>$httpReferer,':httpUserAgent'=>$httpUserAgent,':bot'=>$bot,':browser'=>$browser['name'],':os'=>$browser['platform'],':ti'=>$ti));
 		$e=$db->errorInfo();
-		if(!is_null($e[2])){
+		if(!is_null($e[2]))
 			$_SESSION['tracker']=false;
-		}else{
+		else{
 			$_SESSION['tracker']=true;
 			$lid=$db->lastInsertId();
 			$lr=$db->query("SELECT MAX(vid) as next FROM tracker")->fetch(PDO::FETCH_ASSOC);
@@ -176,4 +178,3 @@ function getBrowser(){
 		'platform'=>$platform,	'pattern'=>$pattern
 	);
 }
-# This action does not relate. There is no data. It does not relate. Go! Leave me, all of you!

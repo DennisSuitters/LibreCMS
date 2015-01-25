@@ -39,11 +39,11 @@ if($ii>0){
 		if($r['caption']!='')
 			$item=str_replace('<print content=caption>',$r['caption'],$item);
 		else
-			$item=str_replace('<print content=caption>',preg_replace('/\s+?(\S+)?$/','',substr(strip_tags($r['notes']),0,1149)),$item);
+			$item=str_replace('<print content=caption>',preg_replace('/\s+?(\S+)?$/','',substr(strip_tags($r['notes'].$r['notes']),0,2700)),$item);
 		$item=str_replace('<print content=backgroundColor>',ltrim($r['backgroundColor'],'#'),$item);
 		$item=str_replace('<print link>',$r['contentType'].'/'.str_replace(' ','-',$r['title']),$item);
 		if($r['file']!=''&&file_exists('media/'.$r['file']))
-			$item=str_replace('<print content=file>','<img src="media/'.$r['file'].'" alt="'.$r['title'].'">',$item);
+			$item=str_replace('<print content=file>','<img class="featuredImage" src="media/'.$r['file'].'" alt="'.$r['title'].'">',$item);
 		else
 			$item=str_replace('<print content=file>','',$item);
 		$item=str_replace('<print content=schemaType>',$r['schemaType'],$item);

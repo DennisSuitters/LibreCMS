@@ -101,9 +101,7 @@ if($show=='categories'){
 </div>
 <div class="col-lg-2 col-md-3">
 	<div class="list-group">
-		<a class="list-group-item" href="<?php echo URL.'admin/content';?>">
-			<h4 class="list-group-item-heading">Categories</h4>
-		</a>
+		<a class="list-group-item" href="<?php echo URL.'admin/content';?>"><h4 class="list-group-item-heading">Categories</h4></a>
 <?php $sc=$db->prepare("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");
 $sc->execute();
 if($sc->rowCount()>0){
@@ -141,14 +139,24 @@ if($show=='item'){
 <div class="form-group">
 	<label for="title" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Title</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title"<?php if($user['options']{1}==0){echo' readonly';}?> />
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+		<input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title"<?php if($user['options']{1}==0){echo' readonly';}?> data-toggle="tooltip" title="">
 	</div>
 </div>
 <?php if($r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='inventory'||$r['contentType']=='services'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'){?>
 <div class="form-group">
 	<label for="published" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Status</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<select id="status" class="form-control" onchange="update('<?php echo$r['id'];?>','content','status',$(this).val());"<?php if($user['options']{1}==0){echo' readonly';}?>>
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+		<select id="status" class="form-control" onchange="update('<?php echo$r['id'];?>','content','status',$(this).val());"<?php if($user['options']{1}==0){echo' readonly';}?> data-toggle="tooltip" title="">
 			<option value="unpublished"<?php if($r['status']=='unpublished')echo' selected';?>>Unpublished</option>
 			<option value="published"<?php if($r['status']=='published')echo' selected';?>>Published</option>
 			<option value="delete"<?php if($r['status']=='delete')echo' selected';?>>Delete</option>
@@ -165,13 +173,23 @@ if($show=='item'){
 <div class="form-group">
 	<label for="views" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Views</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<input type="text" id="views" class="form-control textinput" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="views"<?php if($user['options']{1}==0){echo' readonly';}?> />
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+		<input type="text" id="views" class="form-control textinput" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="views"<?php if($user['options']{1}==0){echo' readonly';}?> data-toggle="tooltip" title="">
 	</div>
 </div>
 <div class="form-group">
 	<label for="contentType" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Content Type</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<select id="contentType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','contentType',$(this).val());"<?php if($user['options']{1}==0){echo' disabled';}?>>
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+		<select id="contentType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','contentType',$(this).val());"<?php if($user['options']{1}==0){echo' disabled';}?> data-toggle="tooltip" title="">
 			<option value="article"<?php if($r['contentType']=='article')echo' selected';?>>Article</option>
 			<option value="portfolio"<?php if($r['contentType']=='portfolio')echo' selected';?>>Portfolio</option>
 			<option value="booking"<?php if($r['contentType']=='booking')echo' selected';?>>Booking</option>
@@ -188,7 +206,12 @@ if($show=='item'){
 <div class="form-group">
 	<label for="schemaType" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Schema Type</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php if($user['options']{1}==0){echo' disabled';}?>>
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="SchemaType" data-content="LibreCMS chooses the appropriate SchemaType when adding Content as defined by <a target='_blank' href='http://www.schema.org/'>www.schema.org</a>."><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+		<select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php if($user['options']{1}==0){echo' disabled';}?> data-toggle="tooltip" title="Schema for Microdata Content">
 			<option value="blogPost"<?php if($r['schemaType']=='blogPost')echo' selected';?>>blogPost -> for Articles</option>
 			<option value="Product"<?php if($r['schemaType']=='Product')echo' selected';?>>Product -> for Inventory</option>
 			<option value="Service"<?php if($r['schemaType']=='Service')echo' selected';?>>Service -> for Services</option>
@@ -198,13 +221,17 @@ if($show=='item'){
 			<option value="Event"<?php if($r['schemaType']=='Event')echo' selected';?>>Event -> for Events</option>
 			<option value="CreativeWork"<?php if($r['schemaType']=='CreativeWork')echo' selected';?>>CreativeWork -> for Portfolio/Proofs</option>
 		</select>
-		<span class="help-block">Libr8 chooses the appropriate SchemaType when adding Content as defined by <a target="_blank" href="http://www.schema.org/">www.schema.org</a></span>
 	</div>
 </div>
 <?php if($r['contentType']=='proofs'){?>
 <div class="form-group">
 	<label for="cid" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Client</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<select id="cid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','cid',$(this).val());"<?php if($user['options']{1}==0){echo' disabled';}?>>
 			<option value="0">Select a Client...</option>
 <?php	$cs=$db->query("SELECT * FROM login ORDER BY name ASC, username ASC");
@@ -219,6 +246,11 @@ if($show=='item'){
 <div class="form-group">
 	<label for="author" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Author</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<select id="uid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','uid',$(this).val());"<?php if($user['options']{1}==0){echo' disabled';}?>>
 <?php	$su=$db->query("SELECT id,username,name FROM login WHERE username!='' AND status!='delete' ORDER BY username ASC, name ASC");
 		while($ru=$su->fetch(PDO::FETCH_ASSOC)){?>
@@ -237,6 +269,11 @@ if($show=='item'){
 	<div class="form-group relative">
 		<label for="file" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Image</label>
 		<div class="input-group col-lg-9 col-md-8 col-sm-8 col-xs-6">
+<?php 	if($config['options']{5}==1){?>
+			<div class="input-group-btn">
+				<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+			</div>
+<?php 	}?>
 			<input type="file" name="fu" class="form-control"<?php if($user['options']{1}==0){echo' disabled';}?>>
 			<div class="input-group-btn">
 				<button class="btn btn-default<?php if($user['options']{1}==0){echo' disabled';}?>" onclick="$('#block').css({'display':'block'});">Upload</button>
@@ -261,6 +298,11 @@ if($show=='item'){
 	<div class="form-group relative">
 		<label for="thumb" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Thumb</label>
 		<div class="input-group col-lg-9 col-md-8 col-sm-8 col-xs-6">
+<?php 	if($config['options']{5}==1){?>
+			<div class="input-group-btn">
+				<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+			</div>
+<?php 	}?>
 			<input type="file" name="fu" class="form-control"<?php if($user['options']{1}==0){echo' disabled';}?>>
 			<div class="input-group-btn">
 				<button class="btn btn-default<?php if($user['options']{1}==0){echo' disabled';}?>" onclick="$('#block').css({'display':'block'});">Upload</button>
@@ -280,6 +322,11 @@ if($show=='item'){
 <div class="form-group">
 	<label for="code" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Code</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="code" class="form-control textinput" value="<?php echo$r['code'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="code" placeholder="Enter a Code..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
@@ -288,6 +335,11 @@ if($show=='item'){
 <div class="form-group">
 	<label for="brand" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Brand</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="brand" class="form-control textinput" value="<?php echo$r['brand'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="brand" placeholder="Enter a Brand..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
@@ -296,12 +348,22 @@ if($show=='item'){
 <div class="form-group">
 	<label for="tis" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Event Start</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="tis" class="form-control" data-tooltip data-original-title="<?php if($r['tis']==0){echo'Select a Date...';}else{echo date($config['dateFormat'],$r['tis']);}?>" value="<?php if($r['tis']!=0){echo date('Y-m-d h:m',$r['tis']);}?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tis" placeholder="Select a Date..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
 <div class="form-group">
 	<label for="tie" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Event End</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="tie" class="form-control" data-tooltip data-original-title="<?php if($r['tie']==''||$r['tie']==0){echo'Select a Date...';}else{echo date($config['dateFormat'],$r['tie']);}?>" value="<?php if($r['tie']!=0){echo date('Y-m-d h:m',$r['tie']);}?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="Select a Date..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
@@ -310,6 +372,11 @@ if($show=='item'){
 <div class="form-group">
 	<label for="email" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Email</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="email" class="form-control textinput" value="<?php echo$r['email'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="email" placeholder="Enter an Email..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
@@ -318,6 +385,11 @@ if($show=='item'){
 <div class="form-group">
 	<label for="name" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Name</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="name" class="form-control textinput" value="<?php echo$r['name'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="name" placeholder="Enter a Name..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
@@ -326,6 +398,11 @@ if($show=='item'){
 <div class="form-group">
 	<label for="url" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">URL</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="url" class="form-control textinput" value="<?php echo$r['url'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="url" placeholder="Enter a URL..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
@@ -334,6 +411,11 @@ if($show=='item'){
 <div class="form-group">
 	<label for="business" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Business</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="business" class="form-control textinput" value="<?php echo$r['business'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="business" placeholder="Enter a Business..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
@@ -342,15 +424,18 @@ if($show=='item'){
 <div class="form-group">
 	<label for="category_1" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Category 1</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<input id="category_1" type="text" class="form-control textinput" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_1" placeholder="Enter a Category..."<?php if($user['options']{1}==0){echo' readonly';}?>>
-		<div class="input-group-addon"><i class="fa fa-long-arrow-left"></i></div>
-		<select class="form-control" onchange="$('#category_1').val($(this).val());update('<?php echo$r['id'];?>','content','category_1',$(this).val());"<?php if($user['options']{1}==0){echo' readonly';}?>>
-			<option value="">Select a Category...</option>
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+		<input id="category_1" list="category_1_options" type="text" class="form-control textinput" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_1" placeholder="Enter a Category..."<?php if($user['options']{1}==0){echo' readonly';}?>>
+		<datalist id="category_1_options">
 <?php	$s=$db->query("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");
 		while($rs=$s->fetch(PDO::FETCH_ASSOC)){?>
-			<option value="<?php echo$rs['category_1'];?>"><?php echo$rs['category_1'];?></option>
+			<option value="<?php echo$rs['category_1'];?>"/>
 <?php	}?>
-		</select>
+		</datalist>
 	</div>
 </div>
 <?php }
@@ -358,15 +443,18 @@ if($show=='item'){
 <div class="form-group">
 	<label for="category_2" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Category 2</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<input id="category_2" type="text" class="form-control textinput" value="<?php echo$r['category_2'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_2" placeholder="Enter a Category..."<?php if($user['options']{1}==0){echo' readonly';}?>>
-		<div class="input-group-addon"><i class="fa fa-long-arrow-left"></i></div>
-		<select class="form-control" onchange="$('#category_2').val($(this).val());update('<?php echo$r['id'];?>','content','category_2',$(this).val());"<?php if($user['options']{1}==0){echo' readonly';}?>>
-			<option value="">Select a Category...</option>
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+		<input id="category_2" list="category_2_options" type="text" class="form-control textinput" value="<?php echo$r['category_2'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_2" placeholder="Enter a Category..."<?php if($user['options']{1}==0){echo' readonly';}?>>
+		<datalist id="category_2_options">
 <?php	$s=$db->query("SELECT DISTINCT category_2 FROM content WHERE category_2!='' ORDER BY category_2 ASC");
 		while($rs=$s->fetch(PDO::FETCH_ASSOC)){?>
 			<option value="<?php echo$rs['category_2'];?>"><?php echo$rs['category_2'];?></option>
 <?php	}?>
-		</select>
+		</datalist>
 	</div>
 </div>
 <?php }
@@ -374,12 +462,24 @@ if($show=='item'){
 <div class="form-group">
 	<label for="cost" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Cost</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<div class="input-group-addon">$</div>
 		<input type="text" id="cost" class="form-control textinput" value="<?php echo$r['cost'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="cost" placeholder="Enter a Cost..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
-<div class="form-group">
-	<label for="options0" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Show Cost</label>
+<div class="form-group clearfix">
+	<label for="options0" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">
+		Show Cost
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 		<input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1){echo' checked';}?><?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
@@ -389,18 +489,37 @@ if($show=='item'){
 <div class="form-group">
 	<label for="quantity" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Quantity</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="quantity" class="form-control textinput" value="<?php echo$r['quantity'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="quantity" placeholder="Enter a Quantity..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
 <?php }?>
-<div class="form-group">
-	<label for="featured0" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Featured</label>
+<div class="form-group clearfix">
+	<label for="featured0" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">
+		Featured
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 		<input type="checkbox" id="featured0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="featured" data-dbb="0"<?php if($r['featured']{0}==1){echo' checked';}?><?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
-<div class="form-group">
-	<label for="backgroundColor" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Featured Background</label>
+<div class="form-group clearfix">
+	<label for="backgroundColor" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">
+		Featured Background
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 		<select id="backgroundColor" class="form-control" onchange="update('<?php echo$r['id'];?>','content','backgroundColor',$(this).val());"<?php if($user['options']{1}==0){echo' disabled';}?>>
 			<option value="#000000"<?php if($r['backgroundColor']=='#000000'){echo' selected';}?>>#000000</option>
@@ -436,25 +555,49 @@ if($show=='item'){
 <div class="form-group">
 	<label for="content_keywords" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Keywords</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="content_keywords" class="form-control textinput" value="<?php echo$r['keywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="keywords" placeholder="Enter Keywords.."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
 <div class="form-group">
 	<label for="tags" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Tags</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="tags" class="form-control textinput" value="<?php echo$r['tags'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tags" placeholder="Enter Tags..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
 <?php }?>
-<div class="form-group">
-	<label for="internal" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Internal</label>
+<div class="form-group clearfix">
+	<label for="internal" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">
+		Internal
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 		<input type="checkbox" id="internal0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="internal" data-dbb="0"<?php if($r['internal']==1){echo' checked';}?><?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
 <?php if($r['contentType']=='events'||$r['contentType']=='services'){?>
-<div class="form-group">
-	<label for="bookable" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Bookable</label>
+<div class="form-group clearfix">
+	<label for="bookable" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">
+		Bookable
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 		<input type="checkbox" id="bookable0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="bookable" data-dbb="0"<?php if($r['bookable']==1){echo' checked';}?><?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
@@ -464,12 +607,24 @@ if($show=='item'){
 <div class="form-group">
 	<label for="caption" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Caption</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+<?php 	if($config['options']{5}==1){?>
+		<div class="input-group-btn">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
 		<input type="text" id="caption" class="form-control textinput" value="<?php echo$r['caption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="caption" placeholder="Enter a Caption..."<?php if($user['options']{1}==0){echo' readonly';}?>>
 	</div>
 </div>
 <?php }?>
 <div class="form-group">
-	<label for="notes" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Notes</label>
+	<label for="notes" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">
+		Notes
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 <?php if($user['options']{1}==1){?>
 		<form method="post" target="sp" action="core/update.php">
@@ -488,14 +643,20 @@ if($show=='item'){
 	</div>
 </div>
 <?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){?>
-<div class="form-group">
-	<label for="options1" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Comments</label>
+<div class="form-group clearfix">
+	<label for="options1" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">
+		Comments
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+		</div>
+<?php 	}?>
+	</label>
 <?php	if($r['contentType']!='proofs'){?>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 		<input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>></div>
 <?php	}?>
 	</div>
-	<div class="clearfix"></div>
 <?php }
 	}
 	if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){?>

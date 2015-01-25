@@ -1,13 +1,29 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="content">
-	<main id="content" class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+	<main id="content" class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-padding">
 		<print page=notes>
 		<settings itemCount="10">
 		<item>
-			<article id="l_<print content=id>" class="article" itemscope itemtype="http://schema.org/<print content=schemaType>">
+			<article class="article" itemscope itemtype="http://schema.org/<print content=schemaType>">
 				<div class="thumbnail">
-					<print content=image>
+					<image>
+						<img class="intense" src="<print content=file>" data-image="<print content=file>" alt="<print content=title>" data-title="<print content=title>" data-caption="<print content=caption>">
+					</image>
+					<cost>
+						<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+							<meta itemprop="currency" content="AUD">
+							<h4 itemprop="price">&#36;<print content=cost></h4>
+							<controls>
+								<inventory>
+									<button class="btn btn-success" onclick="$('#cart').load('core/add_cart.php?id=<print content=id>');">Add to Cart</button>
+								</inventory>
+								<service>
+									<a class="btn btn-success" href="<print content=bookservice>">Book Service</a>
+								</service>
+							</controls>
+						</aside>
+					</cost>
 					<div class="caption">
 						<h2><print content=title></h2>
 						<h6><print content=dateCreated></h6>
@@ -16,33 +32,36 @@
 						<h6><print content=categories></h6>
 						<h6><print content=brand></h6>
 						<h6><print content=tags></h6>
-						<cost>
-							<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
-								<meta itemprop="currency" content="AUD">
-								<h4 itemprop="price">&#36;<print content=cost></h4>
-							</aside>
-						</cost>
-                        <print content=notes>
+						<div>
+							<print content=notes>
+						</div>
 					</div>
 					<author>
 						<hr>
 						<aside class="vcard clearfix">
-							<h4 title="Article by <print user:name>" rel="author"><print user=name></h4>
-							<p>
-								<img class="pull-left avatar img-thumbnail" alt="<print user=name>" src="<print user=avatar>">
-								This article was written by <span class="fn"><print user=name></span>. <print user:notes><br>
-								<print user=email> <print user=social>
-							</p>
+							<h4 title="Article by <print user=name>" rel="author"><print user=name></h4>
+							<img class="pull-left avatar img-thumbnail" alt="<print user=name>" src="<print user=avatar>">
+							This article was written by <span class="fn"><print user=name></span>. <print user=notes><br>
+							<print user=email> <print user=social>
 						</aside>
 					</author>
 				</div>
 			</article>
 		</item>
 		<loop>
-			<article id="l_<print content=id>" class="col-md-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
+			<article class="col-md-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
 				<div class="thumbnail articles">
-					<div class="contentType"><print content=contentType></div>
-					<print content=image>
+					<div class="cover background-color-<print content=backgroundColor>">
+						<image>
+							<img class="intense" src="<print content=thumb>" data-image="<print content=file>" alt="<print content=title>" data-title="<print content=title>" data-caption="<print content=caption>">
+						</image>
+					</div>
+					<cost>
+						<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+							<meta itemprop="currency" content="AUD">
+							<h4 itemprop="price">&#36;<print content=cost></h4>
+						</aside>
+					</cost>
 					<div class="caption">
 						<h4 class="text-center"><print content=title></h4>
 						<h6><print content=dateCreated></h6>
@@ -51,8 +70,22 @@
 						<h6><print content=categories></h6>
 						<h6><print content=brand></h6>
 						<h6><print content=tags></h6>
-						<p><print content=cost><print content=notes></p>
-                        <CONTROLS>
+						<div>
+							<print content=notes>
+						</div>
+						<div class="text-right">
+							<controls>
+								<view>
+									<a class="btn btn-info" href="<print content=linktitle>">View</a>
+								</view>
+								<service>
+									<a class="btn btn-success" href="<print content=bookservice>">Book Service</a>
+								</service>
+								<inventory>
+									<button class="btn btn-success" onclick="$('#cart').load('core/add_cart.php?id=<print content=id>');">Add to Cart</button>
+								</inventory>
+							</controls>
+						</div>
 					</div>
 					<print content=status>
 				</div>
@@ -62,3 +95,4 @@
 </block inbed="content">
 <block include="side_menu.html">
 <block include="footer.html">
+<block include="meta_footer.html">

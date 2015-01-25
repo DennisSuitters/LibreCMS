@@ -18,7 +18,23 @@
 				$("#backgroundColor").simplecolorpicker();
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});
 				$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
-<?php   if($view=='preferences'){?>
+<?php	if($config['options']{4}==1){?>
+				$('[data-toggle="tooltip"]').tooltip({
+					placement:'top',
+					container:'body',
+					title:'Working on the Tooltip Content'
+				});
+<?php	}
+		if($config['options']{5}==1){?>
+				$('[data-toggle="popover"]').popover({
+					placement:'top',
+					html:'true',
+					container:'body',
+					title:'Working on a Title',
+					content:'Working on the Content'
+				});
+<?php	}
+		if($view=='preferences'){?>
 			$("div.theme-chooser").not(".disabled").find("div.theme-chooser-item").on("click",function(){
 				$(this).parent().parent().find("div.theme-chooser-item").removeClass("selected");
 				$(this).addClass("selected");

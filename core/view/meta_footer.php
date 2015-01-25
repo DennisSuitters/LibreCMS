@@ -1,12 +1,8 @@
 <?php
-$content.='<div class="notifications center"></div>';
-$content.='<script src="layout/default/js/jquery-2.1.3.min.js"></script>';
-$content.='<script src="layout/default/js/bootstrap.min.js"></script>';
-$content.='<script src="layout/default/js/jquery.notifications.min.js"></script>';
-$content.='<script src="layout/default/js/masonry.pkgd.min.js"></script>';
-$content.='<script src="layout/default/js/intense.min.js"></script>';
-$content.='<script>/*<![CDATA[*/ window.onload=function(){Intense(document.querySelectorAll(".intense"))}/*]]>*/</script>';
-if($view=='bookings'||$view=='contactus'||$view=='cart'){
-	$content.='<iframe id="sp" name="sp" class="hidden"></iframe>';
+$footer='';
+if(stristr($template,'<block include="meta_footer.html">')){
+	$footer=file_get_contents(THEME.'/meta_footer.html');
+}else{
+	echo'You MUST include a meta_footer template';
 }
-$content.='</body></html>';
+$content.=$footer;
