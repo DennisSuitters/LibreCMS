@@ -141,7 +141,7 @@ if($show=='item'){
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 <?php 	if($config['options']{5}==1){?>
 		<div class="input-group-btn">
-			<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=1"><i class="fa fa-life-ring text-danger"></i></a>
 		</div>
 <?php 	}?>
 		<input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title"<?php if($user['options']{1}==0){echo' readonly';}?> data-toggle="tooltip" title="">

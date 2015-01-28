@@ -156,7 +156,7 @@ $rs=$sr->fetch(PDO::FETCH_ASSOC);?>
 		<div class="form-group">
 			<label for="notes" class="control-label">Notes</label>
 			<div class="input-group" style="width:708px;">
-				<form method="post" target="sp" action="includes/update.php">
+				<form method="post" target="sp" action="core/update.php">
 					<input type="hidden" name="id" value="<?php echo$r['id'];?>">
 					<input type="hidden" name="t" value="content">
 					<input type="hidden" name="c" value="notes">
@@ -227,7 +227,7 @@ $rs=$sr->fetch(PDO::FETCH_ASSOC);?>
 		$('#'+c).before('<i id="'+c+'" class="busy fa fa-cog fa-spin"></i>');
 		$.ajax({
 			type:"GET",
-			url:"includes/update.php",
+			url:"core/update.php",
 			data:{
 				id:id,
 				t:t,
@@ -240,6 +240,6 @@ $rs=$sr->fetch(PDO::FETCH_ASSOC);?>
 		})
 	}
 	function updateButtons(id,t,c,da){
-		$('#sp').load('includes/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da));
+		$('#sp').load('core/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da));
 	}
 /*]]>*/</script>

@@ -132,6 +132,12 @@
 				<div class="modal-content"></div>
 			</div>
 		</div>
+		<div id="seo" class="modal fade seo">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				</div>
+			</div>
+		</div>
 <?php }?>
 		<iframe id="sp" name="sp" class="hidden"></iframe>
 		<div id="block"><i class="fa fa-cog fa-5x fa-spin hidden"></i></div>

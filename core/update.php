@@ -30,8 +30,8 @@ if($tbl=='login'&&$col=='password'){
 	$da=password_hash($da,PASSWORD_DEFAULT);;
 }
 $ti=time();
-$q=$db->prepare("UPDATE $tbl SET $col=:da WHERE id=:id");
-$q->execute(array(':da'=>$da,':id'=>$id));
+$q=$db->prepare("UPDATE $tbl SET $col=:da,eti=:ti WHERE id=:id");
+$q->execute(array(':da'=>$da,':id'=>$id,':ti'=>$ti));
 $e=$db->errorInfo();
 if($tbl=='orders'&&$col=='status'&&$da=='archived'){
 	$r=$db->query("SELECT MAX(id) as id FROM orders")->fetch();
