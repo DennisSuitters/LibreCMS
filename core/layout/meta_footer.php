@@ -14,6 +14,9 @@
 		<script src="core/js/js.js"></script>
 		<script>/*<![CDATA[*/
 			$(document).ready(function(){
+				$(document).on("hidden.bs.modal", function (e) {
+    				$(e.target).removeData("bs.modal").find(".modal-content").empty();
+				});
 				$(".summernote").summernote();
 				$("#backgroundColor").simplecolorpicker();
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});

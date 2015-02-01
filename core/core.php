@@ -16,6 +16,9 @@ class internal{
 		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 		return$config;
 	}
+	function humans($args=false){
+		require 'core/humans.php';
+	}
 	function sitemap($args=false){
 		require'core/sitemap.php';
 	}
@@ -311,6 +314,7 @@ $routes=array(
 	'admin/search'		=>	array('admin','search'),
 	'admin/statistics'	=>	array('admin','statistics'),
 	'admin'				=>	array('admin','statistics'),
+	'humans.txt'		=>	array('internal','humans'),
 	'sitemap.xml'		=>	array('internal','sitemap'),
 	'robots.txt'		=>	array('internal','robots'),
 	'rss'				=>	array('internal','rss')

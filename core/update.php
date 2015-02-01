@@ -5,7 +5,7 @@ $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC)
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $tbl=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
 $col=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
-if($tbl=='content'||$tbl=='menu'&&$col=='notes'){
+if($tbl=='content'||$tbl=='menu'||$tbl=='seo'&&$col=='notes'){
 	$da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_UNSAFE_RAW):filter_input(INPUT_GET,'da',FILTER_UNSAFE_RAW);
 }else{
 	$da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'da',FILTER_SANITIZE_STRING);
@@ -30,8 +30,12 @@ if($tbl=='login'&&$col=='password'){
 	$da=password_hash($da,PASSWORD_DEFAULT);;
 }
 $ti=time();
-$q=$db->prepare("UPDATE $tbl SET $col=:da,eti=:ti WHERE id=:id");
-$q->execute(array(':da'=>$da,':id'=>$id,':ti'=>$ti));
+if($tbl=='content'||$tbl=='seo'){
+	$q=$db->prepare("UPDATE $tbl SET eti=:ti,uid=:uid WHERE id=:id");
+	$q->execute(array('ti'=>$ti,':uid'=>$uid,':id'=>$id));
+}
+$q=$db->prepare("UPDATE $tbl SET $col=:da WHERE id=:id");
+$q->execute(array(':da'=>$da,':id'=>$id));
 $e=$db->errorInfo();
 if($tbl=='orders'&&$col=='status'&&$da=='archived'){
 	$r=$db->query("SELECT MAX(id) as id FROM orders")->fetch();
