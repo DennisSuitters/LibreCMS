@@ -13,12 +13,14 @@ if($tbl=='content'||$tbl=='menu'||$tbl=='seo'&&$col=='notes'){
 $si=session_id();
 if(isset($_SESSION['uid'])){
 	$uid=(int)$_SESSION['uid'];
-	$q=$db->prepare("SELECT rank FROM login WHERE id=:id");
+	$q=$db->prepare("SELECT rank,username,name FROM login WHERE id=:id");
 	$q->execute(array(':id'=>$uid));
 	$u=$q->fetch(PDO::FETCH_ASSOC);
+	if($u['name']!='')$login_user=$u['name'];else $login_user=$u['username'];
 }else{
 	$uid=0;
 	$u['rank']=0;
+	$login_user="Anonymous";
 }
 if($col=='tis'||$col=='tie'||$col=='due_ti'){
 	if($tbl!='orders'){
@@ -30,9 +32,9 @@ if($tbl=='login'&&$col=='password'){
 	$da=password_hash($da,PASSWORD_DEFAULT);;
 }
 $ti=time();
-if($tbl=='content'||$tbl=='seo'){
-	$q=$db->prepare("UPDATE $tbl SET eti=:ti,uid=:uid WHERE id=:id");
-	$q->execute(array('ti'=>$ti,':uid'=>$uid,':id'=>$id));
+if($tbl=='content'||$tbl=='menu'||$tbl=='seo'){
+	$q=$db->prepare("UPDATE $tbl SET eti=:ti,login_user=:login_user,uid=:uid WHERE id=:id");
+	$q->execute(array('ti'=>$ti,':uid'=>$uid,':login_user'=>$login_user,':id'=>$id));
 }
 $q=$db->prepare("UPDATE $tbl SET $col=:da WHERE id=:id");
 $q->execute(array(':da'=>$da,':id'=>$id));

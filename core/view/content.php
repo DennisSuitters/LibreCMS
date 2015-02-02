@@ -79,7 +79,7 @@ if($show=='categories'){
 		$count=$matches[1];
 		$html=preg_replace('~<settings.*?>~is','',$html,1);
 	}else $count=1;
-	$html=str_replace('<print page=notes>',htmlentities($page['notes'],ENT_QUOTES,'UTF-8'),$html);
+	$html=str_replace('<print page=notes>',$page['notes'],$html);
 	if($config['business']) $html=str_replace('<print content=seoTitle>',htmlentities($config['business'],ENT_QUOTES,'UTF-8'),$html);
 	else $html=str_replace('<print content=seoTitle>',htmlentities($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
 	$html=str_replace('<print config=address>',htmlentities($config['address'],ENT_QUOTES,'UTF-8'),$html);
@@ -171,7 +171,7 @@ if($show=='categories'){
 				$items=str_replace('<print content=notes>',substr(htmlentities($notes,ENT_QUOTES,'UTF-8'),0,201),$items);
 			}
 			if($r['contentType']=='testimonials'){
-				if(stristr($items,'<controls>')) $items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
+				if(stristr($items,'<controls>'))$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
 				$controls='';
 			}else{
 				if(stristr($items,'<view>')){
@@ -251,10 +251,10 @@ if($show=='item'){
 	@$doc->loadHTML($item);
 	$tags=$doc->getElementsByTagName('print');
 	foreach($tags as $tag){
-//		if(stristr($tag,'content'))
+		if(stristr($tag,'content'))
 			$print=$tag->getAttribute('content');
-//		if(stristr($tag,'user='))$print=$tag->getAttribute('user');
-//		preg_match_all('/(content)=([^]*)/i',$print,$tag);
+		if(stristr($tag,'user='))$print=$tag->getAttribute('user');
+//			preg_match_all('/(content)=([^]*)/i',$print,$tag);
 		if($print!=''){
 			switch($print){
 				case'categories':
@@ -316,9 +316,8 @@ if($show=='item'){
 								$item=str_replace('<inventory>','',$item);
 								$item=str_replace('</inventory>','',$item);
 								$item=preg_replace('~<service>.*?<\/service>~is','',$item,1);
-							}elseif(stristr($item,'<inventory>')&&$r['contentType']!='inventory'){
+							}elseif(stristr($item,'<inventory>')&&$r['contentType']!='inventory')
 								$item=preg_replace('~<inventory>.*?<\/inventory>~is','',$item,1);
-							}
 						}else $item=preg_replace('~<inventory>.*?<\/inventory>~is','',$item,1);
 						$item=str_replace('<controls>','',$item);
 						$item=str_replace('</controls>','',$item);
@@ -326,7 +325,7 @@ if($show=='item'){
 						$item=preg_replace('~<cost>.*?<\/cost>~is','',$item,1);
 					break;
 				default:
-					if($r[$print]!='') $item=str_replace('<print content='.$print.'>',$r[$print],$item);
+					if($r[$print]!='')$item=str_replace('<print content='.$print.'>',$r[$print],$item);
 					else $item=str_replace('<print content='.$print.'>','',$item);
 			}
 		}

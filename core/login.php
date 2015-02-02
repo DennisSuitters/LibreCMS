@@ -6,8 +6,8 @@ if($act=='logout'){
 	$_SESSION=array();
 	$user=array('rank'=>0);
 }elseif($act=='login'||isset($_SESSION['username'])){
-	$username=isset($_POST['username'])?$_POST['username']:$_SESSION['username'];
-	$password=isset($_POST['password'])?$_POST['username']:$_SESSION['password'];
+	$username=isset($_POST['username'])?filter_input(INPUT_POST,'username',FILTER_SANITIZE_STRING):$_SESSION['username'];
+	$password=isset($_POST['password'])?filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING):$_SESSION['password'];
 	$q=$db->prepare("SELECT * FROM login WHERE username=:username");
 	$q->execute(array(':username'=>$username));
 	$user=$q->fetch(PDO::FETCH_ASSOC);

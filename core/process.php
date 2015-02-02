@@ -62,10 +62,8 @@ $head=str_replace('<print canonical>',$canonical,$head);
 $head=str_replace('<print config:url>',URL,$head);
 $head=str_replace('<print view>',$view,$head);
 $head=str_replace('<print seoKeywords>',$seoKeywords,$head);
-if($view=='index'&&$seoDescription!='')
-	$head=str_replace('<print seoCaption>',$seoDescription,$head);
-else
-	$head=str_replace('<print seoCaption>',$seoCaption,$head);
+if($view=='index'&&$seoDescription!='')$head=str_replace('<print seoCaption>',$seoDescription,$head);
+else $head=str_replace('<print seoCaption>',$seoCaption,$head);
 $head=str_replace('<print shareImage>',$share_image,$head);
 $head=str_replace('<print favicon>',$favicon,$head);
 $head=str_replace('<print dateAtom>',date(DATE_ATOM,time()),$head);

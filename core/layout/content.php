@@ -172,7 +172,7 @@ if($show=='item'){
 <div class="form-group">
 	<label for="eti" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Edited</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-		<input type="text" id="eti" class="form-control" value="<?php echo date($config['dateFormat'],$r['eti']);?>" readonly>
+		<input type="text" id="eti" class="form-control" value="<?php echo date($config['dateFormat'],$r['eti']).' by '.$r['login_user'];?>" readonly>
 	</div>
 </div>
 <div class="form-group">

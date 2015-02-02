@@ -20,11 +20,16 @@ Site: http://www.studiojunkyard.com/
 Twitter: @studiojunkyard
 Location: Nirvana, Earth
 
+Help: You, are you interested in helping develop LibreCMS further?
+Site: Jump into the GitHub Repo. https://github.com/StudioJunkyard/LibreCMS
+Location: Your Work Station
+
 /* THANKS */
 Name: Alan Raycraft, [http://www.raycraft.com.au/]
 
 /* SITE */
-Standards: HTML5, CSS3,..
-Components: PHP, PDO, jQuery, Bootstrap (Administration)
+Standards: HTML5, CSS3, PHP, jQuery, Vanilla Javascript
+Backend Components: PHP, PDO, jQuery, Javascript, Bootstrap (Administration)
+Frontend Componenets: Dependant on theme
 Software: A FOSS Editor
 OUT;

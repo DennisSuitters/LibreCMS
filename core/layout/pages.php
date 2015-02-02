@@ -43,7 +43,14 @@ if($show=='item'){
 	</div>
 </div>
 <div class="form-group">
-	<label for="title" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">Title</label>
+	<label for="title" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">
+		Title
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=1"><i class="fa fa-life-ring text-danger"></i></a>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
 		<input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="title" placeholder="Enter a Page Title...">
 	</div>
@@ -64,36 +71,71 @@ if($show=='item'){
 	</div>
 </div>
 <div class="form-group">
-	<label for="seoTitle" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoTitle</label>
+	<label for="seoTitle" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">
+		seoTitle
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=11"><i class="fa fa-life-ring text-danger"></i></a>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
 		<input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$r['seoTitle'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoTitle" placeholder="Enter a Page seoTitle...">
 	</div>
 </div>
 <div class="form-group">
-	<label for="seoCaption" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoCaption</label>
+	<label for="seoCaption" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">
+		seoCaption
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=12"><i class="fa fa-life-ring text-danger"></i></a>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
 		<input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$r['seoCaption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoCaption" placeholder="Enter a Page Caption...">
 	</div>
 </div>
 <div class="form-group">
-	<label for="seoDescription" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoDescription</label>
+	<label for="seoDescription" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">
+		seoDescription
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=13"><i class="fa fa-life-ring text-danger"></i></a>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
 		<input type="text" id="seoDescription<?php echo$r['id'];?>" class="form-control textinput" value="<?php echo$r['seoDescription'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoDescription" placeholder="Enter a Page Description...">
 	</div>
 </div>
 <div class="form-group">
-	<label for="seoKeywords" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">seoKeywords</label>
+	<label for="seoKeywords" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">
+		seoKeywords
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=14"><i class="fa fa-life-ring text-danger"></i></a>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
 		<input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$r['seoKeywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoKeywords" placeholder="Enter Page Keywords...">
 	</div>
 </div>
 <div class="form-group">
-	<label for="notes" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Notes</label>
+	<label for="notes" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">
+		Notes
+<?php 	if($config['options']{5}==1){?>
+		<div class="pull-right">
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=10"><i class="fa fa-life-ring text-danger"></i></a>
+		</div>
+<?php 	}?>
+	</label>
 	<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
 <?php if($user['options']{1}==1){?>
 		<form method="post" target="sp" action="core/update.php">
 			<input type="hidden" name="id" value="<?php echo$r['id'];?>">
-			<input type="hidden" name="t" value="content">
+			<input type="hidden" name="t" value="menu">
 			<input type="hidden" name="c" value="notes">
 			<textarea id="notes" class="form-control summernote" name="da" readonly><?php echo$r['notes'];?></textarea>
 		</form>
@@ -105,5 +147,8 @@ if($show=='item'){
 		</div>
 <?php }?>
 	</div>
+	<small class="help-block text-right">
+		Edited: <?php echo date($config['dateFormat'],$r['eti']).' by '.$r['login_user'];?>
+	</small>
 </div>
 <?php }?>

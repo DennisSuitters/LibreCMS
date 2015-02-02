@@ -11,10 +11,7 @@ $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $s=$db->prepare("SELECT * FROM seo WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);
-$config=$db->query("SELECT dateFormat FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-$su=$db->prepare("SELECT username,name FROM login WHERE id=:uid");
-$su->execute(array(':uid'=>$r['uid']));
-$u=$su->fetch(PDO::FETCH_ASSOC);?>
+$config=$db->query("SELECT dateFormat FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);?>
 <div class="modal-header clearfix">
 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 <?php if($user['rank']>399&&$user['options']{6}==1){?>
@@ -42,14 +39,13 @@ $u=$su->fetch(PDO::FETCH_ASSOC);?>
 </div>
 <div class="modal-footer">
 	<small class="help-block text-right">
-		Last Update: <?php echo date($config['dateFormat'],$r['eti']).' by ';if($u['name']!='')echo$u['name'];else echo$u['username'];?>
+		Last Update: <?php echo date($config['dateFormat'],$r['eti']).' by '.$r['login_user'];?>
 	</small>
 </div>
 <?php if($user['rank']>399&&$user['options']{6}==1){?>
 <script src="js/summernote.js"></script>
 <script>/*<![CDATA[*/
-	$('.seosummernote').summernote();
-	//{toolbar:[['style',['save','bold','italic','underline','clear']]]}
+	$('.seosummernote').summernote({toolbar:[['style',['save','bold','italic','underline','clear','picture','link','codeview']]]});
 	$(".modal-header input[type=text]").on({
 		keydown:function(event){
 			var id=$(this).data("dbid");
