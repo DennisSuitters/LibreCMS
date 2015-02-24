@@ -124,7 +124,7 @@ if($args[0]=='edit'){
 </div>
 <?php }?>
 <div class="well">
-	<form target="sp" method="post" enctype="multipart/form-data" action="includes/add_data.php">
+	<form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
 		<input type="hidden" name="id" value="<?php echo$r['id'];?>">
 		<input type="hidden" name="act" value="add_avatar">
 		<div class="form-group">

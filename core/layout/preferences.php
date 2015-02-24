@@ -119,6 +119,14 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="options5" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
+				<input type="checkbox" id="options6" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="6"<?php if($config['options']{6}==1){echo' checked';}?>>
+			</label>
+			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+				<span data-toggle="tooltip" title="Display Helper Button for Content Guide Hints.">Enable SEO Statistic Widget</span>
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="itemCount" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Item Count</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
 <?php 	if($config['options']{5}==1){?>

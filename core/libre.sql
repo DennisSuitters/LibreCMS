@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 02, 2015 at 11:03 AM
+-- Generation Time: Feb 24, 2015 at 02:39 PM
 -- Server version: 5.5.41-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4.5
+-- PHP Version: 5.5.9-1ubuntu4.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -99,6 +99,8 @@ CREATE TABLE IF NOT EXISTS `config` (
   `vti` int(10) unsigned NOT NULL,
   `sti` int(10) unsigned NOT NULL,
   `dateFormat` varchar(64) COLLATE utf8_bin NOT NULL,
+  `email_check` int(10) NOT NULL,
+  `email_interval` int(10) NOT NULL,
   `language` varchar(8) COLLATE utf8_bin NOT NULL,
   `timezone` varchar(128) COLLATE utf8_bin NOT NULL,
   `itemCount` int(4) NOT NULL,
@@ -120,8 +122,8 @@ CREATE TABLE IF NOT EXISTS `config` (
 -- Dumping data for table `config`
 --
 
-INSERT INTO `config` (`id`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `language`, `timezone`, `itemCount`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `bti`, `ti`) VALUES
-(1, '11111111', 'default', 'LibreCMS', 'Default Site Description', 'Default Site Caption', 'Default Site Keywords', '', '', '', '', '', '', '', 0, '', '', '', 1406180963, 3600, 'M j, Y g:i A', 'en', 'Australia/Hobart', 4, 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 1404461417, 0);
+INSERT INTO `config` (`id`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `email_check`, `email_interval`, `language`, `timezone`, `itemCount`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `bti`, `ti`) VALUES
+(1, '11111101', 'default', 'LibreCMS', 'Default Site Description', 'Default Site Caption', 'Default Site Keywords', '', '', '', '', '', '', '', 0, '', '', '', 1406180963, 3600, 'M j, Y g:i A', 1424327803, 3600, 'en', 'Australia/Hobart', 4, 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 1404461417, 0);
 
 -- --------------------------------------------------------
 
@@ -199,6 +201,7 @@ CREATE TABLE IF NOT EXISTS `login` (
   `business` varchar(40) COLLATE utf8_bin NOT NULL,
   `name` varchar(40) COLLATE utf8_bin NOT NULL,
   `email` varchar(60) COLLATE utf8_bin NOT NULL,
+  `email_check` int(10) NOT NULL,
   `url` varchar(128) COLLATE utf8_bin NOT NULL,
   `address` varchar(80) COLLATE utf8_bin NOT NULL,
   `suburb` varchar(40) COLLATE utf8_bin NOT NULL,
@@ -220,14 +223,14 @@ CREATE TABLE IF NOT EXISTS `login` (
   `rank` int(4) unsigned NOT NULL,
   `ti` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `login`
 --
 
-INSERT INTO `login` (`id`, `options`, `username`, `password`, `avatar`, `gravatar`, `business`, `name`, `email`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `adminCategory_1`, `adminCategory_2`, `adminCategory_ti`, `language`, `timezone`, `rank`, `ti`) VALUES
-(1, '11111111', 'admin', '$2y$10$dYvrhTGiUhWjHYgXWgg/muDXisNfS7z5y5AQ72dJAelV0YezL/gY6', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', 1, '', '', '', 0, 'en', 'Australia/Hobart', 1000, 1402746479);
+INSERT INTO `login` (`id`, `options`, `username`, `password`, `avatar`, `gravatar`, `business`, `name`, `email`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `adminCategory_1`, `adminCategory_2`, `adminCategory_ti`, `language`, `timezone`, `rank`, `ti`) VALUES
+(1, '11111111', 'admin', '$2y$10$dYvrhTGiUhWjHYgXWgg/muDXisNfS7z5y5AQ72dJAelV0YezL/gY6', 'avatar_1.png', '', '', '', 'dennis@studiojunkyard.com', 0, '', '', '', '', '', 0, '', '', '', '', '', 1, '', '', '', 0, 'en', 'Australia/Hobart', 1000, 1402746479);
 
 -- --------------------------------------------------------
 
@@ -259,7 +262,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `contentType`, `schemaType`, `seoKeywords`, `seoDescription`, `seoCaption`, `menu`, `notes`, `ord`, `active`, `eti`) VALUES
-(1, 0, '', 'Home', '', 'index', '', '', '', '', 'head', '', 0, 1, 1422800072),
+(1, 1, 'admin', 'Home', '', 'index', '', '', '', '', 'head', '<p>I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. Annihilate? No. No violence. I won''t stand for it. Not now, not ever, do you understand me?! I''m the Doctor, the Oncoming Storm - and you basically meant beat them in a football match, didn''t you? Stop talking, brain thinking. Hush.</p>\r\n<p>All I''ve got to do is pass as an ordinary human being. Simple. What could possibly go wrong? You hate me; you want to kill me! Well, go on! Kill me! KILL ME! I''m nobody''s taxi service; I''m not gonna be there to catch you every time you feel like jumping out of a spaceship.</p>\r\n<p>All I''ve got to do is pass as an ordinary human being. Simple. What could possibly go wrong? Aw, you''re all Mr. Grumpy Face today. I am the Doctor, and you are the Daleks!</p>\r\n<p>I am the Doctor, and you are the Daleks! They''re not aliens, they''re Earthâ€¦liens! It''s art! A statement on modern society, ''Oh Ain''t Modern Society Awful?''! Saving the world with meals on wheels. I am the Doctor, and you are the Daleks! Sorry, checking all the water in this area; there''s an escaped fish.</p>\r\n<p>You hate me; you want to kill me! Well, go on! Kill me! KILL ME! No, I''ll fix it. I''m good at fixing rot. Call me the Rotmeister. No, I''m the Doctor. Don''t call me the Rotmeister. The way I see it, every life is a pile of good things and bad things.â€¦hey.â€¦the good things don''t always soften the bad things; but vice-versa the bad things don''t necessarily spoil the good things and make them unimportant.</p>', 0, 1, 1424328485),
 (2, 0, '', 'Blog', '', 'article', '', '', '', '', 'head', '', 1, 1, 0),
 (3, 0, '', 'Portfolio', '', 'portfolio', '', '', '', '', 'head', '', 2, 1, 0),
 (4, 0, '', 'Bookings', '', 'bookings', '', '', '', '', 'head', '', 3, 1, 0),
@@ -271,8 +274,39 @@ INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `contentType
 (10, 0, '', 'Gallery', '', 'gallery', '', '', '', '', 'head', '', 9, 1, 0),
 (11, 0, '', 'Contact', '', 'contactus', '', '', '', '', 'head', '', 10, 1, 0),
 (12, 0, '', 'Cart', '', 'cart', '', '', '', '', 'head', '', 11, 1, 0),
-(13, 0, '', 'Terms of Service', 'Terms of Service', 'tos', '', '', '', '', 'footer', '<h2 style="font-family: ''Helvetica Neue'', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51);">Terms and Conditions Regulating Email Collection</h2><h4 style="font-family: ''Helvetica Neue'', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51);">TERMS AND CONDITIONS OF USE</h4><p>The website from which you accessed this agreement ("studiojunkyard.com/") is provided to you subject to the following conditions. These terms are in addition to any other terms governing access to the Website. By visiting (in any manner) the Website you accept these terms and conditions (the "Terms of Service"). Please read them carefully.</p><p>Any Non-Human Visitors to the Website shall be considered agents of the individual(s) who controls, authors or otherwise makes use of them. These individuals shall ultimately be responsible for the behavior of their Non-Human Visitor agents and are liable for violations of the Terms of Service.</p><h4 style="font-family: ''Helvetica Neue'', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51);">SPECIAL LICENSE RESTRICTIONS FOR NON-HUMAN VISITORS</h4><p>Special restrictions on a visitor''s license to access the Website apply to Non-Human Visitors. Non-Human Visitors include, but are not limited to, web spiders, bots, indexers, robots, crawlers, harvesters, or any other computer programs designed to access, read, compile or gather content from the Website automatically. Non-Human Visitors are restricted from taxing the resources of the Website beyond what would be typical of a human visitor.</p><p>Furthermore, as specified by the "no-email-collection" flag in the header pages within the Website and/or the contents of the robots.txt file, email addresses on this site are considered proprietary intellectual property of the author of the Website. It is recognized that these email addresses are provided for human visitors alone, and have value in part because they are accessible only to said human visitors. By continuing to access the Website, You acknowledge and agree that each email address the Website contains has a value not less than US $500 derived from their relative secrecy. You further agree that the compilation, storage, and potential distribution of these addresses by Non-Human Visitors substantially diminish the value of these addresses. Intentional collection, harvesting, gathering, or storing email addresses by Non-Human Visitors is recognized under this agreement as a violation of this agreement and expressly prohibited.</p><h4 style="font-family: ''Helvetica Neue'', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51);">APPLICABLE LAW AND JURISDICTION</h4><p>Each party agrees that any suit, action or proceeding brought by such party against the other in connection with or arising from the Terms of Service ("Judicial Action") shall be governed by the law of the state of residence of the registered Administrative Contact (the "Admin State") for the Website as such laws are applied to agreements between Admin State residents entered into and performed entirely within the Admin State. The visitor to the Website consents to the jurisdiction of federal and state courts within the Admin State. The visitor to the Website consents to the venue in any action brought against him in connection with breaches of these Terms of Service. The visitor to the Website consents to electronic service of process regarding actions under the above agreement.</p><h4 style="font-family: ''Helvetica Neue'', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51);">NON-TRANSFERABLITIY</h4><p>The access rights granted to you under the Terms of Service are non-transferable without the express written permission of the owner of the Website.</p><h4 style="font-family: ''Helvetica Neue'', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51);">RECORDS OF VISITOR USE AND ABUSE</h4><p>As a visitor to the Website, you consent to having your Internet Protocol address recorded. An email address may appear immediately below (the "Identifier") if we suspect potential abuse. The Identifier is uniquely matched to your Internet Protocol address. Visitors agree not to use this address for any reason.</p><p>VISITORS AGREE THAT HARVESTING, GATHERING, STORING, TRANSFERRING TO A THIRD PARTY OR SENDING ANY MESSAGE(S) TO THE IDENTIFIER CONSTITUTES AN ACCEPTANCE AND SUBSEQUENT BREACH OF THESE TERMS OF SERVICE.</p><p>For more information, please visitÂ <a href="http://www.unspam.com/">www.unspam.com</a>Â orÂ <a href="http://www.projecthoneypot.org/">Project Honey Pot</a>.<span></span><span></span></p>', 0, 1, 0),
+(13, 0, '', 'Terms of Service', 'Terms of Service', 'tos', '', '', '', '', 'footer', '', 0, 1, 0),
 (14, 0, '', 'Search', 'Search', 'search', '', '', '', '', 'footer', '', 1, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `messages`
+--
+
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `uid` bigint(20) NOT NULL,
+  `mid` text COLLATE utf8_bin NOT NULL,
+  `rmid` bigint(20) NOT NULL,
+  `folder` varchar(16) COLLATE utf8_bin NOT NULL,
+  `to_email` varchar(255) COLLATE utf8_bin NOT NULL,
+  `to_name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `from_email` varchar(255) COLLATE utf8_bin NOT NULL,
+  `from_name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `subject` tinytext COLLATE utf8_bin NOT NULL,
+  `status` tinytext COLLATE utf8_bin NOT NULL,
+  `starred` int(1) NOT NULL,
+  `important` int(1) NOT NULL,
+  `notes_raw` text COLLATE utf8_bin NOT NULL,
+  `notes_raw_mime` tinytext COLLATE utf8_bin NOT NULL,
+  `notes_html` text COLLATE utf8_bin NOT NULL,
+  `notes_html_mime` tinytext COLLATE utf8_bin NOT NULL,
+  `attachments` text COLLATE utf8_bin NOT NULL,
+  `email_date` int(10) NOT NULL,
+  `size` bigint(20) NOT NULL,
+  `ti` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -343,9 +377,12 @@ CREATE TABLE IF NOT EXISTS `seo` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `uid` bigint(20) NOT NULL,
   `login_user` varchar(128) COLLATE utf8_bin NOT NULL,
+  `seo_name` varchar(128) COLLATE utf8_bin NOT NULL,
+  `seo_url` varchar(255) COLLATE utf8_bin NOT NULL,
   `seo_title` tinytext COLLATE utf8_bin NOT NULL,
   `notes` text COLLATE utf8_bin NOT NULL,
   `eti` int(10) NOT NULL,
+  `views` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=15 ;
 
@@ -353,21 +390,21 @@ CREATE TABLE IF NOT EXISTS `seo` (
 -- Dumping data for table `seo`
 --
 
-INSERT INTO `seo` (`id`, `uid`, `login_user`, `seo_title`, `notes`, `eti`) VALUES
-(1, 0, '', 'Title', 'This is some notes on Title&#39;s for SEO', 0),
-(2, 0, '', 'Schema Type', 'LibreCMS chooses the appropriate SchemaType when adding Content as defined by <a target="_blank" href="http://www.schema.org/">www.schema.org</a>.', 1422508311),
-(3, 0, '', 'Author', 'Author in SEO', 0),
-(4, 0, '', 'Images', 'Images for SEO', 0),
-(5, 0, '', 'Categories', 'Categories and SEO', 0),
-(6, 0, '', 'Keywords', 'Keywords and SEO', 0),
-(7, 0, '', 'Tags', 'Tags and SEO', 0),
-(8, 0, '', 'Caption', 'Captions and SEO', 0),
-(9, 0, '', 'Comments', 'Comments and SEO', 0),
-(10, 0, '', 'Notes', 'Notes and SEO', 0),
-(11, 0, '', 'SEO Title', 'Notes for SEO Title', 0),
-(12, 0, '', 'SEO Caption', 'Notes for SEO Caption', 0),
-(13, 0, '', 'SEO Description', 'Notes for SEO Description', 0),
-(14, 0, '', 'SEO Keywords', 'Notes for SEO Keywords', 0);
+INSERT INTO `seo` (`id`, `uid`, `login_user`, `seo_name`, `seo_url`, `seo_title`, `notes`, `eti`, `views`) VALUES
+(1, 1, '', '', '', 'Title', 'This is some notes on Title''s for SEO', 0, 0),
+(2, 1, '', '', '', 'Schema Type', 'LibreCMS chooses the appropriate SchemaType when adding Content as defined by <a target="_blank" href="http://www.schema.org/">www.schema.org</a>.', 0, 0),
+(3, 1, '', '', '', 'Author', 'Author in SEO', 0, 0),
+(4, 1, '', '', '', 'Images', 'Images for SEO', 0, 0),
+(5, 1, '', '', '', 'Categories', 'Categories and SEO', 0, 0),
+(6, 1, '', '', '', 'Keywords', 'Keywords and SEO', 0, 0),
+(7, 1, '', '', '', 'Tags', 'Tags and SEO', 0, 0),
+(8, 1, '', '', '', 'Caption', 'Captions and SEO', 0, 0),
+(9, 1, '', '', '', 'Comments', 'Comments and SEO', 0, 0),
+(10, 1, '', '', '', 'Notes', 'Notes and SEO', 0, 0),
+(11, 1, '', '', '', 'SEO Title', 'Notes for SEO Title', 0, 0),
+(12, 1, '', '', '', 'SEO Caption', 'Notes for SEO Caption', 0, 0),
+(13, 1, '', '', '', 'SEO Description', 'Notes for SEO Description', 0, 0),
+(14, 1, '', '', '', 'SEO Keywords', 'Notes for SEO Keywords', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -390,4 +427,4 @@ CREATE TABLE IF NOT EXISTS `tracker` (
   `os` tinytext COLLATE utf8_bin NOT NULL,
   `ti` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;

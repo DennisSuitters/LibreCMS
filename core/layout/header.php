@@ -56,7 +56,7 @@ if($user['rank']==1000||$user['options']{6}==1){?>
 						</ul>
 					</li>
 <?php }?>
-				</ul>
+					<li>
 <?php if($user['gravatar']!=''){
 		$avatar='http://www.gravatar.com/avatar/'.md5($user['gravatar']);
 	}elseif($user['avatar']!=''&&file_exists('media/'.$user['avatar'])){
@@ -64,7 +64,20 @@ if($user['rank']==1000||$user['options']{6}==1){?>
 	}else{
 		$avatar=$noavatar;
 	}?>
-				<img id="avatar" class="pull-right img-circle" src="<?php echo$avatar;?>">
+				<div class="btn-group">
+					<a class="btn btn-primary dropdown-toggle" style="margin-top:7px" data-toggle="dropdown" href="#">
+						<img id="avatar" class="fa img-circle" src="<?php echo$avatar;?>"> <?php echo$user['username'];?>
+						<i class="fa fa-caret-down"></i>
+					</a>
+					<ul class="dropdown-menu pull-right">
+						<li><a href="<?php echo URL.'admin/accounts/edit/'.$user['id'];?>"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+						<li class="divider"></li>
+						<li><a href="<?php echo URL;?>logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+					</ul>
+				</div>
+					</li>
+				</ul>
+
 			</div>
 		</div>
 	</nav>

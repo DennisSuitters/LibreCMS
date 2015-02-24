@@ -105,6 +105,16 @@ if($show=='categories'){
 				if($r['tis']!=0) $items=str_replace('<print content=datePublished>','Published: '.date($config['dateFormat'],$r['tis']),$items);
 				else $items=str_replace('<print content=datePublished>','Published: '.date($config['dateFormat'],$r['ti']),$items);
 			}
+/*			if(stristr($items,'<print content=dateEdited')){
+				$dateEdited='';
+//				if($user['rank']>399){
+					if($r['eti']==0)
+						$dateEdited='Edited: Never';
+					else
+						$dateEdited='Edited: '.date($config['dateFormat'],$r['eti']).' by <strong>'.$r['login_user'].'</strong>';
+//				}
+				$items=str_replace('<print content=dateEdited>',$dateEdited,$items);
+			} */
 			if(stristr($items,'<print content=dateEvent>')){
 				$dateEvent='';
 				if($r['tis']!=0){
@@ -251,9 +261,10 @@ if($show=='item'){
 	@$doc->loadHTML($item);
 	$tags=$doc->getElementsByTagName('print');
 	foreach($tags as $tag){
-		if(stristr($tag,'content'))
+		if($tag->hasAttribute('content'))
 			$print=$tag->getAttribute('content');
-		if(stristr($tag,'user='))$print=$tag->getAttribute('user');
+		if($tag->hasAttribute('user'))
+			$print=$tag->getAttribute('user');
 //			preg_match_all('/(content)=([^]*)/i',$print,$tag);
 		if($print!=''){
 			switch($print){
@@ -287,6 +298,20 @@ if($show=='item'){
 					else
 						$datePublished='Published: '.date($config['dateFormat'],$r['ti']);
 					$item=str_replace('<print content=datePublished>',$datePublished,$item);
+					break;
+				case'dateEdited':
+					$dateEdited='';
+					if($tag->hasAttribute('userRank'))
+						$dateEditedRank=$tag->getAttribute('userRank');
+					else
+						$dateEditedRank=0;
+					if($user['rank']>$dateEditedRank){
+						if($r['eti']==0)
+							$dateEdited='Edited: Never';
+						else
+							$dateEdited='Edited: '.date($config['dateFormat'],$r['eti']).' by <strong>'.$r['login_user'].'</strong>';
+					}
+					$item=preg_replace('%<print content=dateEdited.+?>%',$dateEdited,$item,1);
 					break;
 				case'dateEvent':
 					$dateEvent='';
@@ -324,9 +349,13 @@ if($show=='item'){
 					}else
 						$item=preg_replace('~<cost>.*?<\/cost>~is','',$item,1);
 					break;
+				case'social':
+					break;
 				default:
-					if($r[$print]!='')$item=str_replace('<print content='.$print.'>',$r[$print],$item);
-					else $item=str_replace('<print content='.$print.'>','',$item);
+					if($r[$print]!='')
+						$item=str_replace('<print content='.$print.'>',$r[$print],$item);
+					else
+						$item=str_replace('<print content='.$print.'>','',$item);
 			}
 		}
 	}

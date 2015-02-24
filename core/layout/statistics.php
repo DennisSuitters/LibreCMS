@@ -203,7 +203,10 @@ echo$r['cnt'];?>
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
-						<i class="fa fa-line-chart fa-5x"></i>
+<?php /*							<i class="fa fa-android fa-stack text-success"></i>
+							<i class="fa fa-apple fa-stack text-info"></i>
+							<i class="fa fa-windows fa-stack text-danger"></i> */ ?>
+						<i class="fa fa-linux fa-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
@@ -211,7 +214,7 @@ echo$r['cnt'];?>
 $r=$s->fetch(PDO::FETCH_ASSOC);
 echo$r['cnt'];?>
 						</div>
-						<div class="stat">Unique Operating System Visitors!</div>
+						<div class="stat">Operating Systems!</div>
 					</div>
 				</div>
 			</div>
@@ -225,4 +228,53 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 <?php }?>
 		</div>
 	</div>
+<?php if($config['options']{6}==1){?>
+	<div class="col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-beer fa-5x"></i>
+					</div>
+					<div class="col-xs-9 text-right stats">
+						<div class="stat">
+							Random SEO Tip
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer">
+<?php $rss=new DOMDocument();
+switch(rand(0,1)){
+	case 0:
+		$rss->load('http://feeds.feedburner.com/KateToonCopywriter?format=xml');
+		break;
+	case 1:
+		$rss->load('http://www.copywritematters.com.au/feed/');
+		break;
+}
+$feed=array();
+foreach($rss->getElementsByTagName('item')as$node){
+	$item=array(
+		'title'=>$node->getElementsByTagName('title')->item(0)->nodeValue,
+		'desc'=>$node->getElementsByTagName('description')->item(0)->nodeValue,
+		'link'=>$node->getElementsByTagName('link')->item(0)->nodeValue,
+		'date'=>$node->getElementsByTagName('pubDate')->item(0)->nodeValue,
+		'creator'=>$node->getElementsByTagName('creator')->item(0)->nodeValue,
+		);
+	array_push($feed,$item);
+}
+$x=rand(0,5);
+	$author=$feed[$x]['creator'];
+	$title=str_replace(' & ',' &amp; ',$feed[$x]['title']);
+	$link=$feed[$x]['link'];
+	$description=$feed[$x]['desc'];
+	$date=date('l F d, Y',strtotime($feed[$x]['date']));?>
+				<div><a target="_blank" href="<?php echo$link;?>"><?php echo$title;?></a></div>
+				<div><small><?php echo substr(strip_tags($description),0,300);?></small></div>
+				<div class="text-right"><small><a target="_blank" href="<?php echo$link;?>"><?php echo$author;?></a></small></div>
+			</div>
+		</div>
+	</div>
+<?php }?>
 </div>

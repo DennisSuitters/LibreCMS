@@ -5,22 +5,19 @@ if($view=='add'){
 	$ti=time();
 	$schema='';
 	$comments=0;
-	if($args[0]=='article'){$schema='blogPost';}
-	if($args[0]=='inventory'){$schema='Product';}
-	if($args[0]=='service'){$schema='Service';}
-	if($args[0]=='gallery'){$schema='ImageGallery';}
-	if($args[0]=='testimonials'){$schema='Review';}
-	if($args[0]=='news'){$schema='NewsArticle';}
-	if($args[0]=='events'){$schema='Event';}
-	if($args[0]=='portfolio'){$schema='CreativeWork';}
-	if($args[0]=='proofs'){$schema='CreativeWork';$comments=1;}
-	$q=$db->prepare("INSERT INTO content (options,uid,contentType,schemaType,status,active,ti,eti) VALUES ('00000000',:uid,:contentType,:schemaType,'unpublished','1',:ti,:ti)");
-	if(isset($user['id'])){
-		$uid=$user['id'];
-	}else{
-		$uid=0;
-	}
-	$q->execute(array(':contentType'=>$args[0],':uid'=>$uid,':schemaType'=>$schema,':ti'=>$ti));
+	if($args[0]=='article')$schema='blogPost';
+	if($args[0]=='inventory')$schema='Product';
+	if($args[0]=='service')$schema='Service';
+	if($args[0]=='gallery')$schema='ImageGallery';
+	if($args[0]=='testimonials')$schema='Review';
+	if($args[0]=='news')$schema='NewsArticle';
+	if($args[0]=='events')$schema='Event';
+	if($args[0]=='portfolio')$schema='CreativeWork';
+	if($args[0]=='proofs')$schema='CreativeWork';$comments=1;
+	$q=$db->prepare("INSERT INTO content (options,uid,login_user,contentType,schemaType,status,active,ti,eti) VALUES ('00000000',:uid,:login_user,:contentType,:schemaType,'unpublished','1',:ti,:ti)");
+	if(isset($user['id']))$uid=$user['id'];else$uid=0;
+	if($user['name']!='')$login_user=$user['name'];else$login_user=$user['username'];
+	$q->execute(array(':contentType'=>$args[0],':uid'=>$uid,':login_user'=>$login_user,':schemaType'=>$schema,':ti'=>$ti));
 	$id=$db->lastInsertId();
 	$args[0]=ucfirst($args[0]).' '.$id;
 	$s=$db->prepare("UPDATE content SET title=:title WHERE id=:id");
@@ -55,15 +52,15 @@ if($show=='categories'){
 	<table class="table table-condensed table-hover">
 		<thead>
 			<tr>
-				<th class="col-sm-1 text-center">contentType</th>
-				<th class="col-sm-2 text-center">Created</th>
-				<th class="col-sm-2 text-center">Edited</th>
+				<th class="col-xs-1 text-center">contentType</th>
+				<th class="col-xs-2 text-center">Created</th>
+				<th class="col-xs-2 text-center">Edited</th>
 				<th class="text-center">Title</th>
-				<th class="col-sm-1 text-center">Status</th>
-				<th class="col-sm-1 text-center">Views</th>
-				<th class="col-sm-1 text-center">Featured</th>
-				<th class="col-sm-1 text-center">Internal</th>
-				<th class="col-sm-2 text-right">
+				<th class="col-xs-1 text-center">Status</th>
+				<th class="col-xs-1 text-center">Views</th>
+				<th class="col-xs-1 text-center">Featured</th>
+				<th class="col-xs-1 text-center">Internal</th>
+				<th class="col-xs-2 text-right">
 					Show <div class="btn-group">
 						<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><?php if(!isset($args[1])||$args[1]==''){echo'All';}else{echo ucfirst($args[1]);}?> <i class="caret"></i></button>
 						<ul class="dropdown-menu pull-right">
@@ -135,7 +132,7 @@ if($show=='item'){
 	$r=$s->fetch(PDO::FETCH_ASSOC);?>
 <div class="form-group clearfix">
 	<div class="input-group pull-right">
-		<a class="btn btn-success" href="<?php echo URL.'/admin/content/type/'.$r['contentType'];?>">Back</a>
+		<a class="btn btn-success" href="<?php echo URL.'admin/content/type/'.$r['contentType'];?>">Back</a>
 	</div>
 </div>
 <div class="form-group">
