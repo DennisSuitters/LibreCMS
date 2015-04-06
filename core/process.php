@@ -53,6 +53,7 @@ foreach($tag as $tag1){
 		$html=$matches[1];
 		if($view=='cart')$inbed='cart';
 		if($view=='sitemap')$inbed='sitemap';
+		if($view=='settings')$inbed='settings';
 		require'view/'.$inbed.'.php';
 		$req=$inbed;
 	}

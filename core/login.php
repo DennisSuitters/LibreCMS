@@ -5,13 +5,15 @@ if(!isset($act)){
 if($act=='logout'){
 	$_SESSION=array();
 	$user=array('rank'=>0);
-}elseif($act=='login'||isset($_SESSION['username'])){
+}elseif($act=='login'||(isset($_SESSION['username'])&&isset($_SESSION['password']))){
 	$username=isset($_POST['username'])?filter_input(INPUT_POST,'username',FILTER_SANITIZE_STRING):$_SESSION['username'];
 	$password=isset($_POST['password'])?filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING):$_SESSION['password'];
-	$q=$db->prepare("SELECT * FROM login WHERE username=:username");
-	$q->execute(array(':username'=>$username));
+	$userHash=hash('SHA512',$username);
+	$passHash=hash('SHA512',$password);
+	$q=$db->prepare("SELECT * FROM login WHERE username=:username AND password=:password");
+	$q->execute(array(':username'=>$username,':password'=>$userHash.$passHash));
 	$user=$q->fetch(PDO::FETCH_ASSOC);
-	if(password_verify($password,$user['password'])){
+	if($user['id']>0){
 		$_SESSION['username']=$user['username'];
 		$_SESSION['uid']=$user['id'];
 		$_SESSION['password']=$password;

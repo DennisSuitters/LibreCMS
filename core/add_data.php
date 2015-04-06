@@ -3,7 +3,14 @@ echo'<script>/*<![CDATA[*/';
 session_start();
 include'db.php';
 include'zebra_image.php';
-$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
+require'password.php';
+define('SESSIONID',session_id());
+$config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+define('THEME','../layout/'.$config['theme']);
+define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
+define('UNICODE','UTF-8');
+$theme=parse_ini_file(THEME.'/theme.ini',true);
 $act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
 if($act!=''){
 	$uid=isset($_SESSION['uid'])?(int)$_SESSION['uid']:0;
@@ -12,56 +19,50 @@ if($act!=''){
 	$ti=time();
 	switch($act){
 		case'add_message':
-			$veri=filter_input(INPUT_POST,'veri',FILTER_SANITIZE_STRING);
-			$v=isset($_SESSION['v'])?$_SESSION['v']:NULL;
-			if($v==$veri){
+			if($_POST['emailtrap']==''){
 				$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
-				$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
-				$phone=filter_input(INPUT_POST,'phone',FILTER_SANITIZE_STRING);
-				$subject=filter_input(INPUT_POST,'subject',FILTER_SANITIZE_STRING);
-				$notes=filter_input(INPUT_POST,'notes',FILTER_SANITIZE_STRING);
-				$q=$db->prepare("INSERT INTO content (contentType,rid,uid,ip,name,subject,email,phone,notes,status,active,ti) VALUES ('message_primary','0','0',:ip,:name,:subject,:email,:phone,:notes,'unread','0',:ti)");
-				$q->execute(array(':ip'=>$ip,':name'=>$name,':subject'=>$subject,':email'=>$email,':phone'=>$phone,':notes'=>$notes,':ti'=>$ti));
-				$id=$db->lastInsertId();
-				$e=$db->errorInfo();
-				if(is_null($e[2])){
-					if($config['email']!=''){
-						if($error==0){
-							require'class.phpmailer.php';
-							$mail=new PHPMailer();
-							$mail->IsSMTP();
-							$mail->SetFrom($email,$name);
-							$toname=$config['email'];
-							$mail->AddAddress($config['email']);
-							$mail->IsHTML(true);
-							$mail->Subject='Contact Email via '.$config['seoTitle'].': '.$subject;
-							$msg='Message Date: '.date($config['dateFormat'],$ti).'<br />';
-							$msg.='Subject: '.$subject.'<br />';
-							$msg.='Name: '.$name.'<br />';
-							$msg.='Email: '.$email.'<br />';
-							$msg.='Phone: '.$phone.'<br />';
-							$msg.='Message: '.$notes;
-							$mail->Body=$msg;
-							$mail->AltBody=$msg;
-							if($mail->Send()){?>
-	window.top.window.$('.notifications').notify({type:'success',icon:'',message:{text:'Thank You for Contacting Us'}}).show();
-<?php						}else{?>
-	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an Issue Sending your Message'}}).show();
-<?php						}
+				if(filter_var($email,FILTER_VALIDATE_EMAIL)){
+					$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
+					$subject=filter_input(INPUT_POST,'subject',FILTER_SANITIZE_STRING);
+					$notes=filter_input(INPUT_POST,'notes',FILTER_SANITIZE_STRING);
+					$q=$db->prepare("INSERT INTO messages (uid,folder,to_email,to_name,from_email,from_name,subject,status,notes_raw,ti) VALUES (:uid,:folder,:to_email,:to_name,:from_email,:from_name,:subject,:status,:notes_raw,:ti)");
+					$q->execute(array(':uid'=>$uid,':folder'=>'INBOX',':to_email'=>$config['email'],':to_name'=>$config['business'],':from_email'=>$email,':from_name'=>$name,':subject'=>$subject,':status'=>'unread',':notes_raw'=>$notes,':ti'=>$ti));
+					$id=$db->lastInsertId();
+					$e=$db->errorInfo();
+					if(is_null($e[2])){
+						if($config['email']!=''){
+							if($error==0){
+								require'class.phpmailer.php';
+								$mail=new PHPMailer();
+								$mail->IsSMTP();
+								$mail->SetFrom($email,$name);
+								$toname=$config['email'];
+								$mail->AddAddress($config['email']);
+								$mail->IsHTML(true);
+								$mail->Subject='Contact Email via '.$config['seoTitle'].': '.$subject;
+								$msg='Message Date: '.date($config['dateFormat'],$ti).'<br />';
+								$msg.='Subject: '.$subject.'<br />';
+								$msg.='Name: '.$name.'<br />';
+								$msg.='Email: '.$email.'<br />';
+								$msg.='Message: '.$notes;
+								$mail->Body=$msg;
+								$mail->AltBody=$msg;
+								if($mail->Send()){?>
+	window.top.window.document.getElementById("form").className="<?php echo$theme['settings']['notification_remove'];?>";
+	window.top.window.document.getElementById("notification_success").className="<?php echo$theme['settings']['notification_success'];?>";
+<?php							}else{?>
+	window.top.window.document.getElementById("notification_error").className="<?php echo$theme['settings']['notification_error'];?>";
+<?php 							}
+							}
 						}
-					}?>
-	window.top.window.$('.notifications').notify({type:'success',icon:'',message:{text:'Thank You for Contacting Us...'}}).show();
-<?php			}else{?>
-	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an Issue Sending your Message...'}}).show();
-<?php			}
-			}else{?>
-	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'Verification Code does not match...'}}).show();
-<?php		}
+					}else{?>
+	window.top.window.document.getElementById("notification_error").className="<?php echo$theme['settings']['notification_error'];?>";
+<?php				}
+				}
+			}
 			break;
 		case'add_booking':
-			$veri=filter_input(INPUT_POST,'veri',FILTER_SANITIZE_STRING);
-			$v=isset($_SESSION['v'])?(string)$_SESSION['v']:NULL;
-			if($veri==$v){
+			if($_POST['emailtrap']==''){
 				$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
 				if(filter_var($email,FILTER_VALIDATE_EMAIL)){
 					$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
@@ -73,7 +74,7 @@ if($act!=''){
 					$postcode=filter_input(INPUT_POST,'postcode',FILTER_SANITIZE_STRING);
 					$phone=filter_input(INPUT_POST,'phone',FILTER_SANITIZE_STRING);
 					$notes=filter_input(INPUT_POST,'notes',FILTER_SANITIZE_STRING);
-					$rid=isset($_GET['rid'])?filter_input(INPUT_POST,'rid',FILTER_SANITIZE_STRING):0;
+					$rid=isset($_POST['rid'])?filter_input(INPUT_POST,'rid',FILTER_SANITIZE_STRING):0;
 					if($rid!=0){
 						$s=$db->prepare("SELECT id,tis,tie FROM content WHERE id=:id");
 						$s->execute(array(':id'=>$rid));
@@ -116,20 +117,17 @@ if($act!=''){
 							$msg.='Notes: '.$notes;
 							$mail->Body=$msg;
 							$mail->AltBody=$msg;
-							if($mail->Send()){}else{?>
-	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an Issue Sending your Message'}}).show();
-<?php						}
+							if($mail->Send()){
+
+							}
 						}?>
-		window.top.window.$('.notifications').notify({type:'success',icon:'',message:{text:'Thank You for Booking with <?php echo$config['seoTitle'];?>'}}).show();
+	window.top.window.document.getElementById("form").className="<?php echo$theme['settings']['notification_remove'];?>";
+	window.top.window.document.getElementById("notification_success").className="<?php echo$theme['settings']['notification_success'];?>";
 <?php				}else{?>
-		window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue with creating the Booking'}}).show();
+	window.top.window.document.getElementById("notification_error").className="<?php echo$theme['settings']['notification_error'];?>";
 <?php				}
-				}else{?>
-	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'The Email entered is not valid'}}).show();
-<?php			}
-			}else{?>
-	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'Verification Code does NOT Match'}}).show();
-<?php		}
+				}
+			}
 			break;
 		case'add_social':
 			$user=filter_input(INPUT_POST,'user',FILTER_SANITIZE_NUMBER_INT);

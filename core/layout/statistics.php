@@ -4,7 +4,7 @@
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
-						<i class="fa fa-comments fa-5x"></i>
+						<i class="libre libre-comments libre-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
@@ -19,7 +19,7 @@ echo$r['cnt'];?>
 				<a href="<?php echo URL;?>/admin/content">
 				<span class="pull-left">View Details</span>
 				<a href="#" onclick="statsContent('comments');return false;">
-					<span class="pull-right"><i class="fa fa-angle-down"></i></span>
+					<span class="pull-right"><i class="libre libre-chevron-down"></i></span>
 				</a>
 				<div class="clearfix"></div>
 			</div>
@@ -31,11 +31,11 @@ echo$r['cnt'];?>
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
-						<i class="fa fa-envelope fa-5x"></i>
+						<i class="libre libre-envelope libre-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
-<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE contentType='message_primary' AND status='unread'")->fetch(PDO::FETCH_ASSOC);
+<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM messages WHERE status='unread'")->fetch(PDO::FETCH_ASSOC);
 echo$r['cnt'];?>
 						</div>
 						<div class="stat">New Messages!</div>
@@ -47,7 +47,7 @@ echo$r['cnt'];?>
 					<span class="pull-left">View Details</span>
 				</a>
 				<a href="#" onclick="statsContent('messages');return false;">
-					<span class="pull-right"><i class="fa fa-angle-down"></i></span>
+					<span class="pull-right"><i class="libre libre-chevron-down"></i></span>
 				</a>
 				<div class="clearfix"></div>
 			</div>
@@ -59,7 +59,7 @@ echo$r['cnt'];?>
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
-						<i class="fa fa-shopping-cart fa-5x"></i>
+						<i class="libre libre-shopping-cart libre-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
@@ -73,7 +73,7 @@ echo$r['cnt'];?>
 			<a href="<?php echo URL;?>/admin/orders/pending">
 				<div class="panel-footer">
 					<span class="pull-left">View Details</span>
-					<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+					<span class="pull-right"><i class="libre libre-arrow-circle-right"></i></span>
 					<div class="clearfix"></div>
 				</div>
 			</a>
@@ -84,7 +84,7 @@ echo$r['cnt'];?>
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
-						<i class="fa fa-calendar fa-5x"></i>
+						<i class="libre libre-calendar libre-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
@@ -98,7 +98,7 @@ echo$r['cnt'];?>
 			<a href="<?php echo URL;?>/admin/bookings">
 				<div class="panel-footer">
 					<span class="pull-left">View Details</span>
-					<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+					<span class="pull-right"><i class="libre libre-arrow-circle-right"></i></span>
 					<div class="clearfix"></div>
 				</div>
 			</a>
@@ -111,7 +111,7 @@ echo$r['cnt'];?>
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
-						<i class="fa fa-line-chart fa-5x"></i>
+						<i class="libre libre-seo-performance libre-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
@@ -177,7 +177,7 @@ echo$r['cnt'];?>
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
-						<i class="fa fa-line-chart fa-5x"></i>
+						<i class="libre libre-browser-general libre-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
@@ -192,7 +192,7 @@ echo$r['cnt'];?>
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 			<div class="panel-footer" title="<?php echo ucfirst($r['browser']);?>">
 				<span class="pull-left"><?php echo$r['cnt'];?></span>
-				<span class="pull-right"><i class="fa icon-<?php echo strtolower($r['browser']);?>"></i></span>
+				<span class="pull-right"><i class="libre libre-browser-<?php echo strtolower($r['browser']);?>"></i></span>
 				<div class="clearfix"></div>
 			</div>
 <?php	}?>
@@ -203,10 +203,7 @@ echo$r['cnt'];?>
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
-<?php /*							<i class="fa fa-android fa-stack text-success"></i>
-							<i class="fa fa-apple fa-stack text-info"></i>
-							<i class="fa fa-windows fa-stack text-danger"></i> */ ?>
-						<i class="fa fa-linux fa-5x"></i>
+						<i class="libre libre-os-general libre-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
@@ -222,7 +219,7 @@ echo$r['cnt'];?>
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 			<div class="panel-footer" title="<?php echo ucfirst($r['os']);?>">
 				<span class="pull-left"><?php echo$r['cnt'];?></span>
-				<span class="pull-right"><i class="fa fa-<?php echo strtolower($r['os']);?>"></i></span>
+				<span class="pull-right"><i class="libre libre-os-<?php echo strtolower($r['os']);?>"></i></span>
 				<div class="clearfix"></div>
 			</div>
 <?php }?>
@@ -234,9 +231,10 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-xs-3">
-						<i class="fa fa-beer fa-5x"></i>
+						<i class="libre libre-seo-target-audience libre-5x"></i>
 					</div>
 					<div class="col-xs-9 text-right stats">
+						<div class="number">&nbsp;</div>
 						<div class="stat">
 							Random SEO Tip
 						</div>

@@ -77,6 +77,12 @@ if(isset($args[0])){
 	if($args[0]=='important')$folder='important';
 	if($args[0]=='sent')$folder='sent';
 }
+function human_filesize($bytes, $dec = 2){
+    $size   = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+    $factor = floor((strlen($bytes) - 1) / 3);
+    return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . @$size[$factor];
+}
+/*
 function decode_imap_text($str){
 	$result = '';
 	$decode_header = imap_mime_header_decode($str);
@@ -85,11 +91,7 @@ function decode_imap_text($str){
 	}
 	return $result;
 }
-function human_filesize($bytes, $dec = 2){
-    $size   = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
-    $factor = floor((strlen($bytes) - 1) / 3);
-    return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . @$size[$factor];
-}
+
 function getFileExtension($fileName){
    $parts=explode(".",$fileName);
    return $parts[count($parts)-1];
@@ -220,7 +222,7 @@ if(time()>($chk['email_check']+$chk['email_interval'])){
 		}
 	}
 }
-
+*/
 
 ?>
 <div class="row">
@@ -236,30 +238,10 @@ if(time()>($chk['email_check']+$chk['email_interval'])){
 		</div>
 	</div>
 	<div class="col-sm-9 col-md-10">
-		<div class="btn-group">
-			<button type="button" class="btn btn-default">
-				<div class="checkbox" style="margin: 0;">
-					<label>
-						<input type="checkbox">
-					</label>
-				</div>
-			</button>
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-				<span class="caret"></span>
-				<span class="sr-only">Toggle Dropdown</span>
-			</button>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="#">All</a></li>
-				<li><a href="#">None</a></li>
-				<li><a href="#">Read</a></li>
-				<li><a href="#">Unread</a></li>
-				<li><a href="#">Starred</a></li>
-				<li><a href="#">Unstarred</a></li>
-			</ul>
+		<button type="button" class="btn btn-default" data-toggle="tooltip" title="Refresh"><i class="libre libre-refresh"></i></button>
+		<div id="actions" class="btn-group hidden">
+			<button type="button" class="btn btn-default"><i class="libre libre-trash"></i></button>
 		</div>
-		<button type="button" class="btn btn-default" data-toggle="tooltip" title="Refresh">
-			   <i class="fa fa-refresh"></i>
-		</button>
 		<div class="btn-group">
 			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 				More <span class="caret"></span>
@@ -286,32 +268,31 @@ if(time()>($chk['email_check']+$chk['email_interval'])){
 <hr>
 <div class="row">
 	<div class="col-sm-3 col-md-2">
-		<a href="#" class="btn btn-danger btn-sm btn-block" role="button">COMPOSE</a>
+<?php /*		<a href="#" class="btn btn-danger btn-sm btn-block" role="button">COMPOSE</a> */?>
 		<hr>
 		<ul class="nav nav-pills nav-stacked">
-<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE folder='INBOX' AND status='unread' AND uid=:uid");
-$s->execute(array(':uid'=>$user['id']));
+<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE folder='INBOX'");
+$s->execute();
 $cnt=$s->fetch(PDO::FETCH_ASSOC);?>
 			<li class="<?php if($folder=='INBOX')echo'active';?>"><a href="<?php echo URL.'admin/messages';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Inbox </a></li>
-<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE starred='1' AND uid=:uid");
-$s->execute(array(':uid'=>$user['id']));
+<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE starred='1'");
+$s->execute();
 $cnt=$s->fetch(PDO::FETCH_ASSOC);?>
 			<li class="<?php if($folder=='starred')echo'active';?>"><a href="<?php echo URL.'admin/messages/starred';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Starred </a></li>
-<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE folder='DELETE' AND uid=:uid");
-$s->execute(array(':uid'=>$user['id']));
+<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE folder='DELETE'");
+$s->execute();
 $cnt=$s->fetch(PDO::FETCH_ASSOC);?>
 			<li class="<?php if($folder=='DELETE')echo'active';?>"><a href="<?php echo URL.'admin/messages/deleted';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Deleted </a></li>
-<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE important='1' AND uid=:uid");
-$s->execute(array(':uid'=>$user['id']));
+<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE important='1'");
+$s->execute();
 $cnt=$s->fetch(PDO::FETCH_ASSOC);?>
 			<li class="<?php if($folder=='important')echo'active';?>"><a href="<?php echo URL.'admin/messages/important';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Important </a></li>
-			<li class="<?php if($folder=='sent')echo'active';?>"><a href="<?php echo URL.'admin/messages/sent';?>">Sent Mail</a></li>
 		</ul>
 	</div>
 	<div class="col-sm-9 col-md-10">
 		<ul class="nav nav-tabs">
-			<li<?php if($config['email']!=''&&$user['email']!='')echo' class="active"';?>><a href="#home" data-toggle="tab"><span class="fa fa-inbox"></span>Your Inbox</a></li>
-			<li<?php if($config['email']==''&&$user['email']=='')echo' class="active"';?>><a href="#settings" data-toggle="tab"><span class="fa fa-cogs"></span>Settings</a></li>
+			<li<?php if($config['email']!=''&&$user['email']!='')echo' class="active"';?>><a href="#home" data-toggle="tab"><span class="libre libre-inbox libre-fw"></span>Your Inbox</a></li>
+			<li<?php if($config['email']==''&&$user['email']=='')echo' class="active"';?>><a href="#settings" data-toggle="tab"><span class="libre libre-cogs libre-fw"></span>Settings</a></li>
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade in<?php if($user['email']!='')echo' active';?>" id="home">
@@ -319,30 +300,38 @@ $cnt=$s->fetch(PDO::FETCH_ASSOC);?>
 <?php
 switch($folder){
 	case'starred':
-		$s=$db->prepare("SELECT * FROM messages WHERE uid=:uid AND starred='1' ORDER BY email_date DESC, subject ASC");
-		$s->execute(array(':uid'=>$user['id']));
+		$s=$db->prepare("SELECT * FROM messages WHERE starred='1' ORDER BY email_date DESC, subject ASC");
+		$s->execute();
 		break;
 	case'important':
-		$s=$db->prepare("SELECT * FROM messages WHERE uid=:uid AND important='1' ORDER BY email_date DESC, subject ASC");
-		$s->execute(array(':uid'=>$user['id']));
+		$s=$db->prepare("SELECT * FROM messages WHERE important='1' ORDER BY email_date DESC, subject ASC");
+		$s->execute();
 		break;
 	default:
-		$s=$db->prepare("SELECT * FROM messages WHERE uid=:uid AND folder=:folder ORDER BY email_date DESC, subject ASC");
-		$s->execute(array(':uid'=>$user['id'],':folder'=>$folder));
-}
-while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
+		$s=$db->prepare("SELECT * FROM messages WHERE folder=:folder ORDER BY email_date DESC, subject ASC");
+		$s->execute(array(':folder'=>$folder));
+}?>
+					<div class="list-group-item list-group-item-default">
+						<span data-toggle="tooltip" title="Select Toggle">
+							<input type="checkbox" data-dbid="checkboxtoggle" name="checkboxtoggle">
+						</span>
+						<span class="starred text-muted" data-toggle="tooltip" title="Starred Toggle"><i class="libre libre-star"></i></span>
+						<span class="important text-muted" data-toggle="tooltip" title="Important Toggle"><i class="libre libre-empty-circle"></i></span>
+						<span class="text-muted" data-toggle="tooltip" title="Attachment Toggle"><i class="libre libre-paperclip libre-fw"></i></span>
+					</div>
+<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 					<div id="l_<?php echo$r['id'];?>" class="list-group-item list-group-item-<?php if($r['folder']=='DELETE')echo'danger';else echo'default';?>">
-						<input type="checkbox">
-						<span class="starred text-muted" data-dbid="<?php echo$r['id'];?>" data-starred="<?php echo$r['starred'];?>"><i class="fa fa-star<?php if($r['starred']!=1)echo'-o';?>"></i></span>
-						<span class="important text-muted" data-dbid="<?php echo$r['id'];?>" data-important="<?php echo$r['important'];?>"><i class="fa fa-circle<?php if($r['important']!=1)echo'-o';?>"></i></span>
-						<span class="text-muted"><i class="fa <?php if($r['attachments']!='')echo'fa-paperclip';?> fa-fw"></i></span>
+						<input type="checkbox" data-dbid="null" class="checkboxtoggle" name="selected[]">
+						<span class="starred text-muted" data-dbid="<?php echo$r['id'];?>" data-starred="<?php echo$r['starred'];?>"><i class="libre libre-star<?php if($r['starred']!=1)echo'-o';?>"></i></span>
+						<span class="important text-muted" data-dbid="<?php echo$r['id'];?>" data-important="<?php echo$r['important'];?>"><i class="libre libre-empty-circle<?php if($r['important']!=1)echo'-o';?>"></i></span>
+						<span class="text-muted"><i class="libre <?php if($r['attachments']!='')echo'libre-paperclip';else echo'libre-empty';?> libre-fw"></i></span>
 						<small>
 							<a href="<?php echo URL.'admin/messages/view/'.$r['id'];?>">
 <?php if($r['status']=='unread')echo'<strong>';?>
 								<span class="name" style="min-width:250px;display:inline-block;text-overflow:ellipsis;" title="<?php echo'&lt;'.$r['from_email'].'&gt;';?>"><?php echo $r['from_name'];?></span> 
 								<span class="name" style="min-width:200px;display:inline-block;text-overflow:ellipsis;"><?php echo $r['subject'];?></span>
 <?php if($r['status']=='unread')echo'</strong>';?>
-								<span class="pull-right"><?php echo date('M j \a\t G:i',$r['email_date']);?></span> 
+								<span class="pull-right"><?php echo date('M j \a\t G:i',$r['ti']);?></span> 
 							</a>
 						</small>
 						<small class="pull-right">
@@ -375,5 +364,8 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 		</div>
 	</div>
 </div>
+<script>
+
+</script>
 <?php 
 }

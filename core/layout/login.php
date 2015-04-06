@@ -1,23 +1,24 @@
 <!DOCTYPE HTML>
 <html lang="en-AU">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 		<title>LibreCMS - Administration</title>
-		<base href="<?php echo URL;?>" />
+		<base href="<?php echo URL;?>">
 		<meta http-equiv="X-FRAME-OPTIONS" content="DENY">
-		<link rel="alternate" media="handheld" href="<?php echo URL;?>" />
-		<link rel="alternate" hreflang="x-default" href="<?php echo URL;?>" />
-		<link rel="alternate" hreflang="en-AU" href="<?php echo URL;?>" />
-		<link rel="icon" href="<?php echo URL.'/'.$favicon;?>" />
-		<link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>" />
-		<meta name="viewport" content="width=400,initial-scale=1.0" />
-		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="core/css/admin.css" />
+		<link rel="alternate" media="handheld" href="<?php echo URL;?>">
+		<link rel="alternate" hreflang="x-default" href="<?php echo URL;?>">
+		<link rel="alternate" hreflang="en-AU" href="<?php echo URL;?>">
+		<link rel="icon" href="<?php echo URL.'/'.$favicon;?>">
+		<link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>">
+		<meta name="viewport" content="width=400,initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="core/css/libreicons.css">
+		<link rel="stylesheet" type="text/css" href="core/css/admin.css">
 	</head>
 	<body>
 		<div class="container">
 			<div class="col-md-4 col-md-offset-4">
-				<div class="login-panel panel panel-default">
+				<div class="login-panel panel panel-default animated fadeInDown">
 					<div class="panel-body">
 						<form role="form" method="post" action="" accept-charset="UTF-8">
 							<fieldset>
@@ -25,13 +26,15 @@
 								<input type="hidden" name="act" value="login">
 								<div class="form-group">
 									<label for="username" class="control-label col-lg-4 col-md-5 col-sm-4<?php if(isset($login)&&$login==false){echo' text-danger';}?>">Username</label>
-									<div class="input-group col-lg-8 col-md-7 col-sm-8<?php if(isset($login)&&$login==false){echo' has-error';}?>">
+										<div class="input-group col-lg-8 col-md-7 col-sm-8<?php if(isset($login)&&$login==false){echo' has-error';}?>">
+										<div class="input-group-addon"><i class="libre libre-user"></i></div>
 										<input type="text" id="username" class="form-control" name="username" value="" placeholder="Enter a Username..." autofocus>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="password" class="control-label col-lg-4 col-md-5 col-sm-4<?php if(isset($login)&&$login==false){echo' text-danger';}?>">Password</label>
 									<div class="input-group col-lg-8 col-md-7 col-sm-8<?php if(isset($login)&&$login==false){echo' has-error';}?>">
+										<div class="input-group-addon"><i class="libre libre-key"></i></div>
 										<input type="password" id="password" class="form-control" name="password" placeholder="Enter a Password..." autocomplete="off">
 									</div>
 								</div>

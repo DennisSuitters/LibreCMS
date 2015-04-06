@@ -26,7 +26,12 @@ if($user['rank']==1000||$user['options']{3}==1){?>
 <?php }?>
 					<li<?php if($view=='accounts'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/accounts">Accounts</a></li>
 <?php if($user['rank']==1000||$user['options']{5}==1){?>
-					<li<?php if($view=='messages'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/messages">Messages</a></li>
+					<li<?php if($view=='messages'){echo' class="active"';}?>>
+						<a href="<?php echo URL;?>admin/messages">Messages</a>
+<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE folder='INBOX' AND status='unread'");
+$s->execute();
+$cnt=$s->fetch(PDO::FETCH_ASSOC);?>
+					</li>
 <?php }
 if($user['rank']==1000||$user['options']{6}==1){?>
 					<li<?php if($view=='preferences'){echo' class="active"';}?>><a href="<?php echo URL;?>admin/preferences">Preferences</a></li>

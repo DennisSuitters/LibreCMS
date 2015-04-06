@@ -1,230 +1,114 @@
 <?php
-$content.='<main id="content" class="col-md-12">';
-	$content.='<div class="panel panel-default">';
-		$content.='<div class="panel-body">';
-if($user['rank']>99){
-			$content.='<div class="form-group">';
-				$content.='<label for="ti" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Created</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="ti" class="form-control" value="'.date($config['dateFormat'],$user['ti']).'" readonly>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="username" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Username</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="username" class="form-control" value="'.$user['username'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="username" placeholder="Enter a Username...">';
-					$content.='<div id="usernamesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="password" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Password</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="password" id="password" class="form-control" value="'.$user['password'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="password" placeholder="Enter a Password...">';
-					$content.='<div id="passwordsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-					$content.='<span class="help-block">Changing Username and or Password will Sign you Out</span>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="rank" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Rank</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" class="form-control" value="';if($user['rank']==0){$content.='Visitor';}else{$content.=ucfirst($user['rank']);}$content.='" readonly>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="timezone" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Timezone</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<select id="timezone" class="form-control" onchange="update(\''.$user['id'].'\',\'login\',\'timezone\',$(this).val());">';
-	function formatOffset($offset){
-		$hours=$offset/3600;
-		$remainder=$offset%3600;
-		$sign=$hours>0?'+':'-';
-		$hour=(int)abs($hours);
-		$minutes=(int)abs($remainder/60);
-		if($hour==0 AND$minutes==0){
-			$sign=' ';
-		}
-		return$sign.str_pad($hour,2,'0',STR_PAD_LEFT).':'.str_pad($minutes,2,'0');
-	}
-	$utc=new DateTimeZone('UTC');
-	$dt=new DateTime('now',$utc);
-	foreach(DateTimeZone::listIdentifiers() as$tz){
-		$current_tz=new DateTimeZone($tz);
-		$offset=$current_tz->getOffset($dt);
-		$transition=$current_tz->getTransitions($dt->getTimestamp(),$dt->getTimestamp());
-		$abbr=$transition[0]['abbr'];
-		$content.='<option value="'.$tz.'"';
-		if($tz==$user['timezone']){$content.=' selected';}
-		$content.='>'.$tz.' ['.$abbr.' '.formatOffset($offset).']</option>';
-	}
-					$content.='</select>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="well relative">';
-				$content.='<div class="form-group">';
-					$content.='<label for="avatar" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Avatar</label>';
-					$content.='<form target="sp" method="post" enctype="multipart/form-data" action="includes/add_data.php">';
-						$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-							$content.='<input type="hidden" name="id" value="'.$user['id'].'">';
-							$content.='<input type="hidden" name="act" value="add_avatar">';
-							$content.='<input type="file" name="fu" class="form-control" data-classButton="btn btn-default" data-icon="false">';
-							$content.='<div class="input-group-btn">';
-								$content.='<button class="btn btn-default">Upload</button>';
-							$content.='</div>';
-						$content.='</div>';
-					$content.='</form>';
-				$content.='</div>';
-				$content.='<div class="form-group">';
-					$content.='<label for="gravatar" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Gravatar</label>';
-					$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-						$content.='<input type="text" id="gravatar" class="form-control" value="'.$user['gravatar'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="gravatar" placeholder="Enter Gravatar Link...">';
-						$content.='<div id="gravatarsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-					$content.='</div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="email" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Email</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="email" class="form-control" value="'.$user['email'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="email" placeholder="Enter an Email...">';
-					$content.='<div id="emailsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="name" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Name</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="name" class="form-control" value="'.$user['name'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="name" placeholder="Enter a Name...">';
-					$content.='<div id="namesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="url" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">URL</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="url" class="form-control" value="'.$user['url'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="url" placeholder="Enter a URL...">';
-					$content.='<div id="urlsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="business" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Business</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="business" class="form-control" value="'.$user['business'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="business" placeholder="Enter a Business...">';
-					$content.='<div id="businesssave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="phone" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Phone</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="phone" class="form-control" value="'.$user['phone'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="phone" placeholder="Enter a Phone Number...">';
-					$content.='<div id="phonesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="mobile" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Mobile</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="mobile" class="form-control" value="'.$user['mobile'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="mobile" placeholder="Enter a Mobile Number...">';
-					$content.='<div id="mobilesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="address" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Address</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="address" class="form-control" name="address" value="'.$user['address'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="address" placeholder="Enter an Address...">';
-					$content.='<div id="addresssave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="suburb" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Suburb</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="suburb" class="form-control" name="suburb" value="'.$user['suburb'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="suburb" placeholder="Enter a Suburb...">';
-					$content.='<div id="suburbsave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="city" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">City</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="city" class="form-control" name="city" value="'.$user['city'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="city" placeholder="Enter a City...">';
-					$content.='<div id="citysave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="state" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">State</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="state" class="form-control" name="state" value="'.$user['state'].'" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="state" placeholder="Enter a State...">';
-					$content.='<div id="statesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="form-group">';
-				$content.='<label for="postcode" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Postcode</label>';
-				$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-					$content.='<input type="text" id="postcode" class="form-control" name="postcode" value="';if($user['postcode']!=0){$content.=$user['postcode'];}$content.='" data-dbid="'.$user['id'].'" data-dbt="login" data-dbc="postcode" placeholder="Enter a Postcode...">';
-					$content.='<div id="postcodesave" class="input-group-btn hidden"><button class="btn btn-danger"><i class="fa fa-save"></i></button></div>';
-				$content.='</div>';
-			$content.='</div>';
-			$content.='<div class="well">';
-				$content.='<h4>Social Networking</h4>';
-				$content.='<div class="form-group">';
-					$content.='<label class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">&nbsp;</label>';
-					$content.='<form target="sp" method="post" action="includes/add_data.php">';
-						$content.='<input type="hidden" name="user" value="'.$user['id'].'">';
-						$content.='<input type="hidden" name="act" value="add_social">';
-						$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-							$content.='<span class="input-group-addon">Network</span>';
-							$content.='<select class="form-control" name="icon">';
-								$content.='<option value="">None</option>';
-								$content.='<option value="500px">500px</option>';
-								$content.='<option value="behance-square">Behance</option>';
-								$content.='<option value="blogger">Blogger</option>';
-								$content.='<option value="delicious">Delcicious</option>';
-								$content.='<option value="deviantart">DeviantArt</option>';
-								$content.='<option value="dribble">Dribble</option>';
-								$content.='<option value="facebook-square">Facebook</option>';
-								$content.='<option value="flickr">Flickr</option>';
-								$content.='<option value="forrst">Forrst</option>';
-								$content.='<option value="github-square">GitHub</option>';
-								$content.='<option value="google-plus-square">Google+</option>';
-								$content.='<option value="instagram">Instagram</option>';
-								$content.='<option value="lastfm-square">LastFM</option>';
-								$content.='<option value="linkedin-square">Linkedin</option>';
-								$content.='<option value="livejournal">LiveJournal</option>';
-								$content.='<option value="myspace">MySpace</option>';
-								$content.='<option value="pied-piper">Pied Piper</option>';
-								$content.='<option value="pinterest-square">Pinterest</option>';
-								$content.='<option value="skype">Skype</option>';
-								$content.='<option value="stack-overflow">StackOverflow</option>';
-								$content.='<option value="stumbleupon-circle">StumbleUpon</option>';
-								$content.='<option value="tumblr-square">Tumblr</option>';
-								$content.='<option value="twitter-square">Twitter</option>';
-								$content.='<option value="vimeo-square">Vimeo</option>';
-								$content.='<option value="youtube-square">YouTube</option>';
-							$content.='</select>';
-							$content.='<div class="input-group-addon">URL</div>';
-							$content.='<input type="text" class="form-control" name="url" value="" placeholder="Enter a URL...">';
-							$content.='<div class="input-group-btn">';
-								$content.='<button class="btn btn-success">Add</button>';
-							$content.='</div>';
-						$content.='</div>';
-					$content.='</form>';
-				$content.='</div>';
-				$content.='<div id="social">';
-			$ss=$db->prepare("SELECT * FROM choices WHERE uid=:uid ORDER BY icon ASC");
-			$ss->execute(array(':uid'=>$user['id']));
-			while($rs=$ss->fetch(PDO::FETCH_ASSOC)){
-					$content.='<div id="l_'.$rs['id'].'" class="form-group">';
-						$content.='<label class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">&nbsp;</label>';
-						$content.='<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">';
-							$content.='<div class="input-group-addon">Network</div>';
-							$content.='<div class="input-group-addon"><i class="fa fa-'.$rs['icon'].'"></i></div>';
-							$content.='<div class="input-group-addon">URL</div>';
-							$content.='<input type="text" class="form-control" value="'.$rs['url'].'" onchange="update(\''.$rs['id'].'\',\'social\',\'url\',$(this).val());" placeholder="Enter a URL...">';
-							$content.='<div class="input-group-btn">';
-								$content.='<button class="btn btn-danger" onclick="purge(\''.$rs['id'].'\',\'social\')">Delete</button>';
-							$content.='</div>';
-						$content.='</div>';
-					$content.='</div>';
+$rank=0;
+$show='';
+$theme=parse_ini_file(THEME.'/theme.ini',true);
+$currentPassCSS='';
+$currentPassHidden=$theme['settings']['settings_hidden'];
+$matchPassCSS='';
+$matchPassHidden=$theme['settings']['settings_hidden'];
+$successHidden=$theme['settings']['settings_hidden'];
+$successShow=$theme['settings']['settings_show'];
+$success=$theme['settings']['settings_hidden'];
+if($user['rank']>0){
+	if($act=='updatePassword'&&isset($_POST['emailTrap'])&&$_POST['emailTrap']==''){
+		if(isset($_POST['currentPass'])){
+			$currentPass=filter_input(INPUT_POST,'currentPass',FILTER_SANITIZE_STRING);
+			$cPass=hash('SHA512',$user['username']).hash('SHA512',$currentPass);
+			if($cPass==$user['password']){
+				if(isset($_POST['newPass'])&&isset($_POST['confirmPass'])){
+					$newPass=filter_input(INPUT_POST,'newPass',FILTER_SANITIZE_STRING);
+					$confirmPass=filter_input(INPUT_POST,'confirmPass',FILTER_SANITIZE_STRING);
+					if($newPass==$confirmPass){
+						$pass=hash('SHA512',$user['username']).hash('SHA512',$newPass);
+						$s=$db->prepare("UPDATE login SET password=:password WHERE id=:id");
+						$s->execute(array(':password'=>$pass,':id'=>$user['id']));
+						$success='';
+					}else{
+						$matchPassCSS=$theme['settings']['settings_errorInput'];
+						$matchPassHidden=$theme['settings']['settings_show'];
+					}
+				}else{
+					$matchPassCSS=$theme['settings']['settings_errorInput'];
+					$matchPassHidden=$theme['settings']['settings_show'];
+				}
+			}else{
+				$currentPassCSS=$theme['settings']['settings_errorInput'];
+				$currentPassHidden=$theme['settings']['settings_show'];
 			}
-				$content.='</div>';
-			$content.='</div>';
+		}
+	}
+	if($act=='updateAccount'&&isset($_POST['emailTrap'])&&$_POST['emailTrap']==''){
+		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
+		$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
+		$url=filter_input(INPUT_POST,'url',FILTER_SANITIZE_STRING);
+		$business=filter_input(INPUT_POST,'business',FILTER_SANITIZE_STRING);
+		$phone=filter_input(INPUT_POST,'phone',FILTER_SANITIZE_STRING);
+		$mobile=filter_input(INPUT_POST,'mobile',FILTER_SANITIZE_STRING);
+		$address=filter_input(INPUT_POST,'address',FILTER_SANITIZE_STRING);
+		$suburb=filter_input(INPUT_POST,'suburb',FILTER_SANITIZE_STRING);
+		$city=filter_input(INPUT_POST,'city',FILTER_SANITIZE_STRING);
+		$state=filter_input(INPUT_POST,'state',FILTER_SANITIZE_STRING);
+		$postcode=filter_input(INPUT_POST,'postcode',FILTER_SANITIZE_STRING);
+		$s=$db->prepare("UPDATE login SET email=:email,name=:name,url=:url,business=:business,phone=:phone,mobile=:mobile,address=:address,suburb=:suburb,city=:city,state=:state,postcode=:postcode WHERE id=:id");
+		$s->execute(array(':email'=>$email,':name'=>$name,':url'=>$url,':business'=>$business,':phone'=>$phone,':mobile'=>$mobile,':address'=>$address,':suburb'=>$suburb,':city'=>$city,':state'=>$state,':postcode'=>$postcode,':id'=>$user['id']));
+		$e=$db->errorInfo();
+		if(is_null($e[2])){
+			$s=$db->prepare("SELECT * FROM login WHERE id=:id");
+			$s->execute(array(':id'=>$user['id']));
+			$user=$s->fetch(PDO::FETCH_ASSOC);
+			if(stristr($html,'<success accountHidden>'))$html=str_replace('<success accountHidden>',$theme['settings']['settings_show'],$html);
+		}else{
+			if(stristr($html,'<success accountHidden>'))$html=str_replace('<success accountHidden>',$theme['settings']['settings_hidden'],$html);
+			if(stristr($html,'<error accountHidden>'))$html=str_replace('<error accountHidden>',$theme['settings']['settings_show'],$html);
+		}
+	}else{
+		if(stristr($html,'<success accountHidden>'))$html=str_replace('<success accountHidden>',$theme['settings']['settings_hidden'],$html);
+		if(stristr($html,'<error accountHidden>'))$html=str_replace('<error accountHidden>',$theme['settings']['settings_hidden'],$html);
+	}
+	if(stristr($html,'<error currentPassCSS>'))$html=str_replace('<error currentPassCSS>',$currentPassCSS,$html);
+	if(stristr($html,'<error currentPassHidden>'))$html=str_replace('<error currentPassHidden>',$currentPassHidden,$html);
+	if(stristr($html,'<error matchPassCSS>'))$html=str_replace('<error matchPassCSS>',$matchPassCSS,$html);
+	if(stristr($html,'<error matchPassHidden>'))$html=str_replace('<error matchPassHidden>',$matchPassHidden,$html);
+	if(stristr($html,'<success passUpdated>'))$html=str_replace('<success passUpdated>',$success,$html);
+	if(stristr($html,'<print user=gravatar>'))$html=str_replace('<print user=gravatar>',$user['gravatar'],$html);
+	if(stristr($html,'<print user=ti>'))$html=str_replace('<print user=ti>',date($config['dateFormat'],$user['ti']),$html);
+	if(stristr($html,'<print user=username>'))$html=str_replace('<print user=username>',$user['username'],$html);
+	if(stristr($html,'<print user=rank>')){
+		$rank='Visitor';
+		switch($user['rank']){
+			case 100:$rank='Subscriber';break;
+			case 200:$rank='Member';break;
+			case 300:$rank='Client';break;
+			case 400:$rank='Contributor';break;
+			case 500:$rank='Moderator';break;
+			case 600:$rank='Author';break;
+			case 700:$rank='Editor';break;
+			case 800:$rank='Manager';break;
+			case 900:$rank='Administrator';break;
+			case 1000:$rank='Developer';break;
+			default:$rank='Visitor';break;
+		}
+		$html=str_replace('<print user=rank>',$rank,$html);
+	}
+	if(stristr($html,'<print user=email>'))$html=str_replace('<print user=email>',$user['email'],$html);
+	if(stristr($html,'<print user=name>'))$html=str_replace('<print user=name>',$user['name'],$html);
+	if(stristr($html,'<print user=url>'))$html=str_replace('<print user=url>',$user['url'],$html);
+	if(stristr($html,'<print user=business>'))$html=str_replace('<print user=business>',$user['business'],$html);
+	if(stristr($html,'<print user=phone>'))$html=str_replace('<print user=phone>',$user['phone'],$html);
+	if(stristr($html,'<print user=mobile>'))$html=str_replace('<print user=mobile>',$user['mobile'],$html);
+	if(stristr($html,'<print user=address>'))$html=str_replace('<print user=address>',$user['address'],$html);
+	if(stristr($html,'<print user=suburb>'))$html=str_replace('<print user=suburb>',$user['suburb'],$html);
+	if(stristr($html,'<print user=city>'))$html=str_replace('<print user=city>',$user['city'],$html);
+	if(stristr($html,'<print user=state>'))$html=str_replace('<print user=state>',$user['state'],$html);
+	if(stristr($html,'<print user=postcode>')){
+		if($user['postcode']==0)$user['postcode']='';
+		$html=str_replace('<print user=postcode>',$user['postcode'],$html);
+	}
+
 }else{
-	include'includes/noaccess.php';
+	$html='';
+	if(file_exists(THEME.'/noaccess.html')){
+		$html=file_get_contents(THEME.'/noaccess.html');
+	}
 }
-		$content.='</div>';
-	$content.='</div>';
-$content.='</main>';
+$content.=$html;
