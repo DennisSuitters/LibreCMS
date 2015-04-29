@@ -2,6 +2,7 @@
 require'core/db.php';
 $config=$this->getconfig($db);
 $ti=time();
+$show='';
 $html='';
 $head='';
 $content='';

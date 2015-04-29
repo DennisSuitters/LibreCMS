@@ -64,7 +64,7 @@ if($ii>1){
 	$html=preg_replace('~<featuredControls>.*?<\/featuredControls>~is','',$html,1);
 	$html=str_replace('<featuredIndicators>','',$html);
 }
-if($i>1){
+if($i>0){
 //	$html=str_replace('<featuredIndicators>',$featuredIndicators,$html);
 	$html=preg_replace('~<loop>.*?<\/loop>~is',$items,$html,1);
 }else{

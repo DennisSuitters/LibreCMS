@@ -4,7 +4,6 @@ session_start();
 include'db.php';
 include'zebra_image.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
-require'password.php';
 define('SESSIONID',session_id());
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 define('THEME','../layout/'.$config['theme']);
@@ -18,117 +17,6 @@ if($act!=''){
 	$error=0;
 	$ti=time();
 	switch($act){
-		case'add_message':
-			if($_POST['emailtrap']==''){
-				$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
-				if(filter_var($email,FILTER_VALIDATE_EMAIL)){
-					$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
-					$subject=filter_input(INPUT_POST,'subject',FILTER_SANITIZE_STRING);
-					$notes=filter_input(INPUT_POST,'notes',FILTER_SANITIZE_STRING);
-					$q=$db->prepare("INSERT INTO messages (uid,folder,to_email,to_name,from_email,from_name,subject,status,notes_raw,ti) VALUES (:uid,:folder,:to_email,:to_name,:from_email,:from_name,:subject,:status,:notes_raw,:ti)");
-					$q->execute(array(':uid'=>$uid,':folder'=>'INBOX',':to_email'=>$config['email'],':to_name'=>$config['business'],':from_email'=>$email,':from_name'=>$name,':subject'=>$subject,':status'=>'unread',':notes_raw'=>$notes,':ti'=>$ti));
-					$id=$db->lastInsertId();
-					$e=$db->errorInfo();
-					if(is_null($e[2])){
-						if($config['email']!=''){
-							if($error==0){
-								require'class.phpmailer.php';
-								$mail=new PHPMailer();
-								$mail->IsSMTP();
-								$mail->SetFrom($email,$name);
-								$toname=$config['email'];
-								$mail->AddAddress($config['email']);
-								$mail->IsHTML(true);
-								$mail->Subject='Contact Email via '.$config['seoTitle'].': '.$subject;
-								$msg='Message Date: '.date($config['dateFormat'],$ti).'<br />';
-								$msg.='Subject: '.$subject.'<br />';
-								$msg.='Name: '.$name.'<br />';
-								$msg.='Email: '.$email.'<br />';
-								$msg.='Message: '.$notes;
-								$mail->Body=$msg;
-								$mail->AltBody=$msg;
-								if($mail->Send()){?>
-	window.top.window.document.getElementById("form").className="<?php echo$theme['settings']['notification_remove'];?>";
-	window.top.window.document.getElementById("notification_success").className="<?php echo$theme['settings']['notification_success'];?>";
-<?php							}else{?>
-	window.top.window.document.getElementById("notification_error").className="<?php echo$theme['settings']['notification_error'];?>";
-<?php 							}
-							}
-						}
-					}else{?>
-	window.top.window.document.getElementById("notification_error").className="<?php echo$theme['settings']['notification_error'];?>";
-<?php				}
-				}
-			}
-			break;
-		case'add_booking':
-			if($_POST['emailtrap']==''){
-				$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
-				if(filter_var($email,FILTER_VALIDATE_EMAIL)){
-					$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
-					$business=filter_input(INPUT_POST,'business',FILTER_SANITIZE_STRING);
-					$address=filter_input(INPUT_POST,'address',FILTER_SANITIZE_STRING);
-					$suburb=filter_input(INPUT_POST,'suburb',FILTER_SANITIZE_STRING);
-					$city=filter_input(INPUT_POST,'city',FILTER_SANITIZE_STRING);
-					$state=filter_input(INPUT_POST,'state',FILTER_SANITIZE_STRING);
-					$postcode=filter_input(INPUT_POST,'postcode',FILTER_SANITIZE_STRING);
-					$phone=filter_input(INPUT_POST,'phone',FILTER_SANITIZE_STRING);
-					$notes=filter_input(INPUT_POST,'notes',FILTER_SANITIZE_STRING);
-					$rid=isset($_POST['rid'])?filter_input(INPUT_POST,'rid',FILTER_SANITIZE_STRING):0;
-					if($rid!=0){
-						$s=$db->prepare("SELECT id,tis,tie FROM content WHERE id=:id");
-						$s->execute(array(':id'=>$rid));
-						$r=$s->fetch(PDO::FETCH_ASSOC);
-						$tis=$r['tis'];
-						$tie=$r['tie'];
-					}else{
-						$tis=$ti;
-						$tie=0;
-					}
-					$q=$db->prepare("INSERT INTO content (contentType,name,email,business,address,suburb,city,state,postcode,phone,notes,rid,status,ti,tis,tie) VALUES ('booking',:name,:email,:business,:address,:suburb,:city,:state,:postcode,:phone,:notes,:rid,'unconfirmed',:ti,:tis,:tie)");
-					$q->execute(array(':name'=>$name,':email'=>$email,':business'=>$business,':address'=>$address,':suburb'=>$suburb,':city'=>$city,':state'=>$state,':postcode'=>$postcode,':phone'=>$phone,':notes'=>$notes,':rid'=>$rid,':ti'=>$ti,':tis'=>$tis,':tie'=>$tie));
-					$e=$db->errorInfo();
-					if(is_null($e[2])){
-						if($config['email']!=''){
-							require'class.phpmailer.php';
-							$mail=new PHPMailer();
-							$mail->IsSMTP();
-							$mail->SetFrom($email,$name);
-							$toname=$config['email'];
-							$mail->AddAddress($config['email']);
-							$mail->IsHTML(true);
-							$mail->Subject='Booking Created: '.$name;
-							$msg='Booking Date: '.date($config['dateFormat'],$ti).'<br />';
-							if($rid!=0){
-								$s=$db->prepare("SELECT * FROM content WHERE id=:id");
-								$s->execute(array(':id'=>$rid));
-								$r=$s->fetch(PDO::FETCH_ASSOC);
-								$msg.='Booked: '.ucfirst(rtrim($r['contentType'],'s')).' - '.$r['title'];
-							}
-							$msg.='Name: '.$name.'<br />';
-							$msg.='Email: '.$email.'<br />';
-							$msg.='Business: '.$business.'<br />';
-							$msg.='Address: '.$address.'<br />';
-							$msg.='Suburb: '.$suburb.'<br />';
-							$msg.='City: '.$city.'<br />';
-							$msg.='State: '.$state.'<br /';
-							$msg.='Postcode: '.$postcode.'<br />';
-							$msg.='Phone: '.$phone.'<br />';
-							$msg.='Notes: '.$notes;
-							$mail->Body=$msg;
-							$mail->AltBody=$msg;
-							if($mail->Send()){
-
-							}
-						}?>
-	window.top.window.document.getElementById("form").className="<?php echo$theme['settings']['notification_remove'];?>";
-	window.top.window.document.getElementById("notification_success").className="<?php echo$theme['settings']['notification_success'];?>";
-<?php				}else{?>
-	window.top.window.document.getElementById("notification_error").className="<?php echo$theme['settings']['notification_error'];?>";
-<?php				}
-				}
-			}
-			break;
 		case'add_social':
 			$user=filter_input(INPUT_POST,'user',FILTER_SANITIZE_NUMBER_INT);
 			$icon=filter_input(INPUT_POST,'icon',FILTER_SANITIZE_STRING);
@@ -151,7 +39,7 @@ if($act!=''){
 	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'The URL entered is not valid'}}).show();
 <?php		}
 			break;
-/*	case'make_client':
+	case'make_client':
 		$id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 		$q=$db->prepare("SELECT name,email,phone FROM messages WHERE id=:id");
 		$q->execute(array(':id'=>$id));
@@ -164,7 +52,7 @@ if($act!=''){
 <?php	}else{?>
 	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue Adding new Client'}}).show();
 <?php	}
-		break; */
+		break;
 	case'add_comment':
 		$rid=filter_input(INPUT_POST,'rid',FILTER_SANITIZE_NUMBER_INT);
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);

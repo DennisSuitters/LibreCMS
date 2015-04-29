@@ -1,7 +1,6 @@
-/*!
- *  LibreICONS v1.0.0 by @devel - https://github.com/StudioJunkyard/LibreICONS
- *  License - http://www.gnu.org/licenses/gpl-3.0.txt
- *  Version 1.0.1
+/* LibreICONS v1.0.0 by @devel - https://github.com/StudioJunkyard/LibreICONS
+ * License - http://www.gnu.org/licenses/gpl-3.0.txt
+ * Version 1.0.1
  */
 @charset"UTF-8";
 @font-face{font-family:LibreICONS;src:url('../font/libreicons.eot');src:url('../font/libreicons.eot')format('embedded-opentype'),url('../font/libreicons.woff')format('woff'),url('../font/libreicons.ttf')format('truetype'),url('../font/libreicons.svg') format('svg')}
@@ -33,7 +32,7 @@
 .libre.pull-left,.fa.pull-left{margin-right:.3em}
 .libre.pull-right,.fa.pull-right{margin-left:.3em}
 .libre-spin,.fa-spin{-webkit-animation:libre-spin 2s infinite linear;animation:libre-spin 2s infinite linear}
-.libre-pulse,.fa-pulse{-webkit-animation:libre-spin 1s infinite steps(8);animation:libre-spin 1s infinite steps(8)}@-webkit-keyframes libre-spin{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(359deg);}}@keyframes libre-spin{0%{transform:rotate(0deg)}100%{transform:rotate(359deg)}}
+.libre-pulse,.fa-pulse{-webkit-animation:libre-spin 1s infinite steps(8);animation:libre-spin 1s infinite steps(8)}@-webkit-keyframes libre-spin{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg)}}@keyframes libre-spin{0%{transform:rotate(0deg)}100%{transform:rotate(359deg)}}
 .libre-rotate-90,.fa-rotate-90{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg)}
 .libre-rotate-180,.fa-rotate-180{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);-webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg)}
 .libre-rotate-270,.fa-rotate-270{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);-webkit-transform:rotate(270deg);-ms-transform:rotate(270deg);transform:rotate(270deg)}

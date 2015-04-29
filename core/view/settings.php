@@ -57,6 +57,7 @@ if($user['rank']>0){
 			$s->execute(array(':id'=>$user['id']));
 			$user=$s->fetch(PDO::FETCH_ASSOC);
 			if(stristr($html,'<success accountHidden>'))$html=str_replace('<success accountHidden>',$theme['settings']['settings_show'],$html);
+				if(stristr($html,'<error accountHidden>'))$html=str_replace('<error accountHidden>',$theme['settings']['settings_hidden'],$html);
 		}else{
 			if(stristr($html,'<success accountHidden>'))$html=str_replace('<success accountHidden>',$theme['settings']['settings_hidden'],$html);
 			if(stristr($html,'<error accountHidden>'))$html=str_replace('<error accountHidden>',$theme['settings']['settings_show'],$html);

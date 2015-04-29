@@ -53,26 +53,7 @@ if($view=='index'){
 //if($view=='testimonials'){
 //	$s=$db->query("SELECT * FROM content WHERE contentType='testimonials'");
 //}
-if($view=='bookings'){
-	$sql=$db->query("SELECT id,contentType,code,title FROM content WHERE bookable='1' AND title!='' AND status='published' AND internal!='1' ORDER BY code ASC, title ASC");
-	if($sql->rowCount()>0){
-		$bookable='';
-		while($row=$sql->fetch(PDO::FETCH_ASSOC)){
-			$bookable.='<option value="'.htmlentities($row['id'],ENT_QUOTES,'UTF-8');
-			if($id==$row['id']){
-				$bookable.=' selected';
-			}
-			$bookable.='>'.ucfirst(htmlentities($row['contentType'],ENT_QUOTES,'UTF-8'));
-			if($row['code']!='')$bookable.=':'.htmlentities($row['code'],ENT_QUOTES,'UTF-8');
-			$bookable.=':'.htmlentities($row['title'],ENT_QUOTES,'UTF-8').'</option>';
-		}
-		$html=str_replace('<serviceoptions>',$bookable,$html);
-		$html=str_replace('<bookservices>','',$html);
-		$html=str_replace('</bookservices>','',$html);
-	}else{
-		$html=preg_replace('~<bookservices>.*?<\/bookservices>~is','<input type="hidden" name="service" value="0">',$html,1);
-	}
-}
+
 if($show=='categories'){
 	if(stristr($html,'<settings')){
 		$matches=preg_match_all('/<settings items="(.*?)" contenttype="(.*?)">/',$html,$matches);
@@ -82,106 +63,23 @@ if($show=='categories'){
 	$html=str_replace('<print page=notes>',$page['notes'],$html);
 	if($config['business']) $html=str_replace('<print content=seoTitle>',htmlentities($config['business'],ENT_QUOTES,'UTF-8'),$html);
 	else $html=str_replace('<print content=seoTitle>',htmlentities($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
-	$html=str_replace('<print config=address>',htmlentities($config['address'],ENT_QUOTES,'UTF-8'),$html);
-	$html=str_replace('<print config=suburb>',htmlentities($config['suburb'],ENT_QUOTES,'UTF-8'),$html);
-	$html=str_replace('<print config=state>',htmlentities($config['state'],ENT_QUOTES,'UTF-8'),$html);
-	$html=str_replace('<print config=country>',htmlentities($config['country'],ENT_QUOTES,'UTF-8'),$html);
-	if($config['postcode']!=0) $html=str_replace('<print config=postcode>',htmlentities($config['postcode'],ENT_QUOTES,'UTF-8'),$html);
-	else $html=str_replace('<print config=postcode>','',$html);
-	$html=str_replace('<print config=phone>',htmlentities($config['phone'],ENT_QUOTES,'UTF-8'),$html);
-	$html=str_replace('<print config=mobile>',htmlentities($config['mobile'],ENT_QUOTES,'UTF-8'),$html);
 	if(stristr($html,'<loop>')){
 		preg_match('/<loop>([\w\W]*?)<\/loop>/',$html,$matches);
 		$item=$matches[1];
 		$output='';
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
 			$items=$item;
-			$items=str_replace('<print content=id>',$r['id'],$items);
-			if($view!=$r['contentType']) $items=str_replace('<print content=contentType>','<div>'.$r['contentType'].'</div>',$items);
-			else $items=str_replace('<print content=contentType>','',$items);
-			$items=str_replace('<print content=schemaType>',$r['schemaType'],$items);
-			$items=str_replace('<print content=dateCreated>','Created: '.date($config['dateFormat'],$r['ti']),$items);
-			if(stristr($items,'<print content=datePublished>')){
-				if($r['tis']!=0) $items=str_replace('<print content=datePublished>','Published: '.date($config['dateFormat'],$r['tis']),$items);
-				else $items=str_replace('<print content=datePublished>','Published: '.date($config['dateFormat'],$r['ti']),$items);
-			}
-/*			if(stristr($items,'<print content=dateEdited')){
-				$dateEdited='';
-//				if($user['rank']>399){
-					if($r['eti']==0)
-						$dateEdited='Edited: Never';
-					else
-						$dateEdited='Edited: '.date($config['dateFormat'],$r['eti']).' by <strong>'.$r['login_user'].'</strong>';
-//				}
-				$items=str_replace('<print content=dateEdited>',$dateEdited,$items);
-			} */
-			if(stristr($items,'<print content=dateEvent>')){
-				$dateEvent='';
-				if($r['tis']!=0){
-					$dateEvent.='Event Date: '.date($config['dateFormat'],$r['tis']);
-					if($r['tie']!=0) $dateEvent.=' to '.date($config['dateFormat'],$r['tie']);
-				}
-				$items=str_replace('<print content=dateEvent>',$dateEvent,$items);
-			}
-			if(stristr($items,'<print content=categories>')){
-				if($r['category_1']!=''){
-					$categories='Category: <a href="'.$r['contentType'].'/'.str_replace(' ','-',htmlentities($r['category_1'],ENT_QUOTES,'UTF-8')).'">'.htmlentities($r['category_1'],ENT_QUOTES,'UTF-8').'</a>';
-					if($r['category_2']!='')$categories.=' / <a href="'.$r['contentType'].'/'.str_replace(' ','-',htmlentities($r['category_1'],ENT_QUOTES,'UTF-8').'/'.htmlentities($r['category_2'],ENT_QUOTES,'UTF-8')).'">'.htmlentities($r['category_2'],ENT_QUOTES,'UTF-8').'</a>';
-				}else $categories='';
-				$items=str_replace('<print content=categories>',$categories,$items);
-			}
-			if($r['brand']!='') $items=str_replace('<print content=brand>','Brand: '.htmlentities($r['brand'],ENT_QUOTES,'UTF-8'),$items);
-			else $items=str_replace('<print content=brand>','',$items);
-			if(stristr($items,'<print content=tags>')){
-				if($r['tags']!=''){
-					$tags=explode(',',$r['tags']);
-					$tagged='Tags: ';
-					foreach($tags as $tag) $tagged.='<a href="search/'.str_replace(' ','-',htmlentities($tag,ENT_QUOTES,'UTF-8')).'">#'.htmlentities($tag,ENT_QUOTES,'UTF-8').'</a> ';
-					$items=str_replace('<print content=tags>',$tagged,$items);
-				}else $items=str_replace('<print content=tags>','',$items);
-			}
-			$items=str_replace('<print content=name>',htmlentities($r['name'],ENT_QUOTES,'UTF-8'),$items);
-			if($r['contentType']=='testimonials'){
-				if($r['email']) $items=str_replace('<print content=avatar>','http://gravatar.com/avatar/'.md5($r['email']).'?s=100&amp;d=mm',$items);
-				else $items=str_replace('<print content=avatar>',$noavatar,$items);
-			}
-			$items=str_replace('<print content=backgroundColor>',ltrim($r['backgroundColor'],'#'),$items);
-			if(stristr($items,'<image>')){
-				if($r['thumb']!=''&&file_exists('media/'.$r['thumb'])){
-					$items=str_replace('<print content=thumb>','media/'.$r['thumb'],$items);
-					$items=str_replace('<image>','',$items);
-					$items=str_replace('</image>','',$items);
-				}else{
-					if($r['backgroundColor']==''){
-						$items=str_replace('<print content=thumb>','core/images/noimage.jpg',$items);
-						$items=str_replace('<image>','',$items);
-						$items=str_replace('</image>','',$items);
-					}else $items=preg_replace('~<image>.*?<\m/image>~is','',$items,1);
-				}
-				if($r['file']!=''&&file_exists('media/'.$r['file'])){
-					$items=str_replace('<print content=file>','media/'.$r['file'],$items);
-					$items=str_replace('<image>','',$items);
-					$items=str_replace('</image>','',$items);
-				}else{
-					if($r['backgroundColor']==''){
-						$items=str_replace('<print content=file>','core/images/noimage.jpg',$items);
-						$items=str_replace('<image>','',$items);
-						$items=str_replace('</image>','',$items);
-					}else $items=preg_replace('~<image>.*?<\/image>~is','',$items,1);
-				}
-			}
-			$items=str_replace('<print content=title>',htmlentities($r['title'],ENT_QUOTES,'UTF-8'),$items);
+			require'core/parser.php';
+/*
 			if($r['options']{0}==1){
 				$items=str_replace('<cost>','',$items);
 				$items=str_replace('</cost>','',$items);
 				$items=str_replace('<print content=cost>',htmlentities($r['cost'],ENT_QUOTES,'UTF-8'),$items);
-			}else $items=preg_replace('~<cost>.*?<\/cost>~is','',$items,1);
-			if(stristr($items,'<print content=notes>')){
-				$notes=strip_tags($r['notes']);
-				$items=str_replace('<print content=notes>',substr(htmlentities($notes,ENT_QUOTES,'UTF-8'),0,201),$items);
-			}
+			}else
+				$items=preg_replace('~<cost>.*?<\/cost>~is','',$items,1);
 			if($r['contentType']=='testimonials'){
-				if(stristr($items,'<controls>'))$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
+				if(stristr($items,'<controls>'))
+					$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
 				$controls='';
 			}else{
 				if(stristr($items,'<view>')){
@@ -198,7 +96,8 @@ if($show=='categories'){
 							$items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
 						}
 					}
-				}else $items=preg_replace('~<service>.*?<\/service>~is','',$items,1);
+				}else
+					$items=preg_replace('~<service>.*?<\/service>~is','',$items,1);
 				if($r['contentType']=='inventory'){
 					if(stristr($items,'<inventory>')){
 						$items=str_replace('<inventory>','',$items);
@@ -210,7 +109,7 @@ if($show=='categories'){
 					$items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
 				$items=str_replace('<controls>','',$items);
 				$items=str_replace('</controls>','',$items);
-			}
+			} */
 			$output.=$items;
 		}
 		$html=preg_replace('~<loop>.*?<\/loop>~is',$output,$html,1);

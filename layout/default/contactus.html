@@ -1,11 +1,10 @@
 <block include="meta_head.html">
 <block include="header.html">
-<block inbed="content">
+<block inbed="contactus">
 	<main id="content" class="col-lg-12 col-md-12 col-xs-12" itemscope itemtype="http://schema.org/Contact">
 		<div class="col-lg-8 col-md-8 col-xs-8">
-			<div id="notification_success" class="hidden">Thank You for Contacting Us!!!</div>
-			<div id="notification_error" class="hidden">There was an Issue Sending Your Message!!!</div>
-			<form id="form" target="sp" method="post" action="core/add_data.php">
+			<notification>
+			<form id="form" method="post" action="contactus">
 				<input type="hidden" name="emailtrap" value="">
 				<input type="hidden" name="act" value="add_message">
 				<div class="form-group">
@@ -58,7 +57,8 @@
 				<span class="tel" itemprop="telephone">Phone <a href="tel:<print config=phone>"><print config=phone></a></span><br>
 				<span class="tel" itemprop="telephone">Mobile <a href="tel:<print config=mobile>"><print config=mobile></a></span>
 		</address>
+		<print user=username>
 	</main>
-</block inbed="content">
+</block inbed="contactus">
 <block include="footer.html">
 <block include="meta_footer.html">

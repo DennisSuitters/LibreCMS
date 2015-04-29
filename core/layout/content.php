@@ -52,14 +52,14 @@ if($show=='categories'){
 	<table class="table table-condensed table-hover">
 		<thead>
 			<tr>
-				<th class="col-xs-1 text-center">contentType</th>
-				<th class="col-xs-2 text-center">Created</th>
-				<th class="col-xs-2 text-center">Edited</th>
+				<th class="text-center">contentType</th>
+				<th class="text-center">Created</th>
+				<th class="text-center">Edited</th>
 				<th class="text-center">Title</th>
-				<th class="col-xs-1 text-center">Status</th>
-				<th class="col-xs-1 text-center">Views</th>
-				<th class="col-xs-1 text-center">Featured</th>
-				<th class="col-xs-1 text-center">Internal</th>
+				<th class="text-center">Status</th>
+				<th class="text-center">Views</th>
+				<th class="text-center">Featured</th>
+				<th class="text-center">Internal</th>
 				<th class="col-xs-2 text-right">
 					Show <div class="btn-group">
 						<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><?php if(!isset($args[1])||$args[1]==''){echo'All';}else{echo ucfirst($args[1]);}?> <i class="caret"></i></button>
@@ -302,6 +302,10 @@ if($show=='item'){
 <?php	}else{?>
 			<img src="core/images/noimage.jpg">
 <?php	}?>
+		</div>
+		<label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label>
+		<div class="input-group col-lg-9 col-md-8 col-sm-8 col-xs-6">
+			<span class="help-block">Uploading an Image will also create a Thumbnail</span>
 		</div>
 	</div>
 </form>

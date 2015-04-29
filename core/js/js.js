@@ -98,7 +98,7 @@ $("#content input[type=checkbox]").on({
 					this.checked = false; //deselect all checkboxes with class "checkbox1"
 				});
 			}
-		}else if(id=='null'){
+		}else{
 			var t=$(this).data("dbt");
 			var c=$(this).data("dbc");
 			var b=$(this).data("dbb");
