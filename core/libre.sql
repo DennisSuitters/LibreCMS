@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 24, 2015 at 02:39 PM
--- Server version: 5.5.41-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4.6
+-- Generation Time: Apr 29, 2015 at 09:42 PM
+-- Server version: 5.5.43-0ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `config` (
 --
 
 INSERT INTO `config` (`id`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `email_check`, `email_interval`, `language`, `timezone`, `itemCount`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `bti`, `ti`) VALUES
-(1, '11111101', 'default', 'LibreCMS', 'Default Site Description', 'Default Site Caption', 'Default Site Keywords', '', '', '', '', '', '', '', 0, '', '', '', 1406180963, 3600, 'M j, Y g:i A', 1424327803, 3600, 'en', 'Australia/Hobart', 4, 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 1404461417, 0);
+(1, '11111101', 'default', 'Studio Junkyard', 'Default Site Description', 'Default Site Caption', 'Default Site Keywords', 'Studio Junkyard', '000 000 000', '128 Wilmot Road', 'Wilmot', 'Wilmot', 'Tasmania', 'Australia', 7310, '0364921418', '0364921418', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 1425893894, 3600, 'en', 'Australia/Hobart', 4, 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 1404461417, 0);
 
 -- --------------------------------------------------------
 
@@ -183,7 +183,14 @@ CREATE TABLE IF NOT EXISTS `content` (
   `ti` int(10) unsigned NOT NULL,
   `eti` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `content`
+--
+
+INSERT INTO `content` (`id`, `options`, `rank`, `rid`, `uid`, `login_user`, `cid`, `ip`, `contentType`, `schemaType`, `keywords`, `code`, `brand`, `title`, `category_1`, `category_2`, `name`, `url`, `email`, `business`, `address`, `suburb`, `city`, `state`, `postcode`, `phone`, `thumb`, `file`, `cost`, `subject`, `notes`, `quantity`, `tags`, `caption`, `status`, `service`, `internal`, `featured`, `backgroundColor`, `bookable`, `fti`, `assoc`, `ord`, `views`, `active`, `tis`, `tie`, `lti`, `ti`, `eti`) VALUES
+(1, '00000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'article', 'blogPost', 'doctor who,game', '', '', 'The Long Game', '', '', '', '', '', '', '', '', '', '', 0, '', 'thumb_1.jpg', 'file_1.jpg', 0.00, '', '<p>*Insistently* Bow ties are cool! Come on Amy, I''m a normal bloke, tell me what normal blokes do! Sorry, checking all the water in this area; there''s an escaped fish. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff.</p>\r\n<h2>The Parting of the Ways</h2>\r\n<p>You''ve swallowed a planet! You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better? Saving the world with meals on wheels.</p>\r\n<h3>The Impossible Astronaut</h3>\r\n<p>Saving the world with meals on wheels. I am the last of my species, and I know how that weighs on the heart so don''t lie to me! It''s a fez. I wear a fez now. Fezes are cool. Saving the world with meals on wheels. You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better?</p>\r\n<h4>The Beast Below</h4>\r\n<p>I''m nobody''s taxi service; I''m not gonna be there to catch you every time you feel like jumping out of a spaceship. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. It''s a fez. I wear a fez now. Fezes are cool.</p>\r\n<h5>Voyage of the Damned</h5>\r\n<p>You''ve swallowed a planet! All I''ve got to do is pass as an ordinary human being. Simple. What could possibly go wrong? Did I mention we have comfy chairs? I''m the Doctor, I''m worse than everyone''s aunt. *catches himself* And that is not how I''m introducing myself.</p>', 0, 'doctor who,game', '', 'published', 0, 0, 1, '#ffffff', 0, 0, '', 1, 0, 1, 0, 0, 0, 1429270672, 1429277196);
 
 -- --------------------------------------------------------
 
@@ -195,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `login` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `options` varchar(8) COLLATE utf8_bin NOT NULL DEFAULT '00000000',
   `username` varchar(128) COLLATE utf8_bin NOT NULL,
-  `password` varchar(255) COLLATE utf8_bin NOT NULL,
+  `password` varchar(2048) COLLATE utf8_bin NOT NULL,
   `avatar` varchar(60) COLLATE utf8_bin NOT NULL,
   `gravatar` varchar(60) COLLATE utf8_bin NOT NULL,
   `business` varchar(40) COLLATE utf8_bin NOT NULL,
@@ -230,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `login` (
 --
 
 INSERT INTO `login` (`id`, `options`, `username`, `password`, `avatar`, `gravatar`, `business`, `name`, `email`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `adminCategory_1`, `adminCategory_2`, `adminCategory_ti`, `language`, `timezone`, `rank`, `ti`) VALUES
-(1, '11111111', 'admin', '$2y$10$dYvrhTGiUhWjHYgXWgg/muDXisNfS7z5y5AQ72dJAelV0YezL/gY6', 'avatar_1.png', '', '', '', 'dennis@studiojunkyard.com', 0, '', '', '', '', '', 0, '', '', '', '', '', 1, '', '', '', 0, 'en', 'Australia/Hobart', 1000, 1402746479);
+(1, '11111111', 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ecc7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', 'avatar_1.png', '', '', 'Dennis J Suitters', 'dennis@studiojunkyard.com', 0, '', '128 Cradle Mountain Road', 'Wilmot', 'Wilmot', 'Tasmania', 7310, '', '', '', '', '', 1, '', '', '', 0, 'en', 'Australia/Hobart', 1000, 1402746479);
 
 -- --------------------------------------------------------
 
@@ -262,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `contentType`, `schemaType`, `seoKeywords`, `seoDescription`, `seoCaption`, `menu`, `notes`, `ord`, `active`, `eti`) VALUES
-(1, 1, 'admin', 'Home', '', 'index', '', '', '', '', 'head', '<p>I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. Annihilate? No. No violence. I won''t stand for it. Not now, not ever, do you understand me?! I''m the Doctor, the Oncoming Storm - and you basically meant beat them in a football match, didn''t you? Stop talking, brain thinking. Hush.</p>\r\n<p>All I''ve got to do is pass as an ordinary human being. Simple. What could possibly go wrong? You hate me; you want to kill me! Well, go on! Kill me! KILL ME! I''m nobody''s taxi service; I''m not gonna be there to catch you every time you feel like jumping out of a spaceship.</p>\r\n<p>All I''ve got to do is pass as an ordinary human being. Simple. What could possibly go wrong? Aw, you''re all Mr. Grumpy Face today. I am the Doctor, and you are the Daleks!</p>\r\n<p>I am the Doctor, and you are the Daleks! They''re not aliens, they''re Earthâ€¦liens! It''s art! A statement on modern society, ''Oh Ain''t Modern Society Awful?''! Saving the world with meals on wheels. I am the Doctor, and you are the Daleks! Sorry, checking all the water in this area; there''s an escaped fish.</p>\r\n<p>You hate me; you want to kill me! Well, go on! Kill me! KILL ME! No, I''ll fix it. I''m good at fixing rot. Call me the Rotmeister. No, I''m the Doctor. Don''t call me the Rotmeister. The way I see it, every life is a pile of good things and bad things.â€¦hey.â€¦the good things don''t always soften the bad things; but vice-versa the bad things don''t necessarily spoil the good things and make them unimportant.</p>', 0, 1, 1424328485),
+(1, 1, 'Dennis J Suitters', 'Home', '', 'index', '', '', '', '', 'head', '', 0, 1, 1429322563),
 (2, 0, '', 'Blog', '', 'article', '', '', '', '', 'head', '', 1, 1, 0),
 (3, 0, '', 'Portfolio', '', 'portfolio', '', '', '', '', 'head', '', 2, 1, 0),
 (4, 0, '', 'Bookings', '', 'bookings', '', '', '', '', 'head', '', 3, 1, 0),
@@ -306,7 +313,18 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `size` bigint(20) NOT NULL,
   `ti` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `uid`, `mid`, `rmid`, `folder`, `to_email`, `to_name`, `from_email`, `from_name`, `subject`, `status`, `starred`, `important`, `notes_raw`, `notes_raw_mime`, `notes_html`, `notes_html_mime`, `attachments`, `email_date`, `size`, `ti`) VALUES
+(1, 0, '', 0, 'INBOX', 'info@studiojunkyard.com', 'Studio Junkyard', 'dennis@studiojunkyard.com', '', 'Test', 'read', 0, 0, 'test message', '', '', '', '', 0, 0, 1430132595),
+(2, 0, '', 0, 'INBOX', 'info@studiojunkyard.com', 'Studio Junkyard', 'dennis@studiojunkyard.com', '', 'Test', 'unread', 0, 0, 'test message', '', '', '', '', 0, 0, 1430132619),
+(3, 0, '', 0, 'INBOX', 'info@studiojunkyard.com', 'Studio Junkyard', 'dennis@studiojunkyard.com', '', 'Any old subject', 'unread', 0, 0, 'Test', '', '', '', '', 0, 0, 1430135321),
+(4, 0, '', 0, 'INBOX', 'info@studiojunkyard.com', 'Studio Junkyard', 'dennis@studiojunkyard.com', '', 'Any old subject', 'unread', 0, 0, 'Test', '', '', '', '', 0, 0, 1430135388),
+(5, 0, '', 0, 'INBOX', 'info@studiojunkyard.com', 'Studio Junkyard', 'dennis@studiojunkyard.com', 'Dennis J Suitters', 'Any old subject', 'unread', 0, 0, 'asdf', '', '', '', '', 0, 0, 1430135437);
 
 -- --------------------------------------------------------
 
