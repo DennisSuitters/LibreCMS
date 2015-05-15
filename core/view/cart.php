@@ -30,7 +30,7 @@ if($args[0]=="confirm"){
 						$content.='<td class="text-left">'.$i['code'].'</td>';
 						$content.='<td class="text-left">'.$i['title'].'</td>';
 						$content.='<td class="text-center">';
-							$content.='<form target="sp" action="includes/update.php">';
+							$content.='<form target="sp" action="core/update.php">';
 								$content.='<input type="hidden" name="id" value="'.$oi['id'].'">';
 								$content.='<input type="hidden" name="t" value="cart">';
 								$content.='<input type="hidden" name="c" value="quantity">';
@@ -42,7 +42,7 @@ if($args[0]=="confirm"){
 						$content.='</td>';
 						$content.='<td class="text-right">'.$oi['cost']*$oi['quantity'].'</td>';
 						$content.='<td class="text-right">';
-							$content.='<button class="btn btn-danger" onclick="$(\'#sp\').load(\'includes/update.php?id='.$oi['id'].'&t=cart&c=quantity&da=0\');"><i class="fa fa-trash"></i></button>';
+							$content.='<button class="btn btn-danger" onclick="$(\'#sp\').load(\'core/update.php?id='.$oi['id'].'&t=cart&c=quantity&da=0\');"><i class="fa fa-trash"></i></button>';
 						$content.='</td>';
 					$content.='</tr>';
 		$total=$total+($oi['cost']*$oi['quantity']);

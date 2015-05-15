@@ -34,21 +34,20 @@ if($ii>0){
 		if($r['options']{0}==1){
 			$item=str_replace('<cost>','',$item);
 			$item=str_replace('</cost>','',$item);
-			$item=str_replace('<print content=cost>',$r['cost'],$item);
+			$item=str_replace('<print content="cost">',$r['cost'],$item);
 		}else $item=preg_replace('~<cost>.*?<\/cost>~is','',$item,1);
 		if($r['caption']!='')
-			$item=str_replace('<print content=caption>',$r['caption'],$item);
-		else
-			$item=str_replace('<print content=caption>',preg_replace('/\s+?(\S+)?$/','',substr(strip_tags($r['notes'].$r['notes']),0,2700)),$item);
-		$item=str_replace('<print content=backgroundColor>',ltrim($r['backgroundColor'],'#'),$item);
+			$item=str_replace('<print content="caption">',$r['caption'],$item);
+
 		$item=str_replace('<print link>',$r['contentType'].'/'.str_replace(' ','-',$r['title']),$item);
+		
 		if($r['file']!=''&&file_exists('media/'.$r['file']))
-			$item=str_replace('<print content=file>','<img class="featuredImage" src="media/'.$r['file'].'" alt="'.$r['title'].'">',$item);
+			$item=str_replace('<print content="image">','<img src="media/'.$r['file'].'" alt="'.$r['title'].'">',$item);
 		else
-			$item=str_replace('<print content=file>','',$item);
+			$item=str_replace('<print content="image">','',$item);
 		$item=str_replace('<print content=schemaType>',$r['schemaType'],$item);
-		$item=str_replace('<print content=title>',$r['title'],$item);
-		$item=str_replace('<print content=contentType>','<div>'.$r['contentType'].'</div>',$item);
+		$item=str_replace('<print content="title">',$r['title'],$item);
+		$item=str_replace('<print content="contentType">','<div>'.$r['contentType'].'</div>',$item);
 		$items.=$item;
 		$i++;
 		$indicators.=$indicatorItem;
@@ -65,10 +64,8 @@ if($ii>1){
 	$html=str_replace('<featuredIndicators>','',$html);
 }
 if($i>0){
-//	$html=str_replace('<featuredIndicators>',$featuredIndicators,$html);
 	$html=preg_replace('~<loop>.*?<\/loop>~is',$items,$html,1);
 }else{
-//	$html=str_replace('<featuredIndicators>','',$html);
 	$html='';
 }
 $content.=$html;

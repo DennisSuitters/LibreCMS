@@ -9,16 +9,16 @@
 	</featuredIndicators>
 	<div class="carousel-inner relative">
 		<loop>
-			<div class="item background-color-<print content=backgroundColor><print active>">
-				<print content=file>
+			<div class="item<print active>">
+				<print content="image">
 					<div class="carousel-caption">
-						<h3 class="text-left"><print content=title></h3>
+						<h3 class="text-left"><print content="title"></h3>
 						<p>
-							<print content=caption>
+							<print content="caption">
 							<cost>
 								<aside class="carousel-price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
 									<meta itemprop="currency" content="AUD">
-									<h4 itemprop="price">&#36;<print content=cost></h4>
+									<h4 itemprop="price">&#36;<print content="cost"></h4>
 								</aside>
 							</cost>
 							<a class="btn btn-lg btn-info pull-right" href="<print link>" role="button">View</a>
@@ -29,11 +29,11 @@
 	</div>
 	<featuredControls>
 		<a class="left carousel-control" href="#featured" role="button" data-slide="prev">
-			<span class="fa fa-chevron-left fa-3x" aria-hidden="true"></span>
+			<span class="libre libre-chevron-left libre-3x" aria-hidden="true"></span>
 			<span class="sr-only">Previous</span>
 		</a>
 		<a class="right carousel-control" href="#featured" role="button" data-slide="next">
-			<span class="fa fa-chevron-right fa-3x" aria-hidden="true"></span>
+			<span class="libre libre-chevron-right libre-3x" aria-hidden="true"></span>
 			<span class="sr-only">Next</span>
 		</a>
 	</featuredControls>

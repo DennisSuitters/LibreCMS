@@ -72,15 +72,11 @@ if($act=='add_booking'){
 		}
 	}
 }else{
-	$sql=$db->query("SELECT id,contentType,code,title FROM content WHERE bookable='1' AND title!='' AND status='published' AND internal!='1' ORDER BY code ASC, title ASC");
+	$sql=$db->query("SELECT * FROM content WHERE bookable='1' AND title!='' AND status='published' AND internal!='1' ORDER BY code ASC, title ASC");
 	if($sql->rowCount()>0){
 		$bookable='';
 		while($row=$sql->fetch(PDO::FETCH_ASSOC)){
-			$bookable.='<option value="'.htmlentities($row['id'],ENT_QUOTES,'UTF-8');
-			if($id==$row['id']){
-				$bookable.=' selected';
-			}
-			$bookable.='>'.ucfirst(htmlentities($row['contentType'],ENT_QUOTES,'UTF-8'));
+			$bookable.='<option value="'.htmlentities($row['id'],ENT_QUOTES,'UTF-8').'>'.ucfirst(htmlentities($row['contentType'],ENT_QUOTES,'UTF-8'));
 			if($row['code']!='')$bookable.=':'.htmlentities($row['code'],ENT_QUOTES,'UTF-8');
 			$bookable.=':'.htmlentities($row['title'],ENT_QUOTES,'UTF-8').'</option>';
 		}

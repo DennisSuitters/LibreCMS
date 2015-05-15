@@ -51,8 +51,9 @@ time{
 .carousel .item{
 	height:600px
 }
-.carousel .item .featuredImage{
-	width:100%
+.carousel .item img{
+	width:100%;
+	height:100%;
 }
 .carousel-caption{
 	top:0;
@@ -60,6 +61,14 @@ time{
 }
 .carousel-caption>p{
 	position:relative;
+	height:500px;
+}
+.carousel-caption .btn{
+	position:absolute;
+	display:block;
+	top:auto;
+	right:0;
+	bottom:0;
 }
 .carousel-price{
 	position:absolute;
@@ -69,8 +78,8 @@ time{
 .carousel-price h4{
 	font-size:30px
 }
-.carousel .left .fa,
-.carousel .right .fa{
+.carousel .left .libre,
+.carousel .right .libre{
 	margin-top:100%;
 }
 .contentType{
@@ -160,9 +169,6 @@ article .vcard .avatar{
 }
 .sidebar li{
 	list-style:none;
-}
-.intense:hover{
-	cursor:url(../images/plus_cursor.png)25 25,auto
 }
 textarea{
 	resize:vertical
