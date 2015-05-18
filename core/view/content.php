@@ -145,6 +145,8 @@ if($show=='item'){
 		$sc->execute(array(':contentType'=>$view,':rid'=>$r['id']));
 		if($sc->rowCount()>0){
 			$commentsHTML=file_get_contents(THEME.'/comments.html');
+			if(stristr($commentsHTML,'<print content=id>'))$commentsHTML=str_replace('<print content=id>',$r['id'],$commentsHTML);
+			if(stristr($commentsHTML,'<print content=contentType>'))$commentsHTML=str_replace('<print content=contentType>',$r['contentType'],$commentsHTML);
 			$commentDOC=new DOMDocument();
 			@$commentDOC->loadHTML($commentsHTML);
 			preg_match('/<loop>([\w\W]*?)<\/loop>/',$commentsHTML,$matches);

@@ -1,9 +1,8 @@
 <?php
-$content.='<main id="content" class="col-md-12">';
 if($args[0]=="confirm"){
-	include"includes/add_order.php";
+	include"core/add_order.php";
 }else{
-	$total=0;
+/*	$total=0;
 	$s=$db->prepare("SELECT * FROM cart WHERE si=:si ORDER BY ti DESC");
 	$s->execute(array(':si'=>SESSIONID));
 	if($s->rowCount()>0){
@@ -129,9 +128,8 @@ $content.='<div class="panel panel-default">';
 			$content.='</div>';
 		$content.='</form>';
 	$content.='</div>';
-$content.='</div>';
-	}else{
-	$content.='<div class="alert alert-info">You don\'t have any Items in the Cart</div>';
-	}
+$content.='</div>'; */
+//	}else{
+//	$content.='<div class="alert alert-info">You don\'t have any Items in the Cart</div>';
+//	}
 }
-$content.='</main>';
