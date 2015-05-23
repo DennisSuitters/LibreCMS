@@ -13,7 +13,7 @@ $act=filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING);
 $ip=$_SERVER['REMOTE_ADDR'];
 $error=0;
 $ti=time();
-if($act=='add_comment'){
+if($act=='quantity'){
 	if($_POST['emailtrap']==''){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
 		if(filter_var($email,FILTER_VALIDATE_EMAIL)){
