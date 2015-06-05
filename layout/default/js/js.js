@@ -1,4 +1,4 @@
 function getClient(email){
 	$('#busy').css({'display':'inline-block'});
-	$('#sp').load('includes/get_client.php?email='+email);
+	$('#sp').load('core/get_client.php?email='+email);
 }

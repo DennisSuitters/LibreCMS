@@ -136,33 +136,40 @@ if($show=='item'){
 	$seoTitle=$r['title'].' - '.$config['seoTitle'];
 	$seoKeywords=$r['keywords'];
 	$seoDescription=$r['caption'];
-	$item=str_replace('<CONTROLS>','<div class="text-right">More...</div>',$item);
+	$item=str_replace('<CONTROLS>','...more...',$item);
 	$html=preg_replace('~<settings.*?>~is','',$html,1);
 	$html=preg_replace('~<loop>.*?<\/loop>~is','',$html,1);
-	$html=str_replace('<print page=notes>','',$html);
+	$html=str_replace('<print page="notes">','',$html);
 	if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
-		$sc=$db->prepare("SELECT * FROM comments WHERE contentType=:contentType AND rid=:rid AND status!='unapproved' ORDER BY ti ASC");
-		$sc->execute(array(':contentType'=>$view,':rid'=>$r['id']));
-		if($sc->rowCount()>0){
-			$commentsHTML=file_get_contents(THEME.'/comments.html');
-			if(stristr($commentsHTML,'<print content=id>'))$commentsHTML=str_replace('<print content=id>',$r['id'],$commentsHTML);
-			if(stristr($commentsHTML,'<print content=contentType>'))$commentsHTML=str_replace('<print content=contentType>',$r['contentType'],$commentsHTML);
-			$commentDOC=new DOMDocument();
-			@$commentDOC->loadHTML($commentsHTML);
-			preg_match('/<loop>([\w\W]*?)<\/loop>/',$commentsHTML,$matches);
+		if(file_exists(THEME.'/comments.html')){
 			$comments='';
-			while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
-				$comment=$matches[1];
-				require'core/parser.php';
-				$comments.=$comment;
+			$commentsHTML='';
+			$sc=$db->prepare("SELECT * FROM comments WHERE contentType=:contentType AND rid=:rid AND status!='unapproved' ORDER BY ti ASC");
+			$sc->execute(array(':contentType'=>$view,':rid'=>$r['id']));
+			$commentsHTML=file_get_contents(THEME.'/comments.html');
+			if($sc->rowCount()>0){
+				
+				if(stristr($commentsHTML,'<print content=id>'))$commentsHTML=str_replace('<print content=id>',$r['id'],$commentsHTML);
+				if(stristr($commentsHTML,'<print content=contentType>'))$commentsHTML=str_replace('<print content=contentType>',$r['contentType'],$commentsHTML);
+				$commentDOC=new DOMDocument();
+				@$commentDOC->loadHTML($commentsHTML);
+				preg_match('/<loop>([\w\W]*?)<\/loop>/',$commentsHTML,$matches);
+				while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
+					$comment=$matches[1];
+					require'core/parser.php';
+					$comments.=$comment;
+				}
 			}
-		}
-		$commentsHTML=preg_replace('~<loop>.*?<\/loop>~is',$comments,$commentsHTML,1);
-		if($r['options']{1}==1||$user['rank']>0){
+				$commentsHTML=preg_replace('~<loop>.*?<\/loop>~is',$comments,$commentsHTML,1);
+//			}
+			if($r['options']{1}==1){
 
+			}
+			$commentsHTML=preg_replace('~<loop>.*?<\/loop>~is','',$commentsHTML,1);
+			$item.=$commentsHTML;
+		}else{
+			$item.='Comments for this post is Enabled, but no <strong>"'.THEME.'/comments.html"</strong> template file exists';
 		}
-		$commentsHTML=preg_replace('~<loop>.*?<\/loop>~is','',$commentsHTML,1);
-		$item.=$commentsHTML;
 	}
 	$html=preg_replace('~<item>.*?<\/item>~is',$item,$html,1);
 }

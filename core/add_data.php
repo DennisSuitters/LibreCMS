@@ -1,3 +1,4 @@
+
 <?php
 echo'<script>/*<![CDATA[*/';
 session_start();

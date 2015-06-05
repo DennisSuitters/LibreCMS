@@ -61,73 +61,81 @@
 				</div>
 			</div>
 		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">Create or Add to Existing Account</h3>
-			</div>
-			<div class="panel-body">
-				<form method="post" action="cart/confirm">
-					<div class="form-group">
-						<label class="control-label col-sm-2">&nbsp;</label>
-						<div class="input-group col-sm-10 text-danger">Highlighted Fields are Required</div>
-					</div>
-					<div class="form-group">
-						<label for="email" class="control-label col-md-2 col-xs-4 text-danger">Email</label>
-						<div class="input-group col-md-10 col-xs-8 has-error">
-							<input type="text" id="email" class="form-control" name="email" value="" placeholder="Enter an Email" required>
-							<div class="input-group-btn">
-								<button class="btn btn-default" onclick="getClient($(\'#email\').val());return false">Retrieve</button>
+		<form method="post" action="cart/confirm">
+			<input type="hidden" name="emailtrap" value="">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<loggedin>
+						<div class="panel-heading">
+							<h3 class="panel-title">Create or Add to Existing Account</h3>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2">&nbsp;</label>
+							<div class="input-group col-sm-10">
+								<div class="alert alert-info">
+									If you have ordered from us previously, or already have an account, you can just enter your email below, and we will add this order using your account details.
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="business" class="control-label col-md-2 col-xs-4">Business</label>
-						<div class="input-group col-md-10 col-xs-8">
-							<input type="text" id="business" class="form-control" name="business" value="" placeholder="Enter a Business...">
+						<div class="form-group">
+							<label class="control-label col-sm-2">&nbsp;</label>
+							<div class="input-group col-sm-10 text-danger">Red Highlighted Fields are Required</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="address" class="control-label col-md-2 col-xs-4">Address</label>
-						<div class="input-group col-md-10 col-xs-8">
-							<input type="text" id="address" class="form-control" name="address" value="" placeholder="Enter an Address...">
+						<div class="form-group">
+							<label for="email" class="control-label col-md-2 col-xs-4 text-danger">Email</label>
+							<div class="input-group col-md-10 col-xs-8 has-error">
+								<input type="text" id="email" class="form-control" name="email" value="" placeholder="Enter an Email" required>
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="suburb" class="control-label col-md-2 col-xs-4">Suburb</label>
-						<div class="input-group col-md-10 col-xs-8">
-							<input type="text" id="suburb" class="form-control" name="suburb" value="" placeholder="Enter a Suburb...">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="city" class="control-label col-md-2 col-xs-4">City</label>
-						<div class="input-group col-md-10 col-xs-8">
-							<input type="text" id="city" class="form-control" name="city" value="" placeholder="Enter a City...">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="state" class="control-label col-md-2 col-xs-4">State</label>
-						<div class="input-group col-md-10 col-xs-8">
-							<input type="text" id="state" class="form-control" name="state" value="" placeholder="Enter a State...">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="postcode" class="control-label col-md-2 col-xs-4">Postcode</label>
+						<div class="form-group">
+							<label for="business" class="control-label col-md-2 col-xs-4">Business</label>
 							<div class="input-group col-md-10 col-xs-8">
-							<input type="text" id="postcode" class="form-control" name="postcode" value="" placeholder="Enter a Postcode...">
+								<input type="text" id="business" class="form-control" name="business" value="" placeholder="Enter a Business...">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="phone" class="control-label col-md-2 col-xs-4">Phone</label>
-						<div class="input-group col-md-10 col-xs-8">
-							<input type="text" id="phone" class="form-control" name="phone" value="" placeholder="Enter a Phone Number...">
+						<div class="form-group">
+							<label for="address" class="control-label col-md-2 col-xs-4">Address</label>
+							<div class="input-group col-md-10 col-xs-8">
+								<input type="text" id="address" class="form-control" name="address" value="" placeholder="Enter an Address...">
+							</div>
 						</div>
-					</div>
+						<div class="form-group">
+							<label for="suburb" class="control-label col-md-2 col-xs-4">Suburb</label>
+							<div class="input-group col-md-10 col-xs-8">
+								<input type="text" id="suburb" class="form-control" name="suburb" value="" placeholder="Enter a Suburb...">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="city" class="control-label col-md-2 col-xs-4">City</label>
+							<div class="input-group col-md-10 col-xs-8">
+								<input type="text" id="city" class="form-control" name="city" value="" placeholder="Enter a City...">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="state" class="control-label col-md-2 col-xs-4">State</label>
+							<div class="input-group col-md-10 col-xs-8">
+								<input type="text" id="state" class="form-control" name="state" value="" placeholder="Enter a State...">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="postcode" class="control-label col-md-2 col-xs-4">Postcode</label>
+								<div class="input-group col-md-10 col-xs-8">
+								<input type="text" id="postcode" class="form-control" name="postcode" value="" placeholder="Enter a Postcode...">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="phone" class="control-label col-md-2 col-xs-4">Phone</label>
+							<div class="input-group col-md-10 col-xs-8">
+								<input type="text" id="phone" class="form-control" name="phone" value="" placeholder="Enter a Phone Number...">
+							</div>
+						</div>
+					</loggedin>
 					<div class="pull-right">
-						<button class="btn btn-success">Confirm Order</button>
+						<button type="submit" class="btn btn-success">Confirm Order</button>
 					</div>
-				</form>
+				</div>
 			</div>
-		</div>
+		</form>
 	</emptycart>
 </div>
 </block inbed="cart">

@@ -81,10 +81,20 @@ if($show=='categories'){
 				<td class="text-center"><small><?php echo date($config['dateFormat'],$r['ti']);?></small></td>
 				<td class="text-center"><small><?php echo date($config['dateFormat'],$r['eti']);?></small></td>
 				<td><small><?php echo$r['title'];?></small></a>
-				<td class="text-center"><small class="label label-<?php if($r['status']=='published'){echo'success';}elseif($r['status']=='unpublished'){echo'warning';}else{echo'danger';}?>"><?php echo$r['status'];?></small></td>
+				<td class="text-center"><div class="btn-group"><?php if($r['contentType']!='proofs'){?>
+					<select id="status" class="btn btn-default btn-xs" onchange="update('<?php echo$r['id'];?>','content','status',$(this).val());"<?php if($user['options']{1}==0){echo' readonly';}?>>
+						<option value="unpublished"<?php if($r['status']=='unpublished')echo' selected';?>>Unpublished</option>
+						<option value="published"<?php if($r['status']=='published')echo' selected';?>>Published</option>
+						<option value="delete"<?php if($r['status']=='delete')echo' selected';?>>Delete</option>
+					</select>
+				<?php }?></div></td>
 				<td class="text-center"><small><?php echo$r['views'];?></small></td>
-				<td class="text-center"><i class="fa fa-<?php if($r['featured']{0}==1){echo'check text-success';}else{echo'close text-muted';}?>"></i></td>
-				<td class="text-center"><i class="fa fa-<?php if($r['internal']{0}==1){echo'check text-success';}else{echo'close text-muted';}?>"></i></td>
+				<td class="text-center"><div class="btn-group"><?php if($r['contentType']!='proofs'){?>
+					<input type="checkbox" id="featured0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="featured" data-dbb="0"<?php if($r['featured']{0}==1){echo' checked';}?><?php if($user['options']{1}==0){echo' readonly';}?>>
+				<?php }?></div></td>
+				<td class="text-center"><div class="btn-group"><?php if($r['contentType']!='proofs'){?>
+					<input type="checkbox" id="internal0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="internal" data-dbb="0"<?php if($r['internal']==1){echo' checked';}?><?php if($user['options']{1}==0){echo' readonly';}?>>
+				<?php }?></div></td>
 				<td id="controls_<?php echo$r['id'];?>" class="text-right">
 					<a class="btn btn-primary btn-xs<?php if($r['status']=='delete'){echo' hidden';}?>" href="admin/content/edit/<?php echo$r['id'];?>">View</a> 
 <?php		if($user['rank']==1000||$user['options']{0}==1){?>
@@ -572,10 +582,10 @@ if($show=='item'){
 			$ru=$su->fetch(PDO::FETCH_ASSOC);
 			if($ru['gravatar']!=''){
 				$avatar=$ru['gravatar'];
-			}elseif($ru['avatar']!=''&&file_exists('files/'.$ru['avatar'])){
+			}elseif($ru['avatar']!=''&&file_exists('media/avatar/'.$ru['avatar'])){
 				$avatar='media/'.$ru['avatar'];
 			}else{
-				$avatar='includes/images/noavatar.jpg';
+				$avatar='core/images/noavatar.jpg';
 			}?>
 			<img class="commentavatar img-thumbnail" src="<?php echo$avatar;?>">
 		</div>
@@ -594,7 +604,7 @@ if($show=='item'){
 		</div>
 <?php 	}?>
 	</div>
-<?php 	if($r['options']{1}==1||$user['rank']>399){?>
+<?php 	if($r['options']{1}==1){?>
 	<div class="media">
 		<div class="media-body col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<iframe name="comments" id="comments" class="hidden"></iframe>

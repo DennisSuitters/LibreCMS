@@ -171,6 +171,8 @@ foreach($tags as $tag){
 			}
 			if($attribute=='comments')
 				$parsing.=htmlentities($rc['name'],ENT_QUOTES,'UTF-8');
+			if($attribute=='content')
+				$parsing.=htmlentities($r['name'],ENT_QUOTES,'UTF-8');
 			break;
 		case'notes':
 			if($attribute=='author')$parsing.=$author['notes'];

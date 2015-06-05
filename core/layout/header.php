@@ -69,17 +69,17 @@ if($user['rank']==1000||$user['options']{6}==1){?>
 	}else{
 		$avatar=$noavatar;
 	}?>
-				<div class="btn-group">
-					<a class="btn btn-primary dropdown-toggle" style="margin-top:7px" data-toggle="dropdown" href="#">
-						<img id="avatar" class="fa img-circle" src="<?php echo$avatar;?>"> <?php echo$user['username'];?>
-						<i class="fa fa-caret-down"></i>
-					</a>
-					<ul class="dropdown-menu pull-right">
-						<li><a href="<?php echo URL.'admin/accounts/edit/'.$user['id'];?>"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
-						<li class="divider"></li>
-						<li><a href="<?php echo URL;?>logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
-					</ul>
-				</div>
+						<div class="btn-group">
+							<a class="btn btn-primary dropdown-toggle" style="margin-top:7px" data-toggle="dropdown" href="#">
+								<img id="avatar" class="img-circle" src="<?php echo$avatar;?>"> <?php echo$user['username'];?>
+								<i class="caret"></i>
+							</a>
+							<ul class="dropdown-menu pull-right">
+								<li><a href="<?php echo URL.'admin/accounts/edit/'.$user['id'];?>"><i class="libre libre-pencil libre-fw"></i> Edit</a></li>
+								<li class="divider"></li>
+								<li><a href="<?php echo URL;?>logout"><i class="libre libre-sign-out libre-fw"></i> Logout</a></li>
+							</ul>
+						</div>
 					</li>
 				</ul>
 

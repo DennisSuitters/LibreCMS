@@ -9,7 +9,7 @@
 					<cost>
 						<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
 							<meta itemprop="currency" content="AUD">
-							<h4 itemprop="price">&#36;<print content=cost></h4>
+							<h4 itemprop="price">&#36;<print content="cost"></h4>
 							<controls>
 								<inventory>
 									<button class="btn btn-success" onclick="$('#cart').load('core/add_cart.php?id=<print content=id>');">Add to Cart</button>
@@ -42,7 +42,7 @@
 				</div>
 			</article>
 		</item>
-		<print page=notes>
+		<print page="notes">
 		<settings itemCount="10">
 		<loop>
 			<article class="col-md-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
