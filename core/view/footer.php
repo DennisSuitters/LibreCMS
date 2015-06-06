@@ -1,5 +1,5 @@
 <?php
-if(isset($user['rank'])&&$user['rank']>0){
+if($_SESSION['rank']>0){
 	$link='<a href="logout"><small>Logout</small></a>';
 }else{
 	if($config['options']{3}==1){

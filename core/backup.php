@@ -1,6 +1,5 @@
-<?php
-echo'<script>/*<![CDATA[*/';
-session_start();
+<script>/*<![CDATA[*/
+<?php session_start();
 include'db.php';
 $tables=array();
 $db->setAttribute(PDO::ATTR_ORACLE_NULLS,PDO::NULL_NATURAL);

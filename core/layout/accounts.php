@@ -45,7 +45,7 @@ if($args[0]=='edit'){
 			<option value="700"<?php if($r['rank']==700){echo' selected';}?>>Editor</option>
 			<option value="800"<?php if($r['rank']==800){echo' selected';}?>>Manager</option>
 			<option value="900"<?php if($r['rank']==900){echo' selected';}?>>Administrator</option>
-<?php	if($user['rank']==1000){?>
+<?php	if($_SESSION['rank']==1000){?>
 			<option value="1000"<?php if($r['rank']==1000){echo' selected';}?>>Developer</option>
 <?php	}?>
 		</select>
@@ -344,11 +344,11 @@ if($args[0]=='type'){
 	$s->execute(array(':rank'=>$rank));
 }else{
 	$s=$db->prepare("SELECT * FROM login WHERE rank<:rank ORDER BY ti ASC");
-	$s->execute(array(':rank'=>$user['rank']+1));
+	$s->execute(array(':rank'=>$_SESSION['rank']+1));
 }
 	
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
-		if($user['rank']>900&&$r['status']=='delete')continue;?>
+		if($_SESSION['rank']>900&&$r['status']=='delete')continue;?>
 			<tr id="l_<?php echo$r['id'];?>" class="placeholder<?php if($r['status']=='delete'){echo' danger';}?>">
 				<td><?php echo$r['username'];?></td>
 				<td><?php echo$r['name'];?></td>
@@ -382,7 +382,7 @@ if($args[0]=='type'){
 					<a class="btn btn-primary btn-xs<?php if($r['status']=='delete'){echo' hidden';}?>" href="admin/accounts/edit/<?php echo$r['id'];?>">View</a> 
 					<button class="btn btn-primary btn-xs<?php if($r['status']!='delete'){echo' hidden';}?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','')">Restore</button> 
 					<button class="btn btn-danger btn-xs<?php if($r['status']=='delete'){echo' hidden';}?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')">Delete</button> 
-<?php	if($user['rank']>899){?>
+<?php	if($_SESSION['rank']>899){?>
 					<button class="btn btn-warning btn-xs<?php if($r['status']!='delete'){echo' hidden';}?>" onclick="purge('<?php echo$r['id'];?>','login')">Purge</button>
 <?php	}?>
 				</td>

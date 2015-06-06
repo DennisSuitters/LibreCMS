@@ -1,6 +1,5 @@
-<?php
-echo'<script>/*<![CDATA[*/';
-session_start();
+<script>/*<![CDATA[*/
+<?php session_start();
 include'db.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
@@ -24,9 +23,7 @@ if($act=='quantity'){
 			$q=$db->prepare("SELECT id,name,email,avatar,gravatar FROM login WHERE email=:email");
 			$q->execute(array(':email'=>$email));
 			$u=$q->fetch(PDO::FETCH_ASSOC);
-			if($u['email']==''){
-				$u=array('id'=>'0','name'=>$name,'email'=>$email,'avatar'=>'','gravatar'=>'');
-			}
+			if($u['email']=='')$u=array('id'=>'0','name'=>$name,'email'=>$email,'avatar'=>'','gravatar'=>'');
 			$q=$db->prepare("INSERT INTO comments (contentType,rid,uid,ip,avatar,gravatar,email,name,notes,status,ti) VALUES (:contentType,:rid,:uid,:ip,:avatar,:gravatar,:email,:name,:notes,:status,:ti)");
 			$q->execute(array(':contentType'=>$contentType,':rid'=>$rid,':uid'=>$u['id'],':ip'=>$ip,':avatar'=>$u['avatar'],':gravatar'=>$u['gravatar'],':email'=>$u['email'],':name'=>$u['name'],':notes'=>$notes,':status'=>'unapproved',':ti'=>$ti));
 			$id=$db->lastInsertId();
@@ -58,12 +55,9 @@ if($act=='quantity'){
 						}
 					}
 				}
-			}else{
-				$notification=$theme['settings']['comment_error'];
-			}
+			}else $notification=$theme['settings']['comment_error'];
 		}
 	}
 }?>
 	window.top.document.getElementById("notification").innerHTML='<?php echo$notification;?>';
 /*]]>*/</script>
-<?php

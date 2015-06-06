@@ -15,32 +15,24 @@ $noavatar=$this->noavatar();
 $sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
 $sp->execute(array(':contentType'=>$view));
 $page=$sp->fetch(PDO::FETCH_ASSOC);
-if($view=='index')
-	$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
-else
-	$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'];
+if($view=='index')$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
+else$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'];
 $seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
 $seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
 $seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
 $canonical=URL.$view.'/';
 require'core/login.php';
 require'core/cart_quantity.php';
-if($user['rank']>699){
-	$status="%";
-}else{
-	$status="published";
-}
+if($_SESSION['rank']>699)$status="%";
+else$status="published";
 $content='';
-if(file_exists(THEME.'/'.$view.'.html'))
-	$template=file_get_contents(THEME.'/'.$view.'.html');
-elseif(file_exists(THEME.'/default.html'))
-	$template=file_get_contents(THEME.'/default.html');
-else
-	$template=file_get_contents(THEME.'/content.html');
+if(file_exists(THEME.'/'.$view.'.html'))$template=file_get_contents(THEME.'/'.$view.'.html');
+elseif(file_exists(THEME.'/default.html'))$template=file_get_contents(THEME.'/default.html');
+else$template=file_get_contents(THEME.'/content.html');
 $newDom=new DOMDocument();
 @$newDom->loadHTML($template);
 $tag=$newDom->getElementsByTagName('block');
-foreach($tag as $tag1){
+foreach($tag as$tag1){
 	$inc=$tag1->getAttribute('include');
 	$inbed=$tag1->getAttribute('inbed');
 	if($inc!=''){
@@ -65,7 +57,7 @@ $head=str_replace('<print config:url>',URL,$head);
 $head=str_replace('<print view>',$view,$head);
 $head=str_replace('<print seoKeywords>',$seoKeywords,$head);
 if($view=='index'&&$seoDescription!='')$head=str_replace('<print seoCaption>',$seoDescription,$head);
-else $head=str_replace('<print seoCaption>',$seoCaption,$head);
+else$head=str_replace('<print seoCaption>',$seoCaption,$head);
 $head=str_replace('<print shareImage>',$share_image,$head);
 $head=str_replace('<print favicon>',$favicon,$head);
 $head=str_replace('<print dateAtom>',date(DATE_ATOM,time()),$head);
@@ -95,17 +87,14 @@ if($act!='logout'){
 		$q=$db->prepare("INSERT INTO tracker (vid,contentType,ip,pageName,queryString,httpReferer,httpUserAgent,bot,browser,os,ti) VALUES (:vid,:contentType,:ip,:pageName,:queryString,:httpReferer,:httpUserAgent,:bot,:browser,:os,:ti)");
 		$q->execute(array(':vid'=>$vid,':contentType'=>$view,':ip'=>$ip,':pageName'=>$pageName,':queryString'=>$queryString,':httpReferer'=>$httpReferer,':httpUserAgent'=>$httpUserAgent,':bot'=>$bot,':browser'=>$browser['name'],':os'=>$browser['platform'],':ti'=>$ti));
 		$e=$db->errorInfo();
-		if(!is_null($e[2]))
-			$_SESSION['tracker']=false;
+		if(!is_null($e[2]))$_SESSION['tracker']=false;
 		else{
 			$_SESSION['tracker']=true;
 			$lid=$db->lastInsertId();
 			$lr=$db->query("SELECT MAX(vid) as next FROM tracker")->fetch(PDO::FETCH_ASSOC);
 			$l=$lr['next'];
-			if(!isset($l))
-				$l=1;
-			else
-				$l++;
+			if(!isset($l))$l=1;
+			else$l++;
 			$q=$db->prepare("UPDATE tracker SET vid=:vid WHERE id=:id");
 			$q->execute(array(':vid'=>$l,':id'=>$lid));
 			$_SESSION['vid']=$l;
@@ -126,9 +115,7 @@ function is_bot(){
 		"WebAlta Crawler",	"TweetmemeBot",		"Butterfly",			"Twitturls",
 		"Me.dium",			"Twiceler"
 	);
-	foreach($botlist as$bot){
-		if(strpos($_SERVER['HTTP_USER_AGENT'],$bot)!==false){return$bot;}
-	}
+	foreach($botlist as$bot)if(strpos($_SERVER['HTTP_USER_AGENT'],$bot)!==false){return$bot;}
 	return'visitor';
 }
 function getBrowser(){
@@ -136,12 +123,9 @@ function getBrowser(){
 	$bname='Unknown';
 	$platform='Unknown';
 	$version="";
-	if(preg_match('/linux/i',$uagent))
-		$platform='linux';
-	elseif(preg_match('/macintosh|mac os x/i',$uagent))
-		$platform='mac';
-	elseif(preg_match('/windows|win32/i',$uagent))
-		$platform='windows';
+	if(preg_match('/linux/i',$uagent))$platform='linux';
+	elseif(preg_match('/macintosh|mac os x/i',$uagent))$platform='mac';
+	elseif(preg_match('/windows|win32/i',$uagent))$platform='windows';
 	if(preg_match('/MSIE/i',$uagent)&&!preg_match('/Opera/i',$uagent)){
 		$bname='Explorer';
 		$ub="MSIE";
@@ -166,12 +150,9 @@ function getBrowser(){
 	if(!preg_match_all($pattern,$uagent,$matches)){}
 	$i=count($matches['browser']);
 	if($i!=1){
-		if(strripos($uagent,"Version")<strripos($uagent,$ub))
-			$version=$matches['version'][0];
-		else
-			$version=$matches['version'][1];
-	}else
-		$version=$matches['version'][0];
+		if(strripos($uagent,"Version")<strripos($uagent,$ub))$version=$matches['version'][0];
+		else$version=$matches['version'][1];
+	}else$version=$matches['version'][0];
 	if($version==null||$version==""){$version="?";}
 	return array(
 		'userAgent'=>$uagent,	'name'=>$bname,		'version'=>$version,

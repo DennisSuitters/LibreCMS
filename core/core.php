@@ -1,5 +1,4 @@
 <?php
-/* Config */
 require_once'core/db.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
@@ -15,7 +14,7 @@ class internal{
 		return$config;
 	}
 	function humans($args=false){
-		require 'core/humans.php';
+		require'core/humans.php';
 	}
 	function sitemap($args=false){
 		require'core/sitemap.php';
@@ -143,7 +142,7 @@ class admin{
 class front{
 	function getconfig($db){
 		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-		return $config;
+		return$config;
 	}
 	function favicon(){
 		if(file_exists(THEME.'/images/favicon.png')){
@@ -157,7 +156,7 @@ class front{
 		}else{
 			$favicon='core/images/favicon.png';
 		}
-		return $favicon;
+		return$favicon;
 	}
 	function noimage(){
 		if(file_exists(THEME.'/images/noimage.png')){
@@ -169,7 +168,7 @@ class front{
 		}else{
 			$noimage='core/images/noimage.jpg';
 		}
-		return $noimage;
+		return$noimage;
 	}
 	function noavatar(){
 		if(file_exists(THEME.'/images/noavatar.png')){
@@ -181,7 +180,7 @@ class front{
 		}else{
 			$noavatar='core/images/noavatar.jpg';
 		}
-		return $noavatar;
+		return$noavatar;
 	}
 	function article($args=false){
 		$view='article';
@@ -225,7 +224,6 @@ class front{
 	}
 	function logout($args=false){
 		$act='logout';
-		require'login.php';
 		$view='index';
 		require'process.php';
 	}
@@ -267,67 +265,67 @@ class front{
 	}
 }
 /* Router */
-$routes=array(
-	'error'				=>	array('front','error'),
-	''					=>	array('front','index'),
-	'index'				=>	array('front','index'),
-	'article'			=>	array('front','article'),
-	'portfolio'			=>	array('front','portfolio'),
-	'bookings'			=>	array('front','bookings'),
-	'events'			=>	array('front','events'),
-	'news'				=>	array('front','news'),
-	'testimonials'		=>	array('front','testimonials'),
-	'inventory'			=>	array('front','inventory'),
-	'services'			=>	array('front','services'),
-	'gallery'			=>	array('front','gallery'),
-	'contactus'			=>	array('front','contactus'),
-	'cart'				=>	array('front','cart'),
-	'sitemap'			=>	array('front','sitemap'),
-	'tos'				=>	array('front','tos'),
-	'login'				=>	array('front','login'),
-	'logout'			=>	array('front','logout'),
-	'proofs'			=>	array('front','proofs'),
-	'search'			=>	array('front','search'),
-	'sitemap'			=>	array('front','sitemap'),
-	'settings'			=>	array('front','settings'),
-	'admin/add'			=>	array('admin','add'),
-	'admin/accounts'	=>	array('admin','accounts'),
-	'admin/bookings'	=>	array('admin','bookings'),
-	'admin/content'		=>	array('admin','content'),
-	'admin/article'		=>	array('admin','article'),
-	'admin/portfolio'	=>	array('admin','portfolio'),
-	'admin/events'		=>	array('admin','events'),
-	'admin/news'		=>	array('admin','news'),
-	'admin/testimonials'=>	array('admin','testimonials'),
-	'admin/inventory'	=>	array('admin','inventory'),
-	'admin/services'	=>	array('admin','services'),
-	'admin/gallery'		=>	array('admin','gallery'),
-	'admin/proofs'		=>	array('admin','proofs'),
-	'admin/media'		=>	array('admin','media'),
-	'admin/messages'	=>	array('admin','messages'),
-	'admin/orders'		=>	array('admin','orders'),
-	'admin/pages'		=>	array('admin','pages'),
-	'admin/preferences'	=>	array('admin','preferences'),
-	'admin/proofs'		=>	array('admin','proofs'),
-	'admin/search'		=>	array('admin','search'),
-	'admin/statistics'	=>	array('admin','statistics'),
-	'admin'				=>	array('admin','statistics'),
-	'humans.txt'		=>	array('internal','humans'),
-	'sitemap.xml'		=>	array('internal','sitemap'),
-	'robots.txt'		=>	array('internal','robots'),
-	'rss'				=>	array('internal','rss')
-);
 $route=new router();
-$route->setRoutes($routes);
+$route->setRoutes(
+	array(
+		'error'				=>array('front','error'),
+		''					=>array('front','index'),
+		'index'				=>array('front','index'),
+		'article'			=>array('front','article'),
+		'portfolio'			=>array('front','portfolio'),
+		'bookings'			=>array('front','bookings'),
+		'events'			=>array('front','events'),
+		'news'				=>array('front','news'),
+		'testimonials'		=>array('front','testimonials'),
+		'inventory'			=>array('front','inventory'),
+		'services'			=>array('front','services'),
+		'gallery'			=>array('front','gallery'),
+		'contactus'			=>array('front','contactus'),
+		'cart'				=>array('front','cart'),
+		'sitemap'			=>array('front','sitemap'),
+		'tos'				=>array('front','tos'),
+		'login'				=>array('front','login'),
+		'logout'			=>array('front','logout'),
+		'proofs'			=>array('front','proofs'),
+		'search'			=>array('front','search'),
+		'sitemap'			=>array('front','sitemap'),
+		'settings'			=>array('front','settings'),
+		'admin/add'			=>array('admin','add'),
+		'admin/accounts'	=>array('admin','accounts'),
+		'admin/bookings'	=>array('admin','bookings'),
+		'admin/content'		=>array('admin','content'),
+		'admin/article'		=>array('admin','article'),
+		'admin/portfolio'	=>array('admin','portfolio'),
+		'admin/events'		=>array('admin','events'),
+		'admin/news'		=>array('admin','news'),
+		'admin/testimonials'=>array('admin','testimonials'),
+		'admin/inventory'	=>array('admin','inventory'),
+		'admin/services'	=>array('admin','services'),
+		'admin/gallery'		=>array('admin','gallery'),
+		'admin/proofs'		=>array('admin','proofs'),
+		'admin/media'		=>array('admin','media'),
+		'admin/messages'	=>array('admin','messages'),
+		'admin/orders'		=>array('admin','orders'),
+		'admin/pages'		=>array('admin','pages'),
+		'admin/preferences'	=>array('admin','preferences'),
+		'admin/proofs'		=>array('admin','proofs'),
+		'admin/search'		=>array('admin','search'),
+		'admin/statistics'	=>array('admin','statistics'),
+		'admin'				=>array('admin','statistics'),
+		'humans.txt'		=>array('internal','humans'),
+		'sitemap.xml'		=>array('internal','sitemap'),
+		'robots.txt'		=>array('internal','robots'),
+		'rss'				=>array('internal','rss')
+	));
 $route->routeURL(preg_replace("|/$|","",filter_input(INPUT_GET,'url',FILTER_SANITIZE_URL)));
 function minify($txt){
 	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
 }
 class router{
-	protected $route_match=false;
-	protected $route_call=false;
-	protected $route_call_args=false;
-	protected $routes=array();
+	protected$route_match=false;
+	protected$route_call=false;
+	protected$route_call_args=false;
+	protected$routes=array();
 	public function __construct(){
 	
 	}

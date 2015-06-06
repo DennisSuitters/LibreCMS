@@ -1,5 +1,5 @@
 <?php
-if($user['rank']>0){
+if($_SESSION['rank']>0){
 	if($view=='proofs')$html=str_replace('<print activeproofs>',' class="active"',$html);else $html=str_replace('<print activeproofs>','',$html);
 	if($view=='orders')$html=str_replace('<print activeorders>',' class="active"',$html);else $html=str_replace('<print activeorders>','',$html);
 	if($view=='settings')$html=str_replace('<print activesettings>',' class="active"',$html);else $html=str_replace('<print activesettings>','',$html);

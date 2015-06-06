@@ -9,26 +9,19 @@ $noavatar=$this->noavatar();
 $sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
 $sp->execute(array(':contentType'=>$view));
 require'core/login.php';
-if($user['rank']>399){
+if($_SESSION['rank']>399){
 	require'core/layout/meta_head.php';
 	require'core/layout/header.php';?>
 <main id="content" class="col-md-12">
 	<div class="panel panel-default">
 		<div class="panel-body">
 <?php if($view=='add'){
-		if($args[0]=='bookings'){
-			require'core/layout/bookings.php';
-		}else{
-			require'core/layout/content.php';
-		}
-}else{
-	require'core/layout/'.$view.'.php';
-}?>
+		if($args[0]=='bookings') require'core/layout/bookings.php';
+		else require'core/layout/content.php';
+	}else require'core/layout/'.$view.'.php';?>
 		</div>
 	</div>
 </main>
 <?php require'core/layout/footer.php';
 	require'core/layout/meta_footer.php';
-}else{
-	require'core/layout/login.php';
-}
+}else require'core/layout/login.php';

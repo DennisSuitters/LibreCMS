@@ -1,6 +1,5 @@
-<?php
-echo'<script>/*<![CDATA[*/';
-session_start();
+<script>/*<![CDATA[*/
+<?php session_start();
 include'db.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
@@ -32,9 +31,7 @@ if($act=='quantity'){
 	$q->execute(array(':si'=>$si));
 	$r=$q->fetch(PDO::FETCH_ASSOC);
 	$cnt=$r['quantity'];
-	if($r['quantity']==0){
-		$cnt='';
-	}?>
+	if($r['quantity']==0)$cnt='';?>
 	window.top.document.getElementById("cart").innerHTML='<?php echo$cnt;?>';
 <?php $total=0;
 	$content='';
@@ -69,6 +66,6 @@ if($act=='quantity'){
 	window.top.document.getElementById("total").innerHTML='<?php echo$total;?>';
 	window.top.document.getElementById("orderitems").innerHTML='<?php echo preg_replace('/^\s+|\n|\r|\s+$/m', '', $cartitems);?>';
 <?php }
-}
-}
-echo'/*]]>*/</script>';
+	}
+}?>
+/*]]>*/</script>

@@ -4,8 +4,9 @@ if(!isset($act)){
 }
 if($act=='logout'){
 	$_SESSION=array();
-	$user=array('rank'=>0);
-}elseif($act=='login'||(isset($_SESSION['username'])&&isset($_SESSION['password']))){
+	$_SESSION['loggedin']=false;
+	$_SESSION['rank']=0;
+}elseif($act=='login'||$_SESSION['loggedin']==true){
 	$username=isset($_POST['username'])?filter_input(INPUT_POST,'username',FILTER_SANITIZE_STRING):$_SESSION['username'];
 	$password=isset($_POST['password'])?filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING):$_SESSION['password'];
 	$userHash=hash('SHA512',$username);
@@ -15,12 +16,16 @@ if($act=='logout'){
 	$user=$q->fetch(PDO::FETCH_ASSOC);
 	if($user['id']>0){
 		$_SESSION['username']=$user['username'];
-		$_SESSION['uid']=$user['id'];
 		$_SESSION['password']=$password;
-		$login=true;
+		$_SESSION['uid']=$user['id'];
+		$_SESSION['rank']=$user['rank'];
+		$_SESSION['loggedin']=true;
 	}else{
-		$login=false;
+		$_SESSION=array();
+		$_SESSION['loggedin']=false;
+		$_SESSION['rank']=0;
 	}
 }else{
-	$user=array('rank'=>0);
+	$_SESSION['loggedin']=false;
+	$_SESSION['rank']=0;
 }

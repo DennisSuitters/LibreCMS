@@ -1,15 +1,12 @@
-<script>/*<![CDATA[*/<?php
-session_start();
+<script>/*<![CDATA[*/
+<?php session_start();
 require'db.php';
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $tbl=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
 $col=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
-if($tbl=='content'||$tbl=='menu'||$tbl=='seo'&&$col=='notes'){
-	$da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_UNSAFE_RAW):filter_input(INPUT_GET,'da',FILTER_UNSAFE_RAW);
-}else{
-	$da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'da',FILTER_SANITIZE_STRING);
-}
+if($tbl=='content'||$tbl=='menu'||$tbl=='seo'&&$col=='notes')$da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_UNSAFE_RAW):filter_input(INPUT_GET,'da',FILTER_UNSAFE_RAW);
+else $da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'da',FILTER_SANITIZE_STRING);
 $si=session_id();
 if(isset($_SESSION['uid'])){
 	$uid=(int)$_SESSION['uid'];
@@ -23,9 +20,7 @@ if(isset($_SESSION['uid'])){
 	$login_user="Anonymous";
 }
 if($col=='tis'||$col=='tie'||$col=='due_ti'){
-	if($tbl!='orders'){
-		$da=strtotime($da);
-	}
+	if($tbl!='orders')$da=strtotime($da);
 }
 if($tbl=='login'&&$col=='password'){
 	require'password.php';
@@ -50,9 +45,9 @@ if(is_null($e[2])){
 	window.top.window.$('#due_ti').html('<?php echo date($config['dateFormat'],$da);?>');
 <?php }
 	if($tbl=='content'&&$col=='file'&&$da==''){
-		if(file_exists('../media/file_'.$id.'.jpg')){unlink('../media/file_'.$id.'.jpg');}
-		if(file_exists('../media/file_'.$id.'.png')){unlink('../media/file_'.$id.'.png');}
-		if(file_exists('../media/file_'.$id.'.gif')){unlink('../media/file_'.$id.'.gif');}
+		if(file_exists('../media/file_'.$id.'.jpg'))unlink('../media/file_'.$id.'.jpg');
+		if(file_exists('../media/file_'.$id.'.png'))unlink('../media/file_'.$id.'.png');
+		if(file_exists('../media/file_'.$id.'.gif'))unlink('../media/file_'.$id.'.gif');
 	}
 	if($tbl=='orderitems'||$tbl=='cart'){
 		if($tbl=='cart'&&$col=='quantity'){
@@ -65,9 +60,7 @@ if(is_null($e[2])){
 			$q->execute(array(':si'=>$si));
 			$r=$q->fetch(PDO::FETCH_ASSOC);
 			$cnt=$r['quantity'];
-			if($r['quantity']==0){
-				$cnt='';
-			}?>
+			if($r['quantity']==0)$cnt='';?>
 	window.top.window.$('#cart').html('<?php echo$cnt;?>');
 <?php	}
 		if($tbl=='orderitems'&&$col=='quantity'&&$da==0){

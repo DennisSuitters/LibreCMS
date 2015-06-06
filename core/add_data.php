@@ -1,7 +1,5 @@
-
-<?php
-echo'<script>/*<![CDATA[*/';
-session_start();
+<script>/*<![CDATA[*/
+<?php session_start();
 include'db.php';
 include'zebra_image.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
@@ -291,4 +289,4 @@ if($act!=''){
 	}
 }
 //	window.top.window.$('#busy').css("display","none");?>
-<?php echo'/*]]>*/</script>';
+/*]]>*/</script>

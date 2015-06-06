@@ -21,6 +21,7 @@ if($ii>0){
 		$indicator=$matches[1];
 	}
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
+		if(!file_exists('media/'.$r['file']))continue;
 		$item=$it;
 		$indicatorItem=$indicator;
 		if($i==0){
