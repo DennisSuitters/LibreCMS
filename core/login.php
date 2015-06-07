@@ -6,7 +6,7 @@ if($act=='logout'){
 	$_SESSION=array();
 	$_SESSION['loggedin']=false;
 	$_SESSION['rank']=0;
-}elseif($act=='login'||$_SESSION['loggedin']==true){
+}elseif($act=='login'||(isset($_SESSION['loggedin'])&&$_SESSION['loggedin']==true)){
 	$username=isset($_POST['username'])?filter_input(INPUT_POST,'username',FILTER_SANITIZE_STRING):$_SESSION['username'];
 	$password=isset($_POST['password'])?filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING):$_SESSION['password'];
 	$userHash=hash('SHA512',$username);
