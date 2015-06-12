@@ -10,15 +10,13 @@
 <?php }?>
 		<script src="core/js/summernote.js"></script>
 		<script src="core/js/bootstrap-datetimepicker.min.js"></script>
-		<script src="core/js/jquery.simplecolorpicker.js"></script>
 		<script src="core/js/js.js"></script>
 		<script>/*<![CDATA[*/
 			$(document).ready(function(){
-				$(document).on("hidden.bs.modal", function (e) {
-    				$(e.target).removeData("bs.modal").find(".modal-content").empty();
+				$(document).on("hidden.bs.modal",function (e){
+    				$(e.target).removeData("bs.modal").find(".modal-content").empty()
 				});
 				$(".summernote").summernote();
-				$("#backgroundColor").simplecolorpicker();
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});
 				$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
 <?php	if($config['options']{4}==1){?>

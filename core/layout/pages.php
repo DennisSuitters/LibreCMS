@@ -27,14 +27,14 @@ if($show=='pages'){
 				<td class="text-center"><small><?php echo ucfirst($r['menu']);?></small></td>
 				<td><small><?php echo$r['title'];?></small></td>
 				<td class="text-center"><small>
-<?php		if($r['eti']==0)
-				echo'Never';
-			else
-				echo date($config['dateFormat'],$r['eti']).' by '.$r['login_user'];?>
+<?php		if($r['eti']==0)echo'Never';
+			else echo date($config['dateFormat'],$r['eti']).' by '.$r['login_user'];?>
 				</small></td>
-				<td class="text-center"><i class="fa fa-<?php if($r['active']==1){echo'check text-success';}else{echo'close text-muted';}?>"></i></td>
+				<td class="text-center">
+					<input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
+				</td>
 				<td id="controls_<?php echo$r['id'];?>" class="text-right">
-					<a class="btn btn-primary btn-xs" href="admin/pages/edit/<?php echo$r['id'];?>">View</a> 
+					<a class="btn btn-default btn-xs" href="admin/pages/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php if($config['buttonType']=='text')echo'Edit';else echo'<i class="libre libre-edit"></i>';?></a>
 				</td>
 			</tr>
 <?php	}?>
@@ -46,7 +46,7 @@ if($show=='item'){
 	$r=$s->fetch(PDO::FETCH_ASSOC);?>
 <div class="form-group clearfix">
 	<div class="input-group pull-right">
-		<a class="btn btn-success" href="<?php echo URL.'/admin/pages';?>">Back</a>
+		<a class="btn btn-default" href="<?php echo URL.'/admin/pages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Back"';?>><?php if($config['buttonType']=='text')echo'Back';else echo'<i class="libre libre-back"></i>';?></a>
 	</div>
 </div>
 <div class="form-group">
@@ -54,7 +54,7 @@ if($show=='item'){
 		Title
 <?php 	if($config['options']{5}==1){?>
 		<div class="pull-right">
-			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=1"><i class="fa fa-life-ring text-danger"></i></a>
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=1"><i class="libre libre-help color-danger"></i></a>
 		</div>
 <?php 	}?>
 	</label>
@@ -65,15 +65,15 @@ if($show=='item'){
 <div class="form-group">
 	<label for="active" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">Active</label>
 	<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
-		<input type="checkbox" id="active" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1){echo' checked';}?>>
+		<input type="checkbox" id="active" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
 	</div>
 </div>
 <div class="form-group">
 	<label for="menu" class="control-label col-lg-2 col-md-2 col-sm-2 col-xs-4">Menu</label>
 	<div class="input-group col-lg-10 col-md-10 col-sm-10 col-xs-8">
 		<select id="menu" class="form-control" onchange="update('<?php echo$r['id'];?>','menu','menu',$(this).val());">
-			<option value="head"<?php if($r['menu']=='head'){echo' selected';}?>>Header</option>
-			<option value="footer"<?php if($r['menu']=='footer'){echo' selected';}?>>Footer</option>
+			<option value="head"<?php if($r['menu']=='head')echo' selected';?>>Head</option>
+			<option value="footer"<?php if($r['menu']=='footer')echo' selected';?>>Footer</option>
 		</select>
 	</div>
 </div>
@@ -82,7 +82,7 @@ if($show=='item'){
 		seoTitle
 <?php 	if($config['options']{5}==1){?>
 		<div class="pull-right">
-			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=11"><i class="fa fa-life-ring text-danger"></i></a>
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=11"><i class="libre libre-help color-danger"></i></a>
 		</div>
 <?php 	}?>
 	</label>
@@ -95,7 +95,7 @@ if($show=='item'){
 		seoCaption
 <?php 	if($config['options']{5}==1){?>
 		<div class="pull-right">
-			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=12"><i class="fa fa-life-ring text-danger"></i></a>
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=12"><i class="libre libre-help color-danger"></i></a>
 		</div>
 <?php 	}?>
 	</label>
@@ -108,7 +108,7 @@ if($show=='item'){
 		seoDescription
 <?php 	if($config['options']{5}==1){?>
 		<div class="pull-right">
-			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=13"><i class="fa fa-life-ring text-danger"></i></a>
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=13"><i class="libre libre-help color-danger"></i></a>
 		</div>
 <?php 	}?>
 	</label>
@@ -121,7 +121,7 @@ if($show=='item'){
 		seoKeywords
 <?php 	if($config['options']{5}==1){?>
 		<div class="pull-right">
-			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=14"><i class="fa fa-life-ring text-danger"></i></a>
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=14"><i class="libre libre-help color-danger"></i></a>
 		</div>
 <?php 	}?>
 	</label>
@@ -134,7 +134,7 @@ if($show=='item'){
 		Notes
 <?php 	if($config['options']{5}==1){?>
 		<div class="pull-right">
-			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=10"><i class="fa fa-life-ring text-danger"></i></a>
+			<a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=10"><i class="libre libre-help color-danger"></i></a>
 		</div>
 <?php 	}?>
 	</label>
@@ -155,7 +155,7 @@ if($show=='item'){
 <?php }?>
 	</div>
 	<small class="help-block text-right">
-		Edited: <?php if($r['eti']==0)echo'Never';Else echo date($config['dateFormat'],$r['eti']).' by '.$r['login_user'];?>
+		Edited: <?php if($r['eti']==0)echo'Never';else echo date($config['dateFormat'],$r['eti']).' by '.$r['login_user'];?>
 	</small>
 </div>
-<?php }?>
+<?php }

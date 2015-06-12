@@ -1,0 +1,292 @@
+cart
+  `id` bigint(20) unsigned NOT NULL,
+  `iid` bigint(20) unsigned NOT NULL,
+  `quantity` mediumint(20) unsigned NOT NULL,
+  `cost` decimal(10,2) unsigned NOT NULL,
+  `si` varchar(128) COLLATE utf8_bin NOT NULL,
+  `ti` int(10) unsigned NOT NULL
+
+choices
+  `id` bigint(20) unsigned NOT NULL,
+  `uid` bigint(20) unsigned NOT NULL,
+  `rid` bigint(20) unsigned NOT NULL,
+  `contentType` varchar(16) COLLATE utf8_bin NOT NULL,
+  `rank` int(4) unsigned NOT NULL,
+  `icon` varchar(20) COLLATE utf8_bin NOT NULL,
+  `url` varchar(255) COLLATE utf8_bin NOT NULL,
+  `title` varchar(60) COLLATE utf8_bin NOT NULL,
+  `ti` int(10) unsigned NOT NULL
+
+comments
+  `id` bigint(20) unsigned NOT NULL,
+  `contentType` varchar(16) COLLATE utf8_bin NOT NULL,
+  `rid` bigint(20) unsigned NOT NULL,
+  `uid` bigint(20) unsigned NOT NULL,
+  `cid` bigint(20) unsigned NOT NULL,
+  `ip` varchar(20) COLLATE utf8_bin NOT NULL,
+  `avatar` tinytext COLLATE utf8_bin NOT NULL,
+  `gravatar` tinytext COLLATE utf8_bin NOT NULL,
+  `email` varchar(60) COLLATE utf8_bin NOT NULL,
+  `name` varchar(40) COLLATE utf8_bin NOT NULL,
+  `notes` text COLLATE utf8_bin NOT NULL,
+  `status` varchar(16) COLLATE utf8_bin NOT NULL,
+  `active` tinyint(1) unsigned NOT NULL,
+  `ti` int(10) unsigned NOT NULL
+
+config
+  `id` tinyint(1) unsigned NOT NULL,
+  `options` varchar(8) COLLATE utf8_bin NOT NULL,
+    0
+    1
+    2
+    3   Enable Account Sign Ups
+    4   Enable Tooltips
+    5   Enable Clickable Helper Guides
+    6   Enable SEO Statistic Widget
+    7
+  `theme` varchar(16) COLLATE utf8_bin NOT NULL,
+  `seoTitle` varchar(60) COLLATE utf8_bin NOT NULL,
+  `seoDescription` varchar(255) COLLATE utf8_bin NOT NULL,
+  `seoCaption` varchar(255) COLLATE utf8_bin NOT NULL,
+  `seoKeywords` varchar(255) COLLATE utf8_bin NOT NULL,
+  `business` varchar(40) COLLATE utf8_bin NOT NULL,
+  `abn` varchar(32) COLLATE utf8_bin NOT NULL,
+  `address` varchar(80) COLLATE utf8_bin NOT NULL,
+  `suburb` varchar(40) COLLATE utf8_bin NOT NULL,
+  `city` varchar(40) COLLATE utf8_bin NOT NULL,
+  `state` varchar(40) COLLATE utf8_bin NOT NULL,
+  `country` varchar(40) COLLATE utf8_bin NOT NULL,
+  `postcode` mediumint(5) unsigned NOT NULL,
+  `phone` varchar(14) COLLATE utf8_bin NOT NULL,
+  `mobile` varchar(14) COLLATE utf8_bin NOT NULL,
+  `email` varchar(60) COLLATE utf8_bin NOT NULL,
+  `vti` int(10) unsigned NOT NULL,
+  `sti` int(10) unsigned NOT NULL,
+  `dateFormat` varchar(64) COLLATE utf8_bin NOT NULL,
+  `buttonType`
+  `email_check` int(10) NOT NULL,
+  `email_interval` int(10) NOT NULL,
+  `language` varchar(8) COLLATE utf8_bin NOT NULL,
+  `timezone` varchar(128) COLLATE utf8_bin NOT NULL,
+  `orderPayti` int(10) unsigned NOT NULL,
+  `orderEmailDefaultSubject` tinytext COLLATE utf8_bin NOT NULL,
+  `orderEmailLayout` text COLLATE utf8_bin NOT NULL,
+  `orderEmailNotes` text COLLATE utf8_bin NOT NULL,
+  `bank` varchar(60) COLLATE utf8_bin NOT NULL,
+  `bankAccountName` varchar(40) COLLATE utf8_bin NOT NULL,
+  `bankAccountNumber` varchar(40) COLLATE utf8_bin NOT NULL,
+  `bankBSB` varchar(16) COLLATE utf8_bin NOT NULL,
+  `bankPayPal` varchar(60) COLLATE utf8_bin NOT NULL,
+  `bti` int(10) unsigned NOT NULL,
+  `ti` int(10) unsigned NOT NULL
+
+content
+  `id` bigint(20) unsigned NOT NULL,
+  `options` varchar(8) COLLATE utf8_bin NOT NULL DEFAULT '00000000',
+    0
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+  `rank` int(4) NOT NULL,
+  `rid` bigint(20) unsigned NOT NULL,
+  `uid` bigint(20) unsigned NOT NULL,
+  `login_user` varchar(128) COLLATE utf8_bin NOT NULL,
+  `cid` bigint(20) unsigned NOT NULL,
+  `ip` varchar(20) COLLATE utf8_bin NOT NULL,
+  `contentType` varchar(16) COLLATE utf8_bin NOT NULL,
+  `schemaType` varchar(40) COLLATE utf8_bin NOT NULL,
+  `keywords` varchar(255) COLLATE utf8_bin NOT NULL,
+  `code` varchar(16) COLLATE utf8_bin NOT NULL,
+  `brand` varchar(40) COLLATE utf8_bin NOT NULL,
+  `title` varchar(60) COLLATE utf8_bin NOT NULL,
+  `category_1` varchar(30) COLLATE utf8_bin NOT NULL,
+  `category_2` varchar(30) COLLATE utf8_bin NOT NULL,
+  `name` varchar(40) COLLATE utf8_bin NOT NULL,
+  `url` varchar(128) COLLATE utf8_bin NOT NULL,
+  `email` varchar(60) COLLATE utf8_bin NOT NULL,
+  `business` varchar(40) COLLATE utf8_bin NOT NULL,
+  `address` varchar(80) COLLATE utf8_bin NOT NULL,
+  `suburb` varchar(40) COLLATE utf8_bin NOT NULL,
+  `city` varchar(40) COLLATE utf8_bin NOT NULL,
+  `state` varchar(40) COLLATE utf8_bin NOT NULL,
+  `postcode` mediumint(5) unsigned NOT NULL,
+  `phone` varchar(14) COLLATE utf8_bin NOT NULL,
+  `thumb` varchar(128) COLLATE utf8_bin NOT NULL,
+  `file` varchar(128) COLLATE utf8_bin NOT NULL,
+  `cost` decimal(10,2) unsigned NOT NULL,
+  `subject` varchar(60) COLLATE utf8_bin NOT NULL,
+  `notes` text COLLATE utf8_bin NOT NULL,
+  `quantity` mediumint(20) unsigned NOT NULL,
+  `tags` varchar(255) COLLATE utf8_bin NOT NULL,
+  `caption` varchar(255) COLLATE utf8_bin NOT NULL,
+  `status` varchar(16) COLLATE utf8_bin NOT NULL,
+  `service` bigint(20) unsigned NOT NULL,
+  `internal` tinyint(1) unsigned NOT NULL,
+  `featured` tinyint(1) unsigned NOT NULL,
+  `bookable` tinyint(1) NOT NULL,
+  `fti` int(10) unsigned NOT NULL,
+  `assoc` varchar(128) COLLATE utf8_bin NOT NULL,
+  `ord` bigint(20) unsigned NOT NULL,
+  `views` bigint(20) unsigned NOT NULL,
+  `active` tinyint(1) unsigned NOT NULL,
+  `tis` int(10) unsigned NOT NULL,
+  `tie` int(10) unsigned NOT NULL,
+  `lti` int(10) unsigned NOT NULL,
+  `ti` int(10) unsigned NOT NULL,
+  `eti` int(10) NOT NULL
+
+login
+  `id` bigint(20) unsigned NOT NULL,
+  `options` varchar(8) COLLATE utf8_bin NOT NULL DEFAULT '00000000',
+      0   Add/Remove Content
+      1   Edit Content
+      2   Add/Edit Bookings
+      3   Messege Viewing/Editing
+      4   Orders Viewing/Editing
+      5   User Accounts Viewing/Editing
+      6   SEO Viewing/Editing
+      7   Preferences Viewing/Editing
+  `username` varchar(128) COLLATE utf8_bin NOT NULL,
+  `password` varchar(2048) COLLATE utf8_bin NOT NULL,
+  `avatar` varchar(60) COLLATE utf8_bin NOT NULL,
+  `gravatar` varchar(60) COLLATE utf8_bin NOT NULL,
+  `business` varchar(40) COLLATE utf8_bin NOT NULL,
+  `name` varchar(40) COLLATE utf8_bin NOT NULL,
+  `email` varchar(60) COLLATE utf8_bin NOT NULL,
+  `email_check` int(10) NOT NULL,
+  `url` varchar(128) COLLATE utf8_bin NOT NULL,
+  `address` varchar(80) COLLATE utf8_bin NOT NULL,
+  `suburb` varchar(40) COLLATE utf8_bin NOT NULL,
+  `city` varchar(40) COLLATE utf8_bin NOT NULL,
+  `state` varchar(40) COLLATE utf8_bin NOT NULL,
+  `postcode` mediumint(5) unsigned NOT NULL,
+  `abn` varchar(32) COLLATE utf8_bin NOT NULL,
+  `phone` varchar(14) COLLATE utf8_bin NOT NULL,
+  `mobile` varchar(14) COLLATE utf8_bin NOT NULL,
+  `notes` text COLLATE utf8_bin NOT NULL,
+  `status` varchar(16) COLLATE utf8_bin NOT NULL,
+  `active` tinyint(1) unsigned NOT NULL,
+  `activate` varchar(255) COLLATE utf8_bin NOT NULL,
+  `adminCategory_1` varchar(30) COLLATE utf8_bin NOT NULL,
+  `adminCategory_2` varchar(30) COLLATE utf8_bin NOT NULL,
+  `adminCategory_ti` int(10) unsigned NOT NULL,
+  `language` varchar(8) COLLATE utf8_bin NOT NULL,
+  `timezone` varchar(128) COLLATE utf8_bin NOT NULL,
+  `rank` int(4) unsigned NOT NULL,
+      0     Visitor/Not Logged In
+      100   Subscriber
+      200   Member
+      300   Client
+      400   Contributor
+      500   Author
+      600   Editor
+      700   Moderator
+      800   Manager
+      900   Administrator
+      1000  Developer
+  `ti` int(10) unsigned NOT NULL
+
+menu
+  `id` bigint(20) unsigned NOT NULL,
+  `uid` bigint(20) NOT NULL,
+  `login_user` varchar(128) COLLATE utf8_bin NOT NULL,
+  `title` varchar(60) COLLATE utf8_bin NOT NULL,
+  `seoTitle` varchar(60) COLLATE utf8_bin NOT NULL,
+  `contentType` varchar(16) COLLATE utf8_bin NOT NULL,
+  `schemaType` varchar(40) COLLATE utf8_bin NOT NULL,
+  `seoKeywords` varchar(255) COLLATE utf8_bin NOT NULL,
+  `seoDescription` varchar(255) COLLATE utf8_bin NOT NULL,
+  `seoCaption` varchar(255) COLLATE utf8_bin NOT NULL,
+  `menu` varchar(16) COLLATE utf8_bin NOT NULL,
+  `notes` text COLLATE utf8_bin NOT NULL,
+  `ord` bigint(20) unsigned NOT NULL,
+  `active` tinyint(1) unsigned NOT NULL,
+  `eti` int(10) NOT NULL
+
+messages
+  `id` bigint(20) NOT NULL,
+  `uid` bigint(20) NOT NULL,
+  `mid` text COLLATE utf8_bin NOT NULL,
+  `rmid` bigint(20) NOT NULL,
+  `folder` varchar(16) COLLATE utf8_bin NOT NULL,
+  `to_email` varchar(255) COLLATE utf8_bin NOT NULL,
+  `to_name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `from_email` varchar(255) COLLATE utf8_bin NOT NULL,
+  `from_name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `subject` tinytext COLLATE utf8_bin NOT NULL,
+  `status` tinytext COLLATE utf8_bin NOT NULL,
+  `starred` int(1) NOT NULL,
+  `important` int(1) NOT NULL,
+  `notes_raw` text COLLATE utf8_bin NOT NULL,
+  `notes_raw_mime` tinytext COLLATE utf8_bin NOT NULL,
+  `notes_html` text COLLATE utf8_bin NOT NULL,
+  `notes_html_mime` tinytext COLLATE utf8_bin NOT NULL,
+  `attachments` text COLLATE utf8_bin NOT NULL,
+  `email_date` int(10) NOT NULL,
+  `size` bigint(20) NOT NULL,
+  `ti` int(10) NOT NULL
+
+orderitems
+  `id` bigint(20) NOT NULL,
+  `oid` bigint(20) unsigned NOT NULL,
+  `iid` bigint(20) unsigned NOT NULL,
+  `title` varchar(60) COLLATE utf8_bin NOT NULL,
+  `quantity` mediumint(9) unsigned NOT NULL,
+  `cost` decimal(10,2) unsigned NOT NULL,
+  `status` varchar(16) COLLATE utf8_bin NOT NULL,
+  `ti` int(10) unsigned NOT NULL
+
+orders
+  `id` bigint(20) NOT NULL,
+  `cid` bigint(20) unsigned NOT NULL,
+  `uid` bigint(20) unsigned NOT NULL,
+  `qid` varchar(20) COLLATE utf8_bin NOT NULL,
+  `qid_ti` int(10) unsigned NOT NULL,
+  `iid` varchar(20) COLLATE utf8_bin NOT NULL,
+  `iid_ti` int(10) unsigned NOT NULL,
+  `did` varchar(20) COLLATE utf8_bin NOT NULL,
+  `did_ti` int(10) unsigned NOT NULL,
+  `aid` varchar(20) COLLATE utf8_bin NOT NULL,
+  `aid_ti` int(10) unsigned NOT NULL,
+  `due_ti` int(10) unsigned NOT NULL,
+  `notes` text COLLATE utf8_bin NOT NULL,
+  `status` varchar(16) COLLATE utf8_bin NOT NULL,
+  `recurring` tinyint(1) unsigned NOT NULL,
+  `ti` int(10) unsigned NOT NULL,
+  `eti` bigint(20) NOT NULL
+
+search
+  `id` bigint(20) unsigned NOT NULL,
+  `search` varchar(64) COLLATE utf8_bin NOT NULL,
+  `views` bigint(20) unsigned NOT NULL,
+  `ti` int(10) unsigned NOT NULL
+
+seo
+  `id` bigint(20) NOT NULL,
+  `uid` bigint(20) NOT NULL,
+  `login_user` varchar(128) COLLATE utf8_bin NOT NULL,
+  `seo_name` varchar(128) COLLATE utf8_bin NOT NULL,
+  `seo_url` varchar(255) COLLATE utf8_bin NOT NULL,
+  `seo_title` tinytext COLLATE utf8_bin NOT NULL,
+  `notes` text COLLATE utf8_bin NOT NULL,
+  `eti` int(10) NOT NULL,
+  `views` bigint(20) NOT NULL
+
+tracker
+  `id` bigint(20) NOT NULL,
+  `vid` bigint(20) NOT NULL,
+  `contentType` tinytext COLLATE utf8_bin NOT NULL,
+  `ip` text COLLATE utf8_bin NOT NULL,
+  `pageName` text COLLATE utf8_bin NOT NULL,
+  `queryString` text COLLATE utf8_bin NOT NULL,
+  `hostname` text COLLATE utf8_bin NOT NULL,
+  `httpReferer` text COLLATE utf8_bin NOT NULL,
+  `httpUserAgent` text COLLATE utf8_bin NOT NULL,
+  `bot` tinytext COLLATE utf8_bin NOT NULL,
+  `browser` tinytext COLLATE utf8_bin NOT NULL,
+  `os` tinytext COLLATE utf8_bin NOT NULL,
+  `ti` bigint(20) NOT NULL

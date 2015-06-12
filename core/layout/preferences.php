@@ -9,18 +9,18 @@
 <div class="tab-content">
 	<div id="theme" class="tab-pane fade in active">
 		<div class="row form-group theme-chooser">
-<?php foreach(new DirectoryIterator('layout') as $folder){
+<?php foreach(new DirectoryIterator('layout') as$folder){
 		if($folder->isDOT())continue;
 		if($folder->isDir()){
 			$theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);?>
-			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-				<div class="theme-chooser-item<?php if($config['theme']==$folder){echo' selected';}?>" data-theme="<?php echo$folder;?>">
-					<img src="<?php if(file_exists('layout/'.$folder.'/theme.jpg')){echo'layout/'.$folder.'/theme.jpg';}elseif(file_exists('layout/'.$folder.'/theme.png')){echo'layout/'.$folder.'/theme.png';}else{echo'core/images/noimage.jpg';}?>" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="<?php echo$theme['title'];?>">
+			<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+				<div class="theme-chooser-item<?php if($config['theme']==$folder)echo' selected';?>" data-theme="<?php echo$folder;?>">
+					<img src="<?php if(file_exists('layout/'.$folder.'/theme.jpg'))echo'layout/'.$folder.'/theme.jpg';elseif(file_exists('layout/'.$folder.'/theme.png'))echo'layout/'.$folder.'/theme.png';else echo'core/images/noimage.jpg';?>" class="img-rounded col-xs-4 col-sm-4 col-md-12 col-lg-12" alt="<?php echo$theme['title'];?>">
 					<div class="col-xs-8 col-sm-8 col-md-12 col-lg-12">
-						<span class="title"><?php echo$theme['title'];?></span>
-						<small class="version">Version: v<?php echo$theme['version'];?></small>
-						<small class="creator">Creator: <a target="_blank" href="<?php echo$theme['creator_url'];?>"><?php echo$theme['creator'];?></a></small>
-						<small class="description"><?php echo$theme['description'];?></small>
+						<span class="title"><?php if(isset($theme['title'])&&$theme['title']!='')echo$theme['title'];else echo'No Title Assigned';?></span>
+						<small class="version">Version: <?php if(isset($theme['version'])&&$theme['version']!='')echo'v'.$theme['version'];else echo'No Version Assigned';?></small>
+						<small class="creator">Creator: <?php if(isset($theme['creator_url'])&&$theme['creator_url']!='')echo'<a target="_blank" href="'.$theme['creator_url'].'">'.$theme['creator'].'</a>';else echo'No Creator Assigned';?></small>
+						<small class="description"><?php if(isset($theme['description'])&&$theme['description']!='')echo$theme['description'];else'No Description Assigned';?></small>
 					</div>
 					<div class="clear"></div>
 				</div>
@@ -87,7 +87,7 @@
 		<div class="form-group">
 			<label for="postcode" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Postcode</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<input type="text" id="postcode" class="form-control textinput" value="<?php if($config['postcode']!=0){echo$config['postcode'];}?>" data-dbid="1" data-dbt="config" data-dbc="postcode" placeholder="Enter a Postcode...">
+				<input type="text" id="postcode" class="form-control textinput" value="<?php if($config['postcode']!=0)echo$config['postcode'];?>" data-dbid="1" data-dbt="config" data-dbc="postcode" placeholder="Enter a Postcode...">
 			</div>
 		</div>
 		<div class="form-group">
@@ -99,48 +99,48 @@
 	</div>
 	<div id="interface" class="tab-pane fade in">
 		<div class="form-group">
-			<label for="options26" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
-				<input type="checkbox" id="options26" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1){echo' checked';}?>>
+			<label for="options3" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
+				<input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>>
 			</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11"><span data-toggle="tooltip" title="This allows Users to Create Accounts.">Enable Account Sign Ups</span></div>
 		</div>
 		<div class="form-group">
 			<label for="options4" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
-				<input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1){echo' checked';}?>>
+				<input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>>
 			</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11"><span data-toggle="tooltip" title="Display Administration Tooltips, like this one.">Enable Tooltips</span></div>
 		</div>
 		<div class="form-group">
 			<label for="options5" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
-				<input type="checkbox" id="options5" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="5"<?php if($config['options']{5}==1){echo' checked';}?>>
+				<input type="checkbox" id="options5" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="5"<?php if($config['options']{5}==1)echo' checked';?>>
 			</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<span data-toggle="tooltip" title="Display Helper Button for Content Guide Hints.">Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-default"><i class="fa fa-life-ring text-danger"></i></button>
+				<span data-toggle="tooltip" title="Display Helper Button for Content Guide Hints.">Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-default"><i class="libre libre-help color-danger"></i></button>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="options5" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
-				<input type="checkbox" id="options6" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="6"<?php if($config['options']{6}==1){echo' checked';}?>>
+			<label for="buttonType" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">
+				Buttons Type
 			</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<span data-toggle="tooltip" title="Display Helper Button for Content Guide Hints.">Enable SEO Statistic Widget</span>
+				<select id="buttonType" class="form-control" onchange="update('1','config','buttonType',$(this).val());"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+					<option value="icon"<?php if($config['buttonType']=='icon')echo' selected';?>>As Icons</option>
+					<option value="text"<?php if($config['buttonType']=='text')echo' selected';?>>Textual</option>
+				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="itemCount" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Item Count</label>
+			<label for="options6" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
+				<input type="checkbox" id="options6" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="6"<?php if($config['options']{6}==1)echo' checked';?>>
+			</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-<?php 	if($config['options']{5}==1){?>
-				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="Item Count" data-content="This is the number of items that will be displayed before Pagination occurs. Setting to '0' equals unlimited, and no pagination."><i class="fa fa-life-ring text-danger"></i></button>
-				</div>
-<?php 	}?>
-				<input type="text" id="itemCount" class="form-control textinput" value="<?php echo$config['itemCount'];?>" data-dbid="1" data-dbt="config" data-dbc="itemCount" placeholder="Enter an Item Count..." data-toggle="tooltip" title="Number of Content Items before Pagination.">
+				<span data-toggle="tooltip" title="Disable/Enable Statistics Information RSS SEO Widget.">Enable RSS SEO Information Widget</span>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="timezone" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Timezone</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<select id="timezone" class="form-control" onchange="update('1','config','timezone',$(this).val());" data-toggle="tooltip" title="">
+				<select id="timezone" class="form-control" onchange="update('1','config','timezone',$(this).val());"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 <?php function formatOffset($offset){
         $hours=$offset/3600;
         $remainder=$offset%3600;
@@ -156,9 +156,9 @@
         $current_tz=new DateTimeZone($tz);
         $offset=$current_tz->getOffset($dt);
         $transition=$current_tz->getTransitions($dt->getTimestamp(),$dt->getTimestamp());
-        $abbr=$transition[0]['abbr'];?>
-					<option value="<?php echo$tz;?>"<?php if($tz==$config['timezone']){echo' selected';}?>><?php echo$tz.' ['.$abbr.' '.formatOffset($offset).']';?></option>
-<?php }?>
+        $abbr=$transition[0]['abbr'];
+					echo'<option value="'.$tz.'"';if($tz==$config['timezone'])echo' selected';echo'>'.$tz.' ['.$abbr.' '.formatOffset($offset).']</option>';
+	}?>
 				</select>
 			</div>
 		</div>
@@ -167,157 +167,53 @@
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
 <?php 	if($config['options']{5}==1){?>
 				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="Date/Time Format" data-content="This sets how Dates/Times are displayed."><i class="fa fa-life-ring text-danger"></i></button>
+					<button class="btn btn-default" data-toggle="popover" title="Date/Time Format" data-content="This sets how Dates/Times are displayed."><i class="libre libre-help color-danger"></i></button>
 				</div>
 <?php 	}?>
-				<input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date Format..." data-toggle="tooltip" title="Format Layout of all Dates/Times displayed.">
+				<input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date Format..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Format Layout of all Dates/Times displayed."';?>>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">&nbsp;</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
 				<div class="well">
-					<h4 onclick="$('#dateTimeOptions').toggle(400);" data-toggle="tooltip" title="Click to show Date/Time Formatting Options.">
+					<h4 onclick="$('#dateTimeOptions').toggle(400);"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Click to show Date/Time Formatting Options."';?>>
 						Show Date/Time Formatting Options
 						<span class="pull-right"><i class="caret"></i></span>
 					</h4>
 					<table id="dateTimeOptions" class="table table-striped" style="display:none">
 						<thead>
-							<tr>
-								<th>format character</th>
-								<th>Description	Example</th>
-								<th>returned values</th>
-							</tr>
+							<tr><th>format character</th><th>Description Example</th><th>returned values</th></tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td colspan="3" class="text-center"><strong>Day</strong></td>
-							</tr>
-							<tr>
-								<td>d</td>
-								<td>Day of the month, 2 digits with leading zeros</td>
-								<td>01 to 31</td>
-							</tr>
-							<tr>
-								<td>D</td>
-								<td>A textual representation of a day, three letters</td>
-								<td>Mon through Sun</td>
-							</tr>
-							<tr>
-								<td>j</td>
-								<td>Day of the month without leading zeros</td>
-								<td>1 to 31</td>
-							</tr>
-							<tr>
-								<td>l</td>
-								<td>A full textual representation of the day of the week</td>
-								<td>Sunday through Saturday</td>
-							</tr>
-							<tr>
-								<td>S</td>
-								<td>English ordinal suffix for the day of the month, 2 characters</td>
-								<td>st, nd, rd or th. Works well with j</td>
-							</tr>
-							<tr>
-								<td colspan="3" class="text-center"><strong>Month</strong></td>
-							</tr>
-							<tr>
-								<td>F</td>
-								<td>A full textual representation of a month, such as January or March</td>
-								<td>January through December</td>
-							</tr>
-							<tr>
-								<td>m</td>
-								<td>Numeric representation of a month, with leading zeros</td>
-								<td>01 through 12</td>
-							</tr>
-							<tr>
-								<td>M</td>
-								<td>A short textual representation of a month, three letters</td>
-								<td>Jan through Dec</td>
-							</tr>
-							<tr>
-								<td>n</td>
-								<td>Numeric representation of a month, without leading zeros</td>
-								<td>1 through 12</td>
-							</tr>
-							<tr>
-								<td colspan="3" class="text-center"><strong>Year</strong></td>
-							</tr>
-							<tr>
-								<td>L</td>
-								<td>Whether it\'s a leap year</td>
-								<td>1 if it is a leap year, 0 otherwise.</td>
-							</tr>
-							<tr>
-								<td>Y</td>
-								<td>A full numeric representation of a year, 4 digits</td>
-								<td>Examples: 1999 or 2003</td>
-							</tr>
-							<tr>
-								<td>y</td>
-								<td>A two digit representation of a year</td>
-								<td>Examples: 99 or 03</td>
-							</tr>
-							<tr>
-								<td colspan="3" class="text-center"><strong>Time</strong></td>
-							</tr>
-							<tr>
-								<td>a</td>
-								<td>Lowercase Ante meridiem and Post meridiem</td>
-								<td>am or pm</td>
-							</tr>
-							<tr>
-								<td>A</td>
-								<td>Uppercase Ante meridiem and Post meridiem</td>
-								<td>AM or PM</td>
-							</tr>
-							<tr>
-								<td>g</td>
-								<td>12-hour format of an hour without leading zeros</td>
-								<td>1 through 12</td>
-							</tr>
-							<tr>
-								<td>G</td>
-								<td>24-hour format of an hour without leading zeros</td>
-								<td>0 through 23</td>
-							</tr>
-							<tr>
-								<td>h</td>
-								<td>12-hour format of an hour with leading zeros</td>
-								<td>01 through 12</td>
-							</tr>
-							<tr>
-								<td>H</td>
-								<td>24-hour format of an hour with leading zeros</td>
-								<td>00 through 23</td>
-							</tr>
-							<tr>
-								<td>i</td>
-								<td>Minutes with leading zeros</td>
-								<td>00 to 59</td>
-							</tr>
-							<tr>
-								<td colspan="3" class="text-center"><strong>Timezone</strong></td>
-							</tr>
-							<tr>
-								<td>I</td>
-								<td>Whether or not the date is in daylight saving time</td>
-								<td>1 if Daylight Saving Time, 0 otherwise.</td>
-							</tr>
-							<tr>
-								<td colspan="3" class="text-center"><strong>Full Date/Time</strong></td>
-							</tr>
-							<tr>
-								<td>c</td>
-								<td>ISO 8601 date (added in PHP 5)</td>
-								<td>2004-02-12T15:19:21+00:00</td>
-							</tr>
-							<tr>
-								<td>r</td>
-								<td>RFC 2822 formatted date</td>
-								<td>Example: Thu, 21 Dec 2000 16:01:07 +0200</td>
-							</tr>
+							<tr><td colspan="3" class="text-center"><strong>Day</strong></td></tr>
+							<tr><td>d</td><td>Day of the month, 2 digits with leading zeros</td><td>01 to 31</td></tr>
+							<tr><td>D</td><td>A textual representation of a day, three letters</td><td>Mon through Sun</td></tr>
+							<tr><td>j</td><td>Day of the month without leading zeros</td><td>1 to 31</td></tr>
+							<tr><td>l</td><td>A full textual representation of the day of the week</td><td>Sunday through Saturday</td></tr>
+							<tr><td>S</td><td>English ordinal suffix for the day of the month, 2 characters</td><td>st, nd, rd or th. Works well with j</td></tr>
+							<tr><td colspan="3" class="text-center"><strong>Month</strong></td></tr>
+							<tr><td>F</td><td>A full textual representation of a month, such as January or March</td><td>January through December</td></tr>
+							<tr><td>m</td><td>Numeric representation of a month, with leading zeros</td><td>01 through 12</td></tr>
+							<tr><td>M</td><td>A short textual representation of a month, three letters</td><td>Jan through Dec</td></tr>
+							<tr><td>n</td><td>Numeric representation of a month, without leading zeros</td><td>1 through 12</td></tr>
+							<tr><td colspan="3" class="text-center"><strong>Year</strong></td></tr>
+							<tr><td>L</td><td>Whether it\'s a leap year</td><td>1 if it is a leap year, 0 otherwise.</td></tr>
+							<tr><td>Y</td><td>A full numeric representation of a year, 4 digits</td><td>Examples: 1999 or 2003</td></tr>
+							<tr><td>y</td><td>A two digit representation of a year</td><td>Examples: 99 or 03</td></tr>
+							<tr><td colspan="3" class="text-center"><strong>Time</strong></td></tr>
+							<tr><td>a</td><td>Lowercase Ante meridiem and Post meridiem</td><td>am or pm</td></tr>
+							<tr><td>A</td><td>Uppercase Ante meridiem and Post meridiem</td><td>AM or PM</td></tr>
+							<tr><td>g</td><td>12-hour format of an hour without leading zeros</td><td>1 through 12</td></tr>
+							<tr><td>G</td><td>24-hour format of an hour without leading zeros</td><td>0 through 23</td></tr>
+							<tr><td>h</td><td>12-hour format of an hour with leading zeros</td><td>01 through 12</td></tr>
+							<tr><td>H</td><td>24-hour format of an hour with leading zeros</td><td>00 through 23</td></tr>
+							<tr><td>i</td><td>Minutes with leading zeros</td><td>00 to 59</td></tr>
+							<tr><td colspan="3" class="text-center"><strong>Timezone</strong></td></tr>
+							<tr><td>I</td><td>Whether or not the date is in daylight saving time</td><td>1 if Daylight Saving Time, 0 otherwise.</td></tr>
+							<tr><td colspan="3" class="text-center"><strong>Full Date/Time</strong></td></tr>
+							<tr><td>c</td><td>ISO 8601 date (added in PHP 5)</td><td>2004-02-12T15:19:21+00:00</td></tr>
+							<tr><td>r</td><td>RFC 2822 formatted date</td><td>Example: Thu, 21 Dec 2000 16:01:07 +0200</td></tr>
 						</tbody>
 					</table>
 				</div>
@@ -360,7 +256,7 @@
 		<div class="form-group">
 			<label for="ipn" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">IPN</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<input type="text" id="ipn" class="form-control" value="" readonly data-toggle="tooltip" title="">
+				<input type="text" id="ipn" class="form-control" value="" readonly<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title=""';?>>
 			</div>
 		</div>
 		<h4>Order Processing</h4>
@@ -368,11 +264,11 @@
 			<label for="orderPayti" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Allow</label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<select id="orderPayti" class="form-control" onchange="update('1','config','orderPayti',$(this).val());">
-					<option value="0"<?php if($config['orderPayti']==0){echo' selected';}?>>0 Days</option>
-					<option value="604800"<?php if($config['orderPayti']==604800){echo' selected';}?>>7 Days</option>
-					<option value="1209600"<?php if($config['orderPayti']==1209600){echo' selected';}?>>14 Days</option>
-					<option value="1814400"<?php if($config['orderPayti']==1814400){echo' selected';}?>>21 Days</option>
-					<option value="2592000"<?php if($config['orderPayti']==2592000){echo' selected';}?>>30 Days</option>
+					<option value="0"<?php if($config['orderPayti']==0)echo' selected';}?>>0 Days</option>
+					<option value="604800"<?php if($config['orderPayti']==604800)echo' selected';?>>7 Days</option>
+					<option value="1209600"<?php if($config['orderPayti']==1209600)echo' selected';?>>14 Days</option>
+					<option value="1814400"<?php if($config['orderPayti']==1814400)echo' selected';?>>21 Days</option>
+					<option value="2592000"<?php if($config['orderPayti']==2592000)echo' selected';?>>30 Days</option>
 				</select>
 				<div class="input-group-addon">for Payments</div>
 			</div>
@@ -410,7 +306,7 @@
 		</div>
 	</div>
 	<div id="seo" class="tab-pane fade in">
-		<h4> Default Analytics</h4>
+		<h4>Default Analytics</h4>
 		<div class="form-group">
 			<label for="seoTitle" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-2">&nbsp;</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-10">
@@ -422,10 +318,10 @@
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-10">
 <?php 	if($config['options']{5}==1){?>
 				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button>
 				</div>
 <?php 	}?>
-				<input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$config['seoTitle'];?>" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="Enter a Page Title..." data-toggle="tooltip" title="">
+				<input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$config['seoTitle'];?>" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="Enter a Page Title..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 			</div>
 		</div>
 		<div class="form-group">
@@ -433,10 +329,10 @@
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-10">
 <?php 	if($config['options']{5}==1){?>
 				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button>
 				</div>
 <?php 	}?>
-				<input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$config['seoCaption'];?>" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="Enter a Page Caption..." data-toggle="tooltip" title="">
+				<input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$config['seoCaption'];?>" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="Enter a Page Caption..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 			</div>
 		</div>
 		<div class="form-group">
@@ -444,10 +340,10 @@
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-10">
 <?php 	if($config['options']{5}==1){?>
 				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button>
 				</div>
 <?php 	}?>
-				<input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$config['seoDescription'];?>" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="Enter a Page Description..." data-toggle="tooltip" title="">
+				<input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$config['seoDescription'];?>" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="Enter a Page Description..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 			</div>
 		</div>
 		<div class="form-group">
@@ -455,10 +351,10 @@
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-10">
 <?php 	if($config['options']{5}==1){?>
 				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="fa fa-life-ring text-danger"></i></button>
+					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button>
 				</div>
 <?php 	}?>
-				<input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Page Keywords..." data-toggle="tooltip" title="">
+				<input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Page Keywords..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 			</div>
 		</div>
 	</div>
@@ -486,14 +382,14 @@
 						</div>
 					</form>
 				</div>
-<?php foreach(glob("media/backup/backup_*") as $file){
+<?php foreach(glob("media/backup/backup_*") as$file){
 		$file=ltrim($file,'media/backup/');?>
 				<div id="l_<?php echo str_replace('.','',$file);?>" class="form-group">
 					<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">&nbsp;</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 						<a class="btn btn-default btn-block" href="media/<?php echo$file;?>"><?php echo$file;?></a>
 						<div class="input-group-btn">
-							<button class="btn btn-danger" onclick="removeMedia('<?php echo$file;?>')">Delete</button>
+							<button class="btn btn-default" onclick="removeMedia('<?php echo$file;?>')"><i class="libre libre-trash color-danger"></i></button>
 						</div>
 					</div>
 				</div>

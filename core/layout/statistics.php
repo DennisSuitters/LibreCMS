@@ -8,8 +8,7 @@
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
-<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM comments WHERE status='unapproved'")->fetch(PDO::FETCH_ASSOC);
-echo$r['cnt'];?>
+<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM comments WHERE status='unapproved'")->fetch(PDO::FETCH_ASSOC);echo$r['cnt'];?>
 						</div>
 						<div class="stat">New Comments!</div>
 					</div>
@@ -35,8 +34,7 @@ echo$r['cnt'];?>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
-<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM messages WHERE status='unread'")->fetch(PDO::FETCH_ASSOC);
-echo$r['cnt'];?>
+<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM messages WHERE status='unread'")->fetch(PDO::FETCH_ASSOC);echo$r['cnt'];?>
 						</div>
 						<div class="stat">New Messages!</div>
 					</div>
@@ -63,8 +61,7 @@ echo$r['cnt'];?>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
-<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM orders WHERE status='pending'")->fetch(PDO::FETCH_ASSOC);
-echo$r['cnt'];?>
+<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM orders WHERE status='pending'")->fetch(PDO::FETCH_ASSOC);echo$r['cnt'];?>
 						</div>
 						<div class="stat">Pending Orders!</div>
 					</div>
@@ -88,8 +85,7 @@ echo$r['cnt'];?>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
-<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE status='unconfirmed'")->fetch(PDO::FETCH_ASSOC);
-echo$r['cnt'];?>
+<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE status='unconfirmed'")->fetch(PDO::FETCH_ASSOC);echo$r['cnt'];?>
 						</div>
 						<div class="stat">New Bookings!</div>
 					</div>
@@ -115,8 +111,7 @@ echo$r['cnt'];?>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
-<?php $r=$db->query("SELECT COUNT(DISTINCT vid) as cnt FROM tracker")->fetch(PDO::FETCH_ASSOC);
-echo$r['cnt'];?>
+<?php $r=$db->query("SELECT COUNT(DISTINCT vid) as cnt FROM tracker")->fetch(PDO::FETCH_ASSOC);echo$r['cnt'];?>
 						</div>
 						<div class="stat">Total Visits!</div>
 					</div>
@@ -181,8 +176,7 @@ echo$r['cnt'];?>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
-<?php $r=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser!='Unknown'")->fetch(PDO::FETCH_ASSOC);
-echo$r['cnt'];?>
+<?php $r=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser!='Unknown'")->fetch(PDO::FETCH_ASSOC);echo$r['cnt'];?>
 						</div>
 						<div class="stat">Unique Browser Visitors!</div>
 					</div>
@@ -207,9 +201,7 @@ echo$r['cnt'];?>
 					</div>
 					<div class="col-xs-9 text-right stats">
 						<div class="number">
-<?php $s=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE os!='Unknown'");
-$r=$s->fetch(PDO::FETCH_ASSOC);
-echo$r['cnt'];?>
+<?php $r=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE os!='Unknown'")->fetch(PDO::FETCH_ASSOC);echo$r['cnt'];?>
 						</div>
 						<div class="stat">Operating Systems!</div>
 					</div>

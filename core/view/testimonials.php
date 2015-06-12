@@ -1,9 +1,8 @@
 <?php
-$count=$config['itemCount'];
 if(stristr($html,'<settings')){
 	preg_match('/<settings itemcount="(.*?)">/',$html,$matches);
 	$count=$matches[1];
-}else $count=$config['itemCount'];
+}else $count=4;
 $html=preg_replace('~<settings.*?>~is','',$html,1);
 preg_match('/<loop>([\w\W]*?)<\/loop>/',$html,$matches);
 $item=$matches[1];
