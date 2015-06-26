@@ -133,7 +133,7 @@ $config=$db->query("SELECT dateFormat FROM config WHERE id='1'")->fetch(PDO::FET
 		}
 	});
 	function update(id,t,c,da){
-		$('#'+c).before('<i id="'+c+'" class="busy fa fa-cog fa-spin"></i>');
+		$('#'+c).before('<i id="'+c+'" class="busy libre libre-cog libre-spin"></i>');
 		$.ajax({
 			type:"GET",
 			url:"core/update.php",

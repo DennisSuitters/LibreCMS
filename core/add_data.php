@@ -215,7 +215,7 @@ if($act!=''){
 		));
 		$total=0;
 		$html='';
-		$q=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid ORDER BY ti DESC");
+		$q=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid ORDER BY ti ASC,title ASC");
 		$q->execute(array(':oid'=>$oid));?>
 	window.top.window.$('#updateorder').html('<?php
 		while($oi=$q->fetch(PDO::FETCH_ASSOC)){
@@ -225,21 +225,16 @@ if($act!=''){
 			echo'<tr>';
 				echo'<td class="text-left">'.$i['code'].'</td>';
 				echo'<td class="text-left">';
-					echo'<form target="sp" action="includes/update.php">';
+					echo'<form target="sp" action="core/update.php">';
 						echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
 						echo'<input type="hidden" name="t" value="orderitems">';
 						echo'<input type="hidden" name="c" value="title">';
-						echo'<input type="text" class="form-control" name="da" value="';
-							if($oi['title']!='')
-								echo$oi['title'];
-							else
-								echo$i['title'];
-						echo'">';
+						echo'<input type="text" class="form-control" name="da" value="';if($i['title']!='')echo$i['title'];else echo$oi['title'];echo'">';
 					echo'</form>';
 				echo'</td>';
 				echo'<td class="col-md-1 text-center">';
 				if($oi['iid']!=0){
-                    echo'<form target="sp" action="includes/update.php">';
+                    echo'<form target="sp" action="core/update.php">';
                         echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
                         echo'<input type="hidden" name="t" value="orderitems">';
                         echo'<input type="hidden" name="c" value="quantity">';
@@ -249,7 +244,7 @@ if($act!=''){
 				echo'</td>';
 				echo'<td class="col-md-1 text-right">';
 				if($oi['iid']!=0){
-                    echo'<form target="sp" action="includes/update.php">';
+                    echo'<form target="sp" action="core/update.php">';
                         echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
                         echo'<input type="hidden" name="t" value="orderitems">';
                         echo'<input type="hidden" name="c" value="cost">';
@@ -257,18 +252,14 @@ if($act!=''){
                     echo'</form>';
 				}
 				echo'</td>';
+			echo'<td class="text-right">';if($oi['iid']!=0)echo $oi['cost']*$oi['quantity'];echo'</td>';
 			echo'<td class="text-right">';
-				if($oi['iid']!=0){
-					echo $oi['cost']*$oi['quantity'];
-				}
-			echo'</td>';
-			echo'<td class="text-right">';
-				echo'<form target="sp" action="includes/update.php">';
+				echo'<form target="sp" action="core/update.php">';
 					echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
 					echo'<input type="hidden" name="t" value="orderitems">';
 					echo'<input type="hidden" name="c" value="quantity">';
 					echo'<input type="hidden" name="da" value="0">';
-					echo'<button class="btn btn-danger"><i class="fa fa-trash"></i></button>';
+					echo'<button class="btn btn-default">';if($config['buttonType']=='text')echo'Delete';else echo'<i class="libre libre-trash color-danger"></i>';echo'</button>';
 				echo'</form>';
 			echo'</td>';
 		echo'</tr>';
@@ -276,17 +267,12 @@ if($act!=''){
 		}
 		echo'<tr>';
 			echo'<td colspan="3">&nbsp;</td>';
-			echo'<td class="text-right">';
-				echo'<strong>Total</strong>';
-			echo'</td>';
-			echo'<td class="text-right">';
-				echo'<strong>'.$total.'</strong>';
-			echo'</td>';
+			echo'<td class="text-right"><strong>Total</strong></td>';
+			echo'<td class="text-right"><strong>'.$total.'</strong></td>';
 			echo'<td></td>';
 		echo'</tr>';
 ?>');
 <?php	break;
 	}
-}
-//	window.top.window.$('#busy').css("display","none");?>
+}?>
 /*]]>*/</script>

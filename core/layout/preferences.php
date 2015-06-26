@@ -102,20 +102,24 @@
 			<label for="options3" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
 				<input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>>
 			</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11"><span data-toggle="tooltip" title="This allows Users to Create Accounts.">Enable Account Sign Ups</span></div>
+			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+				<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="This allows Users to Create Accounts."';?>>Enable Account Sign Ups</span>
+			</div>
 		</div>
 		<div class="form-group">
 			<label for="options4" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
 				<input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>>
 			</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11"><span data-toggle="tooltip" title="Display Administration Tooltips, like this one.">Enable Tooltips</span></div>
+			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+				<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Administration Tooltips, like this one."';?>>Enable Tooltips</span>
+			</div>
 		</div>
 		<div class="form-group">
 			<label for="options5" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
 				<input type="checkbox" id="options5" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="5"<?php if($config['options']{5}==1)echo' checked';?>>
 			</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<span data-toggle="tooltip" title="Display Helper Button for Content Guide Hints.">Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-default"><i class="libre libre-help color-danger"></i></button>
+				<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Helper Button for Content Guide Hints."';?>>Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-default"><i class="libre libre-help color-danger"></i></button>
 			</div>
 		</div>
 		<div class="form-group">
@@ -134,7 +138,7 @@
 				<input type="checkbox" id="options6" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="6"<?php if($config['options']{6}==1)echo' checked';?>>
 			</label>
 			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<span data-toggle="tooltip" title="Disable/Enable Statistics Information RSS SEO Widget.">Enable RSS SEO Information Widget</span>
+				<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Disable/Enable Statistics Information RSS SEO Widget."';?>>Enable RSS SEO Information Widget</span>
 			</div>
 		</div>
 		<div class="form-group">

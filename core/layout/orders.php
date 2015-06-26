@@ -65,76 +65,190 @@ if($args[0]=='view'){
 		$q=$db->prepare("UPDATE orders SET notes=:notes WHERE id=:id");
 		$q->execute(array(':notes'=>$config['orderEmailNotes'],':id'=>$r['id']));
 	}
-	if($error==1){?>
-<div class="alert alert-danger"><?php echo$e[0];?></div>
-<?php }else{?>
+	if($error==1)echo'<div class="alert alert-danger">'.$e[0].'</div>';
+	else{?>
 <div class="invoice">
 	<div class="row header">
-		<div class="col-sm-4">
+		<div class="col-xs-4 border-right">
 			<h2>From</h2>
-			<p><strong><?php echo$config['business'];?></strong></p>
-			<p>ABN: <?php echo$config['abn'];?></p>
-			<p><?php echo$config['address'];?></p>
-			<p><?php if($config['suburb']!='')echo$config['suburb'].', ';if($config['city']!='')echo$config['city'].', ';?></p>
-			<p><?php if($config['state']!='')echo$config['state'].', ';if($config['postcode']!=0)echo$config['postcode'];?></p>
-			<p>Email: <?php echo$config['email'];?></p>
-			<p>Phone: <?php echo$config['phone'];?></p>
+			<div class="form-group">
+				<input type="text" class="form-control input-sm text-bold" value="<?php echo$config['business'];?>" readonly>
+			</div>
+			<div class="form-group">
+				<label class="control-label label-xs col-xs-3 col-lg-2">ABN</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo$config['abn'];?>" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Address</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo$config['address'];?>" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Suburb</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo$config['suburb'];?>" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label label-xs col-xs-3 col-lg-2">City</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo$config['city'];?>" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label label-xs col-xs-3 col-lg-2">State</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo$config['state'];?>" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Postcode</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo$config['postcode'];?>" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Email</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo$config['email'];?>" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Phone</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo$config['phone'];?>" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Mobile</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo$config['mobile'];?>" readonly>
+				</div>
+			</div>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-xs-4 border-right">
 			<h2>To</h2>
-			<div id="cdetails">
-				<p><strong><?php echo$client['business'];?></strong></p>
-				<p><?php if($client['address']!='')echo$client['address'];?></p>
-				<p><?php if($client['suburb']!='')echo$client['suburb'].', ';if($client['city']!='')echo$client['city'];?></p>
-				<p><?php if($client['state']!='')echo$client['state'].', ';if($client['postcode']!=0)echo$client['postcode'];?></p>
-				<p>Email: <a href="mailto:'.$client['email'].'"><?php echo$client['email'];?></a></p>
-				<p><?php if($client['phone']!='')echo'Phone: '.$client['phone'];?></p>
-				<p><?php if($client['mobile']!='')echo'Mobile: '.$client['mobile'];?></p>
+			<div class="form-group">
+				<input type="text" id="client_business" class="form-control input-sm text-bold" value="<?php echo$client['username'];if($client['name']!='')echo' ['.$client['name'].']';if($client['business']!='')echo' -> '.$client['business'];?>" placeholder="Username, Business or Name..." readonly>
+			</div>
+			<div class="form-group form-group-xs">
+				<label for="address" class="control-label label-xs col-xs-3 col-lg-2">Address</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" id="address" class="form-control input-xs textinput" value="<?php echo$client['address'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="address" data-bt="icon" data-bs="btn-danger btn-xs" placeholder="Address..."<?php if($r['status']=='archived')echo' readonly';?>>
+				</div>
+			</div>
+			<div class="form-group form-group-xs">
+				<label for="suburb" class="control-label label-xs col-xs-3 col-lg-2">Suburb</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" id="suburb" class="form-control input-xs textinput" value="<?php echo$client['suburb'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="suburb" data-bt="icon" data-bs="btn-danger btn-xs" placeholder="Suburb..."<?php if($r['status']=='archived')echo' readonly';?>>
+				</div>
+			</div>
+			<div class="form-group form-group-xs">
+				<label for="city" class="control-label label-xs col-xs-3 col-lg-2">City</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" id="city" class="form-control input-xs textinput" value="<?php echo$client['city'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="city" data-bt="icon" data-bs="btn-danger btn-xs" placeholder="City..."<?php if($r['status']=='archived')echo' readonly';?>>
+				</div>
+			</div>
+			<div class="form-group form-group-xs">
+				<label for="state" class="control-label label-xs col-xs-3 col-lg-2 textinput">State</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" id="state" class="form-control input-xs textinput" value="<?php echo$client['state'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="state" data-bt="icon" data-bs="btn-danger btn-xs" placeholder="State..."<?php if($r['status']=='archived')echo' readonly';?>>
+				</div>
+			</div>
+			<div class="form-group form-group-xs">
+				<label for="postcode" class="control-label label-xs col-xs-3 col-lg-2">Postcode</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" id="postcode" class="form-control input-xs textinput" value="<?php if($client['postcode']!=0)echo$client['postcode'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="postcode" data-bt="icon" data-bs="btn-danger btn-xs" placeholder="Postcode..."<?php if($r['status']=='archived')echo' readonly';?>>
+				</div>
+			</div>
+			<div class="form-group form-group-xs">
+			<label for="email" class="control-label label-xs col-xs-3 col-lg-2">Email</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" id="email" class="form-control input-xs textinput" value="<?php echo$client['email'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="email" data-bt="icon" data-bs="btn-danger btn-xs" placeholder="Email..."<?php if($r['status']=='archived')echo' readonly';?>>
+					<div class="input-group-btn">
+						<button class="btn btn-default btn-xs">Email</button>
+					</div>
+				</div>
+			</div>
+			<div class="form-group form-group-xs">
+				<label for="phone" class="control-label label-xs col-xs-3 col-lg-2">Phone</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" id="phone" class="form-control input-xs textinput" value="<?php echo$client['phone'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="phone" data-bt="icon" data-bs="btn-danger btn-xs" placeholder="Phone..."<?php if($r['status']=='archived')echo' readonly';?>>
+				</div>
+			</div>
+			<div class="form-group form-group-xs">
+				<label for="mobile" class="control-label label-xs col-xs-3 col-lg-2 textinput">Mobile</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" id="mobile" class="form-control input-xs textinput" value="<?php echo$client['mobile'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="mobile" data-bt="icon" data-bs="btn-danger btn-xs" placeholder="Mobile..."<?php if($r['status']=='archived')echo' readonly';?>>
+				</div>
 			</div>
 <?php	if($r['status']!='archived'){?>
-			<p>
-				<select id="changeClient" class="relative form-control input-sm" onchange="changeClient($(this).val(),'<?php echo$r['id'];?>');">
-					<option value="0"<?php if($r['cid']=='0')echo' selected';?>>None</option>
+			<div class="form-group form-group-xs">
+				<label for="changeClient" class="control-label label-xs col-xs-3 col-lg-2">Change Client</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<select id="changeClient" class="form-control input-xs" onchange="changeClient($(this).val(),'<?php echo$r['id'];?>');">
+						<option value="0"<?php if($r['cid']=='0')echo' selected';?>>None</option>
 <?php		$q=$db->query("SELECT id,business,username,name FROM login WHERE status!='delete' AND status!='suspended' AND active!='0' AND id!='0'");
-			while($rs=$q->fetch(PDO::FETCH_ASSOC)){?>
-					<option value="<?php echo$rs['id'];?>"><?php if($r['cid']==$rs['id'])echo' selected';echo'>'.$rs['username'];if($rs['name']!='')echo' ['.$rs['name'].']';if($rs['business']!='')echo' -> '.$rs['business'];?></option>
-<?php		}?>
-				</select>
-			</p>
+			while($rs=$q->fetch(PDO::FETCH_ASSOC)){
+				echo'<option value="'.$rs['id'].'"';if($r['cid']==$rs['id'])echo' selected';echo'>'.$rs['username'];if($rs['name']!='')echo' ['.$rs['name'].']';if($rs['business']!='')echo' -> '.$rs['business'].'</option>';
+			}?>
+					</select>
+				</div>
+				<small class="help-block">Note: Changing values above will update the User's Account details.</small>
+			</div>
 <?php	}?>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-xs-4">
 			<h2>Details</h2>
-			<p>Order #<strong><?php echo$r['qid'].$r['iid'];?></strong></p>
-			<p>Order Date: <strong><?php echo date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?></strong></p>
-			<div class="form-inline">
-				<p class="form-group">
-					Due Date: <strong id="due_ti"><?php echo date($config['dateFormat'],$r['due_ti']);?></strong> &nbsp;
+			<div class="form-group form-group-xs">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Order #</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo$r['qid'].$r['iid'];?>" readonly>
+				</div>
+			</div>
+			<div class="form-group form-group-xs">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Order Date</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" class="form-control input-xs" value="<?php echo date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?>" readonly>
+				</div>
+			</div>
+			<div class="form-group form-group-xs">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Due Date</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="text" id="due_ti" class="form-control input-xs" value="<?php echo date($config['dateFormat'],$r['due_ti']);?>" readonly>
 <?php	if($r['status']!='archived'){?>
-					<div class="btn-group">
+					<div class="input-group-btn">
 						<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><?php if($config['buttonType']=='text')echo'Add ';else echo'<i class="libre libre-plus"></i>';?> <span class="caret"></span></button>
 						<ul class="dropdown-menu pull-right">
-							<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+604800;?>');return false;">7 Days</a></li>
-							<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti',''<?php echo$r['due_ti']+1209600;?>');return false;">14 Days</a></li>
-							<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti',''<?php echo$r['due_ti']+1814400;?>');return false;">21 Days</a></li>
-							<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti',''<?php echo$r['due_ti']+2592000;?>');return false;">30 Days</a></li>
+							<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+604800;?>');return false;"><small>7 Days</small></a></li>
+							<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+1209600;?>');return false;"><small>14 Days</small></a></li>
+							<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+1814400;?>');return false;"><small>21 Days</small></a></li>
+							<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+2592000;?>');return false;"><small>30 Days</small></a></li>
 						</ul>
 					</div>
 <?php	}?>
-				</p>
+				</div>
 			</div>
-			<div class="form-inline">
-				<p class="form-group">Status: <?php if($r['status']=='archived')echo'<strong>Archived</strong>';else{?>
-					<select id="status" class="form-control input-sm relative" onchange="update('<?php echo$r['id'];?>','orders','status',$(this).val());">
-						<option value="pending"<?php if($r['status']=='pending')echo' selected';?>>Pending</option>
-						<option value="overdue"<?php if($r['status']=='overdue')echo' selected';?>>Overdue</option>
-						<option value="cancelled"<?php if($r['status']=='cancelled')echo' selected';?>>Cancelled</option>
-						<option value="paid"<?php if($r['status']=='paid')echo' selected';?>>Paid</option>
-					</select>
-<?php }?>
-				</p>
+			<div class="form-group form-group-xs">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Status</label>
+				<div class="input-group col-xs-9 col-lg-10">
+<?php	if($r['status']=='archived')echo'<input type="text" class="form-control input-xs" value="Archived" readonly>';else{
+		echo'<select id="status" class="form-control input-xs" onchange="update(\''.$r['id'].'\',\'orders\',\'status\',$(this).val());"><option value="pending"';if($r['status']=='pending')echo' selected';echo'>Pending</option><option value="overdue"';if($r['status']=='overdue')echo' selected';echo'>Overdue</option><option value="cancelled"';if($r['status']=='cancelled')echo' selected';echo'>Cancelled</option><option value="paid"';if($r['status']=='paid')echo' selected';echo'>Paid</option></select>';
+		}?>
+				</div>
 			</div>
-			<p>Recurring <input type="checkbox" onclick="update('<?php echo$r['id'];?>','orders','recurring','checkbox');"<?php if($r['recurring']==1)echo' checked';?>></p>
+			<div class="form-group form-group-xs">
+				<label class="control-label label-xs col-xs-3 col-lg-2">Recurring</label>
+				<div class="input-group col-xs-9 col-lg-10">
+					<input type="checkbox" id="recurring0" data-dbid="<?php echo$r['id'];?>" data-dbt="orders" data-dbc="recurring" data-dbb="0"<?php if($r['recurring']==1)echo' checked';if($r['status']=='archived')echo' disabled';?>><label for="recurring0">
+				</div>
+			</div>
+			<div class="form-group form-group-xs">
+				<small class="help-block">Note: cron.php must be added to crontab for recurring orders to be processed.</small>
+			</div>
 		</div>
 	</div>
 	<div class="table-responsive">
@@ -144,13 +258,12 @@ if($args[0]=='view'){
 				<tr>
 					<th colspan="6">
 						<div class="form-group">
-							<div class="input-group col-sm-12">
+							<div class="input-group col-xs-12">
 								<select id="addItem" class="form-control">
 									<option value="0">Add Empty Entry</option>
 <?php			$s=$db->query("SELECT id,contentType,code,cost,title FROM content WHERE contentType='inventory' OR contentType='service' OR contentType='events' ORDER BY code ASC");
-				while($i=$s->fetch(PDO::FETCH_ASSOC)){?>
-									<option value="<?php echo$i['id'];?>"><?php echo ucfirst(rtrim($i['contentType'],'s')).$i['code'].':$'.$i['cost'].':'.$i['title'];?></option>
-<?php			}?>
+				while($i=$s->fetch(PDO::FETCH_ASSOC))
+					echo'<option value="'.$i['id'].'">'.ucfirst(rtrim($i['contentType'],'s')).$i['code'].':$'.$i['cost'].':'.$i['title'].'</option>';?>
 								</select>
 								<span class="input-group-btn">
 									<button class="btn btn-default" onclick="addOrderItem('<?php echo$r['id'];?>',$('#addItem').val());"><?php if($config['buttonType']=='text')echo'Add';else echo'<i class="libre libre-plus color-success"></i>';?></button>
@@ -170,7 +283,7 @@ if($args[0]=='view'){
 				</tr>
 			</thead>
 			<tbody id="updateorder">
-<?php		$s=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid ORDER BY ti DESC,title ASC");
+<?php		$s=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid ORDER BY ti ASC,title ASC");
 			$s->execute(array(':oid'=>$r['id']));
 			$total=0;
 			while($oi=$s->fetch(PDO::FETCH_ASSOC)){
@@ -209,9 +322,7 @@ if($args[0]=='view'){
 								<input class="form-control text-center" name="da" value="<?php echo$oi['cost'];?>"<?php if($r['status']=='archived')echo' readonly';?>>
 							</div>
 						</form>
-<?php			}else{
-					if($oi['iid']!=0)echo$oi['cost'];
-				}?>
+<?php			}else if($oi['iid']!=0)echo$oi['cost'];?>
 					</td>
 					<td class="text-right"><?php if($oi['iid']!=0)echo$oi['cost']*$oi['quantity'];?></td>
 					<td class="text-right">
@@ -294,9 +405,9 @@ if($args[0]=='view'){
 		<thead>
 			<tr>
 				<th>Order #</th>
-				<th>Client</th>
-				<th>Created</th>
-				<th>Due</th>
+				<th class="hidden-xs">Client</th>
+				<th class="hidden-xs">Created</th>
+				<th class="hidden-xs">Due</th>
 				<th>Status</th>
 				<th class="col-md-3 text-right">
 					View <div class="btn-group">
@@ -313,30 +424,33 @@ if($args[0]=='view'){
 			</tr>
 		</thead>
 		<tbody>
-<?php	while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-			<tr id="l_<?php echo$r['id'];?>"<?php if($r['status']=='delete')echo' class="danger"';?>>
-				<td><?php echo$r['qid'].$r['iid'];if($r['aid']!='')echo' / '.$r['aid'];?></td>
-				<td>
-<?php		$cs=$db->prepare("SELECT business,name FROM login WHERE id=:id");
+<?php	while($r=$s->fetch(PDO::FETCH_ASSOC)){
+			$cs=$db->prepare("SELECT username,name,business FROM login WHERE id=:id");
 			$cs->execute(array(':id'=>$r['cid']));
-			$c=$cs->fetch(PDO::FETCH_ASSOC);
-			echo$c['business'].':'.$c['name'];?>
+			$c=$cs->fetch(PDO::FETCH_ASSOC);?>
+			<tr id="l_<?php echo$r['id'];?>"<?php if($r['status']=='delete')echo' class="danger"';?>>
+				<td>
+					<?php echo$r['qid'].$r['iid'];if($r['aid']!='')echo' / '.$r['aid'];?>
+					<small class="visible-xs hidden-sm hidden-md hidden-lg"><?php echo$c['username'];if($c['name']!='')echo' ['.$c['name'].']';if($c['business']!='')echo' -> '.$c['business'];?></span>
 				</td>
-				<td><?php echo date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?></td>
-				<td><?php echo date($config['dateFormat'],$r['due_ti']);?></td>
+				<td class="hidden-xs">
+					<?php echo$c['username'];if($c['name']!='')echo' ['.$c['name'].']';if($c['business']!='')echo' -> '.$c['business'];?>
+				</td>
+				<td class="hidden-xs"><?php echo date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?></td>
+				<td class="hidden-xs"><?php echo date($config['dateFormat'],$r['due_ti']);?></td>
 				<td><?php echo $r['status'];?></td>
 				<td id="controls_<?php echo$r['id'];?>" class="text-right">
 <?php		if($r['qid']!=''&&$r['aid']==''){?>
-					<a class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/to_invoice/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Convert to Invoice"';?>><?php if($config['buttonType']=='text')echo'to Invoice';else echo'<i class="libre libre-order-quotetoinvoice"></i>';?></a> 
+					<a class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/to_invoice/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Convert to Invoice"';if($config['buttonType']=='text')echo'>to Invoice';else echo'><i class="libre libre-order-quotetoinvoice"></i>';?></a> 
 <?php		}
 			if($r['aid']==''){?>
-					<button class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="update('<?php echo$r['id'];?>','orders','status','archived')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Archive"';?>><?php if($config['buttonType']=='text')echo'Archive';else echo'<i class="libre libre-archive"></i>';?></button> 
+					<button class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="update('<?php echo$r['id'];?>','orders','status','archived')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Archive"';if($config['buttonType']=='text')echo'>Archive';else echo'><i class="libre libre-archive"></i>';?></button> 
 <?php		}?>
-					<a class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/view/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php if($config['buttonType']=='text')echo'Edit';else echo'<i class="libre libre-edit"></i>';?></a> 
+					<a class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/view/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';if($config['buttonType']=='text')echo'>Edit';else echo'><i class="libre libre-edit"></i>';?></a> 
 <?php		if($user['rank']>399){?>
-					<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php if($config['buttonType']=='text')echo'<span class="color-success">Restore</span>';else echo'<i class="libre libre-email-reply color-success"></i>';?></button> 
-					<button class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php if($config['buttonType']=='text')echo'<span class="color-danger">Delete</span>';else echo'<i class="libre libre-trash color-danger"></i>';?></button> 
-					<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','orders')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php if($config['buttonType']=='text')echo'<span class="color-danger">Purge</span>';else echo'<i class="libre libre-email-forward color-danger"></i>';?></button>
+					<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';if($config['buttonType']=='text')echo'><span class="color-success">Restore</span>';else echo'><i class="libre libre-email-reply color-success"></i>';?></button> 
+					<button class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';if($config['buttonType']=='text')echo'><span class="color-danger">Delete</span>';else echo'><i class="libre libre-trash color-danger"></i>';?></button> 
+					<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','orders')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';if($config['buttonType']=='text')echo'><span class="color-danger">Purge</span>';else echo'><i class="libre libre-email-forward color-danger"></i>';?></button>
 <?php		}?>
 				</td>
 			</tr>

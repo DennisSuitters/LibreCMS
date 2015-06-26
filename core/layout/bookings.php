@@ -7,7 +7,7 @@ if($view=='add'){
 }?>
 <link rel="stylesheet" type="text/css" href="core/css/fullcalendar.min.css" />
 <div id="calendar" class="col-lg-10 col-md-9"></div>
-<div class="col-lg-2 col-md-3">
+<div class="col-lg-2 col-md-3 hidden-xs">
 	<div class="list-group">
 		<div class="list-group-item">
 			<h4 class="list-group-item-heading">Bookings</h4>

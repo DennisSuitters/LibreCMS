@@ -14,7 +14,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="panel-footer">
+			<div class="panel-footer hidden-xs">
 				<a href="<?php echo URL;?>/admin/content">
 				<span class="pull-left">View Details</span>
 				<a href="#" onclick="statsContent('comments');return false;">
@@ -40,7 +40,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="panel-footer">
+			<div class="panel-footer hidden-xs">
 				<a href="<?php echo URL;?>/admin/messages">
 					<span class="pull-left">View Details</span>
 				</a>
@@ -67,7 +67,7 @@
 					</div>
 				</div>
 			</div>
-			<a href="<?php echo URL;?>/admin/orders/pending">
+			<a class="hidden-xs" href="<?php echo URL;?>/admin/orders/pending">
 				<div class="panel-footer">
 					<span class="pull-left">View Details</span>
 					<span class="pull-right"><i class="libre libre-arrow-circle-right"></i></span>
@@ -91,7 +91,7 @@
 					</div>
 				</div>
 			</div>
-			<a href="<?php echo URL;?>/admin/bookings">
+			<a class="hidden-xs" href="<?php echo URL;?>/admin/bookings">
 				<div class="panel-footer">
 					<span class="pull-left">View Details</span>
 					<span class="pull-right"><i class="libre libre-arrow-circle-right"></i></span>

@@ -25,15 +25,15 @@
 								<legend>Login</legend>
 								<input type="hidden" name="act" value="login">
 								<div class="form-group">
-									<label for="username" class="control-label col-lg-4 col-md-5 col-sm-4<?php if(isset($login)&&$login==false){echo' text-danger';}?>">Username</label>
-										<div class="input-group col-lg-8 col-md-7 col-sm-8<?php if(isset($login)&&$login==false){echo' has-error';}?>">
+									<label for="username" class="control-label col-lg-4 col-md-5 col-sm-4">Username</label>
+										<div class="input-group col-lg-8 col-md-7 col-sm-8">
 										<div class="input-group-addon"><i class="libre libre-user"></i></div>
 										<input type="text" id="username" class="form-control" name="username" value="" placeholder="Enter a Username..." autofocus>
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="password" class="control-label col-lg-4 col-md-5 col-sm-4<?php if(isset($login)&&$login==false){echo' text-danger';}?>">Password</label>
-									<div class="input-group col-lg-8 col-md-7 col-sm-8<?php if(isset($login)&&$login==false){echo' has-error';}?>">
+									<label for="password" class="control-label col-lg-4 col-md-5 col-sm-4">Password</label>
+									<div class="input-group col-lg-8 col-md-7 col-sm-8">
 										<div class="input-group-addon"><i class="libre libre-key"></i></div>
 										<input type="password" id="password" class="form-control" name="password" placeholder="Enter a Password..." autocomplete="off">
 									</div>
@@ -41,7 +41,7 @@
 								<div class="form-group">
 									<label class="control-label col-lg-4 col-md-5 col-sm-4">&nbsp;</label>
 									<div class="input-group col-lg-8 col-md-7 col-sm-8">
-										<button class="btn btn-<?php if(isset($login)&&$login==false){echo'danger';}else{echo'success';}?> btn-large btn-block">Login</button>
+										<button class="btn btn-default btn-large btn-block color-success text-bold">Login</button>
 									</div>
 								</div>
 							</fieldset>

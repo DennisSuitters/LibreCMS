@@ -7,7 +7,7 @@ function makeClient(id){
 	$('#sp').load('core/add_data.php?id='+id+'&act=make_client')
 }
 function changeClient(id,oid){
-	$('#changeClient').before('<i class="busy libre libre-cog libre-spin');
+	$('#block').css({'display':'inline-block'});
 	$('#sp').load('core/change_client.php?id='+id+'&oid='+oid)
 }
 function addOrderItem(oid,iid){
@@ -56,16 +56,25 @@ $(".textinput").on({
 		}
 	},
 	keypress:function(event){
+		var button_icon='<i class="libre libre-floppy"></i>';
+		var button_style='btn-danger';
 		var id=$(this).data("dbid");
 		var t=$(this).data("dbt");
 		var c=$(this).data("dbc");
+		if($(this).data("bt")){
+			var bt=$(this).data("bt");
+			if(bt=='text')var button_icon='Save';
+		}
+		if($(this).data("bs")){
+			var button_style=$(this).data("bs");
+		}
 		var da=$(this).val();
 		if(t=='menu'){
 			$('#'+c+id+'save').remove();
-			$('#'+c+id).after('<div id="'+c+id+'save" class="input-group-btn"><button class="btn btn-danger"><i class="libre libre-save"></i></button></div>')
+			$('#'+c+id).after('<div id="'+c+id+'save" class="input-group-btn"><button class="btn '+button_style+'">'+button_icon+'</button></div>');
 		}else{
 			$('#'+c+'save').remove();
-			$('#'+c).after('<div id="'+c+'save" class="input-group-btn"><button class="btn btn-danger"><i class="libre libre-save"></i></button></div>')
+			$('#'+c).after('<div id="'+c+'save" class="input-group-btn"><button class="btn '+button_style+'">'+button_icon+'</button></div>');
 		}
 		if(event.which==13){
 			update(id,t,c,da);
@@ -138,8 +147,8 @@ function update(id,t,c,da){
 function updateButtons(id,t,c,da){
 	$('#sp').load('core/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da))
 }
-function removeMedia(id){
-	$('#sp').load('core/removemedia.php?id='+id)
+function removeMedia(id,t){
+	$('#sp').load('core/removemedia.php?id='+id+'&t='+t);
 }
 function showDetails(id,c){
 	if($('#show'+id).hasClass('hidden')){

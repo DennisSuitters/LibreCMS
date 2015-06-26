@@ -1,5 +1,6 @@
 <script>/*<![CDATA[*/
-<?php session_start();
+<?php
+session_start();
 require'db.php';
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
@@ -42,7 +43,7 @@ if($tbl=='orders'&&$col=='status'&&$da=='archived'){
 }
 if(is_null($e[2])){
 	if($tbl=='orders'&&$col=='due_ti'){?>
-	window.top.window.$('#due_ti').html('<?php echo date($config['dateFormat'],$da);?>');
+	window.top.window.$('#due_ti').val('<?php echo date($config['dateFormat'],$da);?>');
 <?php }
 	if($tbl=='content'&&$col=='file'&&$da==''){
 		if(file_exists('../media/file_'.$id.'.jpg'))unlink('../media/file_'.$id.'.jpg');
@@ -63,9 +64,14 @@ if(is_null($e[2])){
 			if($r['quantity']==0)$cnt='';?>
 	window.top.window.$('#cart').html('<?php echo$cnt;?>');
 <?php	}
+		if($tbl=='orderitems'){
+			$q=$db->prepare("SELECT oid FROM orderitems WHERE id=:id");
+			$q->execute(array(':id'=>$id));
+			$iid=$q->fetch(PDO::FETCH_ASSOC);
+		}
 		if($tbl=='orderitems'&&$col=='quantity'&&$da==0){
-            $q=$db->prepare("DELETE FROM orderitems WHERE id=:id");
-            $q->execute(array(':id'=>$id));
+			$q=$db->prepare("DELETE FROM orderitems WHERE id=:id");
+			$q->execute(array(':id'=>$id));
 		}
 		$total=0;
 		$content='';
@@ -74,88 +80,29 @@ if(is_null($e[2])){
 			$q->execute(array(':si'=>$si));
 		}
 		if($tbl=='orderitems'){
-			$q=$db->prepare("SELECT oid FROM orderitems WHERE id=:id");
-			$q->execute(array(':id'=>$id));
-			$iid=$q->fetch(PDO::FETCH_ASSOC);
-			$q=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid ORDER BY ti DESC");
+			$q=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid ORDER BY ti ASC,title ASC");
 			$q->execute(array(':oid'=>$iid['oid']));
 		}
-		if($tbl=='cart'&&$q->rowCount()==0){?>
-	window.top.window.$('#content').html('<div class="alert alert-info">You have no Items in the Cart</div>');
-<?php	}else{
-			$total=0;?>
-	window.top.window.$('#updateorder').html('<?php
+		$html='';
+		$total=0;
 		while($oi=$q->fetch(PDO::FETCH_ASSOC)){
 			$s=$db->prepare("SELECT * FROM content WHERE id=:id");
 			$s->execute(array(':id'=>$oi['iid']));
 			$i=$s->fetch(PDO::FETCH_ASSOC);
-			echo'<tr>';
-				echo'<td class="text-left">'.$i['code'].'</td>';
-				echo'<td class="text-left">';
-					echo'<form target="sp" action="includes/update.php">';
-						echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
-						echo'<input type="hidden" name="t" value="'.$tbl.'">';
-						echo'<input type="hidden" name="c" value="title">';
-						echo'<input type="text" class="form-control" name="da" value="';
-							if($oi['title']!='')
-								echo $oi['title'];
-							else
-								echo $i['title'];
-						echo'">';
-					echo'</form>';
-				echo'</td>';
-				echo'<td class="col-md-1 text-center">';
-				if($oi['iid']!=0){
-                    echo'<form target="sp" action="includes/update.php">';
-                        echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
-                        echo'<input type="hidden" name="t" value="'.$tbl.'">';
-                        echo'<input type="hidden" name="c" value="quantity">';
-                        echo'<input class="form-control text-center" name="da" value="'.$oi['quantity'].'">';
-                    echo'</form>';
-				}
-				echo'</td>';
-				echo'<td class="col-md-1 text-right">';
-				if($oi['iid']!=0){
-                        echo'<form target="sp" action="includes/update.php">';
-                            echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
-                            echo'<input type="hidden" name="t" value="'.$tbl.'">';
-                            echo'<input type="hidden" name="c" value="cost">';
-                            echo'<input class="form-control text-center" name="da" value="'.$oi['cost'].'">';
-                        echo'</form>';
-				}
-				echo'</td>';
-			echo'<td class="text-right">';
-				if($oi['iid']!=0){
-					echo $oi['cost']*$oi['quantity'];
-				}
-			echo'</td>';
-			echo'<td class="text-right">';
-				echo'<form target="sp" action="includes/update.php">';
-					echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
-					echo'<input type="hidden" name="t" value="'.$tbl.'">';
-					echo'<input type="hidden" name="c" value="quantity">';
-					echo'<input type="hidden" name="da" value="0">';
-					echo'<button class="btn btn-danger"><i class="fa fa-trash"></i></button>';
-				echo'</form>';
-			echo'</td>';
-		echo'</tr>';
-            if($oi['iid']!=0){
-                $total=$total+($oi['cost']*$oi['quantity']);
-            }
+			$html.='<tr><td class="text-left">'.$i['code'].'</td><td class="text-left"><form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="'.$tbl.'"><input type="hidden" name="c" value="title"><input type="text" class="form-control" name="da" value="';if($oi['title']!='')$html.=$oi['title'];else$html.=$i['title'];$html.='"></form></td><td class="col-md-1 text-center">';
+			if($oi['iid']!=0)$html.='<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'"></form>';
+			$html.='</td><td class="col-md-1 text-right">';
+			if($oi['iid']!=0)$html.='<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" name="da" value="'.$oi['cost'].'"></form>';
+			$html.='</td><td class="text-right">';
+			if($oi['iid']!=0)$html.=$oi['cost']*$oi['quantity'];
+			$html.='</td><td class="text-right"><form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input type="hidden" name="da" value="0"><button class="btn btn-default">';
+			if($config['buttonType']=='text')$html.='Delete';else $html.='<i class="libre libre-trash color-danger"></i>';
+			$html.='</button></form></td></tr>';
+			if($oi['iid']!=0)$total=$total+($oi['cost']*$oi['quantity']);
 		}
-		echo'<tr>';
-			echo'<td colspan="3">&nbsp;</td>';
-			echo'<td class="text-right">';
-				echo'<strong>Total</strong>';
-			echo'</td>';
-			echo'<td class="text-right">';
-				echo'<strong>'.$total.'</strong>';
-			echo'</td>';
-			echo'<td></td>';
-		echo'</tr>';
-?>');
-<?php	}
-	}
+		$html.='<tr><td colspan="3">&nbsp;</td><td class="text-right"><strong>Total</strong></td><td class="text-right"><strong>'.$total.'</strong></td><td></td></tr>';?>
+	window.top.window.$('#updateorder').html('<?php echo$html;?>');
+<?php }
 		if($tbl=='login'&&$col=='gravatar'){
 			if($da==''){
 				$sav=$db->prepare("SELECT avatar FROM login WHERE id=:id");

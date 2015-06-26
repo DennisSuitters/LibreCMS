@@ -53,6 +53,9 @@
 .color-info{color:#31708f}
 .color-warning{color:#8a6d3b}
 .color-danger{color:#a94442}
+.text-light{font-weight:100}
+.text-normal{font-weight:400}
+.text-bold{font-weight:700}
 /*!
 Animate.css - http://daneden.me/animate
 Licensed under the MIT license - http://opensource.org/licenses/MIT
@@ -152,6 +155,7 @@ Cleaned Up and Adapted for LibreICONS
 .libre-align-justify:before,.fa-align-justify:before,.glyphicon-align-justfy:before{content:'\e802'}
 .libre-align-left:before,.fa-align-left:before,.glyphicon-align-left:before{content:'\e803'}
 .libre-align-right:before,.fa-align-right:before,.glyphicon-align-right:before{content:'\e804'}
+.libre-approve:before{content:'\e832'}
 .libre-archive:before,.fa-archive:before{content:'\e805'}
 .libre-arrow-circle-down:before{content:'\e806'}
 .libre-arrow-circle-right:before{content:'\e807'}
@@ -244,17 +248,17 @@ Cleaned Up and Adapted for LibreICONS
 .libre-exclamation:before,.fa-exclamation:before{content:'\e85d'}
 .libre-export:before{content:'\e85e'}
 .libre-export-booking:before{content:'\e85f'}
-.libre-file:before,.fa-file:before{content:'\e860'}
-.libre-file-archive:before,.fa-file-archive-o:before{content:'\e861'}
-.libre-file-audio:before,.fa-file-audio-o:before{content:'\e862'}
+.libre-file:before,.fa-file:before,.fa-file-o:before{content:'\e860'}
+.libre-file-archive:before,.fa-file-archive-o:before,.fa-file-zip-o:before{content:'\e861'}
+.libre-file-audio:before,.fa-file-audio-o:before,.fa-sound-o:before{content:'\e862'}
 .libre-file-code:before,.fa-file-code-o:before{content:'\e863'}
 .libre-file-excel:before,.fa-file-excel-o:before{content:'\e864'}
-.libre-file-image:before,.fa-file-image-o:before{content:'\e865'}
+.libre-file-image:before,.fa-file-image-o:before,.fa-photo-o:before,.fa-picture-o:before{content:'\e865'}
 .libre-file-pdf:before,.fa-file-pdf-o:before{content:'\e866'}
 .libre-file-powerpoint:before,.fa-file-powerpoint-o:before{content:'\e867'}
 .libre-files:before,.fa-files-o:before{content:'\e868'}
 .libre-file-text:before,.fa-file-text:before,.fa-file-text-o:before{content:'\e869'}
-.libre-file-video:before,.fa-file-video-o:before{content:'\e86a'}
+.libre-file-video:before,.fa-file-video-o:before,.fa-file-movie-o:before{content:'\e86a'}
 .libre-file-word:before,.fa-file-word-o:before{content:'\e86b'}
 .libre-film:before,.fa-film:before,.fa-youtube-play:before,.glyphicon-film:before{content:'\e86c'}
 .libre-filter:before,.fa-filter:before,.glyphicon-filter:before{content:'\e86d'}

@@ -58,68 +58,68 @@ if($args[0]=='edit'){
 <div class="well">
 	<h4>Editing Permissions</h4>
 	<div class="form-group">
-		<label for="options0" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
-			<input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1)echo' checked';?>>
-		</label>
-		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+		<div class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
+			<input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1)echo' checked';?>><label for="options0">
+		</div>
+		<label for="options0" div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
 			<strong>Add/Remove Content</strong>
-		</div>
+		</label>
 	</div>
 	<div class="form-group">
-		<label for="options1" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
-			<input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>>
-		</label>
-		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+		<div class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
+			<input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>><label for="options1">
+		</div>
+		<label for="options1" class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
 			<strong>Edit Content</strong>
-		</div>
+		</label>
 	</div>
 	<div class="form-group">
-		<label for="options2" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
-			<input type="checkbox" id="options2" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="2"<?php if($r['options']{2}==1)echo' checked';?>>
-		</label>
-		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+		<div class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
+			<input type="checkbox" id="options2" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="2"<?php if($r['options']{2}==1)echo' checked';?>><label for="options2">
+		</div>
+		<label for="options2" class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
 			<strong>Add/Edit Bookings</strong>
-		</div>
+		</label>
 	</div>
 	<div class="form-group">
-		<label for="options3" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
-			<input type="checkbox" id="options3" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="3"<?php if($r['options']{3}==1)echo' checked';?>>
-		</label>
-		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+		<div class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
+			<input type="checkbox" id="options3" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="3"<?php if($r['options']{3}==1)echo' checked';?>><label for="options3">
+		</div>
+		<label for="options3" class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
 			<strong>Message Viewing/Editing</strong>
-		</div>
+		</label>
 	</div>
 	<div class="form-group">
-		<label for="options4" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
-			<input type="checkbox" id="options4" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="4"<?php if($r['options']{4}==1)echo' checked';?>>
-		</label>
-		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+		<div class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
+			<input type="checkbox" id="options4" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="4"<?php if($r['options']{4}==1)echo' checked';?>><label for="options4">
+		</div>
+		<label for="options4" div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
 			<strong>Orders Viewing/Editing</strong>
-		</div>
+		</label>
 	</div>
 	<div class="form-group">
-		<label for="options5" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
-			<input type="checkbox" id="options5" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="options" data-dbb="5"<?php if($r['options']{5}==1)echo' checked';?>>
-		</label>
-		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+		<div class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
+			<input type="checkbox" id="options5" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="options" data-dbb="5"<?php if($r['options']{5}==1)echo' checked';?>><label for="options5">
+		</div>
+		<label for="options5" class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
 			<strong>User Accounts Viewing/Editing</strong>
-		</div>
+		</label>
 	</div>
 	<div class="form-group">
-		<label for="options6" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
-			<input type="checkbox" id="options6" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="6"<?php if($r['options']{6}==1)echo' checked';?>>
-		</label>
-		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+		<div for="options6" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
+			<input type="checkbox" id="options6" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="6"<?php if($r['options']{6}==1)echo' checked';?>><label for="options6">
+		</div>
+		<label for="options6" class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
 			<strong>SEO Viewing/Editing</strong>
-		</div>
+		</label>
 	</div>
 	<div class="form-group">
-		<label for="options7" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
-			<input type="checkbox" id="options7" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="7"<?php if($r['options']{7}==1)echo' checked';?>>
-		</label>
-		<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
-			<strong>Preferences Viewing/Editing</strong>
+		<div class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4 text-right">
+			<input type="checkbox" id="options7" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="7"<?php if($r['options']{7}==1)echo' checked';?>><label for="options7">
 		</div>
+		<label for="options7" div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
+			<strong>Preferences Viewing/Editing</strong>
+		</label>
 	</div>
 </div>
 <?php }?>
@@ -221,7 +221,7 @@ if($args[0]=='edit'){
 <div class="form-group">
 	<label for="order_notes" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">About</label>
 	<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
-		<form method="post" target="sp" action="includes/update.php">
+		<form method="post" target="sp" action="core/update.php">
 			<input type="hidden" name="id" value="<?php echo$r['id'];?>">
 			<input type="hidden" name="t" value="login">
 			<input type="hidden" name="c" value="notes">
@@ -299,16 +299,16 @@ if($args[0]=='edit'){
 </div>
 <?php }else{?>
 <div class="table-responsive">
-	<table class="table table-condensed">
+	<table id="stupidtable" class="table table-condensed">
 		<thead>
 			<tr>
-				<th>Username</th>
-				<th>Name</th>
-				<th>Email</th>
-				<th class="col-sm-2">Rank</th>
+				<th data-sort="string">Username</th>
+				<th data-sort="string">Name</th>
+				<th class="hidden-xs" data-sort="string">Email</th>
+				<th class="col-sm-2 hidden-xs">Rank</th>
 				<th class="col-sm-3 text-right">
 					Show <div class="btn-group">
-						<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><?php if(!isset($args[1])||$args[1]==''){echo'All';}else{echo ucfirst($args[1]);}?> <i class="caret"></i></button>
+						<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><?php if(!isset($args[1])||$args[1]=='')echo'All';else echo ucfirst($args[1]);?> <i class="caret"></i></button>
 						<ul class="dropdown-menu pull-right">
 							<li><a href="<?php echo URL.'admin/accounts';?>">All</a></li>
 							<li><a href="<?php echo URL.'admin/accounts/type/subscriber';?>">Subscriber</a></li>
@@ -325,7 +325,7 @@ if($args[0]=='edit'){
 				</th>
 			</tr>
 		</thead>
-		<tbody id="sort">
+		<tbody>
 <?php 
 if($args[0]=='type'){
 	if(isset($args[1])){
@@ -347,11 +347,11 @@ if($args[0]=='type'){
 	$s->execute(array(':rank'=>$_SESSION['rank']+1));
 }
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-			<tr id="l_<?php echo$r['id'];?>" class="placeholder<?php if($r['status']=='delete'){echo' danger';}?>">
+			<tr id="l_<?php echo$r['id'];?>" class="placeholder<?php if($r['status']=='delete')echo' danger';?>">
 				<td><?php echo$r['username'];?></td>
 				<td><?php echo$r['name'];?></td>
-				<td><a href="mailto:<?php echo$r['email'];?>"><?php echo$r['email'];?></a></td>
-				<td>
+				<td class="hidden-xs"><a href="mailto:<?php echo$r['email'];?>"><?php echo$r['email'];?></a></td>
+				<td class="hidden-xs">
 <?php if($r['rank']==100)echo'Subscriber';
 	elseif($r['rank']==200)echo'Member';
 	elseif($r['rank']==300)echo'Client';
@@ -365,11 +365,11 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 	else echo'Visitor';?>
 				</td>
 				<td id="controls_<?php echo$r['id'];?>" class="text-right">
-					<a class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/accounts/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php if($config['buttonType']=='text')echo'Edit';else echo'<i class="libre libre-edit"></i>';?></a> 
-					<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php if($config['buttonType']=='text')echo'Restore';else echo'<i class="libre libre-email-reply color-success"></i>';?></button> 
-					<button class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php if($config['buttonType']=='text')echo'Delete';else echo'<i class="libre libre-trash color-danger"></i>';?></button> 
+					<a class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/accounts/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';if($config['buttonType']=='text')echo'>Edit';else echo'><i class="libre libre-edit"></i>';?></a> 
+					<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';if($config['buttonType']=='text')echo'>Restore';else echo'><i class="libre libre-email-reply color-success"></i>';?></button> 
+					<button class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';if($config['buttonType']=='text')echo'>Delete';else echo'><i class="libre libre-trash color-danger"></i>';?></button> 
 <?php	if($_SESSION['rank']>399&&$user['options']{5}==1){?>
-					<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php if($config['buttonType']=='text')echo'Purge';else echo'<i class="libre libre-email-forward color-danger"></i>';?></button>
+					<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';if($config['buttonType']=='text')echo'>Purge';else echo'><i class="libre libre-email-forward color-danger"></i>';?></button>
 <?php	}?>
 				</td>
 			</tr>
