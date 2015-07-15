@@ -401,14 +401,23 @@ if($args[0]=='view'){
 			$s->execute();
 		}?>
 <div class="table-responsive">
-	<table class="table">
+<?php if($user['rank']==1000||$user['options']{0}==1){?>
+	<div class="dropdown pull-right">
+		<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-placement="right"><?php if($config['buttonType']=='text')echo'<small>Add</small>';else echo'<i class="libre libre-plus color-success"></i>';?> <i class="caret"></i></button>
+		<ul class="dropdown-menu multi-level pull-right">
+			<li><a href="<?php echo URL;?>admin/orders/addquote">Quote</a></li>
+			<li><a href="<?php echo URL;?>admin/orders/addinvoice">Invoice</a></li>
+		</ul>
+	</div>
+<?php }?>
+	<table id="stupidtable" class="table table-condensed table-hover">
 		<thead>
 			<tr>
-				<th>Order #</th>
-				<th class="hidden-xs">Client</th>
-				<th class="hidden-xs">Created</th>
-				<th class="hidden-xs">Due</th>
-				<th>Status</th>
+				<th data-sort="string">Order #</th>
+				<th class="hidden-xs" data-sort="string">Client</th>
+				<th class="hidden-xs" data-sort="string">Created</th>
+				<th class="hidden-xs" data-sort="string">Due</th>
+				<th data-sort="string">Status</th>
 				<th class="col-md-3 text-right">
 					View <div class="btn-group">
 						<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><?php echo ucfirst($args[0]);?> <i class="caret"></i></button>

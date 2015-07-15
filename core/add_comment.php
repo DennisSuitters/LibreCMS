@@ -12,12 +12,12 @@ $act=filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING);
 $ip=$_SERVER['REMOTE_ADDR'];
 $error=0;
 $ti=time();
-if($act=='quantity'){
+if($act=='add_comment'){
 	if($_POST['emailtrap']==''){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
 		if(filter_var($email,FILTER_VALIDATE_EMAIL)){
 			$rid=filter_input(INPUT_POST,'rid',FILTER_SANITIZE_NUMBER_INT);
-			$contentType=filter_input(INPUT_POST,'contentType',FILTER_SANITIZE_STRING);
+			$contentType=filter_input(INPUT_POST,'ct',FILTER_SANITIZE_STRING);
 			$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
 			$notes=filter_input(INPUT_POST,'notes',FILTER_SANITIZE_STRING);
 			$q=$db->prepare("SELECT id,name,email,avatar,gravatar FROM login WHERE email=:email");
@@ -38,7 +38,6 @@ if($act=='quantity'){
 						$mail=new PHPMailer();
 						$mail->IsSMTP();
 						$mail->SetFrom($email,$name);
-						$toname=$config['email'];
 						$mail->AddAddress($config['email']);
 						$mail->IsHTML(true);
 						$mail->Subject='Comment on '.ucfirst($r['contentType']).': '.$r['title'];
@@ -48,14 +47,11 @@ if($act=='quantity'){
 						$msg.='Comment: '.$notes;
 						$mail->Body=$msg;
 						$mail->AltBody=$msg;
-						if($mail->Send()){
-							$notification=$theme['settings']['comment_success'];
-						}else{
-							$notification=$theme['settings']['comment_error'];
-						}
+						if($mail->Send())$notification=$theme['settings']['comment_success'];
+						else$notification=$theme['settings']['comment_error'];
 					}
 				}
-			}else $notification=$theme['settings']['comment_error'];
+			}else$notification=$theme['settings']['comment_error'];
 		}
 	}
 }?>

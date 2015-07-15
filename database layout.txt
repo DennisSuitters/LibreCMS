@@ -42,8 +42,9 @@ config
     3   Enable Account Sign Ups
     4   Enable Tooltips
     5   Enable Clickable Helper Guides
-    6   Enable SEO Statistic Widget
-    7
+    6   
+    7   
+    8   Disable/Enable Google Data Collection Widgets Display
   `theme` varchar(16) COLLATE utf8_bin NOT NULL,
   `seoTitle` varchar(60) COLLATE utf8_bin NOT NULL,
   `seoDescription` varchar(255) COLLATE utf8_bin NOT NULL,

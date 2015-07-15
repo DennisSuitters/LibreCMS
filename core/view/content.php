@@ -147,21 +147,17 @@ if($show=='item'){
 			$sc=$db->prepare("SELECT * FROM comments WHERE contentType=:contentType AND rid=:rid AND status!='unapproved' ORDER BY ti ASC");
 			$sc->execute(array(':contentType'=>$view,':rid'=>$r['id']));
 			$commentsHTML=file_get_contents(THEME.'/comments.html');
-			if($sc->rowCount()>0){
-				
-				if(stristr($commentsHTML,'<print content=id>'))$commentsHTML=str_replace('<print content=id>',$r['id'],$commentsHTML);
-				if(stristr($commentsHTML,'<print content=contentType>'))$commentsHTML=str_replace('<print content=contentType>',$r['contentType'],$commentsHTML);
-				$commentDOC=new DOMDocument();
-				@$commentDOC->loadHTML($commentsHTML);
-				preg_match('/<loop>([\w\W]*?)<\/loop>/',$commentsHTML,$matches);
-				while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
-					$comment=$matches[1];
-					require'core/parser.php';
-					$comments.=$comment;
-				}
+			if(stristr($commentsHTML,'<print content=id>'))$commentsHTML=str_replace('<print content=id>',$r['id'],$commentsHTML);
+			if(stristr($commentsHTML,'<print content=contentType>'))$commentsHTML=str_replace('<print content=contentType>',$r['contentType'],$commentsHTML);
+			$commentDOC=new DOMDocument();
+			@$commentDOC->loadHTML($commentsHTML);
+			preg_match('/<loop>([\w\W]*?)<\/loop>/',$commentsHTML,$matches);
+			while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
+				$comment=$matches[1];
+				require'core/parser.php';
+				$comments.=$comment;
 			}
 				$commentsHTML=preg_replace('~<loop>.*?<\/loop>~is',$comments,$commentsHTML,1);
-//			}
 			if($r['options']{1}==1){
 
 			}

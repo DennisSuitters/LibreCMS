@@ -31,119 +31,106 @@
 	</div>
 	<div id="contact" class="tab-pane fade in">
 		<div class="form-group">
-			<label for="business" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Business</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="business" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Business</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="business" class="form-control textinput" value="<?php echo$config['business'];?>" data-dbid="1" data-dbt="config" data-dbc="business" placeholder="Enter Business Name...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="abn" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">ABN</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="abn" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">ABN</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="abn" class="form-control textinput" value="<?php echo$config['abn'];?>" data-dbid="1" data-dbt="config" data-dbc="abn" placeholder="Enter an ABN...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="email" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Email</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="email" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Email</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="email" class="form-control textinput" value="<?php echo$config['email'];?>" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="Enter an Email...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="phone" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Phone</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="phone" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Phone</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="phone" class="form-control textinput" value="<?php echo$config['phone'];?>" data-dbid="1" data-dbt="config" data-dbc="phone" placeholder="Enter a Phone Number...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="mobile" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Mobile</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="mobile" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Mobile</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="mobile" class="form-control textinput" value="<?php echo$config['mobile'];?>" data-dbid="1" data-dbt="config" data-dbc="mobile" placeholder="Enter a Mobile Number...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="address" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Address</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="address" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Address</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="address" class="form-control textinput" value="<?php echo$config['address'];?>" data-dbid="1" data-dbt="config" data-dbc="address" placeholder="Enter an Address...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="suburb" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Suburb</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="suburb" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Suburb</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="suburb" class="form-control textinput" value="<?php echo$config['suburb'];?>" data-dbid="1" data-dbt="config" data-dbc="suburb" placeholder="Enter a Suburb...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="city" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">City</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="city" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">City</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="city" class="form-control textinput" value="<?php echo$config['city'];?>" data-dbid="1" data-dbt="config" data-dbc="city" placeholder="Enter a City...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="state" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">State</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="state" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">State</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="state" class="form-control textinput" value="<?php echo$config['state'];?>" data-dbid="1" data-dbt="config" data-dbc="state" placeholder="Enter a State...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="postcode" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Postcode</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="postcode" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Postcode</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="postcode" class="form-control textinput" value="<?php if($config['postcode']!=0)echo$config['postcode'];?>" data-dbid="1" data-dbt="config" data-dbc="postcode" placeholder="Enter a Postcode...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="country" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Country</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="country" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Country</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="country" class="form-control textinput" value="<?php echo$config['country'];?>" data-dbid="1" data-dbt="config" data-dbc="country" placeholder="Enter a Country...">
 			</div>
 		</div>
 	</div>
 	<div id="interface" class="tab-pane fade in">
 		<div class="form-group">
-			<label for="options3" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
-				<input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>>
-			</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="This allows Users to Create Accounts."';?>>Enable Account Sign Ups</span>
+			<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
+				<input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>><label for="options3">
 			</div>
+			<label for="options3" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="This allows Users to Create Accounts."';?>>Enable Account Sign Ups</span></label>
 		</div>
 		<div class="form-group">
-			<label for="options4" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
-				<input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>>
-			</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Administration Tooltips, like this one."';?>>Enable Tooltips</span>
+			<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
+				<input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>><label for="options4">
 			</div>
+			<label for="options4" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Administration Tooltips, like this one."';?>>Enable Tooltips</span></label>
 		</div>
 		<div class="form-group">
-			<label for="options5" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
-				<input type="checkbox" id="options5" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="5"<?php if($config['options']{5}==1)echo' checked';?>>
-			</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Helper Button for Content Guide Hints."';?>>Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-default"><i class="libre libre-help color-danger"></i></button>
+			<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
+				<input type="checkbox" id="options5" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="5"<?php if($config['options']{5}==1)echo' checked';?>><label for="options5">
 			</div>
+			<label for="options5" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Helper Button for Content Guide Hints."';?>>Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-default"><i class="libre libre-help color-danger"></i></button>
+			</label>
 		</div>
 		<div class="form-group">
-			<label for="buttonType" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">
+			<label for="buttonType" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">
 				Buttons Type
 			</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<select id="buttonType" class="form-control" onchange="update('1','config','buttonType',$(this).val());"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
-					<option value="icon"<?php if($config['buttonType']=='icon')echo' selected';?>>As Icons</option>
+					<option value="icon"<?php if($config['buttonType']=='icon')echo' selected';?>>Iconic</option>
 					<option value="text"<?php if($config['buttonType']=='text')echo' selected';?>>Textual</option>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="options6" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1 text-right">
-				<input type="checkbox" id="options6" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="6"<?php if($config['options']{6}==1)echo' checked';?>>
-			</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-				<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Disable/Enable Statistics Information RSS SEO Widget."';?>>Enable RSS SEO Information Widget</span>
-			</div>
-		</div>
-		<div class="form-group">
-			<label for="timezone" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Timezone</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="timezone" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Timezone</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<select id="timezone" class="form-control" onchange="update('1','config','timezone',$(this).val());"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 <?php function formatOffset($offset){
         $hours=$offset/3600;
@@ -167,19 +154,15 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="dateFormat" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Date/Time Format</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-<?php 	if($config['options']{5}==1){?>
-				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="Date/Time Format" data-content="This sets how Dates/Times are displayed."><i class="libre libre-help color-danger"></i></button>
-				</div>
-<?php 	}?>
+			<label for="dateFormat" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Date/Time Format</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="Date/Time Format" data-content="This sets how Dates/Times are displayed."><i class="libre libre-help color-danger"></i></button></div>';?>
 				<input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date Format..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Format Layout of all Dates/Times displayed."';?>>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">&nbsp;</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">&nbsp;</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<div class="well">
 					<h4 onclick="$('#dateTimeOptions').toggle(400);"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Click to show Date/Time Formatting Options."';?>>
 						Show Date/Time Formatting Options
@@ -227,39 +210,39 @@
 	<div id="banking" class="tab-pane fade in">
 		<h4>Banking Details</h4>
 		<div class="form-group">
-			<label for="bank" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Bank</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="bank" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Bank</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="bank" class="form-control textinput" value="<?php echo$config['bank'];?>" data-dbid="1" data-dbt="config" data-dbc="bank" placeholder="Enter Bank Name...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="bankAccountName" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Account Name</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="bankAccountName" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Account Name</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="bankAccountName" class="form-control textinput" value="<?php echo$config['bankAccountName'];?>"data-dbid="1" data-dbt="config" data-dbc="bankAccountName" placeholder="Enter an Account Name...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="bankAccountNumber" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Account Number</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="bankAccountNumber" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Account Number</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="bankAccountNumber" class="form-control textinput" value="<?php echo$config['bankAccountNumber'];?>" data-dbid="1" data-dbt="config" data-dbc="bankAccountNumber" placeholder="Enter an Account Number...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="bankBSB" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">BSB</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="bankBSB" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">BSB</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="bankBSB" class="form-control textinput" value="<?php echo$config['bankBSB'];?>" data-dbid="1" data-dbt="config" data-dbc="bankBSB" placeholder="Enter a BSB...">
 			</div>
 		</div>
 		<h4>PayPal Details</h4>
 		<div class="form-group">
-			<label for="bankPayPal" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Account</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="bankPayPal" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Account</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="bankPayPal" class="form-control textinput" value="<?php echo$config['bankPayPal'];?>" data-dbid="1" data-dbt="config" data-dbc="bankPayPal" placeholder="Enter a PayPal Account...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="ipn" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">IPN</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
+			<label for="ipn" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">IPN</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="ipn" class="form-control" value="" readonly<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title=""';?>>
 			</div>
 		</div>
@@ -312,53 +295,52 @@
 	<div id="seo" class="tab-pane fade in">
 		<h4>Default Analytics</h4>
 		<div class="form-group">
-			<label for="seoTitle" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-2">&nbsp;</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-10">
+			<div class="col-xs-5 col-sm-3 col-md-3 col-lg-2"></div>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<span class="help-block">These will be used if Page or Content Seo Fields are empty.</span>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="seoTitle" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-2">seoTitle</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-10">
-<?php 	if($config['options']{5}==1){?>
-				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button>
-				</div>
-<?php 	}?>
+			<label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoTitle</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button></div>';?>
 				<input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$config['seoTitle'];?>" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="Enter a Page Title..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="seoCaption" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-2">seoCaption</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-10">
-<?php 	if($config['options']{5}==1){?>
-				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button>
-				</div>
-<?php 	}?>
+			<label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoCaption</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button></div>';?>
 				<input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$config['seoCaption'];?>" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="Enter a Page Caption..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="seoDescription" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-2">seoDescription</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-10">
-<?php 	if($config['options']{5}==1){?>
-				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button>
-				</div>
-<?php 	}?>
+			<label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoDescription</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button></div>';?>
 				<input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$config['seoDescription'];?>" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="Enter a Page Description..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="seoKeywords" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-2">seoKeywords</label>
-			<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-10">
-<?php 	if($config['options']{5}==1){?>
-				<div class="input-group-btn">
-					<button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button>
-				</div>
-<?php 	}?>
+			<label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoKeywords</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button></div>';?>
 				<input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Page Keywords..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+			</div>
+		</div>
+		<h4>Google Analytics</h4>
+		<div class="form-group">
+			<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
+				<input type="checkbox" id="options8" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="8"<?php if($config['options']{8}==1)echo' checked';?>><label for="options8">
+			</div>
+			<label for="options8" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Disable/Enable Internal Data Collection Widgets Display."';?>>Disable/Enable Google Data Collection Widgets Display.</span></label>
+			<div class="col-xs-5 col-sm-3 col-md-3 col-lg-2"></div><div class="help-block">This will not affect the embedded Google Analytics on the main site.</div>
+		</div>
+		<div class="form-group">
+			<label for="gaClientID" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">ClientID</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help color-danger"></i></button></div>';?>
+				<input type="text" id="gaClientID" class="form-control textinput" value="<?php echo$config['gaClientID'];?>" data-dbid="1" data-dbt="config" data-dbc="gaClientID" placeholder="Enter Google Analytics Client ID..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 			</div>
 		</div>
 	</div>

@@ -24,7 +24,7 @@ if($act!=''){
 				if($icon=='none'||$url==''){?>
 	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
 <?php			}else{
-					$q=$db->prepare("INSERT INTO choices (uid,icon,url) VALUES (:uid,:icon,:url)");
+					$q=$db->prepare("INSERT INTO choices (uid,contentType,icon,url) VALUES (:uid,'social',:icon,:url)");
 					$q->execute(array(':uid'=>$user,':icon'=>$icon,':url'=>$url));
 					$id=$db->lastInsertId();
 					$e=$db->errorInfo();
@@ -93,6 +93,7 @@ if($act!=''){
 	case'add_image':
 	case'add_cover':
 	case'add_avatar':
+	case'add_cover':
 		$id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
 		$col=filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING);
 		$fu=$_FILES['fu'];
@@ -113,9 +114,9 @@ if($act!=''){
 						$fn=$col.'_'.$id.'.gif';
 						$fn2='thumb_'.$id.'.gif';
 					}
-					$ord=$db->query("SELECT MAX(ord) as ord FROM content")->fetch(PDO::FETCH_ASSOC);
-					$ord['ord']++;
 					if($act=='add_image'&&$col=='file'){
+						$ord=$db->query("SELECT MAX(ord) as ord FROM content")->fetch(PDO::FETCH_ASSOC);
+						$ord['ord']++;
 						$q=$db->prepare("UPDATE content SET thumb=:thumb,file=:file,ord=:ord WHERE id=:id");
 						$q->execute(array(':thumb'=>$fn2,':file'=>$fn,':ord'=>$ord['ord'],':id'=>$id));
 						$image=new Zebra_image();
@@ -129,15 +130,20 @@ if($act!=''){
 	window.top.window.$('#thumb').html('<img src="media/<?php echo$fn2.'?'.$ti;?>">');
 <?php				}
 					if($act=='add_avatar'){
-						$fn='avatar'.$fn;
 						$q=$db->prepare("UPDATE login SET avatar=:avatar WHERE id=:id");
 						$q->execute(array(':avatar'=>$fn,':id'=>$id));
 						$image=new Zebra_image();
 						$image->source_path=$tp;
-						$image->target_path='../media/'.$fn;
+						$image->target_path='../media/avatar/'.$fn;
 						$image->resize(150,150,ZEBRA_IMAGE_CROP_CENTER);
+						rename($tp,'../media/avatar/'.$fn);?>
+	window.top.window.$('#avatar').attr('src','media/avatar/<?php echo$fn;?>');
+<?php				}
+					if($act=='add_cover'){
+						$q=$db->prepare("UPDATE login SET cover=:cover WHERE id=:id");
+						$q->execute(array(':cover'=>$fn,':id'=>$id));
 						rename($tp,'../media/'.$fn);?>
-	window.top.window.$('#avatar').attr('src','media/<?php echo$fn;?>');
+	window.top.window.$('#coverimg').html('<img src="media/<?php echo$fn.'?'.$ti;?>">');
 <?php				}
 					if($col=="thumb"){
 						$q=$db->prepare("UPDATE content SET thumb=:thumb WHERE id=:id");
@@ -146,7 +152,7 @@ if($act!=''){
 						$image->source_path=$tp;
 						$image->target_path='../media/'.$fn2;
 						$image->resize(150,150,ZEBRA_IMAGE_CROP_CENTER);?>
-	window.top.window.$('#thumb').html('<img src="media/<?php echo$fn2;?>">');
+	window.top.window.$('#thumb').html('<img src="media/<?php echo$fn2.'?'.$ti;?>">');
 <?php				}
 //					if(file_exists('../media/'.$fn)){
 //						chmod("../media/".$fn,0777);

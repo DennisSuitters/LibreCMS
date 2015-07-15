@@ -10,12 +10,12 @@ if($show=='pages'){
 	$s=$db->prepare("SELECT * FROM menu ORDER BY menu DESC, ord ASC");
 	$s->execute();?>
 <div class="table-responsive">
-	<table class="table table-condensed table-hover">
+	<table id="stupidtable" class="table table-condensed table-hover">
 		<thead>
 			<tr>
-				<th class="col-lg-1 col-md-1 col-sm-1 text-center hidden-xs">Menu</th>
-				<th class="text-center">Title</th>
-				<th class="col-lg-3 col-md-3 col-sm-3 text-center hidden-xs">Edited</th>
+				<th class="col-lg-1 col-md-1 col-sm-1 text-center hidden-xs" data-sort="string">Menu</th>
+				<th class="text-center" data-sort="string">Title</th>
+				<th class="col-lg-3 col-md-3 col-sm-3 text-center hidden-xs" data-sort="string">Edited</th>
 				<th class="col-lg-1 col-md-1 col-sm-1 text-center">Active</th>
 				<th class="col-lg-1 col-md-1 col-sm-1 text-right"></th>
 			</tr>
@@ -50,10 +50,9 @@ if($show=='item'){
 	</div>
 </div>
 <div class="form-group">
-	<label for="title" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Title
-<?php 	if($config['options']{5}==1)echo'<div class="pull-right hidden-xs"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=1"><i class="libre libre-help color-danger"></i></a></div>';?>
-	</label>
+	<label for="title" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Title</label>
 	<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=1"><i class="libre libre-help color-danger"></i></a></div>';?>
 		<input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="title" placeholder="Enter a Page Title...">
 	</div>
 </div>
@@ -73,43 +72,38 @@ if($show=='item'){
 	</div>
 </div>
 <div class="form-group">
-	<label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoTitle
-<?php 	if($config['options']{5}==1)echo'<div class="pull-right hidden-xs"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=11"><i class="libre libre-help color-danger"></i></a></div>';?>
-	</label>
+	<label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoTitle</label>
 	<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=11"><i class="libre libre-help color-danger"></i></a></div>';?>
 		<input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$r['seoTitle'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoTitle" placeholder="Enter a Page seoTitle...">
 	</div>
 </div>
 <div class="form-group">
-	<label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoCaption
-<?php 	if($config['options']{5}==1)echo'<div class="pull-right hidden-xs"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=12"><i class="libre libre-help color-danger"></i></a></div>';?>
-	</label>
+	<label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoCaption</label>
 	<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=12"><i class="libre libre-help color-danger"></i></a></div>';?>
 		<input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$r['seoCaption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoCaption" placeholder="Enter a Page Caption...">
 	</div>
 </div>
 <div class="form-group">
-	<label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoDescription
-<?php 	if($config['options']{5}==1)echo'<div class="pull-right hidden-xs"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=13"><i class="libre libre-help color-danger"></i></a></div>';?>
-	</label>
+	<label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoDescription</label>
 	<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=13"><i class="libre libre-help color-danger"></i></a></div>';?>
 		<input type="text" id="seoDescription<?php echo$r['id'];?>" class="form-control textinput" value="<?php echo$r['seoDescription'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoDescription" placeholder="Enter a Page Description...">
 	</div>
 </div>
 <div class="form-group">
-	<label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoKeywords
-<?php 	if($config['options']{5}==1)echo'<div class="pull-right hidden-xs"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=14"><i class="libre libre-help color-danger"></i></a></div>';?>
-	</label>
+	<label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoKeywords</label>
 	<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=14"><i class="libre libre-help color-danger"></i></a></div>';?>
 		<input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$r['seoKeywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoKeywords" placeholder="Enter Page Keywords...">
 	</div>
 </div>
 <div class="form-group">
-	<label for="notes" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Notes
-<?php 	if($config['options']{5}==1)echo'<div class="pull-right hidden-xs"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=10"><i class="libre libre-help color-danger"></i></a></div>';?>
-	</label>
+	<label for="notes" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Notes</label>
 	<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($user['options']{1}==1){?>
+<?php if($user['options']{1}==1){
+	if($config['options']{5}==1)echo'<div class="input-group-btn" style="vertical-align:top;"><a class="btn btn-default" data-toggle="modal" data-target="#seo" href="core/seo.php?id=10"><i class="libre libre-help color-danger"></i></a></div>';?>
 		<form method="post" target="sp" action="core/update.php">
 			<input type="hidden" name="id" value="<?php echo$r['id'];?>">
 			<input type="hidden" name="t" value="menu">

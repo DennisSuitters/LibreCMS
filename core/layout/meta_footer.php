@@ -5,14 +5,129 @@
 <script src="core/js/featherlight.min.js"></script>
 <script src="core/js/stupidtable.js"></script>
 <?php if($user['rank']>399){
-	if($view=='bookings'){?>
+	if($view=='bookings'){
+		if($config['layoutBookings']=='calendar'){?>
 <script src="core/js/moment.min.js"></script>
 <script src="core/js/fullcalendar.min.js"></script>
-<?php }?>
+<?php }
+}?>
 <script src="core/js/summernote.js"></script>
 <script src="core/js/bootstrap-datetimepicker.min.js"></script>
+<link href="core/css/cropper.min.css" rel="stylesheet">
+<script src="core/js/cropper.min.js"></script>
 <script src="core/js/js.js"></script>
 <script>/*<![CDATA[*/
+<?php if($config['options']{8}==1&&$config['gaClientID']!=''){?>
+	(function(w,d,s,g,js,fs){g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f)}};js=d.createElement(s);fs=d.getElementsByTagName(s)[0];js.src='https://apis.google.com/js/platform.js';fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics')}}(window,document,'script'));
+	gapi.analytics.ready(function(){
+		gapi.analytics.auth.authorize({
+			container:'auth-container',
+			clientid:"<?php echo$config['gaClientID'];?>",
+			userInfoLabel:''
+		});
+		gapi.analytics.auth.on('success', function(response) {
+			$('#auth-container').css({'display':'none'});
+		});
+		gapi.analytics.auth.on('error', function(response) {
+			$('#auth-container').css({'display':'block'});
+			$('#auth-container').html('There was a problem!');
+		});
+		var viewSelector = new gapi.analytics.ViewSelector({
+			container:'view-selector'
+		});
+		viewSelector.execute();
+		var sessions=new gapi.analytics.googleCharts.DataChart({
+			query:{
+				metrics:'ga:sessions',
+				dimensions:'ga:date',
+				'start-date':'30daysAgo',
+				'end-date':'today'
+			},
+			chart:{
+				container:'sessions',
+				type:'LINE',
+				options:{
+					width:'100%'
+				}
+			}
+		});
+		var sessionbycountry=new gapi.analytics.googleCharts.DataChart({
+			query:{
+				metrics:'ga:sessions',
+				dimensions:'ga:country',
+				'start-date':'30daysAgo',
+				'end-date':'today',
+				'max-results':6,
+				sort:'-ga:sessions'
+			},
+			chart:{
+				container:'sessionbycountry',
+				type:'GEO',
+				options:{
+					width:'100%'
+				}
+			}
+		});
+		var topbrowsers=new gapi.analytics.googleCharts.DataChart({
+			query:{
+				'dimensions':'ga:browser',
+				'metrics':'ga:sessions',
+				'sort':'-ga:sessions',
+				'start-date':'30daysAgo',
+				'end-date':'today',
+				'max-results':'6'
+			},
+			chart:{
+				type:'TABLE',
+				container:'topbrowsers',
+				options:{
+					width:'100%'
+				}
+			}
+		});
+		var trafficsources=new gapi.analytics.googleCharts.DataChart({
+			query:{
+				'dimensions':'ga:fullReferrer,ga:source',
+				'metrics':'ga:sessions',
+				'sort':'-ga:sessions',
+				'start-date':'30daysAgo',
+				'end-date':'today',
+				'max-results':'50'
+			},
+			chart:{
+				type:'TABLE',
+				container:'trafficsources',
+				options:{
+					width:'100%'
+				}
+			}
+		});
+		var userflow=new gapi.analytics.googleCharts.DataChart({
+			query:{
+				'dimensions':'ga:landingPagePath,ga:secondPagePath,ga:nextPagePath',
+				'metrics':'ga:pageviews,ga:timeOnPage,ga:sessions',
+				'sort':'-ga:sessions',
+				'start-date':'30daysAgo',
+				'end-date':'today',
+				'max-results':'50'
+			},
+			chart:{
+				type:'TABLE',
+				container:'userflow',
+				options:{
+					width:'100%'
+				}
+			}
+		});
+		viewSelector.on('change',function(ids){
+  			sessions.set({query:{ids:ids}}).execute();
+			sessionbycountry.set({query:{ids:ids}}).execute();
+			topbrowsers.set({query:{ids:ids}}).execute();
+			trafficsources.set({query:{ids:ids}}).execute();
+			userflow.set({query:{ids:ids}}).execute();
+		});
+	});
+<?php }?>
 	$(document).ready(function(){
 		$(document).on("hidden.bs.modal",function (e){
 			$(e.target).removeData("bs.modal").find(".modal-content").empty()
@@ -96,7 +211,7 @@
 			update("1","config","theme",escape($(this).attr("data-theme")))
 		});
 <?php	}
-    if($view=='bookings'){?>
+    if($view=='bookings'&&$config['layoutBookings']=='calendar'){?>
 		$('#calendar').fullCalendar({
 			header:{
 				left:'prev,next',
@@ -107,7 +222,7 @@
 			selectable: true,
 			editable: false,
 			events:[
-<?php       $s=$db->query("SELECT * FROM content WHERE contentType='booking'");
+<?php	$s=$db->query("SELECT * FROM content WHERE contentType='booking'");
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
 			$bs=$db->prepare("SELECT contentType,title,tis,tie,ti FROM content WHERE id=:id");
 			$bs->execute(array(':id'=>$r['rid']));
@@ -122,7 +237,7 @@
                 }
 			}?>
 					allDay:false,
-					color:'<?php if($r['status']=='confirmed'){echo'#0c0';}else{echo'#c00';}?>',
+					color:'<?php if($r['status']=='confirmed'){echo'#5cb85c';}else{echo'#d9534f';}?>',
 					description:'<?php if($r['business']){echo'Business: '.$r['business'].'<br>';}
 			if($r['name']){echo'Name: '.$r['name'].'<br>';}
 			if($r['email']){echo'Email: <a href="mailto:'.$r['email'].'">'.$r['email'].'</a><br>';}
@@ -134,9 +249,9 @@
 				eventMouseover:function(event,domEvent,view){
 					var layer='<div id="events-layer" class="fc-transparent">';
 					if(event.status=="unconfirmed"){
-						layer+='<span id="cbut'+event.id+'" class="btn btn-success btn-xs"><i class="fa fa-check"></i></span> ';
+						layer+='<span id="cbut'+event.id+'" class="btn btn-default btn-xs color-success"><i class="libre libre-approve"></i></span> ';
 					}
-					layer+='<span id="edbut'+event.id+'" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></span> <span id="delbut'+event.id+'" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></span></div>';
+					layer+='<span id="edbut'+event.id+'" class="btn btn-default btn-xs"><i class="libre libre-edit"></i></span> <span id="delbut'+event.id+'" class="btn btn-default btn-xs color-danger"><i class="libre libre-trash"></i></span></div>';
 					var content='Start: '+$.fullCalendar.moment(event.start).format('HH:mm');
 					if(event.end>event.start){
 						content+='<br>End: '+$.fullCalendar.moment(event.end).format('HH:mm');
@@ -149,7 +264,7 @@
 					$("#cbut"+event.id).click(function(){
 						$("#cbut"+event.id).remove();
 						$("#events-layer").remove();
-						event.color="#0c0";
+						event.color="#5cb85c";
 						event.status="confirmed";
 						update(event.id,"content","status","confirmed");
 						$("#calendar").fullCalendar("updateEvent",event);
@@ -178,6 +293,12 @@
 					$("#events-layer").remove();
 					$(this).not(event).popover("hide")
 				},
+				dayClick: function(date, jsEvent, view) {
+					if(view.name == 'month' || view.name == 'basicWeek') {
+						$('#calendar').fullCalendar('changeView', 'basicDay');
+						$('#calendar').fullCalendar('gotoDate', date);      
+					}
+				}
 			});
 <?php }?>
 	});

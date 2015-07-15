@@ -144,6 +144,50 @@ function update(id,t,c,da){
 		}
 	})
 }
+function coverUpdate(id,t,c,da){
+	var imgsrc=$('#cover').attr('val');
+	$.ajax({
+		type:"GET",
+		url:"core/update.php",
+		data:{
+			id:id,
+			t:t,
+			c:c,
+			da:da
+		}
+	}).done(function(msg){
+		if(da==''){
+			$('#'+c).val('');
+			if(imgsrc==''){
+				$('#coverimg').animate({height:"hide"},500,function(){
+					$(this).html('');	
+				});
+			}
+		}else{
+			if(imgsrc==''){
+				$('#coverimg').html('<img src="'+da+'">').animate({height:"show"},500);
+			}
+		}
+	})
+}
+function imageUpdate(id,t,c,da){
+	$.ajax({
+		type:"GET",
+		url:"core/update.php",
+		data:{
+			id:id,
+			t:t,
+			c:c,
+			da:da
+		}
+	}).done(function(msg){
+		if(da==''){
+			$('#'+c).html('');
+		}else{
+			$('#'+c).html('<img src="media/'+da+'">');
+		}
+	})
+}
 function updateButtons(id,t,c,da){
 	$('#sp').load('core/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da))
 }
@@ -160,8 +204,6 @@ function showDetails(id,c){
 		$('#show'+id).removeClass('fadeOutUp');
 	}
 }
-function statsContent(content){
-	$('#stats_'+content).html('<div class="panel-footer text-center"><i class="libre libre-spinner-1 libre-spin"></i></div>').load('core/stats_'+content+'.php');return false}
 $(".important").on({
 	click:function(event){
 		var id=$(this).data("dbid");
@@ -177,6 +219,10 @@ $(".important").on({
 		return false;
 	}
 });
+function reload(c){
+	location.reload(true);
+}
+
 $(".starred").on({
 	click:function(event){
 		var id=$(this).data("dbid");
@@ -192,3 +238,4 @@ $(".starred").on({
 		return false;
 	}
 });
+

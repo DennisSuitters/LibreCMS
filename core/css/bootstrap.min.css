@@ -78,7 +78,7 @@ fieldset{padding:.35em .625em .75em;margin:0 2px;border:1px solid #c0c0c0}
 legend{padding:0;border:0}
 textarea{overflow:auto}
 optgroup{font-weight:700}
-table{border-spacing:0;border-collapse:collapse}td,th{padding:0}
+table{border-spacintablg:0;border-collapse:collapse}td,th{padding:0}
 *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 :after,
 :before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
@@ -1705,6 +1705,7 @@ button.close{-webkit-appearance:none;padding:0;cursor:pointer;background:0 0;bor
 	.navbar-nav .open .dropdown-menu>li>a:focus,.navbar-nav .open .dropdown-menu>li>a:hover{background-image:none}
 	.navbar-form .form-group{margin-bottom:5px}
 	.navbar-form .form-group:last-child{margin-bottom:0}
+	.navbar-default .navbar-nav li a{display:table-cell!important;}
 	.navbar-default .navbar-nav .open .dropdown-menu>li>a{color:#777}
 	.navbar-default .navbar-nav .open .dropdown-menu>li>a:focus,
 	.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover{color:#333;background-color:transparent}
