@@ -1,9 +1,26 @@
 <?php
 if($view=='add'){
 	$ti=time();
-	$q=$db->prepare("INSERT INTO content (contentType,status,ti,tis) VALUES ('booking','unconfirmed',:ti,:tis)");
-	$q->execute(array(':ti'=>$ti,':tis'=>$ti));
+	$q=$db->prepare("INSERT INTO content (uid,contentType,status,ti,tis) VALUES (:uid,'booking','unconfirmed',:ti,:tis)");
+	$q->execute(array(':uid'=>$user['id'],':ti'=>$ti,':tis'=>$ti));
+	$id=$db->lastInsertId();
 	$view='bookings';
+	$s=$db->prepare("INSERT INTO logs (
+		uid,rid,view,contentType,refTable,refColumn,oldda,newda,action,ti
+	) VALUES (
+		:uid,:rid,:view,:contentType,:refTable,:refColumn,:oldda,:newda,:action,:ti)");
+	$s->execute(array(
+		':uid'=>$user['id'],
+		':rid'=>$id,
+		':view'=>$view,
+		':contentType'=>'booking',
+		':refTable'=>'content',
+		':refColumn'=>'all',
+		':oldda'=>'',
+		':newda'=>'',
+		':action'=>'create',
+		':ti'=>$ti
+	));
 }?>
 <div class="row col-xs-12 text-right">
 	<div class="btn-group" data-toggle="buttons">

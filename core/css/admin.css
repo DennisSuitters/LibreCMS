@@ -91,20 +91,24 @@ input[type=checkbox]:checked+label::before{content:'\e832'}
 .panel .panel-content p{margin:0;color:inherit;text-overflow:ellipsis}
 .panel .panel-content.stats a{color:#000;text-decoration:none}
 .panel .panel-content.stats div{text-align:right;line-height:0}
-[class*="badger"]{position:relative;z-index:1}
+[class*="badger"]{position:relative;z-index:1;}
 [class*="badger"]:after{content:attr(data-contenttype);position:absolute;top:0;padding:3px 7px;font-size:12px;font-weight:700;background:#999;color:#fff;text-transform:uppercase}
-.badger-left:after{left:0;border-radius:6px 0 6px 0}
+.badger-left:after{left:0;border-radius:2px 0 6px 0;font-size:9px;}
 .badger-right:after{right:0;border-radius:0 2px 0 6px}
+[data-status|=purge]:after,
 [data-status|=delete]:after,
 .badger-danger:after{background:#d9534f}
 [data-status|='inactive']:after,
 [data-status|=unpublished]:after,
 .badger-warning:after{background:#f0ad4e}
-[data-status|='active']:after,
+[data-status|=insert]:after,
+[data-status|=create]:after,
+[data-status|=active]:after,
 [data-status|=published]:after,
 .badger-success:after{background:#5cb85c}
+[data-status|=update]:after,
+.badger-info:after{background:#337ab7}
 [data-status|=]:after,
-.badger-info:after{background:#5bc0de}
 .badger-inverse:after{background:#222}
 fieldset.control-fieldset{background:#fff;border:1px solid #ddd!important;padding:0 1.4em 1.4em 1.4em!important;margin:0 0 1.5em 0!important;border-radius:5px;}
 legend.control-legend{display:inline;width:auto;font-size:1.5em!important;font-weight:700!important;border:0!important;padding:0 10px}
@@ -174,19 +178,8 @@ legend.control-legend.legend-sm{
   width: 235px;
   height: 180px;
 }
-
-.preview-md {
-  width: 139px;
-  height: 78px;
-}
-
-.preview-sm {
-  width: 69px;
-  height: 39px;
-}
-
-.preview-xs {
-  width: 35px;
-  height: 20px;
-  margin-right: 0;
+.timeline-icon{
+  position:absolute;
+  top:0;
+  right:0;
 }

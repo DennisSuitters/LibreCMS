@@ -9,11 +9,11 @@ if($view=='add'){
 	if($args[0]=='inventory')$schema='Product';
 	if($args[0]=='service')$schema='Service';
 	if($args[0]=='gallery')$schema='ImageGallery';
-	if($args[0]=='testimonials')$schema='Review';
+	if($args[0]=='testimonial')$schema='Review';
 	if($args[0]=='news')$schema='NewsArticle';
-	if($args[0]=='events')$schema='Event';
+	if($args[0]=='event')$schema='Event';
 	if($args[0]=='portfolio')$schema='CreativeWork';
-	if($args[0]=='proofs')$schema='CreativeWork';$comments=1;
+	if($args[0]=='proof')$schema='CreativeWork';$comments=1;
 	$q=$db->prepare("INSERT INTO content (options,uid,login_user,contentType,schemaType,status,active,ti,eti) VALUES ('00000000',:uid,:login_user,:contentType,:schemaType,'unpublished','1',:ti,:ti)");
 	if(isset($user['id']))$uid=$user['id'];else$uid=0;
 	if($user['name']!='')$login_user=$user['name'];
@@ -75,13 +75,13 @@ if($show=='categories'){
 	<ul class="dropdown-menu multi-level pull-right">
 		<li><a href="<?php echo URL;?>admin/add/article">Article</a></li>
 		<li><a href="<?php echo URL;?>admin/add/portfolio">Portfolio</a></li>
-		<li><a href="<?php echo URL;?>admin/add/events">Event</a></li>
+		<li><a href="<?php echo URL;?>admin/add/event">Event</a></li>
 		<li><a href="<?php echo URL;?>admin/add/news">News</a></li>
-		<li><a href="<?php echo URL;?>admin/add/testimonials">Testimonial</a></li>
+		<li><a href="<?php echo URL;?>admin/add/testimonial">Testimonial</a></li>
 		<li><a href="<?php echo URL;?>admin/add/inventory">Inventory</a></li>
-		<li><a href="<?php echo URL;?>admin/add/services">Service</a></li>
+		<li><a href="<?php echo URL;?>admin/add/service">Service</a></li>
 		<li><a href="<?php echo URL;?>admin/add/gallery">Gallery</a></li>
-		<li><a href="<?php echo URL;?>admin/add/proofs">Proofs</a></li>
+		<li><a href="<?php echo URL;?>admin/add/proof">Proofs</a></li>
 	</ul>
 <?php }?>
 </div>
@@ -645,7 +645,7 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
 				<time><small class="text-muted"><?php echo date($config['dateFormat'],$rc['ti']);?></small></time>
 <?php echo strip_tags($rc['notes']);?>
 				<div id="controls-<?php echo$rc['id'];?>" class="pull-right">
-					<button id="approve_<?php echo$rc['id'];?>" class="btn btn-default btn-xs<?php if($rc['status']!='unapproved')echo' hidden';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Approve"';if($config['buttonType']=='text')echo'><span class="color-success">Approve</span>';else echo'><i class="libre libre-approve color-success"></i>';?></button> 
+					<button id="approve_<?php echo$rc['id'];?>" class="btn btn-default btn-xs<?php if($rc['status']!='unapproved')echo' hidden';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','approved')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Approve"';if($config['buttonType']=='text')echo'><span class="color-success">Approve</span>';else echo'><i class="libre libre-approve color-success"></i>';?></button> 
 					<button class="btn btn-default btn-xs" onclick="purge('<?php echo$rc['id'];?>','comments')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';if($config['buttonType']=='text')echo'><span class="color-danger">Delete</span>';else echo'><i class="libre libre-trash color-danger"></i>';?></button>
 				</div>
 			</div>

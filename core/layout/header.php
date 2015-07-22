@@ -11,7 +11,8 @@
 			</div>
 			<div id="admin-collapse" class="collapse navbar-collapse" style="margin-right:50px;">
 				<ul class="nav navbar-nav relative">
-<?php				echo'<li';if($view=='statistics')echo' class="active"';echo'><a href="'.URL.'admin/statistics"><small>Statistics</small></a></li>';
+<?php				echo'<li';if($view=='timeline')echo' class="active"';echo'><a href="'.URL.'admin/timeline"><small>Timeline</small></a></li>';
+					echo'<li';if($view=='statistics')echo' class="active"';echo'><a href="'.URL.'admin/statistics"><small>Statistics</small></a></li>';
 					echo'<li';if($view=='pages')echo' class="active"';echo'><a href="'.URL.'admin/pages"><small>Pages</small></a></li>';
 					echo'<li';if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';echo'><a href="'.URL.'admin/content"><small>Content</small></a></li>';
 if($user['rank']==1000||$user['options']{1}==1){

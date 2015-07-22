@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 15, 2015 at 04:47 PM
--- Server version: 5.5.43-0ubuntu0.14.04.1
+-- Generation Time: Jul 23, 2015 at 02:05 AM
+-- Server version: 5.5.44-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `notes` text COLLATE utf8_bin NOT NULL,
   `status` varchar(16) COLLATE utf8_bin NOT NULL,
   `active` tinyint(1) unsigned NOT NULL,
+  `tie` int(10) NOT NULL,
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -128,6 +129,7 @@ CREATE TABLE IF NOT EXISTS `config` (
   `layoutAccounts` varchar(10) COLLATE utf8_bin NOT NULL,
   `layoutContent` varchar(10) COLLATE utf8_bin NOT NULL,
   `layoutBookings` varchar(10) COLLATE utf8_bin NOT NULL,
+  `showItems` int(4) NOT NULL,
   `bti` int(10) unsigned NOT NULL,
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -136,8 +138,8 @@ CREATE TABLE IF NOT EXISTS `config` (
 -- Dumping data for table `config`
 --
 
-INSERT INTO `config` (`id`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `gaClientID`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `buttonType`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `bti`, `ti`) VALUES
-(1, '1111111100000000', 'default', 'LibreCMS', 'Default Site Description', 'Default Site Caption', 'Default Site Keywords', 'My new copywriting podcast', '<p>Iâ€™m super excited to announce my new copywriting podcas [&#8230;]</p>\n<p>The post <a rel="nofollow" href="https://www.katetooncopywriter.com.au/the-hot-copy-copywriting-podcast/">My new copywriting podcast</a> appeared first on <a rel="nofollow" href="https://www.katetooncopywriter.com.au">Kate Toon Copywriter</a>.</p>\n', 'https://www.katetooncopywriter.com.au/the-hot-copy-copywriting-podcast/', 'katetoon', 1436973216, '', 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'cards', 'cards', 'calendar', 1404461417, 0);
+INSERT INTO `config` (`id`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `gaClientID`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `buttonType`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `showItems`, `bti`, `ti`) VALUES
+(1, '1111111100000000', 'default', 'LibreCMS', 'Default Site Description', 'Default Site Caption', 'Default Site Keywords', 'Copybloggerâ€™s Authority 2015: Your backstage pass to the BEST conference Iâ€™ve ever been to', '<p>If you caught some of my social media updates last week, youâ€™ll know that I was in Denver for Copybloggerâ€™s Authority conference. It was the BEST conference Iâ€™ve been to. Ever. And I canâ€™t keep that kind of awesomeness to myself. So this post has some of my notes from almost every presentation. WARNING: Itâ€™s [&#8230;]</p>\n<p>The post <a rel="nofollow" href="http://copywritematters.com/copybloggers-authority-2015-summary/">Copybloggerâ€™s Authority 2015: Your backstage pass to the BEST conference Iâ€™ve ever been to</a> appeared first on <a rel="nofollow" href="http://copywritematters.com">Copywrite Matters</a>.</p>\n', 'http://copywritematters.com/copybloggers-authority-2015-summary/', 'Belinda Weaver', 1437656894, '', 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'cards', 'cards', 'calendar', 10, 1404461417, 0);
 
 -- --------------------------------------------------------
 
@@ -201,23 +203,24 @@ CREATE TABLE IF NOT EXISTS `content` (
   `lti` int(10) unsigned NOT NULL,
   `ti` int(10) unsigned NOT NULL,
   `eti` int(10) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `content`
 --
 
 INSERT INTO `content` (`id`, `options`, `rank`, `rid`, `uid`, `login_user`, `cid`, `ip`, `contentType`, `schemaType`, `keywords`, `code`, `brand`, `title`, `category_1`, `category_2`, `name`, `url`, `email`, `business`, `address`, `suburb`, `city`, `state`, `postcode`, `phone`, `thumb`, `file`, `fileURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `cost`, `subject`, `notes`, `attributionContentName`, `attributionContentURL`, `quantity`, `tags`, `caption`, `status`, `service`, `internal`, `featured`, `bookable`, `fti`, `assoc`, `ord`, `views`, `active`, `tis`, `tie`, `lti`, `ti`, `eti`) VALUES
-(1, '01000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'article', 'blogPost', 'doctor who,game', '', '', 'The Long Game', 'Doctor Who', 'funny', '', '', '', '', '', '', '', '', 0, '', '', '', 'https://download.unsplash.com/photo-1433838552652-f9a46b332c40', 'test', 'Daniela Cuevas', 'https://unsplash.com/danielacuevas', 0.00, '', '<p>*Insistently* Bow ties are cool! Come on Amy, I''m a normal bloke, tell me what normal blokes do! Sorry, checking all the water in this area; there''s an escaped fish. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff.</p>\r\n<h2>The Parting of the Ways</h2>\r\n<p>You''ve swallowed a planet! You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better? Saving the world with meals on wheels.</p>\r\n<h3>The Impossible Astronaut</h3>\r\n<p>Saving the world with meals on wheels. I am the last of my species, and I know how that weighs on the heart so don''t lie to me! It''s a fez. I wear a fez now. Fezes are cool. Saving the world with meals on wheels. You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better?</p>\r\n<h4>The Beast Below</h4>\r\n<p>I''m nobody''s taxi service; I''m not gonna be there to catch you every time you feel like jumping out of a spaceship. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. It''s a fez. I wear a fez now. Fezes are cool.</p>\r\n<h5>Voyage of the Damned</h5>\r\n<p>You''ve swallowed a planet! All I''ve got to do is pass as an ordinary human being. Simple. What could possibly go wrong? Did I mention we have comfy chairs? I''m the Doctor, I''m worse than everyone''s aunt. *catches himself* And that is not how I''m introducing myself.</p>', '', '', 0, 'doctor who,game', '', 'published', 0, 0, 1, 0, 0, '', 17, 0, 1, 0, 0, 0, 1429270672, 1436886907),
-(2, '10000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'article', 'Product', '', '', '', 'Inventory 2', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', 'https://download.unsplash.com/photo-1429308755210-25a272addeb3', '', 'Demi DeHerrera', 'https://unsplash.com/demidearest', 10.00, '', '<p>*Insistently* Bow ties are cool! Come on Amy, I''m a normal bloke, tell me what normal blokes do! Sorry, checking all the water in this area; there''s an escaped fish. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff.</p>\r\n<h2>The Parting of the Ways</h2>\r\n<p>You''ve swallowed a planet! You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better? Saving the world with meals on wheels.</p>\r\n<h3>The Impossible Astronaut</h3>\r\n<p>Saving the world with meals on wheels. I am the last of my species, and I know how that weighs on the heart so don''t lie to me! It''s a fez. I wear a fez now. Fezes are cool. Saving the world with meals on wheels. You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better?</p>\r\n<h4>The Beast Below</h4>\r\n<p>I''m nobody''s taxi service; I''m not gonna be there to catch you every time you feel like jumping out of a spaceship. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. It''s a fez. I wear a fez now. Fezes are cool.</p>\r\n<h5>Voyage of the Damned</h5>\r\n<p>You''ve swallowed a planet! All I''ve got to do is pass as an ordinary human being. Simple. What could possibly go wrong? Did I mention we have comfy chairs? I''m the Doctor, I''m worse than everyone''s aunt. *catches himself* And that is not how I''m introducing myself.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1430371748, 1436624549),
+(1, '01000000', 0, 0, 1, 'admin', 0, '', 'article', 'blogPost', 'doctor who,game', '', '', 'The Long Game 2', 'Doctor Who', 'funny', '', '', '', '', '', '', '', '', 0, '', '', '', 'https://download.unsplash.com/photo-1433838552652-f9a46b332c40', 'test', 'Daniela Cuevas', 'https://unsplash.com/danielacuevas', 0.00, '', '<p>*Insistently* Bow ties are cool! Come on Amy, I''m a normal bloke, tell me what normal blokes do! Sorry, checking all the water in this area; there''s an escaped fish. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff.</p>\r\n<h2>The Parting of the Ways</h2>\r\n<p>You''ve swallowed a planet! You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better? Saving the world with meals on wheels.</p>\r\n<h3>The Impossible Astronaut</h3>\r\n<p>Saving the world with meals on wheels. I am the last of my species, and I know how that weighs on the heart so don''t lie to me! It''s a fez. I wear a fez now. Fezes are cool. Saving the world with meals on wheels. You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better?</p>\r\n<h4>The Beast Below</h4>\r\n<p>I''m nobody''s taxi service; I''m not gonna be there to catch you every time you feel like jumping out of a spaceship. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. It''s a fez. I wear a fez now. Fezes are cool.</p>\r\n<h5>Voyage of the Damned</h5>\r\n<p>You''ve swallowed a planet! All I''ve got to do is pass as an ordinary human being. Simple. What could possibly go wrong? Did I mention we have comfy chairs? I''m the Doctor, I''m worse than everyone''s aunt. *catches himself* And that is not how I''m introducing myself.</p>', '', '', 0, 'doctor who,game', '', 'published', 0, 0, 1, 0, 0, '', 17, 0, 1, 0, 1436975186, 0, 1429270672, 1437147291),
+(2, '10000000', 0, 0, 1, 'admin', 0, '', 'article', 'Product', '', '', '', 'Inventory 5', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', 'https://download.unsplash.com/photo-1429308755210-25a272addeb3', '', 'Demi DeHerrera', 'https://unsplash.com/demidearest', 10.00, '', '<p>*Insistently* Bow ties are cool! Come on Amy, I''m a normal bloke, tell me what normal blokes do! Sorry, checking all the water in this area; there''s an escaped fish. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff.</p>\r\n<h2>The Parting of the Ways</h2>\r\n<p>You''ve swallowed a planet! You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better? Saving the world with meals on wheels.</p>\r\n<h3>The Impossible Astronaut</h3>\r\n<p>Saving the world with meals on wheels. I am the last of my species, and I know how that weighs on the heart so don''t lie to me! It''s a fez. I wear a fez now. Fezes are cool. Saving the world with meals on wheels. You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better?</p>\r\n<h4>The Beast Below</h4>\r\n<p>I''m nobody''s taxi service; I''m not gonna be there to catch you every time you feel like jumping out of a spaceship. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. It''s a fez. I wear a fez now. Fezes are cool.</p>\r\n<h5>Voyage of the Damned</h5>\r\n<p>You''ve swallowed a planet! All I''ve got to do is pass as an ordinary human being. Simple. What could possibly go wrong? Did I mention we have comfy chairs? I''m the Doctor, I''m worse than everyone''s aunt. *catches himself* And that is not how I''m introducing myself.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1430371748, 1437053186),
 (3, '10000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'article', '', '', '', '', 'Services 3', '', '', '', '', '', '', '', '', '', '', 0, '', 'thumb_3.jpg', 'file_3.jpg', 'https://download.unsplash.com/photo-1430866880825-336a7d7814eb', '', 'Damir Kotoric', 'https://unsplash.com/damirkotoric', 20.00, '', '<p>*Insistently* Bow ties are cool! Come on Amy, I''m a normal bloke, tell me what normal blokes do! Sorry, checking all the water in this area; there''s an escaped fish. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. Father Christmas. Santa Claus. Or as I''ve always known him: Jeff.</p>\r\n<h2>The Parting of the Ways</h2>\r\n<p>You''ve swallowed a planet! You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better? Saving the world with meals on wheels.</p>\r\n<h3>The Impossible Astronaut</h3>\r\n<p>Saving the world with meals on wheels. I am the last of my species, and I know how that weighs on the heart so don''t lie to me! It''s a fez. I wear a fez now. Fezes are cool. Saving the world with meals on wheels. You know when grown-ups tell you ''everything''s going to be fine'' and you think they''re probably lying to make you feel better?</p>\r\n<h4>The Beast Below</h4>\r\n<p>I''m nobody''s taxi service; I''m not gonna be there to catch you every time you feel like jumping out of a spaceship. I''m the Doctor. Well, they call me the Doctor. I don''t know why. I call me the Doctor too. I still don''t know why. It''s a fez. I wear a fez now. Fezes are cool.</p>\r\n<h5>Voyage of the Damned</h5>\r\n<p>You''ve swallowed a planet! All I''ve got to do is pass as an ordinary human being. Simple. What could possibly go wrong? Did I mention we have comfy chairs? I''m the Doctor, I''m worse than everyone''s aunt. *catches himself* And that is not how I''m introducing myself.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 1, 0, '', 2, 0, 1, 0, 0, 0, 1430371800, 1436624805),
-(4, '00000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'article', 'CreativeWork', '', '', '', 'Portfolio 4', 'Doctor Who', '', '', '', '', '', '', '', '', '', 0, '', 'thumb_4.jpg', 'file_4.jpg', 'https://download.unsplash.com/photo-1429547584745-d8bec594c82e', '', 'John Kutcher', 'https://unsplash.com/jmkutcher', 0.00, '', '', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 9, 0, 1, 0, 0, 0, 1432698738, 1436628148),
-(5, '00000000', 0, 0, 1, 'Dennis J Suitters', 1, '', 'proofs', 'CreativeWork', '', '', '', 'Proofs 5', '', '', '', '', '', '', '', '', '', '', 0, '', 'thumb_5.jpg', 'file_5.jpg', '', '', '', '', 0.00, '', '', '', '', 0, '', '', 'unpublished', 0, 0, 0, 0, 0, '', 10, 0, 1, 0, 0, 0, 1432698854, 1432698932),
+(4, '00000000', 0, 0, 1, 'admin', 0, '', 'article', 'CreativeWork', '', '', '', 'Portfolio 4', 'Doctor Who', '', '', '', '', '', '', '', '', '', 0, '', 'thumb_4.jpg', 'file_4.jpg', 'https://download.unsplash.com/photo-1429547584745-d8bec594c82e', '', 'John Kutcher', 'https://unsplash.com/jmkutcher', 0.00, '', '', '', '', 0, '', '', 'delete', 0, 0, 0, 0, 0, '', 9, 0, 1, 0, 0, 0, 1432698738, 1437305326),
+(5, '00000000', 0, 0, 1, 'Dennis J Suitters', 1, '', 'proof', 'CreativeWork', '', '', '', 'Proofs 5', '', '', '', '', '', '', '', '', '', '', 0, '', 'thumb_5.jpg', 'file_5.jpg', '', '', '', '', 0.00, '', '', '', '', 0, '', '', 'unpublished', 0, 0, 0, 0, 0, '', 10, 0, 1, 0, 0, 0, 1432698854, 1432698932),
 (6, '00000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'gallery', 'ImageGallery', '', '', '', 'Machu Picchu', 'Doctor Who', '', '', '', '', '', '', '', '', '', 0, '', 'thumb_6.jpg', 'file_6.jpg', 'https://download.unsplash.com/photo-1429547584745-d8bec594c82e', 'Machu Picchu', 'John Kutcher', 'https://unsplash.com/jmkutcher', 0.00, '', '', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 11, 0, 1, 0, 0, 0, 1432706432, 1436887281),
-(7, '01000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'events', 'Event', '', '', '', 'Events 7', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0.00, '', '', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1432789439, 1432789446),
+(7, '01000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'event', 'Event', '', '', '', 'Events 7', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0.00, '', '', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1432789439, 1432789446),
 (8, '00000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'news', 'NewsArticle', '', '', '', 'News 8', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0.00, '', '', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1432789481, 1432789486),
-(9, '00000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'testimonials', 'Review', '', '', '', 'Testimonials 9', '', '', 'Paul Wyatt', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0.00, '', 'This is a little information to be displayed for this Testimonial', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1432789501, 1435102663),
-(19, '00000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'portfolio', 'CreativeWork', '', '', '', 'Portfolio 19', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0.00, '', '', '', '', 0, '', '', 'unpublished', 0, 0, 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1435651232, 1435651232);
+(19, '00000000', 0, 0, 1, 'Dennis J Suitters', 0, '', 'portfolio', 'CreativeWork', '', '', '', 'Portfolio 19', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0.00, '', '', '', '', 0, '', '', 'unpublished', 0, 0, 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1435651232, 1435651232),
+(25, '00000000', 0, 0, 1, 'admin', 0, '', 'booking', '', '', '', '', '', '', '', 'Dennis J Suitters', '', 'dennis@studiojunkyard.com', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0.00, '', '', '', '', 0, '', '', 'unconfirmed', 0, 0, 0, 0, 0, '', 0, 0, 0, 1437131951, 0, 0, 1437131951, 1437146858),
+(26, '00000000', 0, 0, 1, 'admin', 0, '', 'service', '', '', '', '', 'Services 26', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0.00, '', '', '', '', 0, '', '', 'unpublished', 0, 0, 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 1437146914, 1437146923);
 
 -- --------------------------------------------------------
 
@@ -260,15 +263,36 @@ CREATE TABLE IF NOT EXISTS `login` (
   `language` varchar(8) COLLATE utf8_bin NOT NULL,
   `timezone` varchar(128) COLLATE utf8_bin NOT NULL,
   `rank` int(4) unsigned NOT NULL,
+  `lti` int(10) NOT NULL,
   `ti` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `login`
 --
 
-INSERT INTO `login` (`id`, `options`, `username`, `password`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `avatar`, `gravatar`, `business`, `name`, `email`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `adminCategory_1`, `adminCategory_2`, `adminCategory_ti`, `language`, `timezone`, `rank`, `ti`) VALUES
-(1, '11111111', 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ecc7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', '', 'https://download.unsplash.com/photo-1430916273432-273c2db881a0', '', 'rebecca johnston', 'https://unsplash.com/rebecca_jane', 'avatar_1.jpg', 'http://s.gravatar.com/avatar/3a435c03ed08ca31445419e88617f7d4?s=80', '', '', 'dennis@studiojunkyard.com', 0, '', '', '', '', '', 0, '', '', '', '', 'unpublished', 1, '', '', '', 0, 'en', 'Australia/Hobart', 1000, 1402746479);
+INSERT INTO `login` (`id`, `options`, `username`, `password`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `avatar`, `gravatar`, `business`, `name`, `email`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `adminCategory_1`, `adminCategory_2`, `adminCategory_ti`, `language`, `timezone`, `rank`, `lti`, `ti`) VALUES
+(1, '11111111', 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ecc7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', '', 'https://download.unsplash.com/photo-1430916273432-273c2db881a0', '', 'rebecca johnston', 'https://unsplash.com/rebecca_jane', 'avatar_1.jpg', 'http://s.gravatar.com/avatar/3a435c03ed08ca31445419e88617f7d4?s=80', '', '', 'dennis@studiojunkyard.com', 0, '', '', '', '', '', 0, '', '', '', '', 'unpublished', 1, '', '', '', 0, 'en', 'Australia/Hobart', 1000, 0, 1402746479);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `logs`
+--
+
+CREATE TABLE IF NOT EXISTS `logs` (
+  `id` bigint(20) NOT NULL,
+  `uid` bigint(20) NOT NULL,
+  `rid` bigint(20) NOT NULL,
+  `view` varchar(16) COLLATE utf8_bin NOT NULL,
+  `contentType` varchar(16) COLLATE utf8_bin NOT NULL,
+  `refTable` varchar(16) COLLATE utf8_bin NOT NULL,
+  `refColumn` varchar(16) COLLATE utf8_bin NOT NULL,
+  `oldda` longblob NOT NULL,
+  `newda` longblob NOT NULL,
+  `action` tinytext COLLATE utf8_bin NOT NULL,
+  `ti` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -299,15 +323,15 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `contentType`, `schemaType`, `seoKeywords`, `seoDescription`, `seoCaption`, `menu`, `notes`, `ord`, `active`, `eti`) VALUES
-(1, 1, 'Dennis J Suitters', 'Home', '', 'index', '', '', '', '', 'head', '', 0, 1, 1435312927),
+(1, 1, 'admin', 'Home', 'Boo', 'index', '', '', '', '', 'head', '', 0, 1, 1437150031),
 (2, 0, '', 'Blog', '', 'article', '', '', '', '', 'head', '', 1, 1, 0),
 (3, 0, '', 'Portfolio', '', 'portfolio', '', '', '', '', 'head', '', 2, 1, 0),
 (4, 0, '', 'Bookings', '', 'bookings', '', '', '', '', 'head', '', 3, 1, 0),
-(5, 0, '', 'Events', '', 'events', '', '', '', '', 'head', '', 4, 1, 0),
+(5, 0, '', 'Events', '', 'event', '', '', '', '', 'head', '', 4, 1, 0),
 (6, 0, '', 'News', '', 'news', '', '', '', '', 'head', '', 5, 1, 0),
-(7, 0, '', 'Testimonials', '', 'testimonials', '', '', '', '', 'head', '', 6, 1, 0),
+(7, 0, '', 'Testimonials', '', 'testimonial', '', '', '', '', 'head', '', 6, 1, 0),
 (8, 0, '', 'Inventory', '', 'inventory', '', '', '', '', 'head', '', 7, 1, 0),
-(9, 0, '', 'Services', '', 'services', '', '', '', '', 'head', '', 8, 1, 0),
+(9, 0, '', 'Services', '', 'service', '', '', '', '', 'head', '', 8, 1, 0),
 (10, 0, '', 'Gallery', '', 'gallery', '', '', '', '', 'head', '', 9, 1, 0),
 (11, 0, '', 'Contact', '', 'contactus', '', '', '', '', 'head', '', 10, 1, 0),
 (12, 0, '', 'Cart', '', 'cart', '', '', '', '', 'head', '', 11, 1, 0),
@@ -359,18 +383,7 @@ CREATE TABLE IF NOT EXISTS `orderitems` (
   `cost` decimal(10,2) unsigned NOT NULL,
   `status` varchar(16) COLLATE utf8_bin NOT NULL,
   `ti` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `orderitems`
---
-
-INSERT INTO `orderitems` (`id`, `oid`, `iid`, `title`, `quantity`, `cost`, `status`, `ti`) VALUES
-(1, 1, 2, 'Inventory 2', 3, 10.00, '', 1432777126),
-(34, 4, 2, 'Inventory 2', 2, 20.00, '', 1434970755),
-(41, 4, 7, 'Events 7', 1, 15.00, '', 1435043497),
-(42, 4, 0, '', 1, 0.00, '', 1435043503),
-(43, 4, 0, '', 1, 0.00, '', 1435043601);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -396,15 +409,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `recurring` tinyint(1) unsigned NOT NULL,
   `ti` int(10) unsigned NOT NULL,
   `eti` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `cid`, `uid`, `qid`, `qid_ti`, `iid`, `iid_ti`, `did`, `did_ti`, `aid`, `aid_ti`, `due_ti`, `notes`, `status`, `recurring`, `ti`, `eti`) VALUES
-(1, 2, 0, 'Q150528000001', 1432777126, '', 0, '', 0, 'A150528000002', 1432777227, 1433986726, 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', 'archived', 0, 1432777126, 0),
-(4, 1, 0, 'Q150528000004', 1432790192, '', 0, '', 0, '', 0, 1471842992, 'Services are considered to be in a Grace Period for a total of 14 days whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the 14 Day Grace Period, any unpaid accounts will be suspended, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If 30 days without payment or contact has lapsed, we will at our discretion consider terminatingÂ services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', 'pending', 0, 1432790192, 0);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -520,6 +525,12 @@ ALTER TABLE `login`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `logs`
+--
+ALTER TABLE `logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `menu`
 --
 ALTER TABLE `menu`
@@ -589,12 +600,17 @@ ALTER TABLE `config`
 -- AUTO_INCREMENT for table `content`
 --
 ALTER TABLE `content`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `logs`
+--
+ALTER TABLE `logs`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `menu`
 --
@@ -609,12 +625,12 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `search`
 --

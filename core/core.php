@@ -138,6 +138,10 @@ class admin{
 		$view='statistics';
 		require'admin.php';
 	}
+	function timeline($args=false){
+		$view='timeline';
+		require'admin.php';
+	}
 }
 class front{
 	function getconfig($db){
@@ -311,7 +315,8 @@ $route->setRoutes(
 		'admin/proofs'		=>array('admin','proofs'),
 		'admin/search'		=>array('admin','search'),
 		'admin/statistics'	=>array('admin','statistics'),
-		'admin'				=>array('admin','statistics'),
+		'admin/timeline'	=>array('admin','timeline'),
+		'admin'				=>array('admin','timeline'),
 		'humans.txt'		=>array('internal','humans'),
 		'sitemap.xml'		=>array('internal','sitemap'),
 		'robots.txt'		=>array('internal','robots'),
@@ -320,6 +325,18 @@ $route->setRoutes(
 $route->routeURL(preg_replace("|/$|","",filter_input(INPUT_GET,'url',FILTER_SANITIZE_URL)));
 function minify($txt){
 	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
+}
+function _ago($time){
+	$toTime=time();
+	$fromTime=$time;
+	$timeDiff=floor(abs($toTime-$fromTime)/60);
+	if($timeDiff<2)$timeDiff="Just now";
+	elseif($timeDiff>2&&$timeDiff<60)$timeDiff=floor(abs($timeDiff))." minutes ago";
+	elseif($timeDiff>60&&$timeDiff<120)$timeDiff=floor(abs($timeDiff/60))." hour ago";
+	elseif($timeDiff<1440)$timeDiff=floor(abs($timeDiff/60))." hours ago";
+	elseif($timeDiff>1440&& $timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440))." day ago";
+	elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440))." days ago";
+	return$timeDiff;
 }
 class router{
 	protected$route_match=false;

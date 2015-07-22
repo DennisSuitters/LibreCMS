@@ -1,7 +1,6 @@
 ![Libr8](core/images/librecms.png)  
 a **Free** Open Source Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/StudioJunkyard/LibreICONS). Built to take advantage of HTML5 and CSS3, and injects necessary SEO attributes that fit in with Google's recommendations, and Microformats to help with Search Engine ranking.
 
-
 ### Features
 * Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs
 * Messaging - Whenever a message is created via the Contact Us page, it is stored in the Messages system as well as emailed.
@@ -39,16 +38,17 @@ Remember to set the appropriate file and folder permissions for security purpose
 To Login into the Administration area, goto http://yoursite/admin/ or use the "Administration" link at the bottom of the page. The default "Username/Password" is set to "admin/admin", we recommend changing this on a live site. 
 
 ### TODO:
-* Testing, and Bug Squashing, as per the usual with ongoing projects.
-* Timeline front page for the Administration.
-* Convert from font icons to using svg icons to reduce footprint.
-* Get messaging working properly as a proper built-in webmail client.
+* Build Installer to make Installation Easier, and Checking PHP Components are Installed to Allow LibreCMS to work.
 * File Integrity checking to make sure unwanted code hasn't been injected into files remotely.
 * Make sure database backup works properly, last time we checked it wasn't.
+* Get messaging working properly as a proper built-in webmail client.
+* Add Timeline editing functions, like Restore Delete or Changed content.
+* Convert from font icons to using svg icons to reduce footprint.
 * Reduce the Templating System Markup to make it easier to use.
 * Add Content to the Wiki Pages on how to use LibreCMS and how to create Templates.
 * Once at a Stable Platform, create a release candidate, and create a proper gh-page site.
-* Start creating Templates, and converting Free Templates using various CSS and Javascript Frameworks.
+* Create Free Templates.
+* Testing, and Bug Squashing, as per the usual with ongoing projects.
 
 ### LEGAL:
 By downloading LibreCMS you hereby agree not to hold Studio Junkyard liable for any damages that your usage of LibreCMS may cause to your system, or persons. LibreCMS is Licensed under GPLv3. We request that if you modify, and hopefully enhance LibreCMS, that you take part in maintaining, and contributing to it's code base here at GitHub.

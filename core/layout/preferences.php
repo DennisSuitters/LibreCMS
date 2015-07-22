@@ -118,6 +118,13 @@
 			</label>
 		</div>
 		<div class="form-group">
+			<label for="showItems" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Item Count</label>
+			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="Number of Items to Show" data-content="Number of Items to Display."><i class="libre libre-help color-danger"></i></button></div>';?>
+				<input type="text" id="showItems" class="form-control textinput" value="<?php echo$config['showItems'];?>" data-dbid="1" data-dbt="config" data-dbc="showItems" placeholder="Enter Number of Items to Display..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Number of Items to Display."';?>>
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="buttonType" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">
 				Buttons Type
 			</label>

@@ -51,7 +51,8 @@ $(".textinput").on({
 			var t=$(this).data("dbt");
 			var c=$(this).data("dbc");
 			var da=$(this).val();
-			update(id,t,c,da);
+			$(this).trigger('keypress')
+//			update(id,t,c,da);
 			$(this).next("input").focus()
 		}
 	},
@@ -87,6 +88,7 @@ $(".textinput").on({
 		var c=$(this).data("dbc");
 		var da=$(this).val();
 		update(id,t,c,da)
+//		$(this).trigger('keypress')
 	}
 })
 $("#content input[type=checkbox]").on({
@@ -222,7 +224,20 @@ $(".important").on({
 function reload(c){
 	location.reload(true);
 }
-
+function loadMore(l,is,ie,action){
+	$('#more_'+is).html('<div class="text-center"><i class="libre libre-spinner-12 libre-2x animated spin"></i></div>');
+	$.ajax({
+		type:"GET",
+		url:"core/layout/"+l+".php",
+		data:{
+			is:is,
+			ie:ie,
+			action:action
+		}
+	}).done(function(msg){
+		$('#more_'+is).html(msg);
+	})
+}
 $(".starred").on({
 	click:function(event){
 		var id=$(this).data("dbid");

@@ -9,12 +9,33 @@ $col=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filt
 if($tbl=='content'||$tbl=='menu'||$tbl=='seo'&&$col=='notes')$da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_UNSAFE_RAW):filter_input(INPUT_GET,'da',FILTER_UNSAFE_RAW);
 else $da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'da',FILTER_SANITIZE_STRING);
 $si=session_id();
+$ti=time();
+$qry="SELECT * FROM ".$tbl;
+$s=$db->prepare($qry." WHERE id=:id");
+$s->execute(array(':id'=>$id));
+$r=$s->fetch(PDO::FETCH_ASSOC);
+$oldda=$r[$col];
+if($tbl=='config')$r['contentType']='';
+$log=[
+	'uid'			=>	0,
+	'rid'			=>	$id,
+	'view'			=>	$r['contentType'],
+	'contentType'	=>	$r['contentType'],
+	'refTable'		=>	$tbl,
+	'refColumn'		=>	$col,
+	'oldda'			=>	$oldda,
+	'newda'			=>	$da,
+	'action'		=>	'update',
+	'ti'			=>	$ti
+];
+if($r['contentType']=='booking')$log['view']=$r['contentType'].'s';
 if(isset($_SESSION['uid'])){
 	$uid=(int)$_SESSION['uid'];
 	$q=$db->prepare("SELECT rank,username,name FROM login WHERE id=:id");
 	$q->execute(array(':id'=>$uid));
 	$u=$q->fetch(PDO::FETCH_ASSOC);
 	if($u['name']!='')$login_user=$u['name'];else $login_user=$u['username'];
+	$log['uid']=$uid;
 }else{
 	$uid=0;
 	$u['rank']=0;
@@ -24,10 +45,12 @@ if($col=='tis'||$col=='tie'||$col=='due_ti'){
 	if($tbl!='orders')$da=strtotime($da);
 }
 if($tbl=='login'&&$col=='password'){
-	require'password.php';
-	$da=password_hash($da,PASSWORD_DEFAULT);;
+//	require'password.php';
+//	$da=password_hash($da,PASSWORD_DEFAULT);
+	$log['action']='update password';
+	$log['oldda']='';
+	$log['newda']='';
 }
-$ti=time();
 if($tbl=='content'||$tbl=='menu'||$tbl=='seo'){
 	$q=$db->prepare("UPDATE $tbl SET eti=:ti,login_user=:login_user,uid=:uid WHERE id=:id");
 	$q->execute(array('ti'=>$ti,':uid'=>$uid,':login_user'=>$login_user,':id'=>$id));
@@ -126,7 +149,8 @@ if($col=='status'){
 	if($tbl!='comments'||$da=='delete'||$da==''){?>
 	window.top.window.$('#controls_<?php echo$id;?> button.btn').toggleClass('hidden');
 <?php }
-	if($da=='delete'){?>
+	if($da=='delete'){
+		$log['action']='delete';?>
 	window.top.window.$('#l_<?php echo$id;?>').addClass('danger');
 <?php }else{?>
 	window.top.window.$('#l_<?php echo$id;?>').removeClass('danger');
@@ -134,3 +158,40 @@ if($col=='status'){
 }?>
 	window.top.window.$('#block').css("display","none");
 /*]]>*/</script>
+<?php
+/* Update Logs */
+$s=$db->prepare("INSERT INTO logs (
+	uid,
+	rid,
+	view,
+	contentType,
+	refTable,
+	refColumn,
+	oldda,
+	newda,
+	action,
+	ti
+) VALUES (
+	:uid,
+	:rid,
+	:view,
+	:contentType,
+	:refTable,
+	:refColumn,
+	:oldda,
+	:newda,
+	:action,
+	:ti
+)");
+$s->execute(array(
+	':uid'=>$log['uid'],
+	':rid'=>$log['rid'],
+	':view'=>$log['view'],
+	':contentType'=>$log['contentType'],
+	':refTable'=>$log['refTable'],
+	':refColumn'=>$log['refColumn'],
+	':oldda'=>$log['oldda'],
+	':newda'=>$log['newda'],
+	':action'=>$log['action'],
+	':ti'=>$log['ti']
+));
