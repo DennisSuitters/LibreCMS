@@ -21,7 +21,7 @@ $seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['
 $seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
 $seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
 $canonical=URL.$view.'/';
-require'core/login.php';
+if(isset($act)&&$act=='logout')require'core/login.php';
 require'core/cart_quantity.php';
 if($_SESSION['rank']>699)$status="%";
 else$status="published";
@@ -74,7 +74,7 @@ $bot=is_bot();
 $browser=getBrowser();
 $ti=time();
 if($view==''){$view='index';}
-if($act!='logout'){
+if(isset($act)&&$act!='logout'){
 	$vid=0;
 	if(isset($_SESSION['tracker'])){
 		$vid=isset($_SESSION['vid'])?$_SESSION['vid']:0;

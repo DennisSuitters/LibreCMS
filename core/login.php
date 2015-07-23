@@ -9,8 +9,6 @@ if($act=='logout'){
 }elseif($act=='login'||(isset($_SESSION['loggedin'])&&$_SESSION['loggedin']==true)){
 	$username=isset($_POST['username'])?filter_input(INPUT_POST,'username',FILTER_SANITIZE_STRING):$_SESSION['username'];
 	$password=isset($_POST['password'])?filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING):$_SESSION['password'];
-	$userHash=hash('SHA512',$username);
-	$passHash=hash('SHA512',$password);
 	$q=$db->prepare("SELECT * FROM login WHERE username=:username");
 	$q->execute(array(':username'=>$username));
 	$user=$q->fetch(PDO::FETCH_ASSOC);

@@ -15,7 +15,7 @@ $s=$db->prepare($qry." WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);
 $oldda=$r[$col];
-if($tbl=='config')$r['contentType']='';
+if($tbl=='config'||$tbl=='login')$r['contentType']='';
 $log=[
 	'uid'			=>	0,
 	'rid'			=>	$id,
@@ -45,8 +45,7 @@ if($col=='tis'||$col=='tie'||$col=='due_ti'){
 	if($tbl!='orders')$da=strtotime($da);
 }
 if($tbl=='login'&&$col=='password'){
-//	require'password.php';
-//	$da=password_hash($da,PASSWORD_DEFAULT);
+	$da=password_hash($da,PASSWORD_DEFAULT);
 	$log['action']='update password';
 	$log['oldda']='';
 	$log['newda']='';

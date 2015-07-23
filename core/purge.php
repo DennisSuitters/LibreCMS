@@ -7,6 +7,7 @@ $uid=$_SESSION['uid'];
 $s=$db->prepare("SELECT * FROM ".$tbl." WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);
+if($tbl=='config'||$tbl=='login')$r['contentType']='';
 $nda='';
 foreach($r as $o){
 	$nda.=$o.'|';

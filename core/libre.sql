@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 23, 2015 at 02:05 AM
+-- Generation Time: Jul 24, 2015 at 03:02 AM
 -- Server version: 5.5.44-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.11
 
@@ -232,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `login` (
   `id` bigint(20) unsigned NOT NULL,
   `options` varchar(8) COLLATE utf8_bin NOT NULL DEFAULT '00000000',
   `username` varchar(128) COLLATE utf8_bin NOT NULL,
-  `password` varchar(2048) COLLATE utf8_bin NOT NULL,
+  `password` varchar(256) COLLATE utf8_bin NOT NULL,
   `cover` varchar(60) COLLATE utf8_bin NOT NULL,
   `coverURL` varchar(256) COLLATE utf8_bin NOT NULL,
   `attributionImageTitle` tinytext COLLATE utf8_bin NOT NULL,
@@ -265,14 +265,14 @@ CREATE TABLE IF NOT EXISTS `login` (
   `rank` int(4) unsigned NOT NULL,
   `lti` int(10) NOT NULL,
   `ti` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `login`
 --
 
 INSERT INTO `login` (`id`, `options`, `username`, `password`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `avatar`, `gravatar`, `business`, `name`, `email`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `adminCategory_1`, `adminCategory_2`, `adminCategory_ti`, `language`, `timezone`, `rank`, `lti`, `ti`) VALUES
-(1, '11111111', 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ecc7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', '', 'https://download.unsplash.com/photo-1430916273432-273c2db881a0', '', 'rebecca johnston', 'https://unsplash.com/rebecca_jane', 'avatar_1.jpg', 'http://s.gravatar.com/avatar/3a435c03ed08ca31445419e88617f7d4?s=80', '', '', 'dennis@studiojunkyard.com', 0, '', '', '', '', '', 0, '', '', '', '', 'unpublished', 1, '', '', '', 0, 'en', 'Australia/Hobart', 1000, 0, 1402746479);
+(1, '11111111', 'admin', '$2y$10$cb/MtTJA/9L5HxQE6G8WLO18Ye7AWTCWIy9ql1xa12BmvMpySFNSS', '', 'https://download.unsplash.com/photo-1430916273432-273c2db881a0', '', 'rebecca johnston', 'https://unsplash.com/rebecca_jane', 'avatar_1.jpg', 'http://s.gravatar.com/avatar/3a435c03ed08ca31445419e88617f7d4?s=80', '', '', 'dennis@studiojunkyard.com', 0, '', '', '', '', '', 0, '', '', '', '', 'unpublished', 1, '', '', '', 0, 'en', 'Australia/Hobart', 1000, 0, 1402746479);
 
 -- --------------------------------------------------------
 
@@ -605,7 +605,7 @@ ALTER TABLE `content`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `logs`
 --
