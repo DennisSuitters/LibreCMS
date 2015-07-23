@@ -11,15 +11,17 @@ if($act=='logout'){
 	$password=isset($_POST['password'])?filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING):$_SESSION['password'];
 	$userHash=hash('SHA512',$username);
 	$passHash=hash('SHA512',$password);
-	$q=$db->prepare("SELECT * FROM login WHERE username=:username AND password=:password");
-	$q->execute(array(':username'=>$username,':password'=>$userHash.$passHash));
+	$q=$db->prepare("SELECT * FROM login WHERE username=:username");
+	$q->execute(array(':username'=>$username));
 	$user=$q->fetch(PDO::FETCH_ASSOC);
 	if($user['id']>0){
-		$_SESSION['username']=$user['username'];
-		$_SESSION['password']=$password;
-		$_SESSION['uid']=$user['id'];
-		$_SESSION['rank']=$user['rank'];
-		$_SESSION['loggedin']=true;
+		if(password_verify($password,$user['password'])){
+			$_SESSION['username']=$user['username'];
+			$_SESSION['password']=$password;
+			$_SESSION['uid']=$user['id'];
+			$_SESSION['rank']=$user['rank'];
+			$_SESSION['loggedin']=true;
+		}
 	}else{
 		$_SESSION=array();
 		$_SESSION['loggedin']=false;
