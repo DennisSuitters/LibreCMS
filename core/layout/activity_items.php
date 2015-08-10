@@ -39,14 +39,14 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
 	$u=$sql->fetch(PDO::FETCH_ASSOC);?>
 <div id="l_<?php echo$r['id'];?>" class="row">
 	<div class="col-xs-2">
-		<div class="badger badger-left" data-status="<?php echo$r['action'];?>" data-contenttype="<?php echo$r['action'];?>"></div>
+		<div class="badger badger-left text-shadow-depth-1" data-status="<?php echo$r['action'];?>" data-contenttype="<?php echo$r['action'];?>"></div>
 		<br>
 		<div class="text-muted text-center">
 <?php echo date($config['dateFormat'],$r['ti']);?><br>
 			<small><?php echo _ago($r['ti']);?></small>
 		</div>
 	</div>
-	<div class="col-xs-10">
+	<div class="col-xs-6">
 		<p>
 			<strong>Action:</strong> <?php
 			if($r['action']=='create'){
@@ -73,6 +73,6 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
 <?php }
 if($cnt==$ie){?>
 <div id="more_<?php echo$is+$ie+1;?>">
-	<button class="btn btn-default btn-block" onclick="loadMore('timeline_items','<?php echo$is+$ie+1;?>','<?php echo$ie;?>','<?php echo$action;?>');">More</button>
+	<button class="btn btn-default btn-block" onclick="loadMore('activity_items','<?php echo$is+$ie+1;?>','<?php echo$ie;?>','<?php echo$action;?>');">More</button>
 </div>
-<?php }?>
+<?php }

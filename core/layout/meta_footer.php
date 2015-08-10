@@ -190,7 +190,6 @@
 		});
 <?php	if($config['options']{4}==1){?>
 		$('[data-toggle="tooltip"]').tooltip({
-			placement:'top',
 			container:'body',
 			title:'Working on the Tooltip Content'
 		});
@@ -206,8 +205,8 @@
 <?php	}
 		if($view=='preferences'){?>
 		$("div.theme-chooser").not(".disabled").find("div.theme-chooser-item").on("click",function(){
-			$(this).parent().parent().find("div.theme-chooser-item").removeClass("selected");
-			$(this).addClass("selected");
+			$(this).removeClass("has-success");
+			$(this).addClass("has-success");
 			update("1","config","theme",escape($(this).attr("data-theme")))
 		});
 <?php	}
@@ -218,9 +217,9 @@
 				center:'title',
 				right:'month,basicWeek,basicDay'
 			},
-			eventLimit: true,
-			selectable: true,
-			editable: false,
+			eventLimit:true,
+			selectable:true,
+			editable:false,
 			events:[
 <?php	$s=$db->query("SELECT * FROM content WHERE contentType='booking'");
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
@@ -249,9 +248,9 @@
 				eventMouseover:function(event,domEvent,view){
 					var layer='<div id="events-layer" class="fc-transparent">';
 					if(event.status=="unconfirmed"){
-						layer+='<span id="cbut'+event.id+'" class="btn btn-default btn-xs color-success"><i class="libre libre-approve"></i></span> ';
+						layer+='<span id="cbut'+event.id+'" class="btn btn-success btn-xs"><i class="libre libre-approve"></i></span> ';
 					}
-					layer+='<span id="edbut'+event.id+'" class="btn btn-default btn-xs"><i class="libre libre-edit"></i></span> <span id="delbut'+event.id+'" class="btn btn-default btn-xs color-danger"><i class="libre libre-trash"></i></span></div>';
+					layer+='<span id="edbut'+event.id+'" class="btn btn-info btn-xs"><i class="libre libre-edit"></i></span> <span id="delbut'+event.id+'" class="btn btn-danger btn-xs"><i class="libre libre-trash"></i></span></div>';
 					var content='Start: '+$.fullCalendar.moment(event.start).format('HH:mm');
 					if(event.end>event.start){
 						content+='<br>End: '+$.fullCalendar.moment(event.end).format('HH:mm');
@@ -275,11 +274,13 @@
 						window.top.window.$(".popover").remove();
 					});
 					$("#edbut"+event.id).click(function(){
-						$.get("core/booking.php?id="+event.id,function(data){
+						window.location="<?php echo URL.'admin/bookings/edit/';?>"+event.id;
+/*						$.get("core/booking.php?id="+event.id,function(data){
 							$(".bookings").find(".modal-content").html(data);
 						})
 						$(".summernote2").destroy();
 						$(".bookings").modal("toggle");
+*/
 					});
 					$(this).popover({
 						title:event.title,

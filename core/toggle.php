@@ -11,15 +11,13 @@ if($tbl!='NaN'&&$col!='NaN'){
 	$r=$q->fetch(PDO::FETCH_ASSOC);
 	if($r['c']{$bit}==1){
 		$r['c']{$bit}=0;
-		$w=0;
 	}else{
 		$r['c']{$bit}=1;
-		$w=1;
 	}
 	$q=$db->prepare("UPDATE $tbl SET $col=:c WHERE id=:id");
 	$q->execute(array(':c'=>$r['c'],':id'=>$id));
 }
-if($tbl!='messages'){?>
+if($tbl!='messages'||$col!='pin'){?>
 <script>/*<![CDATA[*/
 	window.top.window.$('#<?php echo$tbl.$col.$bit;?>').remove();
 /*]]>*/</script>

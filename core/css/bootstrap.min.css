@@ -179,6 +179,7 @@ a.bg-warning:hover{background-color:#f7ecb5}
 a.bg-danger:focus,
 a.bg-danger:hover{background-color:#e4b9b9}
 .page-header{padding-bottom:9px;margin:40px 0 20px;border-bottom:1px solid #eee}
+h4.page-header{margin:10px 0 20px}
 ol,
 ul{margin-top:0;margin-bottom:10px}
 ol ol,

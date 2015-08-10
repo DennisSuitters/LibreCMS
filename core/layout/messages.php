@@ -4,6 +4,11 @@
 	$q=$db->prepare("SELECT * FROM messages WHERE id=:id");
 	$q->execute(array(':id'=>$args[1]));
 	$r=$q->fetch(PDO::FETCH_ASSOC);?>
+<h1 class="page-header">
+	Messages
+</h1>
+<div class="panel panel-default">
+	<div class="panel-body">
 <div class="form-group clearfix">
 	<div class="input-group pull-left">
 		<a class="btn btn-default" href="<?php echo URL.'admin/messages';?>">Back</a>
@@ -67,6 +72,8 @@
 		<div class="row-fluid">
 			<iframe class="container well" style="min-height:500px" src="core/viewemail.php?id=<?php echo$r['id'];?>"></iframe>
 		</div>
+	</div>
+</div>
 	</div>
 </div>
 <?php }else{
@@ -225,6 +232,11 @@ if(time()>($chk['email_check']+$chk['email_interval'])){
 */
 
 ?>
+<h1 class="page-header">
+	Messages
+</h1>
+<div class="panel panel-default">
+	<div class="panel-body">
 <div class="row">
 	<div class="col-sm-3 col-md-2">
 		<div class="btn-group">
@@ -362,6 +374,8 @@ switch($folder){
 				</div>
 			</div>
 		</div>
+	</div>
+</div>
 	</div>
 </div>
 <script>

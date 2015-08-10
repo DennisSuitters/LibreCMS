@@ -117,7 +117,22 @@ $("#content input[type=checkbox]").on({
 			$('#sp').load('core/toggle.php?id='+id+'&t='+t+'&c='+c+'&b='+b)
 		}
 	}
-})
+});
+function pinToggle(id,t,c,b){
+	$.ajax({
+		type:"GET",
+		url:"core/toggle.php",
+		data:{
+			id:id,
+			t:t,
+			c:c,
+			b:b
+		}
+	}).done(function(msg){
+		$('#pin'+id).toggleClass('btn-success');
+	})
+	return false;
+}
 function update(id,t,c,da){
 	if(t=='comments'){
 		if(c=='status'){

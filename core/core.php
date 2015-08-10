@@ -138,8 +138,13 @@ class admin{
 		$view='statistics';
 		require'admin.php';
 	}
-	function timeline($args=false){
-		$view='timeline';
+	function activity($args=false){
+		$view='activity';
+		require'admin.php';
+	}
+	function logout($args=false){
+		$act='logout';
+		$view='';
 		require'admin.php';
 	}
 }
@@ -315,8 +320,9 @@ $route->setRoutes(
 		'admin/proofs'		=>array('admin','proofs'),
 		'admin/search'		=>array('admin','search'),
 		'admin/statistics'	=>array('admin','statistics'),
-		'admin/timeline'	=>array('admin','timeline'),
-		'admin'				=>array('admin','timeline'),
+		'admin/activity'	=>array('admin','activity'),
+		'admin/logout'		=>array('admin','logout'),
+		'admin'				=>array('admin','statistics'),
 		'humans.txt'		=>array('internal','humans'),
 		'sitemap.xml'		=>array('internal','sitemap'),
 		'robots.txt'		=>array('internal','robots'),

@@ -1,17 +1,22 @@
-<div>
-	<form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
-		<div class="form-group">
-			<div class="input-group">
-				<input type="file" name="file[]" class="form-control" multiple>
-				<input type="hidden" name="act" value="add_media">
-				<div class="input-group-btn">
-					<button class="btn btn-default" onclick="$('#block').css({'display':'block'});">Upload</button>
+<h1 class="page-header">
+	Media
+	<div class="btn-group col-xs-4 pull-right">
+		<form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
+			<div class="form-group">
+				<div class="input-group">
+					<input type="file" name="file[]" class="form-control" multiple>
+					<input type="hidden" name="act" value="add_media">
+					<div class="input-group-btn">
+						<button class="btn btn-default" onclick="$('#block').css({'display':'block'});">Upload</button>
+					</div>
 				</div>
 			</div>
-		</div>
-	</form>
-</div>
-<div class="table-responsive">
+		</form>
+	</div>
+</h1>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="table-responsive">
 <?php $path='media/';
 	$upload_dir='media/';
 	$handle=opendir($upload_dir);
@@ -45,4 +50,6 @@
 	</div>
 <?php 	}
 	}?>
+</div>
+	</div>
 </div>

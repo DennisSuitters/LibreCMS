@@ -20,7 +20,7 @@
 			<div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
 				<div class="login-panel panel panel-default animated fadeInDown">
 					<div class="panel-body">
-						<form role="form" method="post" action="" accept-charset="UTF-8">
+						<form role="form" method="post" action="<?php echo rtrim(URL,'logout').'admin';?>" accept-charset="UTF-8">
 							<h4>Login</h4>
 							<input type="hidden" name="act" value="login">
 							<div class="form-group">
@@ -40,7 +40,7 @@
 							<div class="form-group">
 								<label class="control-label hidden-xs col-xs-12 col-lg-4 col-md-5 col-sm-4">&nbsp;</label>
 								<div class="input-group col-xs-12 col-lg-8 col-md-7 col-sm-8">
-									<button class="btn btn-default btn-large btn-block color-success text-bold">Login</button>
+									<button class="btn btn-success btn-large btn-block text-bold">Login</button>
 								</div>
 							</div>
 						</form>
