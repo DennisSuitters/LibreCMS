@@ -14,8 +14,35 @@ if($args[0]=='edit'){
 	$r=$q->fetch(PDO::FETCH_ASSOC);?>
 <h1 class="page-header">
 	Accounts
+	<div class="btn-group pull-right">
+		<a class="btn btn-success" href="<?php echo URL;?>admin/accounts"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs">Back<span></a>
+	</div>
 </h1>
 <div class="panel panel-default">
+	<div id="covertop">
+			<div class="badger badger-left text-shadow-depth-1" data-status="<?php if($r['active']==1)echo'active';else echo'inactive';?>" data-contenttype="
+<?php		if($r['rank']==0)echo'Visitor';
+			if($r['rank']==100)echo'Subscriber';
+			if($r['rank']==200)echo'Member';
+			if($r['rank']==300)echo'Client';
+			if($r['rank']==400)echo'Contributor';
+			if($r['rank']==500)echo'Author';
+			if($r['rank']==600)echo'Editor';
+			if($r['rank']==700)echo'Moderator';
+			if($r['rank']==800)echo'Manager';
+			if($r['rank']==900)echo'Administrator';
+			if($r['rank']==1000)echo'Developer';?>"></div>
+		<div id="coverimg">
+<?php if($r['cover']!=''&&file_exists('media/'.$r['cover']))
+		echo'<img class="cover" src="media/'.$r['cover'].'">';
+	elseif(file_exists('media/'.$r['coverURL']))
+		echo'<img class="cover" src="media/'.$r['coverURL'].'">';
+	elseif($r['coverURL']!='')
+		echo'<img class="cover" src="'.$r['coverURL'].'">';?>
+			<h3 class="name text-shadow-depth-1"><?php if($r['name']!='')echo$r['name'];else echo$r['username'];?></h3>
+		</div>
+		<img class="avatar img-thumbnail shadow-depth-1" src="<?php if($user['gravatar']!='')echo$user['gravatar'];elseif($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))echo'media/avatar/'.$user['avatar'];else echo$noavatar;?>">
+	</div>
 	<div class="panel-body">
 		<div class="form-group">
 			<label for="ti" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Created</label>
@@ -130,8 +157,6 @@ if($args[0]=='edit'){
 <?php }?>
 		<fieldset class="control-fieldset">
 			<legend class="control-legend">Cover and Avatar</legend>
-			<div id="coverimg" class="col-xs-7 col-sm-9 col-md-9 col-lg-10 no-padding pull-right"><?php if($r['cover']!=''&&file_exists('media/'.$r['cover']))echo'<img src="media/'.$r['cover'].'">';elseif(file_exists('media/'.$r['coverURL']))echo'<img src="media/'.$r['coverURL'].'">';elseif($r['coverURL']!='')echo'<img src="'.$r['coverURL'].'">';?></div>
-			<div class="clearfix"></div>
 			<div class="form-group">
 				<label for="cover" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Cover</label>
 				<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
@@ -367,7 +392,7 @@ if($args[0]=='edit'){
 		</div>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
 		<div class="btn-group">
-			<a class="btn btn-default" href="<?php echo URL;?>admin/accounts/add"><?php if($config['buttonType']=='text')echo'<small>Add</small>';else echo'<i class="libre libre-plus text-success"></i>';?></a>
+			<a class="btn btn-success" href="<?php echo URL;?>admin/accounts/add"><i class="libre libre-add visible-xs"></i><span class="hidden-xs">Add</span></a>
 		</div>
 <?php }?>
 	</div>
@@ -458,18 +483,21 @@ if($args[0]=='edit'){
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 			<div id="l_<?php echo$r['id'];?>" class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 				<div class="panel panel-default">
-					<div class="badger badger-right" data-status="<?php if($r['active']==1)echo'active';else echo'inactive';?>" data-contenttype="<?php if($r['active']==1)echo'active';else echo'inactive';?>"></div>
+					<div class="badger badger-left text-shadow-depth-1" data-status="<?php if($r['active']==1)echo'active';else echo'inactive';?>" data-contenttype="<?php if($r['active']==1)echo'active';else echo'inactive';?>"></div>
 					<div class="panel-image" data-status="<?php if($r['active']==1)echo'success';else echo'danger';?>">
 						<img src="<?php if($r['cover']!=''&&file_exists('media/'.$r['cover']))echo'media/'.$r['cover'];elseif($r['coverURL']!=''&&file_exists('media/'.$r['coverURL']))echo'media/'.$r['coverURL'];elseif($r['coverURL']!='')echo$r['coverURL'];?>">
-						<img class="avatar img-thumbnail" src="<?php if($r['gravatar']!='')echo$r['gravatar'];elseif($r['avatar']!=''&&file_exists('media/avatar/'.$r['avatar']))echo'media/avatar/'.$r['avatar'];else echo$noavatar;?>">
-						<div class="panel-title text-right"><small class="text-white"><?php echo$r['username'].':'.$r['name'];?></small></div>
+						<img class="avatar img-thumbnail text-shadow-depth-1" src="<?php if($r['gravatar']!='')echo$r['gravatar'];elseif($r['avatar']!=''&&file_exists('media/avatar/'.$r['avatar']))echo'media/avatar/'.$r['avatar'];else echo$noavatar;?>">
+						<div class="panel-title text-shadow-depth-1">
+<?php if($r['name']!='')echo$r['name'];else echo$r['username'];
+if($r['business']!='')echo'<br><small>'.$r['business'].'</small>';?>
+						</div>
 					</div>
-					<div id="controls_<?php echo$r['id'];?>" class="panel-footer text-right">
-						<a class="btn btn-default btn-xs" href="admin/accounts/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';if($config['buttonType']=='text')echo'>Edit';else echo'><i class="libre libre-edit"></i>';echo'</a>';
-					if($user['rank']==1000||$user['options']{0}==1){?>
-						<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';if($config['buttonType']=='text')echo'>Restore';else echo'><i class="libre libre-email-reply text-success"></i>';?></button> 
-						<button class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';if($config['buttonType']=='text')echo'>Delete';else echo'><i class="libre libre-trash text-danger"></i>';?></button> 
-						<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';if($config['buttonType']=='text')echo'>Purge';else echo'><i class="libre libre-email-forward text-danger"></i>';?></button>
+					<div id="controls_<?php echo$r['id'];?>" class="btn-group panel-controls">
+						<a class="btn btn-info btn-xs" href="admin/accounts/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
+<?php				if($user['rank']==1000||$user['options']{0}==1){?>
+						<button class="btn btn-warning btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore"></i></button>
+						<button class="btn btn-danger btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><i class="libre libre-trash"></i></button>
+						<button class="btn btn-danger btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><i class="libre libre-purge"></i></button>
 <?php		}?>
 					</div>
 				</div>

@@ -1,15 +1,11 @@
 <?php if($user['rank']>399){?>
 <div class="nav-side-menu shadow-depth-2">
-	<div class="profile">
-		<div class="profile-sidebar">
-			<div class="profile-userpic">
-				<img class="img-responsive shadow-depth-1-half" src="<?php if($user['gravatar']!='')echo$user['gravatar'];elseif($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))echo'media/avatar/'.$user['avatar'];else echo$noavatar;?>">
+	<div class="profile clearfix">
+		<div class="profile-usertitle">
+			<div class="profile-usertitle-name">
+				<?php if($user['name']!='')echo$user['name'];else echo$user['username'];?>
 			</div>
-			<div class="profile-usertitle">
-				<div class="profile-usertitle-name">
-					<?php if($user['name']!='')echo$user['name'];else echo$user['username'];?>
-				</div>
-				<div class="profile-usertitle-job">
+			<div class="profile-usertitle-job">
 <?php if($user['rank']==400)echo'Contributor';
 if($user['rank']==500)echo'Author';
 if($user['rank']==600)echo'Editor';
@@ -17,9 +13,12 @@ if($user['rank']==700)echo'Moderator';
 if($user['rank']==800)echo'Manager';
 if($user['rank']==900)echo'Administrator';
 if($user['rank']==1000)echo'Developer';?>
-				</div>
 			</div>
-			<div class="clearfix"></div>
+		</div>
+		<div class="profile-sidebar">
+			<div class="profile-userpic">
+				<img class="img-responsive shadow-depth-1-half" src="<?php if($user['gravatar']!='')echo$user['gravatar'];elseif($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))echo'media/avatar/'.$user['avatar'];else echo$noavatar;?>">
+			</div>
 		</div>
 	</div>
 	<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>

@@ -11,9 +11,11 @@ body{background:#f4f4f4;margin:-30px 0 0 0;padding:0}
 .btn-xs{padding:0 5px 1px 5px;font-size:12px;line-height:1.5;border-radius:3px}
 .input-group-addon#file,
 .input-group-addon#thumb{padding:0}
-#coverimg{position:relative;height:200px;overflow:hidden}
-#coverimg img{width:100%;margin:0;padding:0}
-#coverimg:empty{height:0px;display:none}
+#covertop{position:relative;height:340px}
+#coverimg{position:relative;background-color:#ddd;height:300px;margin-bottom:30px;overflow:hidden;}
+#coverimg .cover{position:absolute;top:0;left:0;right:0;bottom:auto;width:100%;margin:0;padding:0}
+#coverimg .name{position:absolute;bottom:5px;left:200px;color:#fff;}
+#covertop .avatar{position:absolute;width:160px;height:160px;left:20px;bottom:0;}
 .input-group-addon img{max-height:40px;width:30px}
 #toTop{position:fixed;top:0;left:0;z-index:2147483647;display:none;padding:5px 8px 5px 5px;-webkit-border-bottom-right-radius:20px;-moz-border-radius-bottomright:20px;border-bottom-right-radius:20px;background-color:#000;background-color:rgba(0,0,0,.5);color:#fff}
 div.clear{clear:both}
@@ -65,15 +67,16 @@ input[type=checkbox]+label{font-family:LibreICONS;color:#a94442}
 input[type=checkbox]+label::before{content:'\e644'}
 input[type=checkbox]:checked+label{font-family:LibreICONS;color:#3c763d}
 input[type=checkbox]:checked+label::before{content:'\e645'}
-.panel .panel-image{position:relative;height:120px;overflow:hidden;}
+.panel .panel-image{position:relative;height:120px;overflow:hidden}
 .panel .panel-image[data-status|=delete]{background:#d9534f}
 .panel .panel-image[data-status|=unpublished]{background:#f0ad4e}
 .panel .panel-image[data-status|=published]{background:#5cb85c}
 .panel .panel-image[data-status|=]{background:#5bc0de}
 .panel .panel-image img{border-radius:3px 3px 0 0;position:relative;left:0;right:0;top:0;bottom:0;width:100%}
 .panel .panel-image img[src=""]{display:none}
-.panel .panel-image .panel-title{position:absolute;display:block;bottom:0;left:0;right:5px;padding:0 0 0 10px;text-shadow:0 1px 2px #444}
-.panel .panel-image .avatar{position:absolute;top:auto;bottom:5px;left:5px;max-width:75px;height:75px}
+.panel .panel-image .panel-title{position:absolute;display:block;color:#fff;line-height:.9em;bottom:2px;left:60px;padding:0 0 0 10px}
+.panel .panel-image h4.panel-title{left:0}
+.panel .panel-image .avatar{position:absolute;top:auto;bottom:5px;left:5px;max-width:60px;height:60px}
 .panel .panel-content{padding:10px;font-size:.9em;border-radius:0 0 3px 3px;height:100px;overflow:hidden}
 .panel .panel-content.ga{height:auto}
 .panel .panel-content p{margin:0;color:inherit;text-overflow:ellipsis}
@@ -125,12 +128,12 @@ legend.control-legend.legend-sm{font-size:.75em!important}
 .nav-side-menu .brand img{width:90%}
 .nav-side-menu .toggle-btn{display:none}
 .nav-side-menu ul,
-.nav-side-menu li{list-style:none;padding:0;margin:0;line-height:35px;cursor:pointer}
+.nav-side-menu li{list-style:none;padding:0;margin:0;line-height:30px;cursor:pointer}
 .nav-side-menu ul :not(collapsed) .arrow:before,
 .nav-side-menu li :not(collapsed) .arrow:before{display: inline-block;padding-left:10px;padding-right:10px;vertical-align:middle;float:right}
 .nav-side-menu ul.active,
 .nav-side-menu li.active *{color:#000;font-weight:700}
-.nav-side-menu li{text-align:left;padding:0 15px}
+.nav-side-menu li{text-align:left;padding:0 10px}
 .nav-side-menu li a{text-decoration:none;color:#777}
 .nav-side-menu li a:hover{color:#000}
 .nav-side-menu li a i{display:none}
@@ -145,7 +148,7 @@ legend.control-legend.legend-sm{font-size:.75em!important}
 }
 .profile{margin:10px}
 .profile-sidebar li{text-align:left}
-.profile-userpic img{float:left;width:40%;height:40%;-webkit-border-radius:50%!important;-moz-border-radius:50%!important;border-radius:50%!important}
+.profile-userpic img{float:left;margin-top:-15px;width:40%;height:40%;-webkit-border-radius:50%!important;-moz-border-radius:50%!important;border-radius:50%!important}
 .profile-usertitle{text-align:right;margin-top:0}
 .profile-usertitle-name{color:#5a7391;font-size:12px;font-weight:600}
 .profile-usertitle-job{text-transform:uppercase;color:#5b9bd1;font-size:9px;font-weight:600}

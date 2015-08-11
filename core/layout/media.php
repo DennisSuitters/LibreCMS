@@ -1,13 +1,13 @@
 <h1 class="page-header">
 	Media
-	<div class="btn-group col-xs-4 pull-right">
+	<div class="btn-group col-xs-3 pull-right">
 		<form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
+			<input type="hidden" name="act" value="add_media">
 			<div class="form-group">
 				<div class="input-group">
-					<input type="file" name="file[]" class="form-control" multiple>
-					<input type="hidden" name="act" value="add_media">
 					<div class="input-group-btn">
-						<button class="btn btn-default" onclick="$('#block').css({'display':'block'});">Upload</button>
+						<span class="btn btn-default btn-file"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse for Images</span><input type="file" name="fu[]" multiple<?php if($user['options']{1}==0)echo' disabled';?>></span>
+						<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs">Upload</span></button>
 					</div>
 				</div>
 			</div>
@@ -44,7 +44,7 @@
 				<h4 class="panel-title color-white"><small><?php echo $file;?></small></h4>
 			</div>
 			<div class="panel-footer text-right">
-				<button class="btn btn-default btn-xs" onclick="removeMedia('<?php echo$i;$i++;?>','<?php echo str_replace(' ','~',$file);?>')"><i class="libre libre-trash color-danger"></i></button>
+				<button class="btn btn-danger btn-xs" onclick="removeMedia('<?php echo$i;$i++;?>','<?php echo str_replace(' ','~',$file);?>')"><i class="libre libre-trash"></i></button>
 			</div>
 		</div>
 	</div>

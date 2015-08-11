@@ -20,7 +20,7 @@
 			<div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
 				<div class="login-panel panel panel-default animated fadeInDown">
 					<div class="panel-body">
-						<form role="form" method="post" action="<?php echo rtrim(URL,'logout').'admin';?>" accept-charset="UTF-8">
+						<form role="form" method="post" action="<?php if(stristr('logout',$_SERVER[REQUEST_URI]))echo rtrim(URL,'logout').'admin';?>" accept-charset="UTF-8">
 							<h4>Login</h4>
 							<input type="hidden" name="act" value="login">
 							<div class="form-group">
