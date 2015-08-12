@@ -274,9 +274,9 @@
 						window.top.window.$(".popover").remove();
 					});
 					$("#edbut"+event.id).click(function(){
-						window.location="<?php echo URL.'admin/bookings/edit/';?>"+event.id;
+						window.location="admin/bookings/edit/"+event.id;
 /*						$.get("core/booking.php?id="+event.id,function(data){
-							$(".bookings").find(".modal-content").html(data);
+			 				$(".bookings").find(".modal-content").html(data);
 						})
 						$(".summernote2").destroy();
 						$(".bookings").modal("toggle");

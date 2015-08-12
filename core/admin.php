@@ -13,7 +13,8 @@ if($_SESSION['rank']>399){
 	require'core/layout/meta_head.php';
 	require'core/layout/header.php';?>
 <main id="content">
-<?php if($view=='add'){
+<?php
+	if($view=='add'){
 		if($args[0]=='bookings')require'core/layout/bookings.php';
 		else require'core/layout/content.php';
 	}else require'core/layout/'.$view.'.php';?>

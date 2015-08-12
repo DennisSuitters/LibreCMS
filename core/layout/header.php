@@ -17,10 +17,11 @@ if($user['rank']==1000)echo'Developer';?>
 		</div>
 		<div class="profile-sidebar">
 			<div class="profile-userpic">
-				<img class="img-responsive shadow-depth-1-half" src="<?php if($user['gravatar']!='')echo$user['gravatar'];elseif($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))echo'media/avatar/'.$user['avatar'];else echo$noavatar;?>">
+				<img class="img-thumbnail shadow-depth-1" src="<?php if($user['gravatar']!='')echo$user['gravatar'];elseif($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))echo'media/avatar/'.$user['avatar'];else echo$noavatar;?>">
 			</div>
 		</div>
 	</div>
+	<hr>
 	<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
 	<div class="menu-list">
 		<ul id="menu-content" class="menu-content collapse out">

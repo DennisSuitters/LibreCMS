@@ -198,10 +198,14 @@ function imageUpdate(id,t,c,da){
 			da:da
 		}
 	}).done(function(msg){
-		if(da==''){
-			$('#'+c).html('');
+		if(t=='login'&&c=='avatar'){
+			$('#'+c).val('');
 		}else{
-			$('#'+c).html('<img src="media/'+da+'">');
+			if(da==''){
+				$('#'+c).html('');
+			}else{
+				$('#'+c).html('<img src="media/'+da+'">');
+			}
 		}
 	})
 }

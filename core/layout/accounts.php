@@ -41,7 +41,7 @@ if($args[0]=='edit'){
 		echo'<img class="cover" src="'.$r['coverURL'].'">';?>
 			<h3 class="name text-shadow-depth-1"><?php if($r['name']!='')echo$r['name'];else echo$r['username'];?></h3>
 		</div>
-		<img class="avatar img-thumbnail shadow-depth-1" src="<?php if($user['gravatar']!='')echo$user['gravatar'];elseif($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))echo'media/avatar/'.$user['avatar'];else echo$noavatar;?>">
+		<img class="avatar img-thumbnail shadow-depth-1" src="<?php if($r['gravatar']!='')echo$r['gravatar'];elseif($r['avatar']!=''&&file_exists('media/avatar/'.$r['avatar']))echo'media/avatar/'.$r['avatar'];else echo$noavatar;?>">
 	</div>
 	<div class="panel-body">
 		<div class="form-group">
@@ -163,8 +163,8 @@ if($args[0]=='edit'){
 					<div class="input-group-addon">URL</div>
 					<input type="text" id="coverURL" class="form-control" value="<?php echo$r['coverURL'];?>" onchange="coverUpdate('<?php echo$r['id'];?>','login','coverURL',$(this).val());" placeholder="Enter Cover URL...">
 					<div class="input-group-btn">
-						<a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=login&c=coverURL">Edit</a>
-						<button class="btn btn-default color-danger" onclick="coverUpdate('<?php echo$r['id'];?>','login','coverURL','');">Delete</button>
+						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=login&c=coverURL"><i class="libre libre-edit visible-xs"></i><span class="hidden-xs">Edit</span></a>
+						<button class="btn btn-danger" onclick="coverUpdate('<?php echo$r['id'];?>','login','coverURL','');"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button>
 					</div>
 				</div>
 				<div class="help-block col-xs-10 pull-right">
@@ -178,14 +178,14 @@ if($args[0]=='edit'){
 							<input type="hidden" name="act" value="add_cover">
 							<input type="hidden" name="t" value="login">
 							<input type="hidden" name="c" value="cover">
-							<span class="btn btn-default btn-file">Browse for Images<input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></span>
-							<button class="btn btn-default<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});">Upload</button>
+							<span class="btn btn-info btn-file"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse for Images</span><input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></span>
+							<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs">Upload</span></button>
 						</form>
 					</div>
 					<div class="input-group-btn">
-						<a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=login&c=cover">Browse Uploaded Images</a>
-						<a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=login&c=cover">Edit</a>
-						<button class="btn btn-default color-danger" onclick="coverUpdate('<?php echo$r['id'];?>','login','cover','');">Delete</button>
+						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=login&c=cover"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse Uploaded Images</span></a>
+						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=login&c=cover"><i class="libre libre-edit visible-xs"></i><span class="hidden-xs">Edit</span></a>
+						<button class="btn btn-danger" onclick="coverUpdate('<?php echo$r['id'];?>','login','cover','');"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button>
 					</div>
 				</div>
 			</div>
@@ -223,9 +223,12 @@ if($args[0]=='edit'){
 						<form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
 							<input type="hidden" name="id" value="<?php echo$r['id'];?>">
 							<input type="hidden" name="act" value="add_avatar">
-							<span class="btn btn-default btn-file">Browse for Images<input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></span>
-							<button class="btn btn-default" type="submit">Upload</button>
+							<span class="btn btn-info btn-file"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse for Images</span><input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></span>
+							<button class="btn btn-success" type="submit"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs">Upload</span></button>
 						</form>
+					</div>
+					<div class="input-group-btn">
+						<button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','login','avatar','');"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button>
 					</div>
 				</div>
 			</div>
@@ -390,6 +393,21 @@ if($args[0]=='edit'){
 				<label class="btn btn-default<?php if($config['layoutAccounts']=='table')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Users as Table."';?>><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutAccounts','table');reload('content');"<?php if($config['layoutAccounts']=='table')echo' checked';if($config['buttonType']=='text')echo'>Table';else echo'><i class="libre libre-display-layout-table"></i>';?></label>
 			</div>
 		</div>
+		<div class="btn-group">
+			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view visible-xs"></i><span class="hidden-xs">Show</span> <i class="caret"></i></button>
+			<ul class="dropdown-menu pull-right">
+				<li><a href="<?php echo URL.'admin/accounts';?>">All</a></li>
+				<li><a href="<?php echo URL.'admin/accounts/type/subscriber';?>">Subscriber</a></li>
+				<li><a href="<?php echo URL.'admin/accounts/type/member';?>">Member</a></li>
+				<li><a href="<?php echo URL.'admin/accounts/type/client';?>">Client</a></li>
+				<li><a href="<?php echo URL.'admin/accounts/type/contributor';?>">Contributor</a></li>
+				<li><a href="<?php echo URL.'admin/accounts/type/author';?>">Author</a></li>
+				<li><a href="<?php echo URL.'admin/accounts/type/editor';?>">Editor</a></li>
+				<li><a href="<?php echo URL.'admin/accounts/type/moderator';?>">Moderator</a></li>
+				<li><a href="<?php echo URL.'admin/accounts/type/manager';?>">Manager</a></li>
+				<li><a href="<?php echo URL.'admin/accounts/type/administrator';?>">Administrator</a></li>
+			</ul>
+		</div>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
 		<div class="btn-group">
 			<a class="btn btn-success" href="<?php echo URL;?>admin/accounts/add"><i class="libre libre-add visible-xs"></i><span class="hidden-xs">Add</span></a>
@@ -427,23 +445,7 @@ if($args[0]=='edit'){
 						<th data-sort="string">Name</th>
 						<th class="hidden-xs" data-sort="string">Email</th>
 						<th class="col-sm-2 hidden-xs" data-sort="string">Rank</th>
-						<th class="col-sm-3 text-right">
-							Show <div class="btn-group">
-								<button class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><?php if(!isset($args[1])||$args[1]=='')echo'All';else echo ucfirst($args[1]);?> <i class="caret"></i></button>
-								<ul class="dropdown-menu pull-right">
-									<li><a href="<?php echo URL.'admin/accounts';?>">All</a></li>
-									<li><a href="<?php echo URL.'admin/accounts/type/subscriber';?>">Subscriber</a></li>
-									<li><a href="<?php echo URL.'admin/accounts/type/member';?>">Member</a></li>
-									<li><a href="<?php echo URL.'admin/accounts/type/client';?>">Client</a></li>
-									<li><a href="<?php echo URL.'admin/accounts/type/contributor';?>">Contributor</a></li>
-									<li><a href="<?php echo URL.'admin/accounts/type/author';?>">Author</a></li>
-									<li><a href="<?php echo URL.'admin/accounts/type/editor';?>">Editor</a></li>
-									<li><a href="<?php echo URL.'admin/accounts/type/moderator';?>">Moderator</a></li>
-									<li><a href="<?php echo URL.'admin/accounts/type/manager';?>">Manager</a></li>
-									<li><a href="<?php echo URL.'admin/accounts/type/administrator';?>">Administrator</a></li>
-								</ul>
-							</div>
-						</th>
+						<th class="col-sm-3"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -465,13 +467,15 @@ if($args[0]=='edit'){
 			elseif($r['rank']==1000)echo'Developer';
 			else echo'Visitor';?>
 						</td>
-						<td id="controls_<?php echo$r['id'];?>" class="text-right">
-							<a class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/accounts/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';if($config['buttonType']=='text')echo'>Edit';else echo'><i class="libre libre-edit"></i>';?></a> 
-							<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';if($config['buttonType']=='text')echo'>Restore';else echo'><i class="libre libre-email-reply color-success"></i>';?></button> 
-							<button class="btn btn-default btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';if($config['buttonType']=='text')echo'>Delete';else echo'><i class="libre libre-trash color-danger"></i>';?></button> 
+						<td id="controls_<?php echo$r['id'];?>">
+							<div class="btn-group pull-right">
+								<a class="btn btn-info btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/accounts/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit visible-xs"></i><span class="hidden-xs">Edit</span></a> 
+								<button class="btn btn-warning btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore visible-xs"></i><span class="hidden-xs">Restore</span></button> 
+								<button class="btn btn-danger btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button> 
 <?php		if($_SESSION['rank']>399&&$user['options']{5}==1){?>
-							<button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';if($config['buttonType']=='text')echo'>Purge';else echo'><i class="libre libre-email-forward color-danger"></i>';?></button>
+								<button class="btn btn-danger btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><i class="libre libre-purge visible-xs"></i><span class="hidden-xs">Purge</span></button>
 <?php		}?>
+							</div>
 						</td>
 					</tr>
 <?php	}?>
@@ -483,10 +487,20 @@ if($args[0]=='edit'){
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 			<div id="l_<?php echo$r['id'];?>" class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 				<div class="panel panel-default">
-					<div class="badger badger-left text-shadow-depth-1" data-status="<?php if($r['active']==1)echo'active';else echo'inactive';?>" data-contenttype="<?php if($r['active']==1)echo'active';else echo'inactive';?>"></div>
+					<div class="badger badger-left text-shadow-depth-1" data-status="<?php if($r['active']==1)echo'active';else echo'inactive';?>" data-contenttype="<?php		if($r['rank']==100)echo'Subscriber';
+			elseif($r['rank']==200)echo'Member';
+			elseif($r['rank']==300)echo'Client';
+			elseif($r['rank']==400)echo'Contributor';
+			elseif($r['rank']==500)echo'Author';
+			elseif($r['rank']==600)echo'Editor';
+			elseif($r['rank']==700)echo'Moderator';
+			elseif($r['rank']==800)echo'Manager';
+			elseif($r['rank']==900)echo'Administrator';
+			elseif($r['rank']==1000)echo'Developer';
+			else echo'Visitor';?>"></div>
 					<div class="panel-image" data-status="<?php if($r['active']==1)echo'success';else echo'danger';?>">
 						<img src="<?php if($r['cover']!=''&&file_exists('media/'.$r['cover']))echo'media/'.$r['cover'];elseif($r['coverURL']!=''&&file_exists('media/'.$r['coverURL']))echo'media/'.$r['coverURL'];elseif($r['coverURL']!='')echo$r['coverURL'];?>">
-						<img class="avatar img-thumbnail text-shadow-depth-1" src="<?php if($r['gravatar']!='')echo$r['gravatar'];elseif($r['avatar']!=''&&file_exists('media/avatar/'.$r['avatar']))echo'media/avatar/'.$r['avatar'];else echo$noavatar;?>">
+						<img class="avatar img-thumbnail shadow-depth-1" src="<?php if($r['gravatar']!='')echo$r['gravatar'];elseif($r['avatar']!=''&&file_exists('media/avatar/'.$r['avatar']))echo'media/avatar/'.$r['avatar'];else echo$noavatar;?>">
 						<div class="panel-title text-shadow-depth-1">
 <?php if($r['name']!='')echo$r['name'];else echo$r['username'];
 if($r['business']!='')echo'<br><small>'.$r['business'].'</small>';?>

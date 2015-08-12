@@ -74,44 +74,8 @@ class admin{
 		$view='content';
 		require'admin.php';
 	}
-	function article($args=false){
-		$view='article';
-		require'admin.php';
-	}
-	function portfolio($args=false){
-		$view='portfolio';
-		require'admin.php';
-	}
-	function events($args=false){
-		$view='events';
-		require'admin.php';
-	}
-	function news($args=false){
-		$view='news';
-		require'admin.php';
-	}
-	function testimonials($args=false){
-		$view='testimonials';
-		require'admin.php';
-	}
-	function inventory($args=false){
-		$view='inventory';
-		require'admin.php';
-	}
-	function services($args=false){
-		$view='services';
-		require'admin.php';
-	}
-	function gallery($args=false){
-		$view='article';
-		require'admin.php';
-	}
 	function pages($args=false){
 		$view='pages';
-		require'admin.php';
-	}
-	function proofs($args=false){
-		$view='proofs';
 		require'admin.php';
 	}
 	function media($args=false){
@@ -277,6 +241,20 @@ class front{
 $route=new router();
 $route->setRoutes(
 	array(
+		'admin/add'			=>array('admin','add'),
+		'admin/accounts'	=>array('admin','accounts'),
+		'admin/bookings'	=>array('admin','bookings'),
+		'admin/content'		=>array('admin','content'),
+		'admin/media'		=>array('admin','media'),
+		'admin/messages'	=>array('admin','messages'),
+		'admin/orders'		=>array('admin','orders'),
+		'admin/pages'		=>array('admin','pages'),
+		'admin/preferences'	=>array('admin','preferences'),
+		'admin/search'		=>array('admin','search'),
+		'admin/statistics'	=>array('admin','statistics'),
+		'admin/activity'	=>array('admin','activity'),
+		'admin/logout'		=>array('admin','logout'),
+		'admin'				=>array('admin','statistics'),
 		'error'				=>array('front','error'),
 		''					=>array('front','index'),
 		'index'				=>array('front','index'),
@@ -299,30 +277,6 @@ $route->setRoutes(
 		'search'			=>array('front','search'),
 		'sitemap'			=>array('front','sitemap'),
 		'settings'			=>array('front','settings'),
-		'admin/add'			=>array('admin','add'),
-		'admin/accounts'	=>array('admin','accounts'),
-		'admin/bookings'	=>array('admin','bookings'),
-		'admin/content'		=>array('admin','content'),
-		'admin/article'		=>array('admin','article'),
-		'admin/portfolio'	=>array('admin','portfolio'),
-		'admin/events'		=>array('admin','events'),
-		'admin/news'		=>array('admin','news'),
-		'admin/testimonials'=>array('admin','testimonials'),
-		'admin/inventory'	=>array('admin','inventory'),
-		'admin/services'	=>array('admin','services'),
-		'admin/gallery'		=>array('admin','gallery'),
-		'admin/proofs'		=>array('admin','proofs'),
-		'admin/media'		=>array('admin','media'),
-		'admin/messages'	=>array('admin','messages'),
-		'admin/orders'		=>array('admin','orders'),
-		'admin/pages'		=>array('admin','pages'),
-		'admin/preferences'	=>array('admin','preferences'),
-		'admin/proofs'		=>array('admin','proofs'),
-		'admin/search'		=>array('admin','search'),
-		'admin/statistics'	=>array('admin','statistics'),
-		'admin/activity'	=>array('admin','activity'),
-		'admin/logout'		=>array('admin','logout'),
-		'admin'				=>array('admin','statistics'),
 		'humans.txt'		=>array('internal','humans'),
 		'sitemap.xml'		=>array('internal','sitemap'),
 		'robots.txt'		=>array('internal','robots'),

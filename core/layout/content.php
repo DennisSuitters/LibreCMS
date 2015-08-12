@@ -163,18 +163,16 @@ if($show=='categories'){
 				<div class="panel-body panel-content">
 					<p><?php echo strip_tags(substr($r['notes'],0,200));?></p>
 				</div>
-				<div class="panel-footer text-right">
+				<div id="controls_<?php echo$r['id'];?>" class="btn-group panel-controls">
+					<a id="pin<?php echo$r['id'];?>" class="btn btn-default btn-xs<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin/Unpin to Top"';?>><i class="libre libre-pin"></i></a>
 <?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){
 	$cnt=0;
 	$sc=$db->prepare("SELECT COUNT(id) as cnt FROM comments WHERE rid=:id AND status='unapproved'");
 	$sc->execute(array(':id'=>$r['id']));
 	$cnt=$sc->fetch(PDO::FETCH_ASSOC);?>
 					<a class="btn btn-default btn-xs" href="admin/content/edit/<?php echo$r['id'];?>#comments"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><i class="libre libre-comments"></i> <?php echo$cnt['cnt'];?></a>
+<?php }?>
 					<span class="btn btn-default btn-xs"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Views"';?>><i class="libre libre-view"></i> <?php echo$r['views'];?></span>
-<?php	}else echo'&nbsp;';?>
-				</div>
-				<div id="controls_<?php echo$r['id'];?>" class="btn-group panel-controls">
-					<a id="pin<?php echo$r['id'];?>" class="btn btn-default btn-xs<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin/Unpin to Top"';?>><i class="libre libre-pin"></i></a>
 					<a class="btn btn-info btn-xs" href="admin/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
 <?php		if($user['rank']==1000||$user['options']{0}==1){?>
 					<button class="btn btn-warning btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore"></i></button>
@@ -323,9 +321,9 @@ if($show=='categories'){
 						<input type="hidden" name="t" value="content">
 						<input type="hidden" name="c" value="file">
 						<div class="input-group-btn">
-							<span class="btn btn-default btn-file"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse for Images</span><input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></span>
+							<span class="btn btn-info btn-file"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse for Images</span><input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></span>
 							<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs">Upload</span></button>
-							<a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=file"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse Uploaded Media</span></a>
+							<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=file"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse Uploaded Images</span></a>
 						</div>
 						<div id="file" class="input-group-addon">
 <?php	if($r['file']!=''&&file_exists('media/'.$r['file']))echo'<a href="media/'.$r['file'].'" data-featherlight="image"><img src="media/'.$r['file'].'"></a>';
@@ -352,11 +350,11 @@ if($show=='categories'){
 						<input type="hidden" name="t" value="content">
 						<input type="hidden" name="c" value="thumb">
 						<div class="input-group-btn">
-							<span class="btn btn-default btn-file"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse for Images</span><input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></span>
+							<span class="btn btn-info btn-file"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse for Images</span><input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></span>
 							<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs">Upload</span></button>
 						</div>
 						<div class="input-group-btn">
-							<a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=thumb"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse Uploaded Images</span></a>
+							<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=thumb"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse Uploaded Images</span></a>
 						</div>
 						<div id="thumb" class="input-group-addon">
 <?php	if($r['thumb']!=''&&file_exists('media/'.$r['thumb']))echo'<a href="media/'.$r['thumb'].'" data-featherlight="image"><img src="media/'.$r['thumb'].'"></a>';
@@ -614,9 +612,9 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
 						<h5 class="media-heading">Name: <?php echo$rc['name'];?></h5>
 						<time><small class="text-muted"><?php echo date($config['dateFormat'],$rc['ti']);?></small></time>
 <?php echo strip_tags($rc['notes']);?>
-						<div id="controls-<?php echo$rc['id'];?>" class="pull-right">
-							<button id="approve_<?php echo$rc['id'];?>" class="btn btn-default btn-xs<?php if($rc['status']!='unapproved')echo' hidden';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','approved')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Approve"';if($config['buttonType']=='text')echo'><span class="color-success">Approve</span>';else echo'><i class="libre libre-approve text-success"></i>';?></button> 
-							<button class="btn btn-default btn-xs" onclick="purge('<?php echo$rc['id'];?>','comments')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';if($config['buttonType']=='text')echo'><span class="color-danger">Delete</span>';else echo'><i class="libre libre-trash text-danger"></i>';?></button>
+						<div id="controls-<?php echo$rc['id'];?>" class="btn-group pull-right">
+							<button id="approve_<?php echo$rc['id'];?>" class="btn btn-success btn-xs<?php if($rc['status']!='unapproved')echo' hidden';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','approved')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Approve"';?>><i class="libre libre-approve visible-xs"></i><span class="hidden-xs">Approve</span></button> 
+							<button class="btn btn-danger btn-xs" onclick="purge('<?php echo$rc['id'];?>','comments')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button>
 						</div>
 					</div>
 				</div>
@@ -642,7 +640,7 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
 					</div>
 					<label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label>
 					<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-						<button class="btn btn-default btn-block color-success">Add Comment</button>
+						<button class="btn btn-success btn-block"><i class="libre libre-comment visible-xs"></i><span class="hidden-xs">Add Comment</span></button>
 					</div>
 				</form>
 			</div>
