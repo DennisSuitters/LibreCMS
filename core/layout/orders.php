@@ -451,6 +451,11 @@ if($args[0]=='view'){
 				</thead>
 				<tbody>
 <?php	while($r=$s->fetch(PDO::FETCH_ASSOC)){
+			if($r['due_ti']<$ti){
+				$us=$db->prepare("UPDATE orders SET status='overdue' WHERE id=:id");
+				$us->execute(array(':id'=>$r['id']));
+				$r['status']='overdue';
+			}
 			$cs=$db->prepare("SELECT username,name,business FROM login WHERE id=:id");
 			$cs->execute(array(':id'=>$r['cid']));
 			$c=$cs->fetch(PDO::FETCH_ASSOC);?>

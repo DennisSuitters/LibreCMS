@@ -19,36 +19,34 @@
 		<div class="container">
 			<div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
 				<div class="login-panel animated fadeInDown">
-					<img class="login img-responsive" src="core/images/librecms.png" alt="LibreCMS">
+					<img class="login img-responsive animated zoomIn" src="core/images/librecms.png" alt="LibreCMS">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<form role="form" method="post" action="<?php echo rtrim(URL,'logout').'admin';?>" accept-charset="UTF-8">
-								<h4>Login</h4>
+							<form role="form" method="post" action="<?php if(strpos(URL,'logout')!=='false')echo rtrim(URL,'logout').'admin';?>" accept-charset="UTF-8">
+								<h4 class="page-header">Login</h4>
 								<input type="hidden" name="act" value="login">
 								<div class="form-group">
-									<label for="username" class="control-label hidden-xs col-xs-12 col-sm-4 col-md-5 col-lg-4">Username</label>
+									<label for="username" class="control-label hidden-xs col-sm-4 col-md-5 col-lg-4">Username</label>
 									<div class="input-group col-xs-12 col-sm-8 col-md-7 col-lg-8">
-										<div class="input-group-addon visible-xs"><i class="libre libre-user"></i></div>
 										<input type="text" id="username" class="form-control" name="username" value="" placeholder="Enter a Username..." autofocus>
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="password" class="control-label hidden-xs col-xs-12 col-sm-4 col-md-5 col-lg-4">Password</label>
+									<label for="password" class="control-label hidden-xs col-sm-4 col-md-5 col-lg-4">Password</label>
 									<div class="input-group col-xs-12 col-sm-8 col-md-7 col-lg-8">
-										<div class="input-group-addon visible-xs"><i class="libre libre-key"></i></div>
 										<input type="password" id="password" class="form-control" name="password" placeholder="Enter a Password..." autocomplete="off">
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label hidden-xs col-xs-12 col-lg-4 col-md-5 col-sm-4">&nbsp;</label>
-									<div class="input-group col-xs-12 col-lg-8 col-md-7 col-sm-8">
+									<label class="control-label hidden-xs col-sm-4 col-md-5 col-lg-4">&nbsp;</label>
+									<div class="input-group col-xs-12 col-sm-8 col-md-7 col-lg-8">
 										<button class="btn btn-success btn-large btn-block text-bold">Login</button>
 									</div>
 								</div>
 							</form>
 						</div>
-						<div class="panel-footer text-right">
-							<a target="_blank" href="https://github.com/StudioJunkyard/Libr8">GitHub</a>
+						<div class="panel-footer hidden-xs text-right">
+							<a target="_blank" href="https://github.com/StudioJunkyard/LibreCMS">GitHub</a>
 							&nbsp;&nbsp;
 							<a href="<?php echo URL;?>">Front</a>
 						</div>

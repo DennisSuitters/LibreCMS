@@ -6,9 +6,13 @@ function makeClient(id){
 	$('#busy').css({'display':'inline-block'});
 	$('#sp').load('core/add_data.php?id='+id+'&act=make_client')
 }
-function changeClient(id,oid){
+function changeClient(id,oid,w){
 	$('#block').css({'display':'inline-block'});
-	$('#sp').load('core/change_client.php?id='+id+'&oid='+oid)
+	if(w=='booking'){
+		$('#sp').load('core/change_bookingClient.php?id='+id+'&bid='+oid)
+	}else{
+		$('#sp').load('core/change_orderClient.php?id='+id+'&oid='+oid)
+	}
 }
 function addOrderItem(oid,iid){
 	$('#busy').css({'display':'inline-block'});

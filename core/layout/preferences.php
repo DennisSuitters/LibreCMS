@@ -19,7 +19,7 @@
 		if($folder->isDir()){
 			$theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);?>
 					<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-						<div class="theme-chooser-item panel panel-default <?php if($config['theme']==$folder)echo' has-success';?>" data-theme="<?php echo$folder;?>">
+						<div class="theme-chooser-item panel<?php if($config['theme']==$folder)echo' panel-success';?>" data-theme="<?php echo$folder;?>">
 							<div class="panel-image">
 								<img src="<?php if(file_exists('layout/'.$folder.'/theme.jpg'))echo'layout/'.$folder.'/theme.jpg';elseif(file_exists('layout/'.$folder.'/theme.png'))echo'layout/'.$folder.'/theme.png';else echo'core/images/noimage.jpg';?>" alt="<?php echo$theme['title'];?>">
 								<h4 class="panel-title text-white text-shadow-depth-1-half"><?php if(isset($theme['title'])&&$theme['title']!='')echo$theme['title'];else echo'No Title Assigned';?></h4>
@@ -122,25 +122,14 @@
 					<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
 						<input type="checkbox" id="options5" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="5"<?php if($config['options']{5}==1)echo' checked';?>><label for="options5">
 					</div>
-					<label for="options5" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Helper Button for Content Guide Hints."';?>>Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-default"><i class="libre libre-help color-danger"></i></button>
+					<label for="options5" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Helper Button for Content Guide Hints."';?>>Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-info"><i class="libre libre-seo"></i></button>
 					</label>
 				</div>
 				<div class="form-group">
 					<label for="showItems" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Item Count</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="Number of Items to Show" data-content="Number of Items to Display."><i class="libre libre-help text-danger"></i></button></div>';?>
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-info" data-toggle="popover" title="Number of Items to Show" data-content="Number of Items to Display."><i class="libre libre-seo"></i></button></div>';?>
 						<input type="text" id="showItems" class="form-control textinput" value="<?php echo$config['showItems'];?>" data-dbid="1" data-dbt="config" data-dbc="showItems" placeholder="Enter Number of Items to Display..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Number of Items to Display."';?>>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="buttonType" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">
-						Buttons Type
-					</label>
-					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<select id="buttonType" class="form-control" onchange="update('1','config','buttonType',$(this).val());"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
-							<option value="icon"<?php if($config['buttonType']=='icon')echo' selected';?>>Iconic</option>
-							<option value="text"<?php if($config['buttonType']=='text')echo' selected';?>>Textual</option>
-						</select>
 					</div>
 				</div>
 				<div class="form-group">
@@ -171,7 +160,7 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 				<div class="form-group">
 					<label for="dateFormat" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Date/Time Format</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="Date/Time Format" data-content="This sets how Dates/Times are displayed."><i class="libre libre-help text-danger"></i></button></div>';?>
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-info" data-toggle="popover" title="Date/Time Format" data-content="This sets how Dates/Times are displayed."><i class="libre libre-seo"></i></button></div>';?>
 						<input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date Format..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Format Layout of all Dates/Times displayed."';?>>
 					</div>
 				</div>
@@ -318,28 +307,28 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 				<div class="form-group">
 					<label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoTitle</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help text-danger"></i></button></div>';?>
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
 						<input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$config['seoTitle'];?>" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="Enter a Page Title..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoCaption</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help text-danger"></i></button></div>';?>
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
 						<input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$config['seoCaption'];?>" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="Enter a Page Caption..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoDescription</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help text-danger"></i></button></div>';?>
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
 						<input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$config['seoDescription'];?>" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="Enter a Page Description..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoKeywords</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help text-danger"></i></button></div>';?>
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
 						<input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Page Keywords..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 					</div>
 				</div>
@@ -354,7 +343,7 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 				<div class="form-group">
 					<label for="gaClientID" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">ClientID</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-default" data-toggle="popover" title="" data-content=""><i class="libre libre-help text-danger"></i></button></div>';?>
+<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
 						<input type="text" id="gaClientID" class="form-control textinput" value="<?php echo$config['gaClientID'];?>" data-dbid="1" data-dbt="config" data-dbc="gaClientID" placeholder="Enter Google Analytics Client ID..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
 					</div>
 				</div>

@@ -205,8 +205,8 @@
 <?php	}
 		if($view=='preferences'){?>
 		$("div.theme-chooser").not(".disabled").find("div.theme-chooser-item").on("click",function(){
-			$(this).removeClass("has-success");
-			$(this).addClass("has-success");
+			$('#theme .theme-chooser-item').removeClass("panel-success");
+			$(this).addClass("panel-success");
 			update("1","config","theme",escape($(this).attr("data-theme")))
 		});
 <?php	}
@@ -274,13 +274,7 @@
 						window.top.window.$(".popover").remove();
 					});
 					$("#edbut"+event.id).click(function(){
-						window.location="admin/bookings/edit/"+event.id;
-/*						$.get("core/booking.php?id="+event.id,function(data){
-			 				$(".bookings").find(".modal-content").html(data);
-						})
-						$(".summernote2").destroy();
-						$(".bookings").modal("toggle");
-*/
+						window.location='admin/bookings/edit/'+event.id;
 					});
 					$(this).popover({
 						title:event.title,
@@ -323,5 +317,5 @@
 </div>
 <?php }?>
 <iframe id="sp" name="sp" class="hidden"></iframe>
-<div id="block"><i class="libre libre-spinner-12 libre-5x libre-spin"></i></div>
+<div id="block"><i class="libre libre-spinner-1 libre-5x libre-spin"></i></div>
 </body></html>

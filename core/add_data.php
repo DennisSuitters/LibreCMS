@@ -29,7 +29,7 @@ if($act!=''){
 					$id=$db->lastInsertId();
 					$e=$db->errorInfo();
 					if(is_null($e[2])){?>
-	window.top.window.$('#social').append('<div id="l_<?php echo$id;?>" class="form-group"><label class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">&nbsp;</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><div class="input-group-addon">Network</div><div class="input-group-addon"><i class="fa fa-<?php echo$icon;?>"></i></div><div class="input-group-addon">URL</div><form target="sp" method="post" action="includes/update.php"><input type="hidden" name="t" value="social"><input type="hidden" name="c" value="url"><input type="text"class="form-control" name="da" value="<?php echo$url;?>" placeholder="Enter a URL..."></form><div class="input-group-btn"><form target="sp" action="includes/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><button class="btn btn-danger"><i class="fa fa-trash"></i></button></form></div></div></div>');
+	window.top.window.$('#social').append('<div id="l_<?php echo$id;?>" class="form-group"><label class="control-label hidden-xs col-sm-3 col-md-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-12 col-sm-9 col-md-9 col-lg-10"><div class="input-group-addon"><i class="libre libre-brand-<?php echo$icon;?>"></i><span class="hidden-xs"> <?php echo ucfirst($icon);?></span></div><form target="sp" method="post" action="includes/update.php"><input type="hidden" name="t" value="social"><input type="hidden" name="c" value="url"><input type="text"class="form-control" name="da" value="<?php echo$url;?>" placeholder="Enter a URL..."></form><div class="input-group-btn"><form target="sp" action="includes/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><button class="btn btn-danger"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button></form></div></div></div>');
 <?php				}else{?>
 	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue adding the Social Networking Link'}}).show();
 <?php				}
@@ -96,6 +96,7 @@ if($act!=''){
 	case'add_cover':
 		$id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
 		$col=filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING);
+		$exif='none';
 		$fu=$_FILES['fu'];
 		if(isset($_FILES['fu'])){
 			$ft=$_FILES['fu']['type'];
@@ -105,6 +106,9 @@ if($act!=''){
 					if($ft=="image/jpeg"||$ft=="image/pjpeg"){
 						$fn=$col.'_'.$id.'.jpg';
 						$fn2='thumb_'.$id.'.jpg';
+						if(function_exists('exif_read_data')){
+							$exif=exif_read_data($tp,0,true);
+						}
 					}
 					if($ft=="image/png"){
 						$fn=$col.'_'.$id.'.png';
@@ -119,6 +123,22 @@ if($act!=''){
 						$ord['ord']++;
 						$q=$db->prepare("UPDATE content SET thumb=:thumb,file=:file,ord=:ord WHERE id=:id");
 						$q->execute(array(':thumb'=>$fn2,':file'=>$fn,':ord'=>$ord['ord'],':id'=>$id));
+						if($exif!='none'){
+							$q=$db->prepare("UPDATE content SET exifFilename=:exifFilename,exifCamera=:exifCamera,exifLens=:exifLens,exifAperture=:exifAperture,exifFocalLength=:exifFocalLength,exifShutterSpeed=:exifShutterSpeed,exifISO=:exifISO,exifti=:exifti WHERE id=:id");
+							$efNumber='F'.$exif['EXIF']['FNumber'];
+							$efLength=intval($exif['EXIF']['FocalLength']).'mm';
+							$efileName=strtolower($exif['FILE']['FileName']);
+							//$elens=$exif['MakerNotes']['LensID'];
+							$elens='';
+							$emake=$exif['IFD0']['Make'];
+							$ecamera=$exif['IFD0']['Model'];
+							if(!stristr($ecamera,$emake))$ecamera=$emake.' '.$ecamera;
+							$eExposureTime=$exif['EXIF']['ExposureTime'].' sec';
+							$eISO=$exif['EXIF']['ISOSpeedRatings'];
+							$eti=strtotime($exif['EXIF']['DateTimeOriginal']);
+							$dti=date($config['dateFormat'],$eti);
+							$q->execute(array(':id'=>$id,':exifFilename'=>$efileName,':exifCamera'=>$ecamera,':exifLens'=>$elens,':exifAperture'=>$efNumber,':exifFocalLength'=>$efLength,':exifShutterSpeed'=>$eExposureTime,':exifISO'=>$eISO,':exifti'=>$eti));
+						}
 						$image=new Zebra_image();
 						$image->source_path=$tp;
 						$image->target_path='../media/'.$fn2;
@@ -128,7 +148,16 @@ if($act!=''){
 						chmod("../media/".$fn2,0777);?>
 	window.top.window.$('#file').html('<img src="media/<?php echo$fn.'?'.$ti;?>">');
 	window.top.window.$('#thumb').html('<img src="media/<?php echo$fn2.'?'.$ti;?>">');
-<?php				}
+<?php if($exif!='none'){?>
+	window.top.window.$('#exifFilename').val('<?php echo$efileName;?>');
+	window.top.window.$('#exifCamera').val('<?php echo$ecamera;?>');
+	window.top.window.$('#exifAperture').val('<?php echo$efNumber;?>');
+	window.top.window.$('#exifFocalLength').val('<?php echo$efLength;?>');
+	window.top.window.$('#exifShutterSpeed').val('<?php echo$eExposureTime;?>');
+	window.top.window.$('#exifISO').val('<?php echo$eISO;?>');
+	window.top.window.$('#exifti').val('<?php echo$dti;?>');
+<?php }
+					}
 					if($act=='add_avatar'){
 						$q=$db->prepare("UPDATE login SET avatar=:avatar WHERE id=:id");
 						$q->execute(array(':avatar'=>$fn,':id'=>$id));

@@ -12,6 +12,7 @@
 		<link rel="icon" href="<?php echo URL.$favicon;?>">
 		<link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>">
 		<meta name="viewport" content="initial-scale=1.0">
+		<script src="core/js/pace.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap-datetimepicker.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/libreicons.css">

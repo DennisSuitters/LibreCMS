@@ -45,26 +45,26 @@ if($args[0]=='edit'){
 	</div>
 	<div class="panel-body">
 		<div class="form-group">
-			<label for="ti" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Created</label>
-			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+			<label for="ti" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Created</label>
+			<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="ti" class="form-control textinput" value="<?php echo date($config['dateFormat'],$r['ti']);?>" readonly>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="username" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Username</label>
-			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+			<label for="username" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Username</label>
+			<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
 				<input type="text" id="username" class="form-control textinput" value="<?php echo$r['username'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="username" placeholder="Enter a Username...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="password" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Password</label>
-			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+			<label for="password" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Password</label>
+			<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
 				<input type="password" id="password" class="form-control textinput" value="<?php echo$r['password'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="password" placeholder="Enter a Password...">
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="rank" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Rank</label>
-			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+			<label for="rank" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Rank</label>
+			<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
 <?php if($r['rank']<1000){?>
 				<select id="rank" class="form-control" onchange="update('<?php echo$r['id'];?>','login','rank',$(this).val());">
 					<option value="0"<?php if($r['rank']==0)echo' selected';?>>Visitor</option>
@@ -322,38 +322,63 @@ if($args[0]=='edit'){
 		<div class="well">
 			<h4>Social Networking</h4>
 			<div class="form-group">
-				<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">&nbsp;</label>
+				<label class="control-label hidden-xs col-sm-3 col-md-3 col-lg-2">&nbsp;</label>
 				<form target="sp" method="post" action="core/add_data.php">
 					<input type="hidden" name="user" value="<?php echo$r['id'];?>">
 					<input type="hidden" name="act" value="add_social">
-					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+					<div class="input-group col-xs-12 col-sm-9 col-md-9 col-lg-10">
 						<span class="input-group-addon">Network</span>
-						<select class="form-control" name="icon">
+						<select class="form-control libre" name="icon">
 							<option value="">None</option>
-							<option value="500px">500px</option>
-							<option value="delicious">Delcicious</option>
-							<option value="deviantart">DeviantArt</option>
-							<option value="facebook">Facebook</option>
-							<option value="github">GitHub</option>
-							<option value="google-plus">Google+</option>
-							<option value="instagram">Instagram</option>
-							<option value="lastfm">LastFM</option>
-							<option value="linkedin">Linkedin</option>
-							<option value="livejournal">LiveJournal</option>
-							<option value="myspace">MySpace</option>
-							<option value="pinterest">Pinterest</option>
-							<option value="skype">Skype</option>
-							<option value="stack-overflow">StackOverflow</option>
-							<option value="stumbleupon">StumbleUpon</option>
-							<option value="tumblr">Tumblr</option>
-							<option value="twitter">Twitter</option>
-							<option value="vimeo">Vimeo</option>
-							<option value="youtube">YouTube</option>
+							<option value="500px">&#xe6d1; 500px</option>
+							<option value="behance">&#xe6d3; Behance</option>
+							<option value="bitcoin">&#xe6d4; Bitcoin</option>
+							<option value="blogger">&#xe6d5; Blogger</option>
+							<option value="buffer">&#xe6d6; Buffer</option>
+							<option value="cargo">&#xe6d7; Cargo</option>
+							<option value="coroflot">&#xe6d8; Coroflot</option>
+							<option value="creatica">&#xe6d9; Creatica</option>
+							<option value="delicious">&#xe6da; Delcicious</option>
+							<option value="deviantart">&#xe6db; DeviantArt</option>
+							<option value="digg">&#xe6dc; Digg</option>
+							<option value="dribbble">&#xe6dd; Dribbble</option>
+							<option value="dropbox">&#xe6de; Dropbox</option>
+							<option value="facebook">&#xe6df; Facebook</option>
+							<option value="feedburner">&#xe6e0; Feedburner</option>
+							<option value="flickr">&#xe6e1; Flickr</option>
+							<option value="forrst">&#xe6e2; Forrst</option>
+							<option value="github">&#xe6e3; GitHub</option>
+							<option value="google-plus">&#xe6e4; Google+</option>
+							<option value="hackernews">&#xe6e5; Hackernews</option>
+							<option value="icq">&#xe6e6; ICQ</option>
+							<option value="instagram">&#xe6e7; Instagram</option>
+							<option value="last-fm">&#xe6e8; Last FM</option>
+							<option value="linkedin">&#xe6e9; Linkedin</option>
+							<option value="livejournal">&#xe6ea; LiveJournal</option>
+							<option value="paypal">&#xe6eb; Paypal</option>
+							<option value="periscope">&#xe6ec; Periscope</option>
+							<option value="pinterest">&#xe6ed; Pinterest</option>
+							<option value="reddit">&#xe6ee; Reddit</option>
+							<option value="sharethis">&#xe6f0; Sharethis</option>
+							<option value="skype">&#xe6f1; Skype</option>
+							<option value="snapchat">&#xe6f2; Snapchat</option>
+							<option value="soundcloud">&#xe6f3; Soundcloud</option>
+							<option value="stackoverflow">&#xe6f4; Stackoverflow</option>
+							<option value="steam">&#xe6f5; Steam</option>
+							<option value="stumbleupon">&#xe6f6; StumbleUpon</option>
+							<option value="tumblr">&#xe6f7; Tumblr</option>
+							<option value="twitch">&#xe6f8; Twitch</option>
+							<option value="twitter">&#xe6f9; Twitter</option>
+							<option value="vimeo">&#xe6fa; Vimeo</option>
+							<option value="whatsapp">&#xe6fb; Whatsapp</option>
+							<option value="yahoo">&#xe6fc; Yahoo</option>
+							<option value="yelp">&#xe6fd; Yelp</option>
+							<option value="youtube">&#xe6fe; YouTube</option>
 						</select>
 						<div class="input-group-addon">URL</div>
 						<input type="text" class="form-control" name="url" value="" placeholder="Enter a URL...">
 						<div class="input-group-btn">
-							<button class="btn btn-default"><?php if($config['buttonType']=='text')echo'Add';else echo'<i class="libre libre-plus text-success"></i>';?></button>
+							<button class="btn btn-success"><i class="libre libre-plus visible-xs"></i><span class="hidden-xs">Add</span></button>
 						</div>
 					</div>
 				</form>
@@ -363,17 +388,16 @@ if($args[0]=='edit'){
 	$ss->execute(array(':uid'=>$r['id']));
 	while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
 				<div id="l_<?php echo$rs['id'];?>" class="form-group">
-					<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">&nbsp;</label>
-					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<div class="input-group-addon">Network:</div>
-						<div class="input-group-addon"><?php if($config['buttonType']=='text')echo ucfirst($rs['icon']);else echo'<i class="libre libre-brand-'.$rs['icon'].'"></i>';?></div>
-						<div class="input-group-addon">URL:</div>
+					<label class="control-label hidden-xs col-sm-3 col-md-3 col-lg-2">&nbsp;</label>
+					<div class="input-group col-xs-12 col-sm-9 col-md-9 col-lg-10">
+						<div class="input-group-addon">
+							<span class="libre-stack"><i class="libre libre-square-rounded libre-stack-1x"></i><i class="libre libre-social-<?php echo$rs['icon'];?> libre-stack-1x text-white"></i></span><span class="hidden-xs">&nbsp;&nbsp;<?php echo ucfirst($rs['icon']);?></span></div>
 						<input type="text" class="form-control" value="<?php echo$rs['url'];?>" onchange="update('<?php echo$rs['id'];?>','social','url',$(this).val());" placeholder="Enter a Social Network URL...">
 						<div class="input-group-btn">
 							<form target="sp" action="core/purge.php">
 								<input type="hidden" name="id" value="<?php echo$rs['id'];?>">
 								<input type="hidden" name="t" value="choices">
-								<button class="btn btn-default text-danger"><?php if($config['buttonType']=='text')echo'Delete';else echo'<i class="libre libre-trash text-danger"></i>';?></button>
+								<button class="btn btn-danger"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button>
 							</form>
 						</div>
 					</div>
@@ -389,8 +413,8 @@ if($args[0]=='edit'){
 	<div class="pull-right">
 		<div class="btn-group">
 			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-default<?php if($config['layoutAccounts']=='cards')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Users as Cards."';?>><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutAccounts','cards');reload('content');"<?php if($config['layoutAccounts']=='cards')echo' checked';if($config['buttonType']=='text')echo'>Cards';else echo'><i class="libre libre-display-layout-blocks"></i>';?></label>
-				<label class="btn btn-default<?php if($config['layoutAccounts']=='table')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Users as Table."';?>><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutAccounts','table');reload('content');"<?php if($config['layoutAccounts']=='table')echo' checked';if($config['buttonType']=='text')echo'>Table';else echo'><i class="libre libre-display-layout-table"></i>';?></label>
+				<label class="btn btn-default<?php if($config['layoutAccounts']=='cards')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Users as Cards."';?>><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutAccounts','cards');reload('content');"<?php if($config['layoutAccounts']=='cards')echo' checked';if($config['buttonType']=='text')echo'>Cards';else echo'><i class="libre libre-layout-blocks"></i>';?></label>
+				<label class="btn btn-default<?php if($config['layoutAccounts']=='table')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Users as Table."';?>><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutAccounts','table');reload('content');"<?php if($config['layoutAccounts']=='table')echo' checked';if($config['buttonType']=='text')echo'>Table';else echo'><i class="libre libre-layout-table"></i>';?></label>
 			</div>
 		</div>
 		<div class="btn-group">
@@ -506,7 +530,7 @@ if($args[0]=='edit'){
 if($r['business']!='')echo'<br><small>'.$r['business'].'</small>';?>
 						</div>
 					</div>
-					<div id="controls_<?php echo$r['id'];?>" class="btn-group panel-controls">
+					<div id="controls_<?php echo$r['id'];?>" class="btn-group panel-controls shadow-depth-1">
 						<a class="btn btn-info btn-xs" href="admin/accounts/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
 <?php				if($user['rank']==1000||$user['options']{0}==1){?>
 						<button class="btn btn-warning btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore"></i></button>
