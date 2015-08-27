@@ -304,7 +304,7 @@ if($show=='categories'){
 					<div class="input-group-addon"><i class="libre libre-link"></i></div>
 					<input type="text" id="fileURL" class="form-control textinput" value="<?php echo$r['fileURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fileURL" placeholder="Enter File URL...">
 					<div class="input-group-btn">
-						<a class="btn btn-info hidden-xs" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=fileURL"><i class="libre libre-edit visible-xs"></i><span class="hidden-xs">Edit<span></a>
+						<a class="btn btn-info hidden-xs" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=fileURL">Edit</a>
 						<button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button>
 					</div>
 				</div>
@@ -322,7 +322,7 @@ if($show=='categories'){
 							<input type="hidden" name="t" value="content">
 							<input type="hidden" name="c" value="file">
 							<div class="btn btn-info btn-file hidden-xs">
-								Browse for Image<input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></span>
+								Browse for Image<input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
 							</div>
 							<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?> hidden-xs" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs">Upload</span></button>
 						</form>

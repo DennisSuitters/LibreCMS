@@ -4,12 +4,12 @@
 <div class="panel panel-default">
 	<div class="panel-body">
 		<ul class="nav nav-tabs">
-			<li class="active"><a href="#theme" data-toggle="tab">Theme</a></li>
-			<li><a href="#contact" data-toggle="tab">Contact</a></li>
-			<li><a href="#interface" data-toggle="tab">Interface</a></li>
-			<li><a href="#banking" data-toggle="tab">Banking</a></li>
-			<li><a href="#seo" data-toggle="tab">SEO</a></li>
-			<li><a href="#security" data-toggle="tab">Security</a></li>
+			<li class="active"><a href="#theme" data-toggle="tab"><i class="libre libre-theme visible-xs"></i><span class="hidden-xs">Theme</span></a></li>
+			<li><a href="#contact" data-toggle="tab"><i class="libre libre-address-book visible-xs"></i><span class="hidden-xs">Contact</span></a></li>
+			<li><a href="#interface" data-toggle="tab"><i class="libre libre-desktop visible-xs"></i><span class="hidden-xs">Interface</span></a></li>
+			<li><a href="#banking" data-toggle="tab"><i class="libre libre-bank visible-xs"></i><span class="hidden-xs">Banking</span></a></li>
+			<li><a href="#seo" data-toggle="tab"><i class="libre libre-seo visible-xs"></i><span class="hidden-xs">SEO</span></a></li>
+			<li><a href="#security" data-toggle="tab"><i class="libre libre-security visible-xs"></i><span class="hidden-xs">Security</span></a></li>
 		</ul>
 		<div class="tab-content">
 			<div id="theme" class="tab-pane fade in active">

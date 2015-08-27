@@ -77,9 +77,9 @@ hr{margin-top:2px;margin-bottom:2px}
 .margin-10{margin:10px}
 input[type=checkbox]{position:absolute;left:-9999px}
 input[type=checkbox]+label{font-family:LibreICONS;color:#a94442}
-input[type=checkbox]+label::before{content:'\e643'}
+input[type=checkbox]+label::before{content:'\e644'}
 input[type=checkbox]:checked+label{font-family:LibreICONS;color:#3c763d}
-input[type=checkbox]:checked+label::before{content:'\e644'}
+input[type=checkbox]:checked+label::before{content:'\e645'}
 .panel .panel-image{position:relative;background-color:#ddd;height:120px;overflow:hidden}
 .panel .panel-image[data-status|=delete]{background:#d9534f}
 .panel .panel-image[data-status|=unpublished]{background:#f0ad4e}
@@ -97,7 +97,7 @@ input[type=checkbox]:checked+label::before{content:'\e644'}
 .panel .panel-content.stats div{text-align:right;line-height:0}
 .panel .panel-controls{position:absolute;top:5px;right:20px;list-style:none}
 .panel .panel-controls li{float:left}
-li.active{text-shadow:0 2px 5px rgba(0,0,0,.5),0 2px 10px rgba(0,0,0,.3)}
+#menu-content li.active{text-shadow:0 2px 5px rgba(0,0,0,.5),0 2px 10px rgba(0,0,0,.3)}
 [class*="badger"]{position:relative;z-index:1;}
 [class*="badger"]:after{content:attr(data-contenttype);position:absolute;top:0;padding:3px 7px;font-size:12px;font-weight:700;background:#999;color:#fff;text-transform:uppercase}
 .badger-left:after{left:0;border-radius:2px 0 6px 0;font-size:9px;}
