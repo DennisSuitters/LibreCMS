@@ -12,12 +12,11 @@ if($args[0]=='edit'){
 	$q=$db->prepare("SELECT * FROM login WHERE id=:id");
 	$q->execute(array(':id'=>$args[1]));
 	$r=$q->fetch(PDO::FETCH_ASSOC);?>
-<h1 class="page-header">
-	Accounts
+<div class="page-toolbar">
 	<div class="btn-group pull-right">
 		<a class="btn btn-success" href="<?php echo URL;?>admin/accounts"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs">Back<span></a>
 	</div>
-</h1>
+</div>
 <div class="panel panel-default">
 	<div id="covertop">
 			<div class="badger badger-left text-shadow-depth-1" data-status="<?php if($r['active']==1)echo'active';else echo'inactive';?>" data-contenttype="
@@ -348,51 +347,77 @@ if($args[0]=='edit'){
 					<div class="input-group col-xs-12 col-sm-9 col-md-9 col-lg-10">
 						<span class="input-group-addon">Network</span>
 						<select class="form-control libre" name="icon">
-							<option value="">None</option>
-							<option value="500px">&#xe6d1; 500px</option>
-							<option value="behance">&#xe6d3; Behance</option>
-							<option value="bitcoin">&#xe6d4; Bitcoin</option>
-							<option value="blogger">&#xe6d5; Blogger</option>
-							<option value="buffer">&#xe6d6; Buffer</option>
-							<option value="cargo">&#xe6d7; Cargo</option>
-							<option value="coroflot">&#xe6d8; Coroflot</option>
-							<option value="creatica">&#xe6d9; Creatica</option>
-							<option value="delicious">&#xe6da; Delcicious</option>
-							<option value="deviantart">&#xe6db; DeviantArt</option>
-							<option value="digg">&#xe6dc; Digg</option>
-							<option value="dribbble">&#xe6dd; Dribbble</option>
-							<option value="dropbox">&#xe6de; Dropbox</option>
-							<option value="facebook">&#xe6df; Facebook</option>
-							<option value="feedburner">&#xe6e0; Feedburner</option>
-							<option value="flickr">&#xe6e1; Flickr</option>
-							<option value="forrst">&#xe6e2; Forrst</option>
-							<option value="github">&#xe6e3; GitHub</option>
-							<option value="google-plus">&#xe6e4; Google+</option>
-							<option value="hackernews">&#xe6e5; Hackernews</option>
-							<option value="icq">&#xe6e6; ICQ</option>
-							<option value="instagram">&#xe6e7; Instagram</option>
-							<option value="last-fm">&#xe6e8; Last FM</option>
-							<option value="linkedin">&#xe6e9; Linkedin</option>
-							<option value="livejournal">&#xe6ea; LiveJournal</option>
-							<option value="paypal">&#xe6eb; Paypal</option>
-							<option value="periscope">&#xe6ec; Periscope</option>
-							<option value="pinterest">&#xe6ed; Pinterest</option>
-							<option value="reddit">&#xe6ee; Reddit</option>
-							<option value="sharethis">&#xe6f0; Sharethis</option>
-							<option value="skype">&#xe6f1; Skype</option>
-							<option value="snapchat">&#xe6f2; Snapchat</option>
-							<option value="soundcloud">&#xe6f3; Soundcloud</option>
-							<option value="stackoverflow">&#xe6f4; Stackoverflow</option>
-							<option value="steam">&#xe6f5; Steam</option>
-							<option value="stumbleupon">&#xe6f6; StumbleUpon</option>
-							<option value="tumblr">&#xe6f7; Tumblr</option>
-							<option value="twitch">&#xe6f8; Twitch</option>
-							<option value="twitter">&#xe6f9; Twitter</option>
-							<option value="vimeo">&#xe6fa; Vimeo</option>
-							<option value="whatsapp">&#xe6fb; Whatsapp</option>
-							<option value="yahoo">&#xe6fc; Yahoo</option>
-							<option value="yelp">&#xe6fd; Yelp</option>
-							<option value="youtube">&#xe6fe; YouTube</option>
+							<option value="">None</option> 
+							<option value="500px">&#xe704; 500px</option>
+							<option value="amazon">&#xe705; Amazon</option>
+							<option value="behance">&#xe707; Behance</option>
+							<option value="bitcoin">&#xe708; Bitcoin</option>
+							<option value="blogger">&#xe709; Blogger</option>
+							<option value="buffer">&#xe70a; Buffer</option>
+							<option value="cargo">&#xe70b; Cargo</option>
+							<option value="codepen">&#xe70c; Codepen</option>
+							<option value="coroflot">&#xe70d; Coroflot</option>
+							<option value="creatica">&#xe70e; Creatica</option>
+							<option value="delicious">&#xe70f; Delcicious</option>
+							<option value="deviantart">&#xe710; DeviantArt</option>
+							<option value="diaspora">&#xe711; Diaspora</option>
+							<option value="digg">&#xe712; Digg</option>
+							<option value="dribbble">&#xe713; Dribbble</option>
+							<option value="dropbox">&#xe714; Dropbox</option>
+							<option value="envato">&#xe716; Envato</option>
+							<option value="exposure">&#xe717; Exposure</option>
+							<option value="facebook">&#xe718; Facebook</option>
+							<option value="feedburner">&#xe719; Feedburner</option>
+							<option value="flickr">&#xe71a; Flickr</option>
+							<option value="forrst">&#xe71b; Forrst</option>
+							<option value="github">&#xe71c; GitHub</option>
+							<option value="google-plus">&#xe71e; Google+</option>
+							<option value="gravatar">&#xe71f; Gravatar</option>
+							<option value="hackernews">&#xe720; Hackernews</option>
+							<option value="icq">&#xe721; ICQ</option>
+							<option value="instagram">&#xe722; Instagram</option>
+							<option value="kickstarter">&#xe723; Kickstarter</option>
+							<option value="last-fm">&#xe724; Last FM</option>
+							<option value="lego">&#xe725; Lego</option>
+							<option value="linkedin">&#xe726; Linkedin</option>
+							<option value="livejournal">&#xe727; LiveJournal</option>
+							<option value="lynda">&#xe728; Lynda</option>
+							<option value="massroots">&#xe72a; Massroots</option>
+							<option value="medium">&#xe72b; Medium</option>
+							<option value="netlify">&#xe72c; Netlify</option>
+							<option value="ovh">&#xe72d; OVH</option>
+							<option value="paypal">&#xe72e; Paypal</option>
+							<option value="periscope">&#xe72f; Periscope</option>
+							<option value="picasa">&#xe730; Picasa</option>
+							<option value="pinterest">&#xe731; Pinterest</option>
+							<option value="play-store">&#xe732; Play Store</option>
+							<option value="quora">&#xe733; Quora</option>
+							<option value="redbubble">&#xe734; Red Bubble</option>
+							<option value="reddit">&#xe735; Reddit</option>
+							<option value="sharethis">&#xe737; Sharethis</option>
+							<option value="skype">&#xe738; Skype</option>
+							<option value="snapchat">&#xe739; Snapchat</option>
+							<option value="soundcloud">&#xe73a; Soundcloud</option>
+							<option value="stackoverflow">&#xe73b; Stackoverflow</option>
+							<option value="steam">&#xe73c; Steam</option>
+							<option value="stumbleupon">&#xe73d; StumbleUpon</option>
+							<option value="tsu">&#xe73f; TSU</option>
+							<option value="tumblr">&#xe740; Tumblr</option>
+							<option value="twitch">&#xe741; Twitch</option>
+							<option value="twitter">&#xe742; Twitter</option>
+							<option value="ubiquiti">&#xe743; Ubiquiti</option>
+							<option value="unsplash">&#xe744; Unsplash</option>
+							<option value="vimeo">&#xe745; Vimeo</option>
+							<option value="vine">&#xe746; Vine</option>
+							<option value="whatsapp">&#xe747; Whatsapp</option>
+							<option value="wikipedia">&#xe748; Wikipedia</option>
+							<option value="windows-store">&#xe749; Windows Store</option>
+							<option value="xbox-live">&#xe74a; Xbox Live</option>
+							<option value="yahoo">&#xe74b; Yahoo</option>
+							<option value="yelp">&#xe74c; Yelp</option>
+							<option value="youtube">&#xe74d; YouTube</option>
+							<option value="zerply">&#xe74e; Zerply</option>
+							<option value="zune">&#xe74f; Zune</option>
 						</select>
 						<div class="input-group-addon">URL</div>
 						<input type="text" class="form-control" name="url" value="" placeholder="Enter a URL...">
@@ -427,8 +452,7 @@ if($args[0]=='edit'){
 	</div>
 </div>
 <?php }else{?>
-<h1 class="page-header">
-	Accounts
+<div class="page-toolbar">
 	<div class="pull-right">
 		<div class="btn-group">
 			<div class="btn-group" data-toggle="buttons">
@@ -457,7 +481,7 @@ if($args[0]=='edit'){
 		</div>
 <?php }?>
 	</div>
-</h1>
+</div>
 <div class="panel panel-default">
 	<div class="panel-body">
 <?php if($args[0]=='type'){

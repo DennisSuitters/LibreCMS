@@ -95,6 +95,7 @@ if($act!=''){
 	case'add_avatar':
 	case'add_cover':
 		$id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
+		$tbl=filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING);
 		$col=filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING);
 		$exif='none';
 		$fu=$_FILES['fu'];
@@ -118,6 +119,7 @@ if($act!=''){
 						$fn=$col.'_'.$id.'.gif';
 						$fn2='thumb_'.$id.'.gif';
 					}
+					if($tbl=='menu')$fn='page_'.$fn;
 					if($act=='add_image'&&$col=='file'){
 						$ord=$db->query("SELECT MAX(ord) as ord FROM content")->fetch(PDO::FETCH_ASSOC);
 						$ord['ord']++;
@@ -160,16 +162,16 @@ if($act!=''){
 					}
 					if($act=='add_avatar'){
 						$q=$db->prepare("UPDATE login SET avatar=:avatar WHERE id=:id");
-						$q->execute(array(':avatar'=>$fn,':id'=>$id));
+						$q->execute(array(':avatar'=>'avatar'.$fn,':id'=>$id));
 						$image=new Zebra_image();
 						$image->source_path=$tp;
-						$image->target_path='../media/avatar/'.$fn;
+						$image->target_path='../media/avatar/avatar'.$fn;
 						$image->resize(150,150,ZEBRA_IMAGE_CROP_CENTER);
-						rename($tp,'../media/avatar/'.$fn);?>
+						rename($tp,'../media/avatar/avatar'.$fn);?>
 	window.top.window.$('#avatar').attr('src','media/avatar/<?php echo$fn;?>');
 <?php				}
 					if($act=='add_cover'){
-						$q=$db->prepare("UPDATE login SET cover=:cover WHERE id=:id");
+						$q=$db->prepare("UPDATE $tbl SET $col=:cover WHERE id=:id");
 						$q->execute(array(':cover'=>$fn,':id'=>$id));
 						rename($tp,'../media/'.$fn);?>
 	window.top.window.$('#coverimg').html('<img src="media/<?php echo$fn.'?'.$ti;?>">');

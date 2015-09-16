@@ -32,12 +32,11 @@ if($args[0]=='edit'){
 	$sr=$db->prepare("SELECT contentType FROM content where id=:id");
 	$sr->execute(array(':id'=>$r['rid']));
 	$rs=$sr->fetch(PDO::FETCH_ASSOC);?>
-<h1 class="page-header">
-	Bookings
+<div class="page-toolbar">
 	<div class="btn-group pull-right">
 		<a class="btn btn-success" href="<?php echo URL.'/admin/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs">Back</span></a>
 	</div>
-</h1>
+</div>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="form-group">
@@ -163,18 +162,19 @@ if($args[0]=='edit'){
 	</div>
 </div>
 <?php }else{?>
-<h1 class="page-header">
-	Bookings
+<div class="page-toolbar">
 	<div class="pull-right">
 		<div class="btn-group" data-toggle="buttons">
 			<label class="btn btn-default<?php if($config['layoutBookings']=='calendar')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Content as Calendar."';?>><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutBookings','calendar');reload('bookings');"<?php if($config['layoutBookings']=='calendar')echo' checked';if($config['buttonType']=='text')echo'>Calendar';else echo'><i class="libre libre-calendar"></i>';?></label>
 			<label class="btn btn-default<?php if($config['layoutBookings']=='table')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Content as Table."';?>><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutBookings','table');reload('bookings');"<?php if($config['layoutBookings']=='table')echo' checked';if($config['buttonType']=='text')echo'>Table';else echo'><i class="libre libre-table"></i>';?></label>
 		</div>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
-		<a class="btn btn-success" href="<?php echo URL;?>admin/add/bookings"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add Booking."';?>><i class="libre libre-plus visible-xs"></i><span class="hidden-xs">Add</span></a>
+		<div class="btn-group">
+			<a class="btn btn-success" href="<?php echo URL;?>admin/add/bookings"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add Booking."';?>><i class="libre libre-plus visible-xs"></i><span class="hidden-xs">Add</span></a>
+		</div>
 <?php }?>
 	</div>
-</h1>
+</div>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="col-xs-12">

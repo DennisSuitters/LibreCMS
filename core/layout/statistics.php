@@ -1,6 +1,4 @@
-<h1 class="page-header">
-	Statistics
-</h1>
+<div class="page-toolbar"></div>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<h4 class="page-header col-xs-6">In Site Analytics</h4>
@@ -144,58 +142,6 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 					</div>
 				</div>
 			</div>
-<?php if($config['options']{6}==1){?>
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-				<div class="panel panel-default">
-					<div class="panel-body bg-info text-black">
-						<i class="libre libre-seo-target-audience libre-5x"></i>
-						<span class="libre-2x pull-right">&nbsp;</span>
-						<div class="clearfix text-right">Random SEO Tip!</div>
-						<div class="clearfix">
-<?php
-if($ti>$config['seoRSSti']){
-	$rss=new DOMDocument();
-	switch(rand(0,1)){
-		case 0:
-			$rss->load('http://feeds.feedburner.com/KateToonCopywriter?format=xml');
-			break;
-		case 1:
-			$rss->load('http://www.copywritematters.com.au/feed/');
-			break;
-	}
-	$feed=array();
-	foreach($rss->getElementsByTagName('item')as$node){
-		$item=array(
-			'title'=>$node->getElementsByTagName('title')->item(0)->nodeValue,
-			'desc'=>$node->getElementsByTagName('description')->item(0)->nodeValue,
-			'link'=>$node->getElementsByTagName('link')->item(0)->nodeValue,
-			'date'=>$node->getElementsByTagName('pubDate')->item(0)->nodeValue,
-			'creator'=>$node->getElementsByTagName('creator')->item(0)->nodeValue,
-			);
-		array_push($feed,$item);
-	}
-	$x=rand(0,5);
-	$author=$feed[$x]['creator'];
-	$title=str_replace(' & ',' &amp; ',$feed[$x]['title']);
-	$link=$feed[$x]['link'];
-	$notes=$feed[$x]['desc'];
-	$date=date('l F d, Y',strtotime($feed[$x]['date']));
-	$s=$db->prepare("UPDATE config SET seoRSSTitle=:title,seoRSSNotes=:notes,seoRSSLink=:link,seoRSSAuthor=:author,seoRSSti=:ti");
-	$s->execute(array(':title'=>$title,':notes'=>$notes,':link'=>$link,':author'=>$author,':ti'=>$ti+86400));
-	$config['seoRSSTitle']=$title;
-	$config['seoRSSNotes']=$notes;
-	$config['seoRSSLink']=$link;
-	$config['seoRSSAuthor']=$author;
-}?>
-							<div><a target="_blank" href="<?php echo$link;?>"><?php echo$config['seoRSSTitle'];?></a></div>
-							<div><small><?php echo substr(strip_tags($config['seoRSSNotes']),0,150);?></small></div>
-							<div class="text-right"><small><a target="_blank" href="<?php echo$config['seoRSSLink'];?>"><?php echo$config['seoRSSAuthor'];?></a></small></div>
-						</div>
-					</div>
-				</div>
-			</div>
-<?php }?>
-		</div>
 <?php if($config['options']{8}==1&&$config['gaClientID']!=''){?>
 		<hr>
 		<div class="row col-xs-12">

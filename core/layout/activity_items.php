@@ -37,8 +37,8 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
 	$sql=$db->prepare("SELECT id,username,name,rank FROM login WHERE id=:id");
 	$sql->execute(array(':id'=>$r['uid']));
 	$u=$sql->fetch(PDO::FETCH_ASSOC);?>
-<div id="l_<?php echo$r['id'];?>" class="row">
-	<div class="col-xs-2">
+<div id="l_<?php echo$r['id'];?>" class="row activity">
+	<div class="col-xs-4 col-sm-2">
 		<div class="badger badger-left text-shadow-depth-1" data-status="<?php echo$r['action'];?>" data-contenttype="<?php echo$r['action'];?>"></div>
 		<br>
 		<div class="text-muted text-center">
@@ -67,6 +67,12 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
 <?php }?>
 			<strong>by</strong> <?php echo $u['username'].':'.$u['name'];?>
 		</p>
+	</div>
+	<div id="controls_<?php echo$r['id'];?>" class="btn-group pull-right shadow-depth-1">
+<?php	if($r['action']=='update'){?>
+		<button class="btn btn-warning btn-sm" onclick="restore('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore"></i></button>
+<?php	}?>
+		<button class="btn btn-danger btn-sm" onclick="purge('<?php echo$r['id'];?>','logs')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><i class="libre libre-trash"></i></button>
 	</div>
 </div>
 <hr>

@@ -1084,13 +1084,13 @@ textarea.input-group-sm>.input-group-btn>.btn{height:auto}
 .nav .open>a:hover{background-color:#eee;border-color:#337ab7}
 .nav .nav-divider{height:1px;margin:9px 0;overflow:hidden;background-color:#e5e5e5}
 .nav>li>a>img{max-width:none}
-.nav-tabs{border-bottom:1px solid #ddd}
+.nav-tabs{border-bottom:1px solid #888}
 .nav-tabs>li{float:left;margin-bottom:-1px}
-.nav-tabs>li>a{margin-right:2px;line-height:1.42857143;border:1px solid transparent;border-radius:4px 4px 0 0}
-.nav-tabs>li>a:hover{border-color:#eee #eee #ddd}
+.nav-tabs>li>a{color:#555;margin-right:2px;border:1px solid #ddd;border-bottom-color:#888;border-radius:4px 4px 0 0}
+.nav-tabs>li>a:hover{border-color:#eee #eee #888}
 .nav-tabs>li.active>a,
 .nav-tabs>li.active>a:focus,
-.nav-tabs>li.active>a:hover{color:#555;cursor:default;background-color:#fff;border:1px solid #ddd;border-bottom-color:transparent}
+.nav-tabs>li.active>a:hover{color:#000;cursor:default;background-color:#fff;border:1px solid #888;border-bottom-color:transparent}
 .nav-tabs.nav-justified{width:100%;border-bottom:0}
 .nav-tabs.nav-justified>li{float:none}
 .nav-tabs.nav-justified>li>a{margin-bottom:5px;text-align:center}
@@ -1184,9 +1184,9 @@ textarea.input-group-sm>.input-group-btn>.btn{height:auto}
 fieldset[disabled] .navbar-default .btn-link:focus,
 fieldset[disabled] .navbar-default .btn-link:hover{color:#ccc}
 
-.breadcrumb{padding:8px 15px;margin-bottom:20px;list-style:none;background-color:#f5f5f5;border-radius:4px}
+.breadcrumb{padding:8px 30px 8px 0;list-style:none;background-color:transparent}
 .breadcrumb>li{display:inline-block}
-.breadcrumb>li+li:before{padding:0 5px;color:#ccc;content:"/\00a0"}
+.breadcrumb>li+li:before{padding:0 2px;color:#ccc;content:"/\00a0"}
 .breadcrumb>.active{color:#777}
 
 .label{display:inline;padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:#fff;text-align:center;white-space:nowrap;vertical-align:baseline;border-radius:.25em}

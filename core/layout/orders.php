@@ -67,12 +67,12 @@ if($args[0]=='view'){
 	}
 	if($error==1)echo'<div class="alert alert-danger">'.$e[0].'</div>';
 	else{?>
-<h1 class="page-header">
+<div class="page-toolbar">
 	Order #<?php echo$r['qid'].$r['iid'];?>
 	<div class="btn-group pull-right">
-		<a class="btn btn-success" href="<?php echo URL.'/admin/orders';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs">Back</span></a>
+		<a class="btn btn-success" href="<?php echo URL.'admin/orders';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs">Back</span></a>
 	</div>
-</h1>
+</div>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="alert alert-info visible-xs">Order Editing/Viewing is more suited for larger screens.</div>
@@ -215,22 +215,22 @@ if($args[0]=='view'){
 					<div class="form-group form-group-xs">
 						<label class="control-label label-xs col-xs-3 col-lg-2">Order #</label>
 						<div class="input-group col-xs-9 col-lg-10">
-							<input type="text" class="form-control input-xs" value="<?php echo$r['qid'].$r['iid'];?>" readonly>
+							<input type="text" class="form-control" value="<?php echo$r['qid'].$r['iid'];?>" readonly>
 						</div>
 					</div>
 					<div class="form-group form-group-xs">
 						<label class="control-label label-xs col-xs-3 col-lg-2">Order Date</label>
 						<div class="input-group col-xs-9 col-lg-10">
-							<input type="text" class="form-control input-xs" value="<?php echo date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?>" readonly>
+							<input type="text" class="form-control" value="<?php echo date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?>" readonly>
 						</div>
 					</div>
 					<div class="form-group form-group-xs">
 						<label class="control-label label-xs col-xs-3 col-lg-2">Due Date</label>
 						<div class="input-group col-xs-9 col-lg-10">
-							<input type="text" id="due_ti" class="form-control input-xs" value="<?php echo date($config['dateFormat'],$r['due_ti']);?>" readonly>
+							<input type="text" id="due_ti" class="form-control" value="<?php echo date($config['dateFormat'],$r['due_ti']);?>" readonly>
 <?php	if($r['status']!='archived'){?>
 							<div class="input-group-btn">
-								<button class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown"><i class="libre libre-plus visible-xs"></i><span class="hidden-xs">Add</span> <span class="caret"></span></button>
+								<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><i class="libre libre-plus visible-xs"></i><span class="hidden-xs">Add</span></button>
 								<ul class="dropdown-menu pull-right">
 									<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+604800;?>');return false;"><small>7 Days</small></a></li>
 									<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+1209600;?>');return false;"><small>14 Days</small></a></li>
@@ -244,8 +244,9 @@ if($args[0]=='view'){
 					<div class="form-group form-group-xs">
 						<label class="control-label label-xs col-xs-3 col-lg-2">Status</label>
 						<div class="input-group col-xs-9 col-lg-10">
-<?php	if($r['status']=='archived')echo'<input type="text" class="form-control input-xs" value="Archived" readonly>';else{
-		echo'<select id="status" class="form-control input-xs" onchange="update(\''.$r['id'].'\',\'orders\',\'status\',$(this).val());"><option value="pending"';if($r['status']=='pending')echo' selected';echo'>Pending</option><option value="overdue"';if($r['status']=='overdue')echo' selected';echo'>Overdue</option><option value="cancelled"';if($r['status']=='cancelled')echo' selected';echo'>Cancelled</option><option value="paid"';if($r['status']=='paid')echo' selected';echo'>Paid</option></select>';
+<?php	if($r['status']=='archived')
+			echo'<input type="text" class="form-control input-xs" value="Archived" readonly>';else{
+			echo'<select id="status" class="form-control" onchange="update(\''.$r['id'].'\',\'orders\',\'status\',$(this).val());"><option value="pending"';if($r['status']=='pending')echo' selected';echo'>Pending</option><option value="overdue"';if($r['status']=='overdue')echo' selected';echo'>Overdue</option><option value="cancelled"';if($r['status']=='cancelled')echo' selected';echo'>Cancelled</option><option value="paid"';if($r['status']=='paid')echo' selected';echo'>Paid</option></select>';
 		}?>
 						</div>
 					</div>
@@ -410,11 +411,10 @@ if($args[0]=='view'){
 			$s=$db->prepare("SELECT * FROM orders WHERE status='pending' ORDER BY ti DESC");
 			$s->execute();
 		}?>
-<h1 class="page-header">
-	Orders
+<div class="page-toolbar">
 	<div class="pull-right">
 		<div class="btn-group">
-			<button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view visible-xs"></i><span class="hidden-xs">Show</span> <i class="caret"></i></button>
+			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view visible-xs"></i><span class="hidden-xs">Show</span></button>
 			<ul class="dropdown-menu pull-right">
 				<li><a href="admin/orders/all">All</a></li>
 				<li><a href="admin/orders/quotes">Quotes</a></li>
@@ -424,14 +424,14 @@ if($args[0]=='view'){
 			</ul>
 		</div>
 		<div class="btn-group">
-			<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-placement="right"><i class="libre libre-plus visible-xs"></i><span class="hidden-xs">Add</span> <i class="caret"></i></button>
+			<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-placement="right"><i class="libre libre-plus visible-xs"></i><span class="hidden-xs">Add</span></button>
 			<ul class="dropdown-menu multi-level pull-right">
 				<li><a href="<?php echo URL;?>admin/orders/addquote">Quote</a></li>
 				<li><a href="<?php echo URL;?>admin/orders/addinvoice">Invoice</a></li>
 			</ul>
 		</div>
 	</div>
-</h1>
+</div>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="table-responsive">

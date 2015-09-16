@@ -1,19 +1,12 @@
-<h1 class="page-header">
-	Media
-	<div class="btn-group col-xs-3 pull-right">
+<div class="page-toolbar text-right">
+	<div class="btn-group hidden-xs">
 		<form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
 			<input type="hidden" name="act" value="add_media">
-			<div class="form-group">
-				<div class="input-group">
-					<div class="input-group-btn">
-						<span class="btn btn-default btn-file"><i class="libre libre-browse-media visible-xs"></i><span class="hidden-xs">Browse for Images</span><input type="file" name="fu[]" multiple<?php if($user['options']{1}==0)echo' disabled';?>></span>
-						<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs">Upload</span></button>
-					</div>
-				</div>
-			</div>
+			<span class="btn btn-info btn-file">Browse for Images<input type="file" name="fu[]" multiple<?php if($user['options']{1}==0)echo' disabled';?>></span>
+			<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});">Upload</button>
 		</form>
 	</div>
-</h1>
+</div>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="table-responsive">
@@ -41,10 +34,10 @@
 			elseif($type=='text/plain')echo'<i class="libre libre-file-text libre-8x"></i>';
 			elseif($type=='image/pjpeg'||$type=='image/jpeg'||$type=='image/bmp'||$type=='image/gif'||$type=='image/png')echo'<a class="panel-image" title="'.$file.'" href="media/'.$file.'" data-featherlight-gallery><img src="media/'.$file.'"></a>';
 			else echo'<i class="libre libre-file libre-8x"></i>';?>
-				<h4 class="panel-title color-white"><small><?php echo $file;?></small></h4>
+				<h4 class="panel-title color-white text-shadow-depth-1"><small><?php echo $file;?></small></h4>
 			</div>
-			<div class="panel-footer text-right">
-				<button class="btn btn-danger btn-xs" onclick="removeMedia('<?php echo$i;$i++;?>','<?php echo str_replace(' ','~',$file);?>')"><i class="libre libre-trash"></i></button>
+			<div class="btn-group panel-controls shadow-depth-1">
+				<button class="btn btn-danger btn-sm" onclick="removeMedia('<?php echo$i;$i++;?>','<?php echo str_replace(' ','~',$file);?>')"><i class="libre libre-trash"></i></button>
 			</div>
 		</div>
 	</div>

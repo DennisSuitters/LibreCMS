@@ -49,15 +49,23 @@ if($show=='categories'){
 			$s->execute();
 		}
 	}?>
-<h1 class="page-header">
-	Content
+<div class="page-toolbar">
+<?php if($args[1]!=''){?>
+	<ol class="breadcrumb col-xs-6">
+		<li><a href="<?php echo URL;?>admin/content">Content</a></li>
+		<li><?php echo ucfirst($args[1]);?></li>
+	</ol>
+<?php }?>
 	<div class="pull-right">
 		<div class="btn-group" data-toggle="buttons">
-			<label class="btn btn-default<?php if($config['layoutContent']=='cards')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Content as Cards."';?>><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutContent','cards');reload('content');"<?php if($config['layoutContent']=='calendar')echo' checked';if($config['buttonType']=='text')echo'>Cards';else echo'><i class="libre libre-layout-blocks"></i>';?></label>
-			<label class="btn btn-default<?php if($config['layoutContent']=='table')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Content as Table."';?>><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutContent','table');reload('content');"<?php if($config['layoutContent']=='table')echo' checked';if($config['buttonType']=='text')echo'>Table';else echo'><i class="libre libre-layout-table"></i>';?></label>
+			<label class="btn btn-default<?php if($config['layoutContent']=='card')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Content as Cards."';?>><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutContent','card');"<?php if($config['layoutContent']=='calendar')echo' checked';if($config['buttonType']=='text')echo'>Cards';else echo'><i class="libre libre-layout-blocks"></i>';?></label>
+			<label class="btn btn-default<?php if($config['layoutContent']=='list')echo' active';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Display Content as List."';?>><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutContent','list');"<?php if($config['layoutContent']=='table')echo' checked';?>><i class="libre libre-layout-list"></i></label>
+		</div>
+		<div class="btn-group hidden-xs">
+			<input id="search" class="form-control" name="search" placeholder="Search...">
 		</div>
 		<div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Show Items by Content Type."';?>>
-			<a class="btn btn-info dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-view visible-xs"></i><span class="hidden-xs">Show</span> <i class="caret"></i></a>
+			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-view visible-xs"></i><span class="hidden-xs">Show</span></button>
 			<ul class="dropdown-menu pull-right">
 				<li><a href="<?php echo URL.'admin/content';?>">All</a></li>
 <?php	$st=$db->query("SELECT DISTINCT contentType FROM content WHERE contentType!='booking' AND contentType!='message' AND contentType!='message_primary' ORDER BY contentType ASC");
@@ -66,7 +74,7 @@ if($show=='categories'){
 		</div>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
 		<div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add Items by Content Type."';?>>
-			<a class="btn btn-success dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-add visible-xs"></i><span class="hidden-xs">Add</span> <i class="caret"></i></a>
+			<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-add visible-xs"></i><span class="hidden-xs">Add</span></button>
 			<ul class="dropdown-menu pull-right">
 				<li><a href="<?php echo URL;?>admin/add/article">Article</a></li>
 				<li><a href="<?php echo URL;?>admin/add/portfolio">Portfolio</a></li>
@@ -81,119 +89,53 @@ if($show=='categories'){
 		</div>
 <?php }?>
 	</div>
-</h1>
-<div class="panel panel-default">
-	<div class="panel-body">
-<?php if($config['layoutContent']=='table'){?>
-		<div class="table-responsive col-xs-12">
-			<table id="stupidtable" class="table table-condensed table-hover">
-				<thead>
-					<tr>
-						<th class="text-center" data-sort="string">contentType</th>
-						<th class="text-center hidden-xs" data-sort="string">Created</th>
-						<th class="text-center hidden-xs" data-sort="string">Edited</th>
-						<th class="text-center" data-sort="string">Title</th>
-						<th class="text-center hidden-xs" data-sort="string">Status</th>
-						<th class="text-center hidden-xs" data-sort="int">Views</th>
-						<th class="text-center hidden-xs">Featured</th>
-						<th class="text-center hidden-xs">Internal</th>
-						<th class="col-xs-2">&nbsp;</th>
-					</tr>
-				</thead>
-				<tbody>
-<?php	while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-					<tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='delete')echo'danger';?>">
-						<td class="text-center"><?php echo'<a class="btn btn-default btn-xs" href="'.URL.'/admin/content/type/'.$r['contentType'].'">'.ucfirst($r['contentType']).'</a>';?></td>
-						<td class="text-center hidden-xs"><small><?php echo date($config['dateFormat'],$r['ti']);?></small></td>
-						<td class="text-center hidden-xs"><small><?php echo date($config['dateFormat'],$r['eti']);?></small></td>
-						<td><small><?php echo$r['title'];?></small></td>
-						<td class="text-center hidden-xs">
-<?php		if($r['contentType']!='proofs'){?>
-							<select id="status_<?php echo$r['id'];?>" class="btn btn-default btn-xs" onchange="update('<?php echo$r['id'];?>','content','status',$(this).val());"<?php if($user['options']{1}==0)echo' readonly';?>>
-								<option value="unpublished"<?php if($r['status']=='unpublished')echo' selected';?>>Unpublished</option>
-								<option value="published"<?php if($r['status']=='published')echo' selected';?>>Published</option>
-								<option value="delete"<?php if($r['status']=='delete')echo' selected';?>>Delete</option>
-							</select>
-<?php		}?>
-						</td>
-						<td class="text-center hidden-xs">
-							<small><?php echo$r['views'];?></small>
-						</td>
-						<td class="text-center hidden-xs">
-							<div class="btn-group">
-<?php		if($r['contentType']!='proofs'){
-				echo'<input type="checkbox" id="featured'.$r['id'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="featured" data-dbb="0"';if($r['featured']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';echo'><label for="featured'.$r['id'].'">';
-			}?>
-							</div>
-						</td>
-						<td class="text-center hidden-xs">
-							<div class="btn-group">
-<?php		if($r['contentType']!='proofs'){
-				echo'<input type="checkbox" id="internal'.$r['id'].'" data-dbid="'.$r['id'].'" data-dbt="content" data-dbc="internal" data-dbb="0"';if($r['internal']==1)echo' checked';if($user['options']{1}==0)echo' readonly';echo'><label for="internal'.$r['id'].'">';
-			}?>
-							</div>
-						</td>
-						<td>
-							<div id="controls_<?php echo$r['id'];?>" class="btn-group pull-right">
-								<a id="pin<?php echo$r['id'];?>" class="btn btn-default btn-sm<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin/Unpin to Top"';?>><i class="libre libre-pin"></i></a>
-								<a class="btn btn-info btn-sm<?php if($r['status']=='delete')echo' hidden';?>" href="admin/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit visible-xs"></i><span class="hidden-xs">Edit</span></a>
-<?php		if($user['rank']==1000||$user['options']{0}==1){?>
-								<button class="btn btn-warning btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore visible-xs"></i><span class="hidden-xs">Restore</span></button> 
-								<button class="btn btn-danger btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button> 
-								<button class="btn btn-danger btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><i class="libre libre-purge visible-xs"></i><span class="hidden-xs">Purge</span></button>
-<?php		}?>
-							</div>
-						</td>
-					</tr>
+</div>
+<div id="listtype" class="<?php echo$config['layoutContent'];?>">
+<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
+	<div id="l_<?php echo$r['id'];?>" class="item">
+		<div class="panel panel-default">
+			<div class="badger badger-left text-shadow-depth-1" href="#" data-status="<?php echo$r['status'];?>" data-contenttype="<?php echo$r['contentType'];?>"></div>
+			<div class="panel-image">
+<?php	if($r['thumb']!=''&&file_exists('media/'.$r['thumb'])){?>
+				<a href="admin/content/edit/<?php echo$r['id'];?>"><img src="<?php echo'media/'.$r['thumb'];?>"></a>
 <?php	}?>
-				</tbody>
-			</table>
-		</div>
-<?php }else{
-	while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-		<div id="l_<?php echo$r['id'];?>" class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-			<div class="panel panel-default">
-				<div class="badger badger-left text-shadow-depth-1" href="#" data-status="<?php echo$r['status'];?>" data-contenttype="<?php echo$r['contentType'];?>"></div>
-				<div class="panel-image" data-status="<?php echo$r['status'];?>">
-					<a href="admin/content/edit/<?php echo$r['id'];?>"><img src="<?php if($r['file']&&file_exists('media/'.$r['file']))echo'media/'.$r['file'];elseif($r['thumb']&&file_exists('media/'.$r['thumb']))echo'media'.$r['thumb'];elseif($r['fileURL']!=''&&file_exists('media/'.$r['fileURL']))echo'media/'.$r['fileURL'];elseif($r['fileURL']!='')echo$r['fileURL'];?>"></a>
-					<h4 class="panel-title text-white"><?php echo$r['title'];?></h4>
-				</div>
-				<div class="panel-body panel-content">
-					<p><?php echo strip_tags(substr($r['notes'],0,200));?></p>
-				</div>
-				<div id="controls_<?php echo$r['id'];?>" class="btn-group panel-controls shadow-depth-1">
-					<a id="pin<?php echo$r['id'];?>" class="btn btn-default btn-sm<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin/Unpin to Top"';?>><i class="libre libre-pin"></i></a>
+			</div>
+			<h4 class="panel-title"><?php echo$r['title'];?></h4>
+			<div class="panel-body panel-content"><?php echo strip_tags(substr($r['notes'],0,200));?></div>
+			<div id="controls_<?php echo$r['id'];?>" class="btn-group panel-controls shadow-depth-1">
+				<a id="pin<?php echo$r['id'];?>" class="btn btn-default btn-sm<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin/Unpin to Top"';?>><i class="libre libre-pin"></i></a>
 <?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){
 	$cnt=0;
 	$sc=$db->prepare("SELECT COUNT(id) as cnt FROM comments WHERE rid=:id AND status='unapproved'");
 	$sc->execute(array(':id'=>$r['id']));
 	$cnt=$sc->fetch(PDO::FETCH_ASSOC);?>
-					<a class="btn btn-default btn-sm" href="admin/content/edit/<?php echo$r['id'];?>#comments"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><i class="libre libre-comments"></i> <?php echo$cnt['cnt'];?></a>
+				<a class="btn btn-default btn-sm" href="admin/content/edit/<?php echo$r['id'];?>#comments"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><i class="libre libre-comments"></i> <?php echo$cnt['cnt'];?></a>
 <?php }?>
-					<span class="btn btn-default btn-sm"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Views"';?>><i class="libre libre-view"></i> <?php echo$r['views'];?></span>
-					<a class="btn btn-info btn-sm" href="admin/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
+				<span class="btn btn-default btn-sm"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Views"';?>><i class="libre libre-view"></i> <?php echo$r['views'];?></span>
+				<a class="btn btn-info btn-sm" href="admin/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
 <?php		if($user['rank']==1000||$user['options']{0}==1){?>
-					<button class="btn btn-warning btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore"></i></button>
-					<button class="btn btn-danger btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><i class="libre libre-trash"></i></button>
-					<button class="btn btn-danger btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><i class="libre libre-purge"></i></button>
+				<button class="btn btn-warning btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore"></i></button>
+				<button class="btn btn-danger btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><i class="libre libre-trash"></i></button>
+				<button class="btn btn-danger btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><i class="libre libre-purge"></i></button>
 <?php		}?>
-				</div>
 			</div>
 		</div>
-<?php	}
-	}?>
 	</div>
+<?php	}?>
 </div>
 <?php }
 	if($show=='item'){
 		$r=$s->fetch(PDO::FETCH_ASSOC);?>
-<h1 class="page-header">
-	Content
+<div class="page-toolbar">
+	<ol class="breadcrumb col-xs-6">
+		<li><a href="<?php echo URL;?>admin/content/">Content</a></li>
+		<li><a href="<?php echo URL;?>admin/content/type/<?php echo$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a></li>
+		<li class="active"><?php echo$r['title'];?></li>
+	</ol>
 	<div class="btn-group pull-right">
 		<a class="btn btn-success" href="<?php echo URL.'admin/content/type/'.$r['contentType'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs">Back<span></a>
 	</div>
 </div>
-</h1>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="form-group">

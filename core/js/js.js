@@ -2,6 +2,10 @@ function purge(id,t){
 	$('#busy').css({'display':'inline-block'});
 	$('#sp').load('core/purge.php?id='+id+'&t='+t)
 }
+function restore(id){
+	$('#busy').css({'display':'inline-block'});
+	$('#sp').load('core/restore.php?id='+id)
+}
 function makeClient(id){
 	$('#busy').css({'display':'inline-block'});
 	$('#sp').load('core/add_data.php?id='+id+'&act=make_client')
@@ -155,6 +159,10 @@ function update(id,t,c,da){
 			da:da
 		}
 	}).done(function(msg){
+		if(t=='config'&&c=='layoutContent'){
+			$('#listtype').removeClass('list card table');
+			$('#listtype').addClass(da);
+		}
 		if(t!='comments'){
 			if(t=='menu'){
 				$('#'+c+id+'save').remove()
@@ -276,4 +284,48 @@ $(".starred").on({
 		return false;
 	}
 });
-
+(function($){
+	$.fn.search_filter=function(options){
+		var settings=$.extend({
+			'filter_inverse':false,
+			'enable_space':true,
+			'el':'#listtype',
+			'cell_selector':'.item'
+		},options);
+		return this.each(function(){
+			var $this=$(this);
+			$this.bind("keyup",function(){
+				var txt=$this.val().toLowerCase();
+				var obj=$(settings.el).find(settings.cell_selector);
+				$.each(obj,function(){
+					var show_el=(settings.filter_inverse)?true:false;
+					var inner_obj=$(this).find(settings.cell_selector);
+					$.each(inner_obj,function(){
+						var el_txt=$.trim($(this).text()).toLowerCase();
+						if(settings.enable_space){
+							var el_array=txt.split(" ");
+							$.each(el_array,function(i){
+								var el_value=el_array[i];
+								if(el_txt.indexOf(el_value)!=-1){
+									show_el=(settings.filter_inverse)?false:true
+								}
+							})
+						}else{
+							if(el_txt.indexOf(txt)!=-1){
+								show_el=(settings.filter_inverse)?false:true
+							}
+						}
+					});
+					if(show_el){
+						$(this).fadeIn('slow')
+					}else{
+						$(this).fadeOut('slow')
+					}
+				});
+				if($.trim(txt)==""){
+					$(settings.el).find(".item").fadeIn('slow')
+				}
+			})
+		})
+	}
+})(jQuery);

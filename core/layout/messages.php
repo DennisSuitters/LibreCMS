@@ -4,9 +4,7 @@
 	$q=$db->prepare("SELECT * FROM messages WHERE id=:id");
 	$q->execute(array(':id'=>$args[1]));
 	$r=$q->fetch(PDO::FETCH_ASSOC);?>
-<h1 class="page-header">
-	Messages
-</h1>
+<div class="page-toolbar"></div>
 <div class="panel panel-default">
 	<div class="panel-body">
 <div class="form-group clearfix">
@@ -232,9 +230,7 @@ if(time()>($chk['email_check']+$chk['email_interval'])){
 */
 
 ?>
-<h1 class="page-header">
-	Messages
-</h1>
+<div class="page-toolbar"></div>
 <div class="panel panel-default">
 	<div class="panel-body">
 <div class="row">
