@@ -30,7 +30,7 @@ img.login{width:10em;margin:0 0 10px 0}
 @media(max-width:767px){
 	#covertop{height:170px}
 	#coverimg{height:150px}
-	#covertop .avatar{width:80px;height:80px;left:10px}
+	#covertop .avatar{width:80px;height:80px;left:10px;bottom:0}
 	#coverimg .name{bottom:0;left:100px}
 	.collapse{display:block}
 	.navbar-collapse li{float:left}
@@ -181,7 +181,7 @@ legend.control-legend.legend-sm{font-size:.75em!important}
 }
 .profile{margin:10px}
 .profile-sidebar li{text-align:left}
-.profile-userpic img{float:left;margin-top:-15px;width:40%;height:40%;-webkit-border-radius:50%!important;-moz-border-radius:50%!important;border-radius:50%!important}
+.profile-userpic img{float:left;margin-top:-15px;width:50px;height:50px;-webkit-border-radius:50%!important;-moz-border-radius:50%!important;border-radius:50%!important}
 .profile-userpic img.img-thumbnail{padding:1px}
 .profile-usertitle{text-align:right;margin-top:0}
 .profile-usertitle-name{color:#5a7391;font-size:10px;font-weight:700}
@@ -191,7 +191,7 @@ legend.control-legend.legend-sm{font-size:.75em!important}
 @media(max-width:767px){
 	#content{margin:-20px 20px 10px 20px}
 	.profile-usertitle{text-align:left;text-indent:50px}
-	.profile-userpic img{margin-top:-25px;width:10%}
+	.profile-userpic img{margin-top:-25px;width:40px;height:40px;}
 	h1.page-header{font-size:20px}
 }
 .activity{padding:5px}

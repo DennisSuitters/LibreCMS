@@ -1,8 +1,11 @@
-RewriteEngine On
+<IfModule mod_rewrite.c>
+    SetEnv HTTP_MOD_REWRITE On
+	RewriteEngine On
 #RewriteBase /
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*) index.php?url=$1 [L,QSA]
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*) index.php?url=$1 [L,QSA]
+</IfModule>
 <Files *.ini>  
     Order deny,allow
     Deny from all

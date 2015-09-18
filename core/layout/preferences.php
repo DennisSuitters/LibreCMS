@@ -135,6 +135,17 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label for="idleTime" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Idle Timeout</label>
+					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+						<input type="text" id="idleTime" class="form-control textinput" value="<?php echo$config['idleTime'];?>" data-dbid="1" data-dbt="config" data-dbc="idleTime" placeholder="Enter a Time in Minutes..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Time in Minutes for Idle Timeout for Auto Logout..."';?>>
+						<div class="input-group-addon">Minutes</div>
+					</div>
+					<div class="col-xs-7 col-sm-9 col-md-9 col-lg-10 pull-right">
+						<div class="help-block">'0' Disables Idle Timeout...</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
 					<label for="timezone" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Timezone</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 						<select id="timezone" class="form-control" onchange="update('1','config','timezone',$(this).val());"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>

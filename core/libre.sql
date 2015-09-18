@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 16, 2015 at 10:48 PM
+-- Generation Time: Sep 19, 2015 at 12:06 AM
 -- Server version: 5.5.44-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.11
 
@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS `config` (
   `layoutContent` varchar(10) COLLATE utf8_bin NOT NULL,
   `layoutBookings` varchar(10) COLLATE utf8_bin NOT NULL,
   `showItems` int(4) NOT NULL,
+  `idleTime` int(6) NOT NULL,
   `bti` int(10) unsigned NOT NULL,
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -138,8 +139,8 @@ CREATE TABLE IF NOT EXISTS `config` (
 -- Dumping data for table `config`
 --
 
-INSERT INTO `config` (`id`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `gaClientID`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `buttonType`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `showItems`, `bti`, `ti`) VALUES
-(1, '1111111100000000', 'default', 'LibreCMS', 'Default Site Description', 'Default Site Caption', 'Default Site Keywords', '', '', '', '', 1440940831, '', 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'cards', 'card', 'calendar', 20, 1404461417, 0);
+INSERT INTO `config` (`id`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `gaClientID`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `buttonType`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `showItems`, `idleTime`, `bti`, `ti`) VALUES
+(1, '1111111100000000', 'default', 'LibreCMS', 'Default Site Description', 'Default Site Caption', 'Default Site Keywords', '', '', '', '', 1440940831, '', 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'cards', 'card', 'calendar', 20, 24, 1404461417, 0);
 
 -- --------------------------------------------------------
 
@@ -301,7 +302,23 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `newda` longblob NOT NULL,
   `action` tinytext COLLATE utf8_bin NOT NULL,
   `ti` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `logs`
+--
+
+INSERT INTO `logs` (`id`, `uid`, `rid`, `view`, `contentType`, `refTable`, `refColumn`, `oldda`, `newda`, `action`, `ti`) VALUES
+(1, 1, 1, '', '', 'config', 'idleTime', 0x30, 0x33, 'update', 1442581008),
+(2, 1, 1, '', '', 'config', 'idleTime', 0x33, 0x31343430, 'update', 1442581033),
+(3, 1, 1, '', '', 'config', 'idleTime', 0x31343430, 0x31, 'update', 1442582582),
+(4, 1, 1, '', '', 'config', 'idleTime', 0x31, 0x31, 'update', 1442582587),
+(5, 1, 1, '', '', 'config', 'idleTime', 0x31, 0x3234, 'update', 1442582711),
+(6, 1, 1, '', '', 'config', 'idleTime', 0x3234, 0x3234, 'update', 1442582832),
+(7, 1, 1, '', '', 'config', 'idleTime', 0x3234, 0x35, 'update', 1442584431),
+(8, 1, 1, '', '', 'config', 'idleTime', 0x35, 0x31, 'update', 1442584657),
+(9, 1, 1, '', '', 'config', 'idleTime', 0x31, 0x3234, 'update', 1442585061),
+(10, 1, 1, '', '', 'config', 'idleTime', 0x3234, 0x3234, 'update', 1442585064);
 
 -- --------------------------------------------------------
 
@@ -625,7 +642,7 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `menu`
 --

@@ -347,7 +347,25 @@
 							}
 						}
 					});
-<?php 		}?>
+<?php 		}
+			if($config['idleTime']!=0){?>
+					idleTimer=null;
+					idleState=false;
+					idleWait=<?php echo$config['idleTime']*60000;?>;
+					(function($){
+						$(document).ready(function(){
+							$('*').bind('mousemove keydown scroll',function(){
+								clearTimeout(idleTimer);
+								idleState=false;
+								idleTimer=setTimeout(function(){
+								var newUrl="<?php echo URL.'/admin/logout';?>";
+								document.location.href=newUrl;
+								idleState=true},idleWait);
+							});
+							$("body").trigger("mousemove");
+						});
+					})(jQuery)
+<?php		}?>
 			});
 		/*]]>*/</script>
 		<div class="modal fade bookings">

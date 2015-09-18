@@ -1,4 +1,6 @@
-<?php  $error=0;?>
+<?php
+	$error=0;
+?>
 <!DOCTYPE HTML>
 <html lang="en-AU">
 	<head>
@@ -26,16 +28,43 @@
 					<div class="well">
 						<h3 class="page-header col-sm-6">System Checks</h3>
 						<div class="clearfix"></div>
-<?php if(file_exists('core/config.ini')){
-	$error=0;
-	echo'<div class="alert alert-danger">"core/config.ini" Exists, but is not writeable.</div>';
+<?php
+if(version_compare(phpversion(),'5.5.9','>')){
+	echo'<div class="alert alert-success">LibreCMS was built using PHPv5.5.9, your installed version is higher.</div>';
+}else{
+	echo'<div class="alert alert-warning">LibreCMS was built using PHPv5.5.9, your installed version is lower. While LibreCMS may operate on your system, some functionality may not work or be available.</div>';
 }
-/*
-if(!function_exists('mod_rewrite')){
-	$error=1;?>
-	echo'<div class="alert alert-danger">"mod-rewrite" must be available and enabled for LibreCMS to function correctly.</div>';'
+if(extension_loaded('pdo')){
+	if(empty(PDO::getAvailableDrivers())){
+		$error=1;
+		echo'<div class="alert aler-danger">Great PDO is Installed and Active, but there are no Database Drivers Installed.</div>';
+	}else{
+		echo'<div class="alert alert-success">Great PDO is Installed and Active.</div>';
+	}
+}else{
+	$error=1;
+	echo'<div class="alert alert-danger">LibreCMS uses PDO for Database Interaction, please Install or Enable PDO.</div>';
 }
-*/
+if(file_exists('core/config.ini')&&!is_writable('core/config.ini')){
+	$error=1;
+	echo'<div class="alert alert-danger">"core/config.ini" Exists, but is not writeable. There is two ways to fix this, either make "core/config.ini" writable, or remove the file.</div>';
+}elseif(file_exists('core/config.ini')&&is_writable('core/config.ini')){
+	echo'<div class="alert alert-success">Great! "core/config.ini" Exists, and is writeable. Values entered below, will overwrite any manually entered settings.</div>';
+}else{
+	echo'<div class="alert alet-warning">"core/config.ini" does NOT exists, that\'s ok, we\'ll create it.</div>';
+}
+if(!isset($_SERVER['HTTP_MOD_REWRITE'])){
+	$error=1;
+	echo'<div class="alert alert-danger">"mod_rewrite" must be available and enabled for LibreCMS to function correctly.</div>';
+}else{
+	echo'<div class="alert alert-success">Great "mod_rewrite" is installed, and enabled.</div>';
+}
+if(extension_loaded('gd')&&function_exists('gd_info')){
+	echo'<div class="alert alert-success">Great! GD-Image is Installed and Enabled.</div>';
+}else{
+	$error=1;
+	echo'<div class="alert alert-danger">GD-Image is NOT Installed or Enabled.</div>';
+}
 if(!function_exists('exif_read_data')){
 	echo'<div class="alert alert-info">EXIF Functions are NOT enabled or installed. While not Mandatory, some features won\'t work.</div>';
 }else{
@@ -48,15 +77,20 @@ if($error==0){
 }?>
 					</div>
 <?php if($error==0){?>
-					<form target="sp" method="post" action="core/installer.php">
+					<form target="sp" method="post" action="core/installer.php" onsubmit="$('#block').css({'display':'block'});">
+						<input type="hidden" name="emailtrap" value="">
 						<div class="well">
 							<h3 class="page-header col-sm-6">Database Settings</h3>
 							<div class="clearfix"></div>
+							<div id="dberror"></div>
 							<div class="form-group">
 								<label for="dbtype" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Database Type</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
 									<select id="dbtype" name="dbtype" class="form-control">
-										<option value="mysql">MySQL</option>
+<?php	foreach(PDO::getAvailableDrivers()as$DRIVER){
+			echo'<option value="'.$DRIVER.'">'.strtoupper($DRIVER).'</option>';
+		}?>
+										
 									</select>
 								</div>
 							</div>
@@ -90,6 +124,7 @@ if($error==0){
 									<input id="dbpassword" name="dbpassword" type="password" class="form-control" value="" placeholder="Enter Database Password...">
 								</div>
 							</div>
+							<div id="dbsuccess"></div>
 						</div>
 						<div class="well">
 							<h3 class="page-header col-sm-6">System Settings</h3>
@@ -143,7 +178,7 @@ if($error==0){
 								</div>
 							</div>
 						</div>
-						<button type="submit" class="btn btn-success btn-block" disabled>Install</button>
+						<button type="submit" class="btn btn-success btn-block">Install</button>
 					</form>
 <?php }?>
 				</div>
@@ -152,6 +187,9 @@ if($error==0){
 				</div>
 			</div>
 		</div>
+		<script src="core/js/jquery-2.1.3.min.js"></script>
+		<iframe id="sp" name="sp" class="hidden"></iframe>
+		<div id="block"><i class="libre libre-spinner-1 libre-5x libre-spin"></i></div>
 	</body>
 </html>
 		
