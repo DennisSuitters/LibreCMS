@@ -120,13 +120,48 @@
 					<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
 						<input type="checkbox" id="options5" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="5"<?php if($config['options']{5}==1)echo' checked';?>><label for="options5">
 					</div>
-					<label for="options5" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Helper Button for Content Guide Hints."';?>>Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-info"><i class="libre libre-seo"></i></button>
-					</label>
+					<label for="options5" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Helper Button for Content Guide Hints."';?>>Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-info"><i class="libre libre-seo"></i></button></label>
 					<div class="help-block col-xs-7 col-sm-9 col-md-9 col-lg-10 pull-right">
 						SEO Helper Icon will be hidden on small screens.
 					</div>
 				</div>
 				<div class="clearfix"></div>
+				<fieldset>
+					<legend>Default Content Display</legend>
+					<div class="form-group">
+						<label for="layoutContent" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Content</label>
+						<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default<?php if($config['layoutContent']=='card'){echo' active';}?>"><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutContent','card');"<?php if($config['layoutContent']=='card'){echo' checked';}if($config['buttonType']=='text'){echo'>Cards';}else{echo'><i class="libre libre-layout-blocks"></i>';}?></label>
+								<label class="btn btn-default<?php if($config['layoutContent']=='list'){echo' active';}?>"><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutContent','list');"<?php if($config['layoutContent']=='list'){echo' checked';}if($config['buttonType']=='text'){echo'>List';}else{echo'><i class="libre libre-layout-list"></i>';}?>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="layoutContent" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Accounts</label>
+						<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default<?php if($config['layoutAccounts']=='card'){echo' active';}?>"><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutAccounts','card');"<?php if($config['layoutAccounts']=='card'){echo' checked';}if($config['buttonType']=='text'){echo'>Cards';}else{echo'><i class="libre libre-layout-blocks"></i>';}?></label>
+								<label class="btn btn-default<?php if($config['layoutAccounts']=='list'){echo' active';}?>"><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutAccounts','list');"<?php if($config['layoutAccounts']=='list'){echo' checked';}if($config['buttonType']=='text'){echo'>List';}else{echo'><i class="libre libre-layout-list"></i>';}?>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="layoutContent" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Bookings</label>
+						<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default<?php if($config['layoutBookings']=='calendar'){echo' active';}?>">
+									<input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutAccounts','calendar');"<?php if($config['layoutBookings']=='calendar'){echo' checked';}echo'><i class="libre libre-calendar"></i>';?>
+								</label>
+								<label class="btn btn-default<?php if($config['layoutBookings']=='list'){echo' active';}?>">
+									<input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutBookings','list');"<?php if($config['layoutBookings']=='list'){echo' checked';}echo'><i class="libre libre-layout-list"></i>';?>
+								</label>
+							</div>
+						</div>
+					</div>
+				</fieldset>
 				<div class="form-group">
 					<label for="showItems" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Item Count</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
@@ -144,6 +179,18 @@
 						<div class="help-block">'0' Disables Idle Timeout...</div>
 					</div>
 					<div class="clearfix"></div>
+				</div>
+				<div class="form-group">
+					<label for="language" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','language');?></label>
+					<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
+						<select id="language" class="form-control" onchange="update('1','config','language',$(this).val());">
+<?php	$languages=parse_ini_file('core/lang/languages.ini');
+		foreach($languages as $lang){
+			$l=explode(':',$lang);?>
+							<option value="<?php echo$l[0];?>"<?php if($config['language']==$l[0])echo' selected';?>><?php echo$l[1];?></option>
+<?php	}?>
+						</select>
+					</div>
 				</div>
 				<div class="form-group">
 					<label for="timezone" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Timezone</label>

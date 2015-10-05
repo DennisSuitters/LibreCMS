@@ -1,4 +1,3 @@
-
 <?php
 	require'core/db.php';
 	$config=$this->getconfig($db);
@@ -10,18 +9,24 @@
 	$sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
 	$sp->execute(array(':contentType'=>$view));
 	require'core/login.php';
+	if(isset($user)&&$user['language']=='')
+		$user=['language'=>$config['language']];
+	if(isset($user['language'])&&file_exists('core/lang/'.$user['language'].'.php'))
+		require'core/lang/'.$user['language'].'.php';
+	else
+		require'core/lang/en-AU.php';
 	if($_SESSION['rank']>399){?>
 <!DOCTYPE HTML>
-<html lang="en-AU" class="libr8">
+<html lang="<?php echo$config['language'];?>" id="libreCMS">
 	<head>
 		<meta name="generator" content="LibreCMS">
 		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-		<title>LibreCMS - Administration - <?php echo ucfirst($view);?></title>
+		<title>LibreCMS - <?php lang('Administration');?> - <?php lang($view);?></title>
 		<base href="<?php echo URL;?>">
 <?php /*		<meta http-equiv="X-FRAME-OPTIONS" content="DENY"> */ ?>
 		<link rel="alternate" media="handheld" href="<?php echo URL;?>">
 		<link rel="alternate" hreflang="x-default" href="<?php echo URL;?>">
-		<link rel="alternate" hreflang="en-AU" href="<?php echo URL;?>">
+		<link rel="alternate" hreflang="<?php echo$user['language'];?>" href="<?php echo URL;?>">
 		<link rel="icon" href="<?php echo URL.$favicon;?>">
 		<link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>">
 		<meta name="viewport" content="initial-scale=1.0">
@@ -29,7 +34,7 @@
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap-datetimepicker.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/libreicons.css">
-		<link rel="stylesheet" type="text/css" href="core/css/summernote.css">
+		<link rel="stylesheet" type="text/css" href="core/css/summernote.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/featherlight.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/admin.css">
 	</head>
@@ -39,15 +44,7 @@
 			<div class="profile clearfix">
 				<div class="profile-usertitle">
 					<div class="profile-usertitle-name"><?php if($user['name']!='')echo$user['name'];else echo$user['username'];?></div>
-					<div class="profile-usertitle-job">
-<?php	if($user['rank']==400)echo'Contributor';
-		if($user['rank']==500)echo'Author';
-		if($user['rank']==600)echo'Editor';
-		if($user['rank']==700)echo'Moderator';
-		if($user['rank']==800)echo'Manager';
-		if($user['rank']==900)echo'Administrator';
-		if($user['rank']==1000)echo'Developer';?>
-					</div>
+					<div class="profile-usertitle-job"><?php lang('rank',$user['rank']);?></div>
 				</div>
 				<div class="profile-sidebar">
 					<div class="profile-userpic">
@@ -58,31 +55,31 @@
 			<hr>
 			<div class="menu-list">
 				<ul id="menu-content" class="menu-content">
-					<li<?php if($view=='statistics')echo' class="active"';?>><a href="<?php echo URL.'admin/statistics';?>"><i class="libre libre-chart-line" name="Statistics"></i><span>Statistics</span></a></li>
-					<li<?php if($view=='pages')echo' class="active"';?>><a href="<?php echo URL.'admin/pages';?>"><i class="libre libre-content" name="Pages"></i><span>Pages</span></a></li>
-					<li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';?>><a href="<?php echo URL.'admin/content';?>"><i class="libre libre-content" name="Content"></i><span>Content</span></a></li>
+					<li<?php if($view=='statistics')echo' class="active"';?>><a href="<?php echo URL.'admin/statistics';?>"><i class="libre libre-chart-line" name="<?php lang('Statistics');?>"></i><span><?php lang('Statistics');?></span></a></li>
+					<li<?php if($view=='pages')echo' class="active"';?>><a href="<?php echo URL.'admin/pages';?>"><i class="libre libre-content" name="<?php lang('Pages');?>"></i><span><?php lang('Pages');?></span></a></li>
+					<li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';?>><a href="<?php echo URL.'admin/content';?>"><i class="libre libre-content" name="<?php lang('Content');?>"></i><span><?php lang('Content');?></span></a></li>
 <?php	if($user['rank']==1000||$user['options']{1}==1){?>
-					<li<?php if($view=='bookings')echo' class="active"';?>><a href="<?php echo URL.'admin/bookings';?>"><i class="libre libre-calendar" name="Bookings"></i><span>Bookings</span></a></li>
+					<li<?php if($view=='bookings')echo' class="active"';?>><a href="<?php echo URL.'admin/bookings';?>"><i class="libre libre-calendar" name="<?php lang('Bookings');?>"></i><span><?php lang('Bookings');?></span></a></li>
 <?php	}
 		if($user['rank']==1000||$user['options']{2}==1){?>
-					<li<?php if($view=='orders')echo' class="active"';?>><a href="<?php echo URL.'admin/orders/all';?>"><i class="libre libre-order" name="Orders"></i><span>Orders</span></a></li>
+					<li<?php if($view=='orders')echo' class="active"';?>><a href="<?php echo URL.'admin/orders/all';?>"><i class="libre libre-order" name="<?php lang('Orders');?>"></i><span><?php lang('Orders');?></span></a></li>
 <?php	}
 		if($user['rank']==1000||$user['options']{3}==1){?>
-					<li<?php if($view=='media')echo' class="active"';?>><a href="<?php echo URL.'admin/media';?>"><i class="libre libre-picture" name="Media"></i><span>Media</span></a></li>
+					<li<?php if($view=='media')echo' class="active"';?>><a href="<?php echo URL.'admin/media';?>"><i class="libre libre-picture" name="<?php lang('Media');?>"></i><span><?php lang('Media');?></span></a></li>
 <?php	}?>
-					<li<?php if($view=='messages')echo' class="active"';?>><a href="<?php echo URL.'admin/messages';?>"><i class="libre libre-mail" name="Messages"></i><span>Messages</span><a></li>
-					<li<?php if($view=='accounts')echo' class="active"';?>><a href="<?php echo URL.'admin/accounts';?>"><i class="libre libre-users" name="Accounts"></i><span>Accounts</span></a></li>
-					<li<?php if($view=='preferences')echo' class="active"';?>><a href="<?php echo URL.'admin/preferences';?>"><i class="libre libre-settings" name="Preferences"></i><span>Preferences</span></a></li>
+					<li<?php if($view=='messages')echo' class="active"';?>><a href="<?php echo URL.'admin/messages';?>"><i class="libre libre-mail" name="<?php lang('Messages');?>"></i><span><?php lang('Messages');?></span><a></li>
+					<li<?php if($view=='accounts')echo' class="active"';?>><a href="<?php echo URL.'admin/accounts';?>"><i class="libre libre-users" name="<?php lang('Accounts');?>"></i><span><?php lang('Accounts');?></span></a></li>
+					<li<?php if($view=='preferences')echo' class="active"';?>><a href="<?php echo URL.'admin/preferences';?>"><i class="libre libre-settings" name="<?php lang('Preferences');?>"></i><span><?php lang('Preferences');?></span></a></li>
 <?php	if($user['rank']>899){?>
-					<li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.'admin/activity';?>"><i class="libre libre-activity" name="Activity"></i><span>Activity</span></a></li>
+					<li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.'admin/activity';?>"><i class="libre libre-activity" name="<?php lang('Activity');?>"></i><span><?php lang('Activity');?></span></a></li>
 <?php	}?>
 				</ul>
 			</div>
 			<footer class="hidden-xs">
 				<div class="brand"><img src="core/images/librecms.png" alt="LibreCMS"></div>
 				<ul>
-					<li><a href="<?php echo URL;?>admin/logout">Logout</a></li>
-					<li><a href="<?php echo URL;?>"><small>Front</small></a></li>
+					<li><a href="<?php echo URL;?>admin/logout"><?php lang('Logout');?></a></li>
+					<li><a href="<?php echo URL;?>"><?php lang('Front');?></a></li>
 				</ul>
 			</footer>
 		</div>
@@ -99,7 +96,7 @@
 			<span class="navbar-brand"><img src="core/images/librecms.png" alt="LibreCMS"></span>
 			<ul class="nav navbar-nav pull-right">
 				<li><a target="_blank" href="https://github.com/StudioJunkyard/LibreCMS"><small>GitHub</small></a></li>
-				<li><a href="<?php echo URL;?>"><small>Front</small></a></li>
+				<li><a href="<?php echo URL;?>"><small><?php lang('Front');?></small></a></li>
 			</ul>
 		</footer>
 		<div class="notifications center"></div>
@@ -107,21 +104,20 @@
 		<script src="core/js/bootstrap.min.js"></script>
 		<script src="core/js/jquery.notifications.min.js"></script>
 		<script src="core/js/featherlight.min.js"></script>
-		<script src="core/js/stupidtable.js"></script>
 <?php 	if($user['rank']>399){
 			if($view=='bookings'){
-				if($config['layoutBookings']=='calendar'){?>
+				if($user['layoutBookings']=='calendar'){?>
 		<script src="core/js/moment.min.js"></script>
 		<script src="core/js/fullcalendar.min.js"></script>
 <?php			}
 			}?>
-		<script src="core/js/summernote.js"></script>
+		<script src="core/js/summernote.min.js"></script>
+		<script src="core/lang/summernote-<?php echo$config['language'];?>.js"></script>
 		<script src="core/js/bootstrap-datetimepicker.min.js"></script>
 		<link href="core/css/cropper.min.css" rel="stylesheet">
 		<script src="core/js/cropper.min.js"></script>
 <?php		if($view=='pages'){?>
 		<script src="core/js/sortable.min.js"></script>
-
 <?php		}?>
 		<script src="core/js/js.js"></script>
 		<script>/*<![CDATA[*/
@@ -153,7 +149,7 @@
 			gapi.analytics.ready(function(){
 				gapi.analytics.auth.authorize({container:'auth-container',clientid:"<?php echo$config['gaClientID'];?>",userInfoLabel:''});
 				gapi.analytics.auth.on('success',function(response){$('#auth-container').css({'display':'none'})});
-				gapi.analytics.auth.on('error',function(response){$('#auth-container').css({'display':'block'});$('#auth-container').html('There was a problem!')});
+				gapi.analytics.auth.on('error',function(response){$('#auth-container').css({'display':'block'});$('#auth-container').html("<?php lang('error','problem');?>")});
 				var viewSelector=new gapi.analytics.ViewSelector({container:'view-selector'});
 				viewSelector.execute();
 				var sessions=new gapi.analytics.googleCharts.DataChart({
@@ -184,66 +180,15 @@
 				$(document).on("hidden.bs.modal",function (e){
 					$(e.target).removeData("bs.modal").find(".modal-content").empty()
 				});
-				$(".summernote").summernote();
+				$(".summernote").summernote({
+					lang:'<?php echo$user["language"];?>'
+				});
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});
 				$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
-				$("#stupidtable").stupidtable();
-				$(function(){
-					var date_from_string=function(str){
-						var months=["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
-						var pattern="^([a-zA-Z]{3})\\s*(\\d{2}),\\s*(\\d{4})$";
-						var re=new RegExp(pattern);
-						var DateParts=re.exec(str).slice(1);
-						var Year=DateParts[2];
-						var Month=$.inArray(DateParts[0].toLowerCase(),months);
-						var Day=DateParts[1];
-						return new Date(Year,Month,Day);
-					}
-					var moveBlanks=function(a,b){
-						if(a<b){
-							if(a=="")return 1;else return -1;
-						}
-						if ( a > b ){
-							if (b == "")
-								return -1;
-							else
-								return 1;
-						}
-						return 0;
-					};
-					var moveBlanksDesc = function(a, b) {
-						if ( a < b )return 1;
-						if ( a > b )return -1;
-						return 0;
-					};
-					var table = $("table").stupidtable({
-						"date":function(a,b){
-							aDate = date_from_string(a);
-							bDate = date_from_string(b);
-							return aDate - bDate;
-						},
-						"moveBlanks": moveBlanks,
-						"moveBlanksDesc": moveBlanksDesc,
-					});
-					table.on("beforetablesort",function (event, data) {
-						$("#msg").text("Sorting index " + data.column)
-					});
-					table.on("aftertablesort", function (event, data) {
-						var th = $(this).find("th");
-						th.find(".arrow").remove();
-						var dir = $.fn.stupidtable.dir;
-						var arrow = data.direction === dir.ASC ? "sort-asc" : "sort-desc";
-						th.eq(data.column).append('<i class="arrow libre libre-'+arrow+' pull-right"></i>');
-					});
-					$("tr").slice(1).click(function(){
-						$(".awesome").removeClass("awesome");
-						$(this).addClass("awesome");
-					});
-				});
 <?php		if($config['options']{4}==1){?>
 				$('[data-toggle="tooltip"]').tooltip({
 					container:'body',
-					title:'Working on the Tooltip Content'
+					title:"<?php lang('tooltip','nulltitle');?>"
 				});
 <?php		}
 			if($config['options']{5}==1){?>
@@ -251,8 +196,8 @@
 					placement:'top',
 					html:'true',
 					container:'body',
-					title:'Working on a Title',
-					content:'Working on the Content'
+					title:"<?php lang('popover','nulltitle');?>",
+					content:"<?php lang('popover','nullcontent');?>"
 				});
 <?php		}
 			if($view=='preferences'){?>
@@ -262,7 +207,7 @@
 					update("1","config","theme",escape($(this).attr("data-theme")))
 				});
 <?php		}
-    		if($view=='bookings'&&$config['layoutBookings']=='calendar'){?>
+    		if($view=='bookings'&&$user['layoutBookings']=='calendar'){?>
 				$('#calendar').fullCalendar({
 					header:{
 						left:'prev,next',
@@ -280,36 +225,30 @@
 					$br=$bs->fetch(PDO::FETCH_ASSOC);?>
 						{
 							id:'<?php echo$r['id'];?>',
-							title:'<?php if($br['contentType']=='events'){?>Event: <?php echo$br['title'];}else{echo ucfirst(rtrim($br['contentType'],'s')).': '.$br['title'];}?>',
+							title:'<?php if($br['contentType']=='events'){lang('Event');?>: <?php echo$br['title'];}else{echo ucfirst(rtrim($br['contentType'],'s')).': '.$br['title'];}?>',
 							start:'<?php if($br['contentType']=='events'){echo date("Y-m-d H:i:s",$r['ti']);}else{echo date("Y-m-d H:i:s",$r['tis']);}?>',
 <?php				if($br['contentType']=='services'){
 						if($r['tie']>$r['tis']){
-                    echo'end:\''.date("Y-m-d H:i:s",$r['tie']).'\',';
+                    echo lang('End').':\''.date("Y-m-d H:i:s",$r['tie']).'\',';
                 		}
 					}?>
 							allDay:false,
 							color:'<?php if($r['status']=='confirmed'){echo'#5cb85c';}else{echo'#d9534f';}?>',
-							description:'<?php if($r['business']){echo'Business: '.$r['business'].'<br>';}
-					if($r['name']){echo'Name: '.$r['name'].'<br>';}
-					if($r['email']){echo'Email: <a href="mailto:'.$r['email'].'">'.$r['email'].'</a><br>';}
-					if($r['phone']){echo'Phone: '.$r['phone'].'<br>';}?>',
+							description:'<?php if($r['business']){echo lang('Business').': '.$r['business'].'<br>';}
+					if($r['name']){echo lang('Name').': '.$r['name'].'<br>';}
+					if($r['email']){echo lang('Email').': <a href="mailto:'.$r['email'].'">'.$r['email'].'</a><br>';}
+					if($r['phone']){echo lang('Phone').': '.$r['phone'].'<br>';}?>',
 							status:'<?php echo$r['status'];?>',
 						},
 <?php			}?>
 						],
 						eventMouseover:function(event,domEvent,view){
 							var layer='<div id="events-layer" class="fc-transparent">';
-							if(event.status=="unconfirmed"){
-								layer+='<span id="cbut'+event.id+'" class="btn btn-success btn-xs"><i class="libre libre-approve"></i></span> ';
-							}
+							if(event.status=="unconfirmed")layer+='<span id="cbut'+event.id+'" class="btn btn-success btn-xs"><i class="libre libre-approve"></i></span> ';
 							layer+='<span id="edbut'+event.id+'" class="btn btn-info btn-xs"><i class="libre libre-edit"></i></span> <span id="delbut'+event.id+'" class="btn btn-danger btn-xs"><i class="libre libre-trash"></i></span></div>';
-							var content='Start: '+$.fullCalendar.moment(event.start).format('HH:mm');
-							if(event.end>event.start){
-								content+='<br>End: '+$.fullCalendar.moment(event.end).format('HH:mm');
-							}
-							if(event.description!=''){
-								content+='<br>'+event.description;
-							}
+							var content='<?php lang('Start');?>: '+$.fullCalendar.moment(event.start).format('HH:mm');
+							if(event.end>event.start)content+='<br><?php lang('End');?>: '+$.fullCalendar.moment(event.end).format('HH:mm');
+							if(event.description!='')content+='<br>'+event.description;
 							$(this).append(layer);
 							var el=$(this);
 							$("#cbut"+event.id).click(function(){
@@ -340,10 +279,10 @@
 							$("#events-layer").remove();
 							$(this).not(event).popover("hide")
 						},
-						dayClick: function(date, jsEvent, view) {
-							if(view.name == 'month' || view.name == 'basicWeek') {
-								$('#calendar').fullCalendar('changeView', 'basicDay');
-								$('#calendar').fullCalendar('gotoDate', date);      
+						dayClick:function(date,jsEvent,view){
+							if(view.name=='month'||view.name=='basicWeek'){
+								$('#calendar').fullCalendar('changeView','basicDay');
+								$('#calendar').fullCalendar('gotoDate',date);      
 							}
 						}
 					});
@@ -358,7 +297,7 @@
 								clearTimeout(idleTimer);
 								idleState=false;
 								idleTimer=setTimeout(function(){
-								var newUrl="<?php echo URL.'/admin/logout';?>";
+								var newUrl="<?php echo URL.'admin/logout';?>";
 								document.location.href=newUrl;
 								idleState=true},idleWait);
 							});

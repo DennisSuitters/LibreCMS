@@ -159,9 +159,10 @@ function update(id,t,c,da){
 			da:da
 		}
 	}).done(function(msg){
-		if(t=='config'&&c=='layoutContent'){
-			$('#listtype').removeClass('list card table');
-			$('#listtype').addClass(da);
+		if(t=='login'){
+			if(c=='layoutAccounts'||c=='layoutContent'){
+				$('#listtype').removeClass('list card table').addClass(da);
+			}
 		}
 		if(t!='comments'){
 			if(t=='menu'){

@@ -13,8 +13,8 @@ img.login{width:10em;margin:0 0 10px 0}
 #busy{position:fixed;bottom:5px;left:5px;display:none}
 .busy{position:absolute;top:2px;left:-32px;z-index:1000}
 .busycheck{position:absolute;top:-8px;left:-32px;z-index:1000}
-#block{position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483646;display:none;background:#000;background:rgba(0,0,0,.75)}
-#block>i{position:absolute;top:47%;left:47%;margin:0 auto;color:#fff;text-shadow:0 0 75px #000,0 0 50px #000,0 0 25px #000}
+#block{position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483646;display:none;background:#000;background:rgba(0,0,0,.15)}
+#block>i{position:absolute;top:47%;left:47%;margin:0 auto;color:#fff;text-shadow:0 0 100px #000,0 0 50px #000,0 0 25px #000}
 .btn-xs{padding:0 5px 1px 5px;font-size:12px;line-height:1.5;border-radius:3px}
 .input-group-addon#file,
 .input-group-addon#thumb{padding:0}
@@ -24,7 +24,7 @@ img.login{width:10em;margin:0 0 10px 0}
 #covertop{position:relative}
 #coverimg{position:relative;height:300px;margin-bottom:30px;overflow:hidden}
 #coverimg:empty{display:none;height:0;}
-#coverimg .cover{position:absolute;top:0;left:0;right:0;bottom:auto;width:100%;margin:0;padding:0}
+#coverimg .cover{display:block;position:absolute;background:url(../images/nocover.jpg) no-repeat;background-size:cover;top:0;left:0;right:0;bottom:auto;width:100%;height:100%;margin:0;padding:0;-moz-box-sizing:border-box;box-sizing:border-box}
 #coverimg .name{position:absolute;bottom:5px;left:200px;color:#fff}
 #covertop .avatar{position:absolute;width:160px;height:160px;left:20px;bottom:-30px}
 @media(max-width:767px){
@@ -95,7 +95,7 @@ input[type=checkbox]:checked+label::before{content:'\e646'}
 .panel .panel-image[data-status|=published]{background:#5cb85c}
 .panel .panel-image[data-status|=]{background:#5bc0de}
 .panel .panel-image img{border-radius:3px 3px 0 0;position:relative;left:0;right:0;top:0;bottom:0;width:100%}
-.panel .panel-image img[src=""]{display:none}
+.panel .panel-image img[src=""]{display:block;position:absolute;background:url(../images/nocover.jpg) no-repeat;background-size:cover;top:0;left:0;right:0;bottom:auto;width:100%;height:100%;margin:0;padding:0;-moz-box-sizing:border-box;box-sizing:border-box}
 .panel .panel-image .panel-title{position:absolute;display:block;color:#fff;line-height:.9em;bottom:2px;left:60px;padding:0 0 0 10px}
 .panel .panel-image h4.panel-title{left:0}
 .panel .panel-image .avatar{position:absolute;top:auto;bottom:5px;left:5px;max-width:60px;height:60px}
@@ -201,13 +201,16 @@ legend.control-legend.legend-sm{font-size:.75em!important}
 .card .item{position:relative;min-height:1px;padding-right:15px;padding-left:15px;float:left;width:25%!important;transition: all .2s;-webkit-transition:all .2s}
 .card .item .panel-image{display:block;width:100%}
 .card .item .panel-title{padding:5px}
+.card .item .panel-title.account{position:absolute;left:70px!important;bottom:2px!important;color:#fff;text-shadow:0 1px 2px #000,0 2px 10px #000}
 .list .item{position:relative;z-index:10;min-height:1px;float:left;width:100%!important;transition:all .2s;-webkit-transition:all .2s;margin:auto;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;overflow:hidden}
-.list .item .panel-image{display:block;max-width:200px;height:100px}
-.list .item .panel-title{position:absolute;top:5px;left:210px!important;color:#000}
-.list .item .panel-content{position:absolute;display:block;top:30px;left:215px}
+.list .item .panel-image{display:block;max-width:100px;height:57px}
+.list .item .panel-image .avatar{width:30px;height:30px}
+.list .item .panel-image .img-thumbnail{padding:2px}
+.list .item .panel-title{position:absolute;top:5px;left:110px!important;color:#000}
+.list .item .panel-content{position:absolute;display:block;top:12px;left:115px;right:200px;}
 @media(max-width:767px){
 	.card .item{width:100%!important}
-	.list .item .panel-image{max-width:120px;height:60px;}
+	.list .item .panel-image{max-width:120px;height:60px}
 	.list .item .panel-title{top:auto;left:5px!important;bottom:5px;color:#fff;text-shadow:0 1px 2px #000,0 2px 5px #000}
 	.list .item .panel-content{display:none}
 }
