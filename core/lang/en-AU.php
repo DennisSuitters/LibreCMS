@@ -1,16 +1,16 @@
 <?php
 function lang($phrase1,$phrase2=null){
 	static $_L=[
-		'lang'					=>'English (Australia)',
+		'lang'						=>'English (Australia)',
 		'Accounts'				=>'Accounts',
 		'accounts'				=>[	'options0'			=>'Add/Remove Content',
-									'options1'			=>'Edit Content',
-									'options2'			=>'Add/Edit Bookings',
-									'options3'			=>'Message Viewing/Editing',
-									'options4'			=>'Orders Viewing/Editing',
-									'options5'			=>'User Accounts Viewing/Editing',
-									'options6'			=>'SEO Viewing/Editing',
-									'options7'			=>'Preferences Viewing/Editing'
+													'options1'			=>'Edit Content',
+													'options2'			=>'Add/Edit Bookings',
+													'options3'			=>'Message Viewing/Editing',
+													'options4'			=>'Orders Viewing/Editing',
+													'options5'			=>'User Accounts Viewing/Editing',
+													'options6'			=>'SEO Viewing/Editing',
+													'options7'			=>'Preferences Viewing/Editing'
 								],
 		'Activity'				=>'Activity',
 		'Administration'		=>'Administration',
