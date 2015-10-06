@@ -70,7 +70,7 @@ if($args[0]=='view'){
 <div class="page-toolbar">
 	Order #<?php echo$r['qid'].$r['iid'];?>
 	<div class="btn-group pull-right">
-		<a class="btn btn-success" href="<?php echo URL.'admin/orders';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs">Back</span></a>
+		<a class="btn btn-success" href="<?php echo URL.'admin/orders';?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','back');echo'"';}?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs"><?php lang('button','back');?></span></a>
 	</div>
 </div>
 <div class="panel panel-default">
