@@ -75,71 +75,71 @@ if($args[0]=='view'){
 </div>
 <div class="panel panel-default">
 	<div class="panel-body">
-		<div class="alert alert-info visible-xs">Order Editing/Viewing is more suited for larger screens.</div>
+		<div class="alert alert-info visible-xs"><?php lang('alert','ordersmallscreen');?></div>
 		<div class="invoice">
 			<div class="row header">
 				<div class="col-xs-4 border-right">
-					<h2>From</h2>
+					<h2><?php lang('From');?></h2>
 					<div class="form-group">
 						<input type="text" class="form-control input-sm text-bold" value="<?php echo$config['business'];?>" readonly>
 					</div>
 					<div class="form-group">
-						<label class="control-label label-xs col-xs-3 col-lg-2">ABN</label>
+						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','abn');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="text" class="form-control input-xs" value="<?php echo$config['abn'];?>" readonly>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label label-xs col-xs-3 col-lg-2">Address</label>
+						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','address');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="text" class="form-control input-xs" value="<?php echo$config['address'];?>" readonly>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label label-xs col-xs-3 col-lg-2">Suburb</label>
+						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','suburb');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="text" class="form-control input-xs" value="<?php echo$config['suburb'];?>" readonly>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label label-xs col-xs-3 col-lg-2">City</label>
+						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','city');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="text" class="form-control input-xs" value="<?php echo$config['city'];?>" readonly>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label label-xs col-xs-3 col-lg-2">State</label>
+						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','state');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="text" class="form-control input-xs" value="<?php echo$config['state'];?>" readonly>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label label-xs col-xs-3 col-lg-2">Postcode</label>
+						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','postcode');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="text" class="form-control input-xs" value="<?php echo$config['postcode'];?>" readonly>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label label-xs col-xs-3 col-lg-2">Email</label>
+						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','email');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="text" class="form-control input-xs" value="<?php echo$config['email'];?>" readonly>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label label-xs col-xs-3 col-lg-2">Phone</label>
+						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','phone');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="text" class="form-control input-xs" value="<?php echo$config['phone'];?>" readonly>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label label-xs col-xs-3 col-lg-2">Mobile</label>
+						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','mobile');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="text" class="form-control input-xs" value="<?php echo$config['mobile'];?>" readonly>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-4 border-right">
-					<h2>To</h2>
+					<h2><?php lang('To');?></h2>
 					<div class="form-group">
 						<input type="text" id="client_business" class="form-control input-sm text-bold" value="<?php echo$client['username'];if($client['name']!='')echo' ['.$client['name'].']';if($client['business']!='')echo' -> '.$client['business'];?>" placeholder="Username, Business or Name..." readonly>
 					</div>
