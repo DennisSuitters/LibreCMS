@@ -244,11 +244,16 @@ if($args[0]=='view'){
 					<div class="form-group form-group-xs">
 						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','status');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
-<?php	if($r['status']=='archived')
-			echo'<input type="text" class="form-control input-xs" value="Archived" readonly>';
-		else{
-			echo'<select id="status" class="form-control" onchange="update(\''.$r['id'].'\',\'orders\',\'status\',$(this).val());"><option value="pending"';if($r['status']=='pending')echo' selected';echo'>Pending</option><option value="overdue"';if($r['status']=='overdue')echo' selected';echo'>Overdue</option><option value="cancelled"';if($r['status']=='cancelled')echo' selected';echo'>Cancelled</option><option value="paid"';if($r['status']=='paid')echo' selected';echo'>Paid</option></select>';
-		}?>
+<?php	if($r['status']=='archived'){?>
+							<input type="text" class="form-control input-xs" value="Archived" readonly>
+<?php 	}else{?>
+							<select id="status" class="form-control" onchange="update('<?php echo$r['id'];?>','orders','status',$(this).val());">
+								<option value="pending"<?php if($r['status']=='pending')echo' selected';?>>Pending</option>
+								<option value="overdue"<?php if($r['status']=='overdue')echo' selected';?>>Overdue</option>
+								<option value="cancelled"<?php if($r['status']=='cancelled')echo' selected';?>>Cancelled</option>
+								<option value="paid"<?php if($r['status']=='paid')echo' selected';?>>Paid</option>
+							</select>
+<?php	}?>
 						</div>
 					</div>
 					<div class="form-group form-group-xs">
