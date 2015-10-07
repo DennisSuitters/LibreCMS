@@ -248,22 +248,22 @@ if($args[0]=='view'){
 							<input type="text" class="form-control input-xs" value="Archived" readonly>
 <?php 	}else{?>
 							<select id="status" class="form-control" onchange="update('<?php echo$r['id'];?>','orders','status',$(this).val());">
-								<option value="pending"<?php if($r['status']=='pending')echo' selected';?>>Pending</option>
-								<option value="overdue"<?php if($r['status']=='overdue')echo' selected';?>>Overdue</option>
-								<option value="cancelled"<?php if($r['status']=='cancelled')echo' selected';?>>Cancelled</option>
-								<option value="paid"<?php if($r['status']=='paid')echo' selected';?>>Paid</option>
+								<option value="pending"<?php if($r['status']=='pending')echo' selected';?>><?php lang('Pending');?></option>
+								<option value="overdue"<?php if($r['status']=='overdue')echo' selected';?>><?php lang('Overdue');?></option>
+								<option value="cancelled"<?php if($r['status']=='cancelled')echo' selected';?>><?php lang('Cancelled');?></option>
+								<option value="paid"<?php if($r['status']=='paid')echo' selected';?>><?php lang('Paid');?></option>
 							</select>
 <?php	}?>
 						</div>
 					</div>
 					<div class="form-group form-group-xs">
-						<label class="control-label label-xs col-xs-3 col-lg-2">Recurring</label>
+						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','recurring');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="checkbox" id="recurring0" data-dbid="<?php echo$r['id'];?>" data-dbt="orders" data-dbc="recurring" data-dbb="0"<?php if($r['recurring']==1)echo' checked';if($r['status']=='archived')echo' disabled';?>><label for="recurring0">
 						</div>
 					</div>
 					<div class="form-group form-group-xs">
-						<small class="help-block">Note: cron.php must be added to crontab for recurring orders to be processed.</small>
+						<small class="help-block"><?php lang('info','recurring');?></small>
 					</div>
 				</div>
 			</div>

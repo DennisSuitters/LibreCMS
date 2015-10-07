@@ -57,6 +57,7 @@ function lang($phrase1,$phrase2=null){
 							'upload'			=>'Upload'
 						],
 		'Business'		=>'Business',
+		'Cancelled'		=>'Cancelled',
 		'confirmed'		=>'Confirmed',
 		'Content'		=>'Content',
 		'Delete'		=>'Delete',
@@ -70,7 +71,8 @@ function lang($phrase1,$phrase2=null){
 							'edited'			=>'Edited: ',
 							'fccif'				=>' for more information or to look up an FCC ID.',
 							'gravatar'			=>' Link will override any image uploaded as your Avatar.',
-							'orderclientnote'	=> 'Note: Changing values above will update the User\'s Account details.'
+							'orderclientnote'	=>'Note: Changing values above will update the User\'s Account details.',
+							'recurring'			=>'Note: cron.php must be added to crontab for recurring orders to be processed.'
 						],
 		'label'			=>[	'abn'				=>'ABN',
 							'about'				=>'About',
@@ -128,6 +130,7 @@ function lang($phrase1,$phrase2=null){
 							'postcode'			=>'Postcode',
 							'quantity'			=>'Quantity',
 							'rank'				=>'Rank',
+							'recurring'			=>'Recurring',
 							'schematype'		=>'schemaType',
 							'showcost'			=>'Show Cost',
 							'shutterspeed'		=>'Shutter Speed',
@@ -152,7 +155,10 @@ function lang($phrase1,$phrase2=null){
 		'Messages'		=>'Messages',
 		'none'			=>'None',
 		'Orders'		=>'Orders',
+		'Overdue'		=>'Overdue',
 		'Pages'			=>'Pages',
+		'Paid'			=>'Paid',
+		'Pending'		=>'Pending',
 		'placeholder'	=>[	'address'			=>'Enter an Address...',
 							'aperture'			=>'Enter Aperture/FStop...',
 							'barcode'			=>'Enter a Barcode...',
