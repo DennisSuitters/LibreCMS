@@ -30,6 +30,7 @@ function lang($phrase1,$phrase2=null){
 							'back'				=>'Back',
 							'booking'			=>'Booking',
 							'browse_image'		=>'Browse for Image',
+							'browse_images'		=>'Browse for Images',
 							'browse_uploaded'	=>'Browse Uploaded Images',
 							'cards'				=>'Cards',
 							'delete'			=>'Delete',

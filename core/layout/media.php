@@ -2,8 +2,8 @@
 	<div class="btn-group hidden-xs">
 		<form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
 			<input type="hidden" name="act" value="add_media">
-			<span class="btn btn-info btn-file">Browse for Images<input type="file" name="fu[]" multiple<?php if($user['options']{1}==0)echo' disabled';?>></span>
-			<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});">Upload</button>
+			<span class="btn btn-info btn-file"><?php lang('button','browse_images');?>'<input type="file" name="fu[]" multiple<?php if($user['options']{1}==0)echo' disabled';?>></span>
+			<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><?php lang('button','upload');?></button>
 		</form>
 	</div>
 </div>
