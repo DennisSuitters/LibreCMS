@@ -276,7 +276,7 @@ if($args[0]=='view'){
 								<div class="form-group">
 									<div class="input-group col-xs-12">
 										<select id="addItem" class="form-control">
-											<option value="0">Add Empty Entry</option>
+											<option value="0"><?php lang('placeholder','addemptyentry');?></option>
 <?php			$s=$db->query("SELECT id,contentType,code,cost,title FROM content WHERE contentType='inventory' OR contentType='service' OR contentType='events' ORDER BY code ASC");
 				while($i=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$i['id'].'">'.ucfirst(rtrim($i['contentType'],'s')).$i['code'].':$'.$i['cost'].':'.$i['title'].'</option>';?>
 										</select>
