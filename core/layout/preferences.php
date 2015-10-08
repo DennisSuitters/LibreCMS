@@ -2,12 +2,12 @@
 <div class="panel panel-default">
 	<div class="panel-body">
 		<ul class="nav nav-tabs">
-			<li class="active"><a href="#theme" data-toggle="tab"><i class="libre libre-theme visible-xs"></i><span class="hidden-xs">Theme</span></a></li>
-			<li><a href="#contact" data-toggle="tab"><i class="libre libre-address-book visible-xs"></i><span class="hidden-xs">Contact</span></a></li>
-			<li><a href="#interface" data-toggle="tab"><i class="libre libre-desktop visible-xs"></i><span class="hidden-xs">Interface</span></a></li>
-			<li><a href="#banking" data-toggle="tab"><i class="libre libre-bank visible-xs"></i><span class="hidden-xs">Banking</span></a></li>
-			<li><a href="#seo" data-toggle="tab"><i class="libre libre-seo visible-xs"></i><span class="hidden-xs">SEO</span></a></li>
-			<li><a href="#security" data-toggle="tab"><i class="libre libre-security visible-xs"></i><span class="hidden-xs">Security</span></a></li>
+			<li class="active"><a href="#theme" data-toggle="tab"><i class="libre libre-theme visible-xs"></i><span class="hidden-xs"><?php lang('button','theme');?></span></a></li>
+			<li><a href="#contact" data-toggle="tab"><i class="libre libre-address-book visible-xs"></i><span class="hidden-xs"><?php lang('button','contact');?></span></a></li>
+			<li><a href="#interface" data-toggle="tab"><i class="libre libre-desktop visible-xs"></i><span class="hidden-xs"><?php lang('button','interface');?></span></a></li>
+			<li><a href="#banking" data-toggle="tab"><i class="libre libre-bank visible-xs"></i><span class="hidden-xs"><?php lang('button','banking');?></span></a></li>
+			<li><a href="#seo" data-toggle="tab"><i class="libre libre-seo visible-xs"></i><span class="hidden-xs"><?php lang('button','seo');?></span></a></li>
+			<li><a href="#security" data-toggle="tab"><i class="libre libre-security visible-xs"></i><span class="hidden-xs"><?php lang('button','security');?></span></a></li>
 		</ul>
 		<div class="tab-content">
 			<div id="theme" class="tab-pane fade in active">
@@ -24,9 +24,9 @@
 							</div>
 							<div class="panel-body panel-content">
 								<p>
-									<small class="version">Version: <?php if(isset($theme['version'])&&$theme['version']!='')echo$theme['version'];else echo'No Version Assigned';?></small><br>
-									<small class="creator">Creator: <?php if(isset($theme['creator_url'])&&$theme['creator_url']!='')echo'<a target="_blank" href="'.$theme['creator_url'].'">'.$theme['creator'].'</a>';else echo'No Creator Assigned';?></small><br>
-									<small class="description"><?php if(isset($theme['description'])&&$theme['description']!='')echo$theme['description'];else'No Description Assigned';?></small>
+									<small class="version"><?php lang('label','version');?>: <?php if(isset($theme['version'])&&$theme['version']!='')echo$theme['version'];else echo'No Version Assigned';?></small><br>
+									<small class="creator"><?php lang('label','creator');?>: <?php if(isset($theme['creator_url'])&&$theme['creator_url']!='')echo'<a target="_blank" href="'.$theme['creator_url'].'">'.$theme['creator'].'</a>';else lang('info','nocreator');?></small><br>
+									<small class="description"><?php if(isset($theme['description'])&&$theme['description']!='')echo$theme['description'];else lang('info','nodescription');?></small>
 								</p>
 							</div>
 						</div>
@@ -37,69 +37,69 @@
 			</div>
 			<div id="contact" class="tab-pane fade in">
 				<div class="form-group">
-					<label for="business" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Business</label>
+					<label for="business" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','business');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="business" class="form-control textinput" value="<?php echo$config['business'];?>" data-dbid="1" data-dbt="config" data-dbc="business" placeholder="Enter Business Name...">
+						<input type="text" id="business" class="form-control textinput" value="<?php echo$config['business'];?>" data-dbid="1" data-dbt="config" data-dbc="business" placeholder="<?php lang('placeholder','business');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="abn" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">ABN</label>
+					<label for="abn" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','abn');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="abn" class="form-control textinput" value="<?php echo$config['abn'];?>" data-dbid="1" data-dbt="config" data-dbc="abn" placeholder="Enter an ABN...">
+						<input type="text" id="abn" class="form-control textinput" value="<?php echo$config['abn'];?>" data-dbid="1" data-dbt="config" data-dbc="abn" placeholder="<?php lang('placeholder','abn');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="email" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Email</label>
+					<label for="email" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','email');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="email" class="form-control textinput" value="<?php echo$config['email'];?>" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="Enter an Email...">
+						<input type="text" id="email" class="form-control textinput" value="<?php echo$config['email'];?>" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="<?php lang('placeholder','email');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="phone" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Phone</label>
+					<label for="phone" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','phone');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="phone" class="form-control textinput" value="<?php echo$config['phone'];?>" data-dbid="1" data-dbt="config" data-dbc="phone" placeholder="Enter a Phone Number...">
+						<input type="text" id="phone" class="form-control textinput" value="<?php echo$config['phone'];?>" data-dbid="1" data-dbt="config" data-dbc="phone" placeholder="<?php lang('placeholder','phone');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="mobile" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Mobile</label>
+					<label for="mobile" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','mobile');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="mobile" class="form-control textinput" value="<?php echo$config['mobile'];?>" data-dbid="1" data-dbt="config" data-dbc="mobile" placeholder="Enter a Mobile Number...">
+						<input type="text" id="mobile" class="form-control textinput" value="<?php echo$config['mobile'];?>" data-dbid="1" data-dbt="config" data-dbc="mobile" placeholder="<?php lang('placeholder','mobile');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="address" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Address</label>
+					<label for="address" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','address');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="address" class="form-control textinput" value="<?php echo$config['address'];?>" data-dbid="1" data-dbt="config" data-dbc="address" placeholder="Enter an Address...">
+						<input type="text" id="address" class="form-control textinput" value="<?php echo$config['address'];?>" data-dbid="1" data-dbt="config" data-dbc="address" placeholder="<?php lang('placeholder','address');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="suburb" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Suburb</label>
+					<label for="suburb" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','suburb');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="suburb" class="form-control textinput" value="<?php echo$config['suburb'];?>" data-dbid="1" data-dbt="config" data-dbc="suburb" placeholder="Enter a Suburb...">
+						<input type="text" id="suburb" class="form-control textinput" value="<?php echo$config['suburb'];?>" data-dbid="1" data-dbt="config" data-dbc="suburb" placeholder="<?php lang('placeholder','suburb');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="city" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">City</label>
+					<label for="city" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','city');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="city" class="form-control textinput" value="<?php echo$config['city'];?>" data-dbid="1" data-dbt="config" data-dbc="city" placeholder="Enter a City...">
+						<input type="text" id="city" class="form-control textinput" value="<?php echo$config['city'];?>" data-dbid="1" data-dbt="config" data-dbc="city" placeholder="<?php lang('placeholder','city');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="state" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">State</label>
+					<label for="state" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','state');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="state" class="form-control textinput" value="<?php echo$config['state'];?>" data-dbid="1" data-dbt="config" data-dbc="state" placeholder="Enter a State...">
+						<input type="text" id="state" class="form-control textinput" value="<?php echo$config['state'];?>" data-dbid="1" data-dbt="config" data-dbc="state" placeholder="<?php lang('placeholder','state');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="postcode" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Postcode</label>
+					<label for="postcode" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','postcode');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="postcode" class="form-control textinput" value="<?php if($config['postcode']!=0)echo$config['postcode'];?>" data-dbid="1" data-dbt="config" data-dbc="postcode" placeholder="Enter a Postcode...">
+						<input type="text" id="postcode" class="form-control textinput" value="<?php if($config['postcode']!=0)echo$config['postcode'];?>" data-dbid="1" data-dbt="config" data-dbc="postcode" placeholder="<?php lang('placeholder','postcode');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="country" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Country</label>
+					<label for="country" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','country');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="country" class="form-control textinput" value="<?php echo$config['country'];?>" data-dbid="1" data-dbt="config" data-dbc="country" placeholder="Enter a Country...">
+						<input type="text" id="country" class="form-control textinput" value="<?php echo$config['country'];?>" data-dbid="1" data-dbt="config" data-dbc="country" placeholder="<?php lang('placeholder','country');?>">
 					</div>
 				</div>
 			</div>
@@ -108,48 +108,48 @@
 					<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
 						<input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>><label for="options3">
 					</div>
-					<label for="options3" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="This allows Users to Create Accounts."';?>>Enable Account Sign Ups</span></label>
+					<label for="options3" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="This allows Users to Create Accounts."';?>><?php lang('label','enablesignups');?></span></label>
 				</div>
 				<div class="form-group">
 					<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
 						<input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>><label for="options4">
 					</div>
-					<label for="options4" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Administration Tooltips, like this one."';?>>Enable Tooltips</span></label>
+					<label for="options4" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Administration Tooltips, like this one."';?>><?php lang('label','enabletooltips');?></span></label>
 				</div>
 				<div class="form-group">
 					<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
 						<input type="checkbox" id="options5" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="5"<?php if($config['options']{5}==1)echo' checked';?>><label for="options5">
 					</div>
-					<label for="options5" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Helper Button for Content Guide Hints."';?>>Enable Clickable Helper Guides like this</span>&nbsp;&nbsp;<button class="btn btn-info"><i class="libre libre-seo"></i></button></label>
+					<label for="options5" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Helper Button for Content Guide Hints."';?>><?php lang('label','enableguides');?></span>&nbsp;&nbsp;<button class="btn btn-info"><i class="libre libre-seo"></i></button></label>
 					<div class="help-block col-xs-7 col-sm-9 col-md-9 col-lg-10 pull-right">
-						SEO Helper Icon will be hidden on small screens.
+						<?php lang('info','seohelper');?>
 					</div>
 				</div>
 				<div class="clearfix"></div>
 				<fieldset>
-					<legend>Default Content Display</legend>
+					<legend><?php lang('title','preferencescontentdisplay');?></legend>
 					<div class="form-group">
-						<label for="layoutContent" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Content</label>
+						<label for="layoutContent" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','content');?></label>
 						<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 							<div class="btn-group" data-toggle="buttons">
-								<label class="btn btn-default<?php if($config['layoutContent']=='card'){echo' active';}?>"><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutContent','card');"<?php if($config['layoutContent']=='card'){echo' checked';}if($config['buttonType']=='text'){echo'>Cards';}else{echo'><i class="libre libre-layout-blocks"></i>';}?></label>
-								<label class="btn btn-default<?php if($config['layoutContent']=='list'){echo' active';}?>"><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutContent','list');"<?php if($config['layoutContent']=='list'){echo' checked';}if($config['buttonType']=='text'){echo'>List';}else{echo'><i class="libre libre-layout-list"></i>';}?>
+								<label class="btn btn-default<?php if($config['layoutContent']=='card'){echo' active';}?>"><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutContent','card');"<?php if($config['layoutContent']=='card'){echo' checked';}echo'><i class="libre libre-layout-blocks"></i>';?></label>
+								<label class="btn btn-default<?php if($config['layoutContent']=='list'){echo' active';}?>"><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutContent','list');"<?php if($config['layoutContent']=='list'){echo' checked';}echo'><i class="libre libre-layout-list"></i>';?>
 								</label>
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="layoutContent" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Accounts</label>
+						<label for="layoutContent" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','accounts');?></label>
 						<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 							<div class="btn-group" data-toggle="buttons">
-								<label class="btn btn-default<?php if($config['layoutAccounts']=='card'){echo' active';}?>"><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutAccounts','card');"<?php if($config['layoutAccounts']=='card'){echo' checked';}if($config['buttonType']=='text'){echo'>Cards';}else{echo'><i class="libre libre-layout-blocks"></i>';}?></label>
-								<label class="btn btn-default<?php if($config['layoutAccounts']=='list'){echo' active';}?>"><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutAccounts','list');"<?php if($config['layoutAccounts']=='list'){echo' checked';}if($config['buttonType']=='text'){echo'>List';}else{echo'><i class="libre libre-layout-list"></i>';}?>
+								<label class="btn btn-default<?php if($config['layoutAccounts']=='card'){echo' active';}?>"><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutAccounts','card');"<?php if($config['layoutAccounts']=='card'){echo' checked';}echo'><i class="libre libre-layout-blocks"></i>';?></label>
+								<label class="btn btn-default<?php if($config['layoutAccounts']=='list'){echo' active';}?>"><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutAccounts','list');"<?php if($config['layoutAccounts']=='list'){echo' checked';}echo'><i class="libre libre-layout-list"></i>';?>
 								</label>
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="layoutContent" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Bookings</label>
+						<label for="layoutContent" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','bookings');?></label>
 						<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 							<div class="btn-group" data-toggle="buttons">
 								<label class="btn btn-default<?php if($config['layoutBookings']=='calendar'){echo' active';}?>">
@@ -163,20 +163,20 @@
 					</div>
 				</fieldset>
 				<div class="form-group">
-					<label for="showItems" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Item Count</label>
+					<label for="showItems" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','itemcount');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 <?php 	if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><button class="btn btn-info" data-toggle="popover" title="Number of Items to Show" data-content="Number of Items to Display."><i class="libre libre-seo"></i></button></div>';?>
-						<input type="text" id="showItems" class="form-control textinput" value="<?php echo$config['showItems'];?>" data-dbid="1" data-dbt="config" data-dbc="showItems" placeholder="Enter Number of Items to Display..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Number of Items to Display."';?>>
+						<input type="text" id="showItems" class="form-control textinput" value="<?php echo$config['showItems'];?>" data-dbid="1" data-dbt="config" data-dbc="showItems" placeholder="Enter Number of Items to Display..."<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','itemcount');echo'"';}?>>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="idleTime" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Idle Timeout</label>
+					<label for="idleTime" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','idletime');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="idleTime" class="form-control textinput" value="<?php echo$config['idleTime'];?>" data-dbid="1" data-dbt="config" data-dbc="idleTime" placeholder="Enter a Time in Minutes..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Time in Minutes for Idle Timeout for Auto Logout..."';?>>
-						<div class="input-group-addon">Minutes</div>
+						<input type="text" id="idleTime" class="form-control textinput" value="<?php echo$config['idleTime'];?>" data-dbid="1" data-dbt="config" data-dbc="idleTime" placeholder="Enter a Time in Minutes..."<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','idletime');echo'"';}?>>
+						<div class="input-group-addon"><?php lang('Minutes');?></div>
 					</div>
 					<div class="col-xs-7 col-sm-9 col-md-9 col-lg-10 pull-right">
-						<div class="help-block">'0' Disables Idle Timeout...</div>
+						<div class="help-block"><?php lang('info','idletime');?></div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -193,9 +193,9 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="timezone" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Timezone</label>
+					<label for="timezone" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','timezone');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<select id="timezone" class="form-control" onchange="update('1','config','timezone',$(this).val());"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+						<select id="timezone" class="form-control" onchange="update('1','config','timezone',$(this).val());"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','timezone');echo'"';}?>>
 <?php function formatOffset($offset){
 	$hours=$offset/3600;
 	$remainder=$offset%3600;
@@ -218,18 +218,16 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="dateFormat" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Date/Time Format</label>
+					<label for="dateFormat" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','datetimeformat');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><button class="btn btn-info" data-toggle="popover" title="Date/Time Format" data-content="This sets how Dates/Times are displayed."><i class="libre libre-seo"></i></button></div>';?>
-						<input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date Format..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Format Layout of all Dates/Times displayed."';?>>
+						<input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date Format..."<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','datetimeformat');echo'"';}?>>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">&nbsp;</label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 						<div class="well">
-							<h4 onclick="$('#dateTimeOptions').toggle(400);"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Click to show Date/Time Formatting Options."';?>>
-								Show Date/Time Formatting Options
+							<h4 onclick="$('#dateTimeOptions').toggle(400);"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','dateformatoptions');echo'"';}?>><?php lang('title','dateformatoptions');?>
 								<span class="pull-right"><i class="caret"></i></span>
 							</h4>
 							<table id="dateTimeOptions" class="table table-striped" style="display:none">
