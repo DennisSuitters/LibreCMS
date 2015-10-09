@@ -1,13 +1,13 @@
 <h1 class="page-toolbar">
-	Activity
+	<?php lang('title','activity');?>
 	<div class="pull-right">
 		<div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Purge All Log Items."';?>>
-			<button class="btn btn-warning" onclick="purge('0','logs')"><i class="libre libre-purge visible-xs"></i><span class="hidden-xs">Purge All</span></button>
+			<button class="btn btn-warning" onclick="purge('0','logs')"><i class="libre libre-purge visible-xs"></i><span class="hidden-xs"><?php lang('button','purgeall');?></span></button>
 		</div>
 		<div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add Items by Action."';?>>
-			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view visible-xs"></i><span class="hidden-xs">Show</span></button>
+			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view visible-xs"></i><span class="hidden-xs"><?php lang('button','show');?></span></button>
 			<ul class="dropdown-menu pull-right">
-				<li><a href="<?php echo URL.'admin/activity';?>">All</a></li>
+				<li><a href="<?php echo URL.'admin/activity';?>"><?php lang('button','all');?></a></li>
 <?php	$st=$db->query("SELECT DISTINCT action FROM logs ORDER BY action ASC");
 		while($sr=$st->fetch(PDO::FETCH_ASSOC))echo'<li><a href="'.URL.'admin/activity/action/'.$sr['action'].'">'.ucfirst($sr['action']).'</a></li>';?>
 			</ul>

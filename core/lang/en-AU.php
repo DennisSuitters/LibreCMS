@@ -55,6 +55,7 @@ function lang($phrase1,$phrase2=null){
 							'print'				=>'Print',
 							'proof'				=>'Proof',
 							'purge'				=>'Purge',
+							'purgeall'			=>'Purge All',
 							'quote'				=>'Quote',
 							'quotes'			=>'Quotes',
 							'restore'			=>'Restore',
@@ -319,6 +320,7 @@ function lang($phrase1,$phrase2=null){
 							'ga_userflow'		=>'User Flow!'
 						],
 		'title'			=>[	'account_permissions'	=>'Editing Permissions',
+							'activity'				=>'Activity',
 							'analytics'				=>'Default Analytics',
 							'banking'				=>'Banking Details',
 							'comments'				=>'Comments',
