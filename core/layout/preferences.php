@@ -270,67 +270,67 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 				</div>
 			</div>
 			<div id="banking" class="tab-pane fade in">
-				<h4>Banking Details</h4>
+				<h4><?php lang('title','banking');?></h4>
 				<div class="form-group">
-					<label for="bank" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Bank</label>
+					<label for="bank" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','bank');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="bank" class="form-control textinput" value="<?php echo$config['bank'];?>" data-dbid="1" data-dbt="config" data-dbc="bank" placeholder="Enter Bank Name...">
+						<input type="text" id="bank" class="form-control textinput" value="<?php echo$config['bank'];?>" data-dbid="1" data-dbt="config" data-dbc="bank" placeholder="<?php lang('placeholder','bank');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="bankAccountName" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Account Name</label>
+					<label for="bankAccountName" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','accountname');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="bankAccountName" class="form-control textinput" value="<?php echo$config['bankAccountName'];?>"data-dbid="1" data-dbt="config" data-dbc="bankAccountName" placeholder="Enter an Account Name...">
+						<input type="text" id="bankAccountName" class="form-control textinput" value="<?php echo$config['bankAccountName'];?>"data-dbid="1" data-dbt="config" data-dbc="bankAccountName" placeholder="<?php lang('placeholder','accountname');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="bankAccountNumber" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Account Number</label>
+					<label for="bankAccountNumber" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','accountnumber');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="bankAccountNumber" class="form-control textinput" value="<?php echo$config['bankAccountNumber'];?>" data-dbid="1" data-dbt="config" data-dbc="bankAccountNumber" placeholder="Enter an Account Number...">
+						<input type="text" id="bankAccountNumber" class="form-control textinput" value="<?php echo$config['bankAccountNumber'];?>" data-dbid="1" data-dbt="config" data-dbc="bankAccountNumber" placeholder="<?php lang('placeholder','accountnumber');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="bankBSB" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">BSB</label>
+					<label for="bankBSB" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','bsb');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="bankBSB" class="form-control textinput" value="<?php echo$config['bankBSB'];?>" data-dbid="1" data-dbt="config" data-dbc="bankBSB" placeholder="Enter a BSB...">
+						<input type="text" id="bankBSB" class="form-control textinput" value="<?php echo$config['bankBSB'];?>" data-dbid="1" data-dbt="config" data-dbc="bankBSB" placeholder="<?php lang('placeholder','bsb');?>">
 					</div>
 				</div>
-				<h4>PayPal Details</h4>
+				<h4><?php lang('title','paypal');?></h4>
 				<div class="form-group">
-					<label for="bankPayPal" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Account</label>
+					<label for="bankPayPal" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','paypalaccount');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="bankPayPal" class="form-control textinput" value="<?php echo$config['bankPayPal'];?>" data-dbid="1" data-dbt="config" data-dbc="bankPayPal" placeholder="Enter a PayPal Account...">
+						<input type="text" id="bankPayPal" class="form-control textinput" value="<?php echo$config['bankPayPal'];?>" data-dbid="1" data-dbt="config" data-dbc="bankPayPal" placeholder="<?php lang('placeholder','paypalaccount');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="ipn" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">IPN</label>
+					<label for="ipn" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','paypalipn');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<input type="text" id="ipn" class="form-control" value="" readonly<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title=""';?>>
+						<input type="text" id="ipn" class="form-control" value="" readonly<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','paypalipn');echo'"';}?>>
 					</div>
 				</div>
-				<h4>Order Processing</h4>
+				<h4><?php lang('title','orderprocessing');?></h4>
 				<div class="form-group">
-					<label for="orderPayti" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Allow</label>
+					<label for="orderPayti" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','allow');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 						<select id="orderPayti" class="form-control" onchange="update('1','config','orderPayti',$(this).val());">
-							<option value="0"<?php if($config['orderPayti']==0)echo' selected';}?>>0 Days</option>
-							<option value="604800"<?php if($config['orderPayti']==604800)echo' selected';?>>7 Days</option>
-							<option value="1209600"<?php if($config['orderPayti']==1209600)echo' selected';?>>14 Days</option>
-							<option value="1814400"<?php if($config['orderPayti']==1814400)echo' selected';?>>21 Days</option>
-							<option value="2592000"<?php if($config['orderPayti']==2592000)echo' selected';?>>30 Days</option>
+							<option value="0"<?php if($config['orderPayti']==0)echo' selected';?>><?php lang('button','0days');?></option>
+							<option value="604800"<?php if($config['orderPayti']==604800)echo' selected';?>><?php lang('button','7days');?></option>
+							<option value="1209600"<?php if($config['orderPayti']==1209600)echo' selected';?>><?php lang('button','14days');?></option>
+							<option value="1814400"<?php if($config['orderPayti']==1814400)echo' selected';?>><?php lang('button','21days');?></option>
+							<option value="2592000"<?php if($config['orderPayti']==2592000)echo' selected';?>><?php lang('button','30days');?></option>
 						</select>
-						<div class="input-group-addon">for Payments</div>
+						<div class="input-group-addon"><?php lang('label','forpayments');?></div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="orderEmailDefaultSubject" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Email Subject</label>
+					<label for="orderEmailDefaultSubject" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','orderemaildefaultsubject');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 						<input type="text" id="orderEmailDefaultSubject" class="form-control textinput" value="<?php echo$config['orderEmailDefaultSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="orderEmailDefaultSubject">
-						<span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number}</span>
+						<span class="help-block"><?php lang('info','emailsubjecttokens');?></span>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="orderEmailLayout" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Email Layout</label>
+					<label for="orderEmailLayout" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','orderemaillayout');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 						<form method="post" target="sp" action="core/update.php">
 							<input type="hidden" name="id" value="1">
@@ -338,7 +338,7 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 							<input type="hidden" name="c" value="orderEmailLayout">
 							<textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['orderEmailLayout'];?></textarea>
 						</form>
-						<span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</span>
+						<span class="help-block"><?php lang('info','orderemaillayout');?></span>
 					</div>
 				</div>
 				<div class="form-group">
