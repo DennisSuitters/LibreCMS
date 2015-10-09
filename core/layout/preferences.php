@@ -342,7 +342,7 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="orderEmailNotes" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Order Notes</label>
+					<label for="orderEmailNotes" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','orderemailnotes');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 						<form method="post" target="sp" action="core/update.php">
 							<input type="hidden" name="id" value="1">
@@ -350,47 +350,47 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 							<input type="hidden" name="c" value="orderEmailNotes">
 							<textarea id="orderEmailNotes" class="form-control summernote" name="da"><?php echo$config['orderEmailNotes'];?></textarea>
 						</form>
-						<span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</span>
+						<span class="help-block"><?php lang('info','orderemailnotes');?></span>
 					</div>
 				</div>
 			</div>
 			<div id="seo" class="tab-pane fade in">
-				<h4>Default Analytics</h4>
+				<h4><?php lang('title','analytics');?></h4>
 				<div class="form-group">
 					<div class="col-xs-5 col-sm-3 col-md-3 col-lg-2"></div>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-						<span class="help-block">These will be used if Page or Content Seo Fields are empty.</span>
+						<span class="help-block"><?php lang('info','analytics');?></span>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoTitle</label>
+					<label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','seotitle');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 <?php 	if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
-						<input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$config['seoTitle'];?>" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="Enter a Page Title..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+						<input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$config['seoTitle'];?>" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="<?php lang('placeholder','seotitle');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoCaption</label>
+					<label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','seocaption');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 <?php 	if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
-						<input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$config['seoCaption'];?>" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="Enter a Page Caption..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+						<input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$config['seoCaption'];?>" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="<?php lang('placeholder','seocaption');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoDescription</label>
+					<label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','seodescription');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 <?php 	if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
-						<input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$config['seoDescription'];?>" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="Enter a Page Description..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+						<input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$config['seoDescription'];?>" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="<?php lang('placeholder','seodescription');?>">
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">seoKeywords</label>
+					<label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','seokeywords');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 <?php 	if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
-						<input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Page Keywords..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+						<input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="<?php lang('placeholder','seokeywords');?>">
 					</div>
 				</div>
-				<h4>Google Analytics</h4>
+				<h4><?php lang('title','googleanalytics');?></h4>
 				<div class="form-group">
 					<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
 						<input type="checkbox" id="options8" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="8"<?php if($config['options']{8}==1)echo' checked';?>><label for="options8">
