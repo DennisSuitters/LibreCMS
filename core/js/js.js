@@ -331,9 +331,3 @@ $(".starred").on({
 		})
 	}
 })(jQuery);
-window.addEventListener("keydown",function (e) {
-    if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)) {
-		alert("Find is disabled for now, but will soon display a cool search option.")
-        e.preventDefault();
-    }
-})

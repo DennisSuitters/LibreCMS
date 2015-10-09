@@ -13,7 +13,7 @@ img.login{width:10em;margin:0 0 10px 0}
 #busy{position:fixed;bottom:5px;left:5px;display:none}
 .busy{position:absolute;top:2px;left:-32px;z-index:1000}
 .busycheck{position:absolute;top:-8px;left:-32px;z-index:1000}
-#block{position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483646;display:none;background:#000;background:rgba(0,0,0,.15)}
+#block,.block{position:fixed;top:0;right:0;bottom:0;left:0;z-index:2147483646;display:none;background:#000;background:rgba(0,0,0,.15)}
 #block>i{position:absolute;top:47%;left:47%;margin:0 auto;color:#fff;text-shadow:0 0 100px #000,0 0 50px #000,0 0 25px #000}
 .btn-xs{padding:0 5px 1px 5px;font-size:12px;line-height:1.5;border-radius:3px}
 .input-group-addon#file,

@@ -301,6 +301,13 @@ if($_SESSION['rank']>399){?>
 						});
 					})(jQuery)
 <?php		}?>
+				window.addEventListener("keydown",function (e) {
+				    if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)) {
+						$('#search').css({'display':'block'});
+				    }
+					if(e.keyCode === 27)$('#search').css({'display':'none'});
+					e.preventDefault();
+				});
 			});
 		/*]]>*/</script>
 		<div class="modal fade bookings">
@@ -310,14 +317,25 @@ if($_SESSION['rank']>399){?>
 		</div>
 		<div id="seo" class="modal fade seo">
 			<div class="modal-dialog">
-				<div class="modal-content">
-				</div>
+				<div class="modal-content"></div>
 			</div>
 		</div>
 		<div id="media" class="modal fade media">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="max-height:85%">
-				</div>
+				<div class="modal-content" style="max-height:85%"></div>
+			</div>
+		</div>
+		<div id="search" class="block">
+			<div class="modal-dialog modal-lg">
+				<form method="post" action="admin/search">
+					<div class="input-group col-xs-12">
+						<input type="text" class="form-control" name="search" placeholder="<?php lang('placeholder','search');?>">
+						<div class="input-group-btn">
+							<button class="btn btn-success"><?php lang('button','search');?></button>
+							<button class="btn btn-default"><?php lang('button','close');?></button>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
 <?php	}?>
