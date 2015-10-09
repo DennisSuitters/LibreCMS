@@ -395,12 +395,12 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 					<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
 						<input type="checkbox" id="options8" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="8"<?php if($config['options']{8}==1)echo' checked';?>><label for="options8">
 					</div>
-					<label for="options8" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Disable/Enable Internal Data Collection Widgets Display."';?>>Disable/Enable Google Data Collection Widgets Display.</span></label>
-					<div class="help-block col-xs-7 col-sm-9 col-md-9 col-lg-10 pull-right">This will not affect the embedded Google Analytics on the main site.</div>
+					<label for="options8" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','googleanalyticsdashboard');echo'"';}?>>Disable/Enable Google Data Collection Widgets Display.</span></label>
+					<div class="help-block col-xs-7 col-sm-9 col-md-9 col-lg-10 pull-right"><?php lang('info','googleanalyticsdashboard');?></div>
 				</div>
 				<div class="clearfix"></div>
 				<div class="form-group">
-					<label for="gaClientID" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">ClientID</label>
+					<label for="gaClientID" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','clientid');?></label>
 					<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 <?php 	if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
 						<input type="text" id="gaClientID" class="form-control textinput" value="<?php echo$config['gaClientID'];?>" data-dbid="1" data-dbt="config" data-dbc="gaClientID" placeholder="Enter Google Analytics Client ID..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
@@ -409,26 +409,26 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 			</div>
 			<div id="security" class="tab-pane fade in">
 				<div id="backup" class="well" name="backup">
-					<h4>Database Backup/Restore</h4>
+					<h4><?php lang('title','databasebackuprestore');?></h4>
 					<div class="form-group">
-						<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Backup</label>
+						<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','backup');?></label>
 						<form target="sp" method="post" action="core/backup.php">
 							<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 								<div class="input-group-btn">
-									<button type="submit" class="btn btn-default btn-block" onclick="$('#block').css({'display':'block'});">Go</button>
+									<button type="submit" class="btn btn-default btn-block" onclick="$('#block').css({'display':'block'});"><?php lang('button','go');?></button>
 								</div>
 							</div>
 						</form>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Restore</label>
+						<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','restore');?></label>
 						<form target="sp" method="post" enctype="multipart/form-data" action="core/restore.php">
 							<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 								<div class="btn btn-default btn-block btn-file">
-									Browse for Backup File<input type="file" id="fu" class="form-control" name="fu" accept="application/x-gzip,application/sql">
+									<?php lang('button','browse_backup');?><input type="file" id="fu" class="form-control" name="fu" accept="application/x-gzip,application/sql">
 								</div>
 								<div class="input-group-btn">
-									<button type="submit" class="btn btn-default" onclick="$('#block').css({'display':'block'});">Restore</button>
+									<button type="submit" class="btn btn-default" onclick="$('#block').css({'display':'block'});"><?php lang('button','restore');?></button>
 								</div>
 							</div>
 						</form>
@@ -448,7 +448,7 @@ foreach(DateTimeZone::listIdentifiers() as$tz){
 <?php }?>
 					</div>
 					<div class="well">
-						<h4>File Integrity Check</h4>
+						<h4><?php lang('title','fileintegrity');?></h4>
 					</div>
 				</div>
 			</div>
