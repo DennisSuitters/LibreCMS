@@ -256,7 +256,7 @@ $(".important").on({
 function reload(c){
 	location.reload(true);
 }
-function loadMore(l,is,ie,action){
+function loadMore(l,is,ie,action,lang){
 	$('#more_'+is).html('<div class="text-center"><i class="libre libre-spinner-12 libre-2x animated spin"></i></div>');
 	$.ajax({
 		type:"GET",
@@ -264,7 +264,8 @@ function loadMore(l,is,ie,action){
 		data:{
 			is:is,
 			ie:ie,
-			action:action
+			action:action,
+			l:lang
 		}
 	}).done(function(msg){
 		$('#more_'+is).html(msg);

@@ -290,12 +290,12 @@ function _ago($time){
 	$toTime=time();
 	$fromTime=$time;
 	$timeDiff=floor(abs($toTime-$fromTime)/60);
-	if($timeDiff<2)$timeDiff="Just now";
-	elseif($timeDiff>2&&$timeDiff<60)$timeDiff=floor(abs($timeDiff))." minutes ago";
-	elseif($timeDiff>60&&$timeDiff<120)$timeDiff=floor(abs($timeDiff/60))." hour ago";
-	elseif($timeDiff<1440)$timeDiff=floor(abs($timeDiff/60))." hours ago";
-	elseif($timeDiff>1440&& $timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440))." day ago";
-	elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440))." days ago";
+	if($timeDiff<2)$timeDiff=lang('noecho','Just now');
+	elseif($timeDiff>2&&$timeDiff<60)$timeDiff=floor(abs($timeDiff)).' '.lang('noecho','minutesago');
+	elseif($timeDiff>60&&$timeDiff<120)$timeDiff=floor(abs($timeDiff/60)).' '.lang('noecho','hourago');
+	elseif($timeDiff<1440)$timeDiff=floor(abs($timeDiff/60)).' '.lang('noecho','hoursago');
+	elseif($timeDiff>1440&& $timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440)).' '.lang('noecho','dayago');
+	elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440)).' '.lang('noecho','daysago');
 	return$timeDiff;
 }
 class router{
@@ -304,7 +304,7 @@ class router{
 	protected$route_call_args=false;
 	protected$routes=array();
 	public function __construct(){
-	
+
 	}
 	public function setRoutes($routes){
 		$this->routes=$routes;

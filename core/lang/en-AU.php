@@ -49,6 +49,7 @@ function lang($phrase1,$phrase2=null){
 							'gallery'			=>'Gallery',
 							'list'				=>'List',
 							'login'				=>'Login',
+							'more'				=>'More',
 							'news'				=>'News',
 							'pending'			=>'Pending',
 							'portfolio'			=>'Portfolio',
@@ -76,6 +77,7 @@ function lang($phrase1,$phrase2=null){
 							'upload'			=>'Upload'
 						],
 		'Business'		=>'Business',
+		'by'			=>'by',
 		'Cancelled'		=>'Cancelled',
 		'confirmed'		=>'Confirmed',
 		'Content'		=>'Content',
@@ -106,6 +108,7 @@ function lang($phrase1,$phrase2=null){
 							'accountname'		=>'Account Name',
 							'accountnumber'		=>'Account Number',
 							'accounts'			=>'Accounts',
+							'action'			=>'Action',
 							'active'			=>'Active',
 							'address'			=>'Address',
 							'allow'				=>'Allow',
@@ -128,10 +131,12 @@ function lang($phrase1,$phrase2=null){
 							'categoryprimary'	=>'Category Primary',
 							'categorysecondary'	=>'Category Secondary',
 							'changeclient'		=>'Change Client',
+							'changedto'			=>'Changed To',
 							'city'				=>'City',
 							'client'			=>'Client',
 							'clientid'			=>'Client ID',
 							'code'				=>'Code',
+							'column'			=>'Column',
 							'comment'			=>'Comment',
 							'comments'			=>'Comments',
 							'content'			=>'Content',
@@ -141,6 +146,7 @@ function lang($phrase1,$phrase2=null){
 							'cover'				=>'Cover',
 							'created'			=>'Created',
 							'creator'			=>'Creator',
+							'data'				=>'Data',
 							'datetimeformat'	=>'Date/Time Format',
 							'due'				=>'Due',
 							'duedate'			=>'Due Date',
@@ -195,6 +201,7 @@ function lang($phrase1,$phrase2=null){
 							'state'				=>'State',
 							'status'			=>'Status',
 							'suburb'			=>'Suburb',
+							'table'				=>'Table',
 							'tags'				=>'Tags',
 							'taken'				=>'Taken',
 							'timezone'			=>'Timezone',
@@ -364,18 +371,31 @@ function lang($phrase1,$phrase2=null){
 							'pin'				=>'Pin/Unpin to Top',
 							'print'				=>'Print Order',
 							'purge'				=>'Purge',
+							'purgeall'			=>'Purge All Log Items.',
 							'restore'			=>'Restore',
 							'resize'			=>'Drag to Change Order',
 							'schematype'		=>'Schema for Microdata Content.',
 							'selectdate'		=>'Select a Date/Time...',
+							'showitems'			=>'Show Items by Action.',
 							'timezone'			=>'',
 							'views'				=>'Views'
 						],
 		'unconfirmed'	=>'Unconfirmed',
-		'Unpublished'	=>'Unpublished'
+		'Unpublished'	=>'Unpublished',
+		'noecho'		=>[	'justnow'	=>'Just now',
+							'minutesago'=>'minutes ago',
+							'hourago'	=>'hour ago',
+							'hoursago'	=>'hours ago',
+							'dayago'	=>'day ago',
+							'daysago'	=>'days ago',
+							'created'	=>'created',
+							'updated'	=>'updated',
+							'purged'	=>'purged'
+						]
 	];
 	if(isset($phrase2)&&$phrase2!='')
-		echo(!array_key_exists($phrase1,$_L))?$phrase2:$_L[$phrase1][$phrase2];
+		if($phrase1=='noecho')return(!array_key_exists($phrase1,$_L))?$phrase2:$_L[$phrase1][$phrase2];
+		else echo(!array_key_exists($phrase1,$_L))?$phrase2:$_L[$phrase1][$phrase2];
 	else
 		echo(!array_key_exists($phrase1,$_L))?$phrase1:$_L[$phrase1];
 }

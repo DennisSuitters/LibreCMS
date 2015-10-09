@@ -1,21 +1,17 @@
 <?php
-	require'core/db.php';
-	$config=$this->getconfig($db);
-	$ti=time();
-	$favicon=$this->favicon();
-	$share_image=$favicon;
-	$noimage=$this->noimage();
-	$noavatar=$this->noavatar();
-	$sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
-	$sp->execute(array(':contentType'=>$view));
-	require'core/login.php';
-	if(isset($user)&&$user['language']=='')
-		$user=['language'=>$config['language']];
-	if(isset($user['language'])&&file_exists('core/lang/'.$user['language'].'.php'))
-		require'core/lang/'.$user['language'].'.php';
-	else
-		require'core/lang/en-AU.php';
-	if($_SESSION['rank']>399){?>
+require'core/db.php';
+$config=$this->getconfig($db);
+$ti=time();
+$favicon=$this->favicon();
+$share_image=$favicon;
+$noimage=$this->noimage();
+$noavatar=$this->noavatar();
+$sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
+$sp->execute(array(':contentType'=>$view));
+require'core/login.php';
+if(isset($user)&&$user['language']=='')$user=['language'=>$config['language']];
+if(isset($user['language'])&&file_exists('core/lang/'.$user['language'].'.php'))require'core/lang/'.$user['language'].'.php';else require'core/lang/en-AU.php';
+if($_SESSION['rank']>399){?>
 <!DOCTYPE HTML>
 <html lang="<?php echo$config['language'];?>" id="libreCMS">
 	<head>
@@ -282,7 +278,7 @@
 						dayClick:function(date,jsEvent,view){
 							if(view.name=='month'||view.name=='basicWeek'){
 								$('#calendar').fullCalendar('changeView','basicDay');
-								$('#calendar').fullCalendar('gotoDate',date);      
+								$('#calendar').fullCalendar('gotoDate',date);
 							}
 						}
 					});
