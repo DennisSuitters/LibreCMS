@@ -81,228 +81,34 @@ if(isset($args[0])){
 	if($args[0]=='starred')$folder='starred';
 	if($args[0]=='important')$folder='important';
 	if($args[0]=='sent')$folder='sent';
-}
-function human_filesize($bytes, $dec = 2){
-    $size   = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
-    $factor = floor((strlen($bytes) - 1) / 3);
-    return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . @$size[$factor];
-}
-/*
-function decode_imap_text($str){
-	$result = '';
-	$decode_header = imap_mime_header_decode($str);
-	foreach ($decode_header AS $obj) {
-		$result .= htmlspecialchars(rtrim($obj->text, "\t"));
-	}
-	return $result;
-}
-
-function getFileExtension($fileName){
-   $parts=explode(".",$fileName);
-   return $parts[count($parts)-1];
-}
-$chk=$db->query("SELECT email_check,email_interval FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-if(time()>($chk['email_check']+$chk['email_interval'])){
-	$s=$db->prepare("UPDATE config SET email_check=:email_check WHERE id='1'");
-	$s->execute(array(':email_check'=>time()));
-	$mailboxes=array(
-		array(
-			'label'     => 'Another mail account',
-			'mailbox'   => '{mail.studiojunkyard.com:143/notls}INBOX',
-			'username'  => 'dennis@studiojunkyard.com',
-			'password'  => 'barnibus!2014'
-		)
-	);
-	foreach($mailboxes as $current_mailbox) {
-// Open an IMAP stream to our mailbox
-		$stream = @imap_open($current_mailbox['mailbox'], $current_mailbox['username'], $current_mailbox['password']);
-		if (!$stream){?>
-					<p>Could not connect to: <?php echo $current_mailbox['label']?>. Error: <?php echo imap_last_error()?></p>
-<?php 	}else{
-			if($chk['email_check']==0){
-				$emails = imap_search($stream,'ALL');
-			}else{
-				$count=$db->query("SELECT MAX(email_date) as email_date FROM messages")->fetch(PDO::FETCH_ASSOC);
-				$since=date('d-M-Y G\:i',$count['email_date']+1);
-				$emails=imap_search($stream,'SINCE "'.$since.'"');
-			}
-			if (count($emails)){
-				rsort($emails);
-				foreach($emails as $email_id){
-					$overview=imap_fetch_overview($stream,$email_id,0);
-					$to_email=explode('&lt;',decode_imap_text($overview[0]->to));
-					$to_name=trim($to_email[0]);
-					if(isset($to_email[1]))$to_email=rtrim($to_email[1],'&gt;');
-					else $to_email=rtrim($to_email[0],'&gt;');
-					$from_email=explode('&lt;',decode_imap_text($overview[0]->from));
-					$from_name=trim($from_email[0]);
-					if(isset($from_email[1]))$from_email=rtrim($from_email[1],'&gt;');
-					else $from_email=rtrim($from_email[0],'&gt;');
-					$body_mime=imap_fetchmime($stream,$email_id,1);
-					$st=imap_fetchstructure($stream, $email_id);
-					if(!empty($st->parts)){
-						for($i=0,$j=count($st->parts);$i<$j;$i++){
-							$part=$st->parts[$i];
-							if($part->subtype=='PLAIN'){
-								$body=imap_fetchbody($stream,$email_id,$i+1,FT_INTERNAL);
-							}
-						}
-					}else{
-						$body=imap_body($stream,$email_id);
-					}
-					$size=$overview[0]->size;
-					$structure=imap_fetchstructure($stream,$email_id);
-				    $attachments=array();
-					if(isset($structure->parts)&& count($structure->parts)){
-						for($i=0;$i<count($structure->parts);$i++){
-							$attachments[$i]=array(
-								'is_attachment'=>false,
-								'filename'=>'',
-								'name'=>'',
-								'attachment'=>''
-							);
-							if($structure->parts[$i]->ifdparameters){
-								foreach($structure->parts[$i]->dparameters as $object){
-									if(strtolower($object->attribute)=='filename'){
-										$attachments[$i]['is_attachment']=true;
-										$attachments[$i]['filename']=$object->value;
-									}
-								}
-							}
-							if($structure->parts[$i]->ifparameters) {
-								foreach($structure->parts[$i]->parameters as $object) {
-									if(strtolower($object->attribute) == 'name') {
-										$attachments[$i]['is_attachment'] = true;
-										$attachments[$i]['name'] = $object->value;
-									}
-								}
-							}
-							if($attachments[$i]['is_attachment']) {
-								$attachments[$i]['attachment'] = imap_fetchbody($stream, $email_id, $i+1);
-								if($structure->parts[$i]->encoding == 3) { // 3 = BASE64
-								$attachments[$i]['attachment'] = base64_decode($attachments[$i]['attachment']);
-							}elseif($structure->parts[$i]->encoding == 4) { // 4 = QUOTED-PRINTABLE
-								$attachments[$i]['attachment'] = quoted_printable_decode($attachments[$i]['attachment']);
-							}
-							}
-						}
-					}
-					$att='';
-					foreach($attachments as $key => $attachment) {
-						if($attachment['name']!=''){
-							$name = $attachment['name'];
-							$contents = $attachment['attachment'];
-							if(!file_exists('media/attachments/'.$email_id.'/'.$name)){
-								mkdir('media/attachments/'.$email_id,0755);
-								file_put_contents('media/attachments/'.$email_id.'/'.$name, $contents);
-								$att.=$name.',';
-							}
-						}
-					}
-					$sc=$db->prepare("SELECT mid FROM messages WHERE mid=:mid");
-					$sc->execute(array(':mid'=>$email_id));
-					if($sc->rowCount()<1){
-						$s=$db->prepare("INSERT INTO messages (uid,mid,folder,to_email,to_name,from_email,from_name,subject,status,notes_raw,notes_raw_mime,attachments,email_date,size,ti) VALUES (:uid,:mid,:folder,:to_email,:to_name,:from_email,:from_name,:subject,:status,:notes_raw,:notes_raw_mime,:attachments,:email_date,:size,:ti)");
-						$s->execute(array(
-							':uid'=>$user['id'],
-							':mid'=>$email_id,
-							':folder'=>'INBOX',
-							':to_email'=>$to_email,
-							':to_name'=>$to_name,
-							':from_email'=>$from_email,
-							':from_name'=>$from_name,
-							':subject'=>decode_imap_text($overview[0]->subject),
-							':status'=>'unread',
-							':notes_raw'=>$body,
-							':notes_raw_mime'=>$body_mime,
-							':attachments'=>$att,
-							':email_date'=>strtotime($overview[0]->date),
-							':size'=>$size,
-							':ti'=>time()
-							));
-					}
-				}
-			} 
-			imap_close($stream); 
-		}
-	}
-}
-*/
-
-?>
+}?>
 <div class="page-toolbar"></div>
 <div class="panel panel-default">
 	<div class="panel-body">
-<div class="row">
-	<div class="col-sm-3 col-md-2">
-		<div class="btn-group">
-			<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-				Mail <span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="#">Mail</a></li>
-				<li><a href="#">Contacts</a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="col-sm-9 col-md-10">
-		<button type="button" class="btn btn-default" data-toggle="tooltip" title="Refresh"><i class="libre libre-refresh"></i></button>
-		<div id="actions" class="btn-group hidden">
-			<button type="button" class="btn btn-default"><i class="libre libre-trash"></i></button>
-		</div>
-		<div class="btn-group">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-				More <span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="#">Mark all as read</a></li>
-				<li class="divider"></li>
-				<li class="text-center"><small class="text-muted">Select messages to see more actions</small></li>
-			</ul>
-		</div>
-		<div class="pull-right">
-			<span class="text-muted"><b>1</b>–<b>50</b> of <b>277</b></span>
-			<div class="btn-group btn-group-sm">
-				<button type="button" class="btn btn-default">
-					<i class="fa fa-chevron-left"></i>
-				</button>
-				<button type="button" class="btn btn-default">
-					<i class="fa fa-chevron-right"></i>
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
-<hr>
-<div class="row">
-	<div class="col-sm-3 col-md-2">
+		<div class="row">
+			<div class="col-sm-3 col-md-2">
 <?php /*		<a href="#" class="btn btn-danger btn-sm btn-block" role="button">COMPOSE</a> */?>
-		<hr>
-		<ul class="nav nav-pills nav-stacked">
+			<hr>
+			<ul class="nav nav-pills nav-stacked">
 <?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE folder='INBOX'");
 $s->execute();
 $cnt=$s->fetch(PDO::FETCH_ASSOC);?>
-			<li class="<?php if($folder=='INBOX')echo'active';?>"><a href="<?php echo URL.'admin/messages';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Inbox </a></li>
+				<li class="<?php if($folder=='INBOX')echo'active';?>"><a href="<?php echo URL.'admin/messages';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Inbox </a></li>
 <?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE starred='1'");
 $s->execute();
 $cnt=$s->fetch(PDO::FETCH_ASSOC);?>
-			<li class="<?php if($folder=='starred')echo'active';?>"><a href="<?php echo URL.'admin/messages/starred';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Starred </a></li>
+				<li class="<?php if($folder=='starred')echo'active';?>"><a href="<?php echo URL.'admin/messages/starred';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Starred </a></li>
 <?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE folder='DELETE'");
 $s->execute();
 $cnt=$s->fetch(PDO::FETCH_ASSOC);?>
-			<li class="<?php if($folder=='DELETE')echo'active';?>"><a href="<?php echo URL.'admin/messages/deleted';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Deleted </a></li>
+				<li class="<?php if($folder=='DELETE')echo'active';?>"><a href="<?php echo URL.'admin/messages/deleted';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Deleted </a></li>
 <?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE important='1'");
 $s->execute();
 $cnt=$s->fetch(PDO::FETCH_ASSOC);?>
-			<li class="<?php if($folder=='important')echo'active';?>"><a href="<?php echo URL.'admin/messages/important';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Important </a></li>
-		</ul>
-	</div>
-	<div class="col-sm-9 col-md-10">
-		<ul class="nav nav-tabs">
-			<li<?php if($config['email']!=''&&$user['email']!='')echo' class="active"';?>><a href="#home" data-toggle="tab"><span class="libre libre-inbox libre-fw"></span>Your Inbox</a></li>
-			<li<?php if($config['email']==''&&$user['email']=='')echo' class="active"';?>><a href="#settings" data-toggle="tab"><span class="libre libre-cogs libre-fw"></span>Settings</a></li>
-		</ul>
-		<div class="tab-content">
+				<li class="<?php if($folder=='important')echo'active';?>"><a href="<?php echo URL.'admin/messages/important';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Important </a></li>
+			</ul>
+		</div>
+		<div class="col-sm-9 col-md-10">
 			<div class="tab-pane fade in<?php if($user['email']!='')echo' active';?>" id="home">
 				<div class="list-group">
 <?php
@@ -332,50 +138,24 @@ switch($folder){
 						<input type="checkbox" data-dbid="null" class="checkboxtoggle" name="selected[]">
 						<span class="starred text-muted" data-dbid="<?php echo$r['id'];?>" data-starred="<?php echo$r['starred'];?>"><i class="libre libre-star<?php if($r['starred']!=1)echo'-o';?>"></i></span>
 						<span class="important text-muted" data-dbid="<?php echo$r['id'];?>" data-important="<?php echo$r['important'];?>"><i class="libre libre-empty-circle<?php if($r['important']!=1)echo'-o';?>"></i></span>
-						<span class="text-muted"><i class="libre <?php if($r['attachments']!='')echo'libre-paperclip';else echo'libre-empty';?> libre-fw"></i></span>
 						<small>
 							<a href="<?php echo URL.'admin/messages/view/'.$r['id'];?>">
 <?php if($r['status']=='unread')echo'<strong>';?>
-								<span class="name" style="min-width:250px;display:inline-block;text-overflow:ellipsis;" title="<?php echo'&lt;'.$r['from_email'].'&gt;';?>"><?php echo $r['from_name'];?></span> 
+								<span class="name" style="min-width:250px;display:inline-block;text-overflow:ellipsis;" title="<?php echo'&lt;'.$r['from_email'].'&gt;';?>"><?php echo $r['from_name'];?></span>
 								<span class="name" style="min-width:200px;display:inline-block;text-overflow:ellipsis;"><?php echo $r['subject'];?></span>
 <?php if($r['status']=='unread')echo'</strong>';?>
-								<span class="pull-right"><?php echo date('M j \a\t G:i',$r['ti']);?></span> 
+								<span class="pull-right"><?php echo date('M j \a\t G:i',$r['ti']);?></span>
 							</a>
 						</small>
-						<small class="pull-right">
-							<span class="text-muted"><?php echo human_filesize($r['size']);?></span>&nbsp;
-						</small> 
 					</div>
 <?php }?>
-				</div>
-			</div>
-			<div class="tab-pane fade in<?php if($config['email']==''&&$user['email']=='')echo' active';?>" id="settings">
-				<div class="well">
-					<h4>Personal Email Settings</h4>
-					<div class="form-group">
-						<label for="email" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Email</label>
-						<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-							<input type="text" id="email" class="form-control textinput" value="<?php echo$config['email'];?>" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="Enter an Email...">
-						</div>
-					</div>
-				</div>
-				<div class="well">
-					<h4>System Email Settings</h4>
-					<div class="form-group">
-						<label for="email" class="control-label col-xs-4 col-sm-2 col-md-2 col-lg-1">Email</label>
-						<div class="input-group col-xs-8 col-sm-10 col-md-10 col-lg-11">
-							<input type="text" id="email" class="form-control textinput" value="<?php echo$config['email'];?>" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="Enter an Email...">
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-	</div>
-</div>
 <script>
 
 </script>
-<?php 
+<?php
 }

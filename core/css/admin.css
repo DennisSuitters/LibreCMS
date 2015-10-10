@@ -168,7 +168,7 @@ legend.control-legend.legend-sm{font-size:.75em!important}
 	.nav-side-menu{position:relative;width:100%;margin-bottom:10px}
 	.nav-side-menu .toggle-btn{display:block;cursor:pointer;position:absolute;right:10px;top:10px;z-index:10!important;padding:3px;background-color:#fff;color:#000;width:40px;text-align:center}
 	.brand{text-align:left!important;font-size:22px;padding-left:20px;line-height:50px!important}
-	.nav-side-menu li{display:inline-block;width:32px;height:32px;padding:0 2px}
+	.nav-side-menu li{display:inline-block;width:30px;height:30px;padding:0 2px}
 	.nav-side-menu li a i{position:relative;font-size:28px;width:34px;height:34px;text-align:center;display:inline-block}
 	.nav-side-menu li a i:before{width:28px;text-align:center}
 	.nav-side-menu li a i:after{content:attr(name);position:absolute;left:0;right:0;bottom:0;width:34px;text-align:center;font-size:6px}
