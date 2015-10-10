@@ -6,6 +6,7 @@ $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 define('THEME','layout/'.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
+define('YANDEX','trnsl.1.1.20151010T141347Z.abb6d53e6280191b.5decd3b201ae911048617d1869e766124de2023d');
 require'login.php';
 /* Controller */
 class internal{

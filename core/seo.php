@@ -17,7 +17,8 @@ if($user['rank']>399&&$user['options']{6}!=1){
 $s=$db->prepare("SELECT * FROM seo WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);
-$config=$db->query("SELECT dateFormat FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);?>
+$config=$db->query("SELECT dateFormat FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+define('YANDEX','trnsl.1.1.20151010T141347Z.abb6d53e6280191b.5decd3b201ae911048617d1869e766124de2023d');?>
 <div class="modal-header clearfix">
 	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 <?php if($user['rank']>399&&$user['options']{6}==1){?>

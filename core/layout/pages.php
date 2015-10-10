@@ -43,7 +43,6 @@ if($show=='item'){
 </div>
 <div class="panel panel-default">
 	<div id="covertop">
-		<div class="badger badger-left text-shadow-depth-1" data-status="<?php if($r['active']==1)echo'active';else echo'inactive';?>" data-contenttype="<?php if($r['active']==1)echo'active';else echo'inactive';?>"></div>
 		<div id="coverimg"><?php if($r['cover']!=''&&file_exists('media/'.$r['cover']))echo'<img class="cover" src="media/'.$r['cover'].'">';elseif($r['coverURL']!=''&&file_exists('media/'.$r['coverURL']))echo'<img class="cover" src="media/'.$r['coverURL'].'">';elseif($r['coverURL']!='')echo'<img class="cover" src="'.$r['coverURL'].'">';else echo'';?></div>
 	</div>
 	<div class="panel-body">
