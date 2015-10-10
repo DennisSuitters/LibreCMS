@@ -306,6 +306,7 @@ function lang($phrase1,$phrase2=null){
 							'1000'			=>'developer',
 							'developer'		=>'Developer'
 						],
+		'Search'		=>'Search',
 		'Start'			=>'Start',
 		'Statistics'	=>'Statistics',
 		'stats'			=>[	'title'				=>'In Site Analytics',

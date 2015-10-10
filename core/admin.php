@@ -69,6 +69,7 @@ if($_SESSION['rank']>399){?>
 <?php	if($user['rank']>899){?>
 					<li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.'admin/activity';?>"><i class="libre libre-activity" name="<?php lang('Activity');?>"></i><span><?php lang('Activity');?></span></a></li>
 <?php	}?>
+					<li<?php if($view=='search')echo' class="active"';?>><a href="<?php echo URL.'admin/search';?>"><i class="libre libre-search" name="<?php lang('Search');?>"></i><span><?php lang('Search');?></span></a></li>
 				</ul>
 			</div>
 			<footer class="hidden-xs">
@@ -301,13 +302,14 @@ if($_SESSION['rank']>399){?>
 						});
 					})(jQuery)
 <?php		}?>
-				window.addEventListener("keydown",function (e) {
-				    if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)) {
+				window.addEventListener("keydown",function(e){
+				    if(e.keyCode===114||(e.ctrlKey&&e.keyCode===70)){
 						$('#search').css({'display':'block'});
+						e.preventDefault()
 				    }
-					if(e.keyCode === 27)$('#search').css({'display':'none'});
-					e.preventDefault();
-				});
+					if(e.keyCode===27)$('#search').css({'display':'none'})
+				})
+				$('#searchclose').click(function(e){$('#search').css({'display':'none'});e.preventDefault()})
 			});
 		/*]]>*/</script>
 		<div class="modal fade bookings">
@@ -325,18 +327,16 @@ if($_SESSION['rank']>399){?>
 				<div class="modal-content" style="max-height:85%"></div>
 			</div>
 		</div>
-		<div id="search" class="block">
-			<div class="modal-dialog modal-lg">
-				<form method="post" action="admin/search">
-					<div class="input-group col-xs-12">
-						<input type="text" class="form-control" name="search" placeholder="<?php lang('placeholder','search');?>">
-						<div class="input-group-btn">
-							<button class="btn btn-success"><?php lang('button','search');?></button>
-							<button class="btn btn-default"><?php lang('button','close');?></button>
-						</div>
+		<div id="search">
+			<form class="form-group search" method="post" action="admin/search">
+				<div class="input-group col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
+					<input type="text" class="form-control" name="search" placeholder="<?php lang('placeholder','search');?>">
+					<div class="input-group-btn">
+						<button class="btn btn-success"><i class="libre libre-search visible-xs"></i><span class="hidden-xs"><?php lang('button','search');?></span></button>
+						<button id="searchclose" class="btn btn-default"><i class="libre libre-close visible-xs"></i><span class="hidden-xs"><?php lang('button','close');?></span></button>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
 <?php	}?>
 		<iframe id="sp" name="sp" class="hidden"></iframe>

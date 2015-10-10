@@ -48,7 +48,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
 			<small><?php echo _ago($r['ti']);?></small>
 		</div>
 	</div>
-	<div class="col-xs-6">
+	<div class="col-xs-6 break-word">
 		<p>
 			<strong><?php lang('label','action');?>:</strong> <?php
 			if($r['action']=='create'){
