@@ -305,6 +305,7 @@ if($_SESSION['rank']>399){?>
 				window.addEventListener("keydown",function(e){
 				    if(e.keyCode===114||(e.ctrlKey&&e.keyCode===70)){
 						$('#search').css({'display':'block'});
+						document.getElementById('searchBox').focus();
 						e.preventDefault()
 				    }
 					if(e.keyCode===27)$('#search').css({'display':'none'})
@@ -330,7 +331,7 @@ if($_SESSION['rank']>399){?>
 		<div id="search">
 			<form class="form-group search" method="post" action="admin/search">
 				<div class="input-group col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
-					<input type="text" class="form-control" name="search" placeholder="<?php lang('placeholder','search');?>">
+					<input type="text" id="searchBox" class="form-control" name="search" placeholder="<?php lang('placeholder','search');?>">
 					<div class="input-group-btn">
 						<button class="btn btn-success"><i class="libre libre-search visible-xs"></i><span class="hidden-xs"><?php lang('button','search');?></span></button>
 						<button id="searchclose" class="btn btn-default"><i class="libre libre-close visible-xs"></i><span class="hidden-xs"><?php lang('button','close');?></span></button>

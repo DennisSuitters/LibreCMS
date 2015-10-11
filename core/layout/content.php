@@ -640,7 +640,7 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
 						<time><small class="text-muted"><?php echo date($config['dateFormat'],$rc['ti']);?></small></time>
 <?php echo strip_tags($rc['notes']);?>
 						<div id="controls-<?php echo$rc['id'];?>" class="btn-group pull-right">
-							<button id="approve_<?php echo$rc['id'];?>" class="btn btn-success btn-sm<?php if($rc['status']!='unapproved')echo' hidden';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','approved')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','approve');echo'"';}?>><i class="libre libre-approve visible-xs"></i><span class="hidden-xs"><?php lang('button','approve');?></span></button> 
+							<button id="approve_<?php echo$rc['id'];?>" class="btn btn-success btn-sm<?php if($rc['status']!='unapproved')echo' hidden';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','approved')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','approve');echo'"';}?>><i class="libre libre-approve visible-xs"></i><span class="hidden-xs"><?php lang('button','approve');?></span></button>
 							<button class="btn btn-danger btn-sm" onclick="purge('<?php echo$rc['id'];?>','comments')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','delete');echo'"';}?>><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button>
 						</div>
 					</div>
