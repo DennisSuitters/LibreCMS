@@ -329,12 +329,29 @@ if($_SESSION['rank']>399){?>
 			</div>
 		</div>
 		<div id="search">
-			<form class="form-group search" method="post" action="admin/search">
-				<div class="input-group col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
-					<input type="text" id="searchBox" class="form-control" name="search" placeholder="<?php lang('placeholder','search');?>">
-					<div class="input-group-btn">
-						<button class="btn btn-success"><i class="libre libre-search visible-xs"></i><span class="hidden-xs"><?php lang('button','search');?></span></button>
-						<button id="searchclose" class="btn btn-default"><i class="libre libre-close visible-xs"></i><span class="hidden-xs"><?php lang('button','close');?></span></button>
+			<form class="form-inline search col-xs-12 col-xs-offset-1 col-md-12 col-md-offset-3" method="post" action="admin/search">
+				<div class="form-group">
+					<div class="input-group">
+						<div class="input-group-btn">
+							<select class="form-control" name="what">
+								<option value="content"<?php if($what=='content')echo' selected';?>>Content</option>
+								<option value="comments"<?php if($what=='comments')echo' selected';?>>Comments</option>
+								<option value="login"<?php if($what=='login')echo' selected';?>>Accounts</option>
+								<option value="messages"<?php if($what=='messages')echo' selected';?>>Messages</option>
+								<option value="orders"<?php if($what=='orders')echo' selected';?>>Orders</option>
+							</select>
+						</div>
+						<input type="text" id="searchBox" class="form-control" name="search" placeholder="<?php lang('placeholder','search');?>">
+						<div class="input-group-btn">
+							<select class="form-control" name="ord">
+								<option value="desc"<?php if($ord=='desc')echo' selected';?>>Order by Descending</option>
+								<option value="asc"<?php if($ord=='asc')echo' selected';?>>Order by Ascending</option>
+							</select>
+						</div>
+						<div class="input-group-btn">
+							<button class="btn btn-success"><i class="libre libre-search visible-xs"></i><span class="hidden-xs"><?php lang('button','search');?></span></button>
+							<button id="searchclose" class="btn btn-default"><i class="libre libre-close visible-xs"></i><span class="hidden-xs"><?php lang('button','close');?></span></button>
+						</div>
 					</div>
 				</div>
 			</form>
