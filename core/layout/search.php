@@ -1,7 +1,7 @@
 <?php
 $search=isset($_POST['search'])?trim(filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING)):'';
 $what=isset($_POST['what'])?filter_input(INPUT_POST,'what',FILTER_SANITIZE_STRING):'content';
-$status=isset($_POST['status'])?filter_input(INPUT_POST,'status',FILTER_SANITIZE_STRING):'published';
+$status=isset($_POST['status'])?filter_input(INPUT_POST,'status',FILTER_SANITIZE_STRING):'all';
 $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):'desc';?>
 <br><br><br>
 <div class="container">
@@ -13,10 +13,9 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
 					<select class="form-control" name="what">
 						<option value="content"<?php if($what=='content')echo' selected';?>>Content</option>
 						<option value="comments"<?php if($what=='comments')echo' selected';?>>Comments</option>
-						<option value="login"<?php if($what=='login')echo' selected';?>>Accounts</option>
 						<option value="messages"<?php if($what=='messages')echo' selected';?>>Messages</option>
 						<option value="orders"<?php if($what=='orders')echo' selected';?>>Orders</option>
-						<option value="menu"<?php if($what=='menu')echo' selected';?>>Pages</option>
+						<option value="pages"<?php if($what=='pages')echo' selected';?>>Pages</option>
 					</select>
 				</div>
 				<div class="input-group-addon">for</div>
@@ -90,25 +89,6 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
 				LOWER(notes) LIKE LOWER(:search)
 				";
 		}
-		if($what=='login'){
-			$qry.="'login WHERE
-				LOWER(username) LIKE LOWER(:search) OR
-				LOWER(attributionImageTitle) LIKE LOWER(:search) OR
-				LOWER(attributionImageName) LIKE LOWER(:search) OR
-				LOWER(business) LIKE LOWER(:search) OR
-				LOWER(name) LIKE LOWER(:search) OR
-				LOWER(email) LIKE LOWER(:search) OR
-				LOWER(address) LIKE LOWER(:search) OR
-				LOWER(suburb) LIKE LOWER(:search) OR
-				LOWER(city) LIKE LOWER(:search) OR
-				LOWER(state) LIKE LOWER(:search) OR
-				LOWER(postcode) LIKE LOWER(:search) OR
-				LOWER(abn) LIKE LOWER(:search) OR
-				LOWER(phone) LIKE LOWER(:search) OR
-				LOWER(mobile) LIKE LOWER(:search) OR
-				LOWER(notes) LIKE LOWER(:search)
-			";
-		}
 		if($what=='messages'){
 			$qry.="messages WHERE
 				LOWER(to_email) LIKE LOWER(:search) OR
@@ -121,7 +101,7 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
 			";
 		}
 		if($what=='orders'){
-			$qry.="'orders WHERE
+			$qry.="orders WHERE
 				LOWER(qid) LIKE LOWER(:search) OR
 				LOWER(iid) LIKE LOWER(:search) OR
 				LOWER(did) LIKE LOWER(:search) OR
@@ -129,7 +109,7 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
 				LOWER(notes) LIKE LOWER(:search)
 			";
 		}
-		if($what=='menu'){
+		if($what=='pages'){
 			$qry.="menu WHERE
 				LOWER(title) LIKE LOWER(:search) OR
 				LOWER(seoTitle) LIKE LOWER(:search) OR
@@ -143,29 +123,29 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
 		}
 		if($status=='all')$qry.="";
 		if($status=='published'){
-			if($what=='menu'||$what=='login')$qry.="AND active='1' ";
+			if($what=='pages')$qry.="AND active='1' ";
 			else $qry.=" AND status='published' ";
 		}
 		if($status=='unpublished'){
-			if($what=='menu'||$what=='login')$qry.="AND active='0' ";
+			if($what=='pages')$qry.="AND active='0' ";
 			else $qry.=" AND status='unpublished' ";
 		}
 		if($status=='active')$qry.=" AND active='1' ";
 		if($status=='inactive')$qry.=" AND active='0' ";
 		if($ord=='asc'){
-			if($what=='menu')$qry.=" ORDER BY title ASC ";
+			if($what=='pages')$qry.=" ORDER BY title ASC ";
 			else $qry.=" ORDER BY ti ASC ";
 		}
 		if($ord=='desc'){
-			if($what=='menu')$qry.=" ORDER BY title DESC ";
+			if($what=='pages')$qry.=" ORDER BY title DESC ";
 			else $qry.=" ORDER BY ti DESC ";
 		}
 	$s=$db->prepare($qry);
 	$s->execute(array(':search'=>'%'.$search.'%'));
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 <div class="searchresults">
-	<a class="link" href="<?php echo URL.'admin/';?>"><?php echo$r['title'];?></a><br>
-	<small class="text-success"><?php echo URL.'admin/';?></small><br>
+	<a class="link" href="<?php echo URL.'admin/'.$what.'/edit/'.$r['id'];?>"><?php echo$r['title'];?></a><br>
+	<small class="text-success"><?php echo URL.'admin/'.$what.'/edit/'.$r['id'];?></small><br>
 	<small><?php echo strip_tags(substr($r['notes'],0,800),'<a>');?></small><br>
 	<br>
 </div>
