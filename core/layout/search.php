@@ -143,11 +143,31 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
 	$s=$db->prepare($qry);
 	$s->execute(array(':search'=>'%'.$search.'%'));
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-<div class="searchresults">
-	<a class="link" href="<?php echo URL.'admin/'.$what.'/edit/'.$r['id'];?>"><?php echo$r['title'];?></a><br>
+<div class="searchresults clearfix">
+	<ol class="breadcrumb">
+		<li>
+			<a href="<?php echo URL.'admin';if($what=='pages')echo'/pages';elseif($what=='orders')echo'/orders';else echo'/content';?>"><?php lang(ucfirst($what));?></a>
+		</li>
+<?php 	if($what=='content'){?>
+		<li><a href="<?php echo URL.'/admin/content/type/'.$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a>
+<?php 	}?>
+		<li><a href="<?php echo URL.'admin/'.$what.'/edit/'.$r['id'];?>"><?php if($what=='orders'){echo$r['qid'].$r['iid'];if($r['aid']!='')echo'/'.$r['aid'];}else echo$r['title'];?></a></li>
+	</ol>
 	<small class="text-success"><?php echo URL.'admin/'.$what.'/edit/'.$r['id'];?></small><br>
-	<small><?php echo strip_tags(substr($r['notes'],0,800),'<a>');?></small><br>
-	<br>
+	<small class="float-left" style="margin-left:10px;">
+<?php 	if($what=='content'){
+			if($r['thumb']!=''&&file_exists('media/'.$r['thumb']))
+				echo'<img src="media/'.$r['file'].'" class="img-thumbnail">';
+			elseif($r['file']!=''&&file_exists('media/'.$r['file']))
+				echo'<img src="media/'.$r['file'].'" class="img-thumbnail">';
+			elseif($r['fileURL']!='')
+				echo'<img src="'.$r['fileURL'].'" class="img-thumbnail">';
+			else
+				echo'';
+		}
+ 		echo strip_tags(substr($r['notes'],0,800),'<a>');
+?>
+	</small>
 </div>
 <?php	}
 }

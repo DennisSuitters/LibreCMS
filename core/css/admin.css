@@ -221,3 +221,12 @@ legend.control-legend.legend-sm{font-size:.75em!important}
 .flex{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex}
 .flex-column{-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}
 .flex>div{box-sizing:border-box}
+.searchresults .breadcrumb{padding-bottom:0;margin-bottom:0}
+.searchresults small img{
+	float:left;
+	vertical-align:top;
+	width:100px!important;
+	height:auto!important;
+	max-width:100px!important;
+	margin:5px 5px 0 5px;
+}

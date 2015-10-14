@@ -45,12 +45,12 @@ if($act=='to_invoice'){
 	$q->execute(array(':iid'=>$oid,':iid_ti'=>$ti,':id'=>$id));
 	unlink('../files/orders/'.$r['qid'].'.pdf');
 	$r['qid']='';
-	$args[0]='view';
+	$args[0]='edit';
 	$q=$db->prepare("SELECT * FROM order WHERE id=:id");
 	$q->execute(array(':id'=>$id));
 	$r=$q->fetch(PDO::FETCH_ASSOC);
 }
-if($args[0]=='view'){
+if($args[0]=='edit'){
 	$q=$db->prepare("SELECT * FROM orders WHERE id=:id");
 	$q->execute(array(':id'=>$id));
 	$r=$q->fetch(PDO::FETCH_ASSOC);
@@ -486,7 +486,7 @@ if($args[0]=='view'){
 <?php		}?>
 								<button class="btn btn-info btn-xs" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','print');echo'"';}?>><i class="libre libre-print visible-xs"></i><span class="hidden-xs"><?php lang('button','print');?></span></button>
 								<button class="btn btn-info btn-xs" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="';lang('tooltip','emailorder');echo'"';?>><i class="libre libre-email-send visible-xs"></i><span class="hidden-xs"><?php lang('button','email');?></span></button>
-								<a class="btn btn-info btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/view/<?php echo$r['id'];?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltop','edit');echo'"';}?>><i class="libre libre-edit visible-xs"></i><span class="hidden-xs"><?php lang('button','edit');?></span></a>
+								<a class="btn btn-info btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltop','edit');echo'"';}?>><i class="libre libre-edit visible-xs"></i><span class="hidden-xs"><?php lang('button','edit');?></span></a>
 <?php		if($user['rank']>399){?>
 								<button class="btn btn-warning btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','restore');echo'"';}?>><i class="libre libre-email-reply visible-xs"></i><span class="hidden-xs"><?php lang('button','restore');?></span></button>
 								<button class="btn btn-danger btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','delete')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','delete');echo'"';}?>><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button>
