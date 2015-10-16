@@ -103,7 +103,11 @@ if($show=='categories'){
 			<div class="panel-image">
 <?php	if($r['thumb']!=''&&file_exists('media/'.$r['thumb'])){?>
 				<a href="admin/content/edit/<?php echo$r['id'];?>"><img src="<?php echo'media/'.$r['thumb'];?>"></a>
-<?php	}?>
+<?php	}elseif($r['file']!=''&&file_exists('media'.$r['file'])){?>
+				<a href="admin/content/edit/<?php echo$r['id'];?>"><img src="<?php echo'media/'.$r['file'];?>"></a>
+<?php 	}elseif($r['fileURL']!=''){?>
+				<a href="admin/content/edit/<?php echo$r['id'];?>"><img src="<?php echo$r['fileURL'];?>"></a>
+<?php 	}?>
 			</div>
 			<h4 class="panel-title"><?php echo$r['title'];?></h4>
 			<div class="panel-body panel-content"><?php echo strip_tags(substr($r['notes'],0,200));?></div>
