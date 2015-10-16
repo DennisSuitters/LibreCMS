@@ -8,30 +8,30 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
 	<form class="form-inline" method="post" action="admin/search">
 		<div class="form-group">
 			<div class="input-group">
-				<div class="input-group-addon">Search</div>
+				<div class="input-group-addon"><?php lang('button','search');?></div>
 				<div class="input-group-btn">
 					<select class="form-control" name="what">
-						<option value="content"<?php if($what=='content')echo' selected';?>>Content</option>
-						<option value="comments"<?php if($what=='comments')echo' selected';?>>Comments</option>
-						<option value="messages"<?php if($what=='messages')echo' selected';?>>Messages</option>
-						<option value="orders"<?php if($what=='orders')echo' selected';?>>Orders</option>
-						<option value="pages"<?php if($what=='pages')echo' selected';?>>Pages</option>
+						<option value="content"<?php if($what=='content')echo' selected';?>><?php lang('Content');?></option>
+						<option value="comments"<?php if($what=='comments')echo' selected';?>><?php lang('Comments');?></option>
+						<option value="messages"<?php if($what=='messages')echo' selected';?>><?php lang('Messages');?></option>
+						<option value="orders"<?php if($what=='orders')echo' selected';?>><?php lang('Orders');?></option>
+						<option value="pages"<?php if($what=='pages')echo' selected';?>><?php lang('Pages');?></option>
 					</select>
 				</div>
-				<div class="input-group-addon">for</div>
+				<div class="input-group-addon"><?php lang('for');?></div>
 				<input type="text" class="form-control" name="search" value="<?php echo trim($search);?>" placeholder="<?php lang('placeholder','search');?>">
 				<div class="input-group-btn">
 					<select class="form-control" name="status">
-						<option value="all"<?php if($status=='all')echo' selected';?>>where Status doesn't matter</option>
-						<option value="published"<?php if($status=='published')echo' selected';?>>where Status is Published</option>
-						<option value="unpublished"<?php if($status=='unpublished')echo' selected';?>>where Status is Unpublished</option>
+						<option value="all"<?php if($status=='all')echo' selected';?>><?php lang('search','all');?></option>
+						<option value="published"<?php if($status=='published')echo' selected';?>><?php lang('search','published');?></option>
+						<option value="unpublished"<?php if($status=='unpublished')echo' selected';?>><?php lang('search','unpublished');?></option>
 					</select>
 				</div>
-				<div class="input-group-addon">and</div>
+				<div class="input-group-addon"><?php lang('and');?></div>
 				<div class="input-group-btn">
 					<select class="form-control" name="ord">
-						<option value="desc"<?php if($ord=='desc')echo' selected';?>>Order by Descending</option>
-						<option value="asc"<?php if($ord=='asc')echo' selected';?>>Order by Ascending</option>
+						<option value="desc"<?php if($ord=='desc')echo' selected';?>><?php lang('search','desc');?></option>
+						<option value="asc"<?php if($ord=='asc')echo' selected';?>><?php lang('search','asc');?></option>
 					</select>
 				</div>
 				<div class="input-group-btn">
@@ -68,12 +68,16 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
 		if($status=='active')$qry.=" AND active='1'";
 		if($status=='inactive')$qry.=" AND active='0'";
 		if($ord=='asc'){
-			if($what=='pages')$qry.=" ORDER BY title ASC";
-			else $qry.=" ORDER BY ti ASC";
+			if($what=='pages')
+				$qry.=" ORDER BY title ASC";
+			else
+				$qry.=" ORDER BY ti ASC";
 		}
 		if($ord=='desc'){
-			if($what=='pages')$qry.=" ORDER BY title DESC";
-			else $qry.=" ORDER BY ti DESC";
+			if($what=='pages')
+				$qry.=" ORDER BY title DESC";
+			else
+				$qry.=" ORDER BY ti DESC";
 		}
 	$s=$db->prepare($qry);
 	$s->execute(array(':search'=>'%'.$search.'%'));
