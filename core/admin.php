@@ -30,7 +30,7 @@ if($_SESSION['rank']>399){?>
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap-datetimepicker.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/libreicons.css">
-		<link rel="stylesheet" type="text/css" href="core/css/summernote.min.css">
+		<link rel="stylesheet" type="text/css" href="core/css/summernote.css">
 		<link rel="stylesheet" type="text/css" href="core/css/featherlight.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/admin.css">
 	</head>
@@ -108,8 +108,8 @@ if($_SESSION['rank']>399){?>
 		<script src="core/js/fullcalendar.min.js"></script>
 <?php			}
 			}?>
-		<script src="core/js/summernote.min.js"></script>
-		<script src="core/lang/summernote-<?php echo$config['language'];?>.js"></script>
+		<script src="core/js/summernote.js"></script>
+<?php /*		<script src="core/lang/summernote-<?php echo$config['language'];?>.js"></script> */ ?>
 		<script src="core/js/bootstrap-datetimepicker.min.js"></script>
 		<link href="core/css/cropper.min.css" rel="stylesheet">
 		<script src="core/js/cropper.min.js"></script>
@@ -178,7 +178,7 @@ if($_SESSION['rank']>399){?>
 					$(e.target).removeData("bs.modal").find(".modal-content").empty()
 				});
 				$(".summernote").summernote({
-					lang:'<?php echo$user["language"];?>'
+//					lang:'<?php echo$user["language"];?>'
 				});
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});
 				$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
@@ -305,12 +305,14 @@ if($_SESSION['rank']>399){?>
 				window.addEventListener("keydown",function(e){
 				    if(e.keyCode===114||(e.ctrlKey&&e.keyCode===70)){
 						$('#search').css({'display':'block'});
-						document.getElementById('searchBox').focus();
-						e.preventDefault()
+						e.preventDefault();
 				    }
 					if(e.keyCode===27)$('#search').css({'display':'none'})
 				})
-				$('#searchclose').click(function(e){$('#search').css({'display':'none'});e.preventDefault()})
+				$('#searchclose').click(function(e){
+					$('#search').css({'display':'none'});
+					e.preventDefault();
+				})
 			});
 		/*]]>*/</script>
 		<div class="modal fade bookings">
@@ -329,28 +331,37 @@ if($_SESSION['rank']>399){?>
 			</div>
 		</div>
 		<div id="search">
-			<form class="form-inline search col-xs-12 col-xs-offset-1 col-md-12 col-md-offset-3" method="post" action="admin/search">
+			<form class="form-inline search col-xs-12 col-xs-offset-1 col-md-12 col-md-offset-1" method="post" action="admin/search">
 				<div class="form-group">
 					<div class="input-group">
+						<div class="input-group-addon"><?php lang('button','search');?></div>
 						<div class="input-group-btn">
 							<select class="form-control" name="what">
-								<option value="content"<?php if($what=='content')echo' selected';?>>Content</option>
-								<option value="comments"<?php if($what=='comments')echo' selected';?>>Comments</option>
-								<option value="login"<?php if($what=='login')echo' selected';?>>Accounts</option>
-								<option value="messages"<?php if($what=='messages')echo' selected';?>>Messages</option>
-								<option value="orders"<?php if($what=='orders')echo' selected';?>>Orders</option>
+								<option value="content"<?php if(isset($what)&&$what=='content')echo' selected';?>><?php lang('Content');?></option>
+								<option value="comments"<?php if(isset($what)&&$what=='comments')echo' selected';?>><?php lang('Comments');?></option>
+								<option value="messages"<?php if(isset($what)&&$what=='messages')echo' selected';?>><?php lang('Messages');?></option>
+								<option value="orders"<?php if(isset($what)&&$what=='orders')echo' selected';?>><?php lang('Orders');?></option>
+								<option value="pages"<?php if(isset($what)&&$what=='pages')echo' selected';?>><?php lang('Pages');?></option>
 							</select>
 						</div>
-						<input type="text" id="searchBox" class="form-control" name="search" placeholder="<?php lang('placeholder','search');?>">
+						<div class="input-group-addon"><?php lang('for');?></div>
+						<input type="text" class="form-control" name="search" value="<?php if(isset($search)){echo trim($search);}?>" placeholder="<?php lang('placeholder','search');?>">
+						<div class="input-group-btn">
+							<select class="form-control" name="status">
+								<option value="all"<?php if(isset($status)&&$status=='all')echo' selected';?>><?php lang('search','all');?></option>
+								<option value="published"<?php if(isset($status)&&$status=='published')echo' selected';?>><?php lang('search','published');?></option>
+								<option value="unpublished"<?php if(isset($status)&&$status=='unpublished')echo' selected';?>><?php lang('search','unpublished');?></option>
+							</select>
+						</div>
+						<div class="input-group-addon"><?php lang('and');?></div>
 						<div class="input-group-btn">
 							<select class="form-control" name="ord">
-								<option value="desc"<?php if($ord=='desc')echo' selected';?>>Order by Descending</option>
-								<option value="asc"<?php if($ord=='asc')echo' selected';?>>Order by Ascending</option>
+								<option value="desc"<?php if(isset($ord)&&$ord=='desc')echo' selected';?>><?php lang('search','desc');?></option>
+								<option value="asc"<?php if(isset($ord)&&$ord=='asc')echo' selected';?>><?php lang('search','asc');?></option>
 							</select>
 						</div>
 						<div class="input-group-btn">
 							<button class="btn btn-success"><i class="libre libre-search visible-xs"></i><span class="hidden-xs"><?php lang('button','search');?></span></button>
-							<button id="searchclose" class="btn btn-default"><i class="libre libre-close visible-xs"></i><span class="hidden-xs"><?php lang('button','close');?></span></button>
 						</div>
 					</div>
 				</div>
