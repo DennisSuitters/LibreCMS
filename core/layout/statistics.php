@@ -148,6 +148,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 			<h4 class="page-header col-xs-6"><?php lang('stats','ga_title');?></h4>
 			<div id="auth-container" class="alert alert-info"><?php lang('stats','Authorising');?></div>
 			<div id="view-selector" class="hidden"></div>
+			<div class="clearfix"></div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 				<div class="panel panel-default">
 					<div class="panel-body ga">
