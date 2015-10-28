@@ -2,7 +2,7 @@
 $theme=parse_ini_file(THEME.'/theme.ini',true);
 $error=0;
 $notification='';
-if($act=='add_message'){
+if(isset($act)&&$act=='add_message'){
 	if($_POST['emailtrap']==''){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
 		if(filter_var($email,FILTER_VALIDATE_EMAIL)){

@@ -1,7 +1,7 @@
 <?php
 $theme=parse_ini_file(THEME.'/theme.ini',true);
 $notification='';
-if($act=='add_booking'){
+if(isset($act)&&$act=='add_booking'){
 	if($_POST['emailtrap']==''){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
 		if(filter_var($email,FILTER_VALIDATE_EMAIL)){

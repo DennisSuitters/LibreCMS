@@ -5,7 +5,7 @@ $status='published';
 $theme=parse_ini_file(THEME.'/theme.ini',true);
 if($view=='index'){
 	if(stristr($html,'<settings')){
-		preg_match('/<settings itemCount="([\w\W]*?)" contentType="([\w\W]*?)">/',$html,$matches);
+		preg_match('/<settings items="([\w\W]*?)" contenttype="([\w\W]*?)">/',$html,$matches);
 		if(isset($matches[1]))
 			$itemCount=$matches[1];
 		else $itemCount=$config['itemCount'];

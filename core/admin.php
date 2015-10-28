@@ -109,7 +109,6 @@ if($_SESSION['rank']>399){?>
 <?php			}
 			}?>
 		<script src="core/js/summernote.js"></script>
-<?php /*		<script src="core/lang/summernote-<?php echo$config['language'];?>.js"></script> */ ?>
 		<script src="core/js/bootstrap-datetimepicker.min.js"></script>
 		<link href="core/css/cropper.min.css" rel="stylesheet">
 		<script src="core/js/cropper.min.js"></script>
@@ -177,9 +176,7 @@ if($_SESSION['rank']>399){?>
 				$(document).on("hidden.bs.modal",function (e){
 					$(e.target).removeData("bs.modal").find(".modal-content").empty()
 				});
-				$(".summernote").summernote({
-//					lang:'<?php echo$user["language"];?>'
-				});
+				$(".summernote").summernote();
 				$("#tis").datetimepicker({format:"yy-mm-dd hh:ii"});
 				$("#tie").datetimepicker({format:"yy-mm-dd hh:ii"});
 <?php		if($config['options']{4}==1){?>

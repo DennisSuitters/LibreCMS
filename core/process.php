@@ -43,7 +43,7 @@ foreach($tag as$tag1){
 	}
 	if($inbed!=''){
 		preg_match('/<block inbed="'.$inbed.'">([\w\W]*?)<\/block inbed="'.$inbed.'">/',$template,$matches);
-		$html=$matches[1];
+		$html=isset($matches[1])?$matches[1]:'';
 		if($view=='cart')$inbed='cart';
 		if($view=='sitemap')$inbed='sitemap';
 		if($view=='settings')$inbed='settings';
@@ -81,7 +81,7 @@ if(isset($act)&&$act!='logout'){
 		if($_SESSION['currentPage']!=$currentPage){
 			$q=$db->prepare("INSERT INTO tracker (vid,contentType,ip,pageName,queryString,httpReferer,httpUserAgent,bot,browser,os,ti) VALUES (:vid,:contentType,:ip,:pageName,:queryString,:httpReferer,:httpUserAgent,:bot,:browser,:os,:ti)");
 			$q->execute(array(':vid'=>$vid,':contentType'=>$view,':ip'=>$ip,':pageName'=>$pageName,':queryString'=>$queryString,':httpReferer'=>$httpReferer,':httpUserAgent'=>$httpUserAgent,':bot'=>$bot,':browser'=>$browser['name'],':os'=>$browser['platform'],':ti'=>$ti));
-			$_SESSION['currentPage']=$currentPage;        
+			$_SESSION['currentPage']=$currentPage;
 		}
 	}else{
 		$q=$db->prepare("INSERT INTO tracker (vid,contentType,ip,pageName,queryString,httpReferer,httpUserAgent,bot,browser,os,ti) VALUES (:vid,:contentType,:ip,:pageName,:queryString,:httpReferer,:httpUserAgent,:bot,:browser,:os,:ti)");
