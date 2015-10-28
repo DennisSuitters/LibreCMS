@@ -2,15 +2,16 @@
 $theme=parse_ini_file(THEME.'/theme.ini',true);
 $error=0;
 $notification='';
+$act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):'';
 if(isset($act)&&$act=='add_message'){
-	if($_POST['emailtrap']==''){
+	if($_POST['emailtrap']=='none'){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
 		if(filter_var($email,FILTER_VALIDATE_EMAIL)){
 			$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
 			$subject=filter_input(INPUT_POST,'subject',FILTER_SANITIZE_STRING);
 			$notes=filter_input(INPUT_POST,'notes',FILTER_SANITIZE_STRING);
 			$q=$db->prepare("INSERT INTO messages (uid,folder,to_email,to_name,from_email,from_name,subject,status,notes_raw,ti) VALUES ('0',:folder,:to_email,:to_name,:from_email,:from_name,:subject,:status,:notes_raw,:ti)");
-			$q->execute(array(':folder'=>'INBOX',':to_email'=>$config['email'],':to_name'=>$config['business'],':from_email'=>$email,':from_name'=>$name,':subject'=>$subject,':status'=>'unread',':notes_raw'=>$notes,':ti'=>$ti));
+			$q->execute(array(':folder'=>'INBOX',':to_email'=>$config['email'],':to_name'=>$config['business'],':from_email'=>$email,':from_name'=>$name,':subject'=>$subject,':status'=>'unread',':notes_raw'=>$notes,':ti'=>time()));
 			$id=$db->lastInsertId();
 			$e=$db->errorInfo();
 			if(is_null($e[2])){
