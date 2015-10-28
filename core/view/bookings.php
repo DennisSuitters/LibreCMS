@@ -1,8 +1,9 @@
 <?php
 $theme=parse_ini_file(THEME.'/theme.ini',true);
 $notification='';
-if(isset($act)&&$act=='add_booking'){
-	if($_POST['emailtrap']==''){
+$act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):'';
+if($act=='add_booking'){
+	if($_POST['emailtrap']=='none'){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
 		if(filter_var($email,FILTER_VALIDATE_EMAIL)){
 			$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
@@ -16,20 +17,14 @@ if(isset($act)&&$act=='add_booking'){
 			$notes=filter_input(INPUT_POST,'notes',FILTER_SANITIZE_STRING);
 			$tis=filter_input(INPUT_POST,'tis',FILTER_SANITIZE_STRING);
 			$tim=filter_input(INPUT_POST,'tim',FILTER_SANITIZE_STRING);
-			if($tis==0){
-				$tis=$ti;
-			}else{
-				$tis=strtotime($tis.$tim);
-			}
+			if($tis==0)$tis=$ti;else$tis=strtotime($tis.$tim);
 			$rid=isset($_POST['rid'])?filter_input(INPUT_POST,'rid',FILTER_SANITIZE_STRING):0;
 			if($rid!=0){
 				$s=$db->prepare("SELECT id,tie FROM content WHERE id=:id");
 				$s->execute(array(':id'=>$rid));
 				$r=$s->fetch(PDO::FETCH_ASSOC);
 				$tie=$r['tie'];
-			}else{
-				$tie=0;
-			}
+			}else$tie=0;
 			$q=$db->prepare("INSERT INTO content (contentType,name,email,business,address,suburb,city,state,postcode,phone,notes,rid,status,ti,tis,tie) VALUES ('booking',:name,:email,:business,:address,:suburb,:city,:state,:postcode,:phone,:notes,:rid,'unconfirmed',:ti,:tis,:tie)");
 			$q->execute(array(':name'=>$name,':email'=>$email,':business'=>$business,':address'=>$address,':suburb'=>$suburb,':city'=>$city,':state'=>$state,':postcode'=>$postcode,':phone'=>$phone,':notes'=>$notes,':rid'=>$rid,':ti'=>$ti,':tis'=>$tis,':tie'=>$tie));
 			$e=$db->errorInfo();
