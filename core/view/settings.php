@@ -9,8 +9,14 @@ $matchPassHidden=$theme['settings']['settings_hidden'];
 $successHidden=$theme['settings']['settings_hidden'];
 $successShow=$theme['settings']['settings_show'];
 $success=$theme['settings']['settings_hidden'];
-if($user['rank']>0){
-	if($act=='updatePassword'&&isset($_POST['emailTrap'])&&$_POST['emailTrap']==''){
+$act=filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING);
+if(isset($_SESSION['uid'])&&$_SESSION['uid']>0){
+	$s=$db->prepare("SELECT * FROM login WHERE id=:id");
+	$s->execute(array(':id'=>$_SESSION['uid']));
+	$user=$s->fetch(PDO::FETCH_ASSOC);
+}
+if(isset($user)&&$user['rank']>0){
+	if(isset($act)&&$act=='updatePassword'&&isset($_POST['emailTrap'])&&$_POST['emailTrap']==''){
 		if(isset($_POST['currentPass'])){
 			$currentPass=filter_input(INPUT_POST,'currentPass',FILTER_SANITIZE_STRING);
 			$cPass=hash('SHA512',$user['username']).hash('SHA512',$currentPass);
@@ -37,7 +43,7 @@ if($user['rank']>0){
 			}
 		}
 	}
-	if($act=='updateAccount'&&isset($_POST['emailTrap'])&&$_POST['emailTrap']==''){
+	if(isset($act)&&$act=='updateAccount'&&isset($_POST['emailTrap'])&&$_POST['emailTrap']==''){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
 		$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
 		$url=filter_input(INPUT_POST,'url',FILTER_SANITIZE_STRING);

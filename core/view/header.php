@@ -3,7 +3,14 @@ if($_SESSION['rank']>0){
 	if($view=='proofs')$html=str_replace('<print activeproofs>',' class="active"',$html);else $html=str_replace('<print activeproofs>','',$html);
 	if($view=='orders')$html=str_replace('<print activeorders>',' class="active"',$html);else $html=str_replace('<print activeorders>','',$html);
 	if($view=='settings')$html=str_replace('<print activesettings>',' class="active"',$html);else $html=str_replace('<print activesettings>','',$html);
-	if(stristr($html,'<print user=avatar>')&&isset($user['gravatar']))$html=str_replace('<print user=avatar>','http://gravatar.com/avatar/'.md5($user['gravatar']),$html);
+	if(stristr($html,'<print user=avatar>')){
+		if(isset($user)&&$user['gravatar']!='')
+			$html=str_replace('<print user=avatar>','http://gravatar.com/avatar/'.md5($user['gravatar']),$html);
+		elseif(isset($user)&&$user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))
+			$html=str_replace('<print user=avatar>','media/avatar/'.$user['avatar'],$html);
+		else
+			$html=str_replace('<print user=avatar>',$noavatar,$html);
+	}
 	$html=str_replace('<accountmenu>','',$html);
 	$html=str_replace('</accountmenu>','',$html);
 }else $html=preg_replace('~<accountmenu>.*?<\/accountmenu>~is','',$html,1);
