@@ -8,6 +8,10 @@ define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
 define('YANDEX','trnsl.1.1.20151010T141347Z.abb6d53e6280191b.5decd3b201ae911048617d1869e766124de2023d');
 require'login.php';
+if($config['maintenance']{0}==1&&!file_exists(THEME.'/maintenance.html')){
+	require'core/layout/maintenance.php';
+	die();
+}
 /* Controller */
 class internal{
 	function getconfig($db){

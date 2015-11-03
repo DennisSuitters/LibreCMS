@@ -72,6 +72,9 @@ if($_SESSION['rank']>399){?>
 					<li<?php if($view=='search')echo' class="active"';?>><a href="<?php echo URL.'admin/search';?>"><i class="libre libre-search" name="<?php lang('Search');?>"></i><span><?php lang('Search');?></span></a></li>
 				</ul>
 			</div>
+<?php 	if($config['maintenance']{0}==1){?>
+			<div class="alert alert-warning">Note: Site is currently in Maintenance Mode</div>
+<?php 	} ?>
 			<footer class="hidden-xs">
 				<div class="brand"><img src="core/images/librecms.png" alt="LibreCMS"></div>
 				<ul>
@@ -81,7 +84,7 @@ if($_SESSION['rank']>399){?>
 			</footer>
 		</div>
 		<main id="content">
-<?php	if($view=='add'){
+<?php 	if($view=='add'){
 			if($args[0]=='bookings')
 				require'core/layout/bookings.php';
 			else

@@ -106,6 +106,12 @@
 			<div id="interface" class="tab-pane fade in">
 				<div class="form-group">
 					<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
+						<input type="checkbox" id="maintenance0" data-dbid="1" data-dbt="config" data-dbc="maintenance" data-dbb="0"<?php if($config['maintenance']{0}==1)echo' checked';?>><label for="maintenance0">
+					</div>
+					<label for="maintenance0" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['maintenance']{0}==1)echo' data-toggle="tooltip" title="Toggle Site Maintenance Mode."';?>><?php lang('label','maintenance');?></span></label>
+				</div>
+				<div class="form-group">
+					<div class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2 text-right">
 						<input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>><label for="options3">
 					</div>
 					<label for="options3" class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="This allows Users to Create Accounts."';?>><?php lang('label','enablesignups');?></span></label>

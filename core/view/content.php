@@ -15,7 +15,7 @@ if($view=='index'){
 			if($contentType=='all'||$contentType==0)$contentType='%';
 		}else $contenType='%';
 	}else{
-		$itemCount=$config['itemCount'];
+		$itemCount=$config['showItems'];
 		$contentType='%';
 	}
 	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND contentType NOT LIKE 'message%' AND contentType!='testimonials' AND contentType!='proofs' AND status LIKE :status AND internal!='1' ORDER BY ti DESC LIMIT $itemCount");

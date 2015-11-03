@@ -26,9 +26,18 @@ require'core/cart_quantity.php';
 if($_SESSION['rank']>699)$status="%";
 else$status="published";
 $content='';
-if(file_exists(THEME.'/'.$view.'.html'))$template=file_get_contents(THEME.'/'.$view.'.html');
-elseif(file_exists(THEME.'/default.html'))$template=file_get_contents(THEME.'/default.html');
-else$template=file_get_contents(THEME.'/content.html');
+if($config['maintenance']{0}==1&&(isset($_SESSION['rank'])&&$_SESSION['rank']<400)){
+	if(file_exists(THEME.'/maintenance.html')){
+		$template=file_get_contents(THEME.'/maintenance.html');
+	}else{
+		$template=file_get_contents('core/layout/maintenance.html');
+	}
+}elseif(file_exists(THEME.'/'.$view.'.html'))
+	$template=file_get_contents(THEME.'/'.$view.'.html');
+elseif(file_exists(THEME.'/default.html'))
+	$template=file_get_contents(THEME.'/default.html');
+else
+	$template=file_get_contents(THEME.'/content.html');
 $newDom=new DOMDocument();
 @$newDom->loadHTML($template);
 $tag=$newDom->getElementsByTagName('block');

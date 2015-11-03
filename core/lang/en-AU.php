@@ -158,6 +158,7 @@ function lang($phrase1,$phrase2=null){
 							'edited'			=>'Edited',
 							'email'				=>'Email',
 							'emailsubjecttokens'=>'You can use the following Tokens: {name} {first} {last} {date} {order_number}',
+							'maintenance'		=>'Site Maintenance Mode',
 							'orderemaildefaultsubject'=>'Email Subject',
 							'orderemaillayout'	=>'Email Layout',
 							'orderemailnotes'	=>'Order Notes',
