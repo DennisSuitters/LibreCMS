@@ -2,8 +2,15 @@
 	<div class="btn-group hidden-xs">
 		<form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
 			<input type="hidden" name="act" value="add_media">
-			<span class="btn btn-info btn-file"><?php lang('button','browse_images');?>'<input type="file" name="fu[]" multiple<?php if($user['options']{1}==0)echo' disabled';?>></span>
-			<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><?php lang('button','upload');?></button>
+			<div class="btn btn-info btn-file">
+				<span class="libre-stack">
+					<i class="libre libre-stack-1x libre-desktop"></i>
+					<i class="libre libre-stack-1x libre-action text-info"></i>
+					<i class="libre libre-stack-action libre-action-select"></i>
+				</span>
+				<input type="file" name="fu[]" multiple<?php if($user['options']{1}==0)echo' disabled';?>>
+			</div>
+			<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload"></i></button>
 		</form>
 	</div>
 </div>
@@ -20,8 +27,10 @@
 		sort($docs);
 		$i=0;
 		foreach($docs as$key=>$file){
-			if($file=='.gitkeep')continue;?>
-	<div id="l_<?php echo$i;?>" class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
+			if($file=='.gitkeep')continue;
+			$fileid=str_replace('.','',$file);
+			$fileid=str_replace('/','',$fileid);?>
+	<div id="l_media<?php echo$fileid;?>" class="col-xs-12 col-sm-6 col-md-4 col-lg-2">
 		<div class="panel panel-default">
 			<div class="panel-image">
 <?php		$finfo=new finfo(FILEINFO_MIME_TYPE);
@@ -37,7 +46,7 @@
 				<h4 class="panel-title color-white text-shadow-depth-1"><small><?php echo $file;?></small></h4>
 			</div>
 			<div class="btn-group panel-controls shadow-depth-1">
-				<button class="btn btn-danger btn-sm" onclick="removeMedia('<?php echo$i;$i++;?>','<?php echo str_replace(' ','~',$file);?>')"><i class="libre libre-trash"></i></button>
+				<button class="btn btn-danger btn-sm" onclick="removeMedia('media/<?php echo str_replace(' ','~',$file);?>')"><i class="libre libre-trash"></i></button>
 			</div>
 		</div>
 	</div>

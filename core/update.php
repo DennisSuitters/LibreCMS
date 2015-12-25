@@ -28,7 +28,6 @@ $log=[
 	'action'		=>	'update',
 	'ti'			=>	$ti
 ];
-if($r['contentType']=='booking')$log['view']=$r['contentType'].'s';
 if(isset($_SESSION['uid'])){
 	$uid=(int)$_SESSION['uid'];
 	$q=$db->prepare("SELECT rank,username,name FROM login WHERE id=:id");

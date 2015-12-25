@@ -1,4 +1,6 @@
 <?php
+ini_set('session.use_cookies',1);
+ini_set('session.use_only_cookies',1);
 require_once'core/db.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
@@ -12,11 +14,32 @@ if($config['maintenance']{0}==1&&!file_exists(THEME.'/maintenance.html')){
 	require'core/layout/maintenance.php';
 	die();
 }
+function minify($txt){
+	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
+}
+function _ago($time){
+	$fromTime=$time;
+	$timeDiff=floor(abs(time()-$fromTime)/60);
+	if($timeDiff<2)$timeDiff=lang('noecho','justnow');
+	elseif($timeDiff>2&&$timeDiff<60)$timeDiff=floor(abs($timeDiff)).' '.lang('noecho','minutesago');
+	elseif($timeDiff>60&&$timeDiff<120)$timeDiff=floor(abs($timeDiff/60)).' '.lang('noecho','hourago');
+	elseif($timeDiff<1440)$timeDiff=floor(abs($timeDiff/60)).' '.lang('noecho','hoursago');
+	elseif($timeDiff>1440&&$timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440)).' '.lang('noecho','dayago');
+	elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440)).' '.lang('noecho','daysago');
+	return$timeDiff;
+}
 /* Controller */
 class internal{
 	function getconfig($db){
 		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 		return$config;
+	}
+	function favicon(){
+		if(file_exists(THEME.'/images/favicon.png'))return THEME.'/images/favicon.png';
+		elseif(file_exists(THEME.'/images/favicon.gif'))return THEME.'/images/favicon.gif';
+		elseif(file_exists(THEME.'/images/favicon.jpg'))return THEME.'/images/favicon.jpg';
+		elseif(file_exists(THEME.'/images/favicon.ico'))return THEME.'/images/favicon.ico';
+		else return'core/images/favicon.png';
 	}
 	function humans($args=false){
 		require'core/humans.php';
@@ -30,45 +53,31 @@ class internal{
 	function rss($args=false){
 		require'core/rss.php';
 	}
-	function favicon(){
-		if(file_exists(THEME.'/images/favicon.png')){
-			$favicon=THEME.'/images/favicon.png';
-		}elseif(file_exists(THEME.'/images/favicon.gif')){
-			$favicon=THEME.'/images/favicon.gif';
-		}elseif(file_exists(THEME.'/images/favicon.jpg')){
-			$favicon=THEME.'/images/favicon.jpg';
-		}elseif(file_exists(THEME.'/images/favicon.ico')){
-			$favicon=THEME.'/images/favicon.ico';
-		}else{
-			$favicon='core/images/favicon.png';
-		}
-		return $favicon;
-	}
 }
 class admin{
 	function getconfig($db){
 		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-		return $config;
+		return$config;
 	}
 	function favicon(){
-		$favicon='core/images/favicon.png';
-		return $favicon;
+		return'core/images/favicon.png';
 	}
 	function noimage(){
-		$noimage='core/images/noimage.jpg';
-		return $noimage;
+		return'core/images/noimage.jpg';
 	}
 	function noavatar(){
-		$noavatar='core/images/noavatar.jpg';
-		return $noavatar;
-	}
-
-	function add($args=false){
-		$view='add';
-		require'admin.php';
+		return'core/images/noavatar.jpg';
 	}
 	function accounts($args=false){
 		$view='accounts';
+		require'admin.php';
+	}
+	function activity($args=false){
+		$view='activity';
+		require'admin.php';
+	}
+	function add($args=false){
+		$view='add';
 		require'admin.php';
 	}
 	function bookings($args=false){
@@ -79,8 +88,13 @@ class admin{
 		$view='content';
 		require'admin.php';
 	}
-	function pages($args=false){
-		$view='pages';
+	function dashboard($args=false){
+		$view='dashboard';
+		require'admin.php';
+	}
+	function logout($args=false){
+		$act='logout';
+		$view='';
 		require'admin.php';
 	}
 	function media($args=false){
@@ -95,25 +109,16 @@ class admin{
 		$view='orders';
 		require'admin.php';
 	}
+	function pages($args=false){
+		$view='pages';
+		require'admin.php';
+	}
 	function preferences($args=false){
 		$view='preferences';
 		require'admin.php';
 	}
 	function search($args=false){
 		$view='search';
-		require'admin.php';
-	}
-	function statistics($args=false){
-		$view='statistics';
-		require'admin.php';
-	}
-	function activity($args=false){
-		$view='activity';
-		require'admin.php';
-	}
-	function logout($args=false){
-		$act='logout';
-		$view='';
 		require'admin.php';
 	}
 }
@@ -123,42 +128,23 @@ class front{
 		return$config;
 	}
 	function favicon(){
-		if(file_exists(THEME.'/images/favicon.png')){
-			$favicon=THEME.'/images/favicon.png';
-		}elseif(file_exists(THEME.'/images/favicon.gif')){
-			$favicon=THEME.'/images/favicon.gif';
-		}elseif(file_exists(THEME.'/images/favicon.jpg')){
-			$favicon=THEME.'/images/favicon.jpg';
-		}elseif(file_exists(THEME.'/images/favicon.ico')){
-			$favicon=THEME.'/images/favicon.ico';
-		}else{
-			$favicon='core/images/favicon.png';
-		}
-		return$favicon;
+		if(file_exists(THEME.'/images/favicon.png'))return THEME.'/images/favicon.png';
+		elseif(file_exists(THEME.'/images/favicon.gif'))return THEME.'/images/favicon.gif';
+		elseif(file_exists(THEME.'/images/favicon.jpg'))return THEME.'/images/favicon.jpg';
+		elseif(file_exists(THEME.'/images/favicon.ico'))return THEME.'/images/favicon.ico';
+		else return'core/images/favicon.png';
 	}
 	function noimage(){
-		if(file_exists(THEME.'/images/noimage.png')){
-			$noimage=THEME.'/images/noimage.png';
-		}elseif(file_exists(THEME.'/images/noimage.gif')){
-			$noimage=THEME.'/images/noimage.gif';
-		}elseif(file_exists(THEME.'/images/noimage.jpg')){
-			$noimage=THEME.'/images/noimage.jpg';
-		}else{
-			$noimage='core/images/noimage.jpg';
-		}
-		return$noimage;
+		if(file_exists(THEME.'/images/noimage.png'))return THEME.'/images/noimage.png';
+		elseif(file_exists(THEME.'/images/noimage.gif'))return THEME.'/images/noimage.gif';
+		elseif(file_exists(THEME.'/images/noimage.jpg'))return THEME.'/images/noimage.jpg';
+		else return'core/images/noimage.jpg';
 	}
 	function noavatar(){
-		if(file_exists(THEME.'/images/noavatar.png')){
-			$noavatar=THEME.'/images/noavatar.png';
-		}elseif(file_exists(THEME.'/images/noavatar.gif')){
-			$noavatar=THEME.'/images/noavatar.gif';
-		}elseif(file_exists(THEME.'/images/noavatar.jpg')){
-			$noavatar=THEME.'/images/noavatar.jpg';
-		}else{
-			$noavatar='core/images/noavatar.jpg';
-		}
-		return$noavatar;
+		if(file_exists(THEME.'/images/noavatar.png'))return THEME.'/images/noavatar.png';
+		elseif(file_exists(THEME.'/images/noavatar.gif'))return THEME.'/images/noavatar.gif';
+		elseif(file_exists(THEME.'/images/noavatar.jpg'))return THEME.'/images/noavatar.jpg';
+		else return'core/images/noavatar.jpg';
 	}
 	function article($args=false){
 		$view='article';
@@ -176,12 +162,12 @@ class front{
 		$view='contactus';
 		require'process.php';
 	}
-	function events($args=false){
-		$view='events';
-		require'process.php';
-	}
 	function error($args=false){
 		$view='error';
+		require'process.php';
+	}
+	function events($args=false){
+		$view='events';
 		require'process.php';
 	}
 	function gallery($args=false){
@@ -244,73 +230,57 @@ class front{
 }
 /* Router */
 $route=new router();
-$route->setRoutes(
-	array(
-		'admin/add'			=>array('admin','add'),
-		'admin/accounts'	=>array('admin','accounts'),
-		'admin/bookings'	=>array('admin','bookings'),
-		'admin/content'		=>array('admin','content'),
-		'admin/media'		=>array('admin','media'),
-		'admin/messages'	=>array('admin','messages'),
-		'admin/orders'		=>array('admin','orders'),
-		'admin/pages'		=>array('admin','pages'),
-		'admin/preferences'	=>array('admin','preferences'),
-		'admin/search'		=>array('admin','search'),
-		'admin/statistics'	=>array('admin','statistics'),
-		'admin/activity'	=>array('admin','activity'),
-		'admin/logout'		=>array('admin','logout'),
-		'admin'				=>array('admin','statistics'),
-		'error'				=>array('front','error'),
-		''					=>array('front','index'),
-		'index'				=>array('front','index'),
-		'article'			=>array('front','article'),
-		'portfolio'			=>array('front','portfolio'),
-		'bookings'			=>array('front','bookings'),
-		'events'			=>array('front','events'),
-		'news'				=>array('front','news'),
-		'testimonials'		=>array('front','testimonials'),
-		'inventory'			=>array('front','inventory'),
-		'services'			=>array('front','services'),
-		'gallery'			=>array('front','gallery'),
-		'contactus'			=>array('front','contactus'),
-		'cart'				=>array('front','cart'),
-		'sitemap'			=>array('front','sitemap'),
-		'tos'				=>array('front','tos'),
-		'login'				=>array('front','login'),
-		'logout'			=>array('front','logout'),
-		'proofs'			=>array('front','proofs'),
-		'search'			=>array('front','search'),
-		'sitemap'			=>array('front','sitemap'),
-		'settings'			=>array('front','settings'),
-		'humans.txt'		=>array('internal','humans'),
-		'sitemap.xml'		=>array('internal','sitemap'),
-		'robots.txt'		=>array('internal','robots'),
-		'rss'				=>array('internal','rss')
-	));
+$route->setRoutes(array(
+	'admin/add'=>array('admin','add'),
+	'admin/accounts'=>array('admin','accounts'),
+	'admin/activity'=>array('admin','activity'),
+	'admin/bookings'=>array('admin','bookings'),
+	'admin/content'=>array('admin','content'),
+	'admin/dashboard'=>array('admin','dashboard'),
+	'admin/logout'=>array('admin','logout'),
+	'admin/media'=>array('admin','media'),
+	'admin/messages'=>array('admin','messages'),
+	'admin/orders'=>array('admin','orders'),
+	'admin/pages'=>array('admin','pages'),
+	'admin/preferences'=>array('admin','preferences'),
+	'admin/search'=>array('admin','search'),
+	'admin'=>array('admin','dashboard'),
+	'error'=>array('front','error'),
+	''=>array('front','index'),
+	'index'=>array('front','index'),
+	'article'=>array('front','article'),
+	'articles'=>array('front','article'),
+	'bookings'=>array('front','bookings'),
+	'cart'=>array('front','cart'),
+	'contactus'=>array('front','contactus'),
+	'event'=>array('front','events'),
+	'events'=>array('front','events'),
+	'gallery'=>array('front','gallery'),
+	'inventory'=>array('front','inventory'),
+	'login'=>array('front','login'),
+	'logout'=>array('front','logout'),
+	'news'=>array('front','news'),
+	'portfolio'=>array('front','portfolio'),
+	'proofs'=>array('front','proofs'),
+	'search'=>array('front','search'),
+	'service'=>array('front','services'),
+	'services'=>array('front','services'),
+	'settings'=>array('front','settings'),
+	'sitemap'=>array('front','sitemap'),
+	'testimonial'=>array('front','testimonials'),
+	'testimonials'=>array('front','testimonials'),
+	'tos'=>array('front','tos'),
+	'humans.txt'=>array('internal','humans'),
+	'sitemap.xml'=>array('internal','sitemap'),
+	'robots.txt'=>array('internal','robots'),
+	'rss'=>array('internal','rss')
+));
 $route->routeURL(preg_replace("|/$|","",filter_input(INPUT_GET,'url',FILTER_SANITIZE_URL)));
-function minify($txt){
-	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
-}
-function _ago($time){
-	$toTime=time();
-	$fromTime=$time;
-	$timeDiff=floor(abs($toTime-$fromTime)/60);
-	if($timeDiff<2)$timeDiff=lang('noecho','Just now');
-	elseif($timeDiff>2&&$timeDiff<60)$timeDiff=floor(abs($timeDiff)).' '.lang('noecho','minutesago');
-	elseif($timeDiff>60&&$timeDiff<120)$timeDiff=floor(abs($timeDiff/60)).' '.lang('noecho','hourago');
-	elseif($timeDiff<1440)$timeDiff=floor(abs($timeDiff/60)).' '.lang('noecho','hoursago');
-	elseif($timeDiff>1440&& $timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440)).' '.lang('noecho','dayago');
-	elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440)).' '.lang('noecho','daysago');
-	return$timeDiff;
-}
 class router{
 	protected$route_match=false;
 	protected$route_call=false;
 	protected$route_call_args=false;
 	protected$routes=array();
-	public function __construct(){
-
-	}
 	public function setRoutes($routes){
 		$this->routes=$routes;
 	}
@@ -321,10 +291,8 @@ class router{
 			$this->callRoute();
 			return true;
 		}
-		foreach($this->routes as $path=>$call){
-			if(empty($path)){
-				continue;
-			}
+		foreach($this->routes as$path=>$call){
+			if(empty($path))continue;
 			preg_match("|{$path}/(.*)$|i",$url,$match);
 			if(!empty($match[1])){
 				$this->route_match=$path;
@@ -345,10 +313,8 @@ class router{
 	private function callRoute(){
 		$call=$this->route_call;
 		if(is_array($call)){
-			$call_obj=new $call[0]();
+			$call_obj=new$call[0]();
 			$call_obj->$call[1]($this->route_call_args);
-		}else{
-			$call($this->route_call_args);
-		}
+		}else$call($this->route_call_args);
 	}
 }

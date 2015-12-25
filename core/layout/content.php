@@ -13,7 +13,7 @@ if($view=='add'){
 	if($args[0]=='news')$schema='NewsArticle';
 	if($args[0]=='event')$schema='Event';
 	if($args[0]=='portfolio')$schema='CreativeWork';
-	if($args[0]=='proof')$schema='CreativeWork';$comments=1;
+	if($args[0]=='proof'){$schema='CreativeWork';$comments=1;}
 	$q=$db->prepare("INSERT INTO content (options,uid,login_user,contentType,schemaType,status,active,ti,eti) VALUES ('00000000',:uid,:login_user,:contentType,:schemaType,'unpublished','1',:ti,:ti)");
 	if(isset($user['id']))$uid=$user['id'];else$uid=0;
 	if($user['name']!='')$login_user=$user['name'];
@@ -66,11 +66,8 @@ if($show=='categories'){
 				<input type="radio" name="options" id="option2" autocomplete="off" onchange="update('<?php echo$user['id'];?>','login','layoutContent','list');"<?php if($user['layoutContent']=='list'){echo' checked';}?>><i class="libre libre-layout-list"></i>
 			</label>
 		</div>
-		<div class="btn-group hidden-xs">
-			<input id="search" class="form-control" name="search" placeholder="<?php lang('placeholder','search');?>">
-		</div>
 		<div class="btn-group"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','items');echo'"';}?>>
-			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-view visible-xs"></i><span class="hidden-xs"><?php lang('button','show');?></span></button>
+			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-view"></i></button>
 			<ul class="dropdown-menu pull-right">
 				<li><a href="<?php echo URL.'admin/content';?>"><?php lang('button','all');?></a></li>
 <?php	$st=$db->query("SELECT DISTINCT contentType FROM content WHERE contentType!='booking' AND contentType!='message' AND contentType!='message_primary' ORDER BY contentType ASC");
@@ -79,17 +76,17 @@ if($show=='categories'){
 		</div>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
 		<div class="btn-group"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','add');echo'"';}?>>
-			<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-add visible-xs"></i><span class="hidden-xs"><?php lang('button','add');?></span></button>
+			<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-add"></i></button>
 			<ul class="dropdown-menu pull-right">
 				<li><a href="<?php echo URL;?>admin/add/article"><?php lang('button','article');?></a></li>
 				<li><a href="<?php echo URL;?>admin/add/portfolio"><?php lang('button','portfolio');?></a></li>
-				<li><a href="<?php echo URL;?>admin/add/event"><?php lang('button','event');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/events"><?php lang('button','event');?></a></li>
 				<li><a href="<?php echo URL;?>admin/add/news"><?php lang('button','news');?></a></li>
-				<li><a href="<?php echo URL;?>admin/add/testimonial"><?php lang('button','testimonial');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/testimonials"><?php lang('button','testimonial');?></a></li>
 				<li><a href="<?php echo URL;?>admin/add/inventory"><?php lang('button','inventory');?></a></li>
 				<li><a href="<?php echo URL;?>admin/add/service"><?php lang('button','service');?></a></li>
 				<li><a href="<?php echo URL;?>admin/add/gallery"><?php lang('button','gallery');?></a></li>
-				<li><a href="<?php echo URL;?>admin/add/proof"><?php lang('button','proof');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/proofs"><?php lang('button','proof');?></a></li>
 			</ul>
 		</div>
 <?php }?>
@@ -107,7 +104,9 @@ if($show=='categories'){
 				<a href="admin/content/edit/<?php echo$r['id'];?>"><img src="<?php echo'media/'.$r['file'];?>"></a>
 <?php 	}elseif($r['fileURL']!=''){?>
 				<a href="admin/content/edit/<?php echo$r['id'];?>"><img src="<?php echo$r['fileURL'];?>"></a>
-<?php 	}?>
+<?php 	}else{?>
+				<a href="admin/content/edit/<?php echo$r['id'];?>"><img src="core/images/nocover.jpg"></a>
+<?php	}?>
 			</div>
 			<h4 class="panel-title"><?php echo$r['title'];?></h4>
 			<div class="panel-body panel-content"><?php echo strip_tags(substr($r['notes'],0,200));?></div>
@@ -141,20 +140,37 @@ if($show=='categories'){
 		<li><a href="<?php echo URL;?>admin/content/type/<?php echo$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a></li>
 		<li class="active"><?php echo$r['title'];?></li>
 	</ol>
-	<div class="btn-group pull-right">
-		<a class="btn btn-success" href="<?php echo URL.'admin/content/type/'.$r['contentType'];?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','back');echo'"';}?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs"><?php lang('button','back');?><span></a>
+	<div class="pull-right">
+		<div class="btn-group">
+			<a class="btn btn-success" href="<?php echo URL.'admin/content/type/'.$r['contentType'];?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','back');echo'"';}?>><i class="libre libre-back"></i></a>
+		</div>
+<?php if($user['rank']==1000||$user['options']{0}==1){?>
+		<div class="btn-group"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','add');echo'"';}?>>
+			<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-add"></i></button>
+			<ul class="dropdown-menu pull-right">
+				<li><a href="<?php echo URL;?>admin/add/article"><?php lang('button','article');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/portfolio"><?php lang('button','portfolio');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/events"><?php lang('button','event');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/news"><?php lang('button','news');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/testimonials"><?php lang('button','testimonial');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/inventory"><?php lang('button','inventory');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/service"><?php lang('button','service');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/gallery"><?php lang('button','gallery');?></a></li>
+				<li><a href="<?php echo URL;?>admin/add/proofs"><?php lang('button','proof');?></a></li>
+			</ul>
+		</div>
 	</div>
+<?php }?>
 </div>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="form-group">
 			<label for="title" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','title');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><a class="btn btn-info" data-toggle="modal" data-target="#seo" href="core/seo.php?id=1"><i class="libre libre-seo"></i></a></div>';?>
 				<input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title"<?php if($user['options']{1}==0)echo' readonly';?>>
 			</div>
 		</div>
-<?php if($r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='inventory'||$r['contentType']=='services'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'){?>
+<?php if($r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'){?>
 		<div class="form-group">
 			<label for="published" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','status');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
@@ -204,7 +220,6 @@ if($show=='categories'){
 		<div class="form-group">
 			<label for="schemaType" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','schematype');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><a class="btn btn-info" data-toggle="modal" data-target="#seo" href="core/seo.php?id=2"><i class="libre libre-seo"></i></a></div>';?>
 				<select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','schematype');echo'"';}?>>
 					<option value="blogPost"<?php if($r['schemaType']=='blogPost')echo' selected';?>>blogPost <?php lang('button','schemablogpost');?></option>
 					<option value="Product"<?php if($r['schemaType']=='Product')echo' selected';?>>Product <?php lang('button','schemaproduct');?></option>
@@ -235,7 +250,6 @@ if($show=='categories'){
 		<div class="form-group">
 			<label for="author" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','author');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><a class="btn btn-info" data-toggle="modal" data-target="#seo" href="core/seo.php?id=3"><i class="libre libre-seo"></i></a></div>';?>
 				<select id="uid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','uid',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';?>>
 <?php	$su=$db->query("SELECT id,username,name FROM login WHERE username!='' AND status!='delete' ORDER BY username ASC, name ASC");
 		while($ru=$su->fetch(PDO::FETCH_ASSOC)){?>
@@ -245,18 +259,17 @@ if($show=='categories'){
 			</div>
 		</div>
 <?php }
-	if($r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='inventory'||$r['contentType']=='portfolio'||$r['contentType']=='proofs'||$r['contentType']=='services'){?>
+	if($r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='inventory'||$r['contentType']=='portfolio'||$r['contentType']=='proofs'||$r['contentType']=='service'){?>
 		<fieldset class="control-fieldset">
 			<legend class="control-legend"><?php lang('title','image');?></legend>
 			<div class="form-group">
 				<label for="file" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','image');?></label>
 				<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><a class="btn btn-info" data-toggle="modal" data-target="#seo" href="core/seo.php?id=4"><i class="libre libre-seo"></i></a></div>';?>
 					<div class="input-group-addon"><i class="libre libre-link"></i></div>
 					<input type="text" id="fileURL" class="form-control textinput" value="<?php echo$r['fileURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fileURL" placeholder="<?php lang('placeholder','url');?>">
 					<div class="input-group-btn">
-						<a class="btn btn-info hidden-xs" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=fileURL"><?php lang('button','edit');?></a>
-						<button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button>
+						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=fileURL"><i class="libre libre-edit"></i></a>
+						<button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><i class="libre libre-trash"></i></button>
 					</div>
 				</div>
 				<div class="help-block col-xs-7 col-sm-9 col-md-9 col-lg-10 pull-right">
@@ -272,18 +285,24 @@ if($show=='categories'){
 							<input type="hidden" name="act" value="add_image">
 							<input type="hidden" name="t" value="content">
 							<input type="hidden" name="c" value="file">
-							<div class="btn btn-info btn-file hidden-xs"><?php lang('button','browse_image');?><input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></div>
-							<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?> hidden-xs" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs"><?php lang('button','upload');?></span></button>
+							<div class="btn btn-info btn-file">
+								<span class="libre-stack">
+									<i class="libre libre-stack-1x libre-desktop"></i>
+									<i class="libre libre-stack-1x libre-action text-info"></i>
+									<i class="libre libre-stack-action libre-action-select"></i>
+								</span>
+								<input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
+							</div>
+							<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload"></i></button>
 						</form>
 					</div>
 					<div class="input-group-btn">
 						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=file">
-							<span class="libre-stack visible-xs">
+							<span class="libre-stack">
 								<i class="libre libre-stack-1x libre-picture"></i>
 								<i class="libre libre-stack-1x libre-action text-info"></i>
 								<i class="libre libre-stack-action libre-action-select"></i>
 							</span>
-							<span class="hidden-xs"><?php lang('button','browse_uploaded');?></span>
 						</a>
 					</div>
 					<div id="file" class="input-group-addon">
@@ -293,8 +312,8 @@ if($show=='categories'){
 		else echo'<img src="core/images/noimage.jpg">';?>
 					</div>
 					<div class="input-group-btn">
-						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=file"><i class="libre libre-edit visible-xs"></i><span class="hidden-xs"><?php lang('button','edit');?></span></a>
-						<button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button>
+						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=file"><i class="libre libre-edit"></i></a>
+						<button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><i class="libre libre-trash"></i></button>
 					</div>
 				</div>
 			</div>
@@ -310,18 +329,23 @@ if($show=='categories'){
 							<input type="hidden" name="act" value="add_image">
 							<input type="hidden" name="t" value="content">
 							<input type="hidden" name="c" value="thumb">
-							<div class="btn btn-info btn-file hidden-xs"><?php lang('button','browse_image');?><input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></div>
-							<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?> hidden-xs" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs"><?php lang('button','upload');?></span></button>
+							<div class="btn btn-info btn-file">
+								<span class="libre-stack">
+									<i class="libre libre-stack-1x libre-desktop"></i>
+									<i class="libre libre-stack-1x libre-action text-info"></i>
+									<i class="libre libre-stack-action libre-action-select"></i>
+								</span>
+								<input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>></div>
+							<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload"></i></button>
 						</form>
 					</div>
 					<div class="input-group-btn">
 						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=thumb">
-							<span class="libre-stack visible-xs">
+							<span class="libre-stack">
 								<i class="libre libre-stack-1x libre-picture"></i>
 								<i class="libre libre-stack-1x libre-action text-info"></i>
 								<i class="libre libre-stack-action libre-action-select"></i>
 							</span>
-							<span class="hidden-xs"><?php lang('button','browse_uploaded');?></span>
 						</a>
 					</div>
 					<div id="thumb" class="input-group-addon">
@@ -329,11 +353,11 @@ if($show=='categories'){
 		else echo'<img src="core/images/noimage.jpg">';?>
 					</div>
 					<div class="input-group-btn">
-						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=thumb"><i class="libre libre-edit visible-xs"></i><span class="hidden-xs"><?php lang('button','edit');?></span></a>
-						<button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button>
+						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=thumb"><i class="libre libre-edit"></i></a>
+						<button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><i class="libre libre-trash"></i></button>
 					</div>
 				</div>
-				<div class="help-block col-xs-7 pull-right">
+				<div class="help-block col-xs-7 col-sm-9 col-md-9 col-lg-10 pull-right">
 					<?php lang('info','cover_1');?>
 				</div>
 			</div>
@@ -413,7 +437,7 @@ if($show=='categories'){
 			<div class="clearfix"></div>
 		</fieldset>
 <?php }
-	if($r['contentType']=='inventory'||$r['contentType']=='services'||$r['contentType']=='events'||$r['contentType']=='news'){?>
+	if($r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='events'||$r['contentType']=='news'){?>
 		<div class="form-group">
 			<label for="code" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','code');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
@@ -448,13 +472,13 @@ if($show=='categories'){
 		<div class="form-group">
 			<label for="tis" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','eventstart');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-				<input type="text" id="tis" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title=';if($r['tis']==0)echo'"Select a Date..."';else echo'"'.date($config['dateFormat'],$r['tis']).'"';}?> value="<?php if($r['tis']!=0)echo date('Y-m-d h:m',$r['tis']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tis" placeholder="<?php lang('placeholder','selectdatetime');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
+				<input type="text" id="tis" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tis']==0){lang('tooltip','selectdate');echo'"';}else{echo date($config['dateFormat'],$r['tis']).'"';}}?> value="<?php if($r['tis']!=0)echo date('Y-m-d h:m',$r['tis']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tis" placeholder="<?php lang('placeholder','selectdate');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="tie" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','eventend');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-				<input type="text" id="tie" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title=';if($r['tie']==''||$r['tie']==0)echo'"Select a Date..."';else echo'"'.date($config['dateFormat'],$r['tie']).'"';}?> value="<?php if($r['tie']!=0)echo date('Y-m-d h:m',$r['tie']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="<?php lang('placeholder','selectdate');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
+				<input type="text" id="tie" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tie']==0){lang('tooltip','selectdate');echo'"';}else{echo date($config['dateFormat'],$r['tie']).'"';}}?> value="<?php if($r['tie']!=0)echo date('Y-m-d h:m',$r['tie']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="<?php lang('placeholder','selectdate');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
 			</div>
 		</div>
 <?php }
@@ -490,11 +514,10 @@ if($show=='categories'){
 			</div>
 		</div>
 <?php }
-	if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='gallery'||$r['contentType']=='inventory'||$r['contentType']=='services'||$r['contentType']=='events'||$r['contentType']=='news'){?>
+	if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='gallery'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='events'||$r['contentType']=='news'){?>
 		<div class="form-group">
 			<label for="category_1" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','categoryprimary');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><a class="btn btn-info" data-toggle="modal" data-target="#seo" href="core/seo.php?id=5"><i class="libre libre-seo"></i></a></div>';?>
 				<input id="category_1" list="category_1_options" type="text" class="form-control textinput" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_1" placeholder="<?php lang('placeholder','category');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
 				<datalist id="category_1_options">
 <?php	$s=$db->query("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");
@@ -502,8 +525,6 @@ if($show=='categories'){
 				</datalist>
 			</div>
 		</div>
-<?php }
-	if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='gallery'||$r['contentType']=='inventory'||$r['contentType']=='services'||$r['contentType']=='events'||$r['contentType']=='news'){?>
 		<div class="form-group">
 			<label for="category_2" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','categorysecondary');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
@@ -515,17 +536,16 @@ if($show=='categories'){
 			</div>
 		</div>
 <?php }
-	if($r['contentType']=='inventory'||$r['contentType']=='services'){?>
+	if($r['contentType']=='inventory'||$r['contentType']=='service'){?>
 		<div class="form-group">
 			<label for="cost" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','cost');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php 	if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
 				<div class="input-group-addon">$</div>
 				<input type="text" id="cost" class="form-control textinput" value="<?php echo$r['cost'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="cost" placeholder="<?php lang('placeholder','cost');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
 			</div>
 		</div>
 		<div class="form-group clearfix">
-			<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','showcost');if($config['options']{5}==1)echo'<div class="pull-right hidden-xs"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?></label>
+			<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','showcost');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';?>><label for="options0">
 			</div>
@@ -535,7 +555,6 @@ if($show=='categories'){
 		<div class="form-group">
 			<label for="quantity" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','quantity');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
 				<input type="text" id="quantity" class="form-control textinput" value="<?php echo$r['quantity'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="quantity" placeholder="<?php lang('placeholder','quantity');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
 			</div>
 		</div>
@@ -546,18 +565,16 @@ if($show=='categories'){
 				<input type="checkbox" id="featured0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="featured" data-dbb="0"<?php if($r['featured']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';?>><label for="featured0">
 			</div>
 		</div>
-<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='inventory'||$r['contentType']=='services'||$r['contentType']=='gallery'||$r['contentType']=='events'||$r['contentType']=='news'){?>
+<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='events'||$r['contentType']=='news'){?>
 		<div class="form-group">
 			<label for="content_keywords" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','keywords');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><a class="btn btn-info" data-toggle="modal" data-target="#seo" href="core/seo.php?id=6"><i class="libre libre-seo"></i></a></div>';?>
 				<input type="text" id="content_keywords" class="form-control textinput" value="<?php echo$r['keywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="keywords" placeholder="<?php lang('placeholder','keywords');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="tags" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','tags');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><a class="btn btn-info" data-toggle="modal" data-target="#seo" href="core/seo.php?id=7"><i class="libre libre-seo"></i></a></div>';?>
 				<input type="text" id="tags" class="form-control textinput" value="<?php echo$r['tags'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tags" placeholder="<?php lang('placeholder','tags');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
 			</div>
 		</div>
@@ -568,27 +585,24 @@ if($show=='categories'){
 				<input type="checkbox" id="internal0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="internal" data-dbb="0"<?php if($r['internal']==1)echo' checked';?><?php if($user['options']{1}==0)echo' readonly';?>><label for="internal0">
 			</div>
 		</div>
-<?php if($r['contentType']=='events'||$r['contentType']=='services'){?>
+<?php if($r['contentType']=='events'||$r['contentType']=='service'){?>
 		<div class="form-group clearfix">
 			<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','bookable');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><button class="btn btn-info" data-toggle="popover" title="" data-content=""><i class="libre libre-seo"></i></button></div>';?>
 				<input type="checkbox" id="bookable0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="bookable" data-dbb="0"<?php if($r['bookable']==1)echo' checked';?><?php if($user['options']{1}==0)echo' readonly';?>><label for="bookable0">
 			</div>
 		</div>
 <?php }
-	if($r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='services'||$r['contentType']=='inventory'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'){?>
+	if($r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='service'||$r['contentType']=='inventory'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'){?>
 		<div class="form-group">
 			<label for="caption" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','caption');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs"><a class="btn btn-info" data-toggle="modal" data-target="#seo" href="core/seo.php?id=8"><i class="libre libre-seo"></i></a></div>';?>
 				<input type="text" id="caption" class="form-control textinput" value="<?php echo$r['caption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="caption" placeholder="<?php lang('placeholder','caption');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
 			</div>
 		</div>
 <?php }?>
 		<div class="form-group">
 			<div class="input-group col-xs-12">
-<?php if($config['options']{5}==1)echo'<div class="input-group-btn hidden-xs" style="vertical-align:top;"><a class="btn btn-info" data-toggle="modal" data-target="#seo" href="core/seo.php?id=10"><i class="libre libre-seo"></i></a></div>';?>
 <?php if($user['options']{1}==1){?>
 				<form method="post" target="sp" action="core/update.php">
 					<input type="hidden" name="id" value="<?php echo$r['id'];?>">
@@ -621,7 +635,7 @@ if($show=='categories'){
 		<div class="clearfix"></div>
 <?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){?>
 		<div class="form-group clearfix">
-			<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','comments');if($config['options']{5}==1)echo'<div class="pull-right hidden-xs"><a class="btn btn-info" data-toggle="modal" data-target="#seo" href="core/seo.php?id=9"><i class="libre libre-seo"></i></a></div>';?></label>
+			<label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','comments');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
 				<input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>><label for="options1">
 			</div>
@@ -644,8 +658,8 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
 						<time><small class="text-muted"><?php echo date($config['dateFormat'],$rc['ti']);?></small></time>
 <?php echo strip_tags($rc['notes']);?>
 						<div id="controls-<?php echo$rc['id'];?>" class="btn-group pull-right">
-							<button id="approve_<?php echo$rc['id'];?>" class="btn btn-success btn-sm<?php if($rc['status']!='unapproved')echo' hidden';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','approved')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','approve');echo'"';}?>><i class="libre libre-approve visible-xs"></i><span class="hidden-xs"><?php lang('button','approve');?></span></button>
-							<button class="btn btn-danger btn-sm" onclick="purge('<?php echo$rc['id'];?>','comments')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','delete');echo'"';}?>><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button>
+							<button id="approve_<?php echo$rc['id'];?>" class="btn btn-success btn-sm<?php if($rc['status']!='unapproved')echo' hidden';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','approved')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','approve');echo'"';}?>><i class="libre libre-approve"></i></button>
+							<button class="btn btn-danger btn-sm" onclick="purge('<?php echo$rc['id'];?>','comments')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','delete');echo'"';}?>><i class="libre libre-trash"></i></button>
 						</div>
 					</div>
 				</div>
@@ -671,7 +685,7 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
 					</div>
 					<label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label>
 					<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-						<button class="btn btn-success btn-block"><i class="libre libre-comment visible-xs"></i><span class="hidden-xs"><?php lang('button','add');?></span></button>
+						<button class="btn btn-success btn-block"><i class="libre libre-comment"></i></button>
 					</div>
 				</form>
 			</div>

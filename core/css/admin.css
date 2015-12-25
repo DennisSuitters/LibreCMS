@@ -8,9 +8,6 @@ body{background:#f4f4f4;margin:0;padding:0}
 .divider{height:1px;overflow:hidden;background-color:#eee}
 #content{margin:-30px 20px 10px 160px}
 .page-toolbar{height:30px;padding-bottom:9px;margin:40px 0 20px 0}
-.login-panel{margin-top:25%}
-.install-panel{margin-top:25px}
-img.login{width:10em;margin:0 0 10px 0}
 #busy{position:fixed;bottom:5px;left:5px;display:none}
 .busy{position:absolute;top:2px;left:-32px;z-index:1000}
 .busycheck{position:absolute;top:-8px;left:-32px;z-index:1000}
@@ -61,12 +58,8 @@ div.clear{clear:both}
 @media screen and(-webkit-min-device-pixel-ratio:0){}
 @media(max-device-height:480px)and(orientation:portrait){}
 @media(max-width:480px){}
-@media(min-width:479px){
-	.login-panel{margin-top:20px}
-}
-@media(min-width:599px){
-	.login-panel{margin-top:25%}
-}
+@media(min-width:479px){}
+@media(min-width:599px){}
 @media screen and(max-width:767px){}
 @media(max-width:767px){
 	footer .navbar-nav li{float:right;display:inline}
@@ -91,6 +84,10 @@ input[type=checkbox]+label{font-family:LibreICONS;color:#a94442}
 input[type=checkbox]+label::before{content:'\e645'}
 input[type=checkbox]:checked+label{font-family:LibreICONS;color:#3c763d}
 input[type=checkbox]:checked+label::before{content:'\e646'}
+input[type=checkbox].check+label{display:inline-block;line-height:1.5em}
+input[type=checkbox].check+label::before{content:' ';display:inline-block;width:1em;height:1em;border:.0625em solid rgb(192,192,192);border-radius:.25em;background:rgb(224,224,224);vertical-align:top}
+input[type=checkbox]:checked.check+label{}
+input[type=checkbox]:checked.check+label::before{content:'✓';color:rgb(0,0,0);font-size:1em;line-height:1em;text-align:center;text-shadow:0 0 0.0714em rgb(0,0,0);font-weight:bold}
 .panel .panel-image{position:relative;background-color:#ddd;height:120px;overflow:hidden}
 .panel .panel-image[data-status|=delete]{background:#d9534f}
 .panel .panel-image[data-status|=unpublished]{background:#f0ad4e}
@@ -183,7 +180,7 @@ legend.control-legend.legend-sm{font-size:.75em!important}
 }
 .profile{margin:10px}
 .profile-sidebar li{text-align:left}
-.profile-userpic img{float:left;margin-top:-15px;width:50px;height:50px;-webkit-border-radius:50%!important;-moz-border-radius:50%!important;border-radius:50%!important}
+.profile-userpic img{float:left;margin-top:-30px;width:30px;height:30px;-webkit-border-radius:50%!important;-moz-border-radius:50%!important;border-radius:50%!important}
 .profile-userpic img.img-thumbnail{padding:1px}
 .profile-usertitle{text-align:right;margin-top:0}
 .profile-usertitle-name{color:#5a7391;font-size:10px;font-weight:700}
@@ -230,3 +227,30 @@ legend.control-legend.legend-sm{font-size:.75em!important}
 	max-width:100px!important;
 	margin:5px 5px 0 5px;
 }
+
+.mailbox-messages>.table{margin:0}
+.mailbox-messages>.table tr.unread{font-weight:700}
+.mailbox-messages .table tr th,
+.mailbox-messages .table tr td{}
+.mailbox-controls{padding:5px}
+.mailbox-controls.with-border{border-bottom:1px solid #f4f4f4}
+.mailbox-toggle,
+.mailbox-star,
+.mailbox-attachment{width:16px}
+.mailbox-date{text-align:right}
+.mailbox-read-info{border-bottom:1px solid #f4f4f4;padding:10px}
+.mailbox-read-info h3{font-size:20px;margin:0}
+.mailbox-read-info h5{margin:0;padding:5px 0 0 0}
+.mailbox-read-time{color:#999;font-size:13px}
+.mailbox-read-message{padding:10px}
+.mailbox-attachments li{float:left;width:200px;border:1px solid #eee;margin-bottom:10px;margin-right:10px}
+.mailbox-attachment-name{font-weight:bold;color:#666}
+.mailbox-attachment-icon,
+.mailbox-attachment-info,
+.mailbox-attachment-size{display:block}
+.mailbox-attachment-info{padding:10px;background:#f4f4f4}
+.mailbox-attachment-size{color:#999;font-size:12px}
+.mailbox-attachment-icon{text-align:center;font-size:65px;color:#666;padding:20px 10px}
+.mailbox-attachment-icon.has-img{padding:0}
+.mailbox-attachment-icon.has-img>img{max-width:100%;height:auto}
+.mailbox-attachments{list-style:none;margin:0;padding:0}

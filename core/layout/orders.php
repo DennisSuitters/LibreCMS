@@ -3,6 +3,38 @@ if(isset($_SESSION['uid'])){$uid=$_SESSION['uid'];}else{$uid=0;}
 $error=0;
 $oid='';
 if(isset($args[1])){$id=$args[1];}
+if($args[0]=='duplicate'){
+	$sd=$db->prepare("SELECT * FROM orders WHERE id=:id");
+	$sd->execute(array(':id'=>$id));
+	$rd=$sd->fetch(PDO::FETCH_ASSOC);
+	$s=$db->prepare("INSERT INTO orders (cid,uid,contentType,due_ti,notes,status,recurring,ti) VALUES (:cid,:uid,:contentType,:due_ti,:notes,:status,:recurring,:ti)");
+	$s->execute(array(':cid'=>$rd['cid'],':uid'=>$uid,':contentType'=>$rd['contentType'],':due_ti'=>$ti+$config['orderPayti'],':notes'=>$rd['notes'],':status'=>'outstanding',':recurring'=>$rd['recurring'],':ti'=>$ti));
+	$iid=$db->lastInsertId();
+	if($rd['qid']!=''){
+		$rd['qid']='Q'.date("ymd",$ti).sprintf("%06d",$iid+1,6);
+		$qid_ti=$ti+$config['orderPayti'];
+	}else $qid_ti=0;
+	if($rd['iid']!=''){
+		$rd['iid']='I'.date("ymd",$ti).sprintf("%06d",$iid+1,6);
+		$iid_ti=$ti+$config['orderPayti'];
+	}else $iid_ti=0;
+	$s=$db->prepare("UPDATE orders SET qid=:qid,qid_ti=:qid_ti,iid=:iid,iid_ti=:iid_ti WHERE id=:id");
+	$s->execute(array(':qid'=>$rd['qid'],':qid_ti'=>$qid_ti,':iid'=>$rd['iid'],':iid_ti'=>$iid_ti,':id'=>$iid));
+	$s=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid");
+	$s->execute(array(':oid'=>$id));
+	while($r=$s->fetch(PDO::FETCH_ASSOC)){
+		$so=$db->prepare("INSERT INTO orderitems (oid,iid,title,quantity,cost,status,ti) VALUES (:oid,:iid,:title,:quantity,:cost,:status,:ti)");
+		$so->execute(array(':oid'=>$iid,':iid'=>$r['iid'],':title'=>$r['title'],':quantity'=>$r['quantity'],':cost'=>$r['cost'],':status'=>$r['status'],':ti'=>$ti));
+	}
+	$aid='A'.date("ymd",$ti).sprintf("%06d",$id,6);
+	$s=$db->prepare("UPDATE orders SET aid=:aid,aid_ti=:aid_ti WHERE id=:id");
+	$s->execute(array(
+		':aid'=>$aid,
+		':aid_ti'=>$ti,
+		':id'=>$id
+	));
+	$args[0]='all';
+}
 if($args[0]=='addquote'||$args[0]=='addinvoice'){
 	$r=$db->query("SELECT MAX(id) as id FROM orders")->fetch(PDO::FETCH_ASSOC);
 	$dti=$ti+$config['orderPayti'];
@@ -18,37 +50,16 @@ if($args[0]=='addquote'||$args[0]=='addinvoice'){
 	}
 	$id=$db->lastInsertId();
 	$e=$db->errorInfo();
-	$args[0]='view';
-}
-if($args[0]=='add_recurring'){
-	$iid=$id;
-	$r=$db->query("SELECT MAX(id) as id FROM orders")->fetch();
-	$oid=strtoupper('I').date("ymd",$ti).sprintf("%06d",$r['id']+1,6);
-	$so=$db->prepare("SELECT cid,uid,order_note,da FROM orders WHERE id=:id LIMIT 0,1");
-	$so->execute(array(':id'=>$id));
-	$ro=$so->fetch(PDO::FETCH_ASSOC);
-	$payti=$ti+$config['orderPayti'];
-	$q=$db->prepare("INSERT INTO orders (cid,uid,order_note,iid,iid_ti,due_ti,da,status,ti) VALUES (:cid,:uid,:order_note,:iid,:iid_ti,:due_ti,:da','pending',:ti)");
-	$q->execute(array(':cid'=>$ro['cid'],':uid'=>$ro['uid'],':order_note'=>$ro['order_note'],':iid'=>$oid,':iid_ti'=>$ti,':due_ti'=>$payti,':da'=>$ro['notes'],':ti'=>$ti));
-	$id=$db->lastInsertId();
-	$s=$db->prepare("SELECT iid,title,quantity,cost,status FROM orderitems WHERE oid=:oid");
-	$s->execute(array(':oid'=>$iid));
-	while($r=$s->fetch(PDO::FETCH_ASSOC)){
-		$q=$db->prepare("INSERT INTO orderitems (oid,iid,title,quantity,cost,status,ti) VALUES (:oid,:iid,:title,:quantity,:cost,:status,:ti)");
-		$q->execute(array(':oid'=>$id,':iid'=>$r['iid'],':title'=>$r['title'],':quantity'=>$r['quantity'],':cost'=>$r['cost'],':status'=>$r['status'],':ti'=>$ti));
-	}
-	$args[0]='view';
-}
-if($act=='to_invoice'){
-	$oid=strtoupper('I').date("ymd",$ti).sprintf("%06d",$r['id'],6);
-	$q=$db->prepare("UPDATE orders SET iid=:iid,iid_ti=:iid_ti,qid='',qid_ti='0' WHERE id=:id");
-	$q->execute(array(':iid'=>$oid,':iid_ti'=>$ti,':id'=>$id));
-	unlink('../files/orders/'.$r['qid'].'.pdf');
-	$r['qid']='';
 	$args[0]='edit';
-	$q=$db->prepare("SELECT * FROM order WHERE id=:id");
+}
+if($args[0]=='to_invoice'){
+	$q=$db->prepare("SELECT qid FROM orders WHERE id=:id");
 	$q->execute(array(':id'=>$id));
 	$r=$q->fetch(PDO::FETCH_ASSOC);
+	$q=$db->prepare("UPDATE orders SET iid=:iid,iid_ti=:iid_ti,qid='',qid_ti='0' WHERE id=:id");
+	$q->execute(array(':iid'=>'I'.date("ymd",$ti).sprintf("%06d",$id,6),':iid_ti'=>$ti,':id'=>$id));
+	if(file_exists('../media/orders/'.$r['qid'].'.pdf')){unlink('../media/orders/'.$r['qid'].'.pdf');}
+	$args[0]='invoices';
 }
 if($args[0]=='edit'){
 	$q=$db->prepare("SELECT * FROM orders WHERE id=:id");
@@ -69,8 +80,17 @@ if($args[0]=='edit'){
 	else{?>
 <div class="page-toolbar">
 	Order #<?php echo$r['qid'].$r['iid'];?>
-	<div class="btn-group pull-right">
-		<a class="btn btn-success" href="<?php echo URL.'admin/orders';?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','back');echo'"';}?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs"><?php lang('button','back');?></span></a>
+	<div class="pull-right">
+		<div class="btn-group">
+			<a class="btn btn-success" href="<?php echo URL.'admin/orders';?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','back');echo'"';}?>><i class="libre libre-back"></i></a>
+		</div>
+		<div class="btn-group">
+			<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-placement="right"><i class="libre libre-plus"></i></button>
+			<ul class="dropdown-menu multi-level pull-right">
+				<li><a href="<?php echo URL;?>admin/orders/addquote"><?php lang('button','quote');?></a></li>
+				<li><a href="<?php echo URL;?>admin/orders/addinvoice"><?php lang('button','invoice');?></a></li>
+			</ul>
+		</div>
 	</div>
 </div>
 <div class="panel panel-default">
@@ -116,7 +136,7 @@ if($args[0]=='edit'){
 					<div class="form-group">
 						<label class="control-label label-xs col-xs-3 col-lg-2"><?php lang('label','postcode');?></label>
 						<div class="input-group col-xs-9 col-lg-10">
-							<input type="text" class="form-control input-xs" value="<?php echo$config['postcode'];?>" readonly>
+							<input type="text" class="form-control input-xs" value="<?php if($config['postcode']!=0){echo$config['postcode'];}?>" readonly>
 						</div>
 					</div>
 					<div class="form-group">
@@ -178,7 +198,7 @@ if($args[0]=='edit'){
 						<div class="input-group col-xs-9 col-lg-10">
 							<input type="text" id="email" class="form-control input-xs textinput" value="<?php echo$client['email'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="email" data-bt="icon" data-bs="btn-danger btn-xs" placeholder="<?php lang('placeholder','email');?>"<?php if($r['status']=='archived')echo' readonly';?>>
 							<div class="input-group-btn">
-								<a class="btn btn-info btn-xs"><i class="libre libre-email-send visible-xs"></i><span class="hidden-xs"><?php lang('button','email');?></span></a>
+								<a class="btn btn-info btn-xs" href="mailto:<?php echo$client['email'];?>"><i class="libre libre-email-send"></i></a>
 							</div>
 						</div>
 					</div>
@@ -206,7 +226,7 @@ if($args[0]=='edit'){
 			}?>
 							</select>
 						</div>
-						<small class="help-block"><?php lang('info','orderclientnote');?></small>
+						<small class="help-block col-xs-9 col-lg-10 pull-right"><small><?php lang('info','orderclientnote');?></small></small>
 					</div>
 <?php	}?>
 				</div>
@@ -230,7 +250,7 @@ if($args[0]=='edit'){
 							<input type="text" id="due_ti" class="form-control" value="<?php echo date($config['dateFormat'],$r['due_ti']);?>" readonly>
 <?php	if($r['status']!='archived'){?>
 							<div class="input-group-btn">
-								<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><i class="libre libre-plus visible-xs"></i><span class="hidden-xs"><?php lang('button','add');?></span></button>
+								<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><i class="libre libre-add"></i></button>
 								<ul class="dropdown-menu pull-right">
 									<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+604800;?>');return false;"><?php lang('button','7days');?></a></li>
 									<li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+1209600;?>');return false;"><?php lang('button','14days');?></a></li>
@@ -262,9 +282,6 @@ if($args[0]=='edit'){
 							<input type="checkbox" id="recurring0" data-dbid="<?php echo$r['id'];?>" data-dbt="orders" data-dbc="recurring" data-dbb="0"<?php if($r['recurring']==1)echo' checked';if($r['status']=='archived')echo' disabled';?>><label for="recurring0">
 						</div>
 					</div>
-					<div class="form-group form-group-xs">
-						<small class="help-block"><?php lang('info','recurring');?></small>
-					</div>
 				</div>
 			</div>
 			<div class="table-responsive">
@@ -281,7 +298,7 @@ if($args[0]=='edit'){
 				while($i=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$i['id'].'">'.ucfirst(rtrim($i['contentType'],'s')).$i['code'].':$'.$i['cost'].':'.$i['title'].'</option>';?>
 										</select>
 										<span class="input-group-btn">
-											<button class="btn btn-success" onclick="addOrderItem('<?php echo$r['id'];?>',$('#addItem').val());"><i class="libre libre-plus visible-xs"></i><span class="hidden-xs"><?php lang('button','add');?></span></button>
+											<button class="btn btn-success" onclick="addOrderItem('<?php echo$r['id'];?>',$('#addItem').val());"><i class="libre libre-plus"></i></button>
 										</span>
 									</div>
 								</div>
@@ -346,7 +363,7 @@ if($args[0]=='edit'){
 									<input type="hidden" name="t" value="orderitems">
 									<input type="hidden" name="c" value="quantity">
 									<input type="hidden" name="da" value="0">
-									<button class="btn btn-danger"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button>
+									<button class="btn btn-danger"><i class="libre libre-trash"></i></button>
 								</form>
 							</td>
 						</tr>
@@ -363,9 +380,13 @@ if($args[0]=='edit'){
 						<tr>
 							<td colspan="3">&nbsp;</td>
 							<td colspan="3">
-								<div class="btn-group pull-right">
-									<button class="btn btn-info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"><i class="libre libre-print visible-xs"></i><span class="hidden-xs"><?php lang('button','print');?></span></button>
-									<button class="btn btn-info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"><i class="libre libre-email-send visible-xs"></i><span class="hidden-xs"><?php lang('button','email');?></span></button>
+								<div class="pull-right">
+									<div class="btn-group">
+										<button class="btn btn-info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"><i class="libre libre-print"></i></button>
+									</div>
+									<div class="btn-group">
+										<button class="btn btn-info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"><i class="libre libre-email-send"></i></button>
+									</div>
 								</div>
 							</td>
 						</tr>
@@ -416,21 +437,26 @@ if($args[0]=='edit'){
 		if($args[0]=='pending'){
 			$s=$db->prepare("SELECT * FROM orders WHERE status='pending' ORDER BY ti DESC");
 			$s->execute();
+		}
+		if($args[0]=='recurring'){
+			$s=$db->prepare("SELECT * FROM orders WHERE recurring='1' ORDER BY ti DESC");
+			$s->execute();
 		}?>
 <div class="page-toolbar">
 	<div class="pull-right">
 		<div class="btn-group">
-			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view visible-xs"></i><span class="hidden-xs"><?php lang('button','show');?></span></button>
+			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view"></i></button>
 			<ul class="dropdown-menu pull-right">
 				<li><a href="admin/orders/all"><?php lang('button','all');?></a></li>
 				<li><a href="admin/orders/quotes"><?php lang('button','quotes');?></a></li>
 				<li><a href="admin/orders/invoices"><?php lang('button','invoices');?></a></li>
 				<li><a href="admin/orders/archived"><?php lang('button','archived');?></a></li>
 				<li><a href="admin/orders/pending"><?php lang('button','pending');?></a></li>
+				<li><a href="admin/orders/recurring"><?php lang('button','recurring');?></a></li>
 			</ul>
 		</div>
 		<div class="btn-group">
-			<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-placement="right"><i class="libre libre-plus visible-xs"></i><span class="hidden-xs"><?php lang('button','add');?></span></button>
+			<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-placement="right"><i class="libre libre-plus"></i></button>
 			<ul class="dropdown-menu multi-level pull-right">
 				<li><a href="<?php echo URL;?>admin/orders/addquote"><?php lang('button','quote');?></a></li>
 				<li><a href="<?php echo URL;?>admin/orders/addinvoice"><?php lang('button','invoice');?></a></li>
@@ -441,16 +467,12 @@ if($args[0]=='edit'){
 <div class="panel panel-default">
 	<div class="panel-body">
 		<div class="table-responsive">
-<?php if($user['rank']==1000||$user['options']{0}==1){?>
-
-<?php }?>
 			<table id="stupidtable" class="table table-condensed table-hover">
 				<thead>
 					<tr>
 						<th data-sort="string"><?php lang('label','order#');?></th>
 						<th class="hidden-xs" data-sort="string"><?php lang('label','client');?></th>
-						<th class="hidden-xs" data-sort="string"><?php lang('label','created');?></th>
-						<th class="hidden-xs" data-sort="string"><?php lang('label','due');?></th>
+						<th class="hidden-xs" data-sort="string"><?php lang('label','date');?></th>
 						<th data-sort="string"><?php lang('label','status');?></th>
 						<th class="col-xs-3"></th>
 					</tr>
@@ -462,35 +484,44 @@ if($args[0]=='edit'){
 				$us->execute(array(':id'=>$r['id']));
 				$r['status']='overdue';
 			}
-			$cs=$db->prepare("SELECT username,name,business FROM login WHERE id=:id");
+			$cs=$db->prepare("SELECT username,name,email,business FROM login WHERE id=:id");
 			$cs->execute(array(':id'=>$r['cid']));
 			$c=$cs->fetch(PDO::FETCH_ASSOC);?>
-					<tr id="l_<?php echo$r['id'];?>"<?php if($r['status']=='delete')echo' class="danger"';?>>
+					<tr id="l_<?php echo$r['id'];?>"<?php if(($ti>$r['due_ti'])||($r['status']=='overdue'))echo' class="danger text-danger"';?>>
 						<td>
-							<?php echo$r['qid'].$r['iid'];if($r['aid']!='')echo' / '.$r['aid'];?>
+							<small><?php if($r['aid']!='')echo$r['aid'].'<br>';echo$r['qid'].$r['iid'];?></small>
 							<small class="visible-xs hidden-sm hidden-md hidden-lg"><?php echo$c['username'];if($c['name']!='')echo' ['.$c['name'].']';if($c['business']!='')echo' -> '.$c['business'];?></span>
 						</td>
-						<td class="hidden-xs">
-							<?php echo$c['username'];if($c['name']!='')echo' ['.$c['name'].']';if($c['business']!='')echo' -> '.$c['business'];?>
+						<td class="hidden-xs"><small>
+<?php 						echo$c['username'];
+							if($c['name']!='')echo' ['.$c['name'].']';
+							if($c['name']!=''&&$c['business']!='')echo'<br>';
+							if($c['business']!='')echo$c['business'];
+?></small>
 						</td>
-						<td class="hidden-xs"><?php echo date($config['dateFormat'],$r['qid_ti']);?></td>
-						<td class="hidden-xs"><?php echo date($config['dateFormat'],$r['due_ti']);?></td>
-						<td><?php echo $r['status'];?></td>
+						<td class="hidden-xs">
+							<small><?php echo lang('label','created').': '.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?></small><br>
+							<small><?php echo lang('label','due').': '.date($config['dateFormat'],$r['due_ti']);?></small>
+						</td>
+						<td><small><?php echo $r['status'];?></small></td>
 						<td>
 							<div id="controls_<?php echo$r['id'];?>" class="btn-group pull-right">
 <?php		if($r['qid']!=''&&$r['aid']==''){?>
-								<a class="btn btn-info btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/to_invoice/<?php echo$r['id'];?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','invoice');echo'"';}?>><i class="libre libre-order-quotetoinvoice visible-xs"></i><span class="hidden-xs"><?php  lang('button','invoice');?></span></a>
+								<a class="btn btn-info btn-sm<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/to_invoice/<?php echo$r['id'];?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','invoice');echo'"';}?>><i class="libre libre-order-quotetoinvoice"></i></a>
 <?php		}
 			if($r['aid']==''){?>
-								<button class="btn btn-info btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="update('<?php echo$r['id'];?>','orders','status','archived')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','archive');echo'"';}?>><i class="libre libre-archive visible-xs"></i><span class="hidden-xs"><?php lang('button','archive');?></span></button>
+								<button class="btn btn-info btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="update('<?php echo$r['id'];?>','orders','status','archived')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','archive');echo'"';}?>><i class="libre libre-archive"></i></button>
 <?php		}?>
-								<button class="btn btn-info btn-xs" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','print');echo'"';}?>><i class="libre libre-print visible-xs"></i><span class="hidden-xs"><?php lang('button','print');?></span></button>
-								<button class="btn btn-info btn-xs" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="';lang('tooltip','emailorder');echo'"';?>><i class="libre libre-email-send visible-xs"></i><span class="hidden-xs"><?php lang('button','email');?></span></button>
-								<a class="btn btn-info btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltop','edit');echo'"';}?>><i class="libre libre-edit visible-xs"></i><span class="hidden-xs"><?php lang('button','edit');?></span></a>
+								<button class="btn btn-info btn-sm" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','print');echo'"';}?>><i class="libre libre-print"></i></button>
+<?php 		if($c['email']!=''){?>
+								<button class="btn btn-info btn-sm" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="';lang('tooltip','emailorder');echo'"';?>><i class="libre libre-email-send"></i></button>
+<?php 		}?>
+								<a class="btn btn-info btn-sm<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/duplicate/<?php echo$r['id'];?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltop','duplicate');echo'"';}?>><i class="libre libre-copy"></i></a>
+								<a class="btn btn-info btn-sm<?php if($r['status']=='delete')echo' hidden';?>" href="admin/orders/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltop','edit');echo'"';}?>><i class="libre libre-edit"></i></a>
 <?php		if($user['rank']>399){?>
-								<button class="btn btn-warning btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','restore');echo'"';}?>><i class="libre libre-email-reply visible-xs"></i><span class="hidden-xs"><?php lang('button','restore');?></span></button>
-								<button class="btn btn-danger btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','delete')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','delete');echo'"';}?>><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button>
-								<button class="btn btn-danger btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','orders')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','purge');echo'"';}?>><i class="libre libre-purge visible-xs"></i><span class="hidden-xs"><?php lang('button','purge');?></span></button>
+								<button class="btn btn-warning btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','restore');echo'"';}?>><i class="libre libre-email-reply"></i></button>
+								<button class="btn btn-danger btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','delete')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','delete');echo'"';}?>><i class="libre libre-trash"></i></button>
+								<button class="btn btn-danger btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','orders')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','purge');echo'"';}?>><i class="libre libre-purge"></i></button>
 <?php		}?>
 							</div>
 						</td>

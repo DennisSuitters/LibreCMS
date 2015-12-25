@@ -225,8 +225,8 @@ function imageUpdate(id,t,c,da){
 function updateButtons(id,t,c,da){
 	$('#sp').load('core/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da))
 }
-function removeMedia(id,t){
-	$('#sp').load('core/removemedia.php?id='+id+'&t='+t);
+function removeMedia(t){
+	$('#sp').load('core/removemedia.php?t='+t);
 }
 function showDetails(id,c){
 	if($('#show'+id).hasClass('hidden')){

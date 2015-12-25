@@ -2,8 +2,9 @@
 <block include="header.html">
 <block include="featured.html">
 <block inbed="content">
+	<print page="cover">
 	<main id="content" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<print page="notes">
+		<div class="clearfix"><print page="notes"></div>
 		<settings items="4" contenttype="all">
 		<loop>
 			<article class="col-lg-3 col-md-3 col-sm-4 col-xs-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
@@ -44,7 +45,7 @@
 			</article>
 		</loop>
 	</main>
-</block inbed="content">
+</block>
 <block inbed="testimonials">
 	<settings itemcount="5">
 	<div class="testimonials row">
@@ -68,6 +69,6 @@
 			<div class="pull-right"><a class="left" href="#testimonials" data-slide="prev"><span class="libre libre-chevron-left libre-2x"></span></a><a class="right" href="#testimonials" data-slide="next"><span class="libre libre-chevron-right libre-2x"></span></a></div>
 		</controls>
 	</div>
-</block inbed="testimonials">
+</block>
 <block include="footer.html">
 <block include="meta_footer.html">

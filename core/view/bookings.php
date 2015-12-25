@@ -51,7 +51,7 @@ if($act=='add_booking'){
 					$msg.='Address: '.$address.'<br />';
 					$msg.='Suburb: '.$suburb.'<br />';
 					$msg.='City: '.$city.'<br />';
-					$msg.='State: '.$state.'<br /';
+					$msg.='State: '.$state.'<br />';
 					$msg.='Postcode: '.$postcode.'<br />';
 					$msg.='Phone: '.$phone.'<br />';
 					$msg.='Notes: '.$notes;

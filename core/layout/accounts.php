@@ -1,4 +1,5 @@
-<?php if($args[0]=='add'){
+<?php
+if($args[0]=='add'){
 	$type=filter_input(INPUT_GET,'type',FILTER_SANITIZE_STRING);
 	$q=$db->prepare("INSERT INTO login (options,rank,active,ti) VALUES ('00000000','0','1',:ti)");
 	$q->execute(array(':ti'=>$ti));
@@ -14,7 +15,7 @@ if($args[0]=='edit'){
 	$r=$q->fetch(PDO::FETCH_ASSOC);?>
 <div class="page-toolbar">
 	<div class="btn-group pull-right">
-		<a class="btn btn-success" href="<?php echo URL;?>admin/accounts"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','back');echo'"';?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs"><?php lang('button','back');?><span></a>
+		<a class="btn btn-success" href="<?php echo URL;?>admin/accounts"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','back');echo'"';?>><i class="libre libre-back"></i></a>
 	</div>
 </div>
 <div class="panel panel-default">
@@ -74,7 +75,7 @@ if($args[0]=='edit'){
 			<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
 				<select id="language" class="form-control" onchange="update('<?php echo$r['id'];?>','login','language',$(this).val());">
 <?php	$languages=parse_ini_file('core/lang/languages.ini');
-		foreach($languages as $lang){
+		foreach($languages as$lang){
 			$l=explode(':',$lang);?>
 					<option value="<?php echo$l[0];?>"<?php if($user['language']==$l[0])echo' selected';?>><?php echo$l[1];?></option>
 <?php	}?>
@@ -158,8 +159,8 @@ if($args[0]=='edit'){
 					<div class="input-group-addon"><i class="libre libre-link"></i></div>
 					<input type="text" id="coverURL" class="form-control" value="<?php echo$r['coverURL'];?>" onchange="coverUpdate('<?php echo$r['id'];?>','login','coverURL',$(this).val());" placeholder="<?php lang('placeholder','cover');?>">
 					<div class="input-group-btn">
-						<a class="btn btn-info hidden-xs" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=login&c=coverURL"><?php lang('button','edit');?></a>
-						<button class="btn btn-danger" onclick="coverUpdate('<?php echo$r['id'];?>','login','coverURL','');"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button>
+						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=login&c=coverURL"><i class="libre libre-edit"></i></a>
+						<button class="btn btn-danger" onclick="coverUpdate('<?php echo$r['id'];?>','login','coverURL','');"><i class="libre libre-trash"></i></button>
 					</div>
 				</div>
 				<div class="help-block col-xs-7 col-sm-9 col-md-9 col-lg-10 pull-right">
@@ -175,23 +176,27 @@ if($args[0]=='edit'){
 							<input type="hidden" name="act" value="add_cover">
 							<input type="hidden" name="t" value="login">
 							<input type="hidden" name="c" value="cover">
-							<div class="btn btn-info btn-file hidden-xs">
-								<?php lang('button','browse_image');?><input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
+							<div class="btn btn-info btn-file">
+								<span class="libre-stack">
+									<i class="libre libre-stack-1x libre-desktop"></i>
+									<i class="libre libre-stack-1x libre-action text-info"></i>
+									<i class="libre libre-stack-action libre-action-select"></i>
+								</span>
+								<input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
 							</div>
-							<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?> hidden-xs" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs"><?php lang('button','upload');?></span></button>
+							<button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?> hidden-xs" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload"></i></button>
 						</form>
 					</div>
 					<div class="input-group-btn">
 						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=login&c=cover">
-							<span class="libre-stack visible-xs">
+							<span class="libre-stack">
 								<i class="libre libre-stack-1x libre-picture"></i>
 								<i class="libre libre-stack-1x libre-action text-info"></i>
 								<i class="libre libre-stack-action libre-action-select"></i>
 							</span>
-							<span class="hidden-xs"><?php lang('button','browse_uploaded');?></span>
 						</a>
-						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=login&c=cover"><i class="libre libre-edit visible-xs"></i><span class="hidden-xs"><?php lang('button','edit');?></span></a>
-						<button class="btn btn-danger" onclick="coverUpdate('<?php echo$r['id'];?>','login','cover','');"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('delete');?></span></button>
+						<a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=login&c=cover"><i class="libre libre-edit"></i></a>
+						<button class="btn btn-danger" onclick="coverUpdate('<?php echo$r['id'];?>','login','cover','');"><i class="libre libre-trash"></i></button>
 					</div>
 				</div>
 			</div>
@@ -230,19 +235,18 @@ if($args[0]=='edit'){
 							<input type="hidden" name="id" value="<?php echo$r['id'];?>">
 							<input type="hidden" name="act" value="add_avatar">
 							<div class="btn btn-info btn-file">
-								<span class="libre-stack visible-xs">
-									<i class="libre libre-stack-1x libre-picture"></i>
+								<span class="libre-stack">
+									<i class="libre libre-stack-1x libre-desktop"></i>
 									<i class="libre libre-stack-1x libre-action text-info"></i>
 									<i class="libre libre-stack-action libre-action-select"></i>
 								</span>
-								<span class="hidden-xs"><?php lang('button','browse_image');?></span>
 								<input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
 							</div>
-							<button class="btn btn-success" type="submit"><i class="libre libre-upload visible-xs"></i><span class="hidden-xs"><?php lang('button','upload');?></span></button>
+							<button class="btn btn-success" type="submit"><i class="libre libre-upload"></i></button>
 						</form>
 					</div>
 					<div class="input-group-btn">
-						<button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','login','avatar','');"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button>
+						<button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','login','avatar','');"><i class="libre libre-trash"></i></button>
 					</div>
 				</div>
 			</div>
@@ -418,7 +422,7 @@ if($args[0]=='edit'){
 						<div class="input-group-addon"><?php lang('label','url');?></div>
 						<input type="text" class="form-control" name="url" value="" placeholder="<?php lang('placeholder','url');?>">
 						<div class="input-group-btn">
-							<button class="btn btn-success"><i class="libre libre-plus visible-xs"></i><span class="hidden-xs"><?php lang('button','add');?></span></button>
+							<button class="btn btn-success"><i class="libre libre-plus"></i></button>
 						</div>
 					</div>
 				</form>
@@ -465,7 +469,7 @@ if($args[0]=='edit'){
 			</div>
 		</div>
 		<div class="btn-group">
-			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view visible-xs"></i><span class="hidden-xs"><?php lang('button','show');?></span></button>
+			<button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view"></i></button>
 			<ul class="dropdown-menu pull-right">
 				<li><a href="<?php echo URL.'admin/accounts';?>">All</a></li>
 				<li><a href="<?php echo URL.'admin/accounts/type/visitor';?>"><?php lang('rank','visitor');?></a></li>
@@ -483,7 +487,7 @@ if($args[0]=='edit'){
 		</div>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
 		<div class="btn-group">
-			<a class="btn btn-success" href="<?php echo URL;?>admin/accounts/add"><i class="libre libre-add visible-xs"></i><span class="hidden-xs"><?php lang('button','add');?></span></a>
+			<a class="btn btn-success" href="<?php echo URL;?>admin/accounts/add"><i class="libre libre-add"></i></a>
 		</div>
 <?php }?>
 	</div>

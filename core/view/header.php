@@ -1,7 +1,7 @@
 <?php
 if($_SESSION['rank']>0){
-	if($view=='proofs')$html=str_replace('<print activeproofs>',' class="active"',$html);else $html=str_replace('<print activeproofs>','',$html);
-	if($view=='orders')$html=str_replace('<print activeorders>',' class="active"',$html);else $html=str_replace('<print activeorders>','',$html);
+	if($view=='proofs'||$view=='proof')$html=str_replace('<print activeproofs>',' class="active"',$html);else $html=str_replace('<print activeproofs>','',$html);
+	if($view=='orders'||$view=='order')$html=str_replace('<print activeorders>',' class="active"',$html);else $html=str_replace('<print activeorders>','',$html);
 	if($view=='settings')$html=str_replace('<print activesettings>',' class="active"',$html);else $html=str_replace('<print activesettings>','',$html);
 	if(stristr($html,'<print user=avatar>')){
 		if(isset($user)&&$user['gravatar']!='')
@@ -21,7 +21,7 @@ $htmlMenu=$matches[1];
 $menu='';
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
 	$buildMenu=$htmlMenu;
-	if($view==$r['contentType']){
+	if($view==$r['contentType']||$view==$r['contentType'].'s'){
 		$buildMenu=str_replace('<print menu=active>',' active',$buildMenu);
 	}else{
 		$buildMenu=str_replace('<print menu=active>','',$buildMenu);

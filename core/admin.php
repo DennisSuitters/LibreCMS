@@ -51,7 +51,7 @@ if($_SESSION['rank']>399){?>
 			<hr>
 			<div class="menu-list">
 				<ul id="menu-content" class="menu-content">
-					<li<?php if($view=='statistics')echo' class="active"';?>><a href="<?php echo URL.'admin/statistics';?>"><i class="libre libre-chart-line" name="<?php lang('Statistics');?>"></i><span><?php lang('Statistics');?></span></a></li>
+					<li<?php if($view=='dashboard')echo' class="active"';?>><a href="<?php echo URL.'admin/dashboard';?>"><i class="libre libre-chart-line" name="<?php lang('Dashboard');?>"></i><span><?php lang('Dashboard');?></span></a></li>
 					<li<?php if($view=='pages')echo' class="active"';?>><a href="<?php echo URL.'admin/pages';?>"><i class="libre libre-content" name="<?php lang('Pages');?>"></i><span><?php lang('Pages');?></span></a></li>
 					<li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';?>><a href="<?php echo URL.'admin/content';?>"><i class="libre libre-content" name="<?php lang('Content');?>"></i><span><?php lang('Content');?></span></a></li>
 <?php	if($user['rank']==1000||$user['options']{1}==1){?>
@@ -73,7 +73,7 @@ if($_SESSION['rank']>399){?>
 				</ul>
 			</div>
 <?php 	if($config['maintenance']{0}==1){?>
-			<div class="alert alert-warning">Note: Site is currently in Maintenance Mode</div>
+			<div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.'admin/preferences#interface';?>">Maintenance Mode</a></div>
 <?php 	} ?>
 			<footer class="hidden-xs">
 				<div class="brand"><img src="core/images/librecms.png" alt="LibreCMS"></div>
@@ -142,38 +142,6 @@ if($_SESSION['rank']>399){?>
 					}
 				})
 			});
-<?php		}
-			if($config['options']{8}==1&&$config['gaClientID']!=''){?>
-			(function(w,d,s,g,js,fs){g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f)}};js=d.createElement(s);fs=d.getElementsByTagName(s)[0];js.src='https://apis.google.com/js/platform.js';fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics')}}(window,document,'script'));
-			gapi.analytics.ready(function(){
-				gapi.analytics.auth.authorize({container:'auth-container',clientid:"<?php echo$config['gaClientID'];?>",userInfoLabel:''});
-				gapi.analytics.auth.on('success',function(response){$('#auth-container').css({'display':'none'})});
-				gapi.analytics.auth.on('error',function(response){$('#auth-container').css({'display':'block'});$('#auth-container').html("<?php lang('error','problem');?>")});
-				var viewSelector=new gapi.analytics.ViewSelector({container:'view-selector'});
-				viewSelector.execute();
-				var sessions=new gapi.analytics.googleCharts.DataChart({
-					query:{metrics:'ga:sessions',dimensions:'ga:date','start-date':'30daysAgo','end-date':'today'},
-					chart:{container:'sessions',type:'LINE',options:{width:'100%'}}
-				});
-				var sessionbycountry=new gapi.analytics.googleCharts.DataChart({
-					query:{metrics:'ga:sessions',dimensions:'ga:country','start-date':'30daysAgo','end-date':'today','max-results':6,sort:'-ga:sessions'},
-					chart:{container:'sessionbycountry',type:'GEO',options:{width:'100%'}}
-				});
-				var topbrowsers=new gapi.analytics.googleCharts.DataChart({
-					query:{'dimensions':'ga:browser','metrics':'ga:sessions','sort':'-ga:sessions','start-date':'30daysAgo','end-date':'today','max-results':'6'},
-					chart:{type:'TABLE',container:'topbrowsers',options:{width:'100%'}}
-				});
-				var trafficsources=new gapi.analytics.googleCharts.DataChart({
-					query:{'dimensions':'ga:fullReferrer,ga:source','metrics':'ga:sessions','sort':'-ga:sessions','start-date':'30daysAgo','end-date':'today','max-results':'50'},
-					chart:{type:'TABLE',container:'trafficsources',options:{width:'100%'}}
-				});
-				var userflow=new gapi.analytics.googleCharts.DataChart({
-					query:{'dimensions':'ga:landingPagePath,ga:secondPagePath,ga:nextPagePath','metrics':'ga:pageviews,ga:timeOnPage,ga:sessions','sort':'-ga:sessions','start-date':'30daysAgo','end-date':'today','max-results':'50'},
-					chart:{type:'TABLE',container:'userflow',options:{width:'100%'}}
-				});
-				viewSelector.on('change',function(ids){sessions.set({query:{ids:ids}}).execute();sessionbycountry.set({query:{ids:ids}}).execute();topbrowsers.set({query:{ids:ids}}).execute();trafficsources.set({query:{ids:ids}}).execute();userflow.set({query:{ids:ids}}).execute();
-				});
-			});
 <?php		}?>
 			$(document).ready(function(){
 				$(document).on("hidden.bs.modal",function (e){
@@ -186,15 +154,6 @@ if($_SESSION['rank']>399){?>
 				$('[data-toggle="tooltip"]').tooltip({
 					container:'body',
 					title:"<?php lang('tooltip','nulltitle');?>"
-				});
-<?php		}
-			if($config['options']{5}==1){?>
-				$('[data-toggle="popover"]').popover({
-					placement:'top',
-					html:'true',
-					container:'body',
-					title:"<?php lang('popover','nulltitle');?>",
-					content:"<?php lang('popover','nullcontent');?>"
 				});
 <?php		}
 			if($view=='preferences'){?>
@@ -315,7 +274,7 @@ if($_SESSION['rank']>399){?>
 				})
 			});
 		/*]]>*/</script>
-		<div class="modal fade bookings">
+		<div id="contacts" class="modal fade contacts">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content"></div>
 			</div>

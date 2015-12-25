@@ -13,14 +13,13 @@
 		<link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>">
 		<meta name="viewport" content="width=400,initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="core/css/libreicons.css">
-		<link rel="stylesheet" type="text/css" href="core/css/admin.css">
+		<link rel="stylesheet" type="text/css" href="core/css/login.css">
 	</head>
 	<body>
 		<div class="container">
 			<div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
-				<div class="login-panel animated fadeInDown">
-					<img class="login img-responsive animated zoomIn" src="core/images/librecms.png" alt="LibreCMS">
+				<div class="login-panel">
+					<img class="login img-responsive" src="core/images/librecms.png" alt="LibreCMS">
 					<div class="panel panel-default shadow-depth-1-half">
 						<div class="panel-body">
 							<form role="form" method="post" action="<?php if(strpos(URL,'logout')!=='false')echo rtrim(URL,'logout').'admin';?>" accept-charset="UTF-8">
@@ -56,4 +55,3 @@
 		</div>
 	</body>
 </html>
-		

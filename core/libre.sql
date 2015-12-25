@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 03, 2015 at 01:54 PM
+-- Generation Time: Dec 26, 2015 at 12:36 AM
 -- Server version: 5.5.46-0ubuntu0.14.04.2
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -91,7 +91,6 @@ CREATE TABLE IF NOT EXISTS `config` (
   `seoRSSLink` varchar(256) COLLATE utf8_bin NOT NULL,
   `seoRSSAuthor` tinytext COLLATE utf8_bin NOT NULL,
   `seoRSSti` bigint(20) NOT NULL,
-  `gaClientID` varchar(256) COLLATE utf8_bin NOT NULL,
   `business` varchar(40) COLLATE utf8_bin NOT NULL,
   `abn` varchar(32) COLLATE utf8_bin NOT NULL,
   `address` varchar(80) COLLATE utf8_bin NOT NULL,
@@ -126,6 +125,8 @@ CREATE TABLE IF NOT EXISTS `config` (
   `showItems` int(4) NOT NULL,
   `idleTime` int(6) NOT NULL,
   `bti` int(10) unsigned NOT NULL,
+  `backup_ti` int(10) NOT NULL,
+  `fiti` int(10) NOT NULL,
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -133,8 +134,8 @@ CREATE TABLE IF NOT EXISTS `config` (
 -- Dumping data for table `config`
 --
 
-INSERT INTO `config` (`id`, `maintenance`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `gaClientID`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `buttonType`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `showItems`, `idleTime`, `bti`, `ti`) VALUES
-(1, 1, '1111111110000000', 'default', 'LibreCMS', '', '', '', '', '', '', '', 1440940831, '878938898011-nnhq1t6of39uj8tb5lmj9c0372f32jv0.apps.googleusercontent.com', 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'list', 'card', 'list', 20, 24, 1404461417, 0);
+INSERT INTO `config` (`id`, `maintenance`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `buttonType`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `showItems`, `idleTime`, `bti`, `backup_ti`, `fiti`, `ti`) VALUES
+(1, 0, '1111111110000000', 'default', 'Default SEO Title', 'Default SEO Description', 'Default SEO Caption', 'Default SEO Keywords', '', '', '', '', 1440940831, 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'card', 'card', 'calendar', 20, 24, 1404461417, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -215,6 +216,19 @@ CREATE TABLE IF NOT EXISTS `content` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `fileintegrity`
+--
+
+CREATE TABLE IF NOT EXISTS `fileintegrity` (
+  `id` bigint(20) NOT NULL,
+  `filename` tinytext COLLATE utf8_bin NOT NULL,
+  `filecheck` text COLLATE utf8_bin NOT NULL,
+  `ti` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `login`
 --
 
@@ -260,15 +274,14 @@ CREATE TABLE IF NOT EXISTS `login` (
   `layoutBookings` varchar(10) COLLATE utf8_bin NOT NULL,
   `lti` int(10) NOT NULL,
   `ti` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `login`
 --
 
 INSERT INTO `login` (`id`, `options`, `username`, `password`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `avatar`, `gravatar`, `business`, `name`, `email`, `emailPassword`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `adminCategory_1`, `adminCategory_2`, `adminCategory_ti`, `language`, `timezone`, `rank`, `discount`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `lti`, `ti`) VALUES
-(1, '11111111', 'admin', '$2y$10$cb/MtTJA/9L5HxQE6G8WLO18Ye7AWTCWIy9ql1xa12BmvMpySFNSS', 'cover_1.png', '', '', '', '', 'avatar_1.jpg', '', 'Studio Junkyard', 'Kenika Suitters', 'dennis@studiojunkyard.com', '', 0, '', '', '', '', '', 0, '', '', '', '', 'unpublished', 1, '', '', '', 0, 'en-AU', 'Australia/Hobart', 1000, '', 'list', 'card', 'list', 0, 1402746479),
-(2, '00000000', 'User 2', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', 0, '', '', '', '', 'unpublished', 1, '', '', '', 0, '', '', 0, '', '', '', '', 0, 1443164183);
+(1, '11111111', 'admin', '$2y$10$cb/MtTJA/9L5HxQE6G8WLO18Ye7AWTCWIy9ql1xa12BmvMpySFNSS', 'cover_1.png', '', '', '', '', 'avatar_1.jpg', '', 'Studio Junkyard', 'Kenika Suitters', 'dennis@studiojunkyard.com', '', 0, '', '', '', '', '', 0, '', '0364921418', '0364921418', '', 'unpublished', 1, '', '', '', 0, 'en-AU', 'Australia/Hobart', 1000, '', 'card', 'card', 'calendar', 0, 1402746479);
 
 -- --------------------------------------------------------
 
@@ -324,20 +337,20 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `contentType`, `schemaType`, `seoKeywords`, `seoDescription`, `seoCaption`, `menu`, `notes`, `ord`, `active`, `eti`) VALUES
-(1, 1, 'Kenika Suitters', 'Home', '', 'page_cover_1.jpg', '', '', '', '', 'index', '', '', '', '', 'head', '', 0, 1, 1443422622),
-(2, 1, 'Kenika Suitters', 'Blog', '', '', '', '', '', '', 'article', '', '', '', '', 'head', '', 7, 1, 1443422622),
-(3, 1, 'Kenika Suitters', 'Portfolio', '', '', '', '', '', '', 'portfolio', '', '', '', '', 'head', '', 10, 1, 1443422622),
-(4, 1, 'Kenika Suitters', 'Bookings', '', '', '', '', '', '', 'bookings', '', '', '', '', 'head', '', 11, 1, 1443422622),
-(5, 1, 'Kenika Suitters', 'Events', '', '', '', '', '', '', 'event', '', '', '', '', 'head', '', 9, 1, 1443422622),
-(6, 1, 'Kenika Suitters', 'News', '', '', '', '', '', '', 'news', '', '', '', '', 'head', '', 8, 1, 1443422622),
-(7, 1, 'Kenika Suitters', 'Testimonials', '', '', '', '', '', '', 'testimonial', '', '', '', '', 'head', '', 6, 1, 1443422622),
-(8, 1, 'Kenika Suitters', 'Inventory', '', '', '', '', '', '', 'inventory', '', '', '', '', 'head', '', 3, 1, 1443422622),
-(9, 1, 'Kenika Suitters', 'Services', '', '', '', '', '', '', 'service', '', '', '', '', 'head', '', 1, 1, 1443422622),
-(10, 1, 'Kenika Suitters', 'Gallery', '', '', '', '', '', '', 'gallery', '', '', '', '', 'head', '', 2, 1, 1443422622),
-(11, 1, 'Kenika Suitters', 'Contact', '', '', '', '', '', '', 'contactus', '', '', '', '', 'head', '', 4, 1, 1443422622),
-(12, 1, 'Kenika Suitters', 'Cart', '', '', '', '', '', '', 'cart', '', '', '', '', 'head', '', 5, 1, 1443422622),
-(13, 1, 'Kenika Suitters', 'Terms of Service', 'Terms of Service', '', '', '', '', '', 'tos', '', '', '', '', 'footer', '', 13, 1, 1443422622),
-(14, 1, 'Kenika Suitters', 'Search', 'Search', '', '', '', '', '', 'search', '', '', '', '', 'footer', '', 12, 1, 1443422622);
+(1, 1, 'Kenika Suitters', 'Home', 'Default home page SEO Title', 'page_cover_1.jpg', '', '', '', '', 'index', '', 'Default home page keywords', 'Default home page description', 'Default home page caption', 'head', 'This is the home page.', 0, 1, 1449793991),
+(2, 1, 'Kenika Suitters', 'Blog', '', '', '', '', '', '', 'article', '', '', '', '', 'head', '', 5, 1, 1449449116),
+(3, 1, 'Kenika Suitters', 'Portfolio', '', '', '', '', '', '', 'portfolio', '', '', '', '', 'head', '', 8, 1, 1449449116),
+(4, 1, 'Kenika Suitters', 'Bookings', '', '', '', '', '', '', 'bookings', '', '', '', '', 'head', '', 9, 1, 1449449116),
+(5, 1, 'Kenika Suitters', 'Events', '', '', '', '', '', '', 'event', '', '', '', '', 'head', '', 7, 1, 1449449116),
+(6, 1, 'Kenika Suitters', 'News', '', '', '', '', '', '', 'news', '', '', '', '', 'head', '', 6, 1, 1449449116),
+(7, 1, 'Kenika Suitters', 'Testimonials', '', '', '', '', '', '', 'testimonial', '', '', '', '', 'head', '', 4, 1, 1449449116),
+(8, 1, 'Kenika Suitters', 'Inventory', '', '', '', '', '', '', 'inventory', '', '', '', '', 'head', '', 3, 1, 1449449116),
+(9, 1, 'Kenika Suitters', 'Services', 'Default Services SEO Title', '', '', '', '', '', 'service', '', 'Default Services SEO Keywords', 'Default Services SEO Description', 'Default Services SEO Caption', 'head', 'This is the Services Page', 2, 1, 1449449116),
+(10, 1, 'Kenika Suitters', 'Gallery', 'Default Gallery SEO Title', '', '', '', '', '', 'gallery', '', 'Default Gallery SEO Keywords', 'Default Gallery SEO Description', 'Default Gallery SEO Caption', 'head', 'This is the Gallery Page', 1, 1, 1449449116),
+(11, 1, 'Kenika Suitters', 'Contact', '', '', '', '', '', '', 'contactus', '', '', '', '', 'head', '', 10, 1, 1449449116),
+(12, 1, 'Kenika Suitters', 'Cart', '', '', '', '', '', '', 'cart', '', '', '', '', 'head', '', 11, 1, 1449449116),
+(13, 1, 'Kenika Suitters', 'Terms of Service', 'Terms of Service', '', '', '', '', '', 'tos', '', '', '', '', 'footer', '', 13, 1, 1449449116),
+(14, 1, 'Kenika Suitters', 'Search', 'Search', '', '', '', '', '', 'search', '', '', '', '', 'footer', '', 12, 1, 1449449116);
 
 -- --------------------------------------------------------
 
@@ -355,6 +368,14 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `to_name` varchar(255) COLLATE utf8_bin NOT NULL,
   `from_email` varchar(255) COLLATE utf8_bin NOT NULL,
   `from_name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `from_business` tinytext COLLATE utf8_bin NOT NULL,
+  `from_phone` tinytext COLLATE utf8_bin NOT NULL,
+  `from_mobile` tinytext COLLATE utf8_bin NOT NULL,
+  `from_address` tinytext COLLATE utf8_bin NOT NULL,
+  `from_suburb` tinytext COLLATE utf8_bin NOT NULL,
+  `from_city` tinytext COLLATE utf8_bin NOT NULL,
+  `from_state` tinytext COLLATE utf8_bin NOT NULL,
+  `from_postcode` tinytext COLLATE utf8_bin NOT NULL,
   `subject` tinytext COLLATE utf8_bin NOT NULL,
   `status` tinytext COLLATE utf8_bin NOT NULL,
   `starred` int(1) NOT NULL,
@@ -408,82 +429,9 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `due_ti` int(10) unsigned NOT NULL,
   `notes` text COLLATE utf8_bin NOT NULL,
   `status` varchar(16) COLLATE utf8_bin NOT NULL,
-  `recurring` tinyint(1) unsigned NOT NULL,
+  `recurring` int(1) NOT NULL,
   `ti` int(10) unsigned NOT NULL,
   `eti` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `search`
---
-
-CREATE TABLE IF NOT EXISTS `search` (
-  `id` bigint(20) unsigned NOT NULL,
-  `search` varchar(64) COLLATE utf8_bin NOT NULL,
-  `views` bigint(20) unsigned NOT NULL,
-  `ti` int(10) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `seo`
---
-
-CREATE TABLE IF NOT EXISTS `seo` (
-  `id` bigint(20) NOT NULL,
-  `uid` bigint(20) NOT NULL,
-  `login_user` varchar(128) COLLATE utf8_bin NOT NULL,
-  `seo_name` varchar(128) COLLATE utf8_bin NOT NULL,
-  `seo_url` varchar(255) COLLATE utf8_bin NOT NULL,
-  `seo_title` tinytext COLLATE utf8_bin NOT NULL,
-  `notes` text COLLATE utf8_bin NOT NULL,
-  `eti` int(10) NOT NULL,
-  `views` bigint(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `seo`
---
-
-INSERT INTO `seo` (`id`, `uid`, `login_user`, `seo_name`, `seo_url`, `seo_title`, `notes`, `eti`, `views`) VALUES
-(1, 1, '', '', '', 'Title', 'This is some notes on Title''s for SEO', 0, 0),
-(2, 1, '', '', '', 'Schema Type', 'LibreCMS chooses the appropriate SchemaType when adding Content as defined by <a target="_blank" href="http://www.schema.org/">www.schema.org</a>.', 0, 0),
-(3, 1, '', '', '', 'Author', 'Author in SEO', 0, 0),
-(4, 1, '', '', '', 'Images', 'Images for SEO', 0, 0),
-(5, 1, '', '', '', 'Categories', 'Categories and SEO', 0, 0),
-(6, 1, '', '', '', 'Keywords', 'Keywords and SEO', 0, 0),
-(7, 1, '', '', '', 'Tags', 'Tags and SEO', 0, 0),
-(8, 1, '', '', '', 'Caption', 'Captions and SEO', 0, 0),
-(9, 1, '', '', '', 'Comments', 'Comments and SEO', 0, 0),
-(10, 1, '', '', '', 'Notes', 'Notes and SEO', 0, 0),
-(11, 1, '', '', '', 'SEO Title', 'Notes for SEO Title', 0, 0),
-(12, 1, '', '', '', 'SEO Caption', 'Notes for SEO Caption', 0, 0),
-(13, 1, '', '', '', 'SEO Description', 'Notes for SEO Description', 0, 0),
-(14, 1, '', '', '', 'SEO Keywords', 'Notes for SEO Keywords', 0, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tracker`
---
-
-CREATE TABLE IF NOT EXISTS `tracker` (
-  `id` bigint(20) NOT NULL,
-  `vid` bigint(20) NOT NULL,
-  `contentType` tinytext COLLATE utf8_bin NOT NULL,
-  `ip` text COLLATE utf8_bin NOT NULL,
-  `pageName` text COLLATE utf8_bin NOT NULL,
-  `queryString` text COLLATE utf8_bin NOT NULL,
-  `hostname` text COLLATE utf8_bin NOT NULL,
-  `httpReferer` text COLLATE utf8_bin NOT NULL,
-  `httpUserAgent` text COLLATE utf8_bin NOT NULL,
-  `bot` tinytext COLLATE utf8_bin NOT NULL,
-  `browser` tinytext COLLATE utf8_bin NOT NULL,
-  `os` tinytext COLLATE utf8_bin NOT NULL,
-  `ti` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
@@ -518,6 +466,12 @@ ALTER TABLE `config`
 -- Indexes for table `content`
 --
 ALTER TABLE `content`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fileintegrity`
+--
+ALTER TABLE `fileintegrity`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -557,24 +511,6 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `search`
---
-ALTER TABLE `search`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `seo`
---
-ALTER TABLE `seo`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `tracker`
---
-ALTER TABLE `tracker`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -604,10 +540,15 @@ ALTER TABLE `config`
 ALTER TABLE `content`
   MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `fileintegrity`
+--
+ALTER TABLE `fileintegrity`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `logs`
 --
@@ -632,19 +573,4 @@ ALTER TABLE `orderitems`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `search`
---
-ALTER TABLE `search`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `seo`
---
-ALTER TABLE `seo`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
---
--- AUTO_INCREMENT for table `tracker`
---
-ALTER TABLE `tracker`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;

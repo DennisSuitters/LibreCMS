@@ -19,7 +19,6 @@ if($_POST['emailtrap']==''){
 	window.top.window.$('#dberror').html('');
 	window.top.window.$('#dbsuccess').html('<div class="alert alert-success">Database Connection Succeeded, writing settings to config file.</div>');
 <?php
-		
 		$sql=file_get_contents('libre.sql');
 		$q=$db->exec($sql);
 		$e=$db->errorInfo();

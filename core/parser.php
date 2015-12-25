@@ -114,6 +114,13 @@ foreach($tags as$tag){
 				}
 			}else$parse=preg_replace('~<cost>.*?<\/cost>~is','',$parse,1);
 			break;
+		case'cover':
+			if($attribute=='page'){
+				if($page['cover']!=''&&file_exists('media/'.$page['cover']))$parsing.='<img class="'.$class.'" src="media/'.$page['cover'].'">';
+				elseif($page['coverURL']!='')$parsing.='<img class="'.$class.'" src="'.$page['coverURL'].'">';
+				else$parsing.='';
+			}
+			break;
 		case'thumb':
 			if($r['thumb']&&file_exists('media/'.$r['thumb']))$parsing.='<img src="media/'.$r['thumb'].'" alt="'.$r['title'].'">';
 			break;
@@ -143,7 +150,7 @@ foreach($tags as$tag){
 		case'name':
 			if($attribute=='author'){
 				if($author['name'])$parsing.=htmlentities($author['name'],ENT_QUOTES,'UTF-8');
-				else $parsing.=htmlentities($author['username'],ENT_QUOTES,'UTF-8');
+				else$parsing.=htmlentities($author['username'],ENT_QUOTES,'UTF-8');
 			}
 			if($attribute=='comments')$parsing.=htmlentities($rc['name'],ENT_QUOTES,'UTF-8');
 			if($attribute=='content')$parsing.=htmlentities($r['name'],ENT_QUOTES,'UTF-8');

@@ -22,10 +22,6 @@ if($id==0&&$tbl=='logs'){
 	$q=$db->query("DELETE FROM logs");
 	$q->execute();
 }
-if($tbl=='tracker'){
-	$q=$db->prepare("DELETE FROM tracker WHERE vid=:vid");
-	$q->execute(array(':vid'=>$id));
-}
 if($tbl=='orders'){
 	$q=$db->prepare("DELETE FROM orderitems WHERE oid=:oid");
 	$q->execute(array(':oid'=>$id));

@@ -5,22 +5,8 @@ if($view=='add'){
 	$q->execute(array(':uid'=>$user['id'],':ti'=>$ti,':tis'=>$ti));
 	$id=$db->lastInsertId();
 	$view='bookings';
-	$s=$db->prepare("INSERT INTO logs (
-		uid,rid,view,contentType,refTable,refColumn,oldda,newda,action,ti
-	) VALUES (
-		:uid,:rid,:view,:contentType,:refTable,:refColumn,:oldda,:newda,:action,:ti)");
-	$s->execute(array(
-		':uid'=>$user['id'],
-		':rid'=>$id,
-		':view'=>$view,
-		':contentType'=>'booking',
-		':refTable'=>'content',
-		':refColumn'=>'all',
-		':oldda'=>'',
-		':newda'=>'',
-		':action'=>'create',
-		':ti'=>$ti
-	));
+	$s=$db->prepare("INSERT INTO logs (uid,rid,view,contentType,refTable,refColumn,oldda,newda,action,ti) VALUES (:uid,:rid,:view,:contentType,:refTable,:refColumn,:oldda,:newda,:action,:ti)");
+	$s->execute(array(':uid'=>$user['id'],':rid'=>$id,':view'=>$view,':contentType'=>'booking',':refTable'=>'content',':refColumn'=>'all',':oldda'=>'',':newda'=>'',':action'=>'create',':ti'=>$ti));
 	$args[0]='edit';
 }else{
 	$id=$args[1];
@@ -34,7 +20,7 @@ if($args[0]=='edit'){
 	$rs=$sr->fetch(PDO::FETCH_ASSOC);?>
 <div class="page-toolbar">
 	<div class="btn-group pull-right">
-		<a class="btn btn-success" href="<?php echo URL.'/admin/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back visible-xs"></i><span class="hidden-xs"><?php lang('button','back');?></span></a>
+		<a class="btn btn-success" href="<?php echo URL.'/admin/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back"></i></a>
 	</div>
 </div>
 <div class="panel panel-default">
@@ -42,21 +28,13 @@ if($args[0]=='edit'){
 		<div class="form-group">
 			<label for="tis" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','bookedfor');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($rs['contentType']=='events'){?>
-				<input type="text" id="tis" class="form-control" value="<?php echo date($config['dateFormat'],$r['tis']);?>" readonly>
-<?php }else{?>
-				<input type="text" id="tis" class="form-control textinput" data-tooltip data-original-title="<?php if($r['tis']==0){lang('tooltip','selectdate');}else{echo date($config['dateFormat'],$r['tis']);}?>" value="<?php if($r['tis']!=0){echo date('Y-m-d h:m',$r['tis']);}?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tis" placeholder="<?php lang('placeholder','selectdate');?>">
-<?php }?>
+				<input type="text" id="tis" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tis']==0){lang('tooltip','selectdate');echo'"';}else{echo date($config['dateFormat'],$r['tis']).'"';}}?> value="<?php if($r['tis']!=0)echo date('y-m-d h:m',$r['tis']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tis" placeholder="<?php lang('placeholder','selectdate');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="tie" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2"><?php lang('label','bookingend');?></label>
 			<div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
-<?php if($rs['contentType']=='events'){?>
-				<input type="text" id="tie" class="form-control" value="<?php echo date($config['dateFormat'],$r['tie']);?>" readonly>
-<?php }else{?>
-				<input type="text" id="tie" class="form-control textinput" data-tooltip data-original-title="<?php if($r['tie']==''||$r['tie']==0){echo'Select a Date...';}else{echo date($config['dateFormat'],$r['tie']);}?>" value="<?php if($r['tie']!=0){echo date('Y-m-d h:m',$r['tie']);}?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="<?php lang('placeholder','selectdate');?>">
-<?php }?>
+				<input type="text" id="tie" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tie']==0){lang('tooltip','selectdate');echo'"';}else{echo date($config['dateFormat'],$r['tie']).'"';}}?> value="<?php if($r['tie']!=0)echo date('y-m-d h:m',$r['tie']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="<?php lang('placeholder','selectdate');?>"<?php if($user['options']{1}==0)echo' readonly';?>>
 			</div>
 		</div>
 		<div class="form-group">
@@ -215,8 +193,8 @@ if($args[0]=='edit'){
 							<div id="controls_<?php echo$r['id'];?>" class="btn-group pull-right">
 								<a class="btn btn-info btn-xs<?php if($r['status']=='delete')echo' hidden';?>" href="admin/bookings/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','edit');echo'"';}?>><i class="libre libre-edit visible-xs"></i><span class="hidden-xs"><?php lang('button','edit');?></span></a>
 <?php		if($user['rank']==1000||$user['options']{0}==1){?>
-								<button class="btn btn-warning btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','restore');echo'"';}?>><i class="libre libre-restore visible-xs"></i><span class="hidden-xs"><?php lang('button','restore');?></span></button> 
-								<button class="btn btn-danger btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','delete');echo'"';}?>><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button> 
+								<button class="btn btn-warning btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','restore');echo'"';}?>><i class="libre libre-restore visible-xs"></i><span class="hidden-xs"><?php lang('button','restore');?></span></button>
+								<button class="btn btn-danger btn-xs<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','delete');echo'"';}?>><i class="libre libre-trash visible-xs"></i><span class="hidden-xs"><?php lang('button','delete');?></span></button>
 								<button class="btn btn-danger btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','purge');echo'"';}?>><i class="libre libre-purge visible-xs"></i><span class="hidden-xs"><?php lang('button','purge');?></span></button>
 <?php		}?>
 							</div>

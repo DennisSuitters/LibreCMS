@@ -46,12 +46,15 @@ foreach($tag as$tag1){
 	$inbed=$tag1->getAttribute('inbed');
 	if($inc!=''){
 		$inc=rtrim($inc,'.html');
-		$html=file_get_contents(THEME.'/'.$inc.'.html');
+		if(file_exists(THEME.'/'.$inc.'.html'))
+			$html=file_get_contents(THEME.'/'.$inc.'.html');
+		else
+			$html='';
 		require'view/'.$inc.'.php';
 		$req=$inc;
 	}
 	if($inbed!=''){
-		preg_match('/<block inbed="'.$inbed.'">([\w\W]*?)<\/block inbed="'.$inbed.'">/',$template,$matches);
+		preg_match('/<block inbed="'.$inbed.'">([\w\W]*?)<\/block>/',$template,$matches);
 		$html=isset($matches[1])?$matches[1]:'';
 		if($view=='cart')$inbed='cart';
 		if($view=='sitemap')$inbed='sitemap';
@@ -70,101 +73,4 @@ else$head=str_replace('<print seoCaption>',$seoCaption,$head);
 $head=str_replace('<print shareImage>',$share_image,$head);
 $head=str_replace('<print favicon>',$favicon,$head);
 $head=str_replace('<print dateAtom>',date(DATE_ATOM,time()),$head);
-print$head.$content;
-# Here goes the ungainly, and over cumbersome Analytics Data Collection
-$ip=$_SERVER['REMOTE_ADDR'];
-if(isset($_SERVER['HTTP_REFERER']))$httpReferer=$_SERVER['HTTP_REFERER'];
-else$httpReferer='';
-$httpUserAgent=$_SERVER['HTTP_USER_AGENT'];
-$pageName=$view;
-$queryString=$_SERVER['QUERY_STRING'];
-$currentPage=$view.'/'.$show;
-$bot=is_bot();
-$browser=getBrowser();
-$ti=time();
-if($view==''){$view='index';}
-if(isset($act)&&$act!='logout'){
-	$vid=0;
-	if(isset($_SESSION['tracker'])){
-		$vid=isset($_SESSION['vid'])?$_SESSION['vid']:0;
-		if($_SESSION['currentPage']!=$currentPage){
-			$q=$db->prepare("INSERT INTO tracker (vid,contentType,ip,pageName,queryString,httpReferer,httpUserAgent,bot,browser,os,ti) VALUES (:vid,:contentType,:ip,:pageName,:queryString,:httpReferer,:httpUserAgent,:bot,:browser,:os,:ti)");
-			$q->execute(array(':vid'=>$vid,':contentType'=>$view,':ip'=>$ip,':pageName'=>$pageName,':queryString'=>$queryString,':httpReferer'=>$httpReferer,':httpUserAgent'=>$httpUserAgent,':bot'=>$bot,':browser'=>$browser['name'],':os'=>$browser['platform'],':ti'=>$ti));
-			$_SESSION['currentPage']=$currentPage;
-		}
-	}else{
-		$q=$db->prepare("INSERT INTO tracker (vid,contentType,ip,pageName,queryString,httpReferer,httpUserAgent,bot,browser,os,ti) VALUES (:vid,:contentType,:ip,:pageName,:queryString,:httpReferer,:httpUserAgent,:bot,:browser,:os,:ti)");
-		$q->execute(array(':vid'=>$vid,':contentType'=>$view,':ip'=>$ip,':pageName'=>$pageName,':queryString'=>$queryString,':httpReferer'=>$httpReferer,':httpUserAgent'=>$httpUserAgent,':bot'=>$bot,':browser'=>$browser['name'],':os'=>$browser['platform'],':ti'=>$ti));
-		$e=$db->errorInfo();
-		if(!is_null($e[2]))$_SESSION['tracker']=false;
-		else{
-			$_SESSION['tracker']=true;
-			$lid=$db->lastInsertId();
-			$lr=$db->query("SELECT MAX(vid) as next FROM tracker")->fetch(PDO::FETCH_ASSOC);
-			$l=$lr['next'];
-			if(!isset($l))$l=1;
-			else$l++;
-			$q=$db->prepare("UPDATE tracker SET vid=:vid WHERE id=:id");
-			$q->execute(array(':vid'=>$l,':id'=>$lid));
-			$_SESSION['vid']=$l;
-			$_SESSION['currentPage']=$currentPage;
-		}
-	}
-}
-function is_bot(){
-	$botlist=array(
-		"Teoma",			"alexa",			"froogle",				"Gigabot",
-		"inktomi",			"looksmart",		"URL_Spider_SQL",		"Firefly",
-		"NationalDirectory","Ask Jeeves",		"TECNOSEEK",			"InfoSeek",
-		"WebFindBot",		"girafabot",		"crawler",				"www.galaxy.com",
-		"Googlebot",		"Scooter",			"Slurp",				"msnbot",
-		"appie",			"FAST",				"WebBug",				"Spade",
-		"ZyBorg",			"rabaz",			"Baiduspider",			"Feedfetcher-Google",
-		"TechnoratiSnoop",	"Rankivabot",		"Mediapartners-Google",	"Sogou web spider",
-		"WebAlta Crawler",	"TweetmemeBot",		"Butterfly",			"Twitturls",
-		"Me.dium",			"Twiceler"
-	);
-	foreach($botlist as$bot)if(strpos($_SERVER['HTTP_USER_AGENT'],$bot)!==false){return$bot;}
-	return'visitor';
-}
-function getBrowser(){
-	$uagent=$_SERVER['HTTP_USER_AGENT'];
-	$bname='Unknown';
-	$platform='Unknown';
-	$version="";
-	if(preg_match('/linux/i',$uagent))$platform='linux';
-	elseif(preg_match('/macintosh|mac os x/i',$uagent))$platform='mac';
-	elseif(preg_match('/windows|win32/i',$uagent))$platform='windows';
-	if(preg_match('/MSIE/i',$uagent)&&!preg_match('/Opera/i',$uagent)){
-		$bname='Explorer';
-		$ub="MSIE";
-	}elseif(preg_match('/Firefox/i',$uagent)){
-		$bname='Firefox';
-		$ub="Firefox";
-	}elseif(preg_match('/Chrome/i',$uagent)){
-		$bname='Chrome';
-		$ub="Chrome";
-	}elseif(preg_match('/Safari/i',$uagent)){
-		$bname='Safari';
-		$ub="Safari";
-	}elseif(preg_match('/Opera/i',$uagent)){
-		$bname='Opera';
-		$ub="Opera";
-	}elseif(preg_match('/Netscape/i',$uagent)){
-		$bname='Netscape';
-		$ub="Netscape";
-	}
-	$known=array('Version',$ub,'other');
-	$pattern='#(?<browser>'.join('|',$known).')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
-	if(!preg_match_all($pattern,$uagent,$matches)){}
-	$i=count($matches['browser']);
-	if($i!=1){
-		if(strripos($uagent,"Version")<strripos($uagent,$ub))$version=$matches['version'][0];
-		else$version=$matches['version'][1];
-	}else$version=$matches['version'][0];
-	if($version==null||$version==""){$version="?";}
-	return array(
-		'userAgent'=>$uagent,	'name'=>$bname,		'version'=>$version,
-		'platform'=>$platform,	'pattern'=>$pattern
-	);
-}
+print"<!--\n * Powered by LibreCMS (https://github.com/StudioJunkyard/LibreCMS)\n * Copyleft 2015 Studio Junkyard (http://studiojunkyard.com/)\n * Licensed under GPLv3 <http://www.gnu.org/licenses/>\n-->\n".$head.$content;

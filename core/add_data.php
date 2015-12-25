@@ -196,17 +196,17 @@ if($act!=''){
 				}
 			}
 		}?>
-	window.top.window.$('#block').css("display","none");		
+	window.top.window.$('#block').css("display","none");
 <?php	break;
 	case'add_media':
-		$nf=count($_FILES['file']['tmp_name']);
+		$nf=count($_FILES['fu']['tmp_name']);
 		for($i=0;$i<$nf;$i++){
-			if($_FILES['file']['name'][$i]){
-				if(!$_FILES['file']['error'][$i]){
-					$file=strtolower($_FILES['file']['name'][$i]);
+			if($_FILES['fu']['name'][$i]){
+				if(!$_FILES['fu']['error'][$i]){
+					$file=strtolower($_FILES['fu']['name'][$i]);
 					$file=str_replace(' ','_',$file);
 					$destination='../media/'.$file;
-					$location=$_FILES["file"]["tmp_name"][$i];
+					$location=$_FILES["fu"]["tmp_name"][$i];
 					move_uploaded_file($location,$destination);
 					$finfo=new finfo(FILEINFO_MIME_TYPE);
 					$type=$finfo->file('../media/'.$file);
@@ -226,12 +226,12 @@ if($act!=''){
 					}else{
 						$img='<a title="'.$file.'" href="media/'.$file.'"><img src="media/'.$file.'" class="img-thumbnail"></a>';
 					}?>
-	window.top.window.$('#media').append('<li id="l_<?php echo str_replace('.','',$file);?>" class="gallery relative"><?php echo$img;?><div id="controls_<?php echo str_replace('.','',$file);?>" class="controls"><button class="btn btn-danger btn-xs" onclick="removeMedia(\'<?php echo$file;?>\');"><i class="fa fa-trash"></i></button></div><div class="title"><?php echo$file;?></div></li>');
+	window.top.window.$('#media').append('<li id="l_<?php echo str_replace('.','',$file);?>" class="gallery relative"><?php echo$img;?><div id="controls_<?php echo str_replace('.','',$file);?>" class="controls"><button class="btn btn-danger btn-xs" onclick="removeMedia(\'<?php echo$file;?>\');"><i class="fa fa-trash"></i></button></div><div class="title"><?php echo$file;?></div></li>'); */
 <?php			}
 			}
 		}?>
 	window.top.window.$('#block').css("display","none");
-<?php	break;
+<?php 	break;
 	case'add_orderitem':
 		$oid=filter_input(INPUT_GET,'oid',FILTER_SANITIZE_NUMBER_INT);
 		$iid=filter_input(INPUT_GET,'iid',FILTER_SANITIZE_NUMBER_INT);

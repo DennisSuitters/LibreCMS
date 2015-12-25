@@ -4,44 +4,42 @@ $what=isset($_POST['what'])?filter_input(INPUT_POST,'what',FILTER_SANITIZE_STRIN
 $status=isset($_POST['status'])?filter_input(INPUT_POST,'status',FILTER_SANITIZE_STRING):'all';
 $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):'desc';?>
 <br><br><br>
-<div class="row">
-	<div class="container">
-		<form class="form-inline" method="post" action="admin/search">
-			<div class="form-group">
-				<div class="input-group">
-					<div class="input-group-addon"><?php lang('button','search');?></div>
-					<div class="input-group-btn">
-						<select class="form-control" name="what">
-							<option value="content"<?php if($what=='content')echo' selected';?>><?php lang('Content');?></option>
-							<option value="comments"<?php if($what=='comments')echo' selected';?>><?php lang('Comments');?></option>
-							<option value="messages"<?php if($what=='messages')echo' selected';?>><?php lang('Messages');?></option>
-							<option value="orders"<?php if($what=='orders')echo' selected';?>><?php lang('Orders');?></option>
-							<option value="pages"<?php if($what=='pages')echo' selected';?>><?php lang('Pages');?></option>
-						</select>
-					</div>
-					<div class="input-group-addon"><?php lang('for');?></div>
-					<input type="text" class="form-control" name="search" value="<?php echo trim($search);?>" placeholder="<?php lang('placeholder','search');?>">
-					<div class="input-group-btn">
-						<select class="form-control" name="status">
-							<option value="all"<?php if($status=='all')echo' selected';?>><?php lang('search','all');?></option>
-							<option value="published"<?php if($status=='published')echo' selected';?>><?php lang('search','published');?></option>
-							<option value="unpublished"<?php if($status=='unpublished')echo' selected';?>><?php lang('search','unpublished');?></option>
-						</select>
-					</div>
-					<div class="input-group-addon"><?php lang('and');?></div>
-					<div class="input-group-btn">
-						<select class="form-control" name="ord">
-							<option value="desc"<?php if($ord=='desc')echo' selected';?>><?php lang('search','desc');?></option>
-							<option value="asc"<?php if($ord=='asc')echo' selected';?>><?php lang('search','asc');?></option>
-						</select>
-					</div>
-					<div class="input-group-btn">
-						<button class="btn btn-success"><i class="libre libre-search visible-xs"></i><span class="hidden-xs"><?php lang('button','search');?></span></button>
-					</div>
+<div class="row col-xs-12">
+	<form class="form-inline" method="post" action="admin/search">
+		<div class="form-group">
+			<div class="input-group">
+				<div class="input-group-addon"><?php lang('button','search');?></div>
+				<div class="input-group-btn">
+					<select class="form-control" name="what">
+						<option value="content"<?php if($what=='content')echo' selected';?>><?php lang('Content');?></option>
+						<option value="comments"<?php if($what=='comments')echo' selected';?>><?php lang('Comments');?></option>
+						<option value="messages"<?php if($what=='messages')echo' selected';?>><?php lang('Messages');?></option>
+						<option value="orders"<?php if($what=='orders')echo' selected';?>><?php lang('Orders');?></option>
+						<option value="pages"<?php if($what=='pages')echo' selected';?>><?php lang('Pages');?></option>
+					</select>
+				</div>
+				<div class="input-group-addon"><?php lang('for');?></div>
+				<input type="text" class="form-control" name="search" value="<?php echo trim($search);?>" placeholder="<?php lang('placeholder','search');?>">
+				<div class="input-group-btn">
+					<select class="form-control" name="status">
+						<option value="all"<?php if($status=='all')echo' selected';?>><?php lang('search','all');?></option>
+						<option value="published"<?php if($status=='published')echo' selected';?>><?php lang('search','published');?></option>
+						<option value="unpublished"<?php if($status=='unpublished')echo' selected';?>><?php lang('search','unpublished');?></option>
+					</select>
+				</div>
+				<div class="input-group-addon"><?php lang('and');?></div>
+				<div class="input-group-btn">
+					<select class="form-control" name="ord">
+						<option value="desc"<?php if($ord=='desc')echo' selected';?>><?php lang('search','desc');?></option>
+						<option value="asc"<?php if($ord=='asc')echo' selected';?>><?php lang('search','asc');?></option>
+					</select>
+				</div>
+				<div class="input-group-btn">
+					<button class="btn btn-success"><i class="libre libre-search visible-xs"></i><span class="hidden-xs"><?php lang('button','search');?></span></button>
 				</div>
 			</div>
-		</form>
-	</div>
+		</div>
+	</form>
 </div>
 <br>
 <?php

@@ -18,7 +18,7 @@ if($view=='index'){
 		$itemCount=$config['showItems'];
 		$contentType='%';
 	}
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND contentType NOT LIKE 'message%' AND contentType!='testimonials' AND contentType!='proofs' AND status LIKE :status AND internal!='1' ORDER BY ti DESC LIMIT $itemCount");
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND contentType NOT LIKE 'message%' AND contentType!='testimonial%' AND contentType!='proof%' AND status LIKE :status AND internal!='1' ORDER BY ti DESC LIMIT $itemCount");
 	$s->execute(array(':contentType'=>$contentType,':status'=>$status));
 }elseif($view=='search'){
 	$search='%';
@@ -43,7 +43,7 @@ if($view=='index'){
 		$show='item';
 	}
 }else{
-	if($view=='proofs'){
+	if($view=='proofs'||$view=='proof'){
 		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND cid=:cid ORDER BY ti DESC");
 		$s->execute(array(':contentType'=>$view,':cid'=>$user['id']));
 	}else{
@@ -59,7 +59,16 @@ if($show=='categories'){
 		$html=preg_replace('~<settings.*?>~is','',$html,1);
 	}else
 		$count=1;
-	$html=str_replace('<print page=notes>',$page['notes'],$html);
+	if(stristr($html,'<print page="cover">')){
+		if($page['cover']!=''&&file_exists('media/'.$page['cover']))
+			$html=str_replace('<print page="cover">','<img src="media/'.$page['cover'].'">',$html);
+		elseif($page['coverURL']!='')
+			$html=str_replace('<print page="cover">','<img src="'.$page['coverURL'].'">',$html);
+		else
+			$html=str_replace('<print page="cover">','',$html);
+	}
+	$html=str_replace('<print page="cover">','',$html);
+	$html=str_replace('<print page="notes">',$page['notes'],$html);
 	if($config['business'])
 		$html=str_replace('<print content=seoTitle>',htmlentities($config['business'],ENT_QUOTES,'UTF-8'),$html);
 	else
@@ -71,7 +80,7 @@ if($show=='categories'){
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
 			$items=$item;
 			require'core/parser.php';
-			if($r['contentType']=='testimonials'){
+			if($r['contentType']=='testimonials'||$r['contentType']=='testimonial'){
 				if(stristr($items,'<controls>'))
 					$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
 				$controls='';

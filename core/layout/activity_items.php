@@ -1,30 +1,30 @@
 <?php
 if(isset($_GET['is'])){
+	session_start();
 	require'../db.php';
 	$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+	$su=$db->prepare("SELECT * FROM login WHERE id=:id");
+	$su->execute(array(':id'=>$_SESSION['uid']));
+	$user=$su->fetch(PDO::FETCH_ASSOC);
 	$is=$_GET['is'];
 	$ie=$_GET['ie'];
 	$action=$_GET['action'];
 	$language=$_GET['l'];
-	if(isset($language)&&file_exists('../core/lang/'.$user['language'].'.php'))require'../core/lang/'.$language.'.php';else require'../core/lang/en-AU.php';
+	if(isset($language)&&file_exists('../lang/'.$user['language'].'.php'))require'../lang/'.$language.'.php';else require'../lang/en-AU.php';
 	function _ago($time){
-		$toTime=time();
-		$fromTime=$time;
-		$timeDiff=floor(abs($toTime-$fromTime)/60);
-		if($timeDiff<2)$timeDiff=lang('noecho','Just now');
+		$timeDiff=floor(abs(time()-$time)/60);
+		if($timeDiff<2)$timeDiff=lang('noecho','justnow');
 		elseif($timeDiff>2&&$timeDiff<60)$timeDiff=floor(abs($timeDiff)).' '.lang('noecho','minutesago');
 		elseif($timeDiff>60&&$timeDiff<120)$timeDiff=floor(abs($timeDiff/60)).' '.lang('noecho','hourago');
 		elseif($timeDiff<1440)$timeDiff=floor(abs($timeDiff/60)).' '.lang('noecho','hoursago');
-		elseif($timeDiff>1440&& $timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440)).' '.lang('noecho','dayago');
+		elseif($timeDiff>1440&&$timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440)).' '.lang('noecho','dayago');
 		elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440)).' '.lang('noecho','daysago');
 		return$timeDiff;
 	}
 }
 if($action!=''){
 	$s=$db->prepare("SELECT * FROM logs WHERE action=:action ORDER BY ti DESC LIMIT ".$is.",".$ie);
-	$s->execute(array(
-		':action'=>$action
-	));
+	$s->execute(array(':action'=>$action));
 }else{
 	$s=$db->prepare("SELECT * FROM logs ORDER BY ti DESC LIMIT ".$is.",".$ie);
 	$s->execute();

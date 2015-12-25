@@ -11,8 +11,7 @@
 		<link rel="apple-touch-icon" href="core/images/favicon.png">
 		<meta name="viewport" content="width=400,initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="core/css/libreicons.css">
-		<link rel="stylesheet" type="text/css" href="core/css/admin.css">
+		<link rel="stylesheet" type="text/css" href="core/css/install.css">
 	</head>
 	<body>
 		<div class="container install-panel">
@@ -90,7 +89,7 @@ if($error==0){
 <?php	foreach(PDO::getAvailableDrivers()as$DRIVER){
 			echo'<option value="'.$DRIVER.'">'.strtoupper($DRIVER).'</option>';
 		}?>
-										
+
 									</select>
 								</div>
 							</div>
@@ -151,30 +150,30 @@ if($error==0){
 							</div>
 						</div>
 						<div class="well">
-							<h3 class="page-header col-sm-6">Administration Settings</h3>
+							<h3 class="page-header col-sm-6">Administrator Account Settings</h3>
 							<div class="clearfix"></div>
 							<div class="form-group">
 								<label for="aName" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Name</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
-									<input id="aName" name="aName" type="text" class="form-control" value="" placeholder="Enter a Name...">
+									<input id="aName" name="aName" type="text" class="form-control" value="" placeholder="Enter a Name..." required>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="aEmail" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Email</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
-									<input id="aEmail" name="aEmail" type="text" class="form-control" value="" placeholder="Enter an Email...">
+									<input id="aEmail" name="aEmail" type="text" class="form-control" value="" placeholder="Enter an Email..." required>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="aUsername" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Username</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
-									<input id="aUsername" name="aUsername" type="text" class="form-control" value="" placeholder="Enter a Username...">
+									<input id="aUsername" name="aUsername" type="text" class="form-control" value="" placeholder="Enter a Username..." required>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="aPassword" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Password</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
-									<input id="aPassword" name="aPassword" type="password" class="form-control" value="" placeholder="Enter a Password...">
+									<input id="aPassword" name="aPassword" type="password" class="form-control" value="" placeholder="Enter a Password..." required>
 								</div>
 							</div>
 						</div>
@@ -192,4 +191,3 @@ if($error==0){
 		<div id="block"><i class="libre libre-spinner-1 libre-5x libre-spin"></i></div>
 	</body>
 </html>
-		

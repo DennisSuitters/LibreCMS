@@ -4,12 +4,12 @@ include'db.php';
 $tables=array();
 $db->setAttribute(PDO::ATTR_ORACLE_NULLS,PDO::NULL_NATURAL);
 $compression=true;
-$nowtimename=date('d-m-Y',time());
+$nowtimename=date('y-d-m',time()).'-'.time();
 if($compression){
-	$file='backup_'.$nowtimename.'.sql.gz';
+	$file=$nowtimename.'.sql.gz';
 	$zp=gzopen('../media/backup/'.$file,"a9");
 }else{
-	$file='backup_'.$nowtimename.'.sql';
+	$file=$nowtimename.'.sql';
 	$handle=fopen('../media/backup/'.$file,'a+');
 }
 $numtypes=array('tinyint','smallint','mediumint','int','bigint','float','double','decimal','real');
@@ -26,7 +26,7 @@ foreach($tables as $table){
 	$num_fields=$result->columnCount();
 	$num_rows=$result->rowCount();
 	$return="";
-	$return.='DROP TABLE IF EXISTS `'.$table.'`;'; 
+	$return.='DROP TABLE IF EXISTS `'.$table.'`;';
 	$pstm2=$db->query("SHOW CREATE TABLE $table");
 	$row2=$pstm2->fetch(PDO::FETCH_NUM);
 	$ifnotexists=str_replace('CREATE TABLE','CREATE TABLE IF NOT EXISTS',$row2[1]);
@@ -101,12 +101,15 @@ if($compression){
 }
 if(file_exists('../media/backup/'.$file)){
     chmod('../media/backup/'.$file,0777);
+	$fileid=str_replace('.','',$file);
+	$fileid=str_replace('/','',$fileid);
 	$ti=time();
 	$q=$db->prepare("UPDATE config SET backup_ti=:backup_ti WHERE id='1'");
 	$q->execute(array(':backup_ti'=>$ti));?>
-	window.top.window.$('#backup').append('<div id="l_<?php echo str_replace('.','',$file);?>" class="form-group"><label class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">&nbsp;</label><div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8"><a class="btn btn-default btn-block" href="media/backup/<?php echo$file;?>"><?php echo$file;?></a><div class="input-group-btn"><button class="btn btn-danger" onclick="removeMedia(\'<?php echo$file;?>\')">Delete</button></div></div></div>');
+	window.top.window.$('#backup').append('<div id="l_<?php echo$fileid;?>" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10"><a class="btn btn-default btn-block" href="media/backup/<?php echo$file;?>">Click to Download <?php echo$file;?></a><div class="input-group-btn"><button class="btn btn-danger" onclick="removeMedia(\'<?php echo$file;?>\')"><i class="libre libre-trash"></i></button></div></div></div>');
+	window.top.window.$('#alert_backup').addClass('hidden');
 <?php }else{?>
-	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue performing the backup!'}}).show();
+	window.top.window.$('#backup_info').html('<div class="alert alert-danger">There was an issue performing the backup!</div>');
 <?php }?>
 	window.top.window.$('#block').css("display","none");
 /*]]>*/</script>

@@ -1,7 +1,7 @@
 <?php
 header('Content-Type:application/rss+xml;charset=ISO-8859-1');
 include'db.php';
-$config=$this->getconfig($db);
+$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $favicon=$this->favicon();
 if($args[0]=='')$args[0]='%_%';
 $ti=time();?>
@@ -9,9 +9,9 @@ $ti=time();?>
 	<channel>
 		<title><?php echo$config['seoTitle'];?></title>
 		<description><?php echo$config['seoCaption'];?></description>
-		<link><?php echo'http://'.$_SERVER['HTTP_HOST'].$config['url'];?></link>
+		<link><?php echo URL;?></link>
 		<copyright><?php echo'Copyright'.' '.date('Y',$ti)." ".$config['seoTitle'];?></copyright>
-		<generator>libr8 - http://studiojunkyard.github.io/Libr8/</generator>
+		<generator>libreCMS - https://github.com/StudioJunkyard/LibreCMS</generator>
 		<pubDate><?php echo strftime("%a, %d %b %Y %T %Z",$ti);?></pubDate>
 		<ttl>60</ttl>
 <?php if(file_exists("layout/".$config['theme']."/images/favicon.jpg")){
@@ -22,18 +22,10 @@ $ti=time();?>
 	$favicon="http://".$_SERVER['HTTP_HOST'].$config['url']."layout/".$config['theme']."/images/favicon.png";
 	$deffiletype="image/png";
 	$deflength=filesize('layout/'.$config['theme'].'/images/favicon.png');
-}elseif(file_exists("images/favicon.jpg")){
-	$favicon="http://".$_SERVER['HTTP_HOST'].$config['url']."images/favicon.jpg";
-	$deffiletype="image/jpeg";
-	$deflength=filesize('images/favicon.jpg');
-}elseif(file_exists("images/favicon.png")){
-	$favicon="http://".$_SERVER['HTTP_HOST'].$config['url']."images/favicon.png";
-	$deffiletype="image/png";
-	$deflength=filesize('images/favicon.png');
 }else{
-	$favicon="http://".$_SERVER['HTTP_HOST'].$config['url']."images/favicon.ico";
-	$deffiletype="image/ico";
-	$deflength=filesize('../images/favicon.ico');	
+	$favicon=URL."core/images/favicon.png";
+	$deffiletype="image/png";
+	$deflength=filesize('core/images/favicon.png');
 }
 $s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND status='published' AND internal!='1' ORDER BY ti DESC LIMIT 25");
 $s->execute(array(':contentType'=>$args[0]));
@@ -63,7 +55,7 @@ $s->execute(array(':contentType'=>$args[0]));
 		<item>
 			<title><?php echo$config['seoTitle'].' - '.ucfirst($r['contentType']).' - '.$r['title'];?></title>
 			<description><?php if($r['caption']==""){echo strip_tags($r['notes']);}else{echo$r['caption'];}?></description>
-			<link><?php echo'http://'.$_SERVER['HTTP_HOST'].$config['url'].$r['contentType'].'/'.str_replace(' ','-',$r['title']);?></link>
+			<link><?php echo URL.$r['contentType'].'/'.str_replace(' ','-',$r['title']);?></link>
 			<pubDate><?php echo strftime("%a, %d %b %Y %T %Z",$r['ti']);?></pubDate>
 			<enclosure url="<?php echo$img;?>" length="<?php echo$length;?>" type="<?php echo$filetype;?>" />
 		</item>
