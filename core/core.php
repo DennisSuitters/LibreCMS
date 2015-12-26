@@ -1,17 +1,21 @@
 <?php
 ini_set('session.use_cookies',1);
 ini_set('session.use_only_cookies',1);
-require_once'core/db.php';
+define('DS',DIRECTORY_SEPARATOR);
+require_once'db.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
-define('THEME','layout/'.$config['theme']);
+define('THEME','layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
+if(file_exists(THEME.DS.'images'.DS.'favicon.png'))define('FAVICON',THEME.DS.'images'.DS.'favicon.png');elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif'))define('FAVICON',THEME.DS.'images'.DS.'favicon.gif');elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg'))define('FAVICON',THEME.DS.'images'.DS.'favicon.jpg');elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico'))define('FAVICON',THEME.DS.'images'.DS.'favicon.ico');else define('FAVICON','core'.DS.'images'.DS.'favicon.png');
+if(file_exists(THEME.DS.'images'.DS.'noimage.png'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.gif');elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');else define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
+if(file_exists(THEME.DS.'images'.DS.'noavatar.png'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.png');elseif(file_exists(THEME.DS.'images'.DS.'noavatar.gif'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.gif');elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.jpg');else return'core'.DS.'images'.DS.'noavatar.jpg';
 define('YANDEX','trnsl.1.1.20151010T141347Z.abb6d53e6280191b.5decd3b201ae911048617d1869e766124de2023d');
 require'login.php';
-if($config['maintenance']{0}==1&&!file_exists(THEME.'/maintenance.html')){
-	require'core/layout/maintenance.php';
+if($config['maintenance']{0}==1&&!file_exists(THEME.DS.'maintenance.html')){
+	require'core'.DS.'layout'.DS.'maintenance.php';
 	die();
 }
 function minify($txt){
@@ -34,24 +38,17 @@ class internal{
 		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 		return$config;
 	}
-	function favicon(){
-		if(file_exists(THEME.'/images/favicon.png'))return THEME.'/images/favicon.png';
-		elseif(file_exists(THEME.'/images/favicon.gif'))return THEME.'/images/favicon.gif';
-		elseif(file_exists(THEME.'/images/favicon.jpg'))return THEME.'/images/favicon.jpg';
-		elseif(file_exists(THEME.'/images/favicon.ico'))return THEME.'/images/favicon.ico';
-		else return'core/images/favicon.png';
-	}
 	function humans($args=false){
-		require'core/humans.php';
+		require'core'.DS.'humans.php';
 	}
 	function sitemap($args=false){
-		require'core/sitemap.php';
+		require'core'.DS.'sitemap.php';
 	}
 	function robots($args=false){
-		require'core/robots.php';
+		require'core'.DS.'robots.php';
 	}
 	function rss($args=false){
-		require'core/rss.php';
+		require'core'.DS.'rss.php';
 	}
 }
 class admin{
@@ -60,13 +57,13 @@ class admin{
 		return$config;
 	}
 	function favicon(){
-		return'core/images/favicon.png';
+		return'core'.DS.'images'.DS.'favicon.png';
 	}
 	function noimage(){
-		return'core/images/noimage.jpg';
+		return'core'.DS.'images'.DS.'noimage.jpg';
 	}
 	function noavatar(){
-		return'core/images/noavatar.jpg';
+		return'core'.DS.'images'.DS.'noavatar.jpg';
 	}
 	function accounts($args=false){
 		$view='accounts';
@@ -126,25 +123,6 @@ class front{
 	function getconfig($db){
 		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 		return$config;
-	}
-	function favicon(){
-		if(file_exists(THEME.'/images/favicon.png'))return THEME.'/images/favicon.png';
-		elseif(file_exists(THEME.'/images/favicon.gif'))return THEME.'/images/favicon.gif';
-		elseif(file_exists(THEME.'/images/favicon.jpg'))return THEME.'/images/favicon.jpg';
-		elseif(file_exists(THEME.'/images/favicon.ico'))return THEME.'/images/favicon.ico';
-		else return'core/images/favicon.png';
-	}
-	function noimage(){
-		if(file_exists(THEME.'/images/noimage.png'))return THEME.'/images/noimage.png';
-		elseif(file_exists(THEME.'/images/noimage.gif'))return THEME.'/images/noimage.gif';
-		elseif(file_exists(THEME.'/images/noimage.jpg'))return THEME.'/images/noimage.jpg';
-		else return'core/images/noimage.jpg';
-	}
-	function noavatar(){
-		if(file_exists(THEME.'/images/noavatar.png'))return THEME.'/images/noavatar.png';
-		elseif(file_exists(THEME.'/images/noavatar.gif'))return THEME.'/images/noavatar.gif';
-		elseif(file_exists(THEME.'/images/noavatar.jpg'))return THEME.'/images/noavatar.jpg';
-		else return'core/images/noavatar.jpg';
 	}
 	function article($args=false){
 		$view='article';
