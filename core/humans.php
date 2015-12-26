@@ -1,8 +1,8 @@
 <?php
 header("Content-Type:text/plain");
-include'core/db.php';
+include'core'.DS.'db.php';
 $config=$db->query("SELECT seoTitle,theme FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-$theme=parse_ini_file('layout/'.$config['theme'].'/theme.ini',true);
+$theme=parse_ini_file('layout'.DS.$config['theme'].DS.'theme.ini',true);
 if($config['seoTitle']!='')
 	$siteTitle=$config['seoTitle'];
 else
@@ -26,6 +26,7 @@ Location: Your Work Station
 
 /* THANKS */
 Name: Alan Raycraft, [http://www.raycraft.com.au/]
+For: Patience, Suggestions.
 
 /* SITE */
 Standards: HTML5, CSS3, PHP, jQuery, Vanilla Javascript
