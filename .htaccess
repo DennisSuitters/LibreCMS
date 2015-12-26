@@ -1,1 +1,18 @@
-
+# Uncomment this on a live site
+#<IfModule mod_headers.c>
+#    <FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
+#        Header set Cache-Control "max-age=604800, public"
+#    </FilesMatch>
+#</IfModule>
+<IfModule mod_rewrite.c>
+    SetEnv HTTP_MOD_REWRITE On
+	RewriteEngine On
+#RewriteBase /
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*) index.php?url=$1 [L,QSA]
+</IfModule>
+<Files *.ini>
+    Order deny,allow
+    Deny from all
+</Files>
