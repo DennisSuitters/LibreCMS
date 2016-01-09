@@ -2,7 +2,7 @@
 $rank=0;
 $show='categories';
 $status='published';
-$theme=parse_ini_file(THEME.'/theme.ini',true);
+$theme=parse_ini_file(THEME.DS.'theme.ini',true);
 if($view=='index'){
 	if(stristr($html,'<settings')){
 		preg_match('/<settings items="([\w\W]*?)" contenttype="([\w\W]*?)">/',$html,$matches);
@@ -18,8 +18,8 @@ if($view=='index'){
 		$itemCount=$config['showItems'];
 		$contentType='%';
 	}
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND contentType NOT LIKE 'message%' AND contentType!='testimonial%' AND contentType!='proof%' AND status LIKE :status AND internal!='1' ORDER BY ti DESC LIMIT $itemCount");
-	$s->execute(array(':contentType'=>$contentType,':status'=>$status));
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType OR contentType LIKE :c2 AND contentType NOT LIKE 'message%' AND contentType!='testimonial%' AND contentType!='proof%' AND status LIKE :status AND internal!='1' ORDER BY ti DESC LIMIT $itemCount");
+	$s->execute(array(':contentType'=>$contentType,':c2'=>$contentType.'s',':status'=>$status));
 }elseif($view=='search'){
 	$search='%';
 	if(isset($args[0])){
@@ -79,7 +79,7 @@ if($show=='categories'){
 		$output='';
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
 			$items=$item;
-			require'core/parser.php';
+			require'core'.DS.'parser.php';
 			if($r['contentType']=='testimonials'||$r['contentType']=='testimonial'){
 				if(stristr($items,'<controls>'))
 					$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
@@ -140,7 +140,7 @@ if($show=='item'){
 	$item=$matches[1];
 	$address='';
 	$edit='';
-	require'core/parser.php';
+	require'core'.DS.'parser.php';
 	$authorHTML='';
 	$seoTitle=$r['title'].' - '.$config['seoTitle'];
 	$seoKeywords=$r['keywords'];
@@ -150,12 +150,12 @@ if($show=='item'){
 	$html=preg_replace('~<loop>.*?<\/loop>~is','',$html,1);
 	$html=str_replace('<print page="notes">','',$html);
 	if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
-		if(file_exists(THEME.'/comments.html')){
+		if(file_exists(THEME.DS.'comments.html')){
 			$comments='';
 			$commentsHTML='';
 			$sc=$db->prepare("SELECT * FROM comments WHERE contentType=:contentType AND rid=:rid AND status!='unapproved' ORDER BY ti ASC");
 			$sc->execute(array(':contentType'=>$view,':rid'=>$r['id']));
-			$commentsHTML=file_get_contents(THEME.'/comments.html');
+			$commentsHTML=file_get_contents(THEME.DS.'comments.html');
 			if(stristr($commentsHTML,'<print content=id>'))$commentsHTML=str_replace('<print content=id>',$r['id'],$commentsHTML);
 			if(stristr($commentsHTML,'<print content=contentType>'))$commentsHTML=str_replace('<print content=contentType>',$r['contentType'],$commentsHTML);
 			$commentDOC=new DOMDocument();
@@ -163,7 +163,7 @@ if($show=='item'){
 			preg_match('/<loop>([\w\W]*?)<\/loop>/',$commentsHTML,$matches);
 			while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
 				$comment=$matches[1];
-				require'core/parser.php';
+				require'core'.DS.'parser.php';
 				$comments.=$comment;
 			}
 				$commentsHTML=preg_replace('~<loop>.*?<\/loop>~is',$comments,$commentsHTML,1);
@@ -173,7 +173,7 @@ if($show=='item'){
 			$commentsHTML=preg_replace('~<loop>.*?<\/loop>~is','',$commentsHTML,1);
 			$item.=$commentsHTML;
 		}else{
-			$item.='Comments for this post is Enabled, but no <strong>"'.THEME.'/comments.html"</strong> template file exists';
+			$item.='Comments for this post is Enabled, but no <strong>"'.THEME.DS.'comments.html"</strong> template file exists';
 		}
 	}
 	$html=preg_replace('~<item>.*?<\/item>~is',$item,$html,1);

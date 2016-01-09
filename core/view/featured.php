@@ -21,7 +21,7 @@ if($ii>0){
 		$indicator=$matches[1];
 	}
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
-		if(!file_exists('media/'.$r['file']))continue;
+		if(!file_exists('media'.DS.$r['file']))continue;
 		$item=$it;
 		$indicatorItem=$indicator;
 		if($i==0){
@@ -39,11 +39,9 @@ if($ii>0){
 		}else $item=preg_replace('~<cost>.*?<\/cost>~is','',$item,1);
 		if($r['caption']!='')
 			$item=str_replace('<print content="caption">',$r['caption'],$item);
-
 		$item=str_replace('<print link>',$r['contentType'].'/'.str_replace(' ','-',$r['title']),$item);
-		
-		if($r['file']!=''&&file_exists('media/'.$r['file']))
-			$item=str_replace('<print content="image">','<img src="media/'.$r['file'].'" alt="'.$r['title'].'">',$item);
+		if($r['file']!=''&&file_exists('media'.DS.$r['file']))
+			$item=str_replace('<print content="image">','<img src="media'.DS.$r['file'].'" alt="'.$r['title'].'">',$item);
 		else
 			$item=str_replace('<print content="image">','',$item);
 		$item=str_replace('<print content=schemaType>',$r['schemaType'],$item);
@@ -64,9 +62,8 @@ if($ii>1){
 	$html=preg_replace('~<featuredControls>.*?<\/featuredControls>~is','',$html,1);
 	$html=str_replace('<featuredIndicators>','',$html);
 }
-if($i>0){
+if($i>0)
 	$html=preg_replace('~<loop>.*?<\/loop>~is',$items,$html,1);
-}else{
+else
 	$html='';
-}
 $content.=$html;

@@ -1,7 +1,7 @@
 <?php
 $rank=0;
 $show='';
-$theme=parse_ini_file(THEME.'/theme.ini',true);
+$theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $currentPassCSS='';
 $currentPassHidden=$theme['settings']['settings_hidden'];
 $matchPassCSS='';
@@ -114,8 +114,8 @@ if(isset($user)&&$user['rank']>0){
 
 }else{
 	$html='';
-	if(file_exists(THEME.'/noaccess.html')){
-		$html=file_get_contents(THEME.'/noaccess.html');
+	if(file_exists(THEME.DS.'noaccess.html')){
+		$html=file_get_contents(THEME.DS.'noaccess.html');
 	}
 }
 $content.=$html;

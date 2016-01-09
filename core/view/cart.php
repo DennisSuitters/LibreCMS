@@ -1,5 +1,5 @@
 <?php
-$theme=parse_ini_file(THEME.'/theme.ini',true);
+$theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $notification='';
 if($args[0]=="confirm"){
 	if($_POST['emailtrap']==''){
@@ -53,7 +53,7 @@ if($args[0]=="confirm"){
 			$q->execute(array(':si'=>SESSIONID));
 			$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 			if($config['email']!=''){
-				require'core/class.phpmailer.php';
+				require'core'.DS.'class.phpmailer.php';
 				$mail=new PHPMailer();
 				$mail->IsSMTP();
 				$mail->SetFrom($config['email'],$config['seoTitle']);

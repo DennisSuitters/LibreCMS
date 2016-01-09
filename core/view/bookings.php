@@ -1,5 +1,5 @@
 <?php
-$theme=parse_ini_file(THEME.'/theme.ini',true);
+$theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $notification='';
 $act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):'';
 if($act=='add_booking'){
@@ -30,7 +30,7 @@ if($act=='add_booking'){
 			$e=$db->errorInfo();
 			if(is_null($e[2])){
 				if($config['email']!=''){
-					require'core/class.phpmailer.php';
+					require'core'.DS.'class.phpmailer.php';
 					$mail=new PHPMailer();
 					$mail->IsSMTP();
 					$mail->SetFrom($email,$name);

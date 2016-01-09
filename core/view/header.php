@@ -6,8 +6,8 @@ if($_SESSION['rank']>0){
 	if(stristr($html,'<print user=avatar>')){
 		if(isset($user)&&$user['gravatar']!='')
 			$html=str_replace('<print user=avatar>','http://gravatar.com/avatar/'.md5($user['gravatar']),$html);
-		elseif(isset($user)&&$user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))
-			$html=str_replace('<print user=avatar>','media/avatar/'.$user['avatar'],$html);
+		elseif(isset($user)&&$user['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$user['avatar']))
+			$html=str_replace('<print user=avatar>','media'.DS.'avatar'.DS.$user['avatar'],$html);
 		else
 			$html=str_replace('<print user=avatar>',$noavatar,$html);
 	}

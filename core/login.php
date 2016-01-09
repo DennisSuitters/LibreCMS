@@ -26,6 +26,7 @@ if($act=='logout'){
 		$_SESSION['rank']=0;
 	}
 }else{
+	$_SESSION=array();
 	$_SESSION['loggedin']=false;
 	$_SESSION['rank']=0;
 }

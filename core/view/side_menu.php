@@ -1,5 +1,5 @@
 <?php
-$side_menu=file_get_contents(THEME.'/side_menu.html');
+$side_menu=file_get_contents(THEME.DS.'side_menu.html');
 $categories='';
 if($view=='article'||$view=='portfolio'||$view=='gallery'||$view=='inventory'||$view=='services'){
 	$sc=$db->prepare("SELECT DISTINCT category_1 FROM content WHERE contentType=:contentType AND category_1!='' AND contentType!='events' AND title!='' AND status LIKE :status ORDER BY category_1 ASC");
@@ -107,7 +107,7 @@ if($sm->rowCount()>0){
 		if($sm2->rowCount()>0){
 			while($rm2=$sm2->fetch(PDO::FETCH_ASSOC)){
 				if($rm['contentType']=='gallery'){
-					if(file_exists('media/'.$rm2['file'])){
+					if(file_exists('media'.DS.$rm2['file'])){
 						$categories.='<a class="list-group-item clearfix" href="'.$rm2['contentType'].'/'.strtolower(str_replace(' ','-',$rm2['title'])).'"  itemscope itemtype="http://schema.org/'.$rm2['schemaType'].'"><p class="list-group-item-text"><div class="media"><span class="media-left"><img class="img-thumbnail side_menu_gallery pull-left" src="media/'.$rm2['thumb'].'"></span><meta itemprop="datePublished" content="'.date('Y-m-d',$r['ti']).'"/><div class="media-body"><h5 class="media-heading">'.$rm2['title'].'</h5>';
 						if($rm2['caption']){
 							$categories.='<small>'.substr($rm2['caption'],0,100);

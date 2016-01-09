@@ -1,5 +1,5 @@
 <?php
-$theme=parse_ini_file(THEME.'/theme.ini',true);
+$theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $error=0;
 $notification='';
 $act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):'';
@@ -17,7 +17,7 @@ if($act=='add_message'){
 			if(is_null($e[2])){
 				if($config['email']!=''){
 					if($error==0){
-						require'core/class.phpmailer.php';
+						require'core'.DS.'class.phpmailer.php';
 						$mail=new PHPMailer();
 						$mail->IsSMTP();
 						$mail->SetFrom($email,$name);
@@ -45,6 +45,6 @@ if($act=='add_message'){
 		}
 	}
 }
-require'core/parser.php';
+require'core'.DS.'parser.php';
 $html=str_replace('<notification>',$notification,$html);
 $content.=$html;
