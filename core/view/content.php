@@ -134,6 +134,8 @@ if($show=='item'){
 		$seoDescription=htmlentities(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
 		$seoCaption=htmlentities(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
 	}
+	if($r['eti']>$ti)$contentTime=$r['eti'];else$contentTime=$r['ti'];
+	$contentTime=$r['eti'];
 	$seoKeywords=htmlentities($r['keywords'],ENT_QUOTES,'UTF-8');
 	$canonical=URL.$view.'/'.str_replace(' ','-',htmlentities($r['title'],ENT_QUOTES,'UTF-8'));
 	preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);

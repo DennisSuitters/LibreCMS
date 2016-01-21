@@ -38,7 +38,7 @@ foreach($tags as$tag){
 	if($tag->hasAttribute('leadingtext'))$leadingtext=$tag->getAttribute('leadingtext');else$leadingtext='';
 	if($tag->hasAttribute('userrank'))$userrank=$tag->getAttribute('userrank');else$userrank=-1;
 	if($tag->hasAttribute('length'))$length=$tag->getAttribute('length');else$length=0;
-	if($tag->hasAttribute('striptags'))$striptags=$tag->getAttribute('striptags');else$striptags='no';
+	if($tag->hasAttribute('striptags'))$striptags=$tag->getAttribute('striptags');else$striptags='';
 	if($tag->hasAttribute('class'))$class=$tag->getAttribute('class');else$class='';
 	if($tag->hasAttribute('alt'))$alt=$tag->getAttribute('alt');else$alt='';
 	if($tag->hasAttribute('type'))$type=$tag->getAttribute('type');else$type='text';
@@ -160,9 +160,10 @@ foreach($tags as$tag){
 			if($attribute=='comments')$notes=$rc['notes'];
 			if($attribute=='page')$notes=$page['notes'];
 			if($attribute=='content')$notes=$r['notes'];
-			if($striptags!='null'||$striptags!='false'||$striptags!='no'||$striptags!='')$notes=strip_tags($notes,$striptags);
+			$notes=strip_tags($notes,$striptags);
 			if($length!=0)$notes=strtok(wordwrap($notes,$length,"...\n"),"\n");
-			$parsing.=htmlentities($notes,ENT_QUOTES,'UTF-8');
+//			$parsing.=htmlentities($notes,ENT_QUOTES,'UTF-8');
+			$parsing.=$notes;
 			break;
 		case'email':
 			if($attribute=='author'){
