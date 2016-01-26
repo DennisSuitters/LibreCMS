@@ -32,6 +32,7 @@ function _ago($time){
 	elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440)).' '.lang('noecho','daysago');
 	return$timeDiff;
 }
+
 /* Controller */
 class internal{
 	function getconfig($db){

@@ -78,7 +78,7 @@ if($args[0]=="confirm"){
 	$total=0;
 	$s=$db->prepare("SELECT * FROM cart WHERE si=:si ORDER BY ti DESC");
 	$s->execute(array(':si'=>SESSIONID));
-	preg_match('/<loop>([\w\W]*?)<\/loop>/',$html,$matches);
+	preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 	$cartloop=$matches[1];
 	$cartitems='';
 	if($s->rowCount()>0){
@@ -96,7 +96,7 @@ if($args[0]=="confirm"){
 			$total=$total+($ci['cost']*$ci['quantity']);
 			$cartitems.=$cartitem;
 		}
-		$html=preg_replace('~<loop>.*?<\/loop>~is',$cartitems,$html,1);
+		$html=preg_replace('~<items>.*?<\/items>~is',$cartitems,$html,1);
 		$total=$total+$ci['postagecost'];
 		$html=str_replace('<print totalcalculate>',$total,$html);
 		if(isset($user['id'])&&$user['id']>0){

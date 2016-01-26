@@ -73,8 +73,8 @@ if($show=='categories'){
 		$html=str_replace('<print content=seoTitle>',htmlentities($config['business'],ENT_QUOTES,'UTF-8'),$html);
 	else
 		$html=str_replace('<print content=seoTitle>',htmlentities($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
-	if(stristr($html,'<loop>')){
-		preg_match('/<loop>([\w\W]*?)<\/loop>/',$html,$matches);
+	if(stristr($html,'<items>')){
+		preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 		$item=$matches[1];
 		$output='';
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
@@ -116,13 +116,13 @@ if($show=='categories'){
 			}
 			$output.=$items;
 		}
-		$html=preg_replace('~<loop>.*?<\/loop>~is',$output,$html,1);
+		$html=preg_replace('~<items>.*?<\/items>~is',$output,$html,1);
 		$html=preg_replace('~<item>.*?<\/item>~is','',$html,1);
 	}else
-		$html=preg_replace('~<loop>.*?<\/loop>~is','',$html,1);
+		$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);
 	$html=preg_replace('~<item>.*?<\/item>~is','',$html,1);
-	$html=str_replace('<loop>','',$html);
-	$html=str_replace('</loop>','',$html);
+	$html=str_replace('<items>','',$html);
+	$html=str_replace('</items>','',$html);
 }
 if($show=='item'){
 	$r=$s->fetch(PDO::FETCH_ASSOC);
@@ -134,8 +134,8 @@ if($show=='item'){
 		$seoDescription=htmlentities(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
 		$seoCaption=htmlentities(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
 	}
-	if($r['eti']>$ti)$contentTime=$r['eti'];else$contentTime=$r['ti'];
-	$contentTime=$r['eti'];
+	if($r['eti']>$r['ti'])$contentTime=$r['eti'];else$contentTime=$r['ti'];
+//	$contentTime=$r['eti'];
 	$seoKeywords=htmlentities($r['keywords'],ENT_QUOTES,'UTF-8');
 	$canonical=URL.$view.'/'.str_replace(' ','-',htmlentities($r['title'],ENT_QUOTES,'UTF-8'));
 	preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);
@@ -149,7 +149,7 @@ if($show=='item'){
 	$seoDescription=$r['caption'];
 	$item=str_replace('<CONTROLS>','...more...',$item);
 	$html=preg_replace('~<settings.*?>~is','',$html,1);
-	$html=preg_replace('~<loop>.*?<\/loop>~is','',$html,1);
+	$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);
 	$html=str_replace('<print page="notes">','',$html);
 	if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
 		if(file_exists(THEME.DS.'comments.html')){
@@ -162,17 +162,17 @@ if($show=='item'){
 			if(stristr($commentsHTML,'<print content=contentType>'))$commentsHTML=str_replace('<print content=contentType>',$r['contentType'],$commentsHTML);
 			$commentDOC=new DOMDocument();
 			@$commentDOC->loadHTML($commentsHTML);
-			preg_match('/<loop>([\w\W]*?)<\/loop>/',$commentsHTML,$matches);
+			preg_match('/<items>([\w\W]*?)<\/items>/',$commentsHTML,$matches);
 			while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
 				$comment=$matches[1];
 				require'core'.DS.'parser.php';
 				$comments.=$comment;
 			}
-				$commentsHTML=preg_replace('~<loop>.*?<\/loop>~is',$comments,$commentsHTML,1);
+			$commentsHTML=preg_replace('~<items>.*?<\/items>~is',$comments,$commentsHTML,1);
 			if($r['options']{1}==1){
 
 			}
-			$commentsHTML=preg_replace('~<loop>.*?<\/loop>~is','',$commentsHTML,1);
+			$commentsHTML=preg_replace('~<items>.*?<\/items>~is','',$commentsHTML,1);
 			$item.=$commentsHTML;
 		}else{
 			$item.='Comments for this post is Enabled, but no <strong>"'.THEME.DS.'comments.html"</strong> template file exists';

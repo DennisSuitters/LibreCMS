@@ -74,9 +74,7 @@ if(!isset($seoCaption)||$seoCaption=='')$seoCaption=empty($page['seoCaption'])?$
 if(!isset($seoKeywords)||$seoKeywords=='')$seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
 $head=str_replace('<print seoKeywords>',$seoKeywords,$head);
 
-if(!isset($contentTime)||$contentTime==0||$contentTime=''){
-	if($page['eti']>$config['ti'])$contentTime=$page['eti'];else$contentTime=$config['ti'];
-}else$contentTime=time();
+if(!isset($contentTime)){if($page['eti']>$config['ti'])$contentTime=$page['eti'];else$contentTime=$config['ti'];}
 $head=str_replace('<print dateAtom>',date(DATE_ATOM,$contentTime),$head);
 
 if(!isset($canonical)||$canonical=='')$canonical=URL.$view.'/';

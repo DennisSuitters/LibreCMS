@@ -5,7 +5,7 @@ $itemCount=$matches[1];
 if($itemCount==0)$itemCount=5;
 $contentType=$matches[2];
 if($contentType=='all')$contentType='%';
-preg_match('/<loop>([\w\W]*?)<\/loop>/',$html,$matches);
+preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 $it=$matches[1];
 $items='';
 $s=$db->prepare("SELECT * FROM content WHERE featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY ti DESC");
@@ -62,8 +62,5 @@ if($ii>1){
 	$html=preg_replace('~<featuredControls>.*?<\/featuredControls>~is','',$html,1);
 	$html=str_replace('<featuredIndicators>','',$html);
 }
-if($i>0)
-	$html=preg_replace('~<loop>.*?<\/loop>~is',$items,$html,1);
-else
-	$html='';
+if($i>0)$html=preg_replace('~<items>.*?<\/items>~is',$items,$html,1);else$html='';
 $content.=$html;

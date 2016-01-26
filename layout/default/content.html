@@ -29,7 +29,7 @@
 						<print content="categories" container="h6" leadingtext="Categories: ">
 						<print content="brand" container="h6" leadingtext="Brand: ">
 						<print content="tags" container="h6" leadingtext="Tags: ">
-						<print content="notes" striptags="<p><img>">
+						<print content="notes" striptags="safe">
 					</div>
 					<author>
 						<hr>
@@ -44,7 +44,7 @@
 		</item>
 		<print page="notes">
 		<settings itemCount="10">
-		<loop>
+		<items>
 			<article class="col-md-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
 				<div class="thumbnail articles">
 					<div class="cover">
@@ -82,7 +82,7 @@
 					</div>
 				</div>
 			</article>
-		</loop>
+		</items>
 	</div>
 </block>
 <block include="side_menu.html">

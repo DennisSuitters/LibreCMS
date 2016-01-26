@@ -43,12 +43,12 @@ foreach($tags as$tag){
 	if($tag->hasAttribute('alt'))$alt=$tag->getAttribute('alt');else$alt='';
 	if($tag->hasAttribute('type'))$type=$tag->getAttribute('type');else$type='text';
 	$print=$tag->getAttribute($attribute);
-	if($container){
+	if($container!=''){
 		$parsing.='<'.$container;
-		if($class)$parsing.=' class="'.$class.'"';
+		if($class!='')$parsing.=' class="'.$class.'"';
 		$parsing.='>';
 	}
-	if($leadingtext)$parsing.=$leadingtext;
+	if($leadingtext!='')$parsing.=$leadingtext;
 	switch($print){
 		case'contentType':
 			$parsing.=ucfirst($r['contentType']);
@@ -160,9 +160,8 @@ foreach($tags as$tag){
 			if($attribute=='comments')$notes=$rc['notes'];
 			if($attribute=='page')$notes=$page['notes'];
 			if($attribute=='content')$notes=$r['notes'];
-			$notes=strip_tags($notes,$striptags);
+			if($striptags=='safe')$notes=strip_tags($notes,'<p><br><img>');
 			if($length!=0)$notes=strtok(wordwrap($notes,$length,"...\n"),"\n");
-//			$parsing.=htmlentities($notes,ENT_QUOTES,'UTF-8');
 			$parsing.=$notes;
 			break;
 		case'email':
@@ -198,8 +197,8 @@ foreach($tags as$tag){
 			}
 			if($attribute=='config')$parsing.=$config[$print];
 	}
-	if($container)$parsing.='</'.$container.'>';
-	$parse=preg_replace('~<print .*?'.$attribute.'=.'.$print.'.*?>~is',$parsing,$parse,1);
+	if($container!='')$parsing.='</'.$container.'>';
+	$parse=preg_replace('~<print .*?'.$attribute.'=.'.$print.'.*?[^>]+>~is',$parsing,$parse,1);
 }
 if($show=='item'){
 	if(isset($comment)&&$comment!='')$comment=$parse;

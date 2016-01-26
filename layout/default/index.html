@@ -6,7 +6,7 @@
 	<main id="content" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 		<div class="clearfix"><print page="notes"></div>
 		<settings items="4" contenttype="all">
-		<loop>
+		<items>
 			<article class="col-lg-3 col-md-3 col-sm-4 col-xs-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
 				<div class="thumbnail">
 					<div class="contentType"><print content="contentType" container="div"></div>
@@ -43,7 +43,7 @@
 					</div>
 				</div>
 			</article>
-		</loop>
+		</items>
 	</main>
 </block>
 <block inbed="testimonials">
@@ -52,7 +52,7 @@
 		<h2 class="page-header">Testimonials <small>Our Clients Love Us!</small></h2>
 		<div class="carousel slide" id="testimonials" data-ride="carousel">
 			<div class="carousel-inner">
-				<loop>
+				<items>
 					<div class="item<print content=active>" itemscope itemtype="http://schema.org/<print content=schemaType>">
 						<div class="testimonials">
 							<print author="avatar" alt="name" class="pull-left img-circle">
@@ -62,7 +62,7 @@
 							</div>
 						</div>
 					</div>
-				</loop>
+				</items>
 			</div>
 		</div>
 		<controls>
