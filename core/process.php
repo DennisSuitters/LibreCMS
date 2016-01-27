@@ -65,11 +65,13 @@ else{
 }
 $head=str_replace('<print seoTitle>',$seoTitle,$head);
 
+if(!isset($seoCaption)||$seoCaption=='')$seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
+
+
 if(!isset($seoDescription)||$seoDescription=='')$seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
 if($view=='index'&&$seoDescription!='')$head=str_replace('<print seoCaption>',$seoDescription,$head);
 else$head=str_replace('<print seoCaption>',$seoCaption,$head);
 
-if(!isset($seoCaption)||$seoCaption=='')$seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
 
 if(!isset($seoKeywords)||$seoKeywords=='')$seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
 $head=str_replace('<print seoKeywords>',$seoKeywords,$head);

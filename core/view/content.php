@@ -70,9 +70,9 @@ if($show=='categories'){
 	$html=str_replace('<print page="cover">','',$html);
 	$html=str_replace('<print page="notes">',$page['notes'],$html);
 	if($config['business'])
-		$html=str_replace('<print content=seoTitle>',htmlentities($config['business'],ENT_QUOTES,'UTF-8'),$html);
+		$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'),$html);
 	else
-		$html=str_replace('<print content=seoTitle>',htmlentities($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
+		$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
 	if(stristr($html,'<items>')){
 		preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 		$item=$matches[1];
@@ -126,18 +126,18 @@ if($show=='categories'){
 }
 if($show=='item'){
 	$r=$s->fetch(PDO::FETCH_ASSOC);
-	$seoTitle=$r['title'].' - '.ucfirst($r['contentType']).' - '.htmlentities($config['seoTitle'],ENT_QUOTES,'UTF-8');
+	$seoTitle=$r['title'].' - '.ucfirst($r['contentType']).' - '.htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8');
 	if($r['caption']!=''){
-		$seoDescription=htmlentities($r['caption'],ENT_QUOTES,'UTF-8');
-		$seoCaption=htmlentities($r['caption'],ENT_QUOTES,'UTF-8');
+		$seoDescription=htmlspecialchars($r['caption'],ENT_QUOTES,'UTF-8');
+		$seoCaption=htmlspecialchars($r['caption'],ENT_QUOTES,'UTF-8');
 	}else{
-		$seoDescription=htmlentities(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
-		$seoCaption=htmlentities(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
+		$seoDescription=htmlspecialchars(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
+		$seoCaption=htmlspecialchars(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
 	}
 	if($r['eti']>$r['ti'])$contentTime=$r['eti'];else$contentTime=$r['ti'];
 //	$contentTime=$r['eti'];
-	$seoKeywords=htmlentities($r['keywords'],ENT_QUOTES,'UTF-8');
-	$canonical=URL.$view.'/'.str_replace(' ','-',htmlentities($r['title'],ENT_QUOTES,'UTF-8'));
+	$seoKeywords=htmlspecialchars($r['keywords'],ENT_QUOTES,'UTF-8');
+	$canonical=URL.$view.'/'.str_replace(' ','-',htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'));
 	preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);
 	$item=$matches[1];
 	$address='';
