@@ -9,7 +9,6 @@ try{
 	$db=new PDO($dns,$settings['database']['username'],$settings['database']['password']);
 	$db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 }catch(PDOException $e){
-//	echo'ERROR: '.$e->getMessage();
 	require'core/layout/install.php';
 	die();
 }

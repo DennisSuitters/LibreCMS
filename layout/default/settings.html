@@ -5,9 +5,10 @@
 		<div class="well relative">
 			<div class="form-group">
 				<label for="avatar" class="control-label col-lg-1 col-md-2 col-sm-2 col-xs-4">Avatar</label>
-				<form target="sp" method="post" enctype="multipart/form-data" action="includes/add_data.php">
+				<iframe id="sp" name="sp" class="hidden"></iframe>
+				<form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
 					<div class="input-group col-lg-11 col-md-10 col-sm-10 col-xs-8">
-						<input type="hidden" name="id" value="'.$user['id'].'">
+						<input type="hidden" name="id" value="<print user=id>">
 						<input type="hidden" name="act" value="add_avatar">
 						<input type="file" name="fu" class="form-control" data-classButton="btn btn-default" data-icon="false">
 						<div class="input-group-btn">

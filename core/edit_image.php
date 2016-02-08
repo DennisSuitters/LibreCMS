@@ -8,11 +8,10 @@ $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);
 if($c=='cover'||$c=='file'||$c=='thumb')$r['img']='media/'.$r['img'];
 if($c=='coverURL'||$c=='fileURL'){
-	if(file_exists('../media/'.$r['img'])){
-		$r['img']='media/'.$r['img'];
-	}else{
-		$img = substr($r['img'], strrpos($r['img'], '/') + 1);
-		copy($r['img'], '../media/'.$img);
+	if(file_exists('../media/'.$r['img']))$r['img']='media/'.$r['img'];
+	else{
+		$img=substr($r['img'],strrpos($r['img'],'/')+1);
+		copy($r['img'],'../media/'.$img);
 		$s=$db->prepare("UPDATE ".$t." SET ".$c."=:img WHERE id=:id");
 		$s->execute(array(':img'=>$img,':id'=>$id));
 		$r['img']='media/'.$img;
@@ -96,17 +95,17 @@ if($c=='coverURL'||$c=='fileURL'){
 </div>
 <script>/*<![CDATA[*/
 function GetWidth(newHeight,orginalWidth,originalHeight){
-	if(currentHeight == 0)return newHeight;
-	var aspectRatio = currentWidth / currentHeight;
-	alert(newHeight * aspectRatio)
+	if(currentHeight==0)return newHeight;
+	var aspectRatio=currentWidth/currentHeight;
+	alert(newHeight*aspectRatio)
 }
-$('#crop').load(function() {
+$('#crop').load(function(){
 	$('.img-container > img').cropper({
-		aspectRatio: 16 / 9,
-		modal: true,
-		responsive: true,
-		checkImageOrigin: true,
-		preview: ".img-preview",
+		aspectRatio:16/9,
+		modal:true,
+		responsive:true,
+		checkImageOrigin:true,
+		preview:".img-preview",
 		crop:function(data){
 			$("#x").val(Math.round(data.x));
 			$("#y").val(Math.round(data.y));

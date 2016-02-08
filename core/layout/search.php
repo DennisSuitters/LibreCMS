@@ -85,14 +85,14 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
 <div class="searchresults clearfix" data-status="<?php echo$r['status'];?>">
 	<ol class="breadcrumb">
 		<li>
-			<a href="<?php echo URL.'admin';if($what=='pages')echo'/pages';elseif($what=='orders')echo'/orders';else echo'/content';?>"><?php lang(ucfirst($what));?></a>
+			<a href="<?php echo URL.$settings['system']['admin'];if($what=='pages')echo'/pages';elseif($what=='orders')echo'/orders';else echo'/content';?>"><?php lang(ucfirst($what));?></a>
 		</li>
 <?php 	if($what=='content'){?>
-		<li><a href="<?php echo URL.'/admin/content/type/'.$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a>
+		<li><a href="<?php echo URL.$settings['system']['admin'].'/content/type/'.$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a>
 <?php 	}?>
-		<li><a href="<?php echo URL.'admin/'.$what.'/edit/'.$r['id'];?>"><?php if($what=='orders'){echo$r['qid'].$r['iid'];if($r['aid']!='')echo'/'.$r['aid'];}else echo$r['title'];?></a></li>
+		<li><a href="<?php echo URL.$settings['system']['admin'].'/'.$what.'/edit/'.$r['id'];?>"><?php if($what=='orders'){echo$r['qid'].$r['iid'];if($r['aid']!='')echo'/'.$r['aid'];}else echo$r['title'];?></a></li>
 	</ol>
-	<small class="text-success"><?php echo URL.'admin/'.$what.'/edit/'.$r['id'];?></small><br>
+	<small class="text-success"><?php echo URL.$settings['system']['admin'].'/'.$what.'/edit/'.$r['id'];?></small><br>
 	<small class="float-left" style="margin-left:10px;">
 <?php 	if($what=='content'){
 			if($r['thumb']!=''&&file_exists('media/'.$r['thumb']))

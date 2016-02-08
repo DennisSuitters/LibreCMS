@@ -1,1 +1,1 @@
-<div class="alert alert-danger">You MUST be Logged in, or have Administrator rights to view this page</div>
+<?php echo$theme['settings']['page_not_found'];

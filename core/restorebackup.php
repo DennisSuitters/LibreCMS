@@ -5,7 +5,7 @@ session_start();
 include'db.php';
 $fu=$_FILES['fu'];
 if(isset($_FILES['fu'])){
-    $tp="../media/backup/".basename($_FILES['fu']['name']);
+    $tp='../media/backup/'.basename($_FILES['fu']['name']);
     if(move_uploaded_file($_FILES['fu']['tmp_name'],$tp)){
         $sql=file_get_contents($tp);
         $q=$db->exec($sql);

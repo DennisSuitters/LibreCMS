@@ -1,8 +1,4 @@
-/*!
- *  LibreICONS v1.0.0 by @devel - https://github.com/StudioJunkyard/LibreICONS
- *  License - http://www.gnu.org/licenses/gpl-3.0.txt
- *  Version 1.0.1
- */
+/* LibreICONS v1.0.1 - https://github.com/StudioJunkyard/LibreICONS */
 @charset"UTF-8";
 @font-face{font-family:LibreICONS;src:url('../font/libreicons.eot');src:url('../font/libreicons.eot')format('embedded-opentype'),url('../font/libreicons.woff')format('woff'),url('../font/libreicons.ttf')format('truetype'),url('../font/libreicons.svg') format('svg')}
 .libre,.fa,.glyphicon{position:relative;display:inline-block;font:normal normal normal 14px/1 LibreICONS;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;transform:translate(0,0)}
@@ -53,6 +49,29 @@
 .color-info{color:#31708f}
 .color-warning{color:#8a6d3b}
 .color-danger{color:#a94442}
+.input-group-xs input[type=date],
+.input-group-xs input[type=time],
+.input-group-xs input[type=datetime-local],
+.input-group-xs input[type=month],
+input[type=date].input-xs,
+input[type=time].input-xs,
+input[type=datetime-local].input-xs,
+input[type=month].input-xs{line-height:30px}
+.form-control-static.input-xs{padding-right:0;padding-left:0}
+.input-xs{height:20px;padding:2px 3px;font-size:9px;line-height:1.75;border-radius:3px}
+select.input-xs{height:20px;line-height:20px}
+select[multiple].input-xs,
+textarea.input-xs{height:auto}
+.form-control .form-group-xs{height:20px;margin:0;padding:0}
+.form-group-xs small.help-block{line-height:1.2em}
+.label-xs{height:20px;padding:0;font-size:8px;line-height:20px}
+.btn-xs{height:20px}
+select.form-group-xs .form-control{height:20px;line-height:20px}
+select[multiple]
+.form-group-xs .form-control,
+.form-group-xs .form-control-static{height:20px;min-height:22px;padding:2px 3px;font-size:9px;line-height:1.75}
+.input-xs+.form-control-feedback{width:20px;height:20px;line-height:20px}
+.input-group-addon.input-xs{padding:2px 3px;font-size:9px;border-radius:3px}
 /*!
 Animate.css - http://daneden.me/animate
 Licensed under the MIT license - http://opensource.org/licenses/MIT

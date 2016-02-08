@@ -1,7 +1,7 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="content">
-	<div id="content" class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+	<div id="content" class="col-xs-12 col-md-8">
 		<item>
 			<article class="article" itemscope itemtype="http://schema.org/<print content=schemaType>">
 				<div class="thumbnail">
@@ -21,15 +21,14 @@
 						</aside>
 					</cost>
 					<div class="caption">
-						<print content="title" container="h2">
-						<print content="dateCreated" userrank="399" container="h6" leadingtext="Created: ">
-						<print content="datePublished" container="h6" leadingtext="Published: ">
-						<print content="dateEdited" userrank="399" container="h6" leadingtext="Edited: ">
-						<print content="dateEvent" container="h6" leadingtext="Event Date: ">
-						<print content="categories" container="h6" leadingtext="Categories: ">
-						<print content="brand" container="h6" leadingtext="Brand: ">
-						<print content="tags" container="h6" leadingtext="Tags: ">
-						<print content="notes" striptags="safe">
+						<print content="title" container="h3">
+						<print content="dateCreated" userrank="399" class="text-muted" container="h6" leadingtext="Created: ">
+						<print content="datePublished" class="text-muted" container="h6" leadingtext="Published: ">
+						<print content="dateEdited" userrank="399" class="text-muted" container="h6" leadingtext="Edited: ">
+						<print content="dateEvent" class="text-muted" container="h6" leadingtext="Event Date: ">
+						<print content="categories" class="text-muted" container="h6" leadingtext="Categories: ">
+						<print content="tags" class="text-muted" container="h6" leadingtext="Tags: ">
+						<print content="notes">
 					</div>
 					<author>
 						<hr>
@@ -45,7 +44,7 @@
 		<print page="notes">
 		<settings itemCount="10">
 		<items>
-			<article class="col-md-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
+			<article class="col-md-4" itemscope itemtype="http://schema.org/<print content=schemaType>">
 				<div class="thumbnail articles">
 					<div class="cover">
 						<print content="thumb">
@@ -58,14 +57,12 @@
 					</cost>
 					<div class="caption">
 						<print content="title" class="text-center" container="h4">
-						<print content="dateCreated" userrank="399" container="h6" leadingtext="Created: ">
-						<print content="datePublished" container="h6" leadingtext="Published: ">
-						<print content="dateEdited" userrank="399" container="h6" leadingtext="Edited: ">
-						<print content="dateEvent" container="h6" leadingtext="Event Date: ">
-						<print content="categories" container="h6" leadingtext="Categories: ">
-						<print content="brand" container="h6" leadingtext="Brand: ">
-						<print content="tags" container="h6" leadingtext="Tags: ">
-						<print content="notes" length="201">
+						<print content="dateCreated" userrank="399" class="text-muted" container="h6" leadingtext="Created: ">
+						<print content="datePublished" class="text-muted" container="h6" leadingtext="Published: ">
+						<print content="dateEdited" userrank="399" class="text-muted" container="h6" leadingtext="Edited: ">
+						<print content="dateEvent" class="text-muted" container="h6" leadingtext="Event Date: ">
+						<print content="categories" class="text-muted" container="h6" leadingtext="Categories: ">
+						<print content="caption" length="200">
 						<div class="text-right">
 							<controls>
 								<view>

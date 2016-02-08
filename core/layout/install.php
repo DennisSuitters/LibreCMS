@@ -1,12 +1,13 @@
-<?php
-	$error=0;
-?>
+<!--
+ * Powered by LibreCMS (https://github.com/StudioJunkyard/LibreCMS)
+ * Copyleft 2016 Studio Junkyard (http://studiojunkyard.com/)
+ * Licensed under GPLv3 <http://www.gnu.org/licenses/>
+-->
 <!DOCTYPE HTML>
 <html lang="en-AU">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-		<title>LibreCMS - Install</title>
-<?php /*		<meta http-equiv="X-FRAME-OPTIONS" content="DENY"> */?>
+		<title>Install - LibreCMS</title>
 		<link rel="icon" href="core/images/favicon.png">
 		<link rel="apple-touch-icon" href="core/images/favicon.png">
 		<meta name="viewport" content="width=400,initial-scale=1.0">
@@ -27,8 +28,7 @@
 					<div class="well">
 						<h3 class="page-header col-sm-6">System Checks</h3>
 						<div class="clearfix"></div>
-<?php
-if(version_compare(phpversion(),'5.5.9','>')){
+<?php if(version_compare(phpversion(),'5.5.9','>')){
 	echo'<div class="alert alert-success">LibreCMS was built using PHPv5.5.9, your installed version is higher.</div>';
 }else{
 	echo'<div class="alert alert-warning">LibreCMS was built using PHPv5.5.9, your installed version is lower. While LibreCMS may operate on your system, some functionality may not work or be available.</div>';
@@ -146,6 +146,13 @@ if($error==0){
 									<select id="sysland" name="sysland" class="form-control">
 										<option value="en-au">English (Australian)</option>
 									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="sysadmin" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Administration URL</label>
+								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
+									<input id="sysadmin" name="sysadmin" type="text" class="form-control" value="" placeholder="Enter Administration Page Name...">
+									<span class="help-text">Leave blank to use default: "admin". e.g. http://www.sitename.com/admin/</span>
 								</div>
 							</div>
 						</div>

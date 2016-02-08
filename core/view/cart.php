@@ -4,15 +4,13 @@ $notification='';
 if($args[0]=="confirm"){
 	if($_POST['emailtrap']==''){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
-		if(isset($_SESSION['uid'])){$uid=$_SESSION['uid'];}else{$uid=0;}
+		if(isset($_SESSION['uid']))$uid=$_SESSION['uid'];else$uid=0;
 		if(filter_var($email,FILTER_VALIDATE_EMAIL)){
 			$s=$db->prepare("SELECT id,status FROM login WHERE email=:email");
 			$s->execute(array(':email'=>$email));
 			if($s->rowCount()>0){
 				$ru=$s->fetch(PDO::FETCH_ASSOC);
-				if($ru['status']=='delete'||$ru['status']=='disabled'){
-					$notification.=$theme['settings']['account_suspend'];
-	 			}
+				if($ru['status']=='delete'||$ru['status']=='disabled')$notification.=$theme['settings']['account_suspend'];
 			}else{
 				$business=filter_input(INPUT_POST,'business',FILTER_SANITIZE_EMAIL);
 				$address=filter_input(INPUT_POST,'address',FILTER_SANITIZE_EMAIL);
@@ -99,11 +97,7 @@ if($args[0]=="confirm"){
 		$html=preg_replace('~<items>.*?<\/items>~is',$cartitems,$html,1);
 		$total=$total+$ci['postagecost'];
 		$html=str_replace('<print totalcalculate>',$total,$html);
-		if(isset($user['id'])&&$user['id']>0){
-			$html=preg_replace('~<loggedin>.*?<\/loggedin>~is','<input type="hidden" name="email" value="'.$user['email'].'">',$html,1);
-		}
-	}else{
-		$html=preg_replace('~<emptycart>.*?<\/emptycart>~is',$theme['settings']['cart_empty'],$html,1);
-	}
+		if(isset($user['id'])&&$user['id']>0)$html=preg_replace('~<loggedin>.*?<\/loggedin>~is','<input type="hidden" name="email" value="'.$user['email'].'">',$html,1);
+	}else$html=preg_replace('~<emptycart>.*?<\/emptycart>~is',$theme['settings']['cart_empty'],$html,1);
 }
 $content.=$html;

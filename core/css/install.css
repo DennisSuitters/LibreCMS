@@ -1,9 +1,1 @@
-body{background:#f4f4f4;margin:0;padding:0}
-.install-panel{margin-top:25px}
-img.login{width:10em;margin:0 0 10px 0}
-@media(min-width:479px){
-	.login-panel{margin-top:20px}
-}
-@media(min-width:599px){
-	.login-panel{margin-top:25%}
-}
+body{background:#f4f4f4;margin:0;padding:0}.install-panel{margin-top:25px}img.login{width:10em;margin:0 0 10px 0}@media(min-width:479px){.login-panel{margin-top:20px}}@media(min-width:599px){.login-panel{margin-top:25%}}

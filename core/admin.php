@@ -44,41 +44,41 @@ if($_SESSION['rank']>399){?>
 				</div>
 				<div class="profile-sidebar">
 					<div class="profile-userpic">
-						<img class="img-thumbnail shadow-depth-1" src="<?php if($user['gravatar']!='')echo$user['gravatar'];elseif($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))echo'media/avatar/'.$user['avatar'];else echo$noavatar;?>">
+						<img class="img-thumbnail shadow-depth-1" src="<?php if($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))	echo'media/avatar/'.$user['avatar'];elseif($user['gravatar']!=''){if(stristr($user['gravatar'],'@'))echo'http://gravatar.com/avatar/'.md5($user['gravatar']);elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))echo$user['gravatar'];else echo$noavatar;}else echo$noavatar;?>">
 					</div>
 				</div>
 			</div>
 			<hr>
 			<div class="menu-list">
 				<ul id="menu-content" class="menu-content">
-					<li<?php if($view=='dashboard')echo' class="active"';?>><a href="<?php echo URL.'admin/dashboard';?>"><i class="libre libre-chart-line" name="<?php lang('Dashboard');?>"></i><span><?php lang('Dashboard');?></span></a></li>
-					<li<?php if($view=='pages')echo' class="active"';?>><a href="<?php echo URL.'admin/pages';?>"><i class="libre libre-content" name="<?php lang('Pages');?>"></i><span><?php lang('Pages');?></span></a></li>
-					<li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';?>><a href="<?php echo URL.'admin/content';?>"><i class="libre libre-content" name="<?php lang('Content');?>"></i><span><?php lang('Content');?></span></a></li>
+					<li<?php if($view=='dashboard')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/dashboard';?>"><i class="libre libre-chart-line" name="<?php lang('Dashboard');?>"></i><span><?php lang('Dashboard');?></span></a></li>
+					<li<?php if($view=='pages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><i class="libre libre-content" name="<?php lang('Pages');?>"></i><span><?php lang('Pages');?></span></a></li>
+					<li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/content';?>"><i class="libre libre-content" name="<?php lang('Content');?>"></i><span><?php lang('Content');?></span></a></li>
 <?php	if($user['rank']==1000||$user['options']{1}==1){?>
-					<li<?php if($view=='bookings')echo' class="active"';?>><a href="<?php echo URL.'admin/bookings';?>"><i class="libre libre-calendar" name="<?php lang('Bookings');?>"></i><span><?php lang('Bookings');?></span></a></li>
+					<li<?php if($view=='bookings')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><i class="libre libre-calendar" name="<?php lang('Bookings');?>"></i><span><?php lang('Bookings');?></span></a></li>
 <?php	}
 		if($user['rank']==1000||$user['options']{2}==1){?>
-					<li<?php if($view=='orders')echo' class="active"';?>><a href="<?php echo URL.'admin/orders/all';?>"><i class="libre libre-order" name="<?php lang('Orders');?>"></i><span><?php lang('Orders');?></span></a></li>
+					<li<?php if($view=='orders')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><i class="libre libre-order" name="<?php lang('Orders');?>"></i><span><?php lang('Orders');?></span></a></li>
 <?php	}
 		if($user['rank']==1000||$user['options']{3}==1){?>
-					<li<?php if($view=='media')echo' class="active"';?>><a href="<?php echo URL.'admin/media';?>"><i class="libre libre-picture" name="<?php lang('Media');?>"></i><span><?php lang('Media');?></span></a></li>
+					<li<?php if($view=='media')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/media';?>"><i class="libre libre-picture" name="<?php lang('Media');?>"></i><span><?php lang('Media');?></span></a></li>
 <?php	}?>
-					<li<?php if($view=='messages')echo' class="active"';?>><a href="<?php echo URL.'admin/messages';?>"><i class="libre libre-mail" name="<?php lang('Messages');?>"></i><span><?php lang('Messages');?></span><a></li>
-					<li<?php if($view=='accounts')echo' class="active"';?>><a href="<?php echo URL.'admin/accounts';?>"><i class="libre libre-users" name="<?php lang('Accounts');?>"></i><span><?php lang('Accounts');?></span></a></li>
-					<li<?php if($view=='preferences')echo' class="active"';?>><a href="<?php echo URL.'admin/preferences';?>"><i class="libre libre-settings" name="<?php lang('Preferences');?>"></i><span><?php lang('Preferences');?></span></a></li>
+					<li<?php if($view=='messages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><i class="libre libre-mail" name="<?php lang('Messages');?>"></i><span><?php lang('Messages');?></span><a></li>
+					<li<?php if($view=='accounts')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><i class="libre libre-users" name="<?php lang('Accounts');?>"></i><span><?php lang('Accounts');?></span></a></li>
+					<li<?php if($view=='preferences')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><i class="libre libre-settings" name="<?php lang('Preferences');?>"></i><span><?php lang('Preferences');?></span></a></li>
 <?php	if($user['rank']>899){?>
-					<li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.'admin/activity';?>"><i class="libre libre-activity" name="<?php lang('Activity');?>"></i><span><?php lang('Activity');?></span></a></li>
+					<li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><i class="libre libre-activity" name="<?php lang('Activity');?>"></i><span><?php lang('Activity');?></span></a></li>
 <?php	}?>
-					<li<?php if($view=='search')echo' class="active"';?>><a href="<?php echo URL.'admin/search';?>"><i class="libre libre-search" name="<?php lang('Search');?>"></i><span><?php lang('Search');?></span></a></li>
+					<li<?php if($view=='search')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/search';?>"><i class="libre libre-search" name="<?php lang('Search');?>"></i><span><?php lang('Search');?></span></a></li>
 				</ul>
 			</div>
 <?php 	if($config['maintenance']{0}==1){?>
-			<div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.'admin/preferences#interface';?>">Maintenance Mode</a></div>
+			<div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#interface';?>">Maintenance Mode</a></div>
 <?php 	} ?>
 			<footer class="hidden-xs">
 				<div class="brand"><img src="core/images/librecms.png" alt="LibreCMS"></div>
 				<ul>
-					<li><a href="<?php echo URL;?>admin/logout"><?php lang('Logout');?></a></li>
+					<li><a href="<?php echo URL.$settings['system']['admin'];?>/logout"><?php lang('Logout');?></a></li>
 					<li><a href="<?php echo URL;?>"><?php lang('Front');?></a></li>
 				</ul>
 			</footer>
@@ -221,7 +221,7 @@ if($_SESSION['rank']>399){?>
 								window.top.window.$(".popover").remove();
 							});
 							$("#edbut"+event.id).click(function(){
-								window.location='admin/bookings/edit/'+event.id;
+								window.location="<?php echo$settings['system']['admin'];?>/bookings/edit/"+event.id;
 							});
 							$(this).popover({
 								title:event.title,
@@ -253,7 +253,7 @@ if($_SESSION['rank']>399){?>
 								clearTimeout(idleTimer);
 								idleState=false;
 								idleTimer=setTimeout(function(){
-								var newUrl="<?php echo URL.'admin/logout';?>";
+								var newUrl="<?php echo URL.$settings['system']['admin'].'/logout';?>";
 								document.location.href=newUrl;
 								idleState=true},idleWait);
 							});
@@ -290,7 +290,7 @@ if($_SESSION['rank']>399){?>
 			</div>
 		</div>
 		<div id="search">
-			<form class="form-inline search col-xs-12 col-xs-offset-1 col-md-12 col-md-offset-1" method="post" action="admin/search">
+			<form class="form-inline search col-xs-12 col-xs-offset-1 col-md-12 col-md-offset-1" method="post" action="<?php echo URL.$settings['system']['admin'];?>/search">
 				<div class="form-group">
 					<div class="input-group">
 						<div class="input-group-addon"><?php lang('button','search');?></div>

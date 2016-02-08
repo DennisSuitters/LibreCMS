@@ -8,12 +8,8 @@ if($uid>0){
 	$su=$db->prepare("SELECT username,name FROM login WHERE id=:id");
 	$su->execute(array(':id'=>$uid));
 	$u=$su->fetch(PDO::FETCH_ASSOC);
-	if($u['name']=='')
-		$lu=$u['username'];
-	else
-		$lu=$u['name'];
-}else
-	$lu='';
+	if($u['name']=='')$lu=$u['username'];else$lu=$u['name'];
+}else$lu='';
 $ti=time();
 foreach($_GET['ord']as$p=>$i){
 	$s=$db->prepare("UPDATE $tbl SET $col=:col,eti=:ti,uid=:uid,login_user=:lu WHERE id=:id");

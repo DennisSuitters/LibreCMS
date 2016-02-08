@@ -1,7 +1,36 @@
-<nav class="col-lg-3 col-md-3 col-sm-3 col-xs-3" role="complementary">
-	<sideMenu categories>
-	<sideMenu events>
-	<sideMenu news>
-	<sideMenu content>
-	<sideMenu testimonials>
+<nav class="col-xs-12 col-md-4" role="complementary">
+	<item>
+		<settings items="limit" contenttype="current">
+		<div class="list-group">
+			<heading>
+				<a class="list-group-item" href="<print viewlink>">
+					<h5 class="list-group-item-heading"><print view></h5>
+				</a>
+			</heading>
+			<items>
+				<a class="list-group-item" href="<print link>" itemscope itemtype="<print content=schematype>">
+					<h6 class="list-group-item-heading" itemprop="headline"><print content="title"></h6>
+					<meta itemprop="datePublished" content="<print metaDate>"/>
+					<p class="list-group-item-text text-muted">
+						<time><small><print time></small></time>
+						<small><small><print content="caption"></small></small>
+					</p>
+				</a>
+				<media>
+					<a class="list-group-item" href="<print link>" itemscope itemtype="<print content=schematype>">
+						<span class="media">
+							<span class="media-left">
+								<img class="img-thumbnail side_menu_gallery pull-left" src="<print content=thumb>">
+							</span>
+							<meta itemprop="datePublished" content="<print metaDate>"/>
+							<span class="media-body text-muted">
+								<h6 class="media-heading"><print content="title"></h6>
+								<small><small><print content="caption"></small></small>
+							</span>
+						</span>
+					</a>
+				</media>
+			</items>
+		</div>
+	</item>
 </nav>

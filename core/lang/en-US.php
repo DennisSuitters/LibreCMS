@@ -1,7 +1,7 @@
 <?php
 function lang($phrase1,$phrase2=null){
 	static $_L=[
-		'lang'			=>'English (Australian)',
+		'lang'			=>'English (American)',
 		'Accounts'		=>'Accounts',
 		'accounts'		=>[	'options0'=>'Add/Remove Content',
 							'options1'=>'Edit Content',

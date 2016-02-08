@@ -32,16 +32,10 @@ if($act=='add_message'){
 						$msg.='Message: '.$notes;
 						$mail->Body=$msg;
 						$mail->AltBody=$msg;
-						if($mail->Send()){
-							$notification=$theme['settings']['contactus_success'];
-						}else{
-							$notification=$theme['settings']['contactus_error'];
-						}
+						if($mail->Send())$notification=$theme['settings']['contactus_success'];else$notification=$theme['settings']['contactus_error'];
 					}
 				}
-			}else{
-				$notification=$theme['settings']['contactus_error'];
-			}
+			}else$notification=$theme['settings']['contactus_error'];
 		}
 	}
 }

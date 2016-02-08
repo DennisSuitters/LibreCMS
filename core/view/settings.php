@@ -97,6 +97,7 @@ if(isset($user)&&$user['rank']>0){
 		}
 		$html=str_replace('<print user=rank>',$rank,$html);
 	}
+	if(stristr($html,'<print user=id>'))$html=str_replace('<print user=id>',$user['id'],$html);
 	if(stristr($html,'<print user=email>'))$html=str_replace('<print user=email>',$user['email'],$html);
 	if(stristr($html,'<print user=name>'))$html=str_replace('<print user=name>',$user['name'],$html);
 	if(stristr($html,'<print user=url>'))$html=str_replace('<print user=url>',$user['url'],$html);
@@ -111,11 +112,8 @@ if(isset($user)&&$user['rank']>0){
 		if($user['postcode']==0)$user['postcode']='';
 		$html=str_replace('<print user=postcode>',$user['postcode'],$html);
 	}
-
 }else{
 	$html='';
-	if(file_exists(THEME.DS.'noaccess.html')){
-		$html=file_get_contents(THEME.DS.'noaccess.html');
-	}
+	if(file_exists(THEME.DS.'noaccess.html'))$html=file_get_contents(THEME.DS.'noaccess.html');
 }
 $content.=$html;

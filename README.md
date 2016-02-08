@@ -26,6 +26,7 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 * [PHPMailer](https://github.com/PHPMailer/PHPMailer)
 * [TCPDF](http://www.tcpdf.org/)
 * [Zebra_Image](https://github.com/stefangabos/Zebra_Image)
+* [kses]() We've modified kses to include HTML5, and minified the source.
 
 ### Tested on:
 * Ubuntu 14.04 + Apache v2.4.7 + PHP v5.5.9-1 + MySQL v5.5.37
@@ -36,14 +37,11 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 ### Setup:
 LibreCMS uses PHP's PDO for Database integration. So all you need to do, is use a Database Engine that's compatible with PDO. Then import the "libre.sql" file found in the "core/" folder, then edit the "config.ini" file in the "core/" folder.
 Remember to set the appropriate file and folder permissions for security purposes, and make sure "media" uses 0755 so files can be uploaded when uploading, editing or creating content.
-To Login into the Administration area, goto http://yoursite/admin/ or use the "Administration" link at the bottom of the page. The default "Username/Password" is set to "admin/admin", we recommend changing this on a live site. 
+To Login into the Administration area, goto http://yoursite/admin/ or use the "Administration" link at the bottom of the page. The default "Username/Password" is set to "admin/admin", we recommend changing this on a live site.
 
 ### TODO:
 * Build Installer to make Installation Easier, and Checking PHP Components are Installed to Allow LibreCMS to work.
-* File Integrity checking to make sure unwanted code hasn't been injected into files remotely.
 * Make sure database backup works properly, last time we checked it wasn't.
-* Get messaging working properly as a proper built-in webmail client.
-* Add Timeline editing functions, like Restore Delete or Changed content.
 * Convert from font icons to using svg icons to reduce footprint.
 * Reduce the Templating System Markup to make it easier to use.
 * Add Content to the Wiki Pages on how to use LibreCMS and how to create Templates.
@@ -52,7 +50,7 @@ To Login into the Administration area, goto http://yoursite/admin/ or use the "A
 * Testing, and Bug Squashing, as per the usual with ongoing projects.
 
 ### LEGAL:
-By downloading LibreCMS you hereby agree not to hold Studio Junkyard liable for any damages that your usage of LibreCMS may cause to your system, or persons. LibreCMS is Licensed under GPLv3. We request that if you modify, and hopefully enhance LibreCMS, that you take part in maintaining, and contributing to it's code base here at GitHub.
+By downloading LibreCMS you hereby agree not to hold Studio Junkyard liable for any damages that your usage of LibreCMS may cause to your system, or persons. Damages may infere such things as (which we are NOT responsible for) Data Loss, Hearing Imparement, Server Crashes, Alien Abduction, Coding Nitemare's, Alien Implants, or Visiting Alternate Realities. LibreCMS is Licensed under GPLv3. We request that if you modify, and hopefully enhance LibreCMS, that you take part in maintaining, and contributing to it's code base here at GitHub.
 
 ### NOTE:
 * We are currently overhauling parts of the Administration Area, and will soon be making changes to the Layout (Front End) area.

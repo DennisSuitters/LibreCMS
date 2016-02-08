@@ -10,33 +10,25 @@ if($id!=0&&$tbl!='logs'){
 	$r=$s->fetch(PDO::FETCH_ASSOC);
 	if($tbl=='config'||$tbl=='login')$r['contentType']='';
 	$nda='';
-	foreach($r as $o){
-		$nda.=$o.'|';
-	}
-}
-if($id!=0&&$tbl!='logs'){
-	$s=$db->prepare("INSERT INTO logs (uid,rid,view,contentType,refTable,refColumn,oldda,newda,action,ti) VALUES (:uid,:rid,:view,:contentType,:refTable,:refColumn,:oldda,:newda,:action,:ti)");
-	$s->execute(array(':uid'=>$uid,':rid'=>$id,':view'=>$r['contentType'],':contentType'=>$r['contentType'],':refTable'=>$tbl,':refColumn'=>'all',':oldda'=>$nda,':newda'=>'',':action'=>'purge',':ti'=>time()));
+	foreach($r as$o)$nda.=$o.'|';
 }
 if($id==0&&$tbl=='logs'){
 	$q=$db->query("DELETE FROM logs");
 	$q->execute();
+	$id='activity';
 }
 if($tbl=='orders'){
 	$q=$db->prepare("DELETE FROM orderitems WHERE oid=:oid");
 	$q->execute(array(':oid'=>$id));
 }
-if($id!=0){
+if($id!=0&&$id!='activity'){
 	$q=$db->prepare("DELETE FROM $tbl WHERE id=:id");
 	$q->execute(array(':id'=>$id));
 }
-	$e=$db->errorInfo();?>
+$e=$db->errorInfo();?>
 <script>/*<![CDATA[*/
 <?php if(is_null($e[2])){?>
 	window.top.window.$('#l_<?php echo$id;?>').slideUp(500,function(){$(this).remove()});
-<?php }
-	if($id==0&&$tbl=='logs'){?>
-	window.top.window.$('#activity').slideUp(500,function(){$(this).remove()});
 <?php }?>
 	window.top.window.$('#busy').css("display","none");
 /*]]>*/</script>

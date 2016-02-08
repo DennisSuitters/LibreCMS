@@ -2,14 +2,14 @@
 <block include="header.html">
 <block inbed="bookings">
 	<print page="notes">
-	<main id="content" class="col-lg-12 col-md-12 col-xs-12" itemscope itemtype="http://schema.org/Booking">
+	<main id="content" class="col-md-12 col-xs-12" itemscope itemtype="http://schema.org/Booking">
 		<notification>
 		<form id="form" role="form" method="post" action="bookings">
 			<input type="hidden" name="emailtrap" value="none">
 			<input type="hidden" name="act" value="add_booking">
 			<div class="form-group">
-				<label class="control-label col-sm-2">&nbsp;</label>
-				<div class="input-group col-sm-10 text-danger">
+				<label class="control-label col-sm-2 col-xs-hidden">&nbsp;</label>
+				<div class="input-group col-xs-12 col-sm-10 text-danger">
 					<div class="alert alert-danger">Highlighted Fields are Required</div>
 				</div>
 			</div>

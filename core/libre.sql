@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 26, 2015 at 12:36 AM
--- Server version: 5.5.46-0ubuntu0.14.04.2
+-- Generation Time: Feb 05, 2016 at 07:18 PM
+-- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `config` (
 --
 
 INSERT INTO `config` (`id`, `maintenance`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `buttonType`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `showItems`, `idleTime`, `bti`, `backup_ti`, `fiti`, `ti`) VALUES
-(1, 0, '1111111110000000', 'default', 'Default SEO Title', 'Default SEO Description', 'Default SEO Caption', 'Default SEO Keywords', '', '', '', '', 1440940831, 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'card', 'card', 'calendar', 20, 24, 1404461417, 0, 0, 0);
+(1, 0, '1111111110000000', 'default', 'StudioJunkyard.com', 'Default SEO Description', 'Default SEO Caption', 'Default SEO Keywords', '', '', '', '', 1440940831, 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'card', 'card', 'calendar', 5, 24, 1404461417, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -216,19 +216,6 @@ CREATE TABLE IF NOT EXISTS `content` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `fileintegrity`
---
-
-CREATE TABLE IF NOT EXISTS `fileintegrity` (
-  `id` bigint(20) NOT NULL,
-  `filename` tinytext COLLATE utf8_bin NOT NULL,
-  `filecheck` text COLLATE utf8_bin NOT NULL,
-  `ti` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `login`
 --
 
@@ -281,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `login` (
 --
 
 INSERT INTO `login` (`id`, `options`, `username`, `password`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `avatar`, `gravatar`, `business`, `name`, `email`, `emailPassword`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `adminCategory_1`, `adminCategory_2`, `adminCategory_ti`, `language`, `timezone`, `rank`, `discount`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `lti`, `ti`) VALUES
-(1, '11111111', 'admin', '$2y$10$cb/MtTJA/9L5HxQE6G8WLO18Ye7AWTCWIy9ql1xa12BmvMpySFNSS', 'cover_1.png', '', '', '', '', 'avatar_1.jpg', '', 'Studio Junkyard', 'Kenika Suitters', 'dennis@studiojunkyard.com', '', 0, '', '', '', '', '', 0, '', '0364921418', '0364921418', '', 'unpublished', 1, '', '', '', 0, 'en-AU', 'Australia/Hobart', 1000, '', 'card', 'card', 'calendar', 0, 1402746479);
+(1, '11111111', 'admin', '$2y$10$NI2hAT4ZJXDMjg.rhYJ0AOYTGHSYwkuRVbSR6/PDBfdMgIJ.1p6Bq', 'cover_1.jpg', '', '', '', '', 'avatar_1.jpg', '', 'Studio Junkyard', 'Kenika Suitters', 'dennis@studiojunkyard.com', '', 0, 'http://www.facebook.com/studiojunkyard', '128 Cradle Mountain Road', 'Wilmot', 'Wilmot', 'Tasmania', 0, '', '0364921418', '0364921418', '', 'unpublished', 1, '', '', '', 0, 'en-AU', 'Australia/Hobart', 1000, '', 'card', 'card', 'calendar', 0, 1402746479);
 
 -- --------------------------------------------------------
 
@@ -337,16 +324,16 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `contentType`, `schemaType`, `seoKeywords`, `seoDescription`, `seoCaption`, `menu`, `notes`, `ord`, `active`, `eti`) VALUES
-(1, 1, 'Kenika Suitters', 'Home', 'Default home page SEO Title', 'page_cover_1.jpg', '', '', '', '', 'index', '', 'Default home page keywords', 'Default home page description', 'Default home page caption', 'head', 'This is the home page.', 0, 1, 1449793991),
-(2, 1, 'Kenika Suitters', 'Blog', '', '', '', '', '', '', 'article', '', '', '', '', 'head', '', 5, 1, 1449449116),
+(1, 1, 'Kenika Suitters', 'Home', '', '', '', '', '', '', 'index', '', 'Default home page keywords', 'Default home page description', 'Default home page caption', 'head', '', 0, 1, 1454308640),
+(2, 1, 'Kenika Suitters', 'Blog', '', '', '', '', '', '', 'article', '', '', '', '', 'head', '', 5, 1, 1454308994),
 (3, 1, 'Kenika Suitters', 'Portfolio', '', '', '', '', '', '', 'portfolio', '', '', '', '', 'head', '', 8, 1, 1449449116),
 (4, 1, 'Kenika Suitters', 'Bookings', '', '', '', '', '', '', 'bookings', '', '', '', '', 'head', '', 9, 1, 1449449116),
 (5, 1, 'Kenika Suitters', 'Events', '', '', '', '', '', '', 'event', '', '', '', '', 'head', '', 7, 1, 1449449116),
 (6, 1, 'Kenika Suitters', 'News', '', '', '', '', '', '', 'news', '', '', '', '', 'head', '', 6, 1, 1449449116),
 (7, 1, 'Kenika Suitters', 'Testimonials', '', '', '', '', '', '', 'testimonial', '', '', '', '', 'head', '', 4, 1, 1449449116),
 (8, 1, 'Kenika Suitters', 'Inventory', '', '', '', '', '', '', 'inventory', '', '', '', '', 'head', '', 3, 1, 1449449116),
-(9, 1, 'Kenika Suitters', 'Services', 'Default Services SEO Title', '', '', '', '', '', 'service', '', 'Default Services SEO Keywords', 'Default Services SEO Description', 'Default Services SEO Caption', 'head', 'This is the Services Page', 2, 1, 1449449116),
-(10, 1, 'Kenika Suitters', 'Gallery', 'Default Gallery SEO Title', '', '', '', '', '', 'gallery', '', 'Default Gallery SEO Keywords', 'Default Gallery SEO Description', 'Default Gallery SEO Caption', 'head', 'This is the Gallery Page', 1, 1, 1449449116),
+(9, 1, 'Kenika Suitters', 'Services', '', '', '', '', '', '', 'service', '', 'Default Services SEO Keywords', 'Default Services SEO Description', 'Default Services SEO Caption', 'head', '', 2, 1, 1454308673),
+(10, 1, 'Kenika Suitters', 'Gallery', '', '', '', '', '', '', 'gallery', '', 'Default Gallery SEO Keywords', 'Default Gallery SEO Description', 'Default Gallery SEO Caption', 'head', '', 1, 1, 1454133987),
 (11, 1, 'Kenika Suitters', 'Contact', '', '', '', '', '', '', 'contactus', '', '', '', '', 'head', '', 10, 1, 1449449116),
 (12, 1, 'Kenika Suitters', 'Cart', '', '', '', '', '', '', 'cart', '', '', '', '', 'head', '', 11, 1, 1449449116),
 (13, 1, 'Kenika Suitters', 'Terms of Service', 'Terms of Service', '', '', '', '', '', 'tos', '', '', '', '', 'footer', '', 13, 1, 1449449116),
@@ -469,12 +456,6 @@ ALTER TABLE `content`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `fileintegrity`
---
-ALTER TABLE `fileintegrity`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `login`
 --
 ALTER TABLE `login`
@@ -539,11 +520,6 @@ ALTER TABLE `config`
 --
 ALTER TABLE `content`
   MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `fileintegrity`
---
-ALTER TABLE `fileintegrity`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `login`
 --

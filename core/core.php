@@ -174,6 +174,10 @@ class front{
 		$view='news';
 		require'process.php';
 	}
+	function orders($args=false){
+		$view='orders';
+		require'process.php';
+	}
 	function portfolio($args=false){
 		$view='portfolio';
 		require'process.php';
@@ -187,7 +191,7 @@ class front{
 		require'process.php';
 	}
 	function services($args=false){
-		$view='services';
+		$view='service';
 		require'process.php';
 	}
 	function settings($args=false){
@@ -210,20 +214,20 @@ class front{
 /* Router */
 $route=new router();
 $route->setRoutes(array(
-	'admin/add'=>array('admin','add'),
-	'admin/accounts'=>array('admin','accounts'),
-	'admin/activity'=>array('admin','activity'),
-	'admin/bookings'=>array('admin','bookings'),
-	'admin/content'=>array('admin','content'),
-	'admin/dashboard'=>array('admin','dashboard'),
-	'admin/logout'=>array('admin','logout'),
-	'admin/media'=>array('admin','media'),
-	'admin/messages'=>array('admin','messages'),
-	'admin/orders'=>array('admin','orders'),
-	'admin/pages'=>array('admin','pages'),
-	'admin/preferences'=>array('admin','preferences'),
-	'admin/search'=>array('admin','search'),
-	'admin'=>array('admin','dashboard'),
+	$settings['system']['admin'].'/add'=>array('admin','add'),
+	$settings['system']['admin'].'/accounts'=>array('admin','accounts'),
+	$settings['system']['admin'].'/activity'=>array('admin','activity'),
+	$settings['system']['admin'].'/bookings'=>array('admin','bookings'),
+	$settings['system']['admin'].'/content'=>array('admin','content'),
+	$settings['system']['admin'].'/dashboard'=>array('admin','dashboard'),
+	$settings['system']['admin'].'/logout'=>array('admin','logout'),
+	$settings['system']['admin'].'/media'=>array('admin','media'),
+	$settings['system']['admin'].'/messages'=>array('admin','messages'),
+	$settings['system']['admin'].'/orders'=>array('admin','orders'),
+	$settings['system']['admin'].'/pages'=>array('admin','pages'),
+	$settings['system']['admin'].'/preferences'=>array('admin','preferences'),
+	$settings['system']['admin'].'/search'=>array('admin','search'),
+	$settings['system']['admin']=>array('admin','dashboard'),
 	'error'=>array('front','error'),
 	''=>array('front','index'),
 	'index'=>array('front','index'),
@@ -239,7 +243,10 @@ $route->setRoutes(array(
 	'login'=>array('front','login'),
 	'logout'=>array('front','logout'),
 	'news'=>array('front','news'),
+	'order'=>array('front','orders'),
+	'orders'=>array('front','orders'),
 	'portfolio'=>array('front','portfolio'),
+	'proof'=>array('front','proofs'),
 	'proofs'=>array('front','proofs'),
 	'search'=>array('front','search'),
 	'service'=>array('front','services'),

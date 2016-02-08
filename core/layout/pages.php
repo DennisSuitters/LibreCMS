@@ -1,9 +1,7 @@
 <?php
 $rank=0;
 $show='pages';
-if($args[0]=='edit'){
-	$show='item';
-}
+if($args[0]=='edit')$show='item';
 if($show=='pages'){
 	$s=$db->prepare("SELECT * FROM menu ORDER BY menu DESC, ord ASC");
 	$s->execute();?>
@@ -19,7 +17,7 @@ if($show=='pages'){
 			<div class="panel-body panel-content"><?php echo strip_tags(substr($r['notes'],0,200));?></div>
 			<div id="controls_<?php echo$r['id'];?>" class="btn-group panel-controls shadow-depth-1">
 				<input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>><label for="active<?php echo$r['id'];?>" class="btn btn-default btn-sm"></label>
-				<a class="btn btn-info btn-sm" href="admin/pages/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="';lang('tooltip','edit');echo'"';?>><i class="libre libre-edit"></i></a>
+				<a class="btn btn-info btn-sm" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="';lang('tooltip','edit');echo'"';?>><i class="libre libre-edit"></i></a>
 				<button class="btn btn-default btn-sm handle"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="';lang('tooltip','resize');echo'"';?>><i class="libre libre-resize-vertical"></i></button>
 			</div>
 		</div>
@@ -34,11 +32,11 @@ if($show=='item'){
 	$r=$s->fetch(PDO::FETCH_ASSOC);?>
 <div class="page-toolbar">
 	<ol class="breadcrumb col-xs-6">
-		<li><a href="<?php echo URL;?>admin/pages/"><?php lang('Pages');?></a></li>
+		<li><a href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><?php lang('Pages');?></a></li>
 		<li class="active"><?php echo$r['title'];?></li>
 	</ol>
 	<div class="btn-group pull-right">
-		<a class="btn btn-success" href="<?php echo URL.'/admin/pages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','back');echo'"';?>><i class="libre libre-back"></i></a>
+		<a class="btn btn-success" href="<?php echo URL.$settings['system']['admin'].'/pages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="';lang('tooltip','back');echo'"';?>><i class="libre libre-back"></i></a>
 	</div>
 </div>
 <div class="panel panel-default">

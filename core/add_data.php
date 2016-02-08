@@ -1,14 +1,16 @@
 <script>/*<![CDATA[*/
 <?php session_start();
-include'db.php';
-include'zebra_image.php';
+require'db.php';
+require'zebra_image.php';
+require'sanitise.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
+define('DS',DIRECTORY_SEPARATOR);
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
-define('THEME','../layout/'.$config['theme']);
+define('THEME','..'.DS.'layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
-$theme=parse_ini_file(THEME.'/theme.ini',true);
+$theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
 if($act!=''){
 	$uid=isset($_SESSION['uid'])?(int)$_SESSION['uid']:0;
@@ -24,12 +26,14 @@ if($act!=''){
 				if($icon=='none'||$url==''){?>
 	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
 <?php			}else{
+					$user=kses($user,array());
+					$url=kses($url,array());
 					$q=$db->prepare("INSERT INTO choices (uid,contentType,icon,url) VALUES (:uid,'social',:icon,:url)");
 					$q->execute(array(':uid'=>$user,':icon'=>$icon,':url'=>$url));
 					$id=$db->lastInsertId();
 					$e=$db->errorInfo();
 					if(is_null($e[2])){?>
-	window.top.window.$('#social').append('<div id="l_<?php echo$id;?>" class="form-group"><label class="control-label hidden-xs col-sm-3 col-md-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-12 col-sm-9 col-md-9 col-lg-10"><div class="input-group-addon"><i class="libre libre-brand-<?php echo$icon;?>"></i><span class="hidden-xs"> <?php echo ucfirst($icon);?></span></div><form target="sp" method="post" action="includes/update.php"><input type="hidden" name="t" value="social"><input type="hidden" name="c" value="url"><input type="text"class="form-control" name="da" value="<?php echo$url;?>" placeholder="Enter a URL..."></form><div class="input-group-btn"><form target="sp" action="includes/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><button class="btn btn-danger"><i class="libre libre-trash visible-xs"></i><span class="hidden-xs">Delete</span></button></form></div></div></div>');
+	window.top.window.$('#social').append('<div id="l_<?php echo$id;?>" class="form-group"><label class="control-label hidden-xs col-sm-3 col-md-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-12 col-sm-9 col-md-9 col-lg-10"><div class="input-group-addon"><i class="libre libre-brand-<?php echo$icon;?>"></i><span class="hidden-xs"> <?php echo ucfirst($icon);?></span></div><form target="sp" method="post" action="core/update.php"><input type="hidden" name="t" value="social"><input type="hidden" name="c" value="url"><input type="text"class="form-control" name="da" value="<?php echo$url;?>" placeholder="Enter a URL..."></form><div class="input-group-btn"><form target="sp" action="core/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><button class="btn btn-danger"><i class="libre libre-trash"></i></button></form></div></div></div>');
 <?php				}else{?>
 	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue adding the Social Networking Link'}}).show();
 <?php				}
@@ -59,27 +63,27 @@ if($act!=''){
 			$q=$db->prepare("SELECT * FROM login WHERE email=:email");
 			$q->execute(array(':email'=>$email));
 			$c=$q->fetch(PDO::FETCH_ASSOC);
-			if($c['id']!=0){
-				$cid=$c['id'];
-			}else{
-				$cid=0;
-			}
+			if($c['id']!=0)$cid=$c['id'];else$cid=0;
 			$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
+			$name=kses($name,array());
 			$contentType=filter_input(INPUT_POST,'contentType',FILTER_SANITIZE_STRING);
 			$da=filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING);
+			$da=kses($da,array());
 			$status='unapproved';
 			$q=$db->prepare("INSERT INTO comments (contentType,rid,uid,cid,ip,name,email,notes,status,ti) VALUES (:contentType,:rid,:uid,:cid,:ip,:name,:email,:notes,:status,:ti)");
 			$q->execute(array(':contentType'=>$contentType,':rid'=>$rid,':uid'=>$uid,':cid'=>$cid,':ip'=>$ip,':name'=>$name,':email'=>$email,':notes'=>$da,':status'=>$status,':ti'=>$ti));
 			$id=$db->lastInsertId();
 			$e=$db->errorInfo();
 			if(is_null($e[2])){
-				if($c['gravatar']!=''){
-					$avatar='http://www.gravatar.com/avatar/'.md5($c['gravatar']);
-				}elseif($c['avatar']!=''&&file_exists('../media/'.$c['avatar'])){
-					$avatar='media/'.$c['avatar'];
-				}else{
-					$avatar='core/images/noavatar.jpg';
-				}
+				if($c['avatar']!=''&&file_exists('..'.DS.'media'.DS.$c['avatar']))$avatar='media'.DS.'avatar'.DS.$c['avatar'];
+				elseif($c['gravatar']!=''){
+					if(stristr($c['gravatar'],'@'))
+						$avatar='http://gravatar.com/avatar/'.md5($c['gravatar']);
+					elseif(stristr($c['gravatar'],'gravatar.com/avatar/'))
+						$avatar=$c['gravatar'];
+					else
+						$avatar='core'.DS.'images'.DS.'noavatar.jpg';
+				}else$avatar='core'.DS.'images'.DS.'noavatar.jpg';
 				$html='<div id="l_'.$id.'" class="media bg-danger"><div class="media-object pull-left"><img class="commentavatar img-thumbnail" alt="User" src="'.$avatar.'"></div><div class="media-body"><h4 class="media-heading">Name</h4>'.$da.'</div><hr></div>';?>
 	window.top.window.$('.notifications').notify({type:'success',icon:'',message:{text:'New comment Added, Awaiting Approval'}}).show();
 	window.top.window.$('#comments').append('<?php echo$html;?>');
@@ -96,7 +100,9 @@ if($act!=''){
 	case'add_cover':
 		$id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
 		$tbl=filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING);
+		$tbl=kses($tbl,array());
 		$col=filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING);
+		$col=kses($col,array());
 		$exif='none';
 		$fu=$_FILES['fu'];
 		if(isset($_FILES['fu'])){
@@ -107,9 +113,10 @@ if($act!=''){
 					if($ft=="image/jpeg"||$ft=="image/pjpeg"){
 						$fn=$col.'_'.$id.'.jpg';
 						$fn2='thumb_'.$id.'.jpg';
-						if(function_exists('exif_read_data')){
-							$exif=exif_read_data($tp,0,true);
-						}
+					//	if(function_exists('exif_read_data')){
+					//		$exif=exif_read_data($tp,0,true);
+					//	}
+						$exif='none';
 					}
 					if($ft=="image/png"){
 						$fn=$col.'_'.$id.'.png';
@@ -143,11 +150,11 @@ if($act!=''){
 						}
 						$image=new Zebra_image();
 						$image->source_path=$tp;
-						$image->target_path='../media/'.$fn2;
+						$image->target_path='..'.DS.'media'.DS.$fn2;
 						$image->resize(150,150,ZEBRA_IMAGE_CROP_CENTER);
-						rename($tp,'../media/'.$fn);
-						chmod("../media/".$fn,0777);
-						chmod("../media/".$fn2,0777);?>
+						rename($tp,'..'.DS.'media'.DS.$fn);
+						chmod('..'.DS.'media'.DS.$fn,0777);
+						chmod('..'.DS.'media'.DS.$fn2,0777);?>
 	window.top.window.$('#file').html('<img src="media/<?php echo$fn.'?'.$ti;?>">');
 	window.top.window.$('#thumb').html('<img src="media/<?php echo$fn2.'?'.$ti;?>">');
 <?php if($exif!='none'){?>
@@ -165,15 +172,15 @@ if($act!=''){
 						$q->execute(array(':avatar'=>'avatar'.$fn,':id'=>$id));
 						$image=new Zebra_image();
 						$image->source_path=$tp;
-						$image->target_path='../media/avatar/avatar'.$fn;
+						$image->target_path='..'.DS.'media'.DS.'avatar'.DS.'avatar'.$fn;
 						$image->resize(150,150,ZEBRA_IMAGE_CROP_CENTER);
-						rename($tp,'../media/avatar/avatar'.$fn);?>
-	window.top.window.$('#avatar').attr('src','media/avatar/<?php echo$fn;?>');
+						rename($tp,'..'.DS.'media'.DS.'avatar'.DS.'avatar'.$fn);?>
+	window.top.window.$('#avatar').attr('src','media/avatar/avatar<?php echo$fn;?>');
 <?php				}
 					if($act=='add_cover'){
 						$q=$db->prepare("UPDATE $tbl SET $col=:cover WHERE id=:id");
 						$q->execute(array(':cover'=>$fn,':id'=>$id));
-						rename($tp,'../media/'.$fn);?>
+						rename($tp,'..'.DS.'media'.DS.$fn);?>
 	window.top.window.$('#coverimg').html('<img src="media/<?php echo$fn.'?'.$ti;?>">');
 <?php				}
 					if($col=="thumb"){
@@ -181,7 +188,7 @@ if($act!=''){
 						$q->execute(array(':thumb'=>$fn2,':id'=>$id));
 						$image=new Zebra_image();
 						$image->source_path=$tp;
-						$image->target_path='../media/'.$fn2;
+						$image->target_path='..'.DS.'media'.DS.$fn2;
 						$image->resize(150,150,ZEBRA_IMAGE_CROP_CENTER);?>
 	window.top.window.$('#thumb').html('<img src="media/<?php echo$fn2.'?'.$ti;?>">');
 <?php				}
@@ -205,11 +212,11 @@ if($act!=''){
 				if(!$_FILES['fu']['error'][$i]){
 					$file=strtolower($_FILES['fu']['name'][$i]);
 					$file=str_replace(' ','_',$file);
-					$destination='../media/'.$file;
+					$destination='..'.DS.'media'.DS.$file;
 					$location=$_FILES["fu"]["tmp_name"][$i];
 					move_uploaded_file($location,$destination);
 					$finfo=new finfo(FILEINFO_MIME_TYPE);
-					$type=$finfo->file('../media/'.$file);
+					$type=$finfo->file('..'.DS.'media'.DS.$file);
 					$img='<span class="filetype img-thumbnail"><i class="fa fa-file-o fa-5x"></i></span>';
 					if($type=='application/msword'||$type=='application/vnd.openxmlformats-officedocument.wordprocessingml.document'||$type=='application/vnd.openxmlformats-officedocument.wordprocessingml.template'||$type=='application/rtf'||$type=='application/x-rtf'||$type=='text/richtext'||$type=='application/rtf'||$type=='text/richtext'){
 						$img='<span class="filetype img-thumbnail"><i class="fa fa-word-pdf-o fa-5x"></i></span>';
@@ -224,7 +231,7 @@ if($act!=''){
 					}elseif($type=='text/plain'){
 						$img='<span class="filetype img-thumbnail"><i class="fa fa-text-pdf-o fa-5x"></i></span>';
 					}else{
-						$img='<a title="'.$file.'" href="media/'.$file.'"><img src="media/'.$file.'" class="img-thumbnail"></a>';
+						$img='<a title="'.$file.'" href="media'.DS.$file.'"><img src="media'.DS.$file.'" class="img-thumbnail"></a>';
 					}?>
 	window.top.window.$('#media').append('<li id="l_<?php echo str_replace('.','',$file);?>" class="gallery relative"><?php echo$img;?><div id="controls_<?php echo str_replace('.','',$file);?>" class="controls"><button class="btn btn-danger btn-xs" onclick="removeMedia(\'<?php echo$file;?>\');"><i class="fa fa-trash"></i></button></div><div class="title"><?php echo$file;?></div></li>'); */
 <?php			}
@@ -254,60 +261,21 @@ if($act!=''){
 		$html='';
 		$q=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid ORDER BY ti ASC,title ASC");
 		$q->execute(array(':oid'=>$oid));?>
-	window.top.window.$('#updateorder').html('<?php
-		while($oi=$q->fetch(PDO::FETCH_ASSOC)){
-			$s=$db->prepare("SELECT * FROM content WHERE id=:id");
-			$s->execute(array(':id'=>$oi['iid']));
-			$i=$s->fetch(PDO::FETCH_ASSOC);
-			echo'<tr>';
-				echo'<td class="text-left">'.$i['code'].'</td>';
-				echo'<td class="text-left">';
-					echo'<form target="sp" action="core/update.php">';
-						echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
-						echo'<input type="hidden" name="t" value="orderitems">';
-						echo'<input type="hidden" name="c" value="title">';
-						echo'<input type="text" class="form-control" name="da" value="';if($i['title']!='')echo$i['title'];else echo$oi['title'];echo'">';
-					echo'</form>';
-				echo'</td>';
-				echo'<td class="col-md-1 text-center">';
+	window.top.window.$('#updateorder').html('<?php while($oi=$q->fetch(PDO::FETCH_ASSOC)){$s=$db->prepare("SELECT * FROM content WHERE id=:id");$s->execute(array(':id'=>$oi['iid']));$i=$s->fetch(PDO::FETCH_ASSOC);
+			echo'<tr><td class="text-left">'.$i['code'].'</td><td class="text-left"><form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="title"><input type="text" class="form-control" name="da" value="';if($i['title']!='')echo$i['title'];else echo$oi['title'];echo'"></form></td><td class="col-md-1 text-center">';
 				if($oi['iid']!=0){
-                    echo'<form target="sp" action="core/update.php">';
-                        echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
-                        echo'<input type="hidden" name="t" value="orderitems">';
-                        echo'<input type="hidden" name="c" value="quantity">';
-                        echo'<input class="form-control text-center" name="da" value="'.$oi['quantity'].'">';
-                    echo'</form>';
+                    echo'<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'"></form>';
 				}
-				echo'</td>';
-				echo'<td class="col-md-1 text-right">';
+				echo'</td><td class="col-md-1 text-right">';
 				if($oi['iid']!=0){
-                    echo'<form target="sp" action="core/update.php">';
-                        echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
-                        echo'<input type="hidden" name="t" value="orderitems">';
-                        echo'<input type="hidden" name="c" value="cost">';
-                        echo'<input class="form-control text-center" name="da" value="'.$oi['cost'].'">';
-                    echo'</form>';
+                    echo'<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" name="da" value="'.$oi['cost'].'"></form>';
 				}
-				echo'</td>';
-			echo'<td class="text-right">';if($oi['iid']!=0)echo $oi['cost']*$oi['quantity'];echo'</td>';
-			echo'<td class="text-right">';
-				echo'<form target="sp" action="core/update.php">';
-					echo'<input type="hidden" name="id" value="'.$oi['id'].'">';
-					echo'<input type="hidden" name="t" value="orderitems">';
-					echo'<input type="hidden" name="c" value="quantity">';
-					echo'<input type="hidden" name="da" value="0">';
-					echo'<button class="btn btn-default">';if($config['buttonType']=='text')echo'Delete';else echo'<i class="libre libre-trash color-danger"></i>';echo'</button>';
-				echo'</form>';
-			echo'</td>';
-		echo'</tr>';
+				echo'</td><td class="text-right">';
+				if($oi['iid']!=0)echo $oi['cost']*$oi['quantity'];
+				echo'</td><td class="text-right"><form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input type="hidden" name="da" value="0"><button class="btn btn-danger"><i class="libre libre-trash"></i></button></form></td></tr>';
 			$total=$total+($oi['cost']*$oi['quantity']);
 		}
-		echo'<tr>';
-			echo'<td colspan="3">&nbsp;</td>';
-			echo'<td class="text-right"><strong>Total</strong></td>';
-			echo'<td class="text-right"><strong>'.$total.'</strong></td>';
-			echo'<td></td>';
-		echo'</tr>';
+		echo'<tr><td colspan="3">&nbsp;</td><td class="text-right"><strong>Total</strong></td><td class="text-right"><strong>'.$total.'</strong></td><td></td></tr>';
 ?>');
 <?php	break;
 	}

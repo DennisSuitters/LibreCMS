@@ -12,7 +12,7 @@ while($file=readdir($handle)){
 	}
 }
 sort($docs);
-foreach($docs as $key=>$file){
+foreach($docs as$key=>$file){
 		$array[]=array(
 			'thumb'=>$path.$file,
 			'image'=>$upload_dir.$file,

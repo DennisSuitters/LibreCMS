@@ -1,5 +1,5 @@
 <?php
-preg_match('/<settings itemCount="([\w\W]*?)" contentType="([\w\W]*?)">/',$html,$matches);
+preg_match('/<settings itemcount="([\w\W]*?)" contenttype="([\w\W]*?)">/',$html,$matches);
 $html=preg_replace('~<settings.*?>~is','',$html,1);
 $itemCount=$matches[1];
 if($itemCount==0)$itemCount=5;
@@ -36,14 +36,10 @@ if($ii>0){
 			$item=str_replace('<cost>','',$item);
 			$item=str_replace('</cost>','',$item);
 			$item=str_replace('<print content="cost">',$r['cost'],$item);
-		}else $item=preg_replace('~<cost>.*?<\/cost>~is','',$item,1);
-		if($r['caption']!='')
-			$item=str_replace('<print content="caption">',$r['caption'],$item);
+		}else$item=preg_replace('~<cost>.*?<\/cost>~is','',$item,1);
+		if($r['caption']!='')$item=str_replace('<print content="caption">',$r['caption'],$item);
 		$item=str_replace('<print link>',$r['contentType'].'/'.str_replace(' ','-',$r['title']),$item);
-		if($r['file']!=''&&file_exists('media'.DS.$r['file']))
-			$item=str_replace('<print content="image">','<img src="media'.DS.$r['file'].'" alt="'.$r['title'].'">',$item);
-		else
-			$item=str_replace('<print content="image">','',$item);
+		if($r['file']!=''&&file_exists('media'.DS.$r['file']))$item=str_replace('<print content="image">','<img src="media'.DS.$r['file'].'" alt="'.$r['title'].'">',$item);else$item=str_replace('<print content="image">','',$item);
 		$item=str_replace('<print content=schemaType>',$r['schemaType'],$item);
 		$item=str_replace('<print content="title">',$r['title'],$item);
 		$item=str_replace('<print content="contentType">','<div>'.$r['contentType'].'</div>',$item);

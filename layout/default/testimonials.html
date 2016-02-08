@@ -1,27 +1,26 @@
 <block include="meta_head.html">
 <block include="header.html">
-<block inbed="content">
-	<div id="content" class="col-md-9 no-padding">
-		<item>
-			<print page="notes">
-		</item>
-		<items>
-			<div itemscope itemtype="http://schema.org/<print content=schemaType>">
-				<div class="item">
-					<div class="testimonials">
-						<print author="avatar" alt="name" class="img-circle img-responsive pull-left">
-						<div class="col-md-offset-2" itemprop="description">
-							<print content="notes">
-							<strong><small itemprop="name"> - <print content="name"></small></strong>
+<block inbed="testimonials">
+	<div class="testimonials">
+		<div class="carousel">
+			<div class="">
+				<items>
+					<div class="item" itemscope itemtype="http://schema.org/<print content=schemaType>">
+						<div class="testimonials">
+							<img class="img-circle pull-left" alt="<print content=name>" src="<print content=avatar>">
+							<div class="description col-md-offset-2" itemprop="description">
+								<print content="notes">
+								<strong><small itemprop="name"> - <print content=name></small></strong>
+							</div>
 						</div>
+						<div class="clearfix"></div>
+						<hr>
 					</div>
-				</div>
-				<div class="clearfix"></div>
-				<hr>
+				</items>
 			</div>
-		</items>
+		</div>
 	</div>
+	<div class="clearfix"></div>
 </block>
-<block include="side_menu.html">
 <block include="footer.html">
 <block include="meta_footer.html">

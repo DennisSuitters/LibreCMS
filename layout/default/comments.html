@@ -14,33 +14,35 @@
 			</div>
 		</div>
 	</items>
-	<div id="notification" class="media col-lg-12 col-md-12 col-sm-12 col-xs-12">
-		<div class="media-body">
-			<iframe name="comments" id="comments" class="hidden"></iframe>
-			<form role="form" target="comments" method="post" action="core/add_comment.php">
-				<input type="hidden" name="emailtrap" value="">
-				<input type="hidden" name="act" value="add_comment">
-				<input type="hidden" name="rid" value="<print content=id>">
-				<input type="hidden" name="ct" value="<print content=contentType>">
-				<div class="form-group">
-					<label for="email" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Email</label>
-					<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-						<input type="text" class="form-control" name="email" value="" placeholder="Enter an Email..." required>
+	<comment>
+		<div id="notification" class="media col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="media-body">
+				<iframe name="comments" id="comments" class="hidden"></iframe>
+				<form role="form" target="comments" method="post" action="core/add_comment.php">
+					<input type="hidden" name="emailtrap" value="">
+					<input type="hidden" name="act" value="add_comment">
+					<input type="hidden" name="rid" value="<print content=id>">
+					<input type="hidden" name="ct" value="<print content=contentType>">
+					<div class="form-group">
+						<label for="email" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Email</label>
+						<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+							<input type="text" class="form-control" name="email" value="" placeholder="Enter an Email..." required>
+						</div>
+						<label for="name" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Name</label>
+						<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+							<input type="text" class="form-control" name="name" value="" placeholder="Enter a Name..." required>
+						</div>
+						<label for="notes" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Comment</label>
+						<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+							<textarea id="notes" class="form-control" name="notes" placeholder="Enter a Comment..." required></textarea>
+						</div>
+						<label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label>
+						<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
+							<button class="btn btn-success btn-block" type="submit">Add Comment</button>
+						</div>
 					</div>
-					<label for="name" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Name</label>
-					<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-						<input type="text" class="form-control" name="name" value="" placeholder="Enter a Name..." required>
-					</div>
-					<label for="notes" class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">Comment</label>
-					<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-						<textarea id="notes" class="form-control" name="notes" placeholder="Enter a Comment..." required></textarea>
-					</div>
-					<label class="control-label col-lg-2 col-md-3 col-sm-3 col-xs-5">&nbsp;</label>
-					<div class="input-group col-lg-10 col-md-9 col-sm-9 col-xs-7">
-						<button class="btn btn-success btn-block" type="submit">Add Comment</button>
-					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
-	</div>
+	</comment>
 </div>

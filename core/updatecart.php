@@ -3,11 +3,12 @@
 include'db.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
+define('DS',DIRECTORY_SEPARATOR);
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
-define('THEME','../layout/'.$config['theme']);
+define('THEME','..'.DS.'layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
-$theme=parse_ini_file(THEME.'/theme.ini',true);
+$theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $act=filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING);
 $ip=$_SERVER['REMOTE_ADDR'];
 $si=session_id();

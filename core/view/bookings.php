@@ -57,13 +57,9 @@ if($act=='add_booking'){
 					$msg.='Notes: '.$notes;
 					$mail->Body=$msg;
 					$mail->AltBody=$msg;
-					if($mail->Send()){
-						$notification=$theme['settings']['booking_success'];
-					}
+					if($mail->Send())$notification=$theme['settings']['booking_success'];
 				}
-			}else{
-				$notification=$theme['settings']['booking_error'];
-			}
+			}else$notification=$theme['settings']['booking_error'];
 		}
 	}
 }else{
@@ -71,16 +67,14 @@ if($act=='add_booking'){
 	if($sql->rowCount()>0){
 		$bookable='';
 		while($row=$sql->fetch(PDO::FETCH_ASSOC)){
-			$bookable.='<option value="'.htmlentities($row['id'],ENT_QUOTES,'UTF-8').'>'.ucfirst(htmlentities($row['contentType'],ENT_QUOTES,'UTF-8'));
+			$bookable.='<option value="'.htmlentities($row['id'],ENT_QUOTES,'UTF-8').'">'.ucfirst(htmlentities($row['contentType'],ENT_QUOTES,'UTF-8'));
 			if($row['code']!='')$bookable.=':'.htmlentities($row['code'],ENT_QUOTES,'UTF-8');
 			$bookable.=':'.htmlentities($row['title'],ENT_QUOTES,'UTF-8').'</option>';
 		}
 		$html=str_replace('<serviceoptions>',$bookable,$html);
 		$html=str_replace('<bookservices>','',$html);
 		$html=str_replace('</bookservices>','',$html);
-	}else{
-		$html=preg_replace('~<bookservices>.*?<\/bookservices>~is','<input type="hidden" name="service" value="0">',$html,1);
-	}
+	}else$html=preg_replace('~<bookservices>.*?<\/bookservices>~is','<input type="hidden" name="service" value="0">',$html,1);
 }
 $html=str_replace('<notification>',$notification,$html);
 $content.=$html;

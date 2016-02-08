@@ -18,22 +18,23 @@ if($_POST['emailtrap']==''){
 	if($error==0){?>
 	window.top.window.$('#dberror').html('');
 	window.top.window.$('#dbsuccess').html('<div class="alert alert-success">Database Connection Succeeded, writing settings to config file.</div>');
-<?php
-		$sql=file_get_contents('libre.sql');
-		$q=$db->exec($sql);
-		$e=$db->errorInfo();
-		if(is_null($e[2])){?>
+<?php $sql=file_get_contents('libre.sql');
+	$q=$db->exec($sql);
+	$e=$db->errorInfo();
+	if(is_null($e[2])){?>
 	window.top.window.$('#dbsuccess').append('<div class="alert alert-success">Database Imported Succeeded.</div>');
-<?php		$sysurl=filter_input(INPUT_POST,'sysurl',FILTER_SANITIZE_STRING);
-			$sysname=filter_input(INPUT_POST,'sysname',FILTER_SANITIZE_STRING);
-			$syslang=filter_input(INPUT_POST,'syslang',FILTER_SANITIZE_STRING);
-			$aName=filter_input(INPUT_POST,'aName',FILTER_SANITIZE_STRING);
-			$aEmail=filter_input(INPUT_POST,'aEmail',FILTER_SANITIZE_STRING);
-			$aUsername=filter_input(INPUT_POST,'aUsername',FILTER_SANITIZE_STRING);
-			$aPassword=filter_input(INPUT_POST,'aPassword',FILTER_SANITIZE_STRING);
-		}else{?>
+<?php	$sysurl=filter_input(INPUT_POST,'sysurl',FILTER_SANITIZE_STRING);
+		$sysadmin=filter_input(INPUT_POST,'sysadmin',FILTER_SANITIZE_STRING);
+		$sysname=filter_input(INPUT_POST,'sysname',FILTER_SANITIZE_STRING);
+		$syslang=filter_input(INPUT_POST,'syslang',FILTER_SANITIZE_STRING);
+		$aName=filter_input(INPUT_POST,'aName',FILTER_SANITIZE_STRING);
+		$aEmail=filter_input(INPUT_POST,'aEmail',FILTER_SANITIZE_STRING);
+		$aUsername=filter_input(INPUT_POST,'aUsername',FILTER_SANITIZE_STRING);
+		$aPassword=filter_input(INPUT_POST,'aPassword',FILTER_SANITIZE_STRING);
+		//$hash=password_hash($aPassword,PASSWORD_DEFAULT);
+	}else{?>
 	window.top.window.$('#dbsuccess').append('<div class="alert alert-danger">There was an Issue Importing the Database.<br><?php echo$e[2];?></div>');
-<?php	}
+<?php }
 	}
 }?>
 	window.top.window.$('#block').css({'display':'none'});

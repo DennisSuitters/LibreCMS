@@ -2,7 +2,7 @@
 	<nav class="navbar navbar-default">
 		<ul class="nav navbar-nav pull-right">
 			<li><a href="sitemap"><small>Sitemap</small></a></li>
-			<li><a href="tos/"><small>TOS</small></a></li>
+			<li><a href="tos"><small>TOS</small></a></li>
 			<li><login></li>
 			<li>
 				<form class="navbar-form" method="post" action="search">
@@ -22,72 +22,5 @@
 <div class="theme">
 	<print theme="title"> Theme by <print theme="creator"><br>
 	Powered by <a target="_blank" href="https://github.com/StudioJunkyard/LibreCMS"><span class="libre">Libre</span><span class="cms">CMS</span></a><br>
-	<a href="admin/">Administration</a>
-</div>
-<div id="login" class="modal fade" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content col-md-9">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Login</h4>
-			</div>
-			<div class="modal-body">
-				<form method="post" action="" accept-charset="UTF-8">
-					<input type="hidden" name="act" value="login">
-					<div class="form-group">
-						<label for="username" class="control-label col-md-3 col-xs-3">Username</label>
-						<div class="input-group col-sm-8 col-xs-9">
-							<input type="text" id="username" class="form-control" name="username" value="" placeholder="Enter a Username..." autofocus>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="password" class="control-label col-md-3 col-xs-3">Password</label>
-						<div class="input-group col-md-8 col-xs-9">
-							<input type="password" id="password" class="form-control" name="password" placeholder="Enter a Password..." autocomplete="off">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-xs-3">&nbsp;</label>
-						<div class="input-group col-md-8 col-xs-9">
-							<button class="btn btn-success btn-block">Login</button>
-						</div>
-					</div>
-				</form>
-				<div class="form-group">
-					<div class="input-group col-md-11 col-xs-12 text-right">
-						<a href="recover">Forgot Password?</a>
-					</div>
-				</div>
-			</div>
-			<block signup>
-			<div class="modal-header">
-				<h4 class="modal-title">Sign Up</h4>
-			</div>
-			<div class="modal-body">
-				<form method="post" action="newaccount" accept-charset="UTF-8">
-					<input type="hidden" name="act" value="newaccount">
-					<div class="form-group">
-						<label for="email" class="control-label col-md-3 col-xs-3">Email</label>
-						<div class="input-group col-sm-8 col-xs-9">
-							<input type="text" id="email" class="form-control" name="email" value="" placeholder="Enter an Email...">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="username" class="control-label col-sm-3 col-xs-3">Username</label>
-						<div class="input-group col-sm-8 col-xs-9">
-							<input type="text" id="username" class="form-control" name="username" placeholder="Enter a Username...">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-3 col-xs-3"></label>
-						<div class="input-group col-sm-8 col-xs-9">
-							<button class="btn btn-success btn-block">Sign Up</button>
-						</div>
-					</div>
-				</form>
-			</div>
-			</block signup>
-			<div class="modal-footer"></div>
-		</div>
-	</div>
+	<a href="<admin>">Administration</a>
 </div>

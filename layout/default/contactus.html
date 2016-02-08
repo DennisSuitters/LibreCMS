@@ -1,15 +1,15 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="contactus">
-	<main id="content" class="col-lg-12 col-md-12 col-xs-12" itemscope itemtype="http://schema.org/Contact">
-		<div class="col-lg-8 col-md-8 col-xs-8">
+	<main id="content" class="col-md-12 col-xs-12" itemscope itemtype="http://schema.org/Contact">
+		<div class="col-md-8">
 			<notification>
 			<form id="form" method="post" action="contactus">
 				<input type="hidden" name="emailtrap" value="none">
 				<input type="hidden" name="act" value="add_message">
 				<div class="form-group">
-					<label class="control-label col-sm-2">&nbsp;</label>
-					<div class="input-group col-sm-10 text-danger">
+					<label class="control-label col-sm-2 col-xs-hidden">&nbsp;</label>
+					<div class="input-group col-xs-12 col-md-10 text-danger">
 						<div class="alert alert-danger">Highlighted Fields are Required</div>
 					</div>
 				</div>
@@ -46,18 +46,17 @@
 			</form>
 			<iframe id="sp" name="sp" style="display:none;"></iframe>
 		</div>
-		<address class="col-lg-4 col-md-4 col-xs-4">
+		<address class="col-md-4">
 				<h4><print config=seoTitle></h4>
 				<span class="adr">
-					<span class="street-address" itemprop="streetAddress"><print config=address>, <print config=suburb>, </span><br>
-					<span class="region" itemprop="addressLocality"><print config=state>, </span>
-					<span class="country-name" itemprop="addressCountry"><print config=country>, </span>
-					<span class="postal-code" itemprop="postalCode"><print config=postcode></span>
+					<span class="street-address" itemprop="streetAddress"><print config="address">, <print config="suburb">, </span><br>
+					<span class="region" itemprop="addressLocality"><print config="state">, </span>
+					<span class="country-name" itemprop="addressCountry"><print config="country">, </span>
+					<span class="postal-code" itemprop="postalCode"><print config="postcode"></span>
 				</span><br>
-				<span class="tel" itemprop="telephone">Phone <a href="tel:<print config=phone>"><print config=phone></a></span><br>
-				<span class="tel" itemprop="telephone">Mobile <a href="tel:<print config=mobile>"><print config=mobile></a></span>
+				<span class="tel" itemprop="telephone">Phone <a href="tel:<print config=phone>"><print config="phone"></a></span><br>
+				<span class="tel" itemprop="telephone">Mobile <a href="tel:<print config=mobile>"><print config="mobile"></a></span>
 		</address>
-		<print user=username>
 	</main>
 </block>
 <block include="footer.html">

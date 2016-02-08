@@ -1,6 +1,7 @@
 <?php
 require'core'.DS.'db.php';
 $config=$this->getconfig($db);
+$theme=parse_ini_file(THEME.DS.'theme.ini',TRUE);
 $ti=time();
 $show='';
 $html='';
@@ -40,10 +41,7 @@ foreach($tag as$tag1){
 	$inbed=$tag1->getAttribute('inbed');
 	if($include!=''){
 		$include=rtrim($include,'.html');
-		if(file_exists(THEME.DS.$include.'.html'))
-			$html=file_get_contents(THEME.DS.$include.'.html');
-		else
-			$html='';
+		if(file_exists(THEME.DS.$include.'.html'))$html=file_get_contents(THEME.DS.$include.'.html');else$html='';
 		require'view'.DS.$include.'.php';
 		$req=$include;
 	}
@@ -57,33 +55,42 @@ foreach($tag as$tag1){
 		$req=$inbed;
 	}
 }
-if($view=='index')
-	$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
-else{
-	if(!isset($seoTitle)||$seoTitle=='')
-		$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'].' - '.$config['seoTitle'];
+if(stristr($head,'<print meta=seoTitle>')){
+	if($view=='index')$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
+	else{
+		if(!isset($seoTitle)||$seoTitle=='')$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'].' - '.$config['seoTitle'];
+	}
+	$head=str_replace('<print meta=seoTitle>',$seoTitle,$head);
 }
-$head=str_replace('<print seoTitle>',$seoTitle,$head);
-
-if(!isset($seoCaption)||$seoCaption=='')$seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
-
-
-if(!isset($seoDescription)||$seoDescription=='')$seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
-if($view=='index'&&$seoDescription!='')$head=str_replace('<print seoCaption>',$seoDescription,$head);
-else$head=str_replace('<print seoCaption>',$seoCaption,$head);
-
-
-if(!isset($seoKeywords)||$seoKeywords=='')$seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
-$head=str_replace('<print seoKeywords>',$seoKeywords,$head);
-
-if(!isset($contentTime)){if($page['eti']>$config['ti'])$contentTime=$page['eti'];else$contentTime=$config['ti'];}
-$head=str_replace('<print dateAtom>',date(DATE_ATOM,$contentTime),$head);
-
-if(!isset($canonical)||$canonical=='')$canonical=URL.$view.'/';
-$head=str_replace('<print canonical>',$canonical,$head);
-
-$head=str_replace('<print url>',URL,$head);
-$head=str_replace('<print view>',$view,$head);
-$head=str_replace('<print shareImage>',$shareImage,$head);
-$head=str_replace('<print favicon>',FAVICON,$head);
-print"<!--\n * Powered by LibreCMS (https://github.com/StudioJunkyard/LibreCMS)\n * Copyleft 2015 Studio Junkyard (http://studiojunkyard.com/)\n * Licensed under GPLv3 <http://www.gnu.org/licenses/>\n-->\n".$head.$content;
+if(stristr($head,'<print meta=seoCaption>')){
+	if(!isset($seoCaption)||$seoCaption=='')$seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
+	if(!isset($seoDescription)||$seoDescription=='')$seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
+	if($view=='index'&&$seoDescription!='')$head=str_replace('<print meta=seoCaption>',$seoDescription,$head);
+	else$head=str_replace('<print meta=seoCaption>',$seoCaption,$head);
+}
+if(stristr($head,'<print meta=seoKeywords>')){
+	if(isset($args[1])&&$args[1]!=''&&isset($r['keywords']))$seoKeywords=$r['keywords'];
+	elseif(!isset($seoKeywords)||$seoKeywords=='')$seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
+	$head=str_replace('<print meta=seoKeywords>',$seoKeywords,$head);
+}
+if(stristr($head,'<print meta=dateAtom>')){
+	if(!isset($contentTime)){
+		if($page['eti']>$config['ti'])$contentTime=$page['eti'];
+		else$contentTime=$config['ti'];
+	}
+	$head=str_replace('<print meta=dateAtom>',date(DATE_ATOM,$contentTime),$head);
+}
+if(stristr($head,'<print meta=canonical>')){
+	if(!isset($canonical)||$canonical=='')$canonical=URL.$view.'/';
+	$head=str_replace('<print meta=canonical>',$canonical,$head);
+}
+if(stristr($head,'<print meta=url>'))$head=str_replace('<print meta=url>',URL,$head);
+if(stristr($head,'<print meta=view>'))$head=str_replace('<print meta=view>',$view,$head);
+if(stristr($head,'<print meta=rss>')){
+	if($args[0]!=''||$args[0]!='index'||$args[0]!='bookings'||$args[0]!='contactus'||$args[0]!='cart'||$args[0]!='proofs'||$args[0]!='settings'||$args[0]!='accounts')$rss=URL.'rss/'.$view;
+	else$rss=URL.'rss/';
+	$head=str_replace('<print meta=rss>',$rss,$head);
+}
+if(stristr($head,'<print meta=shareImage>'))$head=str_replace('<print meta=shareImage>',$shareImage,$head);
+if(stristr($head,'<print meta=favicon>'))$head=str_replace('<print meta=favicon>',FAVICON,$head);
+print"<!--\n * Powered by LibreCMS (https://github.com/StudioJunkyard/LibreCMS)\n * Copyleft ".date('Y',time())." Studio Junkyard (http://studiojunkyard.com/)\n * Licensed under GPLv3 <http://www.gnu.org/licenses/>\n-->\n".$head.$content;
