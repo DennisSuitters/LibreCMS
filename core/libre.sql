@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 05, 2016 at 07:18 PM
+-- Generation Time: Feb 11, 2016 at 07:30 PM
 -- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `config` (
   `id` tinyint(1) unsigned NOT NULL,
   `maintenance` int(1) NOT NULL,
   `options` varchar(32) COLLATE utf8_bin NOT NULL,
-  `theme` varchar(16) COLLATE utf8_bin NOT NULL,
+  `theme` varchar(255) COLLATE utf8_bin NOT NULL,
   `seoTitle` varchar(60) COLLATE utf8_bin NOT NULL,
   `seoDescription` varchar(255) COLLATE utf8_bin NOT NULL,
   `seoCaption` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `config` (
 --
 
 INSERT INTO `config` (`id`, `maintenance`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `buttonType`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `showItems`, `idleTime`, `bti`, `backup_ti`, `fiti`, `ti`) VALUES
-(1, 0, '1111111110000000', 'default', 'StudioJunkyard.com', 'Default SEO Description', 'Default SEO Caption', 'Default SEO Keywords', '', '', '', '', 1440940831, 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'card', 'card', 'calendar', 5, 24, 1404461417, 0, 0, 0);
+(1, 0, '1111111110000000', 'default-bootstrap3', 'StudioJunkyard.com', 'Default SEO Description', 'Default SEO Caption', 'Default SEO Keywords', '', '', '', '', 1440940831, 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'card', 'card', 'calendar', 5, 24, 1404461417, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -211,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `content` (
   `lti` int(10) unsigned NOT NULL,
   `ti` int(10) unsigned NOT NULL,
   `eti` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `login` (
 --
 
 INSERT INTO `login` (`id`, `options`, `username`, `password`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `avatar`, `gravatar`, `business`, `name`, `email`, `emailPassword`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `adminCategory_1`, `adminCategory_2`, `adminCategory_ti`, `language`, `timezone`, `rank`, `discount`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `lti`, `ti`) VALUES
-(1, '11111111', 'admin', '$2y$10$NI2hAT4ZJXDMjg.rhYJ0AOYTGHSYwkuRVbSR6/PDBfdMgIJ.1p6Bq', 'cover_1.jpg', '', '', '', '', 'avatar_1.jpg', '', 'Studio Junkyard', 'Kenika Suitters', 'dennis@studiojunkyard.com', '', 0, 'http://www.facebook.com/studiojunkyard', '128 Cradle Mountain Road', 'Wilmot', 'Wilmot', 'Tasmania', 0, '', '0364921418', '0364921418', '', 'unpublished', 1, '', '', '', 0, 'en-AU', 'Australia/Hobart', 1000, '', 'card', 'card', 'calendar', 0, 1402746479);
+(1, '11111111', 'admin', '$2y$10$NI2hAT4ZJXDMjg.rhYJ0AOYTGHSYwkuRVbSR6/PDBfdMgIJ.1p6Bq', '', '', '', '', '', 'avatar_1.jpg', '', 'Studio Junkyard', 'Kenika Suitters', 'dennis@studiojunkyard.com', '', 0, 'http://www.facebook.com/studiojunkyard', '128 Cradle Mountain Road', 'Wilmot', 'Wilmot', 'Tasmania', 0, '', '0364921418', '0364921418', '', 'unpublished', 1, '', '', '', 0, 'en-AU', 'Australia/Hobart', 1000, '', 'card', 'card', 'calendar', 0, 1402746479);
 
 -- --------------------------------------------------------
 
@@ -519,7 +519,7 @@ ALTER TABLE `config`
 -- AUTO_INCREMENT for table `content`
 --
 ALTER TABLE `content`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `login`
 --

@@ -1,0 +1,40 @@
+<settings itemcount="4" contenttype="all">
+<div id="featured" class="carousel slide" data-ride="carousel">
+	<featuredIndicators>
+		<ol class="carousel-indicators">
+			<indicators>
+				<li data-target="#featured" data-slide-to="<print indicatorCount>" class="<print active>"></li>
+			</indicators>
+		</ol>
+	</featuredIndicators>
+	<div class="carousel-inner relative">
+		<items>
+			<div class="item<print active>">
+				<print content="image">
+					<div class="carousel-caption">
+						<h3 class="text-left"><print content="title"></h3>
+						<p>
+							<print content="caption">
+							<cost>
+								<aside class="carousel-price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+									<meta itemprop="currency" content="AUD">
+									<h4 itemprop="price">&#36;<print content="cost"></h4>
+								</aside>
+							</cost>
+							<a class="btn btn-lg btn-info pull-right" href="<print link>" role="button">View</a>
+						</p>
+					</div>
+			</div>
+		</items>
+	</div>
+	<featuredControls>
+		<a class="left carousel-control" href="#featured" role="button" data-slide="prev">
+			<span class="libre libre-chevron-left libre-3x" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="right carousel-control" href="#featured" role="button" data-slide="next">
+			<span class="libre libre-chevron-right libre-3x" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</featuredControls>
+</div>
