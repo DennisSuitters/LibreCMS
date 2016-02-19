@@ -24,7 +24,16 @@ if($view=='index'){
 	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(keywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(caption) LIKE LOWER(:caption) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' ORDER BY ti DESC");
 	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':notes'=>$search));
 }elseif($view=='bookings'){
-	if(isset($args[0]))$id=(int)$args[0];else $id=0;
+	if(isset($args[0]))$id=(int)$args[0];else$id=0;
+}elseif(isset($args[1])&&strlen($args[1])==2){
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND ti > :ti ORDER BY ti ASC");
+	$s->execute(array(':contentType'=>$view.'%',':ti'=>DateTime::createFromFormat('!d/m/Y', '01/'.$args[1].'/'.$args[0])->getTimestamp()));
+	$show='categories';
+}elseif(isset($args[0])&&strlen($args[0])==4){
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND ti > :ti ORDER BY ti ASC");
+	$tim=strtotime('01-Jan-'.$args[0]);
+	$s->execute(array(':contentType'=>$view.'%',':ti'=>DateTime::createFromFormat('!d/m/Y', '01/01/'.$args[0])->getTimestamp()));
+	$show='categories';
 }elseif(isset($args[1])){
 	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND LOWER(category_2) LIKE LOWER(:category_2) AND status LIKE :status AND internal!='1' ORDER BY ti DESC");
 	$s->execute(array(':contentType'=>$view,':category_1'=>str_replace('-',' ',$args[0]),':category_2'=>str_replace('-',' ',$args[1]),':status'=>$status));
