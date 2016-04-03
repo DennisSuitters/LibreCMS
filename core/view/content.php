@@ -16,37 +16,37 @@ if($view=='index'){
 		$itemCount=$config['showItems'];
 		$contentType='%';
 	}
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND contentType NOT LIKE 'message%' AND contentType NOT LIKE 'testimonial%' AND contentType NOT LIKE 'proof%' AND status LIKE :status AND internal!='1' ORDER BY ti DESC LIMIT $itemCount");
-	$s->execute(array(':contentType'=>$contentType.'%',':status'=>$status));
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND contentType NOT LIKE 'message%' AND contentType NOT LIKE 'testimonial%' AND contentType NOT LIKE 'proof%' AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY featured DESC, ti DESC LIMIT $itemCount");
+	$s->execute(array(':contentType'=>$contentType.'%',':status'=>$status,':ti'=>time()));
 }elseif($view=='search'){
 	$search='%';
 	if(isset($args[0]))$search='%'.str_replace('-',' ',$args[0]).'%';else$search='%'.str_replace('-',' ',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING)).'%';
-	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(keywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(caption) LIKE LOWER(:caption) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' ORDER BY ti DESC");
-	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':notes'=>$search));
+	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(keywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(caption) LIKE LOWER(:caption) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':notes'=>$search,':ti'=>$ti));
 }elseif($view=='bookings'){
 	if(isset($args[0]))$id=(int)$args[0];else$id=0;
 }elseif(isset($args[1])&&strlen($args[1])==2){
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND ti > :ti ORDER BY ti ASC");
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND ti < :ti ORDER BY ti ASC");
 	$s->execute(array(':contentType'=>$view.'%',':ti'=>DateTime::createFromFormat('!d/m/Y', '01/'.$args[1].'/'.$args[0])->getTimestamp()));
 	$show='categories';
 }elseif(isset($args[0])&&strlen($args[0])==4){
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND ti > :ti ORDER BY ti ASC");
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND ti>:ti ORDER BY ti ASC");
 	$tim=strtotime('01-Jan-'.$args[0]);
 	$s->execute(array(':contentType'=>$view.'%',':ti'=>DateTime::createFromFormat('!d/m/Y', '01/01/'.$args[0])->getTimestamp()));
 	$show='categories';
 }elseif(isset($args[1])){
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND LOWER(category_2) LIKE LOWER(:category_2) AND status LIKE :status AND internal!='1' ORDER BY ti DESC");
-	$s->execute(array(':contentType'=>$view,':category_1'=>str_replace('-',' ',$args[0]),':category_2'=>str_replace('-',' ',$args[1]),':status'=>$status));
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND LOWER(category_2) LIKE LOWER(:category_2) AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+	$s->execute(array(':contentType'=>$view,':category_1'=>str_replace('-',' ',$args[0]),':category_2'=>str_replace('-',' ',$args[1]),':status'=>$status,':ti'=>time()));
 }elseif(isset($args[0])){
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND status LIKE :status AND internal!='1' ORDER BY ti DESC");
-	$s->execute(array(':contentType'=>$view.'%',':category_1'=>str_replace('-',' ',$args[0]),':status'=>$status));
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+	$s->execute(array(':contentType'=>$view.'%',':category_1'=>str_replace('-',' ',$args[0]),':status'=>$status,':ti'=>time()));
 	if($s->rowCount()<1){
 		if($view=='proofs'||$view=='proof'){
 			$status='%';
 			if($_SESSION['loggedin']==false)die();
 		}
-		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(title) LIKE LOWER(:title) AND status LIKE :status AND internal!='1' ORDER BY ti DESC");
-		$s->execute(array(':contentType'=>$view.'%',':title'=>str_replace('-',' ',$args[0]),':status'=>$status));
+		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(title) LIKE LOWER(:title) AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+		$s->execute(array(':contentType'=>$view.'%',':title'=>str_replace('-',' ',$args[0]),':status'=>$status,':ti'=>time()));
 		$show='item';
 	}
 }else{
@@ -56,8 +56,8 @@ if($view=='index'){
 			$s->execute(array(':cid'=>$_SESSION['uid']));
 		}
 	}else{
-		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND status LIKE :status AND internal!='1' ORDER BY ti DESC");
-		$s->execute(array(':contentType'=>$view,':status'=>$status));
+		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+		$s->execute(array(':contentType'=>$view,':status'=>$status,':ti'=>time()));
 	}
 }
 if($show=='categories'){

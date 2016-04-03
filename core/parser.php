@@ -58,12 +58,12 @@ foreach($tags as$tag){
 			else$container=$parsing='';
 			break;
 		case'datePublished':
-			if($r['tis']!=0)$parsing.=date($config['dateFormat'],$r['tis']);
+			if($r['pti']!=0)$parsing.=date($config['dateFormat'],$r['pti']);
 			else$parsing.=date($config['dateFormat'],$r['ti']);
 			break;
 		case'dateEvent':
 			if($r['tis']!=0){
-				$parsing.=date($config['dateFormat'],$t['tis']);
+				$parsing.=date($config['dateFormat'],$r['tis']);
 				if($r['tie']!=0)$parsing.=' to '.date($config['dateFormat'],$r['tie']);
 			}else$container=$parsing='';
 			break;

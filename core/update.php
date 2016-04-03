@@ -4,13 +4,14 @@ session_start();
 require'db.php';
 require'sanitise.php';
 define('DS',DIRECTORY_SEPARATOR);
+$e='';
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $tbl=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
 $col=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
 if($tbl=='content'||$tbl=='menu'&&$col=='notes'){
     $da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_UNSAFE_RAW):filter_input(INPUT_GET,'da',FILTER_UNSAFE_RAW);
-    $da=kses($da);
+//    $da=kses($da);
 }else{
     $da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'da',FILTER_SANITIZE_STRING);
     $da=kses($da,array());
@@ -21,18 +22,16 @@ $s=$db->prepare("SELECT * FROM ".$tbl." WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);
 $oldda=$r[$col];
-if($tbl!='content'&&$tbl!='orders'){
-    if($col=='tis'||$col=='tie'||$col=='due_ti')$da=strtotime($da);
-}
-if($r['contentType']=='booking'){
-    if($col=='tis'||$col=='tie'||$col=='ti'){
-        $da=isset($_POST['da'])?(int)$_POST['da']:(int)$_GET['da'];
-    }
+if($col=='tis')$da=strtotime($da);
+if($col=='tie')$da=strtotime($da);
+if($col=='pti')$da=strtotime($da);
+if($tbl=='content'&&$col=='status'&&$da=='published'){
+    $q=$db->prepare("UPDATE content SET pti=:pti WHERE id=:id");
+    $q->execute(array(':pti'=>$ti,':id'=>$id));
 }
 if($tbl=='config'||$tbl=='login')$r['contentType']='';
 $log=['uid'=>0,'rid'=>$id,'view'=>$r['contentType'],'contentType'=>$r['contentType'],'refTable'=>$tbl,'refColumn'=>$col,'oldda'=>$oldda,'newda'=>$da,'action'=>'update','ti'=>$ti];
-if($r['contentType']=='booking')
-    $log['view']=$r['contentType'].'s';
+if($r['contentType']=='booking')$log['view']=$r['contentType'].'s';
 if(isset($_SESSION['uid'])){
     $uid=(int)$_SESSION['uid'];
     $q=$db->prepare("SELECT rank,username,name FROM login WHERE id=:id");
@@ -42,7 +41,7 @@ if(isset($_SESSION['uid'])){
         $login_user=$u['name'];
     else
         $login_user=$u['username'];
-        $log['uid']=$uid;
+    $log['uid']=$uid;
 }else{
     $uid=0;
     $u['rank']=0;
@@ -54,12 +53,28 @@ if($tbl=='login'&&$col=='password'){
     $log['oldda']='';
     $log['newda']='';
 }
-if($tbl=='content'||$tbl=='menu'||$tbl=='seo'){
+if($tbl=='content'||$tbl=='menu'){
     $q=$db->prepare("UPDATE $tbl SET eti=:ti,login_user=:login_user,uid=:uid WHERE id=:id");
     $q->execute(array('ti'=>$ti,':uid'=>$uid,':login_user'=>$login_user,':id'=>$id));
 }
-$q=$db->prepare("UPDATE $tbl SET $col=:da WHERE id=:id");
-$q->execute(array(':da'=>$da,':id'=>$id));
+if($tbl=='login'&&$col=='username'){
+    $uc1=$db->prepare("SELECT username FROM login WHERE username=:da");
+    $uc1->execute(array(':da'=>$da));
+    if($uc1->rowCount()<1){
+        $q=$db->prepare("UPDATE login SET username=:da WHERE id=:id");
+        $q->execute(array(':da'=>$da,':id'=>$id));?>
+window.top.window.$('#uerror').removeClass('has-error');
+<?php  }else{
+        $uc2=$db->prepare("SELECT username FROM login WHERE id=:id");
+        $uc2->execute(array(':id'=>$id));
+        $uc=$uc2->fetch(PDO::FETCH_ASSOC);?>
+window.top.window.$('#uerror').addClass('has-error');
+window.top.window.$('#username').val('<?php echo$uc['username'];?>');
+<?php }
+}else{
+    $q=$db->prepare("UPDATE $tbl SET $col=:da WHERE id=:id");
+    $q->execute(array(':da'=>$da,':id'=>$id));
+}
 $e=$db->errorInfo();
 if($tbl=='orders'&&$col=='status'&&$da=='archived'){
     $r=$db->query("SELECT MAX(id) as id FROM orders")->fetch();
@@ -69,7 +84,7 @@ if($tbl=='orders'&&$col=='status'&&$da=='archived'){
 }
 if(is_null($e[2])){
 if($tbl=='orders'&&$col=='due_ti'){?>
-    window.top.window.$('#due_ti').val('<?php echo date($config['dateFormat'],$da);?>');
+window.top.$("#due_ti").val("<?php echo date($config['dateFormat'],$da);?>");
 <?php }
 if($tbl=='content'&&$col=='file'&&$da==''){
     if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.jpg'))unlink('..'.DS.'media'.DS.'file_'.$id.'.jpg');
@@ -153,23 +168,6 @@ window.top.window.$('#l_<?php echo$id;?>').removeClass('danger');
 <?php }
 }?>
 window.top.window.$('#block').css("display","none");
-/*	notifyMe('Updated');
-function notifyMe(note){
-if(!("Notification" in window)){
-alert("This browser does not support desktop notification");
-}elseif(Notification.permission==="granted"){
-var notification=new Notification(note);
-}elseif(Notification.permission!=='denied'){
-Notification.requestPermission(function(permission){
-if(!('permission' in Notification)){
-Notification.permission=permission;
-}
-if(permission==="granted"){
-var notification=new Notification(note);
-}
-});
-}
-} */
 /*]]>*/</script>
 <?php /* Update Logs */
 $s=$db->prepare("INSERT INTO logs (uid,rid,view,contentType,refTable,refColumn,oldda,newda,action,ti) VALUES (:uid,:rid,:view,:contentType,:refTable,:refColumn,:oldda,:newda,:action,:ti)");

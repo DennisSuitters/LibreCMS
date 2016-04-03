@@ -1,24 +1,34 @@
-<div class="page-toolbar"></div><div class="panel panel-default"><div class="panel-body"><ul class="nav nav-tabs"><li class="active"><a href="#theme" data-toggle="tab"><i class="libre libre-theme visible-xs"></i><span class="hidden-xs"><?php lang('button','theme');?></span></a></li><li><a href="#contact" data-toggle="tab"><i class="libre libre-address-book visible-xs"></i><span class="hidden-xs"><?php lang('button','contact');?></span></a></li><li><a href="#interface" data-toggle="tab"><i class="libre libre-desktop visible-xs"></i><span class="hidden-xs"><?php lang('button','interface');?></span></a></li><li><a href="#banking" data-toggle="tab"><i class="libre libre-bank visible-xs"></i><span class="hidden-xs"><?php lang('button','banking');?></span></a></li><li><a href="#seo" data-toggle="tab"><i class="libre libre-seo visible-xs"></i><span class="hidden-xs"><?php lang('button','seo');?></span></a></li><li><a href="#backrestore" data-toggle="tab"><i class="libre libre-database visible-xs"></i><span class="hidden-xs"><?php lang('button','backup');?></span></a></li></ul>
-<div class="tab-content">
-    <div id="theme" class="tab-pane fade in active">
-        <div class="row theme-chooser">
+<div class="page-toolbar"></div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#theme" data-toggle="tab"><i class="libre libre-theme visible-xs"></i><span class="hidden-xs">Theme</span></a></li>
+            <li><a href="#contact" data-toggle="tab"><i class="libre libre-address-book visible-xs"></i><span class="hidden-xs">Contact</span></a></li>
+            <li><a href="#interface" data-toggle="tab"><i class="libre libre-desktop visible-xs"></i><span class="hidden-xs">Interface</span></a></li>
+            <li><a href="#banking" data-toggle="tab"><i class="libre libre-bank visible-xs"></i><span class="hidden-xs">Banking</span></a></li>
+            <li><a href="#seo" data-toggle="tab"><i class="libre libre-seo visible-xs"></i><span class="hidden-xs">SEO</span></a></li>
+            <li><a href="#backrestore" data-toggle="tab"><i class="libre libre-database visible-xs"></i><span class="hidden-xs">Backup</span></a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="theme" class="tab-pane fade in active">
+                <div class="row theme-chooser">
 <?php foreach(new DirectoryIterator('layout') as$folder){
     if($folder->isDOT())continue;
     if($folder->isDir()){
         $theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);?>
-            <div class="col-xs-12 col-md-3">
-                <div class="theme-chooser-item panel<?php if($config['theme']==$folder)echo' panel-success';?>" data-theme="<?php echo$folder;?>">
-                    <div class="panel-image">
-                        <img src="<?php if(file_exists('layout/'.$folder.'/theme.jpg'))echo'layout/'.$folder.'/theme.jpg';elseif(file_exists('layout/'.$folder.'/theme.png'))echo'layout/'.$folder.'/theme.png';else echo'core/images/noimage.jpg';?>" alt="<?php echo$theme['title'];?>">
-                        <h4 class="panel-title text-white text-shadow-depth-1-half"><?php if(isset($theme['title'])&&$theme['title']!='')echo$theme['title'];else echo'No Title Assigned';?></h4>
-                    </div>
-                    <div class="panel-body panel-content">
-                        <p>
+                    <div class="col-xs-12 col-md-3">
+                        <div class="theme-chooser-item panel<?php if($config['theme']==$folder)echo' panel-success';?>" data-theme="<?php echo$folder;?>">
+                            <div class="panel-image">
+                                <img src="<?php if(file_exists('layout/'.$folder.'/theme.jpg'))echo'layout/'.$folder.'/theme.jpg';elseif(file_exists('layout/'.$folder.'/theme.png'))echo'layout/'.$folder.'/theme.png';else echo'core/images/noimage.jpg';?>" alt="<?php echo$theme['title'];?>">
+                                <h4 class="panel-title text-white text-shadow-depth-1-half"><?php if(isset($theme['title'])&&$theme['title']!='')echo$theme['title'];else echo'No Title Assigned';?></h4>
+                            </div>
+                            <div class="panel-body panel-content">
+                                <p>
 <?php if(isset($theme['version'])&&$theme['version']!=''){
-    echo'<small class="version">';lang('label','version');echo': '.$theme['version'].'</small><br>';
+    echo'<small class="version">Version: '.$theme['version'].'</small><br>';
 }
 if(isset($theme['creator'])&&$theme['creator']!=''){
-    echo'<small class="creator">';lang('label','creator');
+    echo'<small class="creator">Creator';
     if(isset($theme['creator_url'])&&$theme['creator_url']!='')echo': <a target="_blank" href="'.$theme['creator_url'].'">'.$theme['creator'].'</a>';
     else echo$theme['creator'];
     echo'</small><br>';
@@ -30,9 +40,301 @@ if(isset($theme['framework_name'])&&$theme['framework_name']!=''){
     echo'</small><br>';
 }
 if(isset($theme['description'])&&$theme['description']!='')echo'<small class="description">'.$theme['description'].'</small>';?>
-                        </p>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+<?php }
+}?>
+                </div>
+            </div>
+            <div id="contact" class="tab-pane fade in">
+                <div class="form-group">
+                    <label for="business" class="control-label col-xs-5 col-sm-3 col-lg-2">Business</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="business" class="form-control textinput" value="<?php echo$config['business'];?>" data-dbid="1" data-dbt="config" data-dbc="business" placeholder="Enter a Business...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="abn" class="control-label col-xs-5 col-sm-3 col-lg-2">ABN</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="abn" class="form-control textinput" value="<?php echo$config['abn'];?>" data-dbid="1" data-dbt="config" data-dbc="abn" placeholder="Enter an ABN...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="email" class="form-control textinput" value="<?php echo$config['email'];?>" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="Enter an Email...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="control-label col-xs-5 col-sm-3 col-lg-2">Phone</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="phone" class="form-control textinput" value="<?php echo$config['phone'];?>" data-dbid="1" data-dbt="config" data-dbc="phone" placeholder="Enter a Phone Number...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mobile" class="control-label col-xs-5 col-sm-3 col-lg-2">Mobile</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="mobile" class="form-control textinput" value="<?php echo$config['mobile'];?>" data-dbid="1" data-dbt="config" data-dbc="mobile" placeholder="Enter a Mobile Number...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="control-label col-xs-5 col-sm-3 col-lg-2">Address</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="address" class="form-control textinput" value="<?php echo$config['address'];?>" data-dbid="1" data-dbt="config" data-dbc="address" placeholder="Enter an Address...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="suburb" class="control-label col-xs-5 col-sm-3 col-lg-2">Suburb</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="suburb" class="form-control textinput" value="<?php echo$config['suburb'];?>" data-dbid="1" data-dbt="config" data-dbc="suburb" placeholder="Enter a Suburb...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="city" class="control-label col-xs-5 col-sm-3 col-lg-2">City</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="city" class="form-control textinput" value="<?php echo$config['city'];?>" data-dbid="1" data-dbt="config" data-dbc="city" placeholder="Enter a City...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="state" class="control-label col-xs-5 col-sm-3 col-lg-2">State</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="state" class="form-control textinput" value="<?php echo$config['state'];?>" data-dbid="1" data-dbt="config" data-dbc="state" placeholder="Enter a State...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="postcode" class="control-label col-xs-5 col-sm-3 col-lg-2">Postcode</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="postcode" class="form-control textinput" value="<?php if($config['postcode']!=0)echo$config['postcode'];?>" data-dbid="1" data-dbt="config" data-dbc="postcode" placeholder="Enter a Postcode...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="country" class="control-label col-xs-5 col-sm-3 col-lg-2">Country</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="country" class="form-control textinput" value="<?php echo$config['country'];?>" data-dbid="1" data-dbt="config" data-dbc="country" placeholder="Enter a Country...">
                     </div>
                 </div>
             </div>
+            <div id="interface" name="interface" class="tab-pane fade in">
+                <div class="form-group">
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
+                        <input type="checkbox" id="maintenance0" data-dbid="1" data-dbt="config" data-dbc="maintenance" data-dbb="0"<?php if($config['maintenance']{0}==1)echo' checked';?>>
+                        <label for="maintenance0">
+                    </div>
+                    <label for="maintenance0" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['maintenance']{0}==1)echo' data-toggle="tooltip" title="Toggle Site Maintenance Mode."';?>>Maintenance</span></label>
+                </div>
+                <div class="form-group">
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
+                        <input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>>
+                        <label for="options3">
+                    </div>
+                    <label for="options3" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Allow Users to Create Accounts."';?>>Enable Account Sign Ups</span></label>
+                </div>
+                <div class="form-group">
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
+                        <input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>>
+                        <label for="options4">
+                    </div>
+                    <label for="options4" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Administration Tooltops, like this one."';?>>Enable Tooltips</span></label>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                    <label for="showItems" class="control-label col-xs-5 col-sm-3 col-lg-2">Item Count</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="showItems" class="form-control textinput" value="<?php echo$config['showItems'];?>" data-dbid="1" data-dbt="config" data-dbc="showItems" placeholder="Enter Number of Items to Display..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Number of Items to Display."';?>>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="idleTime" class="control-label col-xs-5 col-sm-3 col-lg-2">Idle Timeout</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="idleTime" class="form-control textinput" value="<?php echo$config['idleTime'];?>" data-dbid="1" data-dbt="config" data-dbc="idleTime" placeholder="Enter a Time in Minutes..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Time in Minutes for Idle Timeout for Auto Logout..."';?>>
+                        <div class="input-group-addon">Minutes</div>
+                    </div>
+                    <div class="col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        <div class="help-block">'0' Disables Idle Timeout...</div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <label for="dateFormat" class="control-label col-xs-5 col-sm-3 col-lg-2">Date/Time Format</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date/Time Format..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Format Layout of all Dates/Times displayed."';?>>
+                        <span class="help-text">For information on Date Format Characters click <a target="_blank" href="http://php.net/manual/en/function.date.php#refsect1-function.date-parameters">here</a>.</span>
+                    </div>
+                </div>
+            </div>
+            <div id="banking" class="tab-pane fade in">
+                <h4>Banking</h4>
+                <div class="form-group">
+                    <label for="bank" class="control-label col-xs-5 col-sm-3 col-lg-2">Bank</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="bank" class="form-control textinput" value="<?php echo$config['bank'];?>" data-dbid="1" data-dbt="config" data-dbc="bank" placeholder="Enter Bank Name...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bankAccountName" class="control-label col-xs-5 col-sm-3 col-lg-2">Account Name</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="bankAccountName" class="form-control textinput" value="<?php echo$config['bankAccountName'];?>"data-dbid="1" data-dbt="config" data-dbc="bankAccountName" placeholder="Enter an Account Name...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bankAccountNumber" class="control-label col-xs-5 col-sm-3 col-lg-2">Account Number</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="bankAccountNumber" class="form-control textinput" value="<?php echo$config['bankAccountNumber'];?>" data-dbid="1" data-dbt="config" data-dbc="bankAccountNumber" placeholder="Enter an Account Number...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bankBSB" class="control-label col-xs-5 col-sm-3 col-lg-2">BSB</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="bankBSB" class="form-control textinput" value="<?php echo$config['bankBSB'];?>" data-dbid="1" data-dbt="config" data-dbc="bankBSB" placeholder="Enter a BSB...">
+                    </div>
+                </div>
+                <h4>PayPal</h4>
+                <div class="form-group">
+                    <label for="bankPayPal" class="control-label col-xs-5 col-sm-3 col-lg-2">Account</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="bankPayPal" class="form-control textinput" value="<?php echo$config['bankPayPal'];?>" data-dbid="1" data-dbt="config" data-dbc="bankPayPal" placeholder="Enter a PayPal Account...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ipn" class="control-label col-xs-5 col-sm-3 col-lg-2">IPN</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="ipn" class="form-control" value="" readonly<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+                    </div>
+                </div>
+                <h4>Order Processing</h4>
+                <div class="form-group">
+                    <label for="orderPayti" class="control-label col-xs-5 col-sm-3 col-lg-2">Allow</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <select id="orderPayti" class="form-control" onchange="update('1','config','orderPayti',$(this).val());">
+                            <option value="0"<?php if($config['orderPayti']==0)echo' selected';?>>0 Days</option>
+                            <option value="604800"<?php if($config['orderPayti']==604800)echo' selected';?>>7 Days</option>
+                            <option value="1209600"<?php if($config['orderPayti']==1209600)echo' selected';?>>14 Days</option>
+                            <option value="1814400"<?php if($config['orderPayti']==1814400)echo' selected';?>>21 Days</option>
+                            <option value="2592000"<?php if($config['orderPayti']==2592000)echo' selected';?>>30 Days</option>
+                        </select>
+                        <div class="input-group-addon">for Payments</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="orderEmailDefaultSubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Email Subject</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="orderEmailDefaultSubject" class="form-control textinput" value="<?php echo$config['orderEmailDefaultSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="orderEmailDefaultSubject">
+                        <span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="orderEmailLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Email Layout</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <form method="post" target="sp" action="core/update.php">
+                            <input type="hidden" name="id" value="1">
+                            <input type="hidden" name="t" value="config">
+                            <input type="hidden" name="c" value="orderEmailLayout">
+                            <textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['orderEmailLayout'];?></textarea>
+                        </form>
+                        <span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="orderEmailNotes" class="control-label col-xs-5 col-sm-3 col-lg-2">Order Notes</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <form method="post" target="sp" action="core/update.php">
+                            <input type="hidden" name="id" value="1">
+                            <input type="hidden" name="t" value="config">
+                            <input type="hidden" name="c" value="orderEmailNotes">
+                            <textarea id="orderEmailNotes" class="form-control summernote" name="da"><?php echo$config['orderEmailNotes'];?></textarea>
+                        </form>
+                        <span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</span>
+                    </div>
+                </div>
+            </div>
+            <div id="seo" class="tab-pane fade in">
+                <h4>Default Analytics</h4>
+                <div class="form-group">
+                    <div class="col-xs-5 col-sm-3 col-lg-2"></div>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <span class="help-block">These will be used if Page or Content Seo Fields are empty.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Title</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$config['seoTitle'];?>" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="Enter an SEO Title...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Caption</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$config['seoCaption'];?>" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="Enter a Caption...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Description</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$config['seoDescription'];?>" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="Enter a Description...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Keywords</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Keywords...">
+                    </div>
+                </div>
+            </div>
+            <div id="backrestore" class="tab-pane fade in">
+                <div id="backup" class="well" name="backup">
+                    <h4>Database Backup/Restore</h4>
+                    <div id="backup_info">
+<?php $tid=$ti-2592000;
+if($config['backup_ti']<$tid){
+    if($config['backup_ti']==0){?>
+                        <div class="alert alert-info">A Backup has yet to be performed.</div>
+<?php }else{?>
+                        <div class="alert alert-danger">It has been more than 30 days since a Backup has been performed.</div>
 <?php }
-}?></div></div><div id="contact" class="tab-pane fade in"><div class="form-group"><label for="business" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','business');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="business" class="form-control textinput" value="<?php echo$config['business'];?>" data-dbid="1" data-dbt="config" data-dbc="business" placeholder="<?php lang('placeholder','business');?>"></div></div><div class="form-group"><label for="abn" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','abn');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="abn" class="form-control textinput" value="<?php echo$config['abn'];?>" data-dbid="1" data-dbt="config" data-dbc="abn" placeholder="<?php lang('placeholder','abn');?>"></div></div><div class="form-group"><label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','email');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="email" class="form-control textinput" value="<?php echo$config['email'];?>" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="<?php lang('placeholder','email');?>"></div></div><div class="form-group"><label for="phone" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','phone');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="phone" class="form-control textinput" value="<?php echo$config['phone'];?>" data-dbid="1" data-dbt="config" data-dbc="phone" placeholder="<?php lang('placeholder','phone');?>"></div></div><div class="form-group"><label for="mobile" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','mobile');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="mobile" class="form-control textinput" value="<?php echo$config['mobile'];?>" data-dbid="1" data-dbt="config" data-dbc="mobile" placeholder="<?php lang('placeholder','mobile');?>"></div></div><div class="form-group"><label for="address" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','address');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="address" class="form-control textinput" value="<?php echo$config['address'];?>" data-dbid="1" data-dbt="config" data-dbc="address" placeholder="<?php lang('placeholder','address');?>"></div></div><div class="form-group"><label for="suburb" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','suburb');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="suburb" class="form-control textinput" value="<?php echo$config['suburb'];?>" data-dbid="1" data-dbt="config" data-dbc="suburb" placeholder="<?php lang('placeholder','suburb');?>"></div></div><div class="form-group"><label for="city" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','city');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="city" class="form-control textinput" value="<?php echo$config['city'];?>" data-dbid="1" data-dbt="config" data-dbc="city" placeholder="<?php lang('placeholder','city');?>"></div></div><div class="form-group"><label for="state" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','state');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="state" class="form-control textinput" value="<?php echo$config['state'];?>" data-dbid="1" data-dbt="config" data-dbc="state" placeholder="<?php lang('placeholder','state');?>"></div></div><div class="form-group"><label for="postcode" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','postcode');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="postcode" class="form-control textinput" value="<?php if($config['postcode']!=0)echo$config['postcode'];?>" data-dbid="1" data-dbt="config" data-dbc="postcode" placeholder="<?php lang('placeholder','postcode');?>"></div></div><div class="form-group"><label for="country" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','country');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="country" class="form-control textinput" value="<?php echo$config['country'];?>" data-dbid="1" data-dbt="config" data-dbc="country" placeholder="<?php lang('placeholder','country');?>"></div></div></div><div id="interface" name="interface" class="tab-pane fade in"><div class="form-group"><div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"><input type="checkbox" id="maintenance0" data-dbid="1" data-dbt="config" data-dbc="maintenance" data-dbb="0"<?php if($config['maintenance']{0}==1)echo' checked';?>><label for="maintenance0"></div><label for="maintenance0" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['maintenance']{0}==1)echo' data-toggle="tooltip" title="';lang('tooltip','maintenance');echo'"';?>><?php lang('label','maintenance');?></span></label></div><div class="form-group"><div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"><input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>><label for="options3"></div><label for="options3" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="';lang('tooltip','options3');echo'"';?>><?php lang('label','enablesignups');?></span></label></div><div class="form-group"><div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"><input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>><label for="options4"></div><label for="options4" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="';lang('tooltip','options4');echo'"';?>><?php lang('label','enabletooltips');?></span></label></div><div class="clearfix"></div><fieldset><legend><?php lang('title','preferencescontentdisplay');?></legend><div class="form-group"><label for="layoutContent" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','content');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><div class="btn-group" data-toggle="buttons"><label class="btn btn-default<?php if($config['layoutContent']=='card'){echo' active';}?>"><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutContent','card');"<?php if($config['layoutContent']=='card'){echo' checked';}echo'><i class="libre libre-layout-blocks"></i>';?></label><label class="btn btn-default<?php if($config['layoutContent']=='list'){echo' active';}?>"><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutContent','list');"<?php if($config['layoutContent']=='list'){echo' checked';}echo'><i class="libre libre-layout-list"></i>';?></label></div></div></div><div class="form-group"><label for="layoutAccounts" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','accounts');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><div class="btn-group" data-toggle="buttons"><label class="btn btn-default<?php if($config['layoutAccounts']=='card'){echo' active';}?>"><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutAccounts','card');"<?php if($config['layoutAccounts']=='card'){echo' checked';}echo'><i class="libre libre-layout-blocks"></i>';?></label><label class="btn btn-default<?php if($config['layoutAccounts']=='list'){echo' active';}?>"><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutAccounts','list');"<?php if($config['layoutAccounts']=='list'){echo' checked';}echo'><i class="libre libre-layout-list"></i>';?></label></div></div></div><div class="form-group"><label for="layoutBookings" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','bookings');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><div class="btn-group" data-toggle="buttons"><label class="btn btn-default<?php if($config['layoutBookings']=='calendar'){echo' active';}?>"><input type="radio" name="options" id="option1" autocomplete="off" onchange="update('1','config','layoutBookings','calendar');"<?php if($config['layoutBookings']=='calendar'){echo' checked';}echo'><i class="libre libre-calendar"></i>';?></label><label class="btn btn-default<?php if($config['layoutBookings']=='list'){echo' active';}?>"><input type="radio" name="options" id="option2" autocomplete="off" onchange="update('1','config','layoutBookings','list');"<?php if($config['layoutBookings']=='list'){echo' checked';}echo'><i class="libre libre-layout-list"></i>';?></label></div></div></div></fieldset><div class="form-group"><label for="showItems" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','itemcount');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="showItems" class="form-control textinput" value="<?php echo$config['showItems'];?>" data-dbid="1" data-dbt="config" data-dbc="showItems" placeholder="<?php lang('placeholder','itemcount');?>"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','itemcount');echo'"';}?>></div></div><div class="form-group"><label for="idleTime" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','idletime');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="idleTime" class="form-control textinput" value="<?php echo$config['idleTime'];?>" data-dbid="1" data-dbt="config" data-dbc="idleTime" placeholder="Enter a Time in Minutes..."<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','idletime');echo'"';}?>><div class="input-group-addon"><?php lang('Minutes');?></div></div><div class="col-xs-7 col-sm-9 col-lg-10 pull-right"><div class="help-block"><?php lang('info','idletime');?></div></div><div class="clearfix"></div></div><div class="form-group"><label for="language" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','language');?></label><div class="input-group col-xs-8 col-sm-9 col-lg-10"><select id="language" class="form-control" onchange="update('1','config','language',$(this).val());"><?php $languages=parse_ini_file('core/lang/languages.ini');foreach($languages as$lang){$l=explode(':',$lang);?><option value="<?php echo$l[0];?>"<?php if($config['language']==$l[0])echo' selected';?>><?php echo$l[1];?></option><?php }?></select></div></div><div class="form-group"><label for="timezone" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','timezone');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><select id="timezone" class="form-control" onchange="update('1','config','timezone',$(this).val());"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','timezone');echo'"';}?>><?php function formatOffset($offset){$hours=$offset/3600;$remainder=$offset%3600;$sign=$hours>0?'+':'-';$hour=(int)abs($hours);$minutes=(int)abs($remainder/60);if($hour==0&&$minutes==0)$sign=' ';return$sign.str_pad($hour,2,'0',STR_PAD_LEFT).':'.str_pad($minutes,2,'0');}$utc=new DateTimeZone('UTC');$dt=new DateTime('now',$utc);foreach(DateTimeZone::listIdentifiers() as$tz){$current_tz=new DateTimeZone($tz);$offset=$current_tz->getOffset($dt);$transition=$current_tz->getTransitions($dt->getTimestamp(),$dt->getTimestamp());$abbr=$transition[0]['abbr'];echo'<option value="'.$tz.'"';if($tz==$config['timezone'])echo' selected';echo'>'.$tz.' ['.$abbr.' '.formatOffset($offset).']</option>';}?></select></div></div><div class="form-group"><label for="dateFormat" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','datetimeformat');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date Format..."<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','datetimeformat');echo'"';}?>><span class="help-text">For information on Date Format Characters click <a target="_blank" href="http://php.net/manual/en/function.date.php#refsect1-function.date-parameters">here</a>.</span></div></div></div><div id="banking" class="tab-pane fade in"><h4><?php lang('title','banking');?></h4><div class="form-group"><label for="bank" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','bank');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="bank" class="form-control textinput" value="<?php echo$config['bank'];?>" data-dbid="1" data-dbt="config" data-dbc="bank" placeholder="<?php lang('placeholder','bank');?>"></div></div><div class="form-group"><label for="bankAccountName" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','accountname');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="bankAccountName" class="form-control textinput" value="<?php echo$config['bankAccountName'];?>"data-dbid="1" data-dbt="config" data-dbc="bankAccountName" placeholder="<?php lang('placeholder','accountname');?>"></div></div><div class="form-group"><label for="bankAccountNumber" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','accountnumber');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="bankAccountNumber" class="form-control textinput" value="<?php echo$config['bankAccountNumber'];?>" data-dbid="1" data-dbt="config" data-dbc="bankAccountNumber" placeholder="<?php lang('placeholder','accountnumber');?>"></div></div><div class="form-group"><label for="bankBSB" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','bsb');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="bankBSB" class="form-control textinput" value="<?php echo$config['bankBSB'];?>" data-dbid="1" data-dbt="config" data-dbc="bankBSB" placeholder="<?php lang('placeholder','bsb');?>"></div></div><h4><?php lang('title','paypal');?></h4><div class="form-group"><label for="bankPayPal" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','paypalaccount');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="bankPayPal" class="form-control textinput" value="<?php echo$config['bankPayPal'];?>" data-dbid="1" data-dbt="config" data-dbc="bankPayPal" placeholder="<?php lang('placeholder','paypalaccount');?>"></div></div><div class="form-group"><label for="ipn" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','paypalipn');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="ipn" class="form-control" value="" readonly<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';lang('tooltip','paypalipn');echo'"';}?>></div></div><h4><?php lang('title','orderprocessing');?></h4><div class="form-group"><label for="orderPayti" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','allow');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><select id="orderPayti" class="form-control" onchange="update('1','config','orderPayti',$(this).val());"><option value="0"<?php if($config['orderPayti']==0)echo' selected';?>><?php lang('button','0days');?></option><option value="604800"<?php if($config['orderPayti']==604800)echo' selected';?>><?php lang('button','7days');?></option><option value="1209600"<?php if($config['orderPayti']==1209600)echo' selected';?>><?php lang('button','14days');?></option><option value="1814400"<?php if($config['orderPayti']==1814400)echo' selected';?>><?php lang('button','21days');?></option><option value="2592000"<?php if($config['orderPayti']==2592000)echo' selected';?>><?php lang('button','30days');?></option></select><div class="input-group-addon"><?php lang('label','forpayments');?></div></div></div><div class="form-group"><label for="orderEmailDefaultSubject" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','orderemaildefaultsubject');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="orderEmailDefaultSubject" class="form-control textinput" value="<?php echo$config['orderEmailDefaultSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="orderEmailDefaultSubject"><span class="help-block"><?php lang('info','emailsubjecttokens');?></span></div></div><div class="form-group"><label for="orderEmailLayout" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','orderemaillayout');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><form method="post" target="sp" action="core/update.php"><input type="hidden" name="id" value="1"><input type="hidden" name="t" value="config"><input type="hidden" name="c" value="orderEmailLayout"><textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['orderEmailLayout'];?></textarea></form><span class="help-block"><?php lang('info','orderemaillayout');?></span></div></div><div class="form-group"><label for="orderEmailNotes" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','orderemailnotes');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><form method="post" target="sp" action="core/update.php"><input type="hidden" name="id" value="1"><input type="hidden" name="t" value="config"><input type="hidden" name="c" value="orderEmailNotes"><textarea id="orderEmailNotes" class="form-control summernote" name="da"><?php echo$config['orderEmailNotes'];?></textarea></form><span class="help-block"><?php lang('info','orderemailnotes');?></span></div></div></div><div id="seo" class="tab-pane fade in"><h4><?php lang('title','analytics');?></h4><div class="form-group"><div class="col-xs-5 col-sm-3 col-lg-2"></div><div class="input-group col-xs-7 col-sm-9 col-lg-10"><span class="help-block"><?php lang('info','analytics');?></span></div></div><div class="form-group"><label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','seotitle');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$config['seoTitle'];?>" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="<?php lang('placeholder','seotitle');?>"></div></div><div class="form-group"><label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','seocaption');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$config['seoCaption'];?>" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="<?php lang('placeholder','seocaption');?>"></div></div><div class="form-group"><label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','seodescription');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$config['seoDescription'];?>" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="<?php lang('placeholder','seodescription');?>"></div></div><div class="form-group"><label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','seokeywords');?></label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="<?php lang('placeholder','seokeywords');?>"></div></div></div><div id="backrestore" class="tab-pane fade in"><div id="backup" class="well" name="backup"><h4><?php lang('title','databasebackuprestore');?></h4><div id="backup_info"><?php $tid=$ti-2592000;if($config['backup_ti']<$tid){if($config['backup_ti']==0){?><div class="alert alert-info">A Backup has yet to be performed.</div><?php }else{?><div class="alert alert-danger">It has been more than 30 days since a Backup has been performed.</div><?php }}?></div><div class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','backup');?></label><form target="sp" method="post" action="core/backup.php"><div class="input-group col-xs-7 col-sm-9 col-lg-10"><div class="input-group-btn"><button type="submit" class="btn btn-default btn-block" onclick="$('#block').css({'display':'block'});">Perform Backup</button></div></div></form></div><div class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2"><?php lang('label','restore');?></label><form target="sp" method="post" enctype="multipart/form-data" action="core/restorebackup.php"><div class="input-group col-xs-7 col-sm-9 col-lg-10"><div class="btn btn-default btn-block btn-file">Select .sql file to restore<input type="file" id="fu" class="form-control" name="fu" accept="application/sql"></div><div class="input-group-btn"><button type="submit" class="btn btn-success" onclick="$('#block').css({'display':'block'});">Restore</button></div></div></form></div><div id="backup" class="form-group"><?php foreach(glob("media/backup/*") as$file){$fileid=str_replace('.','',$file);$fileid=str_replace('/','',$fileid);?><div id="l_<?php echo$fileid;?>" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><a class="btn btn-default btn-block" href="<?php echo$file;?>">Click to Download <?php echo ltrim($file,'media/backup/');?></a><div class="input-group-btn"><button class="btn btn-danger" onclick="removeMedia('<?php echo$file;?>')"><i class="libre libre-trash"></i></button></div></div></div><?php }?></div></div></div></div></div></div>
+}?>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-5 col-sm-3 col-lg-2">Backup</label>
+                        <form target="sp" method="post" action="core/backup.php">
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-default btn-block" onclick="$('#block').css({'display':'block'});">Perform Backup</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-5 col-sm-3 col-lg-2">Restore</label>
+                        <form target="sp" method="post" enctype="multipart/form-data" action="core/restorebackup.php">
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <div class="btn btn-default btn-block btn-file">
+                                    Select .sql file to restore<input type="file" id="fu" class="form-control" name="fu" accept="application/sql">
+                                </div>
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-success" onclick="$('#block').css({'display':'block'});">Restore</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="backup" class="form-group">
+<?php foreach(glob("media/backup/*")as$file){
+    $fileid=str_replace('.','',$file);
+    $fileid=str_replace('/','',$fileid);?>
+                        <div id="l_<?php echo$fileid;?>" class="form-group">
+                            <label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <a class="btn btn-default btn-block" href="<?php echo$file;?>">Click to Download <?php echo ltrim($file,'media/backup/');?></a>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-danger" onclick="removeMedia('<?php echo$file;?>')"><i class="libre libre-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+<?php }?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

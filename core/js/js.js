@@ -172,6 +172,49 @@ function update(id,t,c,da){
 			}
 			$('#'+c).remove()
 		}
+		if(t=='content'&&c=='contentType'){
+			if(da=='article'){
+				$('#d1,#d3,#d4,#d15,#d16,#d20,#d21,#d23,#d24').removeClass('hidden');
+				$('#d2,#d5,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d17,#d18,#d19,#d22').addClass('hidden');
+			}
+			if(da=='portfolio'){
+				$('#d1,#d4,#d15,#d16,#d20,#d21,#d23').removeClass('hidden');
+				$('#d2,#d3,#d5,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d17,#d18,#d19,#d22,#d24').addClass('hidden');
+			}
+			if(da=='booking'){
+				$('#d1').removeClass('hidden');
+				$('#d2,#d3,#d4,#d5,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d15,#d16,#d17,#d18,#d19,#d20,#d21,#d22,#d23,#d24').addClass('hidden');
+			}
+			if(da=='events'){
+				$('#d1,#d5,#d9,#d10,#d15,#d16,#d20,#d21,#d22,#d23,#d24').removeClass('hidden');
+				$('#d2,#d3,#d4,#d6,#d7,#d8,#d11,#d12,#d13,#d14,#d17,#d18,#d19').addClass('hidden');
+			}
+			if(da=='news'){
+				$('#d1,#d5,#d12,#d13,#d14,#d15,#d16,#d20,#d21,#d23,#d24').removeClass('hidden');
+				$('#d2,#d3,#d4,#d6,#d7,#d8,#d9,#d10,#d11,#d17,#d18,#d19,#d22').addClass('hidden');
+			}
+			if(da=='testimonials'){
+				$('#d1,#d2,#d11,#d12,#d13').removeClass('hidden');
+				$('#d3,#d4,#d5,#d6,#d7,#d8,#d9,#d10,#d14,#d15,#d16,#d17,#d18,#d19,#d20,#d21,#d22,#d23,#d24').addClass('hidden');
+			}
+			if(da=='inventory'){
+				$('#d1,#d4,#d5,#d6,#d7,#d8,#d15,#d16,#d17,#d18,#d19,#d20,#d21,#d23').removeClass('hidden');
+				$('#d2,#d3,#d9,#d10,#d11,#d12,#d13,#d14,#d22,#d24').addClass('hidden');
+			}
+			if(da=='service'){
+				$('#d1,#d4,#d5,#d15,#d16,#d17,#d18,#d20,#d21,#d22,#d23').removeClass('hidden');
+				$('#d2,#d3,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d19,#d24').addClass('hidden');
+			}
+			if(da=='gallery'){
+				$('#d1,#d4,#d15,#d16,#d20,#d21,#d23').removeClass('hidden');
+				$('#d2,#d3,#d5,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d17,#d18,#d19,#d22,#d24').addClass('hidden');
+			}
+			if(da=='proofs'){
+				$('#d2,#d4,#d14,#d24').removeClass('hidden');
+				$('#d1,#d3,#d5,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d15,#d16,#d17,#d18,#d19,#d20,#d21,#d22,#d23').addClass('hidden');
+			}
+		}
+		$('#block').css({display:'none'});
 	})
 }
 function coverUpdate(id,t,c,da){

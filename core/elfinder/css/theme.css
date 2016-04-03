@@ -1,0 +1,800 @@
+/**
+ * Libre Bootstrap like theme for elFinder
+ * Required jquery ui "smoothness" theme
+ * Style rules copied and edited from Boostrap Source
+ * @author StudioJunkyard
+ * @ProjectURL https://github.com/StudioJunkyard/elfinder-libre-theme
+ **/
+.elfinder{
+	display:block;
+	padding:0;
+	height:100%;
+	border:0
+}
+.elfinder *{
+	border-collapse:collapse;
+	font:normal normal normal 12px Arial,Helvetica,Tahoma,Verdana,Sans-Serif;
+	color:#000;
+	text-align:left;
+	cursor:auto
+}
+.ui-corner-all{
+	border:0;
+	margin:0;
+	padding:0;
+	box-shadow:0;
+}
+.elfinder .ui-icon-gripsmall-diagonal-se,
+.elfinder-dialog .ui-icon-gripsmall-diagonal-se{
+	background-image:none;
+	bottom:3px;
+	right:3px;
+	width:0;
+	height:0;
+	overflow:hidden;
+	border-width:10px 10px 0 0;
+	border-color:transparent #666 transparent transparent;
+	border-style:dashed solid dashed dashed;
+	font-size:0;
+	vertical-align:bottom;
+	margin-top:6px;
+	margin-bottom:2px;
+	box-shadow:0 1px 0 rgba(255,255,255,.3);
+	cursor:se-resize
+}
+.elfinder-drag-helper *{
+	font-size:42px
+}
+.elfinder-drag-num{
+	font-size:12px
+}
+.elfinder-cwd-icon{
+	overflow:hidden
+}
+.elfinder-cwd-icon:before{
+	background:none;
+	display:block;
+	text-align:center
+}
+.elfinder-cwd-icon-application:before{
+	content:url(svg/libre-file.svg)
+}
+.elfinder-cwd-icon-directory:before{
+	content:url(svg/libre-folder.svg)
+}
+.elfinder-droppable-active .elfinder-cwd-icon-directory:before{
+	content:url(svg/libre-folder-open.svg)
+}
+.elfinder-cwd-icon-x-empty:before,
+.elfinder-cwd-icon-inode:before{
+	content:url(svg/libre-file-code.svg)
+}
+.elfinder-cwd-icon-text:before,
+.elfinder-cwd-icon-rtf:before,
+.elfinder-cwd-icon-rtfd:before{
+	content:url(svg/libre-file-text.svg)
+}
+.elfinder-cwd-icon-pdf:before{
+	content:url(svg/libre-file-pdf.svg)
+}
+.elfinder-cwd-icon-html:before{
+	content:url(svg/libre-file-text.svg)
+}
+.elfinder-cwd-icon-vnd-ms-word:before{
+	content:url(svg/libre-file-text.svg)
+}
+.elfinder-cwd-icon-vnd-ms-powerpoint:before{
+	content:url(svg/libre-file-text.svg)
+}
+.elfinder-cwd-icon-ms-excel:before,
+.elfinder-cwd-icon-vnd-ms-excel:before,
+.elfinder-cwd-icon-vnd-ms-excel-addin-macroEnabled-12:before,
+.elfinder-cwd-icon-vnd-ms-excel-sheet-binary-macroEnabled-12:before,
+.elfinder-cwd-icon-vnd-ms-excel-sheet-macroEnabled-12:before,
+.elfinder-cwd-icon-vnd-ms-excel-template-macroEnabled-12:before{
+	content:url(svg/libre-file-text.svg)
+}
+.elfinder-cwd-icon-audio:before{
+	content:url(svg/libre-file-audio.svg)
+}
+.elfinder-cwd-icon-video:before,
+.elfinder-cwd-icon-flash-video:before{
+	content:url(svg/libre-file-video.svg)
+}
+.elfinder-cwd-icon-zip:before,
+.elfinder-cwd-icon-x-zip:before,
+.elfinder-cwd-icon-x-xz:before,
+.elfinder-cwd-icon-x-7z-compressed:before,
+.elfinder-cwd-icon-x-gzip:before,
+.elfinder-cwd-icon-x-tar:before,
+.elfinder-cwd-icon-x-bzip:before,
+.elfinder-cwd-icon-x-bzip2:before,
+.elfinder-cwd-icon-x-rar:before{
+	content:url(svg/libre-file-archive.svg)
+}
+.elfinder-cwd-icon-javascript:before,
+.elfinder-cwd-icon-x-javascript:before,
+.elfinder-cwd-icon-x-perl:before,
+.elfinder-cwd-icon-x-python:before,
+.elfinder-cwd-icon-x-ruby:before,
+.elfinder-cwd-icon-x-sh:before,
+.elfinder-cwd-icon-x-shellscript:before,
+.elfinder-cwd-icon-x-c:before,
+.elfinder-cwd-icon-x-csrc:before,
+.elfinder-cwd-icon-x-chdr:before,
+.elfinder-cwd-icon-x-c--:before,
+.elfinder-cwd-icon-x-c--src:before,
+.elfinder-cwd-icon-x-c--hdr:before,
+.elfinder-cwd-icon-x-java:before,
+.elfinder-cwd-icon-x-java-source:before,
+.elfinder-cwd-icon-x-php:before,
+.elfinder-cwd-icon-xml:before{
+	content:url(svg/libre-file-text.svg)
+}
+.elfinder .elfinder-toolbar{
+	white-space:normal;
+	padding:10px 15px;
+	border-bottom:1px solid transparent;
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;
+	color:#333;
+	background-color:#f5f5f5;
+	border-color:#ddd
+}
+.elfinder .elfinder-buttonset{
+	float:left;
+	margin:0 6px 5px 0;
+	display:inline-block;
+	font-size:14px;
+	font-weight:400;
+	line-height:1.42857143;
+	text-align:center;
+	white-space:nowrap;
+	vertical-align:middle;
+	-ms-touch-action:manipulation;
+	touch-action:manipulation;
+	cursor:pointer;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+	background:#fff none;
+	border:1px solid #ccc;
+	border-radius:4px
+}
+.elfinder .elfinder-buttonset .elfinder-button{
+	display:inline-block;
+	height:18px;
+	padding:4px 6px;
+	outline:none;
+	cursor:default;
+	float:left;
+	border:none;
+	border-radius:0;
+	background:none
+}
+.elfinder .elfinder-buttonset .elfinder-button:hover,
+.elfinder .elfinder-buttonset .elfinder-button:focus,
+.elfinder .elfinder-buttonset .elfinder-button:active{
+	background:#ccc
+}
+.elfinder .elfinder-buttonset .elfinder-button.ui-state-disabled{
+	opacity:.3
+}
+.elfinder .elfinder-buttonset .elfinder-toolbar-button-separator{
+	display:none
+}
+.elfinder-toolbar .elfinder-button-search{
+	margin:0 0 5px 5px;
+	height:28px;
+	width:200px;
+	box-sizing:border-box
+}
+.elfinder-toolbar .elfinder-button-search .elfinder-button-menu{
+	padding:4px 0 0 4px
+}
+.elfinder-toolbar .elfinder-button-search .elfinder-button-menu .ui-button-text{
+	cursor:pointer
+}
+.elfinder-toolbar .elfinder-button-search .elfinder-button-menu .ui-state-default{
+	background:#eaeaea none
+}
+.elfinder-toolbar .elfinder-button-search .elfinder-button-menu .ui-state-hover{
+	background:#d0ebf4 none;
+	border:1px solid #509ece!important
+}
+.elfinder-toolbar .elfinder-button-search .elfinder-button-menu .ui-button-text:hover{
+	color:#509ece
+}
+.elfinder-toolbar .elfinder-button-search:nth-child(2){
+	display:none!important
+}
+.elfinder-toolbar .elfinder-button-search input{
+	height:26px;
+	width:200px;
+	padding-left:24px;
+	box-sizing:border-box
+}
+.elfinder-toolbar .elfinder-button-search .ui-icon{
+	background-image:none!important;
+	overflow:hidden;
+	height:16px;
+	width:16px;
+	font-size:14px;
+	line-height:16px;
+	text-align:center
+}
+.elfinder-toolbar .elfinder-button-search .ui-icon:before{
+	background:none;
+	display:block;
+	text-align:center;
+	text-indent:0
+}
+.elfinder-toolbar .elfinder-button-search .ui-icon-search{
+	margin-left:5px;
+	margin-right:5px;
+	overflow:hidden;
+	display:block
+}
+.elfinder-toolbar .elfinder-button-search .ui-icon-search:before{
+	content:url(svg/libre-search.svg)
+}
+.elfinder-toolbar .elfinder-button-search .ui-icon-close:before{
+	content:url(svg/libre-close.svg)
+}
+.elfinder-button-icon,
+.elfinder-menu-item-sort-dir{
+	background:none;
+	font-size:14px;
+	height:16px;
+	width:16px;
+	overflow:hidden;
+	display:block;
+	text-align:center;
+	line-height:16px
+}
+.elfinder-button-icon:before,
+.elfinder-button-icon:after,
+.elfinder-menu-item-sort-dir:before{
+	background:none;
+	display:block;
+	text-align:center;
+	cursor:pointer
+}
+.elfinder-button-icon-back:before{
+	content:url(svg/libre-chevron-left.svg)
+}
+.elfinder-button-icon-forward:before{
+	content:url(svg/libre-chevron-right.svg)
+}
+.elfinder-button-icon-netmount:before{
+	content:url(svg/libre-server.svg)
+}
+.elfinder-button-icon-reload:before{
+	content:url(svg/libre-refresh.svg)
+}
+.elfinder-button-icon-home:before{
+	content:url(svg/libre-home.svg)
+}
+.elfinder-button-icon-up:before{
+	content:url(svg/libre-level-up.svg)
+}
+.elfinder-button-icon-mkdir:before{
+	content:url(svg/libre-folder.svg)
+}
+.elfinder-button-icon-mkfile:before{
+	content:url(svg/libre-file.svg)
+}
+.elfinder-button-icon-upload:before{
+	content:url(svg/libre-upload.svg)
+}
+.elfinder-button-icon-open:before{
+	content:url(svg/libre-folder-open.svg)
+}
+.elfinder-button-icon-download:before{
+	content:url(svg/libre-download.svg)
+}
+.elfinder-button-icon-getfile:before{
+	content:url(svg/libre-download.svg)
+}
+.elfinder-button-icon-info:before{
+	content:url(svg/libre-info.svg)
+}
+.elfinder-button-icon-quicklook:before{
+	content:url(svg/libre-view.svg)
+}
+.elfinder-button-icon-copy:before{
+	content:url(svg/libre-copy.svg)
+}
+.elfinder-button-icon-cut:before{
+	content:url(svg/libre-cut.svg)
+}
+.elfinder-button-icon-paste:before{
+	content:url(svg/libre-paste.svg)
+}
+.elfinder-button-icon-view:before{
+	content:url(svg/libre-th.svg)
+}
+.elfinder-button-icon-view-list:before{
+	content:url(svg/libre-th-list.svg)
+}
+.elfinder-button-icon-help:before{
+	content:url(svg/libre-help.svg)
+}
+.elfinder-button-icon-duplicate:before{
+	content:url(svg/libre-copy.svg)
+}
+.elfinder-button-icon-rm:before{
+	content:url(svg/libre-trash.svg)
+}
+.elfinder-button-icon-edit:before{
+	content:url(svg/libre-edit.svg)
+}
+.elfinder-button-icon-rename:before{
+	content:url(svg/libre-cursor.svg)
+}
+.elfinder-button-icon-archive:before{
+	content:url(svg/libre-archive.svg)
+}
+.elfinder-button-icon-archive:after{
+	position:absolute;
+	content:url(svg/libre-add.svg);
+	bottom:2px;
+	right:5px;
+	height:10px
+}
+.elfinder-button-icon-resize:before{
+	content:url(svg/libre-resize-full.svg)
+}
+.elfinder-button-icon-extract:before{
+	content:url(svg/libre-file-archive.svg)
+}
+.elfinder-button-icon-sort:before{
+	content:url(svg/libre-sort.svg)
+}
+.elfinder-button-menu{
+	background-color:#f00;
+	border:1px solid #b6b6b6;
+	border-bottom-color:#999;
+	border-radius:3px;
+	box-shadow:0 0 3px rgba(0,0,0,.15);
+	margin:0;
+	padding:0
+}
+.elfinder-button-menu-item{
+	margin:3px;
+	cursor:pointer
+}
+.elfinder-button-menu-item-selected,
+.elfinder-button-menu-item.ui-state-hover{
+	background:#f2f2f2 none
+}
+.elfinder-button-menu-item-selected.elfinder-menu-item-sort-asc .elfinder-menu-item-sort-dir:before{
+	content:url(svg/libre-sort-asc.svg)
+}
+.elfinder-button-menu-item-selected.elfinder-menu-item-sort-desc .elfinder-menu-item-sort-dir:before{
+	content:url(svg/libre-sort-desc.svg)
+}
+.elfinder .elfinder-navbar{
+	background:#fff
+}
+.elfinder .elfinder-navbar-dir{
+	padding:3px 3px 3px 38px;
+	margin:0 0 3px 0;
+	display:block;
+	overflow:hidden;
+	cursor:pointer
+}
+.elfinder .elfinder-navbar-dir.ui-state-active,
+.elfinder .elfinder-navbar-dir:hover{
+	border-radius:3px;
+	background:#e4e4e4;
+	color:#000;
+	border-color:transparent
+}
+.elfinder .elfinder-navbar-arrow{
+	background-image:none!important;
+	overflow:hidden;
+	font-size:14px;
+	line-height:16px;
+	width:20px;
+	text-align:center
+}
+.elfinder .elfinder-navbar-arrow:before{
+	height:16px;
+	width:16px;
+	content:url(svg/libre-caret-right.svg);
+	background:none;
+	display:block;
+	text-align:center;
+	cursor:pointer
+}
+.elfinder .elfinder-navbar-expanded .elfinder-navbar-arrow:before{
+	content:url(svg/libre-caret-down.svg)
+}
+.elfinder .elfinder-navbar-icon{
+	background-image:none !important;
+	overflow:hidden;
+	height:16px;
+	width:16px;
+	font-size:14px;
+	line-height:16px;
+	margin-left:3px
+}
+.elfinder .elfinder-navbar-icon:before{
+	background:none;
+	display:block;
+	text-align:center;
+	cursor:pointer
+}
+.elfinder .elfinder-navbar-root > .elfinder-navbar-icon:before,
+.elfinder .elfinder-navbar-root.elfinder-navbar-expanded > .elfinder-navbar-icon:before{
+	content:url(svg/libre-home.svg)
+}
+.elfinder .elfinder-navbar-icon:before{
+	content:url(svg/libre-folder.svg)
+}
+.elfinder .elfinder-navbar-expanded > .elfinder-navbar-icon:before{
+	content:url(svg/libre-folder-open.svg)
+}
+.elfinder .ui-resizable-handle.ui-resizable-e{
+	cursor:e-resize
+}
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file{
+	padding:4px;
+	cursor:pointer
+}
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file *,
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-filename,
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-file-wrapper{
+	background:none;
+	cursor:pointer;
+	color:#000
+}
+.elfinder .elfinder-cwd-wrapper .elfinder-cwd-view-icons .elfinder-cwd-icon{
+	overflow:hidden;
+	height:52px;
+	width:52px;
+	font-size:48px;
+	line-height:52px
+}
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-filename{
+	font-size:12px;
+}
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file:hover,
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file:active,
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file.ui-selected{
+	background:#f2f2f2 none;
+	border-color:#dedede;
+	border-radius:6px
+}
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file:hover *,
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file:active *,
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file.ui-selected *{
+	color:#666
+}
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file.ui-selected:hover{
+	background-color:#f4f4f4
+}
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file.ui-selected:hover *{
+	color:#b7b7b7
+}
+.elfinder .elfinder-cwd table thead tr{
+	background:none;
+	border:none
+}
+.elfinder .elfinder-cwd table thead tr td,
+.elfinder .elfinder-cwd table thead tr td.ui-state-active{
+	font-weight:700;
+	font-size:13px;
+	position:relative;
+	color:#474747;
+	text-shadow:0 1px 0 rgba(255,255,255,.75);
+	border-bottom:2px solid #b2b2b2;
+	padding:6px 18px 6px 10px;
+	border-radius:2px 2px 0 0;
+	background:#cfd1cf
+}
+.elfinder .elfinder-cwd-wrapper-list tr td .ui-icon,
+.elfinder .elfinder-cwd-wrapper-list tr.ui-state-default td .ui-icon{
+	text-indent:0;
+	background-image:none!important;
+	overflow:hidden;
+	font-size:14px;
+	line-height:16px;
+	width:20px;
+	text-align:center;
+	position:absolute;
+	top:0;
+	right:0;
+	height:100%;
+	line-height:28px;
+	margin:auto 0 auto auto
+}
+.elfinder .elfinder-cwd-wrapper-list tr td .ui-icon:before{
+	height:100%;
+	background:none;
+	display:block;
+	text-align:center
+}
+.elfinder .elfinder-cwd-wrapper-list tr.ui-state-default td .ui-icon-triangle-1-s:before{
+	content: url(svg/libre-caret-down.svg)
+}
+.elfinder .elfinder-cwd-wrapper-list tr.ui-state-default td .ui-icon-triangle-1-n:before{
+	content: url(svg/libre-sort-asc.svg)
+}
+.elfinder .elfinder-cwd table{
+	padding:0
+}
+.elfinder .elfinder-cwd table tr *{
+	cursor:default
+}
+.elfinder .elfinder-cwd table tbody tr:nth-child(odd){
+	background-color:#eaeaea
+}
+.elfinder .elfinder-cwd-view-list td{
+	font-size:12px
+}
+.elfinder .elfinder-cwd-view-list td div{
+	padding-top:3px;
+	padding-bottom:3px
+}
+.elfinder .elfinder-cwd-wrapper-list .elfinder-cwd-file:hover,
+.elfinder .elfinder-cwd-wrapper-list .elfinder-cwd-file.ui-state-hover{
+	background:#d0ebf4 none
+}
+.elfinder .elfinder-cwd-wrapper-list .elfinder-cwd-file:hover *,
+.elfinder .elfinder-cwd-wrapper-list .elfinder-cwd-file.ui-state-hover:hover *,
+.elfinder .elfinder-cwd-wrapper-list .elfinder-cwd-file.ui-state-hover *{
+	color:#509ece
+}
+.elfinder .elfinder-cwd table tbody tr.ui-selected td{
+	background:#d2d2d7 none
+}
+.elfinder .elfinder-cwd-wrapper-list .elfinder-cwd-file.ui-selected:hover *{
+	color:#fff
+}
+.elfinder .elfinder-cwd-wrapper-list .elfinder-cwd-icon{
+	height:16px;
+	width:16px;
+	line-height:16px
+}
+.elfinder .elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-filename{
+	border-radius:3px
+}
+.elfinder .elfinder-cwd-wrapper-list .elfinder-cwd-icon:before{
+	cursor:pointer
+}
+.elfinder-dialog{
+	padding:0;
+	background:#eaeaea;
+	border:1px solid #b2b2b2;
+	border-bottom-color:#999;
+	border-radius:3px;
+	box-shadow:0 0 3px rgba(0,0,0,.15)
+}
+.elfinder-dialog .ui-dialog-content,
+.elfinder-dialog .ui-dialog-content .ui-tabs{
+	padding:0;
+	margin:0;
+	border:0
+}
+.elfinder-dialog .ui-dialog-titlebar{
+	font-weight:700;
+	cursor:move;
+	position:relative;
+	min-height:16.43px;
+	padding:15px!important;
+	border-bottom:1px solid #e5e5e5
+}
+.elfinder-dialog-icon{
+	background:none;
+	font-size:18px;
+	height:20px;
+	width:20px;
+	overflow:hidden;
+	display:block;
+	text-align:center;
+	line-height:20px;
+	position:relative;
+	margin:0 20px 0 0;
+	float:left
+}
+.elfinder-dialog-icon:before{
+	background:none;
+	display:block;
+	text-align:center;
+	cursor:pointer
+}
+.elfinder-dialog-icon-error:before{
+	content:url(svg/libre-exclamation-circle.svg)
+}
+.elfinder-dialog-icon-confirm:before{
+	content:url(svg/libre-question-circle.svg)
+}
+.ui-dialog-titlebar-close:before{
+	content:url(svg/libre-close.svg)
+}
+.elfinder-dialog .ui-tabs-nav{
+	height:24px;
+	background:#eaeaea;
+	border:0;
+	border-bottom:1px solid #999;
+	border-radius:0
+}
+.elfinder-dialog .ui-tabs .ui-tabs-nav li a{
+	display:block;
+	padding:3px;
+	border:none;
+	outline:none
+}
+.elfinder-dialog .ui-tabs-nav .ui-state-default{
+	height:16px;
+	padding:3px;
+	margin-right:3px;
+	display:inline-block;
+	cursor:pointer;
+	line-height:16px;
+	outline:none;
+	color:#595959;
+	border:1px solid #bfbfbf;
+	border-radius:3px 3px 0 0;
+	background:#d4d4d4
+}
+.elfinder-dialog .ui-tabs-nav .ui-tabs-selected{
+	background:#fff;
+	color:#383838;
+	border-bottom-color:#fff;
+	cursor:default;
+	filter:none;
+	padding-bottom:4px!important
+}
+.elfinder-dialog .ui-tabs-nav li:active{
+	background:#ededed
+}
+.elfinder-dialog .elfinder-cwd-icon{
+	background-image:none!important;
+	overflow:hidden;
+	height:52px;
+	width:52px;
+	font-size:48px;
+	line-height:52px;
+	margin:6px
+}
+.elfinder-dialog .elfinder-upload-dropbox,
+.elfinder-dialog .elfinder-upload-dialog-or,
+.elfinder-dialog .ui-button.ui-button-text-only{
+	margin:6px;
+	text-align:center
+}
+.elfinder-dialog .elfinder-file-edit{
+	box-sizing:border-box;
+	width:100%;
+	height:100%;
+	border:0;
+	padding:5px
+}
+.elfinder-dialog-error .ui-dialog-content,
+.elfinder-dialog-confirm .ui-dialog-content{
+	white-space:normal;
+	padding:5px
+}
+.elfinder-dialog textarea{
+	resize:none
+}
+.elfinder-dialog .ui-dialog-buttonpane{
+	text-align:right;
+	position:relative;
+	padding:15px 15px;
+	background-color:#f5f5f5;
+	border-top:1px solid #ddd;
+	border-bottom-right-radius:3px;
+	border-bottom-left-radius:3px
+}
+.elfinder-dialog .ui-dialog-buttonset{
+	margin-right:8px
+}
+.elfinder-dialog .ui-button{
+	display:inline-block;
+	*display:inline;
+	*zoom:1;
+	padding:4px 0;
+	margin: 0 0 4px 4px!important;
+	text-align:center;
+	color:#333;
+	vertical-align:middle;
+	cursor:pointer;
+	border:1px solid #b6b6b6;
+	border-bottom-color:#999;
+	border-radius:3px;
+	background:#e4e4e4
+}
+.elfinder-dialog .ui-button:hover{
+	border-color:#9e9e9e;
+	background:#ccc
+}
+.elfinder-dialog .ui-button:active{
+	border-color:#969696;
+	outline:none
+}
+.elfinder-contextmenu *{
+	font:normal normal normal 16px Arial,Helvetica,Tahoma,Verdana,Sans-Serif
+}
+.elfinder-contextmenu{
+	display:block;
+	border:1px solid #b6b6b6;
+	padding:0;
+	box-shadow:0 0 3px rgba(0,0,0,.15)
+}
+.elfinder-contextmenu .elfinder-contextmenu-item{
+	padding:5px 30px 5px 30px;
+	box-sizing:border-box;
+	height:24px
+}
+.elfinder-contextmenu .elfinder-contextmenu-item:hover{
+	background-color:#eff0ef
+}
+.elfinder-contextmenu .elfinder-contextmenu-icon{
+	top:0;
+	left:0;
+	margin:0;
+	background-color:#fff;
+	opacity:.70;
+	filter:alpha(opacity=70);
+	height:100%;
+	line-height:32px;
+	width:14px;
+	text-align:center
+}
+.elfinder-contextmenu .elfinder-contextmenu-separator{
+	border:none;
+	background-color:#333;
+	height:1px;
+	filter:alpha(opacity=70);
+	opacity:.70
+}
+.elfinder .elfinder-statusbar{
+	position:relative;
+	padding:10px 15px;
+	background-color:#f5f5f5;
+	border:1px solid #ddd;
+	border-bottom-right-radius:3px;
+	border-bottom-left-radius:3px
+}
+.elfinder .elfinder-path{
+	max-width:none;
+	font-size:0;
+	float:left;
+	margin:0 6px 5px 0;
+	border:1px solid #a6a6a6;
+	border-bottom-color:#979797;
+	border-radius:3px;
+	background:#e4e4e4
+}
+.elfinder .elfinder-path a{
+	font-size:12px;
+	cursor:pointer;
+	display:block;
+	float:left;
+	padding:5px
+}
+.elfinder .elfinder-path a:not(:first-child){
+	border-left:1px dotted #a6a6a6
+}
+.elfinder .elfinder-path a:hover,
+.elfinder .elfinder-path a:hover:focus,
+.elfinder .elfinder-path a:hover:active{
+	background:#ccc
+}
+.elfinder .elfinder-statusbar .elfinder-stat-selected{
+	float:right;
+	font-size:12px;
+	margin:0 0 5px 6px;
+	padding:5px;
+	text-align:right
+}
+.elfinder .elfinder-statusbar .elfinder-stat-size{
+	font-size:12px;
+	padding:5px;
+	margin:0 0 5px 6px
+}

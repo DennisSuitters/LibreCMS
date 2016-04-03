@@ -4,6 +4,18 @@
 .margin-bottom-20{margin-bottom:20px}
 .margin-left-20{margin-left:20px}
 .clearfix{clear:both}
+.navbar-default{background-color:#eee;background-color:rgba(254,254,254,.30);border-color:transparent}
+.navbar-default .navbar-brand,
+.navbar-default .navbar-brand a{color:#222;text-decoration:none}
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:hover{color:#000;background-color:transparent;text-decoration:none;text-shadow:0 0 20px #fff;}
+.navbar-default .navbar-text{color:#222}
+.navbar-default .navbar-nav>li>a{color:#222}
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover{color:#000;background-color:transparent}
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover{color:#000;background-color:transparent;font-weight:700}
 h6:empty{display:none;height:0;margin:0;padding:0;line-height:0}
 #avatar{position:absolute;top:0;right:0;max-height:50px;width:50px}
 .commentavatar{width:50px;height:50px}
@@ -57,3 +69,6 @@ main{display:inline-table}
 .theme a:hover{color:inherit;text-decoration:underline}
 .theme a .libre{color:#18a303;font-size:10px;font-weight:700}
 .theme a .cms{color:#000}
+.jumbotron{padding:0;margin-top:-75px;margin-bottom:75px}
+.jumbotron img{width:100%;}
+#content .jumbotron{margin-top:0;}

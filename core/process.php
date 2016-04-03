@@ -20,7 +20,10 @@ require'core'.DS.'cart_quantity.php';
 if($_SESSION['rank']>699)$status="%";else$status="published";
 $content='';
 if($config['maintenance']{0}==1&&(isset($_SESSION['rank'])&&$_SESSION['rank']<400)){
-    if(file_exists(THEME.DS.'maintenance.html'))$template=file_get_contents(THEME.DS.'maintenance.html');else$template=file_get_contents('core'.DS.'layout'.DS.'maintenance.html');
+    if(file_exists(THEME.DS.'maintenance.html'))$template=file_get_contents(THEME.DS.'maintenance.html');else{
+        include'core'.DS.'layout'.DS.'maintenance.php';
+        die();
+    }
 }elseif(file_exists(THEME.DS.$view.'.html'))
     $template=file_get_contents(THEME.DS.$view.'.html');
 elseif(file_exists(THEME.DS.'default.html'))
