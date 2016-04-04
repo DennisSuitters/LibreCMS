@@ -112,12 +112,12 @@ if($_SESSION['rank']>399){
             </ul>
         </footer>
         <div class="notifications center"></div>
-        <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
-        <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme.css">
         <script src="core/js/jquery-2.1.3.min.js"></script>
         <script src="core/js/jquery-ui.min.js"></script>
         <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.theme.css">
+        <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
+        <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons.css">
         <script src="core/js/bootstrap.min.js"></script>
         <script src="core/js/summernote.js"></script>
         <script src="core/js/plugin/summernote-save-button/summernote-save-button.js"></script>
