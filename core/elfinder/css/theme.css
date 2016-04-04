@@ -331,7 +331,7 @@
 	content:url(svg/libre-edit.svg)
 }
 .elfinder-button-icon-rename:before{
-	content:url(svg/libre-cursor.svg)
+	content:url(svg/libre-text-cursor.svg)
 }
 .elfinder-button-icon-archive:before{
 	content:url(svg/libre-archive.svg)

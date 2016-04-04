@@ -71,9 +71,9 @@ hr{margin-top:2px;margin-bottom:2px}
 .margin-10{margin:10px}
 input[type=checkbox]{position:absolute;left:-9999px}
 input[type=checkbox]+label{font-family:LibreICONS;color:#a94442}
-input[type=checkbox]+label::before{content:'\e645'}
+input[type=checkbox]+label::before{content:'\e947'}
 input[type=checkbox]:checked+label{font-family:LibreICONS;color:#3c763d}
-input[type=checkbox]:checked+label::before{content:'\e646'}
+input[type=checkbox]:checked+label::before{content:'\e948'}
 input[type=checkbox].check+label{display:inline-block;line-height:1.5em}
 input[type=checkbox].check+label::before{content:' ';display:inline-block;width:1em;height:1em;border:.0625em solid rgb(192,192,192);border-radius:.25em;background:rgb(224,224,224);vertical-align:top}
 input[type=checkbox]:checked.check+label{}
