@@ -43,16 +43,12 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     $su=$db->prepare("SELECT id,username,name,rank FROM login WHERE id=:id");
     $su->execute(array(':id'=>$r['uid']));
     $u=$su->fetch(PDO::FETCH_ASSOC);?>
-<div id="l_<?php echo$r['id'];?>" class="row activity">
-    <div class="col-xs-4 col-sm-2">
-        <div class="badger badger-left text-shadow-depth-1" data-status="<?php echo$r['action'];?>" data-contenttype="<?php echo$r['action'];?>">
-        </div><br>
-        <div class="text-muted text-center">
-            <?php echo date($config['dateFormat'],$r['ti']);?><br>
-            <small><?php echo _ago($r['ti']);?></small>
-        </div>
-    </div>
-    <div class="col-xs-6 break-word">
+<tr id="l_<?php echo$r['id'];?>" class="row activity clearfix">
+    <td class="col-xs-4 col-sm-2 text-muted text-center">
+        <?php echo date($config['dateFormat'],$r['ti']);?><br>
+        <small><?php echo _ago($r['ti']);?></small>
+    </td>
+    <td class="col-xs-6 break-word">
         <p>
             <strong>Action:</strong> <?php echo ucfirst($r['contentType']);
             if($r['action']=='create')echo' Created';
@@ -67,18 +63,19 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     }
     echo'<strong>by</strong> '.$u['username'].':'.$u['name'];?>
         </p>
-    </div>
-    <div id="controls_<?php echo$r['id'];?>" class="btn-group pull-right shadow-depth-1">
+    </td>
+    <td id="controls_<?php echo$r['id'];?>" class="text-right">
 <?php if($r['action']=='update'){?>
         <button class="btn btn-warning btn-sm" onclick="restore('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore"></i></button>
 <?php }?>
         <button class="btn btn-danger btn-sm" onclick="purge('<?php echo$r['id'];?>','logs')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><i class="libre libre-trash"></i></button>
-    </div>
-</div>
-<hr>
+    </td>
+</tr>
 <?php }
 if($cnt==$ie){?>
-<div id="more_<?php echo$is+$ie+1;?>">
-    <button class="btn btn-default btn-block" onclick="loadMore('activity_items','<?php echo$is+$ie+1;?>','<?php echo$ie;?>','<?php echo$action;?>');">More</button>
+<tr id="more_<?php echo$is+$ie+1;?>">
+    <td colspan="4">
+        <button class="btn btn-default btn-block" onclick="loadMore('activity_items','<?php echo$is+$ie+1;?>','<?php echo$ie;?>','<?php echo$action;?>');">More</button>
+    </td>
 </div>
 <?php }

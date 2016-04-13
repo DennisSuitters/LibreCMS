@@ -74,22 +74,24 @@ if($args[0]=='edit'){
     }
     if($error==1)echo'<div class="alert alert-danger">'.$e[0].'</div>';
     else{?>
-<div class="page-toolbar">Order #<?php echo$r['qid'].$r['iid'];?>
-    <div class="pull-right">
-        <div class="btn-group">
-            <a class="btn btn-success" href="<?php echo URL.$settings['system']['admin'].'/orders';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back"></i></a>
-        </div>
-        <div class="btn-group">
-            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-placement="right"><i class="libre libre-plus"></i></button>
-            <ul class="dropdown-menu multi-level pull-right">
-                <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/addquote';?>">Quote</a></li><li><a href="<?php echo URL.$settings['system']['admin'].'/orders/addinvoice';?>">Invoice</a></li>
-            </ul>
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="col-xs-6">
+            Order #<?php echo$r['qid'].$r['iid'];?>
+        </h4>
+        <div class="pull-right">
+            <div class="btn-group">
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/orders';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back"></i></a>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-default" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Print Order"';?>><i class="libre libre-print"></i></button>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-default" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Email Order"';?>><i class="libre libre-email-send"></i></button>
+            </div>
         </div>
     </div>
-</div>
-<div class="panel panel-default">
     <div class="panel-body">
-        <div class="alert alert-info visible-xs">Order Editing/Viewing is more suited for larger screens.</div>
         <div class="invoice">
             <div class="row header">
                 <div class="col-xs-4 border-right">
@@ -192,7 +194,7 @@ if($args[0]=='edit'){
                         <div class="input-group col-xs-9 col-lg-10">
                             <input type="text" id="email" class="form-control input-xs textinput" value="<?php echo$client['email'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="email" data-bt="icon" data-bs="btn-danger btn-xs" placeholder="Enter an Email..."<?php if($r['status']=='archived')echo' readonly';?>>
                             <div class="input-group-btn">
-                                <a class="btn btn-info btn-xs" href="mailto:<?php echo$client['email'];?>"><i class="libre libre-email-send"></i></a>
+                                <a class="btn btn-default btn-xs" href="mailto:<?php echo$client['email'];?>"><i class="libre libre-email-send"></i></a>
                             </div>
                         </div>
                     </div>
@@ -219,8 +221,8 @@ if($args[0]=='edit'){
         echo'<option value="'.$rs['id'].'"';if($r['cid']==$rs['id'])echo' selected';echo'>'.$rs['username'];if($rs['name']!='')echo' ['.$rs['name'].']';if($rs['business']!='')echo' -> '.$rs['business'].'</option>';
     }?>
                             </select>
+                            <span class="help-block"><small><small>Note: Changing values above will update the User's Account details.</small></small></span>
                         </div>
-                        <small class="help-block col-xs-9 col-lg-10 pull-right"><small>Note: Changing values above will update the User's Account details.</small></small>
                     </div>
 <?php }?>
                 </div>
@@ -244,7 +246,7 @@ if($args[0]=='edit'){
                             <input type="text" id="due_ti" class="form-control" value="<?php echo date($config['dateFormat'],$r['due_ti']);?>">
 <?php if($r['status']!='archived'){?>
                             <div class="input-group-btn">
-                                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown"><i class="libre libre-add"></i></button>
+                                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="libre libre-add"></i></button>
                                 <ul class="dropdown-menu pull-right">
                                     <li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+604800;?>');return false;">7 Days</a></li>
                                     <li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+1209600;?>');return false;">14 Days</a></li>
@@ -294,7 +296,7 @@ while($i=$s->fetch(PDO::FETCH_ASSOC))
 echo'<option value="'.$i['id'].'">'.ucfirst(rtrim($i['contentType'],'s')).$i['code'].':$'.$i['cost'].':'.$i['title'].'</option>';?>
                                         </select>
                                         <span class="input-group-btn">
-                                            <button class="btn btn-success" onclick="addOrderItem('<?php echo$r['id'];?>',$('#addItem').val());"><i class="libre libre-plus"></i></button>
+                                            <button class="btn btn-default" onclick="addOrderItem('<?php echo$r['id'];?>',$('#addItem').val());"><i class="libre libre-plus"></i></button>
                                         </span>
                                     </div>
                                 </div>
@@ -374,36 +376,19 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
                             <td></td>
                         </tr>
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3">&nbsp;</td>
-                            <td colspan="3">
-                                <div class="pull-right">
-                                    <div class="btn-group">
-                                        <button class="btn btn-info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"><i class="libre libre-print"></i></button>
-                                    </div>
-                                    <div class="btn-group">
-                                        <button class="btn btn-info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"><i class="libre libre-email-send"></i></button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
-            <div class="row">
-                <div class="input-group col-lg-4 col-sm-5">
+            <div class="col-xs-6">
 <?php if($r['status']!='archived'&&$user['rank']>699){?>
-                    <form target="sp" action="core/update.php">
-                        <input type="hidden" name="id" value="<?php echo$r['id'];?>">
-                        <input type="hidden" name="t" value="orders">
-                        <input type="hidden" name="c" value="notes">
-                        <textarea class="summernote" name="da"><?php echo$r['notes'];?></textarea>
-                    </form>
+                <form target="sp" action="core/update.php">
+                    <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                    <input type="hidden" name="t" value="orders">
+                    <input type="hidden" name="c" value="notes">
+                    <textarea class="summernote" name="da"><?php echo$r['notes'];?></textarea>
+                </form>
 <?php }else{?>
-                    <div class="well"><?php echo$r['notes'];?></div>
+                <div class="well"><?php echo$r['notes'];?></div>
 <?php }?>
-                </div>
             </div>
         </div>
     </div>
@@ -440,38 +425,41 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
         $s=$db->prepare("SELECT * FROM orders WHERE recurring='1' ORDER BY ti DESC");
         $s->execute();
     }?>
-<div class="page-toolbar">
-    <div class="pull-right">
-        <div class="btn-group">
-            <button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view"></i></button>
-            <ul class="dropdown-menu pull-right">
-                <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>">All</a></li>
-                <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/quotes';?>">Quotes</a></li>
-                <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/invoices';?>">Invoices</a></li>
-                <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/archived';?>">Archived</a></li>
-                <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/pending';?>">Pending</a></li>
-                <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/recurring';?>">Recurring</a></li>
-            </ul>
-        </div>
-        <div class="btn-group">
-            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-placement="right"><i class="libre libre-plus"></i></button>
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="col-xs-6">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo URL.$settings['system']['admin'].'/orders';?>">Orders</a></li>
+                <li class="relative">
+                    <a class="dropdown-toggle" data-toggle="dropdown"><?php if(isset($args[0]))echo ucfirst($args[0]);else echo'All';?> <i class="caret"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?php echo URL.$settings['system']['admin'].'/orders';?>">All</a></li>
+                        <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/quotes';?>">Quotes</a></li>
+                        <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/invoices';?>">Invoices</a></li>
+                        <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/archived';?>">Archived</a></li>
+                        <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/pending';?>">Pending</a></li>
+                        <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/recurring';?>">Recurring</a></li>
+                    </ul>
+                </li>
+            </ol>
+        </h4>
+        <div class="btn-group pull-right">
+            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-placement="right"><i class="libre libre-plus"></i></button>
             <ul class="dropdown-menu multi-level pull-right">
                 <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/addquote';?>">Quote</a></li>
                 <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/addinvoice';?>">Invoice</a></li>
             </ul>
         </div>
     </div>
-</div>
-<div class="panel panel-default">
     <div class="panel-body">
         <div class="table-responsive">
             <table id="stupidtable" class="table table-condensed table-hover">
                 <thead>
                     <tr>
-                        <th data-sort="string">Order #</th>
-                        <th class="hidden-xs" data-sort="string">Client</th>
-                        <th class="hidden-xs" data-sort="string">Date</th>
-                        <th data-sort="string">Status</th>
+                        <th class="col-xs-1">Order #</th>
+                        <th class="col-xs-1">Client</th>
+                        <th class="col-xs-2">Date</th>
+                        <th class="col-xs-1">Status</th>
                         <th class="col-xs-3"></th>
                     </tr>
                 </thead>
@@ -494,7 +482,7 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
                             <small><?php echo$c['username'];if($c['name']!='')echo' ['.$c['name'].']';if($c['name']!=''&&$c['business']!='')echo'<br>';if($c['business']!='')echo$c['business'];?></small>
                         </td>
                         <td class="hidden-xs">
-                            <small>created: <?php echo' '.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?></small><br>
+                            <small><?php echo' '.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?></small><br>
                             <small>Due: <?php echo date($config['dateFormat'],$r['due_ti']);?></small>
                         </td>
                         <td>
@@ -502,17 +490,17 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
                         </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
 <?php if($r['qid']!=''&&$r['aid']==''){?>
-                            <a class="btn btn-info btn-sm<?php if($r['status']=='delete')echo' hidden';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/to_invoice/'.$r['id'].'"';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Convert to Invoice..."';?>><i class="libre libre-order-quotetoinvoice"></i></a>
+                            <a class="btn btn-primary btn-sm<?php if($r['status']=='delete')echo' hidden';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/to_invoice/'.$r['id'].'"';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Convert to Invoice..."';?>><i class="libre libre-order-quotetoinvoice"></i></a>
 <?php }
 if($r['aid']==''){?>
-                            <button class="btn btn-info btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="update('<?php echo$r['id'];?>','orders','status','archived')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Archive"';?>><i class="libre libre-archive"></i></button>
+                            <button class="btn btn-primary btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="update('<?php echo$r['id'];?>','orders','status','archived')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Archive"';?>><i class="libre libre-archive"></i></button>
 <?php }?>
-                            <button class="btn btn-info btn-sm" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Print Order"';?>><i class="libre libre-print"></i></button>
+                            <button class="btn btn-primary btn-sm" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Print Order"';?>><i class="libre libre-print"></i></button>
 <?php if($c['email']!=''){?>
-                            <button class="btn btn-info btn-sm" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Email Order"';?>><i class="libre libre-email-send"></i></button>
+                            <button class="btn btn-primary btn-sm" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Email Order"';?>><i class="libre libre-email-send"></i></button>
 <?php }?>
-                            <a class="btn btn-info btn-sm<?php if($r['status']=='delete')echo' hidden';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/duplicate/'.$r['id'].'"';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Duplicate"';?>><i class="libre libre-copy"></i></a>
-                            <a class="btn btn-info btn-sm<?php if($r['status']=='delete')echo' hidden';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'].'"';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
+                            <a class="btn btn-primary btn-sm<?php if($r['status']=='delete')echo' hidden';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/duplicate/'.$r['id'].'"';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Duplicate"';?>><i class="libre libre-copy"></i></a>
+                            <a class="btn btn-primary btn-sm<?php if($r['status']=='delete')echo' hidden';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'].'"';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
 <?php if($user['rank']>399){?>
                             <button class="btn btn-warning btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-email-reply"></i></button>
                             <button class="btn btn-danger btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><i class="libre libre-trash"></i></button>

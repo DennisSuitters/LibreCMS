@@ -1,6 +1,8 @@
 ![Libr8](core/images/librecms.png)  
 a **Free** Open Source Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/StudioJunkyard/LibreICONS). Built to take advantage of HTML5 and CSS3, and injects necessary SEO attributes that fit in with Google's recommendations, and Microformats to help with Search Engine ranking.
 
+## Current Update may contain a lot of broken features as we upgrade and fix bugs.
+
 ### Features
 * Auto Installer when first Opened (In Progress)...
 * Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs

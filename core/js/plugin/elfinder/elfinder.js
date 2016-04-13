@@ -14,7 +14,7 @@
             var ui=$.summernote.ui;
             context.memo('button.media',function(){
                 var button=ui.button({
-                    contents:'<i class="fa fa-folder"/>',
+                    contents:'<i class="fa fa-folder-open"/>',
                     tooltip:'Media Browser',
                     click:function(){
                         mediaDialog();

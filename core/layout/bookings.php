@@ -14,12 +14,15 @@ if($args[0]=='edit'){
     $sr=$db->prepare("SELECT contentType FROM content where id=:id");
     $sr->execute(array(':id'=>$r['rid']));
     $rs=$sr->fetch(PDO::FETCH_ASSOC);?>
-<div class="page-toolbar">
-    <div class="btn-group pull-right">
-        <a class="btn btn-success" href="<?php echo URL.$settings['system']['admin'].'/bookings"';if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back';?>"><i class="libre libre-back"></i></a>
-    </div>
-</div>
 <div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="col-xs-6">
+            Bookings
+        </h4>
+        <div class="btn-group pull-right">
+            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/bookings"';if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back';?>"><i class="libre libre-back"></i></a>
+        </div>
+    </div>
     <div class="panel-body">
         <div class="form-group">
             <label for="tis" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Booked For</label>
@@ -136,22 +139,21 @@ if($sql->rowCount()>0){?>
     </div>
 </div>
 <?php }else{?>
-<div class="page-toolbar">
-    <div class="pull-right">
-<?php if($user['rank']==1000||$user['options']{0}==1){?>
-        <div class="btn-group">
-            <a class="btn btn-success" href="<?php echo URL.$settings['system']['admin'].'/add/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add Booking."';?>><i class="libre libre-add"></i></a>
-        </div>
-<?php }?>
-    </div>
-</div>
 <link rel="stylesheet" type="text/css" href="core/css/fullcalendar.min.css">
+<link rel="stylesheet" type="text/css" href="core/css/fullcalendar.theme.css">
 <div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="col-xs-6">
+            Bookings
+        </h4>
+        <div class="btn-group pull-right">
+            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/add/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add Booking."';?>><i class="libre libre-add"></i></a>
+        </div>
+    </div>
     <div class="panel-body">
         <div class="col-xs-12">
             <div id="calendar"></div>
         </div>
     </div>
 </div>
-
 <?php }

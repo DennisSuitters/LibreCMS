@@ -40,11 +40,10 @@ if($_SESSION['rank']>399){
         <link rel="stylesheet" type="text/css" href="core/css/libreicons.css">
         <link rel="stylesheet" type="text/css" href="core/css/summernote.css">
         <link rel="stylesheet" type="text/css" href="core/css/featherlight.min.css">
-        <link rel="stylesheet" type="text/css" href="core/css/admin.css">
+        <link rel="stylesheet" type="text/css" href="core/css/style.css">
     </head>
     <body>
-        <div id="top" class="hidden"></div>
-        <div class="nav-side-menu shadow-depth-2">
+        <aside class="nav-side-menu">
             <div class="profile clearfix">
                 <div class="profile-usertitle">
                     <div class="profile-usertitle-name"><?php if($user['name']!='')echo$user['name'];else echo$user['username'];?></div>
@@ -52,48 +51,42 @@ if($_SESSION['rank']>399){
                 </div>
                 <div class="profile-sidebar">
                     <div class="profile-userpic">
-                        <img class="img-thumbnail shadow-depth-1" src="<?php if($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))	echo'media/avatar/'.$user['avatar'];elseif($user['gravatar']!=''){if(stristr($user['gravatar'],'@'))echo'http://gravatar.com/avatar/'.md5($user['gravatar']);elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))echo$user['gravatar'];else echo$noavatar;}else echo$noavatar;?>">
+                        <img id="menu_avatar" class="img-thumbnail" src="<?php if($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))	echo'media/avatar/'.$user['avatar'];elseif($user['gravatar']!=''){if(stristr($user['gravatar'],'@'))echo'http://gravatar.com/avatar/'.md5($user['gravatar']);elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))echo$user['gravatar'];else echo$noavatar;}else echo$noavatar;?>">
                     </div>
                 </div>
             </div>
-            <hr>
             <div class="menu-list">
                 <ul id="menu-content" class="menu-content">
-                    <li<?php if($view=='dashboard')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/dashboard';?>"><i class="libre libre-chart-line" name="Dashboard"></i><span>Dashboard</span></a></li>
-                    <li<?php if($view=='pages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><i class="libre libre-content" name="Pages"></i><span>Pages</span></a></li>
-                    <li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/content';?>"><i class="libre libre-content" name="Content"></i><span>Content</span></a></li>
-<?php if($user['rank']==1000||$user['options']{1}==1){?>
-                    <li<?php if($view=='bookings')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><i class="libre libre-calendar" name="Bookings"></i><span>Bookings</span></a></li>
-<?php }
-    if($user['rank']==1000||$user['options']{2}==1){?>
-                    <li<?php if($view=='orders')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><i class="libre libre-order" name="Orders"></i><span>Orders</span></a></li>
-<?php }
-    if($user['rank']==1000||$user['options']{3}==1){?>
-                    <li<?php if($view=='media')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/media';?>"><i class="libre libre-picture" name="Media"></i><span>Media</span></a></li>
-<?php }?>
-                    <li<?php if($view=='messages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><i class="libre libre-mail" name="Messages"></i><span>Messages</span><a></li>
-                    <li<?php if($view=='accounts')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><i class="libre libre-users" name="Accounts"></i><span>Accounts</span></a></li>
-                    <li<?php if($view=='preferences')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><i class="libre libre-settings" name="Preferences"></i><span>Preferences</span></a></li>
-<?php if($user['rank']>899){?>
-                    <li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><i class="libre libre-activity" name="Activity"></i><span>Activity</span></a></li>
-<?php }?>
-                    <li<?php if($view=='search')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/search';?>"><i class="libre libre-search" name="Search"></i><span>Search</span></a></li>
+                    <li<?php if($view=='dashboard')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/dashboard';?>"><i class="libre libre-chart-line" name="Dashboard"></i> Dashboard</a></li>
+                    <li<?php if($view=='pages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><i class="libre libre-content" name="Pages"></i> Pages</a></li>
+                    <li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/content';?>"><i class="libre libre-content" name="Content"></i> Content</a></li>
+                    <li<?php if($view=='bookings')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><i class="libre libre-calendar" name="Bookings"></i> Bookings</a></li>
+                    <li<?php if($view=='orders')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><i class="libre libre-order" name="Orders"></i> Orders</a></li>
+                    <li<?php if($view=='media')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/media';?>"><i class="libre libre-picture" name="Media"></i> Media</a></li>
+                    <li<?php if($view=='messages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><i class="libre libre-mail" name="Messages"></i> Messages<a></li>
+                    <li<?php if($view=='accounts')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><i class="libre libre-users" name="Accounts"></i> Accounts</a></li>
+                    <li<?php if($view=='preferences')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><i class="libre libre-settings" name="Preferences"></i> Preferences</a></li>
+                    <li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><i class="libre libre-activity" name="Activity"></i> Activity</a></li>
+                    <li class="search<?php if($view=='search')echo' active';?>">
+                        <form class="" method="post" action="admin/search">
+                            <i class="libre libre-search"></i>
+                            <input class="form-control" type="search" name="search" value="" placeholder="Search" onblur="$(this).val('');$('#menu_search_icon').toggleClass('hidden');" onfocus="$('#menu_search_icon').toggleClass('hidden');">
+                        </form>
+                    </li>
                 </ul>
             </div>
 <?php if($config['maintenance']{0}==1){?>
             <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#interface';?>">Maintenance Mode</a></div>
 <?php }?>
-            <footer class="hidden-xs">
-                <div class="brand">
-                    <img src="core/images/librecms.png" alt="LibreCMS">
-                </div>
+            <footer>
                 <ul>
-                    <li><a href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out"><i class="libre libre-sign-out"></i></a></li>
-                    <li><a target="_blank" href="https://github.com/StudioJunkyard/LibreCMS/wiki" title="Wiki"><i class="libre libre-social-wikipedia"></i></li>
-                    <li><a href="<?php echo URL;?>" title="Front"><i class="libre libre-desktop"></i></a></li>
+                    <li><img class="logo" src="core/images/librecms-white-60.png"></li>
+                    <li><a class="btn btn-libre btn-xs" target="_blank" href="https://github.com/StudioJunkyard/LibreCMS/wiki" title="Wiki"><i class="libre libre-social-wikipedia"></i></a></li>
+                    <li><a class="btn btn-libre btn-xs" href="<?php echo URL;?>" title="Front"><i class="libre libre-desktop"></i></a></li>
+                    <li><a class="btn btn-libre btn-xs" href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out"><i class="libre libre-sign-out"></i></a></li>
                 </ul>
             </footer>
-        </div>
+        </aside>
         <main id="content">
 <?php if($view=='add'){
         if($args[0]=='bookings')
@@ -102,20 +95,10 @@ if($_SESSION['rank']>399){
     }else
         require'core/layout/'.$view.'.php';?>
         </main>
-        <footer class="clearfix navbar navbar-default visible-xs">
-            <span class="navbar-brand">
-                <img src="core/images/librecms.png" alt="LibreCMS">
-            </span>
-            <ul class="nav navbar-nav pull-right">
-                <li><a target="_blank" href="https://github.com/StudioJunkyard/LibreCMS"><i class="libre libre-social-github"></i></a></li>
-                <li><a href="<?php echo URL;?>"><i class="libre libre-desktop"></i></a></li>
-            </ul>
-        </footer>
         <div class="notifications center"></div>
         <script src="core/js/jquery-2.1.3.min.js"></script>
         <script src="core/js/jquery-ui.min.js"></script>
         <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
-        <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.theme.css">
         <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
         <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons.css">
         <script src="core/js/bootstrap.min.js"></script>
@@ -141,35 +124,34 @@ if($_SESSION['rank']>399){
                             folders:false
                         }
                     }
-
                 }).dialogelfinder('instance');
             }
 <?php if($view=='media'){?>
-            $().ready(function() {
-               var f=$('#elfinder').elfinder({
-                 url:'<?php echo URL;?>core/elfinder/php/connector.php',
-               }).elfinder('instance');
-             });
+            $().ready(function(){
+                var f=$('#elfinder').elfinder({
+                    url:'<?php echo URL;?>core/elfinder/php/connector.php',
+                }).elfinder('instance');
+            });
 <?php }?>
             var unsaved=false;
-            $(window).bind('beforeunload', function() {
+            $(window).bind('beforeunload',function(){
                 if(unsaved){
-                    return "You have unsaved changes in the Editor. Do you want to leave this page and discard your changes or stay on this page?";
+                    return"You have unsaved changes in the Editor. Do you want to leave this page and discard your changes or stay on this page?";
                 }
             });
             $('.summernote').summernote({
-                height:<?php if($view=='bookings'||$view=='preferences')echo'100';else echo'500';?>,
+                height:<?php if($view=='bookings'||$view=='orders'||$view=='preferences'||$view=='accounts')echo'100';else echo'300';?>,
                 tabsize:2,
-                popover: {
-                    image: [
-                        ['custom', ['imageAttributes']],
-                        ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
-                        ['float', ['floatLeft', 'floatRight', 'floatNone']],
-                        ['remove', ['removeMedia']],
+                popover:{
+                    image:[
+                        ['custom',['imageAttributes']],
+                        ['imagesize',['imageSize100','imageSize50','imageSize25']],
+                        ['float',['floatLeft','floatRight','floatNone']],
+                        ['remove',['removeMedia']],
                     ],
                 },
                 toolbar:[
-<?php if($view=='bookings'||$view=='preferences'){?>
+<?php if($view=='bookings'||$view=='orders'||$view=='preferences'||$view=='accounts'){?>
                     ['save',['save']],
                     ['font',['bold','italic','underline']],
                     ['insert',['link','hr']],
@@ -279,7 +261,8 @@ if($view=='bookings'&&$args[0]!='add'||$args[0]!='edit'){?>
                     }
                 },
                 eventDrop:function(event){
-                    update(event.id,"content","tis",event.start.format('X'));
+                    $('#block').css({'display':'block'});
+                    update(event.id,"content","tis",event.start.format());
                 }
             });
             $(window).resize(function(){
@@ -297,38 +280,25 @@ if($view=='bookings'&&$args[0]!='add'||$args[0]!='edit'){?>
         </script>
         <link href="core/css/cropper.min.css" rel="stylesheet">
         <script src="core/js/cropper.min.js"></script>
-<?php if($view=='pages'){?>
-        <script src="core/js/sortable.min.js"></script>
-<?php }?>
         <script src="core/js/js.js"></script>
         <script>/*<![CDATA[*/
             $('#search').search_filter();
-<?php		if($view=='pages'){?>
-            $('#listtype').sortable({
-                handle:'.handle',
-                forcePlaceholderSize:true,
-                placeholderClass:'sort-placeholder',
-                items:':not(.disabled)',
-                dragImage:$('.ghost')[0]
-            }).bind('sortupdate',function(e,ui){
-                var ord=$('#listtype').find('.item').map(function(){return $(this).data('id')}).get();
-                var t=$('#listtype').data('t');
-                var c=$('#listtype').data('c');
-                $.ajax({
-                    type:"GET",
-                    url:"core/reorder.php",
-                    data:{
-                        t:t,
-                        c:c,
-                        ord:ord
-                    }
-                })
-            });
-<?php		}?>
             $(document).ready(function(){
-                $(document).on("hidden.bs.modal",function (e){
-                    $(e.target).removeData("bs.modal").find(".modal-content").empty()
+<?php		if($view=='pages'){?>
+                $('#sortable').sortable({
+                    items: "> tr",
+                    placeholder: ".sort-placeholder",
+                    handle: ".handle",
+                    helper: "clone",
+                    axis: "y",
+                    update: function( event, ui ) {
+                        alert (event+' : '+ui);
+                    }
                 });
+<?php		}?>
+//                $(document).on("hidden.bs.modal",function (e){
+//                    $(e.target).removeData("bs.modal").find(".modal-content").empty()
+//                });
 <?php		if($config['options']{4}==1){?>
                 $('[data-toggle="tooltip"]').tooltip({
                     container:'body',

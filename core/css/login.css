@@ -1,8 +1,0 @@
-body{background:#fff url(../images/bg.png) repeat-x top center;margin:0;padding:0}.login-panel{margin-top:15%}img.login{width:7em;float:left;}
-@media(min-width:479px){.login-panel{margin-top:10px}}
-@media(min-width:599px){
-    .login-panel{margin-top:5%}
-}
-@media(max-width:767px){
-    .control-label{padding-left:0}
-}

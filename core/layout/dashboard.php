@@ -1,6 +1,10 @@
 <div class="page-toolbar"></div>
 <div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Dashboard</h4>
+    </div>
     <div class="panel-body">
+
 <?php if($config['maintenance']{0}==1){?>
         <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#interface';?>">Maintenance Mode</a></div>
 <?php }
@@ -13,8 +17,7 @@ if($config['backup_ti']<$tid){
 <?php }
 }
 ?>
-        <h4 class="page-header col-xs-6">In Site Analytics</h4>
-        <div class="row col-xs-12">
+        <div class="row">
 <?php $r=$db->query("SELECT COUNT(status) AS cnt FROM comments WHERE status='unapproved'")->fetch(PDO::FETCH_ASSOC);?>
             <div class="col-xs-12 col-sm-6 col-md-3">
                 <div class="panel panel-default">
@@ -51,7 +54,7 @@ if($config['backup_ti']<$tid){
                     </div>
                 </div>
             </div>
-<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE status='unconfirmed'")->fetch(PDO::FETCH_ASSOC);?>
+<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE contentType='booking' AND status!='confirmed'")->fetch(PDO::FETCH_ASSOC);?>
             <div class="col-xs-12 col-sm-6 col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-body bg-<?php if($cnt>0)echo'danger';else echo'info';?>">

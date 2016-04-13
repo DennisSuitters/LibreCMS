@@ -1,5 +1,7 @@
-<div class="page-toolbar"></div>
 <div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="col-xs-6">Preferences</h4>
+    </div>
     <div class="panel-body">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#theme" data-toggle="tab"><i class="libre libre-theme visible-xs"></i><span class="hidden-xs">Theme</span></a></li>

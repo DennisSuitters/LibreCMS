@@ -1,0 +1,22 @@
+
+
+
+#events-layer{
+    position:absolute;
+    top:-1px;
+    right:0;
+    z-index:100;
+    width:65px;
+    height:17px;
+    text-align:right;
+    padding-right:5px
+}
+#events-layer .btn{
+    padding:0;
+    line-height:13px;
+    font-size:12px;
+}
+#events-layer .btn-xs{
+    width:14px;
+    height:14px
+}

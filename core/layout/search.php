@@ -3,14 +3,18 @@ $search=isset($_POST['search'])?trim(filter_input(INPUT_POST,'search',FILTER_SAN
 $what=isset($_POST['what'])?filter_input(INPUT_POST,'what',FILTER_SANITIZE_STRING):'content';
 $status=isset($_POST['status'])?filter_input(INPUT_POST,'status',FILTER_SANITIZE_STRING):'all';
 $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):'desc';?>
-<br>
-<br>
-<br>
-<div class="row col-xs-12">
-    <form class="form-inline" method="post" action="admin/search">
-        <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-addon">Search</div>
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="col-xs-6">Search</h4>
+    </div>
+    <div class="panel-body">
+        <form method="post" action="admin/search">
+            <div class="form-group input-group">
+                <div class="input-group-addon">Search for</div>
+                <input type="text" class="form-control" name="search" value="<?php echo trim($search);?>" placeholder="Enter a Search Phrase...">
+            </div>
+            <div class="form-group input-group">
+                <div class="input-group-addon">in</div>
                 <div class="input-group-btn">
                     <select class="form-control" name="what">
                         <option value="content"<?php if($what=='content')echo' selected';?>>Content</option>
@@ -20,8 +24,7 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
                         <option value="pages"<?php if($what=='pages')echo' selected';?>>Pages</option>
                     </select>
                 </div>
-                <div class="input-group-addon">for</div>
-                <input type="text" class="form-control" name="search" value="<?php echo trim($search);?>" placeholder="Enter a Search Phrase...">
+                <div class="input-group-addon">where Status is</div>
                 <div class="input-group-btn">
                     <select class="form-control" name="status">
                         <option value="all"<?php if($status=='all')echo' selected';?>>All</option>
@@ -29,7 +32,7 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
                         <option value="unpublished"<?php if($status=='unpublished')echo' selected';?>>Unpublished</option>
                     </select>
                 </div>
-                <div class="input-group-addon">and</div>
+                <div class="input-group-addon">Order By</div>
                 <div class="input-group-btn">
                     <select class="form-control" name="ord">
                         <option value="desc"<?php if($ord=='desc')echo' selected';?>>Descending</option>
@@ -37,13 +40,10 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
                     </select>
                 </div>
                 <div class="input-group-btn">
-                    <button class="btn btn-success"><i class="libre libre-search visible-xs"></i><span class="hidden-xs">Search</span></button>
+                    <button class="btn btn-default">Go</button>
                 </div>
             </div>
-        </div>
-    </form>
-</div>
-<br>
+        </form>
 <?php if($search!=''){
     $qry="SELECT * FROM";
     if($what=='content')
@@ -79,22 +79,22 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
     $s=$db->prepare($qry);
     $s->execute(array(':search'=>'%'.$search.'%'));
     while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-<div class="searchresults clearfix" data-status="<?php echo$r['status'];?>">
-    <ol class="breadcrumb">
-        <li>
-            <a href="<?php echo URL.$settings['system']['admin'];if($what=='pages')echo'/pages';elseif($what=='orders')echo'/orders';else echo'/content';?>"><?php echo ucfirst($what);?></a>
-        </li>
+        <div class="searchresults clearfix" data-status="<?php echo$r['status'];?>">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="<?php echo URL.$settings['system']['admin'];if($what=='pages')echo'/pages';elseif($what=='orders')echo'/orders';else echo'/content';?>"><?php echo ucfirst($what);?></a>
+                </li>
 <?php if($what=='content'){?>
-        <li>
-            <a href="<?php echo URL.$settings['system']['admin'].'/content/type/'.$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a>
-        </li>
+                <li>
+                    <a href="<?php echo URL.$settings['system']['admin'].'/content/type/'.$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a>
+                </li>
 <?php }?>
-        <li>
-            <a href="<?php echo URL.$settings['system']['admin'].'/'.$what.'/edit/'.$r['id'];?>"><?php if($what=='orders'){echo$r['qid'].$r['iid'];if($r['aid']!='')echo'/'.$r['aid'];}else echo$r['title'];?></a>
-        </li>
-    </ol>
-    <small class="text-success"><?php echo URL.$settings['system']['admin'].'/'.$what.'/edit/'.$r['id'];?></small><br>
-    <small class="float-left" style="margin-left:10px;">
+                <li>
+                    <a href="<?php echo URL.$settings['system']['admin'].'/'.$what.'/edit/'.$r['id'];?>"><?php if($what=='orders'){echo$r['qid'].$r['iid'];if($r['aid']!='')echo'/'.$r['aid'];}else echo$r['title'];?></a>
+                </li>
+            </ol>
+            <small class="text-success"><?php echo URL.$settings['system']['admin'].'/'.$what.'/edit/'.$r['id'];?></small><br>
+            <small class="float-left" style="margin-left:10px;">
 <?php if($what=='content'){
     if($r['thumb']!=''&&file_exists('media/'.$r['thumb']))
         echo'<img src="media/'.$r['file'].'" class="img-thumbnail">';
@@ -106,7 +106,10 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
         echo'';
 }
     echo strip_tags(substr($r['notes'],0,800),'<a>');?>
-    </small>
-</div>
+            </small>
+        </div>
+        <hr>
 <?php }
-}
+}?>
+    </div>
+</div>

@@ -7,14 +7,13 @@ if(isset($args[0])&&$args[0]=='view'||$args[0]=='compose'){
         $q->execute(array(':id'=>$args[1]));
         $r=$q->fetch(PDO::FETCH_ASSOC);
     }?>
-<div class="page-toolbar">
-    <div class="pull-right">
-        <div class="btn-group">
-            <a class="btn btn-success" href="<?php echo URL.$settings['system']['admin'].'/messages';?>">Back</a>
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="col-xs-6">Messages</h4>
+        <div class="btn-group pull-right">
+            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><i class="libre libre-back"></i></a>
         </div>
     </div>
-</div>
-<div class="panel panel-default">
     <div class="panel-body">
         <div class="clearfix"></div>
         <div class="form-group">
@@ -65,8 +64,10 @@ if(isset($args[0])&&$args[0]=='view'||$args[0]=='compose'){
         if($args[0]=='important')$folder='important';
         if($args[0]=='sent')$folder='sent';
     }?>
-<div class="page-toolbar"></div>
 <div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="col-xs-6">Messages</h4>
+    </div>
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-3 col-md-2">
@@ -108,7 +109,7 @@ $cnt=$s->fetch(PDO::FETCH_ASSOC);?>
                             <th class="mailbox-star">&nbsp;</th>
                             <th class="mailbox-name col-xs-4 text-center">Name</th>
                             <th class="mailbox-subject col-xs-4 text-center">Subject</th>
-                            <th class="mailbox-date col-xs-2">&nbsp;</th>
+                            <th class="mailbox-date col-xs-2"></th>
                         </tr>
                     </thead>
                     <tbody>
