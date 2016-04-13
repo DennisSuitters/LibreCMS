@@ -27,15 +27,15 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 #### Integrated Projects:
 - [LibreICONS](https://github.com/StudioJunkyard/LibreICONS)
 - [Summernote](https://github.com/summernote/summernote)
-- - [summernote-save-button](https://github.com/StudioJunkyard/summernote-save-button)
-- - [summernote-image-attributes](https://github.com/StudioJunkyard/summernote-image-attributes)
-- - [summernote-ext-elfinder](https://github.com/semplon/summernote-ext-elfinder)
+  - [summernote-save-button](https://github.com/StudioJunkyard/summernote-save-button)
+  - [summernote-image-attributes](https://github.com/StudioJunkyard/summernote-image-attributes)
+  - [summernote-ext-elfinder](https://github.com/semplon/summernote-ext-elfinder)
 - [PHPMailer](https://github.com/PHPMailer/PHPMailer)
 - [TCPDF](http://www.tcpdf.org/)
 - [Zebra_Image](https://github.com/stefangabos/Zebra_Image)
 - [kses]() We've modified kses to include HTML5, and minified the source.
 - [elFinder](https://github.com/Studio-42/elFinder)
-- - [elFinder-bootstrap-theme](https://github.com/StudioJunkyard/elfinder-bootstrap-theme)
+  - [elFinder-bootstrap-theme](https://github.com/StudioJunkyard/elfinder-bootstrap-theme)
 
 ### Tested on:
 - Ubuntu 14.04 + Apache v2.4.7 + PHP v5.5.9-1 + MySQL v5.5.37
