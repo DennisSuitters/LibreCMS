@@ -167,7 +167,7 @@ if($_SESSION['rank']>399){
                     ['para',['ul','ol','paragraph']],
                     ['height',['height']],
                     ['table',['table']],
-                    ['insert',['media','link','hr']],
+                    ['insert',['media','picture','video','link','hr']],
                     ['view',['fullscreen','codeview']],
                     ['help',['help']]
 <?php }?>
