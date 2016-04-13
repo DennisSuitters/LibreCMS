@@ -409,10 +409,10 @@ if($show=='item'){
                                     </span>
                                 </a>
                             </div>
-                            <div id="file" class="input-group-addon">
-<?php if($r['file']!=''&&file_exists('media/'.$r['file']))
+                            <div id="file" class="input-group-addon img">
+<?php if($r['file']!=''&&file_exists('media'.DS.$r['file']))
     echo'<a href="media/'.$r['file'].'" data-featherlight="image"><img src="media/'.$r['file'].'"></a>';
-elseif($r['fileURL']!=''&&file_exists('media/'.$r['fileURL']))
+elseif($r['fileURL']!=''&&file_exists('media'.DS.$r['fileURL']))
     echo'<a href="media/'.$r['fileURL'].'" data-featherlight="image"><img src="media/'.$r['fileURL'].'"></a>';
 elseif($r['fileURL']!='')
     echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img src="'.$r['fileURL'].'"></a>';
@@ -454,8 +454,8 @@ else echo'<img src="core/images/noimage.jpg">';?>
                                     </span>
                                 </a>
                             </div>
-                            <div id="thumb" class="input-group-addon">
-<?php if($r['thumb']!=''&&file_exists('media/'.$r['thumb']))echo'<a href="media/'.$r['thumb'].'" data-featherlight="image"><img src="media/'.$r['thumb'].'"></a>';
+                            <div id="thumb" class="input-group-addon img">
+<?php if($r['thumb']!=''&&file_exists('media'.DS.$r['thumb']))echo'<a href="media/'.$r['thumb'].'" data-featherlight="image"><img src="media/'.$r['thumb'].'"></a>';
 else echo'<img src="core/images/noimage.jpg">';?>
                             </div>
                             <div class="input-group-btn">

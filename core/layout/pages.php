@@ -94,7 +94,6 @@ if($show=='item'){
                     <div class="form-group">
                         <label for="cover" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
                         <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <div class="input-group-addon"><i class="libre libre-link"></i></div>
                             <input type="text" id="coverURL" class="form-control" value="<?php echo$r['coverURL'];?>" onchange="coverUpdate('<?php echo$r['id'];?>','menu','coverURL',$(this).val());" placeholder="Enter Cover URL...">
                             <div class="input-group-btn">
                                 <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=menu&c=coverURL"><i class="libre libre-edit"></i></a>
@@ -126,11 +125,22 @@ if($show=='item'){
                             <div class="input-group-btn">
                                 <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=menu&c=cover"><span class="libre-stack"><i class="libre libre-stack-1x libre-picture"></i><i class="libre libre-stack-1x libre-action text-info"></i><i class="libre libre-stack-action libre-action-select"></i></span></a>
                                 <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=menu&c=cover"><i class="libre libre-edit"></i></a>
+                            </div>
+                            <div id="cover" class="input-group-addon img">
+<?php if($r['cover']!=''&&file_exists('media'.DS.$r['cover']))
+    echo'<a href="media/'.$r['cover'].'" data-featherlight="image"><img src="media/'.$r['cover'].'"></a>';
+elseif($r['coverURL']!=''&&file_exists('media'.DS.$r['coverURL']))
+    echo'<a href="media/'.$r['coverURL'].'" data-featherlight="image"><img src="media/'.$r['coverURL'].'"></a>';
+elseif($r['coverURL']!='')
+    echo'<a href="'.$r['coverURL'].'" data-featherlight="image"><img src="'.$r['coverURL'].'"></a>';
+else echo'<img src="core/images/nocover.jpg">';?>
+                            </div>
+                            <div class="input-group-btn">
                                 <button class="btn btn-danger" onclick="coverUpdate('<?php echo$r['id'];?>','menu','cover','');"><i class="libre libre-trash"></i></button>
                             </div>
                         </div>
+                        <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div>
                     </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div>
                 </fieldset>
                 <fieldset class="control-fieldset">
                     <legend class="control-legend">Image Attribution</legend>

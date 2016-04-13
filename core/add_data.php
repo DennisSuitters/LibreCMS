@@ -230,7 +230,7 @@ if($act!=''){
                             $q=$db->prepare("UPDATE $tbl SET $col=:cover WHERE id=:id");
                             $q->execute(array(':cover'=>$fn,':id'=>$id));
                             rename($tp,'..'.DS.'media'.DS.$fn);?>
-    window.top.window.$('#coverimg').html('<img src="media/<?php echo$fn.'?'.$ti;?>">');
+    window.top.window.$('#cover').html('<img src="media/<?php echo$fn.'?'.$ti;?>">');
 <?php                   }
                         if($col=="thumb"){
                             $q=$db->prepare("UPDATE content SET thumb=:thumb WHERE id=:id");

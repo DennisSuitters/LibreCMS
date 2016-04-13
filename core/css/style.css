@@ -8,8 +8,8 @@ body{background-color:#ededed;margin:0;padding:0}
 .libre-cms_login .btn{width:45%}
 #content{margin:15px 15px 15px 275px}
 .panel-body .elfinder{display:block;padding:0;margin:-15px;border:0;-webkit-box-shadow:none;box-shadow:none}
-.input-group-addon .img{padding:0}
-.input-group-addon img{margin:0;padding:0;max-width:40px;max-height:20px;}
+.input-group-addon.img{padding:0;margin:0;}
+.input-group-addon img{margin:0;padding:0;width:40px;height:30px}
 .btn-libre{color:#aaa;background-color:transparent;border-color:#aaa}
 .btn-libre:focus,
 .btn-libre:hover{color:#fff;background:transparent none;border-color:#bbb;-webkit-box-shadow:0 1px 3px rgba(128,128,128,.5);box-shadow:0 1px 3px rgba(128,128,128,.25)}
@@ -22,9 +22,6 @@ body{background-color:#ededed;margin:0;padding:0}
 h4 .breadcrumb{padding:0;margin:0}
 .btn-file{position:relative;overflow:hidden}
 .btn-file input[type=file]{position:absolute;top:0;right:0;min-width:100%;min-height:100%;font-size:100px;text-align:right;filter:alpha(opacity=0);opacity:0;outline:none;background:white;cursor:inherit;display:block}
-.input-group-addon#file,
-.input-group-addon#thumb,
-.input-group-addon#thumb{padding:0}
 .theme-chooser-item{cursor:pointer}
 .theme-chooser-item.panel.panel-success{border-width:3px;border-color:#4aa03f}
 #sp{display:none}

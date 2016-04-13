@@ -28,7 +28,6 @@ if($args[0]=='edit'){
             <li role="presentation"><a href="#account-settings" aria-controls="account-settings" role="tab" data-toggle="tab">Settings</a></li>
         </ul>
         <div class="tab-content">
-<?php // General ?>
             <div role="tabpanel" class="tab-pane active" id="account-general">
                 <div class="form-group">
                     <label for="ti" class="control-label col-xs-4 col-sm-3 col-lg-2">Created</label>
@@ -119,9 +118,7 @@ if($args[0]=='edit'){
                         </form>
                     </div>
                 </div>
-
             </div>
-<?php // Images ?>
             <div role="tabpanel" class="tab-pane" id="account-images">
                 <fieldset class="control-fieldset">
                     <legend class="control-legend">Avatar</legend>
@@ -157,7 +154,6 @@ if($args[0]=='edit'){
                     </div>
                 </fieldset>
             </div>
-<?php // Social ?>
             <div role="tabpanel" class="tab-pane" id="account-social">
                 <fieldset class="control-fieldset">
                     <legend class="control-legend">Social Networking</legend>
@@ -250,9 +246,9 @@ if($args[0]=='edit'){
                         </form>
                     </div>
                     <div id="social">
-        <?php $ss=$db->prepare("SELECT * FROM choices WHERE contentType='social' AND uid=:uid ORDER BY icon ASC");
-        $ss->execute(array(':uid'=>$r['id']));
-        while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
+<?php $ss=$db->prepare("SELECT * FROM choices WHERE contentType='social' AND uid=:uid ORDER BY icon ASC");
+$ss->execute(array(':uid'=>$r['id']));
+while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                         <div id="l_<?php echo$rs['id'];?>" class="form-group">
                             <label class="control-label hidden-xs col-sm-3 col-lg-2">&nbsp;</label>
                             <div class="input-group col-xs-12 col-sm-9 col-lg-10">
@@ -270,11 +266,10 @@ if($args[0]=='edit'){
                                 </div>
                             </div>
                         </div>
-        <?php }?>
+<?php }?>
                     </div>
                 </fieldset>
             </div>
-<?php // Settings?>
             <div role="tabpanel" class="tab-pane" id="account-settings">
                 <div class="form-group">
                     <label for="password" class="control-label col-xs-4 col-sm-3 col-lg-2">Password</label>
@@ -385,9 +380,6 @@ if($args[0]=='edit'){
                 </div>
             </div>
         </div>
-
-
-
     </div>
 </div>
 <?php }else{

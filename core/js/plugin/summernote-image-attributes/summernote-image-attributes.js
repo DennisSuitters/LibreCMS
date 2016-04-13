@@ -46,37 +46,37 @@
             this.initialize=function(){
                 var $container=options.dialogsInBody?$(document.body):$editor;
                 var body='<div class="form-group">'+
-                 '<label class="control-label col-xs-2">'+lang.imageAttributes.title+'</label>'+
-                 '<div class="input-group col-xs-10">'+
-                    '<input class="note-image-title-text form-control" type="text">'+
-                 '</div>'+
+                    '<label class="control-label col-xs-2">'+lang.imageAttributes.title+'</label>'+
+                    '<div class="input-group col-xs-10">'+
+                        '<input class="note-image-title-text form-control" type="text">'+
+                    '</div>'+
                 '</div>'+
                 '<div class="form-group">'+
-                 '<label class="control-label col-xs-2">'+lang.imageAttributes.alt+'</label>'+
-                 '<div class="input-group col-xs-10">'+
-                  '<input class="note-image-alt-text form-control" type="text">'+
-                 '</div>'+
+                    '<label class="control-label col-xs-2">'+lang.imageAttributes.alt+'</label>'+
+                    '<div class="input-group col-xs-10">'+
+                        '<input class="note-image-alt-text form-control" type="text">'+
+                    '</div>'+
                 '</div>'+
                 '<div class="form-group">'+
-                 '<label class="control-label col-xs-2">'+lang.imageAttributes.class+'</label>'+
-                 '<div class="input-group col-xs-10">'+
-                  '<input class="note-image-class-text form-control" list="note-image-class-select" type="text">'+
-                  '<div class="input-group-btn">'+
-                   '<select class="note-image-class-select btn btn-default" onchange="$(\'.note-image-class-text\').val($(\'.note-image-class-text\').val()+\' \'+$(this).val());">'+
-                    '<option value="">Select Class</option>'+
-                    '<option value="img-responsive">Responsive</option>'+
-                    '<option value="img-rounded">Rounded</option>'+
-                    '<option value="img-circle">Circle</option>'+
-                    '<option value="img-thumbnail">Thumbnail</option>'+
-                   '</select>'+
-                  '</div>'+
-                 '</div>'+
+                    '<label class="control-label col-xs-2">'+lang.imageAttributes.class+'</label>'+
+                    '<div class="input-group col-xs-10">'+
+                        '<input class="note-image-class-text form-control" list="note-image-class-select" type="text">'+
+                        '<div class="input-group-btn">'+
+                            '<select class="note-image-class-select btn btn-default" onchange="$(\'.note-image-class-text\').val($(\'.note-image-class-text\').val()+\' \'+$(this).val());">'+
+                                '<option value="">Select Class</option>'+
+                                '<option value="img-responsive">Responsive</option>'+
+                                '<option value="img-rounded">Rounded</option>'+
+                                '<option value="img-circle">Circle</option>'+
+                                '<option value="img-thumbnail">Thumbnail</option>'+
+                            '</select>'+
+                        '</div>'+
+                    '</div>'+
                 '</div>'+
                 '<div class="form-group">'+
-                 '<label class="control-label col-xs-2">'+lang.imageAttributes.style+'</label>'+
-                 '<div class="input-group col-xs-10">'+
-                  '<input class="note-image-style-text form-control" type="text">'+
-                 '</div>'+
+                    '<label class="control-label col-xs-2">'+lang.imageAttributes.style+'</label>'+
+                    '<div class="input-group col-xs-10">'+
+                        '<input class="note-image-style-text form-control" type="text">'+
+                    '</div>'+
                 '</div>';
                 this.$dialog=ui.dialog({
                     title:'Image Attributes',
