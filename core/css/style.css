@@ -6,7 +6,6 @@ body{background-color:#ededed;margin:0;padding:0}
 .libre-cms_login{position:relative;width:300px;margin-top:15%;padding:20px;-webkit-box-shadow:0 3px 10px rgba(128,128,128,.5);box-shadow:0 3px 10px rgba(128,128,128,.5)}
 .libre-cms_login .loginimg{margin:-10px -25px 20px 0}
 .libre-cms_login .btn{width:45%}
-#content{margin:15px 15px 15px 275px}
 .panel-body .elfinder{display:block;padding:0;margin:-15px;border:0;-webkit-box-shadow:none;box-shadow:none}
 .input-group-addon.img{padding:0;margin:0;}
 .input-group-addon img{margin:0;padding:0;width:40px;height:30px}
@@ -35,7 +34,19 @@ input[type=checkbox].check+label{display:inline-block;line-height:1.5em}
 input[type=checkbox].check+label::before{content:' ';display:inline-block;width:1em;height:1em;border:.0625em solid rgb(192,192,192);border-radius:.25em;background:rgb(224,224,224);vertical-align:top}
 input[type=checkbox]:checked.check+label{}
 input[type=checkbox]:checked.check+label::before{content:'✓';color:rgb(0,0,0);font-size:1em;line-height:1em;text-align:center;text-shadow:0 0 0.0714em rgb(0,0,0);font-weight:700}
-.nav-side-menu{overflow:auto;font-size:14px;font-weight:200;background-color:#386386;position:fixed;top:0;width:260px;height:100%;color:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 0 0}
+#menu-toggle{position:absolute;top:-15px;right:-23px;display:none}
+#sidemenu{position:fixed;z-index:100;width:275px;left:0;margin-left:0;-webkit-transition: all 0.5s ease;-moz-transition: all 0.5s ease;-o-transition: all 0.5s ease;transition: all 0.5s ease}
+#sidemenu.toggled{left:0;margin-left:0}
+#content{margin:15px 15px 15px 275px;-webkit-transition: all 0.5s ease;-moz-transition: all 0.5s ease;-o-transition: all 0.5s ease;transition: all 0.5s ease}
+#content.toggled{margin:15px 15px 15px 275px}
+@media(max-width:767px){
+    #menu-toggle{display:block}
+    #sidemenu{left:-130px;margin-left:-130px}
+    #sidemenu.toggled{left:0;margin-left:0}
+    #content,
+    #content.toggled{margin:15px 15px 15px 15px}
+}
+.nav-side-menu{overflow:auto;font-size:14px;font-weight:200;background-color:#386386;position:fixed;top:0;width:260px;height:100%;color:#fff}
 .nav-side-menu ul,
 .nav-side-menu li{list-style:none;padding:0;margin:2px 0;line-height:30px;font-weight:300;cursor:pointer}
 .nav-side-menu ul :not(collapsed) .arrow:before,
@@ -55,13 +66,11 @@ input[type=checkbox]:checked.check+label::before{content:'✓';color:rgb(0,0,0);
 .nav-side-menu li a{text-decoration:none;color:#ccc}
 .nav-side-menu li a:hover{color:#fff;text-shadow:0 1px 1px #000}
 .nav-side-menu li.search input[type=search]{display:inline;width:220px;padding:0;margin:0 0 0 -2px;border:0 none transparent;background-color:transparent;-webkit-box-shadow:0 0 0 transparent;box-shadow:0 0 0 transparent}
-
 .nav-side-menu li.search input[type=search]:hover{display:inline;width:220px;padding:0;margin:0 0 0 -2px;border:0 none transparent;background-color:transparent;cursor:pointer}
 .nav-side-menu li.search i.libre{display:inline-block;width:15px;font-size:12px;line-height:14px;background-color:transparent;color:#ccc;text-shadow:0 0 0 none;border-width:0;padding:0;border-radius:0;-webkit-box-shadow:0 0 0 transparent;box-shadow:0 0 0 transparent}
 .nav-side-menu li.search:hover i.libre,
 .nav-side-menu li.search:focus i.libre,
 .nav-side-menu li.search.active i.libre{display:inline-block;width:15px;background-color:transparent;color:#fff;text-shadow:0 1px 5px #000;border-width:0;padding:0;border-radius:0}
-
 .nav-side-menu input[type=search]::-webkit-input-placeholder{color:#ccc}
 .nav-side-menu input[type=search]:-moz-placeholder{color:#ccc}
 .nav-side-menu input[type=search]::-moz-placeholder{color:#ccc}

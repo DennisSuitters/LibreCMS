@@ -43,6 +43,8 @@ if($_SESSION['rank']>399){
         <link rel="stylesheet" type="text/css" href="core/css/style.css">
     </head>
     <body>
+        <div id="sidemenu">
+            <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle"><i class="libre libre-layout-list"></i></a>
         <aside class="nav-side-menu">
             <div class="profile clearfix">
                 <div class="profile-usertitle">
@@ -87,6 +89,7 @@ if($_SESSION['rank']>399){
                 </ul>
             </footer>
         </aside>
+    </div>
         <main id="content">
 <?php if($view=='add'){
         if($args[0]=='bookings')
@@ -108,6 +111,10 @@ if($_SESSION['rank']>399){
         <script src="core/js/plugin/elfinder/elfinder.js"></script>
 		<script src="core/elfinder/js/elfinder.min.js"></script>
         <script>
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#sidemenu,#content").toggleClass("toggled");
+            });
             function mediaDialog(){
                 var fm=$('<div/>').dialogelfinder({
                     url:'<?php echo URL;?>core/elfinder/php/connector.php',
@@ -180,8 +187,7 @@ if($_SESSION['rank']>399){
         <script src="core/js/moment.min.js"></script>
         <script src="core/js/fullcalendar.min.js"></script>
         <script>
-<?php
-if($view=='bookings'&&$args[0]!='add'||$args[0]!='edit'){?>
+<?php   if($args[0]!='add'||$args[0]!='edit'){?>
             $('#calendar').fullCalendar({
                 header:{
                     left:'prev,next',

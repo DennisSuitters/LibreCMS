@@ -68,13 +68,6 @@ if($show=='item'){
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="active" class="control-label col-xs-5 col-sm-3 col-lg-2">Active</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="checkbox" id="active" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
-                        <label for="active">
-                    </div>
-                </div>
-                <div class="form-group">
                     <div class="input-group col-xs-12">
                         <form id="summernote" method="post" target="sp" action="core/update.php">
                             <input type="hidden" name="id" value="<?php echo$r['id'];?>">
@@ -164,7 +157,6 @@ else echo'<img src="core/images/nocover.jpg">';?>
                     </div>
                 </fieldset>
             </div>
-<?php // SEO ?>
             <div role="tabpanel" class="tab-pane" id="page-seo">
                 <div class="form-group">
                     <label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Title</label>
@@ -192,8 +184,14 @@ else echo'<img src="core/images/nocover.jpg">';?>
                 </div>
 
             </div>
-<?php // Settings ?>
             <div role="tabpanel" class="tab-pane" id="page-settings">
+                <div class="form-group">
+                    <label for="active" class="control-label col-xs-5 col-sm-3 col-lg-2">Active</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="checkbox" id="active" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
+                        <label for="active">
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="menu" class="control-label col-xs-5 col-sm-3 col-lg-2">Menu</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
