@@ -12,6 +12,7 @@
 		<link rel="apple-touch-icon" href="core/images/favicon.png">
 		<meta name="viewport" content="width=400,initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="core/css/libreicons.css">
 		<link rel="stylesheet" type="text/css" href="core/css/style.css">
 	</head>
 	<body>
