@@ -41,7 +41,7 @@ if($_POST['emailtrap']==''){
 		$txt.='password = '.$dbpassword.PHP_EOL;
 		$txt.='[system]'.PHP_EOL;
 		$txt.='url = '.$sysurl.PHP_EOL;
-		if($sysadmin=='')$txt.='admin'.PHP_EOL;
+		if($sysadmin=='')$txt.='admin = admin'.PHP_EOL;
 		else $txt.='admin = '.$sysadmin.PHP_EOL;
 		$oFH=fopen("config.ini",'w');
 		fwrite($oFH,$txt);
