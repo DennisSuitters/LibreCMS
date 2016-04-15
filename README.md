@@ -1,7 +1,5 @@
-![Libr8](core/images/librecms.png)  
-a **Free** Open Source Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/StudioJunkyard/LibreICONS). Built to take advantage of HTML5 and CSS3, and injects necessary SEO attributes that fit in with Google's recommendations, and Microformats to help with Search Engine ranking.
-
-## Current Update may contain a lot of broken features as we upgrade and fix bugs.
+![LibreCMS](core/images/librecms.png)  
+a **Free** Open Source Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/StudioJunkyard/LibreICONS). Built to take advantage of HTML5 and CSS3, and injects necessary SEO attributes that fit in with Google's recommendations, and Micro-formats to help with Search Engine ranking.
 
 ### Features
 - Auto Installer when first Opened (In Progress)...
@@ -13,7 +11,7 @@ a **Free** Open Source Content Management System, that is built utilising [PHP](
 - Client Proofs and Commenting
 - Easy Theme Selector
 - Front End Theme Engine processing that allows the use of any CSS or Javascript Framework.
-- Front End integration uses Vanilla Javascript for backend processing for Form Submission and Event Notification.
+- Front End integration uses Vanilla Javascript for back end processing for Form Submission and Event Notification.
 - Administration uses jQuery, Modified Bootstrap, LibreICONS, and other jQuery Addons.
 
 Please submit issue's here at GitHub, this is so we can track, and update issue's more efficiently.
@@ -52,14 +50,14 @@ To Login into the Administration area, goto http://yoursite/admin/ or use the "A
 - Build Installer to make Installation Easier, and Checking PHP Components are Installed to Allow LibreCMS to work.
 - Make sure database backup works properly, last time we checked it wasn't.
 - Convert from font icons to using svg icons to reduce footprint.
-- Reduce the Templating System Markup to make it easier to use.
+- Reduce the Template System Markup to make it easier to use.
 - Add Content to the Wiki Pages on how to use LibreCMS and how to create Templates.
 - Once at a Stable Platform, create a release candidate, and create a proper gh-page site.
 - Create Free Templates.
 - Testing, and Bug Squashing, as per the usual with ongoing projects.
 
 ### LEGAL:
-By downloading LibreCMS you hereby agree not to hold Studio Junkyard liable for any damages that your usage of LibreCMS may cause to your system, or persons. Damages may infere such things as (which we are NOT responsible for) Data Loss, Hearing Imparement, Server Crashes, Alien Abduction, Coding Nitemare's, Alien Implants, or Visiting Alternate Realities. LibreCMS is Licensed under GPLv3. We request that if you modify, and hopefully enhance LibreCMS, that you take part in maintaining, and contributing to it's code base here at GitHub.
+By downloading LibreCMS you hereby agree not to hold Studio Junkyard liable for any damages that your usage of LibreCMS may cause to your system, or persons. Damages may infer such things as (which we are NOT responsible for) Data Loss, Hearing Impairment, Server Crashes, Alien Abduction, Coding nightmare's, Alien Implants, or Visiting Alternate Realities. LibreCMS is Licensed under GPLv3. We request that if you modify, and hopefully enhance LibreCMS, that you take part in maintaining, and contributing to it's code base here at GitHub.
 
 ### NOTE:
 - We are currently overhauling parts of the Administration Area, and will soon be making changes to the Layout (Front End) area.

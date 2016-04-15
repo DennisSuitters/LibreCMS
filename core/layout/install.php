@@ -12,33 +12,25 @@
 		<link rel="apple-touch-icon" href="core/images/favicon.png">
 		<meta name="viewport" content="width=400,initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="core/css/install.css">
+		<link rel="stylesheet" type="text/css" href="core/css/style.css">
 	</head>
 	<body>
 		<div class="container install-panel">
-			<img class="login img-responsive" src="core/images/librecms.png" alt="LibreCMS">
+			<img class="installimg img-responsive" src="core/images/librecms.png" alt="LibreCMS">
 			<div class="panel panel-default">
-				<div class="panel-body visible-xs">
-					<div class="alert alert-danger">
-						It is best to install LibreCMS using a Desktop System...
-					</div>
+				<div class="panel-heading">
+					<h2>Installation</h2>
 				</div>
-				<div class="panel-body hidden-xs">
-					<h2 class="page-header">Installation</h2>
-					<div class="well">
-						<h3 class="page-header col-sm-6">System Checks</h3>
-						<div class="clearfix"></div>
-<?php if(version_compare(phpversion(),'5.5.9','>')){
-	echo'<div class="alert alert-success">LibreCMS was built using PHPv5.5.9, your installed version is higher.</div>';
-}else{
+				<div id="d0" class="panel-body">
+<?php
+$error=0;
+if(version_compare(phpversion(),'5.5.9','<')){
 	echo'<div class="alert alert-warning">LibreCMS was built using PHPv5.5.9, your installed version is lower. While LibreCMS may operate on your system, some functionality may not work or be available.</div>';
 }
 if(extension_loaded('pdo')){
 	if(empty(PDO::getAvailableDrivers())){
 		$error=1;
 		echo'<div class="alert aler-danger">Great PDO is Installed and Active, but there are no Database Drivers Installed.</div>';
-	}else{
-		echo'<div class="alert alert-success">Great PDO is Installed and Active.</div>';
 	}
 }else{
 	$error=1;
@@ -47,40 +39,26 @@ if(extension_loaded('pdo')){
 if(file_exists('core/config.ini')&&!is_writable('core/config.ini')){
 	$error=1;
 	echo'<div class="alert alert-danger">"core/config.ini" Exists, but is not writeable. There is two ways to fix this, either make "core/config.ini" writable, or remove the file.</div>';
-}elseif(file_exists('core/config.ini')&&is_writable('core/config.ini')){
-	echo'<div class="alert alert-success">Great! "core/config.ini" Exists, and is writeable. Values entered below, will overwrite any manually entered settings.</div>';
-}else{
-	echo'<div class="alert alet-warning">"core/config.ini" does NOT exists, that\'s ok, we\'ll create it.</div>';
 }
 if(!isset($_SERVER['HTTP_MOD_REWRITE'])){
 	$error=1;
 	echo'<div class="alert alert-danger">"mod_rewrite" must be available and enabled for LibreCMS to function correctly.</div>';
-}else{
-	echo'<div class="alert alert-success">Great "mod_rewrite" is installed, and enabled.</div>';
 }
-if(extension_loaded('gd')&&function_exists('gd_info')){
-	echo'<div class="alert alert-success">Great! GD-Image is Installed and Enabled.</div>';
-}else{
+if(!extension_loaded('gd')&&!function_exists('gd_info')){
 	$error=1;
 	echo'<div class="alert alert-danger">GD-Image is NOT Installed or Enabled.</div>';
 }
 if(!function_exists('exif_read_data')){
 	echo'<div class="alert alert-info">EXIF Functions are NOT enabled or installed. While not Mandatory, some features won\'t work.</div>';
-}else{
-	echo'<div class="alert alert-success">Great EXIF Functions are enabled.</div>';
 }
-if($error==0){
-	echo'<div class="alert alert-success">Checks have been satisfied, you can continue to fill in the rest of Settings Details below.</div>';
-}else{
+if($error==1){
 	echo'<div class="alert alert-danger">Please fix the above Issue\'s outlined within the Red Sections, then Refresh the page to Check Again.</div>';
 }?>
-					</div>
 <?php if($error==0){?>
 					<form target="sp" method="post" action="core/installer.php" onsubmit="$('#block').css({'display':'block'});">
 						<input type="hidden" name="emailtrap" value="">
 						<div class="well">
-							<h3 class="page-header col-sm-6">Database Settings</h3>
-							<div class="clearfix"></div>
+							<h4 class="page-header">Database Settings</h3>
 							<div id="dberror"></div>
 							<div class="form-group">
 								<label for="dbtype" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Database Type</label>
@@ -89,14 +67,13 @@ if($error==0){
 <?php	foreach(PDO::getAvailableDrivers()as$DRIVER){
 			echo'<option value="'.$DRIVER.'">'.strtoupper($DRIVER).'</option>';
 		}?>
-
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="dbhost" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Database Host</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
-									<input id="dbhost" name="dbhost" type="text" class="form-control" value="localhost" placeholder="Enter a Host...">
+									<input id="dbhost" name="dbhost" type="text" class="form-control" value="localhost" placeholder="Enter a Host..." required>
 								</div>
 							</div>
 							<div class="form-group">
@@ -108,26 +85,25 @@ if($error==0){
 							<div class="form-group">
 								<label for="dbschema" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Database Schema</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
-									<input id="dbschema" name="dbschema" type="text" class="form-control" value="" placeholder="Enter Database Schema/Name...">
+									<input id="dbschema" name="dbschema" type="text" class="form-control" value="" placeholder="Enter Database Schema/Name..." required>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="dbusername" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Database Username</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
-									<input id="dbusername" name="dbusername" type="text" class="form-control" value="" placeholder="Enter Database Username...">
+									<input id="dbusername" name="dbusername" type="text" class="form-control" value="" placeholder="Enter Database Username..." required>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="dbpassword" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Database Password</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
-									<input id="dbpassword" name="dbpassword" type="password" class="form-control" value="" placeholder="Enter Database Password...">
+									<input id="dbpassword" name="dbpassword" type="password" class="form-control" value="" placeholder="Enter Database Password..." required>
 								</div>
 							</div>
 							<div id="dbsuccess"></div>
 						</div>
 						<div class="well">
-							<h3 class="page-header col-sm-6">System Settings</h3>
-							<div class="clearfix"></div>
+							<h4 class="page-header">System Settings</h3>
 							<div class="form-group">
 								<label for="sysurl" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Site URL</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
@@ -141,24 +117,15 @@ if($error==0){
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="syslang" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Site Language</label>
+								<label for="sysadmin" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Administration Page Folder</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
-									<select id="sysland" name="sysland" class="form-control">
-										<option value="en-au">English (Australian)</option>
-									</select>
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="sysadmin" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Administration URL</label>
-								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
-									<input id="sysadmin" name="sysadmin" type="text" class="form-control" value="" placeholder="Enter Administration Page Name...">
+									<input id="sysadmin" name="sysadmin" type="text" class="form-control" value="" placeholder="Enter Administration Page Folder...">
 									<span class="help-text">Leave blank to use default: "admin". e.g. http://www.sitename.com/admin/</span>
 								</div>
 							</div>
 						</div>
 						<div class="well">
-							<h3 class="page-header col-sm-6">Administrator Account Settings</h3>
-							<div class="clearfix"></div>
+							<h4 class="page-header">Administrator Account Settings</h4>
 							<div class="form-group">
 								<label for="aName" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Name</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
@@ -187,9 +154,6 @@ if($error==0){
 						<button type="submit" class="btn btn-success btn-block">Install</button>
 					</form>
 <?php }?>
-				</div>
-				<div class="panel-footer text-right">
-					<a target="_blank" href="https://github.com/StudioJunkyard/LibreCMS">GitHub</a>
 				</div>
 			</div>
 		</div>

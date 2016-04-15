@@ -77,9 +77,6 @@ if($_SESSION['rank']>399){
                     </li>
                 </ul>
             </div>
-<?php if($config['maintenance']{0}==1){?>
-            <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#interface';?>">Maintenance Mode</a></div>
-<?php }?>
             <footer>
                 <ul>
                     <li><img class="logo" src="core/images/librecms-white-60.png"></li>

@@ -1,31 +1,5 @@
--- phpMyAdmin SQL Dump
--- version 4.4.7
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Mar 25, 2016 at 03:58 PM
--- Server version: 5.5.47-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4.14
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `libre`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cart`
---
-
 CREATE TABLE IF NOT EXISTS `cart` (
   `id` bigint(20) unsigned NOT NULL,
   `iid` bigint(20) unsigned NOT NULL,
@@ -34,13 +8,6 @@ CREATE TABLE IF NOT EXISTS `cart` (
   `si` varchar(128) COLLATE utf8_bin NOT NULL,
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `choices`
---
-
 CREATE TABLE IF NOT EXISTS `choices` (
   `id` bigint(20) unsigned NOT NULL,
   `uid` bigint(20) unsigned NOT NULL,
@@ -52,13 +19,6 @@ CREATE TABLE IF NOT EXISTS `choices` (
   `title` varchar(60) COLLATE utf8_bin NOT NULL,
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `comments`
---
-
 CREATE TABLE IF NOT EXISTS `comments` (
   `id` bigint(20) unsigned NOT NULL,
   `contentType` varchar(16) COLLATE utf8_bin NOT NULL,
@@ -76,13 +36,6 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `tie` int(10) NOT NULL,
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `config`
---
-
 CREATE TABLE IF NOT EXISTS `config` (
   `id` tinyint(1) unsigned NOT NULL,
   `maintenance` int(1) NOT NULL,
@@ -134,20 +87,8 @@ CREATE TABLE IF NOT EXISTS `config` (
   `backup_ti` int(10) NOT NULL,
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `config`
---
-
 INSERT INTO `config` (`id`, `maintenance`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `buttonType`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailDefaultSubject`, `orderEmailLayout`, `orderEmailNotes`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `showItems`, `idleTime`, `bti`, `backup_ti`, `ti`) VALUES
 (1, 0, '1111111110000000', 'default-bootstrap3', 'LibreCMS', 'Default SEO Description', 'Default SEO Caption', 'Default SEO Keywords', '', '', '', '', 1440940831, 'LibreCMS', '000 000 000', '', '', '', '', '', 0, '', '', 'info@studiojunkyard.com', 1406180963, 3600, 'M j, Y g:i A', 'icon', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b>Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '', '', '', '', '', 'card', 'card', 'calendar', 10, 24, 1404461417, 0, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `content`
---
-
 CREATE TABLE IF NOT EXISTS `content` (
   `id` bigint(20) unsigned NOT NULL,
   `options` varchar(8) COLLATE utf8_bin NOT NULL DEFAULT '00000000',
@@ -218,30 +159,6 @@ CREATE TABLE IF NOT EXISTS `content` (
   `eti` int(10) NOT NULL,
   `pti` int(10) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `content`
---
-
-INSERT INTO `content` (`id`, `options`, `rank`, `rid`, `uid`, `login_user`, `cid`, `ip`, `contentType`, `schemaType`, `keywords`, `barcode`, `fccid`, `code`, `brand`, `title`, `category_1`, `category_2`, `name`, `url`, `email`, `business`, `address`, `suburb`, `city`, `state`, `postcode`, `phone`, `mobile`, `thumb`, `file`, `fileURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `exifISO`, `exifAperture`, `exifFocalLength`, `exifShutterSpeed`, `exifCamera`, `exifLens`, `exifFilename`, `exifti`, `cost`, `subject`, `notes`, `attributionContentName`, `attributionContentURL`, `quantity`, `tags`, `caption`, `status`, `service`, `internal`, `featured`, `bookable`, `fti`, `assoc`, `ord`, `views`, `active`, `pin`, `tis`, `tie`, `lti`, `ti`, `eti`, `pti`) VALUES
-(1, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 1', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '155976.jpg', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu lectus quis massa malesuada posuere. Vestibulum id ex quis purus placerat suscipit in at sem. Nunc ac dui in turpis volutpat molestie vel sit amet diam. In tristique hendrerit ipsum, ac rhoncus sem efficitur sit amet. Nam non mauris nisi. Phasellus placerat, lectus vitae ultricies semper, augue eros tristique turpis, eget mattis tellus quam sit amet dui. Aliquam bibendum laoreet tellus a semper.</p>', '', '', 0, '', '', 'published', 0, 0, 1, 0, 0, '', 0, 9, 1, 1, 1457874018, 0, 0, 1349619450, 1458574976, 1457902800),
-(2, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 2', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu lectus quis massa malesuada posuere. Vestibulum id ex quis purus placerat suscipit in at sem. Nunc ac dui in turpis volutpat molestie vel sit amet diam. In tristique hendrerit ipsum, ac rhoncus sem efficitur sit amet. Nam non mauris nisi. Phasellus placerat, lectus vitae ultricies semper, augue eros tristique turpis, eget mattis tellus quam sit amet dui. Aliquam bibendum laoreet tellus a semper.</p><p>Vestibulum ac justo nec urna scelerisque sagittis sed quis tortor. Suspendisse scelerisque interdum metus, et commodo tellus dignissim nec. Etiam ultrices varius libero, non elementum turpis dictum a. Maecenas rhoncus sapien id eros dictum auctor. Praesent consectetur, felis eget gravida commodo, magna est mattis orci, et consectetur ante odio tincidunt lacus. Cras non urna commodo, commodo eros et, maximus est. Integer a porttitor nunc. Duis pharetra at massa sed facilisis. Curabitur ipsum erat, semper sit amet libero sit amet, eleifend pretium metus. Proin fringilla maximus scelerisque. Morbi id quam quis ligula posuere auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer facilisis nisl id ex rutrum, in porttitor est aliquam. Proin porttitor imperdiet fringilla. Nullam mattis dolor enim, a egestas erat egestas sit amet. Vestibulum porttitor nisi vitae metus pellentesque blandit.</p><p>Ut sem justo, tempus ac odio in, maximus pharetra elit. Vivamus at tortor vel lorem ultricies faucibus. Cras vitae ultrices tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque semper et justo id fringilla. Nam vestibulum aliquet ante vel tincidunt. Nulla quam eros, rhoncus nec pulvinar sagittis, egestas non massa. Cras ut libero sit amet sem lacinia auctor ut quis libero.</p><p>Sed lobortis tellus gravida finibus dignissim. Donec a sem nec tortor efficitur vestibulum. Sed consectetur est at mauris feugiat cursus eget sed orci. Quisque vitae fermentum felis, vel viverra nulla. Ut ut vehicula leo, ut aliquam leo. Suspendisse vitae nulla luctus, euismod eros at, auctor lorem. Aliquam interdum nunc mauris, ac varius lorem euismod in. Vivamus urna nisl, maximus sit amet arcu id, interdum maximus ante. Maecenas mi leo, tincidunt scelerisque dui id, pulvinar volutpat orci. Praesent sapien dolor, efficitur tincidunt nibh id, lacinia volutpat enim. Aenean a gravida lacus. Morbi sit amet mauris sit amet libero laoreet commodo quis venenatis mauris. Vivamus mattis, erat vitae blandit posuere, enim elit interdum quam, sit amet consequat mauris velit venenatis felis. Vestibulum at metus malesuada, accumsan dui in, pulvinar tortor.</p><p>Donec consectetur eu nulla quis tincidunt. Vestibulum suscipit eu est non auctor. Nulla non est ac orci mollis luctus. Quisque tincidunt turpis sit amet quam fringilla, id iaculis purus laoreet. Suspendisse accumsan venenatis lectus nec volutpat. Quisque id placerat ex. Fusce ac sagittis urna, sit amet hendrerit enim. Sed libero purus, dignissim sed dolor nec, sagittis rutrum tortor. Sed ac volutpat lectus, at commodo tellus.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 3, 1, 0, 0, 0, 0, 1432984875, 1457679814, 2001600),
-(3, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 3', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu lectus quis massa malesuada posuere. Vestibulum id ex quis purus placerat suscipit in at sem. Nunc ac dui in turpis volutpat molestie vel sit amet diam. In tristique hendrerit ipsum, ac rhoncus sem efficitur sit amet. Nam non mauris nisi. Phasellus placerat, lectus vitae ultricies semper, augue eros tristique turpis, eget mattis tellus quam sit amet dui. Aliquam bibendum laoreet tellus a semper.</p><p>Vestibulum ac justo nec urna scelerisque sagittis sed quis tortor. Suspendisse scelerisque interdum metus, et commodo tellus dignissim nec. Etiam ultrices varius libero, non elementum turpis dictum a. Maecenas rhoncus sapien id eros dictum auctor. Praesent consectetur, felis eget gravida commodo, magna est mattis orci, et consectetur ante odio tincidunt lacus. Cras non urna commodo, commodo eros et, maximus est. Integer a porttitor nunc. Duis pharetra at massa sed facilisis. Curabitur ipsum erat, semper sit amet libero sit amet, eleifend pretium metus. Proin fringilla maximus scelerisque. Morbi id quam quis ligula posuere auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer facilisis nisl id ex rutrum, in porttitor est aliquam. Proin porttitor imperdiet fringilla. Nullam mattis dolor enim, a egestas erat egestas sit amet. Vestibulum porttitor nisi vitae metus pellentesque blandit.</p><p>Ut sem justo, tempus ac odio in, maximus pharetra elit. Vivamus at tortor vel lorem ultricies faucibus. Cras vitae ultrices tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque semper et justo id fringilla. Nam vestibulum aliquet ante vel tincidunt. Nulla quam eros, rhoncus nec pulvinar sagittis, egestas non massa. Cras ut libero sit amet sem lacinia auctor ut quis libero.</p><p>Sed lobortis tellus gravida finibus dignissim. Donec a sem nec tortor efficitur vestibulum. Sed consectetur est at mauris feugiat cursus eget sed orci. Quisque vitae fermentum felis, vel viverra nulla. Ut ut vehicula leo, ut aliquam leo. Suspendisse vitae nulla luctus, euismod eros at, auctor lorem. Aliquam interdum nunc mauris, ac varius lorem euismod in. Vivamus urna nisl, maximus sit amet arcu id, interdum maximus ante. Maecenas mi leo, tincidunt scelerisque dui id, pulvinar volutpat orci. Praesent sapien dolor, efficitur tincidunt nibh id, lacinia volutpat enim. Aenean a gravida lacus. Morbi sit amet mauris sit amet libero laoreet commodo quis venenatis mauris. Vivamus mattis, erat vitae blandit posuere, enim elit interdum quam, sit amet consequat mauris velit venenatis felis. Vestibulum at metus malesuada, accumsan dui in, pulvinar tortor.</p><p>Donec consectetur eu nulla quis tincidunt. Vestibulum suscipit eu est non auctor. Nulla non est ac orci mollis luctus. Quisque tincidunt turpis sit amet quam fringilla, id iaculis purus laoreet. Suspendisse accumsan venenatis lectus nec volutpat. Quisque id placerat ex. Fusce ac sagittis urna, sit amet hendrerit enim. Sed libero purus, dignissim sed dolor nec, sagittis rutrum tortor. Sed ac volutpat lectus, at commodo tellus.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 16, 1, 0, 0, 0, 0, 1421382304, 1455872986, 0),
-(4, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 4', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu lectus quis massa malesuada posuere. Vestibulum id ex quis purus placerat suscipit in at sem. Nunc ac dui in turpis volutpat molestie vel sit amet diam. In tristique hendrerit ipsum, ac rhoncus sem efficitur sit amet. Nam non mauris nisi. Phasellus placerat, lectus vitae ultricies semper, augue eros tristique turpis, eget mattis tellus quam sit amet dui. Aliquam bibendum laoreet tellus a semper.</p><p>Vestibulum ac justo nec urna scelerisque sagittis sed quis tortor. Suspendisse scelerisque interdum metus, et commodo tellus dignissim nec. Etiam ultrices varius libero, non elementum turpis dictum a. Maecenas rhoncus sapien id eros dictum auctor. Praesent consectetur, felis eget gravida commodo, magna est mattis orci, et consectetur ante odio tincidunt lacus. Cras non urna commodo, commodo eros et, maximus est. Integer a porttitor nunc. Duis pharetra at massa sed facilisis. Curabitur ipsum erat, semper sit amet libero sit amet, eleifend pretium metus. Proin fringilla maximus scelerisque. Morbi id quam quis ligula posuere auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer facilisis nisl id ex rutrum, in porttitor est aliquam. Proin porttitor imperdiet fringilla. Nullam mattis dolor enim, a egestas erat egestas sit amet. Vestibulum porttitor nisi vitae metus pellentesque blandit.</p><p>Ut sem justo, tempus ac odio in, maximus pharetra elit. Vivamus at tortor vel lorem ultricies faucibus. Cras vitae ultrices tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque semper et justo id fringilla. Nam vestibulum aliquet ante vel tincidunt. Nulla quam eros, rhoncus nec pulvinar sagittis, egestas non massa. Cras ut libero sit amet sem lacinia auctor ut quis libero.</p><p>Sed lobortis tellus gravida finibus dignissim. Donec a sem nec tortor efficitur vestibulum. Sed consectetur est at mauris feugiat cursus eget sed orci. Quisque vitae fermentum felis, vel viverra nulla. Ut ut vehicula leo, ut aliquam leo. Suspendisse vitae nulla luctus, euismod eros at, auctor lorem. Aliquam interdum nunc mauris, ac varius lorem euismod in. Vivamus urna nisl, maximus sit amet arcu id, interdum maximus ante. Maecenas mi leo, tincidunt scelerisque dui id, pulvinar volutpat orci. Praesent sapien dolor, efficitur tincidunt nibh id, lacinia volutpat enim. Aenean a gravida lacus. Morbi sit amet mauris sit amet libero laoreet commodo quis venenatis mauris. Vivamus mattis, erat vitae blandit posuere, enim elit interdum quam, sit amet consequat mauris velit venenatis felis. Vestibulum at metus malesuada, accumsan dui in, pulvinar tortor.</p><p>Donec consectetur eu nulla quis tincidunt. Vestibulum suscipit eu est non auctor. Nulla non est ac orci mollis luctus. Quisque tincidunt turpis sit amet quam fringilla, id iaculis purus laoreet. Suspendisse accumsan venenatis lectus nec volutpat. Quisque id placerat ex. Fusce ac sagittis urna, sit amet hendrerit enim. Sed libero purus, dignissim sed dolor nec, sagittis rutrum tortor. Sed ac volutpat lectus, at commodo tellus.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 1417939651, 1455872995, 0),
-(5, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 5', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu lectus quis massa malesuada posuere. Vestibulum id ex quis purus placerat suscipit in at sem. Nunc ac dui in turpis volutpat molestie vel sit amet diam. In tristique hendrerit ipsum, ac rhoncus sem efficitur sit amet. Nam non mauris nisi. Phasellus placerat, lectus vitae ultricies semper, augue eros tristique turpis, eget mattis tellus quam sit amet dui. Aliquam bibendum laoreet tellus a semper.</p><p>Vestibulum ac justo nec urna scelerisque sagittis sed quis tortor. Suspendisse scelerisque interdum metus, et commodo tellus dignissim nec. Etiam ultrices varius libero, non elementum turpis dictum a. Maecenas rhoncus sapien id eros dictum auctor. Praesent consectetur, felis eget gravida commodo, magna est mattis orci, et consectetur ante odio tincidunt lacus. Cras non urna commodo, commodo eros et, maximus est. Integer a porttitor nunc. Duis pharetra at massa sed facilisis. Curabitur ipsum erat, semper sit amet libero sit amet, eleifend pretium metus. Proin fringilla maximus scelerisque. Morbi id quam quis ligula posuere auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer facilisis nisl id ex rutrum, in porttitor est aliquam. Proin porttitor imperdiet fringilla. Nullam mattis dolor enim, a egestas erat egestas sit amet. Vestibulum porttitor nisi vitae metus pellentesque blandit.</p><p>Ut sem justo, tempus ac odio in, maximus pharetra elit. Vivamus at tortor vel lorem ultricies faucibus. Cras vitae ultrices tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque semper et justo id fringilla. Nam vestibulum aliquet ante vel tincidunt. Nulla quam eros, rhoncus nec pulvinar sagittis, egestas non massa. Cras ut libero sit amet sem lacinia auctor ut quis libero.</p><p>Sed lobortis tellus gravida finibus dignissim. Donec a sem nec tortor efficitur vestibulum. Sed consectetur est at mauris feugiat cursus eget sed orci. Quisque vitae fermentum felis, vel viverra nulla. Ut ut vehicula leo, ut aliquam leo. Suspendisse vitae nulla luctus, euismod eros at, auctor lorem. Aliquam interdum nunc mauris, ac varius lorem euismod in. Vivamus urna nisl, maximus sit amet arcu id, interdum maximus ante. Maecenas mi leo, tincidunt scelerisque dui id, pulvinar volutpat orci. Praesent sapien dolor, efficitur tincidunt nibh id, lacinia volutpat enim. Aenean a gravida lacus. Morbi sit amet mauris sit amet libero laoreet commodo quis venenatis mauris. Vivamus mattis, erat vitae blandit posuere, enim elit interdum quam, sit amet consequat mauris velit venenatis felis. Vestibulum at metus malesuada, accumsan dui in, pulvinar tortor.</p><p>Donec consectetur eu nulla quis tincidunt. Vestibulum suscipit eu est non auctor. Nulla non est ac orci mollis luctus. Quisque tincidunt turpis sit amet quam fringilla, id iaculis purus laoreet. Suspendisse accumsan venenatis lectus nec volutpat. Quisque id placerat ex. Fusce ac sagittis urna, sit amet hendrerit enim. Sed libero purus, dignissim sed dolor nec, sagittis rutrum tortor. Sed ac volutpat lectus, at commodo tellus.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 1349469061, 1455873002, 0),
-(6, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 6', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu lectus quis massa malesuada posuere. Vestibulum id ex quis purus placerat suscipit in at sem. Nunc ac dui in turpis volutpat molestie vel sit amet diam. In tristique hendrerit ipsum, ac rhoncus sem efficitur sit amet. Nam non mauris nisi. Phasellus placerat, lectus vitae ultricies semper, augue eros tristique turpis, eget mattis tellus quam sit amet dui. Aliquam bibendum laoreet tellus a semper.</p><p>Vestibulum ac justo nec urna scelerisque sagittis sed quis tortor. Suspendisse scelerisque interdum metus, et commodo tellus dignissim nec. Etiam ultrices varius libero, non elementum turpis dictum a. Maecenas rhoncus sapien id eros dictum auctor. Praesent consectetur, felis eget gravida commodo, magna est mattis orci, et consectetur ante odio tincidunt lacus. Cras non urna commodo, commodo eros et, maximus est. Integer a porttitor nunc. Duis pharetra at massa sed facilisis. Curabitur ipsum erat, semper sit amet libero sit amet, eleifend pretium metus. Proin fringilla maximus scelerisque. Morbi id quam quis ligula posuere auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer facilisis nisl id ex rutrum, in porttitor est aliquam. Proin porttitor imperdiet fringilla. Nullam mattis dolor enim, a egestas erat egestas sit amet. Vestibulum porttitor nisi vitae metus pellentesque blandit.</p><p>Ut sem justo, tempus ac odio in, maximus pharetra elit. Vivamus at tortor vel lorem ultricies faucibus. Cras vitae ultrices tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque semper et justo id fringilla. Nam vestibulum aliquet ante vel tincidunt. Nulla quam eros, rhoncus nec pulvinar sagittis, egestas non massa. Cras ut libero sit amet sem lacinia auctor ut quis libero.</p><p>Sed lobortis tellus gravida finibus dignissim. Donec a sem nec tortor efficitur vestibulum. Sed consectetur est at mauris feugiat cursus eget sed orci. Quisque vitae fermentum felis, vel viverra nulla. Ut ut vehicula leo, ut aliquam leo. Suspendisse vitae nulla luctus, euismod eros at, auctor lorem. Aliquam interdum nunc mauris, ac varius lorem euismod in. Vivamus urna nisl, maximus sit amet arcu id, interdum maximus ante. Maecenas mi leo, tincidunt scelerisque dui id, pulvinar volutpat orci. Praesent sapien dolor, efficitur tincidunt nibh id, lacinia volutpat enim. Aenean a gravida lacus. Morbi sit amet mauris sit amet libero laoreet commodo quis venenatis mauris. Vivamus mattis, erat vitae blandit posuere, enim elit interdum quam, sit amet consequat mauris velit venenatis felis. Vestibulum at metus malesuada, accumsan dui in, pulvinar tortor.</p><p>Donec consectetur eu nulla quis tincidunt. Vestibulum suscipit eu est non auctor. Nulla non est ac orci mollis luctus. Quisque tincidunt turpis sit amet quam fringilla, id iaculis purus laoreet. Suspendisse accumsan venenatis lectus nec volutpat. Quisque id placerat ex. Fusce ac sagittis urna, sit amet hendrerit enim. Sed libero purus, dignissim sed dolor nec, sagittis rutrum tortor. Sed ac volutpat lectus, at commodo tellus.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 1417909749, 1455873002, 0),
-(7, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 7', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu lectus quis massa malesuada posuere. Vestibulum id ex quis purus placerat suscipit in at sem. Nunc ac dui in turpis volutpat molestie vel sit amet diam. In tristique hendrerit ipsum, ac rhoncus sem efficitur sit amet. Nam non mauris nisi. Phasellus placerat, lectus vitae ultricies semper, augue eros tristique turpis, eget mattis tellus quam sit amet dui. Aliquam bibendum laoreet tellus a semper.</p><p>Vestibulum ac justo nec urna scelerisque sagittis sed quis tortor. Suspendisse scelerisque interdum metus, et commodo tellus dignissim nec. Etiam ultrices varius libero, non elementum turpis dictum a. Maecenas rhoncus sapien id eros dictum auctor. Praesent consectetur, felis eget gravida commodo, magna est mattis orci, et consectetur ante odio tincidunt lacus. Cras non urna commodo, commodo eros et, maximus est. Integer a porttitor nunc. Duis pharetra at massa sed facilisis. Curabitur ipsum erat, semper sit amet libero sit amet, eleifend pretium metus. Proin fringilla maximus scelerisque. Morbi id quam quis ligula posuere auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer facilisis nisl id ex rutrum, in porttitor est aliquam. Proin porttitor imperdiet fringilla. Nullam mattis dolor enim, a egestas erat egestas sit amet. Vestibulum porttitor nisi vitae metus pellentesque blandit.</p><p>Ut sem justo, tempus ac odio in, maximus pharetra elit. Vivamus at tortor vel lorem ultricies faucibus. Cras vitae ultrices tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque semper et justo id fringilla. Nam vestibulum aliquet ante vel tincidunt. Nulla quam eros, rhoncus nec pulvinar sagittis, egestas non massa. Cras ut libero sit amet sem lacinia auctor ut quis libero.</p><p>Sed lobortis tellus gravida finibus dignissim. Donec a sem nec tortor efficitur vestibulum. Sed consectetur est at mauris feugiat cursus eget sed orci. Quisque vitae fermentum felis, vel viverra nulla. Ut ut vehicula leo, ut aliquam leo. Suspendisse vitae nulla luctus, euismod eros at, auctor lorem. Aliquam interdum nunc mauris, ac varius lorem euismod in. Vivamus urna nisl, maximus sit amet arcu id, interdum maximus ante. Maecenas mi leo, tincidunt scelerisque dui id, pulvinar volutpat orci. Praesent sapien dolor, efficitur tincidunt nibh id, lacinia volutpat enim. Aenean a gravida lacus. Morbi sit amet mauris sit amet libero laoreet commodo quis venenatis mauris. Vivamus mattis, erat vitae blandit posuere, enim elit interdum quam, sit amet consequat mauris velit venenatis felis. Vestibulum at metus malesuada, accumsan dui in, pulvinar tortor.</p><p>Donec consectetur eu nulla quis tincidunt. Vestibulum suscipit eu est non auctor. Nulla non est ac orci mollis luctus. Quisque tincidunt turpis sit amet quam fringilla, id iaculis purus laoreet. Suspendisse accumsan venenatis lectus nec volutpat. Quisque id placerat ex. Fusce ac sagittis urna, sit amet hendrerit enim. Sed libero purus, dignissim sed dolor nec, sagittis rutrum tortor. Sed ac volutpat lectus, at commodo tellus.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 1394846241, 1455873002, 0),
-(8, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 8', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu lectus quis massa malesuada posuere. Vestibulum id ex quis purus placerat suscipit in at sem. Nunc ac dui in turpis volutpat molestie vel sit amet diam. In tristique hendrerit ipsum, ac rhoncus sem efficitur sit amet. Nam non mauris nisi. Phasellus placerat, lectus vitae ultricies semper, augue eros tristique turpis, eget mattis tellus quam sit amet dui. Aliquam bibendum laoreet tellus a semper.</p><p>Vestibulum ac justo nec urna scelerisque sagittis sed quis tortor. Suspendisse scelerisque interdum metus, et commodo tellus dignissim nec. Etiam ultrices varius libero, non elementum turpis dictum a. Maecenas rhoncus sapien id eros dictum auctor. Praesent consectetur, felis eget gravida commodo, magna est mattis orci, et consectetur ante odio tincidunt lacus. Cras non urna commodo, commodo eros et, maximus est. Integer a porttitor nunc. Duis pharetra at massa sed facilisis. Curabitur ipsum erat, semper sit amet libero sit amet, eleifend pretium metus. Proin fringilla maximus scelerisque. Morbi id quam quis ligula posuere auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer facilisis nisl id ex rutrum, in porttitor est aliquam. Proin porttitor imperdiet fringilla. Nullam mattis dolor enim, a egestas erat egestas sit amet. Vestibulum porttitor nisi vitae metus pellentesque blandit.</p><p>Ut sem justo, tempus ac odio in, maximus pharetra elit. Vivamus at tortor vel lorem ultricies faucibus. Cras vitae ultrices tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque semper et justo id fringilla. Nam vestibulum aliquet ante vel tincidunt. Nulla quam eros, rhoncus nec pulvinar sagittis, egestas non massa. Cras ut libero sit amet sem lacinia auctor ut quis libero.</p><p>Sed lobortis tellus gravida finibus dignissim. Donec a sem nec tortor efficitur vestibulum. Sed consectetur est at mauris feugiat cursus eget sed orci. Quisque vitae fermentum felis, vel viverra nulla. Ut ut vehicula leo, ut aliquam leo. Suspendisse vitae nulla luctus, euismod eros at, auctor lorem. Aliquam interdum nunc mauris, ac varius lorem euismod in. Vivamus urna nisl, maximus sit amet arcu id, interdum maximus ante. Maecenas mi leo, tincidunt scelerisque dui id, pulvinar volutpat orci. Praesent sapien dolor, efficitur tincidunt nibh id, lacinia volutpat enim. Aenean a gravida lacus. Morbi sit amet mauris sit amet libero laoreet commodo quis venenatis mauris. Vivamus mattis, erat vitae blandit posuere, enim elit interdum quam, sit amet consequat mauris velit venenatis felis. Vestibulum at metus malesuada, accumsan dui in, pulvinar tortor.</p><p>Donec consectetur eu nulla quis tincidunt. Vestibulum suscipit eu est non auctor. Nulla non est ac orci mollis luctus. Quisque tincidunt turpis sit amet quam fringilla, id iaculis purus laoreet. Suspendisse accumsan venenatis lectus nec volutpat. Quisque id placerat ex. Fusce ac sagittis urna, sit amet hendrerit enim. Sed libero purus, dignissim sed dolor nec, sagittis rutrum tortor. Sed ac volutpat lectus, at commodo tellus.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 1328077217, 1455873002, 0),
-(9, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 9', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu lectus quis massa malesuada posuere. Vestibulum id ex quis purus placerat suscipit in at sem. Nunc ac dui in turpis volutpat molestie vel sit amet diam. In tristique hendrerit ipsum, ac rhoncus sem efficitur sit amet. Nam non mauris nisi. Phasellus placerat, lectus vitae ultricies semper, augue eros tristique turpis, eget mattis tellus quam sit amet dui. Aliquam bibendum laoreet tellus a semper.</p><p>Vestibulum ac justo nec urna scelerisque sagittis sed quis tortor. Suspendisse scelerisque interdum metus, et commodo tellus dignissim nec. Etiam ultrices varius libero, non elementum turpis dictum a. Maecenas rhoncus sapien id eros dictum auctor. Praesent consectetur, felis eget gravida commodo, magna est mattis orci, et consectetur ante odio tincidunt lacus. Cras non urna commodo, commodo eros et, maximus est. Integer a porttitor nunc. Duis pharetra at massa sed facilisis. Curabitur ipsum erat, semper sit amet libero sit amet, eleifend pretium metus. Proin fringilla maximus scelerisque. Morbi id quam quis ligula posuere auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer facilisis nisl id ex rutrum, in porttitor est aliquam. Proin porttitor imperdiet fringilla. Nullam mattis dolor enim, a egestas erat egestas sit amet. Vestibulum porttitor nisi vitae metus pellentesque blandit.</p><p>Ut sem justo, tempus ac odio in, maximus pharetra elit. Vivamus at tortor vel lorem ultricies faucibus. Cras vitae ultrices tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque semper et justo id fringilla. Nam vestibulum aliquet ante vel tincidunt. Nulla quam eros, rhoncus nec pulvinar sagittis, egestas non massa. Cras ut libero sit amet sem lacinia auctor ut quis libero.</p><p>Sed lobortis tellus gravida finibus dignissim. Donec a sem nec tortor efficitur vestibulum. Sed consectetur est at mauris feugiat cursus eget sed orci. Quisque vitae fermentum felis, vel viverra nulla. Ut ut vehicula leo, ut aliquam leo. Suspendisse vitae nulla luctus, euismod eros at, auctor lorem. Aliquam interdum nunc mauris, ac varius lorem euismod in. Vivamus urna nisl, maximus sit amet arcu id, interdum maximus ante. Maecenas mi leo, tincidunt scelerisque dui id, pulvinar volutpat orci. Praesent sapien dolor, efficitur tincidunt nibh id, lacinia volutpat enim. Aenean a gravida lacus. Morbi sit amet mauris sit amet libero laoreet commodo quis venenatis mauris. Vivamus mattis, erat vitae blandit posuere, enim elit interdum quam, sit amet consequat mauris velit venenatis felis. Vestibulum at metus malesuada, accumsan dui in, pulvinar tortor.</p><p>Donec consectetur eu nulla quis tincidunt. Vestibulum suscipit eu est non auctor. Nulla non est ac orci mollis luctus. Quisque tincidunt turpis sit amet quam fringilla, id iaculis purus laoreet. Suspendisse accumsan venenatis lectus nec volutpat. Quisque id placerat ex. Fusce ac sagittis urna, sit amet hendrerit enim. Sed libero purus, dignissim sed dolor nec, sagittis rutrum tortor. Sed ac volutpat lectus, at commodo tellus.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 1406449121, 1455873002, 0),
-(10, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 10', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu lectus quis massa malesuada posuere. Vestibulum id ex quis purus placerat suscipit in at sem. Nunc ac dui in turpis volutpat molestie vel sit amet diam. In tristique hendrerit ipsum, ac rhoncus sem efficitur sit amet. Nam non mauris nisi. Phasellus placerat, lectus vitae ultricies semper, augue eros tristique turpis, eget mattis tellus quam sit amet dui. Aliquam bibendum laoreet tellus a semper.</p><p>Vestibulum ac justo nec urna scelerisque sagittis sed quis tortor. Suspendisse scelerisque interdum metus, et commodo tellus dignissim nec. Etiam ultrices varius libero, non elementum turpis dictum a. Maecenas rhoncus sapien id eros dictum auctor. Praesent consectetur, felis eget gravida commodo, magna est mattis orci, et consectetur ante odio tincidunt lacus. Cras non urna commodo, commodo eros et, maximus est. Integer a porttitor nunc. Duis pharetra at massa sed facilisis. Curabitur ipsum erat, semper sit amet libero sit amet, eleifend pretium metus. Proin fringilla maximus scelerisque. Morbi id quam quis ligula posuere auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer facilisis nisl id ex rutrum, in porttitor est aliquam. Proin porttitor imperdiet fringilla. Nullam mattis dolor enim, a egestas erat egestas sit amet. Vestibulum porttitor nisi vitae metus pellentesque blandit.</p><p>Ut sem justo, tempus ac odio in, maximus pharetra elit. Vivamus at tortor vel lorem ultricies faucibus. Cras vitae ultrices tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque semper et justo id fringilla. Nam vestibulum aliquet ante vel tincidunt. Nulla quam eros, rhoncus nec pulvinar sagittis, egestas non massa. Cras ut libero sit amet sem lacinia auctor ut quis libero.</p><p>Sed lobortis tellus gravida finibus dignissim. Donec a sem nec tortor efficitur vestibulum. Sed consectetur est at mauris feugiat cursus eget sed orci. Quisque vitae fermentum felis, vel viverra nulla. Ut ut vehicula leo, ut aliquam leo. Suspendisse vitae nulla luctus, euismod eros at, auctor lorem. Aliquam interdum nunc mauris, ac varius lorem euismod in. Vivamus urna nisl, maximus sit amet arcu id, interdum maximus ante. Maecenas mi leo, tincidunt scelerisque dui id, pulvinar volutpat orci. Praesent sapien dolor, efficitur tincidunt nibh id, lacinia volutpat enim. Aenean a gravida lacus. Morbi sit amet mauris sit amet libero laoreet commodo quis venenatis mauris. Vivamus mattis, erat vitae blandit posuere, enim elit interdum quam, sit amet consequat mauris velit venenatis felis. Vestibulum at metus malesuada, accumsan dui in, pulvinar tortor.</p><p>Donec consectetur eu nulla quis tincidunt. Vestibulum suscipit eu est non auctor. Nulla non est ac orci mollis luctus. Quisque tincidunt turpis sit amet quam fringilla, id iaculis purus laoreet. Suspendisse accumsan venenatis lectus nec volutpat. Quisque id placerat ex. Fusce ac sagittis urna, sit amet hendrerit enim. Sed libero purus, dignissim sed dolor nec, sagittis rutrum tortor. Sed ac volutpat lectus, at commodo tellus.</p>', '', '', 0, '', '', 'published', 0, 0, 0, 0, 0, '', 0, 1, 1, 0, 0, 0, 0, 1349730719, 1455873002, 0),
-(11, '00000000', 0, 0, 1, 'Kenika Suitters', 1, '', 'booking', '', '', '', '', '', '', '', '', '', 'Kenika Suitters', '', 'dennis@studiojunkyard.com', 'Studio Junkyard', '128 Cradle Mountain Road', 'Wilmot', 'Wilmot', 'Tasmania', 0, '0364921418', '0364921418', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '', '', '', 0, '', '', 'confirmed', 0, 0, 0, 0, 0, '', 0, 0, 0, 0, 1459116000, 0, 0, 1458811127, 1458811968, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `login`
---
-
 CREATE TABLE IF NOT EXISTS `login` (
   `id` bigint(20) unsigned NOT NULL,
   `options` varchar(8) COLLATE utf8_bin NOT NULL DEFAULT '00000000',
@@ -285,22 +202,10 @@ CREATE TABLE IF NOT EXISTS `login` (
   `lti` int(10) NOT NULL,
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `login`
---
-
 INSERT INTO `login` (`id`, `options`, `username`, `password`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `avatar`, `gravatar`, `business`, `name`, `email`, `emailPassword`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `adminCategory_1`, `adminCategory_2`, `adminCategory_ti`, `language`, `timezone`, `rank`, `discount`, `layoutAccounts`, `layoutContent`, `layoutBookings`, `lti`, `ti`) VALUES
 (1, '11111111', 'root', '$2y$10$6SkCJ1NRcNDgElDfHjw7SOvQxAcoIRUmossH1gfj1yy2xscW3q8PC', '', '', '', '', '', 'avatar_1.jpg', '', 'Studio Junkyard', 'Kenika Suitters', 'dennis@studiojunkyard.com', '', 0, 'http://www.facebook.com/studiojunkyard', '128 Cradle Mountain Road', 'Wilmot', 'Wilmot', 'Tasmania', 0, '', '0364921418', '0364921418', '', 'unpublished', 1, '', '', '', 0, 'en-AU', 'Australia/Hobart', 1000, '', 'card', 'list', 'calendar', 0, 1402746479),
 (2, '00000000', 'green', '$2y$10$NdVkcQ502edSVkQayBKkFOCiRqye9dHLNtQMS4ogzPurEs5icqDh.', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', 0, '', '', '', '', '', 1, '', '', '', 0, '', '', 0, '', '', '', '', 0, 1455888199),
 (3, '00000000', 'blue', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', 0, '', '', '', '', '', 1, '', '', '', 0, '', '', 0, '', '', '', '', 0, 1455888219);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `logs`
---
-
 CREATE TABLE IF NOT EXISTS `logs` (
   `id` bigint(20) NOT NULL,
   `uid` bigint(20) NOT NULL,
@@ -314,26 +219,6 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `action` tinytext COLLATE utf8_bin NOT NULL,
   `ti` int(10) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `logs`
---
-
-INSERT INTO `logs` (`id`, `uid`, `rid`, `view`, `contentType`, `refTable`, `refColumn`, `oldda`, `newda`, `action`, `ti`) VALUES
-(1, 1, 11, 'bookings', 'booking', 'content', 'tis', 0x31343538383131313237, 0x31343539313136303030, 'update', 1458811144),
-(2, 1, 11, 'bookings', 'booking', 'content', 'status', 0x756e636f6e6669726d6564, 0x636f6e6669726d6564, 'update', 1458811151),
-(3, 1, 11, 'bookings', 'booking', 'content', 'notes', '', '', 'update', 1458811740),
-(4, 1, 11, 'bookings', 'booking', 'content', 'notes', '', '', 'update', 1458811948),
-(5, 1, 11, 'bookings', 'booking', 'content', 'notes', '', '', 'update', 1458811968),
-(6, 1, 1, 'index', 'index', 'menu', 'cover', 0x706167655f636f7665725f312e6a7067, '', 'update', 1458866345),
-(7, 1, 1, '', '', 'login', 'layoutContent', 0x63617264, 0x6c697374, 'update', 1458866702);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `menu`
---
-
 CREATE TABLE IF NOT EXISTS `menu` (
   `id` bigint(20) unsigned NOT NULL,
   `uid` bigint(20) NOT NULL,
@@ -357,11 +242,6 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `active` tinyint(1) unsigned NOT NULL,
   `eti` int(10) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Dumping data for table `menu`
---
-
 INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `file`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `contentType`, `schemaType`, `seoKeywords`, `seoDescription`, `seoCaption`, `menu`, `notes`, `ord`, `active`, `eti`) VALUES
 (1, 1, 'Kenika Suitters', 'Home', '', '', 'page_cover_1.jpg', '', '', '', '', 'index', '', 'Default home page keywords', 'Default home page description', 'Default home page caption', 'head', '', 0, 1, 1458866345),
 (2, 1, 'Kenika Suitters', 'Blog', '', 'article', 'page_cover_2.jpg', '', '', '', '', 'article', '', '', '', '', 'head', '', 5, 1, 1458787523),
@@ -377,13 +257,6 @@ INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `file`, `cov
 (12, 1, 'Kenika Suitters', 'Cart', '', 'cart', '', '', '', '', '', 'cart', '', '', '', '', 'head', '', 11, 1, 1458787523),
 (13, 1, 'Kenika Suitters', 'Terms of Service', 'Terms of Service', 'tos', '', '', '', '', '', 'tos', '', '', '', '', 'footer', '', 13, 1, 1458787523),
 (14, 1, 'Kenika Suitters', 'Search', 'Search', 'search', '', '', '', '', '', 'search', '', '', '', '', 'footer', '', 12, 1, 1458787523);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `messages`
---
-
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` bigint(20) NOT NULL,
   `uid` bigint(20) NOT NULL,
@@ -415,13 +288,6 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `size` bigint(20) NOT NULL,
   `ti` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `orderitems`
---
-
 CREATE TABLE IF NOT EXISTS `orderitems` (
   `id` bigint(20) NOT NULL,
   `oid` bigint(20) unsigned NOT NULL,
@@ -432,13 +298,6 @@ CREATE TABLE IF NOT EXISTS `orderitems` (
   `status` varchar(16) COLLATE utf8_bin NOT NULL,
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `orders`
---
-
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` bigint(20) NOT NULL,
   `cid` bigint(20) unsigned NOT NULL,
@@ -459,136 +318,47 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `ti` int(10) unsigned NOT NULL,
   `eti` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `cart`
---
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `choices`
---
 ALTER TABLE `choices`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `comments`
---
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `config`
---
 ALTER TABLE `config`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `content`
---
 ALTER TABLE `content`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `login`
---
 ALTER TABLE `login`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `logs`
---
 ALTER TABLE `logs`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `menu`
---
 ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `messages`
---
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `orderitems`
---
 ALTER TABLE `orderitems`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `orders`
---
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `cart`
---
 ALTER TABLE `cart`
   MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `choices`
---
 ALTER TABLE `choices`
   MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `comments`
---
 ALTER TABLE `comments`
   MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `config`
---
 ALTER TABLE `config`
   MODIFY `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `content`
---
 ALTER TABLE `content`
   MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
---
--- AUTO_INCREMENT for table `login`
---
 ALTER TABLE `login`
   MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
---
--- AUTO_INCREMENT for table `logs`
---
 ALTER TABLE `logs`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `menu`
---
 ALTER TABLE `menu`
   MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
---
--- AUTO_INCREMENT for table `messages`
---
 ALTER TABLE `messages`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `orderitems`
---
 ALTER TABLE `orderitems`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `orders`
---
 ALTER TABLE `orders`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

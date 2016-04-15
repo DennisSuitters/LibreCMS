@@ -3,6 +3,7 @@ body{background-color:#ededed;margin:0;padding:0}
 .pace-inactive{display:none}
 .pace .pace-progress{background:#f40;position:fixed;z-index:99999;top:0;right:100%;width:100%;height:2px;box-shadow:0 0 10px #f40}
 .pace .pace-progress:after{content:'';position:absolute;height:4px;width:100px;top:0;right:0;border-radius:25%;box-shadow:0 0 20px #f40}
+.installimg{width:200px;margin:20px 0 5px 0}
 .libre-cms_login{position:relative;width:300px;margin-top:15%;padding:20px;-webkit-box-shadow:0 3px 10px rgba(128,128,128,.5);box-shadow:0 3px 10px rgba(128,128,128,.5)}
 .libre-cms_login .loginimg{margin:-10px -25px 20px 0}
 .libre-cms_login .btn{width:45%}
