@@ -162,7 +162,19 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                     <label for="dateFormat" class="control-label col-xs-5 col-sm-3 col-lg-2">Date/Time Format</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date/Time Format..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Format Layout of all Dates/Times displayed."';?>>
-                        <span class="help-text">For information on Date Format Characters click <a target="_blank" href="http://php.net/manual/en/function.date.php#refsect1-function.date-parameters">here</a>.</span>
+                        <span class="help-block">For information on Date Format Characters click <a target="_blank" href="http://php.net/manual/en/function.date.php#refsect1-function.date-parameters">here</a>.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="orderEmailLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Password Email Layout</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <form method="post" target="sp" action="core/update.php">
+                            <input type="hidden" name="id" value="1">
+                            <input type="hidden" name="t" value="config">
+                            <input type="hidden" name="c" value="PasswordResetLayout">
+                            <textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['PasswordResetLayout'];?></textarea>
+                            <div class="help-block">You can use the following Tokens: {name} {first} {last} {password}</div>
+                        </form>
                     </div>
                 </div>
             </div>

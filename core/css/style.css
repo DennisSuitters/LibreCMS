@@ -6,7 +6,7 @@ body{background-color:#ededed;margin:0;padding:0}
 .installimg{width:200px;margin:20px 0 5px 0}
 .libre-cms_login{position:relative;width:300px;margin-top:15%;padding:20px;-webkit-box-shadow:0 3px 10px rgba(128,128,128,.5);box-shadow:0 3px 10px rgba(128,128,128,.5)}
 .libre-cms_login .loginimg{margin:-10px -25px 20px 0}
-.libre-cms_login .btn{width:45%}
+.libre-cms_login .btn.lgn{width:45%}
 .panel-body .elfinder{display:block;padding:0;margin:-15px;border:0;-webkit-box-shadow:none;box-shadow:none}
 .input-group-addon.img{padding:0;margin:0;}
 .input-group-addon img{margin:0;padding:0;width:40px;height:30px}

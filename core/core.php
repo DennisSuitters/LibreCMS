@@ -39,7 +39,7 @@ elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))
 else
 	define('NOAVATAR','core'.DS.'images'.DS.'noavatar.jpg');
 define('YANDEX','trnsl.1.1.20151010T141347Z.abb6d53e6280191b.5decd3b201ae911048617d1869e766124de2023d');
-require'login.php';
+//require'login.php';
 function rank($txt){
 	if($txt==0)return'visitor';
 	if($txt==100)return'subscriber';
