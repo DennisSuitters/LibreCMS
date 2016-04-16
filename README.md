@@ -28,10 +28,13 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
   - [summernote-save-button](https://github.com/StudioJunkyard/summernote-save-button)
   - [summernote-image-attributes](https://github.com/StudioJunkyard/summernote-image-attributes)
   - [summernote-ext-elfinder](https://github.com/semplon/summernote-ext-elfinder)
+- [FullCalendar](https://github.com/fullcalendar/fullcalendar)
+  - fullcalendar-bootstrap-theme (Unreleased, but within LibreCMS, WIP)
 - [PHPMailer](https://github.com/PHPMailer/PHPMailer)
 - [TCPDF](http://www.tcpdf.org/)
 - [Zebra_Image](https://github.com/stefangabos/Zebra_Image)
-- [kses]() We've modified kses to include HTML5, and minified the source.
+- [kses]()
+  - We've modified kses to include HTML5, and minified the source.
 - [elFinder](https://github.com/Studio-42/elFinder)
   - [elFinder-bootstrap-theme](https://github.com/StudioJunkyard/elfinder-bootstrap-theme)
 
