@@ -16,7 +16,10 @@
 		<link rel="stylesheet" type="text/css" href="core/css/style.css">
 	</head>
 	<body>
-		<div class="container install-panel">
+		<div class="container">
+			<noscript>
+				<div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div>
+			</noscript>
 			<img class="installimg img-responsive" src="core/images/librecms.png" alt="LibreCMS">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -122,6 +125,20 @@ if($error==1){
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
 									<input id="sysadmin" name="sysadmin" type="text" class="form-control" value="" placeholder="Enter Administration Page Folder...">
 									<span class="help-text">Leave blank to use default: "admin". e.g. http://www.sitename.com/admin/</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="systheme" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Theme</label>
+								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
+									<select id="systheme" class="form-control" name="systheme">
+<?php foreach(new DirectoryIterator('layout') as$folder){
+    if($folder->isDOT())continue;
+    if($folder->isDir()){
+        $theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);?>
+										<option value="<?php echo$folder;?>"<?php if(stristr($folder,'default'))echo' selected';?>><?php echo$theme['title'];?></option>
+<?php }
+}?>
+									</select>
 								</div>
 							</div>
 						</div>

@@ -4,7 +4,9 @@
         <h4>Dashboard</h4>
     </div>
     <div class="panel-body">
-
+        <noscript>
+            <div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div>
+        </noscript>
 <?php if($config['maintenance']{0}==1){?>
         <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#interface';?>">Maintenance Mode</a></div>
 <?php }

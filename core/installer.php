@@ -31,6 +31,7 @@ if($_POST['emailtrap']==''){
 <?php	$sysurl=filter_input(INPUT_POST,'sysurl',FILTER_SANITIZE_STRING);
 		$sysadmin=filter_input(INPUT_POST,'sysadmin',FILTER_SANITIZE_STRING);
 		$sysname=filter_input(INPUT_POST,'sysname',FILTER_SANITIZE_STRING);
+		$systheme=filter_input(INPUT_POST,'systheme',FILTER_SANITIZE_STRING);
 		$txt='[database]'.PHP_EOL;
 		$txt.='driver = '.$dbtype.PHP_EOL;
 		$txt.='host = '.$dbhost.PHP_EOL;
@@ -53,8 +54,8 @@ if($_POST['emailtrap']==''){
 		$hash=password_hash($aPassword,PASSWORD_DEFAULT);
 		$q=$db->prepare("UPDATE login SET name=:aName,email=:aEmail,username=:aUsername,password=:aPassword WHERE id='1'");
 		$q->execute(array(':aName'=>$aName,':aEmail'=>$aEmail,':aUsername'=>$aUsername,':aPassword'=>$hash));
-		$q=$db->prepare("UPDATE config SET maintenance='1',seoTitle=:seoTitle,seoRSSTitle=:seoRSSTitle WHERE id='1'");
-		$q->execute(array(':seoTitle'=>$sysname,':seoRSSTitle'=>$sysname));
+		$q=$db->prepare("UPDATE config SET maintenance='1',seoTitle=:seoTitle,seoRSSTitle=:seoRSSTitle,theme=:systheme WHERE id='1'");
+		$q->execute(array(':seoTitle'=>$sysname,':seoRSSTitle'=>$sysname,':systheme'=>$systheme));
 		$e=$db->errorInfo();
 		if(is_null($e[2])){?>
 <script>/*<![CDATA[*/
