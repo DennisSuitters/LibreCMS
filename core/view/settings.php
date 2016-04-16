@@ -16,31 +16,13 @@ if(isset($_SESSION['uid'])&&$_SESSION['uid']>0){
 	$user=$s->fetch(PDO::FETCH_ASSOC);
 }
 if(isset($user)&&$user['rank']>0){
-	if(isset($act)&&$act=='updatePassword'&&isset($_POST['emailTrap'])&&$_POST['emailTrap']==''){
-		if(isset($_POST['currentPass'])){
-			$currentPass=filter_input(INPUT_POST,'currentPass',FILTER_SANITIZE_STRING);
-			$cPass=hash('SHA512',$user['username']).hash('SHA512',$currentPass);
-			if($cPass==$user['password']){
-				if(isset($_POST['newPass'])&&isset($_POST['confirmPass'])){
-					$newPass=filter_input(INPUT_POST,'newPass',FILTER_SANITIZE_STRING);
-					$confirmPass=filter_input(INPUT_POST,'confirmPass',FILTER_SANITIZE_STRING);
-					if($newPass==$confirmPass){
-						$pass=hash('SHA512',$user['username']).hash('SHA512',$newPass);
-						$s=$db->prepare("UPDATE login SET password=:password WHERE id=:id");
-						$s->execute(array(':password'=>$pass,':id'=>$user['id']));
-						$success='';
-					}else{
-						$matchPassCSS=$theme['settings']['settings_errorInput'];
-						$matchPassHidden=$theme['settings']['settings_show'];
-					}
-				}else{
-					$matchPassCSS=$theme['settings']['settings_errorInput'];
-					$matchPassHidden=$theme['settings']['settings_show'];
-				}
-			}else{
-				$currentPassCSS=$theme['settings']['settings_errorInput'];
-				$currentPassHidden=$theme['settings']['settings_show'];
-			}
+	if(isset($act)&&$act=='updatePassword'){
+		if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
+			$password=filter_input(INPUT_POST,'newPass',FILTER_SANITIZE_STRING);
+			$hash=password_hash($password,PASSWORD_DEFAULT);
+			$su=$db->prepare("UPDATE login SET password=:hash WHERE id=:id");
+			$su->execute(array(':hash'=>$hash,':id'=>$user['id']));
+			$success='';
 		}
 	}
 	if(isset($act)&&$act=='updateAccount'&&isset($_POST['emailTrap'])&&$_POST['emailTrap']==''){

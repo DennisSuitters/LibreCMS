@@ -1,6 +1,8 @@
 <?php
 if(file_exists('core/config.ini'))
     $settings=parse_ini_file('core/config.ini',TRUE);
+elseif(file_exists('../core/config.ini'))
+    $settings=parse_ini_file('../core/config.ini',TRUE);
 else
     $settings=parse_ini_file('config.ini',TRUE);
 try{

@@ -30,4 +30,16 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
 }
 $html=str_replace('<buildMenu>',$menu.'<buildMenu>',$html);
 $html=preg_replace('~<buildMenu>.*?<\/buildMenu>~is','',$html,1);
+if(isset($_GET['activate'])&&$_GET['activate']!=''){
+	$activate=filter_input(INPUT_GET,'activate',FILTER_SANITIZE_STRING);
+	$sa=$db->prepare("UPDATE login SET active='1',activate='',rank='100' WHERE activate=:activate");
+	$sa->execute(array(':activate'=>$activate));
+	if($sa->rowCount()>0){
+		$html=str_replace('<activation>','<div class="alert alert-success">Your Account is now Active!</div>',$html);
+	}else{
+		$html=str_replace('<activation>','<div class="alert alert-danger">There was an Issue Activating your Account!</div>',$html);
+	}
+}else{
+	$html=str_replace('<activation>','',$html);
+}
 $content.=$html;

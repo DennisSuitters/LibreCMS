@@ -177,6 +177,18 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                         </form>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="AccountActivationLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Sign Up Email Layout</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <form method="post" target="sp" action="core/update.php">
+                            <input type="hidden" name="id" value="1">
+                            <input type="hidden" name="t" value="config">
+                            <input type="hidden" name="c" value="AccountActivationLayout">
+                            <textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['AccountActivationLayout'];?></textarea>
+                            <div class="help-block">You can use the following Tokens: {username} {activation_link} {password}</div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div id="banking" class="tab-pane fade in">
                 <h4>Banking</h4>

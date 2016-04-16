@@ -9,7 +9,7 @@ if($act=='logout'){
 }elseif($act=='login'||(isset($_SESSION['loggedin'])&&$_SESSION['loggedin']==true)){
     $username=isset($_POST['username'])?filter_input(INPUT_POST,'username',FILTER_SANITIZE_STRING):$_SESSION['username'];
     $password=isset($_POST['password'])?filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING):$_SESSION['password'];
-    $q=$db->prepare("SELECT * FROM login WHERE username=:username LIMIT 1");
+    $q=$db->prepare("SELECT * FROM login WHERE username=:username AND activate='' AND active='1' LIMIT 1");
     $q->execute(array(':username'=>$username));
     $user=$q->fetch(PDO::FETCH_ASSOC);
     if($user['id']!=0){

@@ -1,5 +1,5 @@
 <?php
-if($_SESSION['rank']>0)$link='<a href="logout"><small>Logout</small></a>';
+if($_SESSION['rank']>0)$link='<a href="?act=logout"><small>Logout</small></a>';
 else{
 	if($config['options']{3}==1)$link_x=' or Sign Up';
 	else{
@@ -12,5 +12,4 @@ $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $html=str_replace('<print theme="title">',$theme['title'],$html);
 $html=str_replace('<print theme="creator">','<a target="_blank" href="'.$theme['creator_url'].'">'.$theme['creator'].'</a>',$html);
 $html=str_replace('<login>',$link,$html);
-$html=str_replace('<admin>',URL.$settings['system']['admin'],$html);
 $content.=$html;
