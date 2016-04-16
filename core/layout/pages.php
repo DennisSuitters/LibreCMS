@@ -2,14 +2,13 @@
 $rank=0;
 $show='pages';
 if($args[0]=='edit')$show='item';
-if($show=='pages'){
-    $s=$db->prepare("SELECT * FROM menu ORDER BY menu DESC, ord ASC");
-    $s->execute();?>
+if($show=='pages'){?>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h4>Pages</h4>
     </div>
     <div class="panel-body">
+        <div class="page-header"><h4>Active Pages</h4></div>
         <div class="table-responsive">
             <table class="table table-condensed table-striped table-hover">
                 <thead>
@@ -19,7 +18,9 @@ if($show=='pages'){
                     </tr>
                 </thead>
                 <tbody id="sortable" class="sortable" data-t="menu" data-c="ord">
-<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
+<?php $s=$db->prepare("SELECT * FROM menu WHERE active='1' ORDER BY menu DESC, ord ASC");
+    $s->execute();
+    while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>" class="item" data-id="<?php echo$r['id'];?>">
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
@@ -33,7 +34,31 @@ if($show=='pages'){
                     <tr class="ghost hidden"><td colspan="3">&nbsp;</td></tr>
                 </tbody>
             </table>
-
+            <div class="page-header"><h4>Inactive Pages</h4></div>
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-xs-9">Title</th>
+                        <th class="col-xs-3"></th>
+                    </tr>
+                </thead>
+                <tbody>
+<?php $s=$db->prepare("SELECT * FROM menu WHERE active!='1' ORDER BY menu DESC, ord ASC");
+    $s->execute();
+    while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
+                    <tr id="l_<?php echo$r['id'];?>">
+                        <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
+                        <td id="controls_<?php echo$r['id'];?>" class="text-right">
+                            <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
+                            <label for="active<?php echo$r['id'];?>" class="btn btn-default btn-sm"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Active State"';?>></label>
+                            <a class="btn btn-primary btn-sm" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
+                            <button class="btn btn-default btn-sm handle"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Drag to Change Order"';?>><i class="libre libre-resize-vertical"></i></button>
+                        </td>
+                    </tr>
+<?php }?>
+                    <tr class="ghost hidden"><td colspan="3">&nbsp;</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
