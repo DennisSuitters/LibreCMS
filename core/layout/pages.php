@@ -14,6 +14,7 @@ if($show=='pages'){?>
                 <thead>
                     <tr>
                         <th class="col-xs-9">Title</th>
+                        <th class="col-xs-1 text-center">Views</th>
                         <th class="col-xs-3"></th>
                     </tr>
                 </thead>
@@ -23,6 +24,7 @@ if($show=='pages'){?>
     while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>" class="item" data-id="<?php echo$r['id'];?>">
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
+                        <td class="text-center"><?php echo$r['views'];?></td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
                             <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
                             <label for="active<?php echo$r['id'];?>" class="btn btn-default btn-sm"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Active State"';?>></label>
@@ -183,6 +185,12 @@ else echo'<img src="core/images/nocover.jpg">';?>
                 </fieldset>
             </div>
             <div role="tabpanel" class="tab-pane" id="page-seo">
+                <div class="form-group">
+                    <label for="views" class="control-label col-xs-5 col-sm-3 col-lg-2">Views</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="number" id="views" class="form-control textinput" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="views">
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Title</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
