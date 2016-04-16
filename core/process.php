@@ -15,6 +15,8 @@ $noavatar=NOAVATAR;
 $sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
 $sp->execute(array(':contentType'=>$view));
 $page=$sp->fetch(PDO::FETCH_ASSOC);
+$pu=$db->prepare("UPDATE menu SET views=views+1 WHERE id=:id");
+$pu->execute(array(':id'=>$page['id']));
 if(isset($act)&&$act=='logout')require'core/login.php';
 require'core'.DS.'cart_quantity.php';
 if($_SESSION['rank']>699)$status="%";else$status="published";
