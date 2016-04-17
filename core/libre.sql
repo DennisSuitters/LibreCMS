@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 16, 2016 at 11:45 PM
+-- Generation Time: Apr 17, 2016 at 01:02 PM
 -- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -263,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `login` (
   `layoutBookings` varchar(10) COLLATE utf8_bin NOT NULL,
   `lti` int(10) NOT NULL,
   `ti` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `login`
@@ -328,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `file`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `contentType`, `schemaType`, `seoKeywords`, `seoDescription`, `seoCaption`, `menu`, `notes`, `ord`, `active`, `views`, `eti`) VALUES
-(1, 1, 'Kenika Suitters', 'Home', '', '', 'page_cover_1.jpg', '', '', '', '', 'index', '', 'Default home page keywords', 'Default home page description', 'Default home page caption', 'head', '', 0, 1, 62, 1460777612),
+(1, 1, 'Kenika Suitters', 'Home', '', '', 'page_cover_1.jpg', '', '', '', '', 'index', '', 'Default home page keywords', 'Default home page description', 'Default home page caption', 'head', '', 0, 1, 65, 1460777612),
 (2, 1, 'Kenika Suitters', 'Blog', '', 'article', 'page_cover_2.jpg', '', '', '', '', 'article', '', '', '', '', 'head', '', 5, 1, 0, 1458787523),
 (3, 1, 'Kenika Suitters', 'Portfolio', '', 'portfolio', '', '', '', '', '', 'portfolio', '', '', '', '', 'head', '', 8, 0, 0, 1458787523),
 (4, 1, 'Kenika Suitters', 'Bookings', '', 'bookings', '', '', '', '', '', 'bookings', '', '', '', '', 'head', '', 9, 1, 1, 1458787523),
@@ -528,7 +528,7 @@ ALTER TABLE `content`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `logs`
 --
