@@ -53,6 +53,14 @@ function rank($txt){
 	if($txt==900)return'administrator';
 	if($txt==1000)return'developer';
 }
+function svg($svg,$size=null,$color=null){
+	echo'<i class="libre';
+	if($size!=null)echo' libre-'.$size;
+	if($color!=null)echo' libre-'.$color;
+	echo'">';
+	include'svg/libre-'.$svg.'.svg';
+	echo'</i>';
+}
 function minify($txt){
 	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
 }

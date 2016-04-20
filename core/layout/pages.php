@@ -13,8 +13,9 @@ if($show=='pages'){?>
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
-                        <th class="col-xs-9">Title</th>
+                        <th class="col-xs-8">Title</th>
                         <th class="col-xs-1 text-center">Views</th>
+                        <th class="col-xs-1 text-center">Active</th>
                         <th class="col-xs-3"></th>
                     </tr>
                 </thead>
@@ -25,42 +26,48 @@ if($show=='pages'){?>
                     <tr id="l_<?php echo$r['id'];?>" class="item" data-id="<?php echo$r['id'];?>">
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
                         <td class="text-center"><?php echo$r['views'];?></td>
+                        <td class="text-center">
+                          <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
+                          <label for="active<?php echo$r['id'];?>" <?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Active State"';?>></label>
+                        </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
-                            <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
-                            <label for="active<?php echo$r['id'];?>" class="btn btn-default btn-sm"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Active State"';?>></label>
-                            <a class="btn btn-primary btn-sm" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
-                            <button class="btn btn-default btn-sm handle"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Drag to Change Order"';?>><i class="libre libre-resize-vertical"></i></button>
+                            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+                            <button class="btn btn-default handle"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Drag to Change Order"';?>><?php svg('resize-vertical');?></button>
                         </td>
                     </tr>
 <?php }?>
                     <tr class="ghost hidden"><td colspan="3">&nbsp;</td></tr>
                 </tbody>
             </table>
+<?php $s=$db->prepare("SELECT * FROM menu WHERE active!='1' ORDER BY menu DESC, ord ASC");
+    $s->execute();
+    if($s->rowCount()>0){?>
             <div class="page-header"><h4>Inactive Pages</h4></div>
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
                         <th class="col-xs-9">Title</th>
-                        <th class="col-xs-3"></th>
+                        <th class="col-xs-1 text-center">Active</th>
+                        <th class="col-xs-2"></th>
                     </tr>
                 </thead>
                 <tbody>
-<?php $s=$db->prepare("SELECT * FROM menu WHERE active!='1' ORDER BY menu DESC, ord ASC");
-    $s->execute();
-    while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
+<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>">
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
+                        <td class="text-center">
+                          <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
+                          <label for="active<?php echo$r['id'];?>" <?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Active State"';?>></label>
+                        </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
-                            <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
-                            <label for="active<?php echo$r['id'];?>" class="btn btn-default btn-sm"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Active State"';?>></label>
-                            <a class="btn btn-primary btn-sm" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
-                            <button class="btn btn-default btn-sm handle"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Drag to Change Order"';?>><i class="libre libre-resize-vertical"></i></button>
+                            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
                         </td>
                     </tr>
 <?php }?>
                     <tr class="ghost hidden"><td colspan="3">&nbsp;</td></tr>
                 </tbody>
             </table>
+<?php }?>
         </div>
     </div>
 </div>
@@ -77,7 +84,7 @@ if($show=='item'){
                 <li class="active"><?php echo$r['title'];?></li>
             </ol>
         </h4>
-        <a class="btn btn-default pull-right" href="<?php echo URL.$settings['system']['admin'].'/pages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back"></i></a>
+        <a class="btn btn-default pull-right" href="<?php echo URL.$settings['system']['admin'].'/pages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
     </div>
     <div class="panel-body">
         <ul class="nav nav-tabs" role="tablist">
@@ -91,7 +98,7 @@ if($show=='item'){
                 <div class="form-group">
                     <label for="title" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="title" placeholder="Enter a Title...">
+                        <input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="title" data-bs="btn-danger" placeholder="Enter a Title...">
                     </div>
                 </div>
                 <div class="form-group">
@@ -116,8 +123,8 @@ if($show=='item'){
                         <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                             <input type="text" id="coverURL" class="form-control" value="<?php echo$r['coverURL'];?>" onchange="coverUpdate('<?php echo$r['id'];?>','menu','coverURL',$(this).val());" placeholder="Enter Cover URL...">
                             <div class="input-group-btn">
-                                <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=menu&c=coverURL"><i class="libre libre-edit"></i></a>
-                                <button class="btn btn-danger" onclick="coverUpdate('<?php echo$r['id'];?>','menu','coverURL','');"><i class="libre libre-trash"></i></button>
+                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=menu&c=coverURL"><?php svg('edit');?></a>
+                                <button class="btn btn-default" onclick="coverUpdate('<?php echo$r['id'];?>','menu','coverURL','');"><?php svg('trash');?></button>
                             </div>
                         </div>
                         <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Editing a URL Image will retreive the image to the server for Editing.</div>
@@ -131,20 +138,16 @@ if($show=='item'){
                                     <input type="hidden" name="act" value="add_cover">
                                     <input type="hidden" name="t" value="menu">
                                     <input type="hidden" name="c" value="cover">
-                                    <div class="btn btn-info btn-file">
-                                        <span class="libre-stack">
-                                            <i class="libre libre-stack-1x libre-desktop"></i>
-                                            <i class="libre libre-stack-1x libre-action text-info"></i>
-                                            <i class="libre libre-stack-action libre-action-select"></i>
-                                        </span>
+                                    <div class="btn btn-default btn-file">
+                                        <?php svg('browse-computer');?>
                                         <input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
                                     </div>
-                                    <button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?> hidden-xs" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload"></i></button>
+                                    <button class="btn btn-default<?php if($user['options']{1}==0)echo' disabled';?> hidden-xs" onclick="$('#block').css({'display':'block'});"><?php svg('upload');?></button>
                                 </form>
                             </div>
                             <div class="input-group-btn">
-                                <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=menu&c=cover"><span class="libre-stack"><i class="libre libre-stack-1x libre-picture"></i><i class="libre libre-stack-1x libre-action text-info"></i><i class="libre libre-stack-action libre-action-select"></i></span></a>
-                                <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=menu&c=cover"><i class="libre libre-edit"></i></a>
+                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=menu&c=cover"><?php svg('browse-media');?></a>
+                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=menu&c=cover"><?php svg('edit');?></a>
                             </div>
                             <div id="cover" class="input-group-addon img">
 <?php if($r['cover']!=''&&file_exists('media'.DS.$r['cover']))
@@ -156,7 +159,7 @@ elseif($r['coverURL']!='')
 else echo'<img src="core/images/nocover.jpg">';?>
                             </div>
                             <div class="input-group-btn">
-                                <button class="btn btn-danger" onclick="coverUpdate('<?php echo$r['id'];?>','menu','cover','');"><i class="libre libre-trash"></i></button>
+                                <button class="btn btn-default" onclick="coverUpdate('<?php echo$r['id'];?>','menu','cover','');"><?php svg('trash');?></button>
                             </div>
                         </div>
                         <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div>

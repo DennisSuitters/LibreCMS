@@ -18,12 +18,12 @@
         <meta name="viewport" content="width=400,initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/style.css">
-        <link rel="stylesheet" type="text/css" href="core/css/libreicons.css">
+        <link rel="stylesheet" type="text/css" href="core/css/libreicons-svg.css">
         <script src="core/js/jquery-2.1.3.min.js"></script>
     </head>
     <body>
         <div class="container">
-            <div class="panel panel-default libre-cms_login center-block">
+            <div class="panel panel-default login center-block">
                 <div class="panel-body">
                     <form role="form" method="post" action="<?php if(strpos(URL,'logout')!=='false')echo rtrim(URL,'logout').$settings['system']['admin'];?>" accept-charset="UTF-8">
                         <input type="hidden" name="act" value="login">

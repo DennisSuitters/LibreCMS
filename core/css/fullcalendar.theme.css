@@ -1,2 +1,80 @@
-/* Bootstrap 3.5 Theme for FullCalendar */[class^="fc-icon-"]:before,[class*=" fc-icon-"]:before{display:inline-block;font:normal normal normal 14px/1 LibreICONS;font-size:inherit;-webkit-font-smoothing:antialiased;text-decoration:inherit;text-rendering:auto;text-transform:none;vertical-align:middle;speak:none;-moz-osx-font-smoothing:grayscale}.fc-icon:after{position:absolute;left:0;width:100%;text-align:center;font-size:1em}.fc-icon:before{position:relative;margin:0}.fc-icon-left-single-arrow:before{content:'\e94a'}.fc-icon-right-single-arrow:before{content:'\e94b'}.fc-icon-left-double-arrow:after{content:'\e94a'}.fc-icon-right-double-arrow:after{content:'\e94b'}.fc-icon-left-triangle:after{content:'\e93f'}.fc-icon-right-triangle:after{content:'\e940'}.fc-icon-down-triangle:after{content:'\e93e'}.fc-icon-x:after{content:'\e951'}.fc button{display:inline-block;padding:6px 12px;margin-bottom:0;font-size:14px;font-weight:400;line-height:1.2em;text-align:center;white-space:nowrap;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background-image:none;border:1px solid transparent;border-radius:4px}
-.fc button:active:focus,.fc button:focus{outline:thin dotted;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}.fc button:focus,.fc button:hover{color:#333;text-decoration:none}.fc button:active{background-image:none;outline:0;-webkit-box-shadow:inset 0 3px 5px rgba(0,0,0,.125);box-shadow:inset 0 3px 5px rgba(0,0,0,.125)}.fc button{color:#333;background-color:#fff;border-color:#ccc}.fc button:focus{color:#333;background-color:#e6e6e6;border-color:#8c8c8c}.fc button:hover{color:#333;background-color:#e6e6e6;border-color:#adadad}.fc button:active{color:#333;background-color:#e6e6e6;border-color:#adadad}.fc button:active:focus,.fc button:active:hover{color:#333;background-color:#d4d4d4;border-color:#8c8c8c}.fc button:active{background-image:none}.fc-state-default{background-image:none}#events-layer{position:absolute;top:-1px;right:0;z-index:100;width:65px;height:17px;text-align:right;padding-right:5px}#events-layer .btn{padding:0;line-height:13px;font-size:12px}#events-layer .btn-xs{width:14px;height:14px}
+/* Bootstrap 3.5 Theme for FullCalendar */
+[class^="fc-icon-"],
+[class*=" fc-icon-"]{
+    display:inline-block;
+	background-repeat:no-repeat;
+	background-image:url(../svg/libre-svg-black.svg);
+	width:14px;
+	height:14px;
+	vertical-align:middle
+}
+.fc-icon-left-single-arrow{background-position:-70px -70px}
+.fc-icon-right-single-arrow{background-position:-84px -70px}
+.fc-icon-left-double-arrow{background-position:-70px -70px}
+.fc-icon-right-double-arrow{background-position:-84px -70px}
+.fc-icon-left-triangle{background-position:-112px -56px}
+.fc-icon-right-triangle{background-position:-126px -56px}
+.fc-icon-down-triangle{background-position:-98px -56px}
+.fc-icon-x:after{background-position:-168px -70px}
+.fc button{
+    display:inline-block;
+    padding:6px 12px;
+    margin-bottom:0;
+    font-size:14px;
+    font-weight:400;
+    line-height:1.2em;
+    text-align:center;
+    white-space:nowrap;
+    vertical-align:middle;
+    -ms-touch-action:manipulation;
+    touch-action:manipulation;
+    cursor:pointer;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    background-image:none;
+    border:1px solid transparent;
+    border-radius:4px
+}
+.fc button:active:focus,
+.fc button:focus{
+    outline:thin dotted;
+    outline:5px auto -webkit-focus-ring-color;
+    outline-offset:-2px
+}
+.fc button:focus,
+.fc button:hover{
+    color:#333;
+    text-decoration:none
+}
+.fc button:active{
+    background-image:none;
+    outline:0;
+    -webkit-box-shadow:inset 0 3px 5px rgba(0,0,0,.125);
+    box-shadow:inset 0 3px 5px rgba(0,0,0,.125)
+}
+.fc button{
+    color:#333;
+    background-color:#fff;
+    border-color:#ccc
+}
+.fc button:focus{
+    color:#333;
+    background-color:#e6e6e6;
+    border-color:#8c8c8c
+}
+.fc button:hover,
+.fc button:active{
+    color:#333;
+    background-color:#e6e6e6;
+    border-color:#adadad
+}
+.fc button:active:focus,
+.fc button:active:hover{
+    color:#333;
+    background-color:#d4d4d4;
+    border-color:#8c8c8c
+}
+.fc button:active,
+.fc-state-default{background-image:none}

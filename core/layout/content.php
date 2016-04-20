@@ -73,7 +73,7 @@ if($show=='categories'){
         <div class="pull-right">
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
             <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>>
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-add"></i></button>
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php svg('add');?></button>
                 <ul class="dropdown-menu pull-right">
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/article">Article</a></li>
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/portfolio">Portfolio</a></li>
@@ -112,19 +112,19 @@ if($show=='categories'){
     $sc=$db->prepare("SELECT COUNT(id) as cnt FROM comments WHERE rid=:id AND status='unapproved'");
     $sc->execute(array(':id'=>$r['id']));
     $cnt=$sc->fetch(PDO::FETCH_ASSOC);?>
-                            <a class="btn btn-default btn-sm" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>#comments"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><i class="libre libre-comments"></i> <?php echo$cnt['cnt'];?></a>
+                            <a class="btn btn-default btn-sm" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>#comments"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><?php svg('comments');?> <?php echo$cnt['cnt'];?></a>
 <?php }?>
                         </td>
                         <td class="text-center">
-                            <span class="btn btn-default btn-sm"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Views"';?>><i class="libre libre-view"></i> <?php echo$r['views'];?></span>
+                            <span class="btn btn-default btn-sm"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Views"';?>><?php svg('view');?> <?php echo$r['views'];?></span>
                         </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
-                            <a id="pin<?php echo$r['id'];?>" class="btn btn-default btn-sm<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin"';?>><i class="libre libre-pin"></i></a>
-                            <a class="btn btn-primary btn-sm" href="<?php echo URL.$settings['system']['admin'];?>/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
+                            <a id="pin<?php echo$r['id'];?>" class="btn btn-default<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin"';?>><?php svg('pin');?></a>
+                            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'];?>/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
-                            <button class="btn btn-warning btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore"></i></button>
-                            <button class="btn btn-danger btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><i class="libre libre-trash"></i></button>
-                            <button class="btn btn-danger btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><i class="libre libre-purge"></i></button>
+                            <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+                            <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+                            <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
                         </td>
                     </tr>
 <?php }
@@ -155,11 +155,11 @@ if($show=='item'){
         </h4>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/content/type/'.$r['contentType'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back"></i></a>
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/content/type/'.$r['contentType'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
             </div>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
             <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>>
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="libre libre-add"></i></button>
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php svg('add');?></button>
                 <ul class="dropdown-menu pull-right">
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/article">Article</a></li>
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/portfolio">Portfolio</a></li>
@@ -188,7 +188,7 @@ if($show=='item'){
                 <div id="d0" class="form-group">
                     <label for="title" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title"<?php if($user['options']{1}==0)echo' readonly';?>>
+                        <input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title" data-bs="btn-danger" placeholder="Content MUST contain a title or it won't be accessible...">
                     </div>
                 </div>
                 <div id="d1" class="form-group">
@@ -364,8 +364,8 @@ if($show=='item'){
                             <div class="input-group-addon"><i class="libre libre-link"></i></div>
                             <input type="text" id="fileURL" class="form-control textinput" value="<?php echo$r['fileURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fileURL" placeholder="Enter a URL...">
                             <div class="input-group-btn">
-                                <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=fileURL"><i class="libre libre-edit"></i></a>
-                                <button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><i class="libre libre-trash"></i></button>
+                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=fileURL"><?php svg('edit');?></a>
+                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><?php svg('trash');?></button>
                             </div>
                         </div>
                         <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Editing a URL Image will retreive the image to the server for Editing.</div>
@@ -379,25 +379,15 @@ if($show=='item'){
                                     <input type="hidden" name="act" value="add_image">
                                     <input type="hidden" name="t" value="content">
                                     <input type="hidden" name="c" value="file">
-                                    <div class="btn btn-info btn-file">
-                                        <span class="libre-stack">
-                                            <i class="libre libre-stack-1x libre-desktop"></i>
-                                            <i class="libre libre-stack-1x libre-action text-info"></i>
-                                            <i class="libre libre-stack-action libre-action-select"></i>
-                                        </span>
+                                    <div class="btn btn-default btn-file">
+                                        <?php svg('browse-computer');?>
                                         <input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
                                     </div>
-                                    <button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload"></i></button>
+                                    <button class="btn btn-default<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><?php svg('upload');?></button>
                                 </form>
                             </div>
                             <div class="input-group-btn">
-                                <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=file">
-                                    <span class="libre-stack">
-                                        <i class="libre libre-stack-1x libre-picture"></i>
-                                        <i class="libre libre-stack-1x libre-action text-info"></i>
-                                        <i class="libre libre-stack-action libre-action-select"></i>
-                                    </span>
-                                </a>
+                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=file"><?php svg('browse-media');?></a>
                             </div>
                             <div id="file" class="input-group-addon img">
 <?php if($r['file']!=''&&file_exists('media'.DS.$r['file']))
@@ -409,8 +399,8 @@ elseif($r['fileURL']!='')
 else echo'<img src="core/images/noimage.jpg">';?>
                             </div>
                             <div class="input-group-btn">
-                                <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=file"><i class="libre libre-edit"></i></a>
-                                <button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><i class="libre libre-trash"></i></button>
+                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=file"><?php svg('edit');?></a>
+                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('trash');?></button>
                             </div>
                         </div>
                     </div>
@@ -424,33 +414,23 @@ else echo'<img src="core/images/noimage.jpg">';?>
                                     <input type="hidden" name="act" value="add_image">
                                     <input type="hidden" name="t" value="content">
                                     <input type="hidden" name="c" value="thumb">
-                                    <div class="btn btn-info btn-file">
-                                        <span class="libre-stack">
-                                            <i class="libre libre-stack-1x libre-desktop"></i>
-                                            <i class="libre libre-stack-1x libre-action text-info"></i>
-                                            <i class="libre libre-stack-action libre-action-select"></i>
-                                        </span>
+                                    <div class="btn btn-default btn-file">
+                                        <?php svg('browse-computer');?>
                                         <input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
                                     </div>
-                                    <button class="btn btn-success<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><i class="libre libre-upload"></i></button>
+                                    <button class="btn btn-default<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><?php svg('upload');?></button>
                                 </form>
                             </div>
                             <div class="input-group-btn">
-                                <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=thumb">
-                                    <span class="libre-stack">
-                                        <i class="libre libre-stack-1x libre-picture"></i>
-                                        <i class="libre libre-stack-1x libre-action text-info"></i>
-                                        <i class="libre libre-stack-action libre-action-select"></i>
-                                    </span>
-                                </a>
+                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=thumb"><?php svg('browse-media');?></a>
                             </div>
                             <div id="thumb" class="input-group-addon img">
 <?php if($r['thumb']!=''&&file_exists('media'.DS.$r['thumb']))echo'<a href="media/'.$r['thumb'].'" data-featherlight="image"><img src="media/'.$r['thumb'].'"></a>';
 else echo'<img src="core/images/noimage.jpg">';?>
                             </div>
                             <div class="input-group-btn">
-                                <a class="btn btn-info" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=thumb"><i class="libre libre-edit"></i></a>
-                                <button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><i class="libre libre-trash"></i></button>
+                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=thumb"><?php svg('edit');?></a>
+                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('trash');?></button>
                             </div>
                         </div>
                         <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div>

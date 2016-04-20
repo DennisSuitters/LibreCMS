@@ -37,7 +37,7 @@ if($_SESSION['rank']>399){
         <script src="core/js/pace.min.js"></script>
         <link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/bootstrap-datetimepicker.min.css">
-        <link rel="stylesheet" type="text/css" href="core/css/libreicons.css">
+        <link rel="stylesheet" type="text/css" href="core/css/svg.css">
         <link rel="stylesheet" type="text/css" href="core/css/summernote.css">
         <link rel="stylesheet" type="text/css" href="core/css/featherlight.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/style.css">
@@ -59,19 +59,19 @@ if($_SESSION['rank']>399){
             </div>
             <div class="menu-list">
                 <ul id="menu-content" class="menu-content">
-                    <li<?php if($view=='dashboard')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/dashboard';?>"><i class="libre libre-chart-line" name="Dashboard"></i> Dashboard</a></li>
-                    <li<?php if($view=='pages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><i class="libre libre-content" name="Pages"></i> Pages</a></li>
-                    <li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/content';?>"><i class="libre libre-content" name="Content"></i> Content</a></li>
-                    <li<?php if($view=='bookings')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><i class="libre libre-calendar" name="Bookings"></i> Bookings</a></li>
-                    <li<?php if($view=='orders')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><i class="libre libre-order" name="Orders"></i> Orders</a></li>
-                    <li<?php if($view=='media')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/media';?>"><i class="libre libre-picture" name="Media"></i> Media</a></li>
-                    <li<?php if($view=='messages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><i class="libre libre-mail" name="Messages"></i> Messages<a></li>
-                    <li<?php if($view=='accounts')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><i class="libre libre-users" name="Accounts"></i> Accounts</a></li>
-                    <li<?php if($view=='preferences')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><i class="libre libre-settings" name="Preferences"></i> Preferences</a></li>
-                    <li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><i class="libre libre-activity" name="Activity"></i> Activity</a></li>
+                    <li<?php if($view=='dashboard')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/dashboard';?>"><?php svg('chart-line');?> Dashboard</a></li>
+                    <li<?php if($view=='pages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><?php svg('content');?> Pages</a></li>
+                    <li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/content';?>"><?php svg('content');?> Content</a></li>
+                    <li<?php if($view=='bookings')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><?php svg('calendar');?> Bookings</a></li>
+                    <li<?php if($view=='orders')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><?php svg('order');?> Orders</a></li>
+                    <li<?php if($view=='media')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/media';?>"><?php svg('picture');?> Media</a></li>
+                    <li<?php if($view=='messages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('envelope');?> Messages<a></li>
+                    <li<?php if($view=='accounts')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><?php svg('users');?> Accounts</a></li>
+                    <li<?php if($view=='preferences')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><?php svg('settings');?> Preferences</a></li>
+                    <li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><?php svg('activity');?> Activity</a></li>
                     <li class="search<?php if($view=='search')echo' active';?>">
                         <form class="" method="post" action="admin/search">
-                            <i class="libre libre-search"></i>
+                            <?php svg('search');?>
                             <input class="form-control" type="search" name="search" value="" placeholder="Search" onblur="$(this).val('');$('#menu_search_icon').toggleClass('hidden');" onfocus="$('#menu_search_icon').toggleClass('hidden');">
                         </form>
                     </li>
@@ -80,9 +80,9 @@ if($_SESSION['rank']>399){
             <footer>
                 <ul>
                     <li><img class="logo" src="core/images/librecms-white-60.png"></li>
-                    <li><a class="btn btn-libre btn-xs" target="_blank" href="https://github.com/StudioJunkyard/LibreCMS/wiki" title="Wiki"><i class="libre libre-social-wikipedia"></i></a></li>
-                    <li><a class="btn btn-libre btn-xs" href="<?php echo URL;?>" title="Front"><i class="libre libre-desktop"></i></a></li>
-                    <li><a class="btn btn-libre btn-xs" href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out"><i class="libre libre-sign-out"></i></a></li>
+                    <li><a class="btn btn-libre btn-xs" target="_blank" href="https://github.com/StudioJunkyard/LibreCMS/wiki" title="Wiki"><?php svg('social-wikipedia');?></a></li>
+                    <li><a class="btn btn-libre btn-xs" href="<?php echo URL;?>" title="Front"><?php svg('desktop');?></i></a></li>
+                    <li><a class="btn btn-libre btn-xs" href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out"><?php svg('sign-out');?></a></li>
                 </ul>
             </footer>
         </aside>
@@ -100,7 +100,7 @@ if($_SESSION['rank']>399){
         <script src="core/js/jquery-ui.min.js"></script>
         <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
-        <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons.css">
+        <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons-svg.css">
         <script src="core/js/bootstrap.min.js"></script>
         <script src="core/js/summernote.js"></script>
         <script src="core/js/plugin/summernote-save-button/summernote-save-button.js"></script>
@@ -222,8 +222,8 @@ if($_SESSION['rank']>399){
                 ],
                 eventMouseover:function(event,domEvent,view){
                     var layer='<div id="events-layer" class="fc-transparent">';
-                    if(event.status=="unconfirmed")layer+='<span id="cbut'+event.id+'" class="btn btn-success btn-xs"><i class="libre libre-approve"></i></span> ';
-                    layer+='<span id="edbut'+event.id+'" class="btn btn-info btn-xs"><i class="libre libre-edit"></i></span> <span id="delbut'+event.id+'" class="btn btn-danger btn-xs"><i class="libre libre-trash"></i></span></div>';
+                    if(event.status=="unconfirmed")layer+='<span id="cbut'+event.id+'" class="btn btn-default btn-xs"><?php svg('approve');?></span> ';
+                    layer+='<span id="edbut'+event.id+'" class="btn btn-default btn-xs"><?php svg('edit');?></span> <span id="delbut'+event.id+'" class="btn btn-default trash btn-xs"><?php svg('trash');?></span></div>';
                     var content='Start: '+$.fullCalendar.moment(event.start).format('HH:mm');
                     if(event.end>event.start)content+='<br>End: '+$.fullCalendar.moment(event.end).format('HH:mm');
                     if(event.description!='')content+='<br>'+event.description;
@@ -342,7 +342,7 @@ if($_SESSION['rank']>399){
             </div>
         </div>
         <iframe id="sp" name="sp" class="hidden"></iframe>
-        <div id="block"><i class="libre libre-spinner-1 libre-5x libre-spin"></i></div>
+        <div id="block"><div class="spinner"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
     </body>
 </html>
 <?php }else require'core/layout/login.php';

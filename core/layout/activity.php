@@ -3,10 +3,10 @@
         <h4 class="col-xs-6">Activity</h4>
         <div class="pull-right">
             <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Purge All"';?>>
-                <button class="btn btn-warning" onclick="purge('0','logs')"><i class="libre libre-purge"></i></button>
+                <button class="btn btn-default trash" onclick="purge('0','logs')"><?php svg('purge');?></button>
             </div>
             <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Show Items"';?>>
-                <button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><i class="libre libre-view"></i></button>
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><?php svg('view');?></button>
                 <ul class="dropdown-menu pull-right">
                     <li><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>">All</a></li>
         <?php $st=$db->query("SELECT DISTINCT action FROM logs ORDER BY action ASC");
@@ -21,8 +21,8 @@
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
-                        <th class=""></th>
-                        <th class=""></th>
+                        <th class="col-xs-2"></th>
+                        <th class="col-xs-8"></th>
                         <th class="col-xs-2"></th>
                     </tr>
                 </thead>

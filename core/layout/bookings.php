@@ -20,7 +20,7 @@ if($args[0]=='edit'){
             Bookings
         </h4>
         <div class="btn-group pull-right">
-            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/bookings"';if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back';?>"><i class="libre libre-back"></i></a>
+            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/bookings"';if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back';?>"><?php svg('back');?></a>
         </div>
     </div>
     <div class="panel-body">
@@ -147,7 +147,7 @@ if($sql->rowCount()>0){?>
             Bookings
         </h4>
         <div class="btn-group pull-right">
-            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/add/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add Booking."';?>><i class="libre libre-add"></i></a>
+            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/add/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add Booking."';?>><?php svg('add');?></a>
         </div>
     </div>
     <div class="panel-body">

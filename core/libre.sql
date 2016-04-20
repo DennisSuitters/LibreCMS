@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 17, 2016 at 01:02 PM
+-- Generation Time: Apr 20, 2016 at 11:56 PM
 -- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -45,7 +45,15 @@ CREATE TABLE IF NOT EXISTS `choices` (
   `url` varchar(255) COLLATE utf8_bin NOT NULL,
   `title` varchar(60) COLLATE utf8_bin NOT NULL,
   `ti` int(10) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `choices`
+--
+
+INSERT INTO `choices` (`id`, `uid`, `rid`, `contentType`, `rank`, `icon`, `url`, `title`, `ti`) VALUES
+(1, 1, 0, 'social', 0, 'facebook', 'https://www.facebook.com/studiojunkyard/', '', 0),
+(2, 1, 0, 'social', 0, 'blogger', 'https://www.facebook.com/studiojunkyard/', '', 0);
 
 -- --------------------------------------------------------
 
@@ -213,7 +221,15 @@ CREATE TABLE IF NOT EXISTS `content` (
   `ti` int(10) unsigned NOT NULL,
   `eti` int(10) NOT NULL,
   `pti` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `content`
+--
+
+INSERT INTO `content` (`id`, `options`, `rank`, `rid`, `uid`, `login_user`, `cid`, `ip`, `contentType`, `schemaType`, `keywords`, `barcode`, `fccid`, `code`, `brand`, `title`, `category_1`, `category_2`, `name`, `url`, `email`, `business`, `address`, `suburb`, `city`, `state`, `postcode`, `phone`, `mobile`, `thumb`, `file`, `fileURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `exifISO`, `exifAperture`, `exifFocalLength`, `exifShutterSpeed`, `exifCamera`, `exifLens`, `exifFilename`, `exifti`, `cost`, `subject`, `notes`, `attributionContentName`, `attributionContentURL`, `quantity`, `tags`, `caption`, `status`, `service`, `internal`, `featured`, `bookable`, `fti`, `assoc`, `ord`, `views`, `active`, `pin`, `tis`, `tie`, `lti`, `ti`, `eti`, `pti`) VALUES
+(2, '00000000', 0, 0, 1, 'Kenika Suitters', 0, '', 'article', 'blogPost', '', '', '', '', '', 'Article 2', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '', '', '', 0, '', '', 'unpublished', 0, 0, 0, 0, 0, '', 0, 0, 1, 0, 0, 0, 0, 1460913778, 1461073349, 1461056838),
+(4, '00000000', 0, 0, 1, 'Kenika Suitters', 1, '', 'booking', '', '', '', '', '', '', '', '', '', 'Kenika Suitters', '', 'info@studiojunkyard.com', 'Studio Junkyard', '128 Cradle Mountain Road', 'Wilmot', 'Wilmot', 'Tasmania', 0, '0364921418', '0364921418', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, 0.00, '', '', '', '', 0, '', '', 'confirmed', 0, 0, 0, 0, 0, '', 0, 0, 0, 0, 1461071791, 0, 0, 1461071791, 1461071907, 0);
 
 -- --------------------------------------------------------
 
@@ -290,7 +306,15 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `newda` longblob NOT NULL,
   `action` tinytext COLLATE utf8_bin NOT NULL,
   `ti` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `logs`
+--
+
+INSERT INTO `logs` (`id`, `uid`, `rid`, `view`, `contentType`, `refTable`, `refColumn`, `oldda`, `newda`, `action`, `ti`) VALUES
+(116, 1, 1, '', '', 'orders', 'status', '', 0x6f766572647565, 'update', 1461143159),
+(117, 1, 1, '', '', 'orders', 'status', 0x6f766572647565, 0x70656e64696e67, 'update', 1461143191);
 
 -- --------------------------------------------------------
 
@@ -328,18 +352,18 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `file`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `contentType`, `schemaType`, `seoKeywords`, `seoDescription`, `seoCaption`, `menu`, `notes`, `ord`, `active`, `views`, `eti`) VALUES
-(1, 1, 'Kenika Suitters', 'Home', '', '', 'page_cover_1.jpg', '', '', '', '', 'index', '', 'Default home page keywords', 'Default home page description', 'Default home page caption', 'head', '', 0, 1, 65, 1460777612),
-(2, 1, 'Kenika Suitters', 'Blog', '', 'article', 'page_cover_2.jpg', '', '', '', '', 'article', '', '', '', '', 'head', '', 5, 1, 0, 1458787523),
+(1, 1, 'Kenika Suitters', 'Home', '', '', 'page_cover_1.jpg', '', '', '', '', 'index', '', 'Default home page keywords', 'Default home page description', 'Default home page caption', 'head', '<p><a target="_blank" href="https://www.facebook.com/studiojunkyard/"><img src="http://localhost/LibreCMS/media/599822_10150961026277947_908721304_n.jpg" style="width: 25%;" alt="All the way" title="Myself" class=" img-responsive"></a></p>', 0, 1, 1, 1461130527),
+(2, 1, 'Kenika Suitters', 'Blog', '', 'article', 'page_cover_2.jpg', '', '', '', '', 'article', '', '', '', '', 'head', '', 5, 1, 1, 1458787523),
 (3, 1, 'Kenika Suitters', 'Portfolio', '', 'portfolio', '', '', '', '', '', 'portfolio', '', '', '', '', 'head', '', 8, 0, 0, 1458787523),
-(4, 1, 'Kenika Suitters', 'Bookings', '', 'bookings', '', '', '', '', '', 'bookings', '', '', '', '', 'head', '', 9, 1, 1, 1458787523),
+(4, 1, 'Kenika Suitters', 'Bookings', '', 'bookings', '', '', '', '', '', 'bookings', '', '', '', '', 'head', '', 9, 1, 2, 1458787523),
 (5, 1, 'Kenika Suitters', 'Events', '', 'events', '', '', '', '', '', 'event', '', '', '', '', 'head', '', 7, 0, 0, 1458787523),
 (6, 1, 'Kenika Suitters', 'News', '', 'news', '', '', '', '', '', 'news', '', '', '', '', 'head', '', 6, 0, 0, 1458787523),
 (7, 1, 'Kenika Suitters', 'Testimonials', '', 'testimonials', '', '', '', '', '', 'testimonial', '', '', '', '', 'head', '', 4, 1, 0, 1458787523),
-(8, 1, 'Kenika Suitters', 'Inventory', '', 'inventory', '', '', '', '', '', 'inventory', '', '', '', '', 'head', '', 3, 1, 0, 1458787523),
-(9, 1, 'Kenika Suitters', 'Services', '', 'services', 'page_cover_9.jpg', '', '', '', '', 'service', '', 'Default Services SEO Keywords', 'Default Services SEO Description', 'Default Services SEO Caption', 'head', '', 2, 1, 0, 1458787523),
-(10, 1, 'Kenika Suitters', 'Gallery', '', 'gallery', '', '', '', '', '', 'gallery', '', 'Default Gallery SEO Keywords', 'Default Gallery SEO Description', 'Default Gallery SEO Caption', 'head', '', 1, 1, 2, 1458787523),
-(11, 1, 'Kenika Suitters', 'Contact', '', 'contactus', '', '', '', '', '', 'contactus', '', '', '', '', 'head', '', 10, 1, 1, 1458787523),
-(12, 1, 'Kenika Suitters', 'Cart', '', 'cart', '', '', '', '', '', 'cart', '', '', '', '', 'head', '', 11, 1, 0, 1458787523),
+(8, 1, 'Kenika Suitters', 'Inventory', '', 'inventory', '', '', '', '', '', 'inventory', '', '', '', '', 'head', '', 3, 1, 1, 1458787523),
+(9, 1, 'Kenika Suitters', 'Services', '', 'services', 'page_cover_9.jpg', '', '', '', '', 'service', '', 'Default Services SEO Keywords', 'Default Services SEO Description', 'Default Services SEO Caption', 'head', '', 2, 1, 1, 1458787523),
+(10, 1, 'Kenika Suitters', 'Gallery', '', 'gallery', '', '', '', '', '', 'gallery', '', 'Default Gallery SEO Keywords', 'Default Gallery SEO Description', 'Default Gallery SEO Caption', 'head', '', 1, 1, 3, 1458787523),
+(11, 1, 'Kenika Suitters', 'Contact', '', 'contactus', '', '', '', '', '', 'contactus', '', '', '', '', 'head', '', 10, 1, 2, 1458787523),
+(12, 1, 'Kenika Suitters', 'Cart', '', 'cart', '', '', '', '', '', 'cart', '', '', '', '', 'head', '', 11, 1, 1, 1458787523),
 (13, 1, 'Kenika Suitters', 'Terms of Service', 'Terms of Service', 'tos', '', '', '', '', '', 'tos', '', '', '', '', 'footer', '', 13, 1, 0, 1458787523),
 (14, 1, 'Kenika Suitters', 'Search', 'Search', 'search', '', '', '', '', '', 'search', '', '', '', '', 'footer', '', 12, 1, 0, 1458787523);
 
@@ -396,7 +420,14 @@ CREATE TABLE IF NOT EXISTS `orderitems` (
   `cost` decimal(10,2) unsigned NOT NULL,
   `status` varchar(16) COLLATE utf8_bin NOT NULL,
   `ti` int(10) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `orderitems`
+--
+
+INSERT INTO `orderitems` (`id`, `oid`, `iid`, `title`, `quantity`, `cost`, `status`, `ti`) VALUES
+(1, 1, 0, '', 1, 0.00, '', 1461131424);
 
 -- --------------------------------------------------------
 
@@ -423,7 +454,14 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `recurring` int(1) NOT NULL,
   `ti` int(10) unsigned NOT NULL,
   `eti` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `cid`, `uid`, `contentType`, `qid`, `qid_ti`, `iid`, `iid_ti`, `did`, `did_ti`, `aid`, `aid_ti`, `due_ti`, `notes`, `status`, `recurring`, `ti`, `eti`) VALUES
+(1, 1, 1, '', 'Q160419000001', 1461057706, '', 0, '', 0, '', 0, 1462267306, 'Services are considered to be in a Grace Period for a total of 14 days whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the 14 Day Grace Period, any unpaid accounts will be suspended, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If 30 days without payment or contact has lapsed, we will at our discretion consider terminatingÃ‚Â services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', 'pending', 0, 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -508,7 +546,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `choices`
 --
 ALTER TABLE `choices`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `comments`
 --
@@ -523,7 +561,7 @@ ALTER TABLE `config`
 -- AUTO_INCREMENT for table `content`
 --
 ALTER TABLE `content`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `login`
 --
@@ -533,7 +571,7 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=118;
 --
 -- AUTO_INCREMENT for table `menu`
 --
@@ -548,9 +586,9 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `orderitems`
 --
 ALTER TABLE `orderitems`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;

@@ -4,12 +4,12 @@
     </div>
     <div class="panel-body">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#theme" data-toggle="tab"><i class="libre libre-theme visible-xs"></i><span class="hidden-xs">Theme</span></a></li>
-            <li><a href="#contact" data-toggle="tab"><i class="libre libre-address-book visible-xs"></i><span class="hidden-xs">Contact</span></a></li>
-            <li><a href="#interface" data-toggle="tab"><i class="libre libre-desktop visible-xs"></i><span class="hidden-xs">Interface</span></a></li>
-            <li><a href="#banking" data-toggle="tab"><i class="libre libre-bank visible-xs"></i><span class="hidden-xs">Banking</span></a></li>
-            <li><a href="#seo" data-toggle="tab"><i class="libre libre-seo visible-xs"></i><span class="hidden-xs">SEO</span></a></li>
-            <li><a href="#backrestore" data-toggle="tab"><i class="libre libre-database visible-xs"></i><span class="hidden-xs">Backup</span></a></li>
+            <li class="active"><a href="#theme" data-toggle="tab">Theme</a></li>
+            <li><a href="#contact" data-toggle="tab">Contact</a></li>
+            <li><a href="#interface" data-toggle="tab">Interface</a></li>
+            <li><a href="#banking" data-toggle="tab">Banking</a></li>
+            <li><a href="#seo" data-toggle="tab">SEO</a></li>
+            <li><a href="#backrestore" data-toggle="tab">Backup</a></li>
         </ul>
         <div class="tab-content">
             <div id="theme" class="tab-pane fade in active">
@@ -21,7 +21,7 @@
                     <div class="col-xs-12 col-md-3">
                         <div class="theme-chooser-item panel<?php if($config['theme']==$folder)echo' panel-success';?>" data-theme="<?php echo$folder;?>">
                             <div class="panel-image">
-                                <img src="<?php if(file_exists('layout/'.$folder.'/theme.jpg'))echo'layout/'.$folder.'/theme.jpg';elseif(file_exists('layout/'.$folder.'/theme.png'))echo'layout/'.$folder.'/theme.png';else echo'core/images/noimage.jpg';?>" alt="<?php echo$theme['title'];?>">
+                                <img class="col-xs-4 col-md-12 img-responsive" src="<?php if(file_exists('layout/'.$folder.'/theme.jpg'))echo'layout/'.$folder.'/theme.jpg';elseif(file_exists('layout/'.$folder.'/theme.png'))echo'layout/'.$folder.'/theme.png';else echo'core/images/noimage.jpg';?>" alt="<?php echo$theme['title'];?>">
                                 <h4 class="panel-title text-white text-shadow-depth-1-half"><?php if(isset($theme['title'])&&$theme['title']!='')echo$theme['title'];else echo'No Title Assigned';?></h4>
                             </div>
                             <div class="panel-body panel-content">

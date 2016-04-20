@@ -17,7 +17,7 @@ if($args[0]=='edit'){
             Accounts
         </h4>
         <div class="pull-right">
-            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><i class="libre libre-back"></i></a>
+            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
         </div>
     </div>
     <div class="panel-body">
@@ -130,18 +130,15 @@ if($args[0]=='edit'){
                                 <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
                                     <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                                     <input type="hidden" name="act" value="add_avatar">
-                                    <div class="btn btn-info btn-file">
-                                        <span class="libre-stack"><i class="libre libre-stack-1x libre-desktop"></i><i class="libre libre-stack-1x libre-action text-info"></i><i class="libre libre-stack-action libre-action-select"></i></span>
-                                        <input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
-                                    </div>
-                                    <button class="btn btn-success" type="submit"><i class="libre libre-upload"></i></button>
+                                    <div class="btn btn-default btn-file"><?php svg('browse-computer');?></div>
+                                    <button class="btn btn-default" type="submit"><?php svg('upload');?></button>
                                 </form>
                             </div>
                             <div class="input-group-addon img">
                                 <img id="avatar" src="<?php if($r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$r['avatar']))echo'media/avatar/'.$r['avatar'];else echo'core/images/noavatar.jpg';?>">
                             </div>
                             <div class="input-group-btn">
-                                <button class="btn btn-danger" onclick="imageUpdate('<?php echo$r['id'];?>','login','avatar','');"><i class="libre libre-trash"></i></button>
+                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','login','avatar','');"><?php svg('trash');?></button>
                             </div>
                         </div>
                     </div>
@@ -164,83 +161,83 @@ if($args[0]=='edit'){
                             <input type="hidden" name="act" value="add_social">
                             <div class="input-group col-xs-12 col-sm-9 col-lg-10">
                                 <span class="input-group-addon">Network</span>
-                                <select class="form-control libre" name="icon">
+                                <select class="form-control" name="icon">
                                     <option value="">None</option>
-                                    <option value="500px">&#xea09; 500px</option>
-                                    <option value="amazon">&#xea0a; Amazon</option>
-                                    <option value="behance">&#xea0c; Behance</option>
-                                    <option value="bitcoin">&#xea0d; Bitcoin</option>
-                                    <option value="blogger">&#xea0e; Blogger</option>
-                                    <option value="buffer">&#xea0f; Buffer</option>
-                                    <option value="cargo">&#xea10; Cargo</option>
-                                    <option value="codepen">&#xea11; Codepen</option>
-                                    <option value="coroflot">&#xea12; Coroflot</option>
-                                    <option value="creatica">&#xea13; Creatica</option>
-                                    <option value="delicious">&#xea14; Delcicious</option>
-                                    <option value="deviantart">&#xea15; DeviantArt</option>
-                                    <option value="diaspora">&#xea16; Diaspora</option>
-                                    <option value="digg">&#xea17; Digg</option>
-                                    <option value="dribbble">&#xea18; Dribbble</option>
-                                    <option value="dropbox">&#xea19; Dropbox</option>
-                                    <option value="envato">&#xea1b; Envato</option>
-                                    <option value="exposure">&#xea1c; Exposure</option>
-                                    <option value="facebook">&#xea1d; Facebook</option>
-                                    <option value="feedburner">&#xea1e; Feedburner</option>
-                                    <option value="flickr">&#xea1f; Flickr</option>
-                                    <option value="forrst">&#xea20; Forrst</option>
-                                    <option value="github">&#xea21; GitHub</option>
-                                    <option value="google-plus">&#xea23; Google+</option>
-                                    <option value="gravatar">&#xea24; Gravatar</option>
-                                    <option value="hackernews">&#xea25; Hackernews</option>
-                                    <option value="icq">&#xea26; ICQ</option>
-                                    <option value="instagram">&#xea27; Instagram</option>
-                                    <option value="kickstarter">&#xea28; Kickstarter</option>
-                                    <option value="last-fm">&#xea29; Last FM</option>
-                                    <option value="lego">&#xea2a; Lego</option>
-                                    <option value="linkedin">&#xea2b; Linkedin</option>
-                                    <option value="livejournal">&#xea2c; LiveJournal</option>
-                                    <option value="lynda">&#xea2d; Lynda</option>
-                                    <option value="massroots">&#xea2f; Massroots</option>
-                                    <option value="medium">&#xea30; Medium</option>
-                                    <option value="netlify">&#xea31; Netlify</option>
-                                    <option value="ovh">&#xea32; OVH</option>
-                                    <option value="paypal">&#xea33; Paypal</option>
-                                    <option value="periscope">&#xea34; Periscope</option>
-                                    <option value="picasa">&#xea35; Picasa</option>
-                                    <option value="pinterest">&#xea36; Pinterest</option>
-                                    <option value="play-store">&#xea37; Play Store</option>
-                                    <option value="quora">&#xea38; Quora</option>
-                                    <option value="redbubble">&#xea39; Red Bubble</option>
-                                    <option value="reddit">&#xea3a; Reddit</option>
-                                    <option value="sharethis">&#xea3c; Sharethis</option>
-                                    <option value="skype">&#xea3d; Skype</option>
-                                    <option value="snapchat">&#xea3e; Snapchat</option>
-                                    <option value="soundcloud">&#xea3f; Soundcloud</option>
-                                    <option value="stackoverflow">&#xea40; Stackoverflow</option>
-                                    <option value="steam">&#xea41; Steam</option>
-                                    <option value="stumbleupon">&#xea42; StumbleUpon</option>
-                                    <option value="tsu">&#xea44; TSU</option>
-                                    <option value="tumblr">&#xea45; Tumblr</option>
-                                    <option value="twitch">&#xea46; Twitch</option>
-                                    <option value="twitter">&#xea47; Twitter</option>
-                                    <option value="ubiquiti">&#xea48; Ubiquiti</option>
-                                    <option value="unsplash">&#xea49; Unsplash</option>
-                                    <option value="vimeo">&#xea4a; Vimeo</option>
-                                    <option value="vine">&#xea4b; Vine</option>
-                                    <option value="whatsapp">&#xea4c; Whatsapp</option>
-                                    <option value="wikipedia">&#xea4d; Wikipedia</option>
-                                    <option value="windows-store">&#xea4e; Windows Store</option>
-                                    <option value="xbox-live">&#xea4f; Xbox Live</option>
-                                    <option value="yahoo">&#xea50; Yahoo</option>
-                                    <option value="yelp">&#xea51; Yelp</option>
-                                    <option value="youtube">&#xea52; YouTube</option>
-                                    <option value="zerply">&#xea53; Zerply</option>
-                                    <option value="zune">&#xea54; Zune</option>
+                                    <option value="500px">500px</option>
+                                    <option value="amazon">Amazon</option>
+                                    <option value="behance">Behance</option>
+                                    <option value="bitcoin">Bitcoin</option>
+                                    <option value="blogger">Blogger</option>
+                                    <option value="buffer">Buffer</option>
+                                    <option value="cargo">Cargo</option>
+                                    <option value="codepen">Codepen</option>
+                                    <option value="coroflot">Coroflot</option>
+                                    <option value="creatica">Creatica</option>
+                                    <option value="delicious">Delcicious</option>
+                                    <option value="deviantart">DeviantArt</option>
+                                    <option value="diaspora">Diaspora</option>
+                                    <option value="digg">Digg</option>
+                                    <option value="dribbble">Dribbble</option>
+                                    <option value="dropbox">Dropbox</option>
+                                    <option value="envato">Envato</option>
+                                    <option value="exposure">Exposure</option>
+                                    <option value="facebook">Facebook</option>
+                                    <option value="feedburner">Feedburner</option>
+                                    <option value="flickr">Flickr</option>
+                                    <option value="forrst">Forrst</option>
+                                    <option value="github">GitHub</option>
+                                    <option value="google-plus">Google+</option>
+                                    <option value="gravatar">Gravatar</option>
+                                    <option value="hackernews">Hackernews</option>
+                                    <option value="icq">ICQ</option>
+                                    <option value="instagram">Instagram</option>
+                                    <option value="kickstarter">Kickstarter</option>
+                                    <option value="last-fm">Last FM</option>
+                                    <option value="lego">Lego</option>
+                                    <option value="linkedin">Linkedin</option>
+                                    <option value="livejournal">LiveJournal</option>
+                                    <option value="lynda">Lynda</option>
+                                    <option value="massroots">Massroots</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="netlify">Netlify</option>
+                                    <option value="ovh">OVH</option>
+                                    <option value="paypal">Paypal</option>
+                                    <option value="periscope">Periscope</option>
+                                    <option value="picasa">Picasa</option>
+                                    <option value="pinterest">Pinterest</option>
+                                    <option value="play-store">Play Store</option>
+                                    <option value="quora">Quora</option>
+                                    <option value="redbubble">Red Bubble</option>
+                                    <option value="reddit">Reddit</option>
+                                    <option value="sharethis">Sharethis</option>
+                                    <option value="skype">Skype</option>
+                                    <option value="snapchat">Snapchat</option>
+                                    <option value="soundcloud">Soundcloud</option>
+                                    <option value="stackoverflow">Stackoverflow</option>
+                                    <option value="steam">Steam</option>
+                                    <option value="stumbleupon">StumbleUpon</option>
+                                    <option value="tsu">TSU</option>
+                                    <option value="tumblr">Tumblr</option>
+                                    <option value="twitch">Twitch</option>
+                                    <option value="twitter">Twitter</option>
+                                    <option value="ubiquiti">Ubiquiti</option>
+                                    <option value="unsplash">Unsplash</option>
+                                    <option value="vimeo">Vimeo</option>
+                                    <option value="vine">Vine</option>
+                                    <option value="whatsapp">Whatsapp</option>
+                                    <option value="wikipedia">Wikipedia</option>
+                                    <option value="windows-store">Windows Store</option>
+                                    <option value="xbox-live">Xbox Live</option>
+                                    <option value="yahoo">Yahoo</option>
+                                    <option value="yelp">Yelp</option>
+                                    <option value="youtube">YouTube</option>
+                                    <option value="zerply">Zerply</option>
+                                    <option value="zune">Zune</option>
                                 </select>
                                 <div class="input-group-addon">URL</div>
                                 <input type="text" class="form-control" name="url" value="" placeholder="Enter a URL...">
                                 <div class="input-group-btn">
-                                    <button class="btn btn-success"><i class="libre libre-plus"></i></button>
+                                    <button class="btn btn-default"><?php svg('plus');?></button>
                                 </div>
                             </div>
                         </form>
@@ -253,15 +250,14 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                             <label class="control-label hidden-xs col-sm-3 col-lg-2">&nbsp;</label>
                             <div class="input-group col-xs-12 col-sm-9 col-lg-10">
                                 <div class="input-group-addon">
-                                    <span class="libre-stack"><i class="libre libre-square-rounded libre-stack-1x"></i><i class="libre libre-social-<?php echo$rs['icon'];?> libre-stack-1x text-white"></i></span>
-                                    <span class="hidden-xs">&nbsp;&nbsp;<?php echo ucfirst($rs['icon']);?></span>
+                                    <?php svg('social-'.$rs['icon']);echo' '.ucfirst($rs['icon']);?>
                                 </div>
                                 <input type="text" class="form-control" value="<?php echo$rs['url'];?>" onchange="update('<?php echo$rs['id'];?>','social','url',$(this).val());" placeholder="Enter a URL...">
                                 <div class="input-group-btn">
                                     <form target="sp" action="core/purge.php">
                                         <input type="hidden" name="id" value="<?php echo$rs['id'];?>">
                                         <input type="hidden" name="t" value="choices">
-                                        <button class="btn btn-danger"><i class="libre libre-trash"></i></button>
+                                        <button class="btn btn-default trash"><?php svg('trash');?></button>
                                     </form>
                                 </div>
                             </div>
@@ -428,7 +424,7 @@ if($args[0]=='type'){
             </ol>
         </h4>
         <div class="btn-group pull-right">
-            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>"><i class="libre libre-add"></i></a>
+            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>"><?php svg('add');?></a>
         </div>
     </div>
     <div class="panel-body">
@@ -449,10 +445,10 @@ if($args[0]=='type'){
                         <td class="text-center"><?php echo rank($r['rank']);?></td>
                         <td class="text-center"><?php echo$r['status'];?></td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
-                            <a class="btn btn-primary btn-sm" href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><i class="libre libre-edit"></i></a>
-                            <button class="btn btn-warning btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore"></i></button>
-                            <button class="btn btn-danger btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><i class="libre libre-trash"></i></button>
-                            <button class="btn btn-danger btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><i class="libre libre-purge"></i></button>
+                            <a class="btn btn-primary btn-sm" href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+                            <button class="btn btn-warning btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+                            <button class="btn btn-danger btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+                            <button class="btn btn-danger btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
                         </td>
                     </tr>
 <?php }?>

@@ -25,6 +25,14 @@ if(isset($_GET['is'])){
             $timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
         return$timeDiff;
     }
+    function svg($svg,$size=null,$color=null){
+    	echo'<i class="libre';
+    	if($size!=null)echo' libre-'.$size;
+    	if($color!=null)echo' libre-'.$color;
+    	echo'">';
+    	include'../svg/libre-'.$svg.'.svg';
+    	echo'</i>';
+    }
 }
 if($action!=''){
     $s=$db->prepare("SELECT * FROM logs WHERE action=:action ORDER BY ti DESC LIMIT ".$is.",".$ie);
@@ -43,17 +51,16 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     $su=$db->prepare("SELECT id,username,name,rank FROM login WHERE id=:id");
     $su->execute(array(':id'=>$r['uid']));
     $u=$su->fetch(PDO::FETCH_ASSOC);?>
-<tr id="l_<?php echo$r['id'];?>" class="row activity clearfix">
-    <td class="col-xs-4 col-sm-2 text-muted text-center">
+<tr id="l_<?php echo$r['id'];?>">
+    <td>
         <?php echo date($config['dateFormat'],$r['ti']);?><br>
         <small><?php echo _ago($r['ti']);?></small>
     </td>
-    <td class="col-xs-6 break-word">
-        <p>
-            <strong>Action:</strong> <?php echo ucfirst($r['contentType']);
-            if($r['action']=='create')echo' Created';
-            if($r['action']=='update')echo' Updated';
-            if($r['action']=='purge')echo' Purged';?><br>
+    <td class="break-word">
+        <strong>Action:</strong> <?php echo ucfirst($r['contentType']);
+        if($r['action']=='create')echo' Created';
+        if($r['action']=='update')echo' Updated';
+        if($r['action']=='purge')echo' Purged';?><br>
 <?php if(isset($c['title'])&&$c['title']!=''){
     echo'<strong>Title:</strong> '.$c['title'].'<br>';
     if($r['action']=='update')echo'<strong>Table:</strong> '.$r['refTable'].'<br>';
@@ -62,20 +69,19 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     echo'<strong>Changed To:</strong> '.strip_tags(substr($r['newda'],0,300)).'<br>';
     }
     echo'<strong>by</strong> '.$u['username'].':'.$u['name'];?>
-        </p>
     </td>
     <td id="controls_<?php echo$r['id'];?>" class="text-right">
 <?php if($r['action']=='update'){?>
-        <button class="btn btn-warning btn-sm" onclick="restore('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><i class="libre libre-restore"></i></button>
+        <button class="btn btn-default" onclick="restore('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
 <?php }?>
-        <button class="btn btn-danger btn-sm" onclick="purge('<?php echo$r['id'];?>','logs')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><i class="libre libre-trash"></i></button>
+        <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','logs')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('trash');?></button>
     </td>
 </tr>
 <?php }
 if($cnt==$ie){?>
 <tr id="more_<?php echo$is+$ie+1;?>">
-    <td colspan="4">
+    <td colspan="3">
         <button class="btn btn-default btn-block" onclick="loadMore('activity_items','<?php echo$is+$ie+1;?>','<?php echo$ie;?>','<?php echo$action;?>');">More</button>
     </td>
-</div>
+</tr>
 <?php }
