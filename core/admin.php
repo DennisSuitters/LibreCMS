@@ -44,7 +44,7 @@ if($_SESSION['rank']>399){
     </head>
     <body>
         <div id="sidemenu">
-            <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle"><i class="libre libre-layout-list"></i></a>
+            <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle"><?php svg('layout-list');?></a>
         <aside class="nav-side-menu">
             <div class="profile clearfix">
                 <div class="profile-usertitle">

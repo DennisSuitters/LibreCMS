@@ -16,7 +16,7 @@
                 alt:'Alt',
                 class:'Class',
                 style:'Style',
-                href:'URL',
+                url:'URL',
                 target:'Target'
             }
         }
@@ -86,15 +86,15 @@
                     '</div>' +
                 '</div>' +
                 '<div class="form-group">' +
-                    '<label class="control-label col-xs-2">' + lang.imageAttributes.href + '</label>' +
+                    '<label class="control-label col-xs-2">' + lang.imageAttributes.url + '</label>' +
                     '<div class="input-group col-xs-10">' +
-                        '<input class="note-image-attributes-href form-control" type="text">' +
+                        '<input class="note-image-attributes-href form-control" type="text" name="url">' +
                     '</div>' +
                 '</div>' +
                 '<div class="form-group">' +
                     '<label class="control-label col-xs-2">' + lang.imageAttributes.target + '</label>' +
                     '<div class="input-group col-xs-10">' +
-                        '<select class="note-image-attributes-target form-control">' +
+                        '<select class="note-image-attributes-target form-control" name="target">' +
                             '<option value="_self">Self</option>' +
                             '<option value="_blank">Blank</option>' +
                             '<option value="_top">Top</option>' +
@@ -126,28 +126,21 @@
             this.show = function(){
 
                 var $img=$($editable.data('target'));
-                var $lnk=$($editable.data('target')).parent();
+
                 var imgInfo={
                     imgDom:$img,
                     title:$img.attr('title'),
                     alt:$img.attr('alt'),
                     class:$img.attr('class'),
-                    style:$img.attr('style')
+                    style:$img.attr('style'),
                 };
-                var lnkInfo={
-                    lnkDom:$lnk,
-                    target:$lnk.attr('target'),
-                    href:$lnk.attr('href')
-                }
+
                 this.showLinkDialog(imgInfo)
                     .then(function(imgInfo){
 
                         ui.hideDialog(self.$dialog);
 
                         var $img=imgInfo.imgDom;
-                        var $lnk=lnkInfo.lnkDom;
-                        $lnk.attr('target',lnkInfo.target);
-                        $lnk.attr('href',lnkInfo.href);
 
                         if(options.imageAttributes.removeEmpty){
                             if(imgInfo.alt){
@@ -179,6 +172,8 @@
                             $img.attr('title',imgInfo.title);
                             $img.attr('class',imgInfo.class);
                             $img.attr('style',imgInfo.style);
+                            $img.attr('href',imgInfo.url);
+                            $img.attr('target',imgInfo.target);
                         }
 
                         // Link
@@ -186,8 +181,8 @@
                             $img.unwrap();
                         }
 
-                        if(lnkInfo.url) {
-                            $img.wrap('<a target="' + lnkInfo.target + '" href="' + lnkInfo.href + '"></a>');
+                        if(imgInfo.url) {
+                            $img.wrap('<a href="' + imgInfo.url + '" target="' + imgInfo.target + '"></a>');
                         }
 
                         $note.val(context.invoke('code'));
@@ -202,64 +197,32 @@
                     var $imageAlt=self.$dialog.find('.note-image-attributes-alt');
                     var $imageClass=self.$dialog.find('.note-image-attributes-class');
                     var $imageStyle=self.$dialog.find('.note-image-attributes-style');
-                    var $lnkHref=self.$dialog.find('.note-image-attributes-href');
-                    var $lnkTarget=self.$dialog.find('.note-image-attributes-target');
+                    var $imageUrl=self.$dialog.find('.note-image-attributes-url');
+                    var $imageTarget=self.$dialog.find('.note-image-attributes-target');
                     var $editBtn=self.$dialog.find('.note-image-attributes-btn');
 
                     ui.onDialogShown(self.$dialog,function(){
                         context.triggerEvent('dialog.shown');
+
                         $editBtn.click(function(event){
                             event.preventDefault();
                             deferred.resolve({
-                                imgDom:imgInfo.imgDom,
-                                alt:$imageAlt.val(),
-                                class:$imageClass.val(),
-                                title:$imageTitle.val(),
-                                style:$imageStyle.val(),
-                                href:$lnkHref.val(),
-                                target:$lnkTarget.val()
+                                imgDom : imgInfo.imgDom,
+                                title : $imageTitle.val(),
+                                alt : $imageAlt.val(),
+                                class : $imageClass.val(),
+                                style : $imageStyle.val(),
+                                url : $imageUrl.val(),
+                                target : $imageTarget.val()
                             });
                         });
-                        $imageTitle.on('keyup paste',function(){
-                            var url=$imageTitle.val();
-                        }).val(imgInfo.title).trigger('focus');
-                        $imageAlt.on('keyup paste',function(){
-                            var url=$imageAlt.val();
-                        }).val(imgInfo.alt).trigger('focus');
-                        $imageClass.on('keyup paste',function(){
-                            var url=$imageClass.val();
-                        }).val(imgInfo.class).trigger('focus');
-                        $imageStyle.on('keyup paste',function(){
-                            var url=$imageStyle.val();
-                        }).val(imgInfo.style).trigger('focus');
-
-                        $lnkHref.on('keyup paste',function(){
-                            var url=$lnkHref.val();
-                        }).val(lnkInfo.href).trigger('focus');
-                        $lnkTarget.on('keyup paste',function(){
-                            var url=$lnkTarget.val();
-                        }).val(lnkInfo.target).trigger('focus');
-
-// subject.replace(/.*?:\/\//g, "");
 
                         self.bindEnterKey(
-                            $imageTitle,
-                            $imageAlt,
-                            $imageClass,
-                            $imageStyle,
-                            $lnkUrl,
-                            $lnkTarget,
                             $editBtn
                         );
                     });
 
                     ui.onDialogHidden(self.$dialog,function(){
-                        $imageTitle.off('keyup paste keypress');
-                        $imageAlt.off('keyup paste keypress');
-                        $imageClass.off('keyup paste keypress');
-                        $imageStyle.off('keyup paste keypress');
-                        $lnkUrl.off('keyup paste keypress');
-                        $lnkTarget.off('keyup paste keypress');
                         $editBtn.off('click');
                         if(deferred.state()==='pending'){
                             deferred.reject();
