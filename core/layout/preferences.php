@@ -339,7 +339,7 @@ if($config['backup_ti']<$tid){
                                     Select .sql file to restore<input type="file" id="fu" class="form-control" name="fu" accept="application/sql">
                                 </div>
                                 <div class="input-group-btn">
-                                    <button type="submit" class="btn btn-success" onclick="$('#block').css({'display':'block'});">Restore</button>
+                                    <button type="submit" class="btn btn-default" onclick="$('#block').css({'display':'block'});">Restore</button>
                                 </div>
                             </div>
                         </form>
@@ -353,7 +353,7 @@ if($config['backup_ti']<$tid){
                             <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                                 <a class="btn btn-default btn-block" href="<?php echo$file;?>">Click to Download <?php echo ltrim($file,'media/backup/');?></a>
                                 <div class="input-group-btn">
-                                    <button class="btn btn-danger" onclick="removeMedia('<?php echo$file;?>')"><i class="libre libre-trash"></i></button>
+                                    <button class="btn btn-default trash" onclick="removeMedia('<?php echo$file;?>')"><i class="libre libre-trash"></i></button>
                                 </div>
                             </div>
                         </div>

@@ -125,12 +125,15 @@ if($args[0]=='edit'){
                     <div class="form-group">
                         <label for="avatar" class="control-label col-xs-5 col-sm-3 col-lg-2">Avatar</label>
                         <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <input type="text" class="form-control hidden-xs" value="<?php echo$r['avatar'];?>" disabled>
+                            <input type="text" class="form-control" value="<?php echo$r['avatar'];?>" readonly>
                             <div class="input-group-btn">
                                 <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
                                     <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                                     <input type="hidden" name="act" value="add_avatar">
-                                    <div class="btn btn-default btn-file"><?php svg('browse-computer');?></div>
+                                    <div class="btn btn-default btn-file">
+                                        <?php svg('browse-computer');?>
+                                        <input type="file" name="fu">
+                                    </div>
                                     <button class="btn btn-default" type="submit"><?php svg('upload');?></button>
                                 </form>
                             </div>
@@ -445,10 +448,12 @@ if($args[0]=='type'){
                         <td class="text-center"><?php echo rank($r['rank']);?></td>
                         <td class="text-center"><?php echo$r['status'];?></td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
-                            <a class="btn btn-primary btn-sm" href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
-                            <button class="btn btn-warning btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
-                            <button class="btn btn-danger btn-sm<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
-                            <button class="btn btn-danger btn-sm<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+                            <a class="btn btn-default" href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+<?php if($r['rank']!=1000){?>
+                            <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+                            <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+                            <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+<?php }?>
                         </td>
                     </tr>
 <?php }?>

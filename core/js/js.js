@@ -233,13 +233,11 @@ function coverUpdate(id,t,c,da){
 		if(da==''){
 			$('#'+c).val('');
 			if(imgsrc==''){
-				$('#coverimg').animate({height:"hide"},500,function(){
-					$(this).html('');
-				});
+				$('#'+c+'image').attr('src','../core/images/nocover.jpg');
 			}
 		}else{
 			if(imgsrc==''){
-				$('#coverimg').html('<img src="'+da+'">').animate({height:"show"},500);
+				$('#'+c+'image').attr('src',da);
 			}
 		}
 	})

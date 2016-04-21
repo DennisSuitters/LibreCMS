@@ -112,7 +112,7 @@ if($_SESSION['rank']>399){
                 e.preventDefault();
                 $("#sidemenu,#content").toggleClass("toggled");
             });
-            function mediaDialog(){
+            function mediaDialog(id,t,c){
                 var fm=$('<div/>').dialogelfinder({
                     url:'<?php echo URL;?>core/elfinder/php/connector.php',
                     lang:'en',
@@ -120,7 +120,14 @@ if($_SESSION['rank']>399){
                     height:450,
                     destroyOnClose:true,
                     getFileCallback:function(files,fm){
-                        $('.summernote').summernote('editor.insertImage',files.url);
+                        if(id>0){
+                            $('#block').css({display:'block'});
+                            $('#'+c).val(files.url);
+                            $('#'+c+'image').attr('src',files.url);
+                            update(id,t,c,files.url);
+                        }else{
+                            $('.summernote').summernote('editor.insertImage',files.url);
+                        }
                     },
                     commandsOptions:{
                         getfile:{
@@ -336,11 +343,6 @@ if($_SESSION['rank']>399){
 <?php		}?>
         });
         /*]]>*/</script>
-        <div id="media" class="modal fade media">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content" style="max-height:85%"></div>
-            </div>
-        </div>
         <iframe id="sp" name="sp" class="hidden"></iframe>
         <div id="block"><div class="spinner"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
     </body>

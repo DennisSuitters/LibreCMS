@@ -361,45 +361,28 @@ if($show=='item'){
                     <div class="form-group">
                         <label for="file" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
                         <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <div class="input-group-addon"><i class="libre libre-link"></i></div>
                             <input type="text" id="fileURL" class="form-control textinput" value="<?php echo$r['fileURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fileURL" placeholder="Enter a URL...">
                             <div class="input-group-btn">
-                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=fileURL"><?php svg('edit');?></a>
                                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><?php svg('trash');?></button>
                             </div>
                         </div>
-                        <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Editing a URL Image will retreive the image to the server for Editing.</div>
                     </div>
                     <div class="form-group clearfix">
                         <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
-                            <input type="text" class="form-control hidden-xs" value="<?php echo$r['file'];?>" disabled>
+                            <input id="file" type="text" class="form-control" value="<?php echo$r['file'];?>" readonly>
                             <div class="input-group-btn">
-                                <form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
-                                    <input type="hidden" name="id" value="<?php echo$r['id'];?>">
-                                    <input type="hidden" name="act" value="add_image">
-                                    <input type="hidden" name="t" value="content">
-                                    <input type="hidden" name="c" value="file">
-                                    <div class="btn btn-default btn-file">
-                                        <?php svg('browse-computer');?>
-                                        <input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
-                                    </div>
-                                    <button class="btn btn-default<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><?php svg('upload');?></button>
-                                </form>
+                                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','file');"><?php svg('browse-media');?></button>
                             </div>
-                            <div class="input-group-btn">
-                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=file"><?php svg('browse-media');?></a>
-                            </div>
-                            <div id="file" class="input-group-addon img">
-<?php if($r['file']!=''&&file_exists('media'.DS.$r['file']))
-    echo'<a href="media/'.$r['file'].'" data-featherlight="image"><img src="media/'.$r['file'].'"></a>';
+                            <div class="input-group-addon img">
+<?php if($r['file']!='')
+    echo'<a href="'.$r['file'].'" data-featherlight="image"><img id="fileimage" src="'.$r['file'].'"></a>';
 elseif($r['fileURL']!=''&&file_exists('media'.DS.$r['fileURL']))
-    echo'<a href="media/'.$r['fileURL'].'" data-featherlight="image"><img src="media/'.$r['fileURL'].'"></a>';
+    echo'<a href="media/'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="media/'.$r['fileURL'].'"></a>';
 elseif($r['fileURL']!='')
-    echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img src="'.$r['fileURL'].'"></a>';
-else echo'<img src="core/images/noimage.jpg">';?>
+    echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="'.$r['fileURL'].'"></a>';
+else echo'<img id="fileimage" src="core/images/noimage.jpg">';?>
                             </div>
                             <div class="input-group-btn">
-                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=file"><?php svg('edit');?></a>
                                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('trash');?></button>
                             </div>
                         </div>
@@ -407,29 +390,15 @@ else echo'<img src="core/images/noimage.jpg">';?>
                     <div class="form-group clearfix">
                         <label for="thumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Thumbnail</label>
                         <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
-                            <input type="text" class="form-control hidden-xs" value="<?php echo$r['thumb'];?>" disabled>
+                            <input id="thumb" type="text" class="form-control" value="<?php echo$r['thumb'];?>" readonly>
                             <div class="input-group-btn">
-                                <form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
-                                    <input type="hidden" name="id" value="<?php echo$r['id'];?>">
-                                    <input type="hidden" name="act" value="add_image">
-                                    <input type="hidden" name="t" value="content">
-                                    <input type="hidden" name="c" value="thumb">
-                                    <div class="btn btn-default btn-file">
-                                        <?php svg('browse-computer');?>
-                                        <input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
-                                    </div>
-                                    <button class="btn btn-default<?php if($user['options']{1}==0)echo' disabled';?>" onclick="$('#block').css({'display':'block'});"><?php svg('upload');?></button>
-                                </form>
+                                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','thumb');"><?php svg('browse-media');?></button>
+                            </div>
+                            <div class="input-group-addon img">
+<?php if($r['thumb']!='')echo'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="media/'.$r['thumb'].'"></a>';
+else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
                             </div>
                             <div class="input-group-btn">
-                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=content&c=thumb"><?php svg('browse-media');?></a>
-                            </div>
-                            <div id="thumb" class="input-group-addon img">
-<?php if($r['thumb']!=''&&file_exists('media'.DS.$r['thumb']))echo'<a href="media/'.$r['thumb'].'" data-featherlight="image"><img src="media/'.$r['thumb'].'"></a>';
-else echo'<img src="core/images/noimage.jpg">';?>
-                            </div>
-                            <div class="input-group-btn">
-                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=content&c=thumb"><?php svg('edit');?></a>
                                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('trash');?></button>
                             </div>
                         </div>

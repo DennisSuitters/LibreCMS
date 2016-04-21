@@ -121,49 +121,33 @@ if($show=='item'){
                     <div class="form-group">
                         <label for="cover" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
                         <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <input type="text" id="coverURL" class="form-control" value="<?php echo$r['coverURL'];?>" onchange="coverUpdate('<?php echo$r['id'];?>','menu','coverURL',$(this).val());" placeholder="Enter Cover URL...">
+                            <input type="text" id="coverURL" class="form-control image" value="<?php echo$r['coverURL'];?>" onchange="coverUpdate('<?php echo$r['id'];?>','menu','coverURL',$(this).val());" placeholder="Enter Cover URL...">
                             <div class="input-group-btn">
-                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=menu&c=coverURL"><?php svg('edit');?></a>
-                                <button class="btn btn-default" onclick="coverUpdate('<?php echo$r['id'];?>','menu','coverURL','');"><?php svg('trash');?></button>
+                                <button class="btn btn-default trash" onclick="coverUpdate('<?php echo$r['id'];?>','menu','coverURL','');"><?php svg('trash');?></button>
                             </div>
                         </div>
                         <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Editing a URL Image will retreive the image to the server for Editing.</div>
                     </div>
                     <div class="form-group clearfix">
                         <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
-                            <input type="text" id="cover" class="form-control hidden-xs" value="<?php echo$r['cover'];?>" disabled>
+                            <input type="text" id="cover" class="form-control" name="feature_image" value="<?php echo$r['cover'];?>" readonly />
                             <div class="input-group-btn">
-                                <form method="post" target="sp" enctype="multipart/form-data" action="core/add_data.php">
-                                    <input type="hidden" name="id" value="<?php echo$r['id'];?>">
-                                    <input type="hidden" name="act" value="add_cover">
-                                    <input type="hidden" name="t" value="menu">
-                                    <input type="hidden" name="c" value="cover">
-                                    <div class="btn btn-default btn-file">
-                                        <?php svg('browse-computer');?>
-                                        <input type="file" name="fu"<?php if($user['options']{1}==0)echo' disabled';?>>
-                                    </div>
-                                    <button class="btn btn-default<?php if($user['options']{1}==0)echo' disabled';?> hidden-xs" onclick="$('#block').css({'display':'block'});"><?php svg('upload');?></button>
-                                </form>
+                                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','menu','cover');"><?php svg('browse-media');?></button>
                             </div>
-                            <div class="input-group-btn">
-                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/browse_media.php?id=<?php echo$r['id'];?>&t=menu&c=cover"><?php svg('browse-media');?></a>
-                                <a class="btn btn-default" data-toggle="modal" data-target="#media" href="core/edit_image.php?id=<?php echo$r['id'];?>&t=menu&c=cover"><?php svg('edit');?></a>
-                            </div>
-                            <div id="cover" class="input-group-addon img">
-<?php if($r['cover']!=''&&file_exists('media'.DS.$r['cover']))
-    echo'<a href="media/'.$r['cover'].'" data-featherlight="image"><img src="media/'.$r['cover'].'"></a>';
-elseif($r['coverURL']!=''&&file_exists('media'.DS.$r['coverURL']))
-    echo'<a href="media/'.$r['coverURL'].'" data-featherlight="image"><img src="media/'.$r['coverURL'].'"></a>';
+                            <div class="input-group-addon img">
+<?php if($r['cover']!='')
+    echo'<a href="media/'.$r['cover'].'" data-featherlight="image"><img id="coverimage" src="'.$r['cover'].'"></a>';
 elseif($r['coverURL']!='')
-    echo'<a href="'.$r['coverURL'].'" data-featherlight="image"><img src="'.$r['coverURL'].'"></a>';
-else echo'<img src="core/images/nocover.jpg">';?>
+    echo'<a href="media/'.$r['coverURL'].'" data-featherlight="image"><img id="coverimage" src="media/'.$r['coverURL'].'"></a>';
+elseif($r['coverURL']!='')
+    echo'<a href="'.$r['coverURL'].'" data-featherlight="image"><img id="coverimage" src="'.$r['coverURL'].'"></a>';
+else echo'<img id="coverimage" src="core/images/nocover.jpg">';?>
                             </div>
                             <div class="input-group-btn">
-                                <button class="btn btn-default" onclick="coverUpdate('<?php echo$r['id'];?>','menu','cover','');"><?php svg('trash');?></button>
+                                <button class="btn btn-default trash" onclick="coverUpdate('<?php echo$r['id'];?>','menu','cover','');"><?php svg('trash');?></button>
                             </div>
                         </div>
                         <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div>
-                    </div>
                 </fieldset>
                 <fieldset class="control-fieldset">
                     <legend class="control-legend">Image Attribution</legend>
