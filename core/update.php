@@ -4,6 +4,10 @@ session_start();
 require'db.php';
 require'sanitise.php';
 define('DS',DIRECTORY_SEPARATOR);
+function svg($svg){
+	$s=file_get_contents('svg/libre-'.$svg.'.svg');
+	return '<i class="libre">'.$s.'</i>';
+}
 $e='';
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
@@ -29,7 +33,7 @@ if($tbl=='content'&&$col=='status'&&$da=='published'){
     $q=$db->prepare("UPDATE content SET pti=:pti WHERE id=:id");
     $q->execute(array(':pti'=>$ti,':id'=>$id));
 }
-if($tbl=='config'||$tbl=='login')$r['contentType']='';
+if($tbl=='config'||$tbl=='login'||$tbl=='orders'||$tbl=='orderitems')$r['contentType']='';
 $log=['uid'=>0,'rid'=>$id,'view'=>$r['contentType'],'contentType'=>$r['contentType'],'refTable'=>$tbl,'refColumn'=>$col,'oldda'=>$oldda,'newda'=>$da,'action'=>'update','ti'=>$ti];
 if($r['contentType']=='booking')$log['view']=$r['contentType'].'s';
 if(isset($_SESSION['uid'])){
@@ -136,9 +140,7 @@ window.top.window.$('#cart').html('<?php echo$cnt;?>');
             if($oi['iid']!=0)$html.='<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" name="da" value="'.$oi['cost'].'"></form>';
             $html.='</td><td class="text-right">';
             if($oi['iid']!=0)$html.=$oi['cost']*$oi['quantity'];
-            $html.='</td><td class="text-right"><form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input type="hidden" name="da" value="0"><button class="btn btn-danger">';
-            if($config['buttonType']=='text')$html.='Delete';else$html.='<i class="libre libre-trash"></i>';
-            $html.='</button></form></td></tr>';
+            $html.='</td><td class="text-right"><form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input type="hidden" name="da" value="0"><button class="btn btn-default trash">'.svg('trash').'</button></form></td></tr>';
             if($oi['iid']!=0)$total=$total+($oi['cost']*$oi['quantity']);
         }
         $html.='<tr><td colspan="3">&nbsp;</td><td class="text-right"><strong>Total</strong></td><td class="text-right"><strong>'.$total.'</strong></td><td></td></tr>';?>
