@@ -37,7 +37,7 @@ if($_SESSION['rank']>399){
         <script src="core/js/pace.min.js"></script>
         <link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/bootstrap-datetimepicker.min.css">
-        <link rel="stylesheet" type="text/css" href="core/css/svg.css">
+        <link rel="stylesheet" type="text/css" href="core/css/libreicons-svg.css">
         <link rel="stylesheet" type="text/css" href="core/css/summernote.css">
         <link rel="stylesheet" type="text/css" href="core/css/featherlight.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/style.css">
@@ -141,6 +141,17 @@ if($_SESSION['rank']>399){
             $().ready(function(){
                 var f=$('#elfinder').elfinder({
                     url:'<?php echo URL;?>core/elfinder/php/connector.php',
+                    handlers:{
+                      dblclick:function(e,eI){
+                        e.preventDefault();
+                        eI.exec('getfile')
+                          .done(function(){eI.exec('quicklook');})
+                          .fail(function(){eI.exec('open');});
+                      }
+                    },
+                    getFileCallback:function(){
+                      return false;
+                    },
                 }).elfinder('instance');
             });
 <?php }?>

@@ -31,16 +31,16 @@
                             <img class="loginimg col-xs-8 pull-right" src="core/images/librecms.png" alt="LibreCMS Logo">
                         </div>
                         <div class="form-group input-group">
-                            <div class="input-group-addon"><i class="libre libre-user"></i></div>
+                            <div class="input-group-addon"><?php svg('user');?></div>
                             <input type="text" id="username" class="form-control" name="username" value="" placeholder="Username..." autofocus required>
                         </div>
                         <div class="form-group input-group">
-                            <div class="input-group-addon"><i class="libre libre-lock"></i></div>
+                            <div class="input-group-addon"><?php svg('lock');?></div>
                             <input type="password" id="password" class="form-control" name="password" placeholder="Password..." autocomplete="off" required>
                         </div>
                         <div class="form-group clearfix">
-                            <button class="btn lgn btn-danger pull-left" type="reset"><i class="libre libre-eraser"></i>&nbsp;&nbsp;Reset</button>
-                            <button class="btn lgn btn-primary pull-right" type="submit"><i class="libre libre-sign-in"></i>&nbsp;&nbsp;Sign in</button>
+                            <button class="btn lgn btn-danger pull-left" type="reset"><?php svg('eraser');?>&nbsp;&nbsp;Reset</button>
+                            <button class="btn lgn btn-primary pull-right" type="submit"><?php svg('sign-in');?>&nbsp;&nbsp;Sign in</button>
                         </div>
                     </form>
                     <div class="form-group text-center">
