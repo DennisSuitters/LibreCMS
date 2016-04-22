@@ -245,9 +245,11 @@ if($_SESSION['rank']>399){
                         $("#calendar").fullCalendar("updateEvent",event);
                     });
                     $("#delbut"+event.id).click(function(){
+                        $('#calendar').fullCalendar('removeEvents', event.id);
                         window.top.window.purge(event.id,"content");
                         window.top.window.$(el).remove();
                         window.top.window.$(".popover").remove();
+
                     });
                     $("#edbut"+event.id).click(function(){
                         window.location="<?php echo$settings['system']['admin'];?>/bookings/edit/"+event.id;
