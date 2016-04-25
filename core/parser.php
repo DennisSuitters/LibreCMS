@@ -124,9 +124,12 @@ foreach($tags as$tag){
 			}
 			break;
 		case'thumb':
+			$filechk=basename($r['file']);
 			$thumbchk=basename($r['thumb']);
-			if($r['thumb']&&file_exists('media'.DS.$thumbchk))
+			if($r['thumb']!=''&&file_exists('media'.DS.$thumbchk))
 				$parsing.='<img src="'.$r['thumb'].'" alt="'.$r['title'].'">';
+			elseif($r['file']!=''&&file_exists('media'.DS.$filechk))
+				$parsing.='<img src="'.$r['file'].'" alt="'.$r['title'].'">';
 			break;
 		case'image':
 			$filechk=basename($r['file']);

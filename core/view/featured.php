@@ -40,8 +40,9 @@ if($ii>0){
 		}else$item=preg_replace('~<cost>.*?<\/cost>~is','',$item,1);
 		if($r['caption']!='')$item=str_replace('<print content="caption">',$r['caption'],$item);
 		$item=str_replace('<print link>',$r['contentType'].'/'.str_replace(' ','-',$r['title']),$item);
-		$item=str_replace('<print content="image">','<img src="'.$r['file'].'" class="img-responsive center-block" alt="'.$r['title'].'">',$item);
+		$item=str_replace('<print content="image">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
 		$item=str_replace('<print content=schemaType>',$r['schemaType'],$item);
+		$item=str_replace('<print content=title>',$r['title'],$item);
 		$item=str_replace('<print content="title">',$r['title'],$item);
 		$item=str_replace('<print content="contentType">','<div>'.$r['contentType'].'</div>',$item);
 		$items.=$item;
