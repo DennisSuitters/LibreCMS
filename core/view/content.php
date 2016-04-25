@@ -67,7 +67,13 @@ if($show=='categories'){
 		$html=preg_replace('~<settings.*?>~is','',$html,1);
 	}else$count=1;
 	if(stristr($html,'<print page="cover">')){
-		if($page['cover']!=''&&file_exists('media/'.$page['cover']))$html=str_replace('<print page="cover">','<img src="media/'.$page['cover'].'">',$html);elseif($page['coverURL']!='')$html=str_replace('<print page="cover">','<img src="'.$page['coverURL'].'">',$html);else$html=str_replace('<print page="cover">','',$html);
+		$page['cover']=basename($page['cover']);
+		if($page['cover']!=''&&file_exists('media'.DS.$page['cover']))
+			$html=str_replace('<print page="cover">','<img src="media'.DS.$page['cover'].'">',$html);
+		elseif($page['coverURL']!='')
+			$html=str_replace('<print page="cover">','<img src="'.$page['coverURL'].'">',$html);
+		else
+			$html=str_replace('<print page="cover">','',$html);
 	}
 	$html=str_replace('<print page="cover">','',$html);
 	$html=str_replace('<print page="notes">',$page['notes'],$html);
@@ -80,11 +86,13 @@ if($show=='categories'){
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
 			$items=$item;
 			if($si==1){
-				if($r['file']!=''){
-					$shareImage=URL.'media'.DS.$r['file'];
+				$filechk=basename($r['file']);
+				$thumbchk=basename($r['thumb']);
+				if($r['file']!=''&&file_exists('media'.DS.$filechk)){
+					$shareImage=$r['file'];
 					$si++;
-				}elseif($r['thumb']!=''){
-					$shareImage=URL.'media'.DS.$r['thumb'];
+				}elseif($r['thumb']!=''&&file_exists('media'.DS.$thumbchk)){
+					$shareImage=$r['thumb'];
 					$si++;
 				}
 			}
@@ -131,7 +139,10 @@ if($show=='item'){
 	$r=$s->fetch(PDO::FETCH_ASSOC);
 	$su=$db->prepare("UPDATE content SET views=:views WHERE id=:id");
 	$su->execute(array(':views'=>$r['views']+1,':id'=>$r['id']));
-	if($r['file']!='')$shareImage=URL.'media'.DS.$r['file'];elseif($r['thumb']!='')$shareImage=URL.'media'.DS.$r['thumb'];
+	if($r['file']!='')
+		$shareImage=$r['file'];
+	elseif($r['thumb']!='')
+		$shareImage=$r['thumb'];
 	$seoTitle=$r['title'].' - '.ucfirst($r['contentType']).' - '.htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8');
 	if($r['caption']!='')$seoDescription=$seoCaption=htmlspecialchars($r['caption'],ENT_QUOTES,'UTF-8');else$seoDescription=$seoCaption=htmlspecialchars(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
 	if($r['eti']>$r['ti'])$contentTime=$r['eti'];else$contentTime=$r['ti'];

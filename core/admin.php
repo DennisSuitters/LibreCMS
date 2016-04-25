@@ -185,11 +185,12 @@ if($_SESSION['rank']>399){
                     ['style',['style']],
                     ['font',['bold','italic','underline','clear']],
                     ['fontname',['fontname']],
+                    ['fontsize',['fontsize']],
                     ['color',['color']],
                     ['para',['ul','ol','paragraph']],
                     ['height',['height']],
                     ['table',['table']],
-                    ['insert',['media','picture','video','link','hr']],
+                    ['insert',['media','link','hr']],
                     ['view',['fullscreen','codeview']],
                     ['help',['help']]
 <?php }?>

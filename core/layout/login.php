@@ -52,7 +52,7 @@
                             <div class="input-group col-xs-12">
                                 <input type="text" id="rst" class="form-control" name="rst" value="" autocomplete="off" placeholder="Enter Account Email..." required>
                                 <div class="input-group-btn">
-                                    <button id="rstbusy" type="submit" class="btn btn-primary pull-right"><i class="libre libre-envelope"></i></button>
+                                    <button id="rstbusy" type="submit" class="btn btn-primary pull-right"><?php svg('envelope');?></button>
                                 </div>
                             </div>
                         </div>

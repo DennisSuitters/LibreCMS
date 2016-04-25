@@ -9,10 +9,10 @@
 <IfModule mod_rewrite.c>
     SetEnv HTTP_MOD_REWRITE On
 	RewriteEngine On
+#    Options +SymLinksIfOwnerMatch
 # Uncomment the below two lines if you want to force https site
 #    RewriteCond %{HTTPS} !=on
 #    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-#RewriteBase /
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteRule ^(.*) index.php?url=$1 [L,QSA]

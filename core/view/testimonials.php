@@ -20,7 +20,7 @@ if($s->rowCount()>0){
 				$su=$db->prepare("SELECT avatar,gravatar FROM login WHERE id=:id");
 				$su->execute(array(':id'=>$r['cid']));
 				$ru=$su->fetch(PDO::FETCH_ASSOC);
-				if($ru['avatar']!=''&&file_exists('media/avatar/'.$ru['avatar']))
+				if($ru['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$ru['avatar']))
 					$items=str_replace('<print content=avatar>','media/avatar/'.$ru['avatar'],$items);
 				elseif(stristr($ru['gravatar'],'@'))
 					$items=str_replace('<print content=avatar>','http://gravatar.com/avatar/'.md5($ru['gravatar']),$items);
