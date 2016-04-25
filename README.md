@@ -57,5 +57,5 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 By downloading LibreCMS you hereby agree not to hold Studio Junkyard liable for any damages that your usage of LibreCMS may cause to your system, or persons. Damages may infer such things as (which we are NOT responsible for) Data Loss, Hearing Impairment, Server Crashes, Alien Abduction, Coding nightmare's, Alien Implants, or Visiting Alternate Realities. LibreCMS is Licensed under GPLv3. We request that if you modify, and hopefully enhance LibreCMS, that you take part in maintaining, and contributing to it's code base here at GitHub.
 
 ### Contributors:
-- (Raycraft Computer Services)[https://www.raycraft.com.au/
+- [Raycraft Computer Services](https://www.raycraft.com.au/)
   - Live Testing, Suggestions, and witty Banter.
