@@ -8,6 +8,47 @@
         </div>
     </div>
     <div class="panel-body">
+        <h4 class="page-header">Contact Subjects</h4>
+        <div class="form-group">
+            <div class="clearfix">
+                <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">If no entries are made, an input text box will be used instead of a dropdown.<br>If email's are left blank, the messages will be sent to the site email set in Preferences.</div>
+            </div>
+            <label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label>
+            <form target="sp" method="post" action="core/add_data.php">
+                <input type="hidden" name="act" value="add_subject">
+                <div class="input-group col-xs-12 col-sm-9 col-lg-10">
+                    <span class="input-group-addon">Subject</span>
+                    <input type="text" class="form-control" name="sub" value="" placeholder="Enter a Subject...">
+                    <div class="input-group-addon">Email</div>
+                    <input type="text" class="form-control" name="eml" value="" placeholder="Enter an Email...">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><?php svg('plus');?></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="subjects">
+<?php $ss=$db->prepare("SELECT * FROM choices WHERE contentType='subject' ORDER BY title ASC");
+$ss->execute();
+while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
+            <div id="l_<?php echo$rs['id'];?>" class="form-group">
+                <label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label>
+                <div class="input-group col-xs-12 col-sm-9 col-lg-10">
+                    <div class="input-group-addon">Subject</div>
+                    <input type="text" class="form-control" value="<?php echo$rs['title'];?>" onchange="update('<?php echo$rs['id'];?>','subject','title',$(this).val());" placeholder="Enter a Subject...">
+                    <div class="input-group-addon">Email</div>
+                    <input type="text" class="form-control" value="<?php echo$rs['url'];?>" onchange="update('<?php echo$rs['id'];?>','subject','url',$(this).val());" placeholder="Enter an Email...">
+                    <div class="input-group-btn">
+                        <form target="sp" action="core/purge.php">
+                            <input type="hidden" name="id" value="<?php echo$rs['id'];?>">
+                            <input type="hidden" name="t" value="choices">
+                            <button class="btn btn-default trash"><?php svg('trash');?></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+<?php }?>
+        </div>
         <h4 class="page-header">AutoReply Email Layout</h4>
         <div class="form-group clearfix">
             <label for="contactAutoReplySubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>

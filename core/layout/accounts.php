@@ -160,7 +160,7 @@ if($args[0]=='settings'){
                 <fieldset class="control-fieldset">
                     <legend class="control-legend">Social Networking</legend>
                     <div class="form-group">
-                        <label class="control-label hidden-xs col-sm-3 col-lg-2">&nbsp;</label>
+                        <label class="control-label col-sm-3 col-lg-2">&nbsp;</label>
                         <form target="sp" method="post" action="core/add_data.php">
                             <input type="hidden" name="user" value="<?php echo$r['id'];?>">
                             <input type="hidden" name="act" value="add_social">

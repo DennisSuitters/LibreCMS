@@ -70,6 +70,44 @@ if($act!=''){
     }).show();
 <?php       }
             break;
+
+
+
+            case'add_subject':
+                $sub=filter_input(INPUT_POST,'sub',FILTER_SANITIZE_STRING);
+                $eml=filter_input(INPUT_POST,'eml',FILTER_SANITIZE_STRING);
+                if($sub==''){?>
+        window.top.window.$('.notifications').notify({
+            type:'danger',
+            icon:'',message:{
+                text:'Data not Entirely Entered'
+            }
+        }).show();
+<?php           }else{
+                    $sub=kses($sub,array());
+                    $eml=kses($eml,array());
+                    $q=$db->prepare("INSERT INTO choices (contentType,title,url) VALUES ('subject',:title,:url)");
+                    $q->execute(array(':title'=>$sub,':url'=>$eml));
+                    $id=$db->lastInsertId();
+                    $e=$db->errorInfo();
+                    if(is_null($e[2])){?>
+        window.top.window.$('#subjects').append('<div id="l_<?php echo$id;?>" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-12 col-sm-9 col-lg-10"><div class="input-group-addon">Subject</div><form target="sp" method="post"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><input type="hidden" name="c" value="title"><input type="text" class="form-control" name="da" value="<?php echo$sub;?>" placeholder="Enter a Subject..."></form><div class="input-group-addon">Email</div><form target="sp" method="post"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><input type="hidden" name="c" value="url"><input type="text" class="form-control" name="da" value="<?php echo$eml;?>" placeholder="Enter an Email..."></form><div class="input-group-btn"><form target="sp" action="core/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><button class="btn btn-default trash"><?php svg('trash');?></button></form></div></div></div>');
+<?php               }else{?>
+        window.top.window.$('.notifications').notify({
+            type:'danger',
+            icon:'',
+            message:{
+                text:'There was an issue adding the Social Networking Link'
+            }
+        }).show();
+<?php               }
+                }
+
+                break;
+
+
+
+
         case'make_client':
             $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
             $q=$db->prepare("SELECT name,email,phone FROM messages WHERE id=:id");

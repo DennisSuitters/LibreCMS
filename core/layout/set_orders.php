@@ -10,7 +10,7 @@
     <div class="panel-body">
         <h4 class="page-header">
             Banking
-            <button class="btn btn-link pull-right" onclick="$('#orders0').toggleClass('hidden');"><?php svg('cogs');?></button>
+            <button class="btn btn-link pull-right" onclick="$('#orders0').toggleClass('hidden');"><?php svg('unfold');?></button>
         </h4>
         <div id="orders0" class="hidden">
             <div class="form-group">
@@ -40,7 +40,7 @@
         </div>
         <h4 class="page-header">
             PayPal
-            <button class="btn btn-link pull-right" onclick="$('#orders1').toggleClass('hidden');"><?php svg('cogs');?></button>
+            <button class="btn btn-link pull-right" onclick="$('#orders1').toggleClass('hidden');"><?php svg('unfold');?></button>
         </h4>
         <div id="orders1" class="hidden">
             <div class="form-group">
@@ -58,7 +58,7 @@
         </div>
         <h4 class="page-header">
             Order Processing
-            <button class="btn btn-link pull-right" onclick="$('#orders2').toggleClass('hidden');"><?php svg('cogs');?></button>
+            <button class="btn btn-link pull-right" onclick="$('#orders2').toggleClass('hidden');"><?php svg('unfold');?></button>
         </h4>
         <div id="orders2" class="hidden">
             <div class="form-group">
@@ -89,7 +89,7 @@
         </div>
         <h4 class="page-header">
             Email Layout
-            <button class="btn btn-link pull-right" onclick="$('#orders3').toggleClass('hidden');"><?php svg('cogs');?></button>
+            <button class="btn btn-link pull-right" onclick="$('#orders3').toggleClass('hidden');"><?php svg('unfold');?></button>
         </h4>
         <div id="orders3" class="hidden">
             <div class="form-group clearfix">
