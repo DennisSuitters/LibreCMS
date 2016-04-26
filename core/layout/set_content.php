@@ -8,6 +8,11 @@
         </div>
     </div>
     <div class="panel-body">
-
+        <div class="form-group">
+            <label for="showItems" class="control-label col-xs-5 col-sm-3 col-lg-2">Item Count</label>
+            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                <input type="text" id="showItems" class="form-control textinput" value="<?php echo$config['showItems'];?>" data-dbid="1" data-dbt="config" data-dbc="showItems" placeholder="Enter Number of Items to Display..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Number of Items to Display."';?>>
+            </div>
+        </div>
     </div>
 </div>

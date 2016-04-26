@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 26, 2016 at 07:52 PM
+-- Generation Time: Apr 26, 2016 at 09:42 PM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -117,6 +117,8 @@ CREATE TABLE IF NOT EXISTS `config` (
   `passwordResetSubject` tinytext COLLATE utf8_bin NOT NULL,
   `accountActivationSubject` tinytext COLLATE utf8_bin NOT NULL,
   `accountActivationLayout` text COLLATE utf8_bin NOT NULL,
+  `bookingEmailSubject` tinytext COLLATE utf8_bin NOT NULL,
+  `bookingEmailLayout` text COLLATE utf8_bin NOT NULL,
   `bookingAutoReplySubject` tinytext COLLATE utf8_bin NOT NULL,
   `bookingAutoReplyLayout` text COLLATE utf8_bin NOT NULL,
   `contactAutoReplySubject` tinytext COLLATE utf8_bin NOT NULL,
@@ -137,8 +139,8 @@ CREATE TABLE IF NOT EXISTS `config` (
 -- Dumping data for table `config`
 --
 
-INSERT INTO `config` (`id`, `maintenance`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailSubject`, `orderEmailLayout`, `orderEmailNotes`, `passwordResetLayout`, `passwordResetSubject`, `accountActivationSubject`, `accountActivationLayout`, `bookingAutoReplySubject`, `bookingAutoReplyLayout`, `contactAutoReplySubject`, `contactAutoReplyLayout`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `showItems`, `idleTime`, `bti`, `backup_ti`, `ti`) VALUES
-(1, 1, '1111111110000000', 'default-bootstrap3', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0, '', '', '', 0, 3600, 'M j, Y g:i A', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '{name}: Invoice: {order_number}', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b> services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '<p>Hi {name},</p><p>A Password Reset was requested, it is now: {password}</p><p>We recommend changing the above password after logging in.</p>', '', '', '<p>Hi {username},</p><p>This is your activation link, and password.</p><p>Activation Link: {activation_link}</p><p>NOTE: You won''t be able to login until you activate your account.</p><p>Password: {password}</p><p>We recommend changing the password after logging in.</p>', '', '', '', '', '', '', '', '', '', 10, 24, 0, 0, 0);
+INSERT INTO `config` (`id`, `maintenance`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailSubject`, `orderEmailLayout`, `orderEmailNotes`, `passwordResetLayout`, `passwordResetSubject`, `accountActivationSubject`, `accountActivationLayout`, `bookingEmailSubject`, `bookingEmailLayout`, `bookingAutoReplySubject`, `bookingAutoReplyLayout`, `contactAutoReplySubject`, `contactAutoReplyLayout`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `showItems`, `idleTime`, `bti`, `backup_ti`, `ti`) VALUES
+(1, 1, '1111111110000000', 'default-bootstrap3', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0, '', '', '', 0, 3600, 'M j, Y g:i A', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b> services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '<p>Hi {name},</p><p>A Password Reset was requested, it is now: {password}</p><p>We recommend changing the above password after logging in.</p>', '', '', '<p>Hi {username},</p><p>This is your activation link, and password.</p><p>Activation Link: {activation_link}</p><p>NOTE: You won''t be able to login until you activate your account.</p><p>Password: {password}</p><p>We recommend changing the password after logging in.</p>', '', '', '', '', '', '', '', '', '', '', '', 10, 24, 0, 0, 0);
 
 -- --------------------------------------------------------
 

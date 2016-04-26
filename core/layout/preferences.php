@@ -7,9 +7,7 @@
             <li class="active"><a href="#theme" data-toggle="tab">Theme</a></li>
             <li><a href="#contact" data-toggle="tab">Contact</a></li>
             <li><a href="#interface" data-toggle="tab">Interface</a></li>
-            <li><a href="#banking" data-toggle="tab">Banking</a></li>
             <li><a href="#seo" data-toggle="tab">SEO</a></li>
-            <li><a href="#templates" data-toggle="tab">Templates</a></li>
             <li><a href="#backrestore" data-toggle="tab">Backup</a></li>
         </ul>
         <div class="tab-content">
@@ -127,26 +125,12 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                     </div>
                     <label for="maintenance0" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['maintenance']{0}==1)echo' data-toggle="tooltip" title="Toggle Site Maintenance Mode."';?>>Maintenance</span></label>
                 </div>
-                <div class="form-group">
-                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                        <input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>>
-                        <label for="options3">
-                    </div>
-                    <label for="options3" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Allow Users to Create Accounts."';?>>Enable Account Sign Ups</span></label>
-                </div>
-                <div class="form-group">
+                <div class="form-group clearfix">
                     <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
                         <input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>>
                         <label for="options4">
                     </div>
                     <label for="options4" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Administration Tooltops, like this one."';?>>Enable Tooltips</span></label>
-                </div>
-                <div class="clearfix"></div>
-                <div class="form-group">
-                    <label for="showItems" class="control-label col-xs-5 col-sm-3 col-lg-2">Item Count</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="showItems" class="form-control textinput" value="<?php echo$config['showItems'];?>" data-dbid="1" data-dbt="config" data-dbc="showItems" placeholder="Enter Number of Items to Display..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Number of Items to Display."';?>>
-                    </div>
                 </div>
                 <div class="form-group">
                     <label for="idleTime" class="control-label col-xs-5 col-sm-3 col-lg-2">Idle Timeout</label>
@@ -165,72 +149,6 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                         <input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date/Time Format..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Format Layout of all Dates/Times displayed."';?>>
                         <span class="help-block">For information on Date Format Characters click <a target="_blank" href="http://php.net/manual/en/function.date.php#refsect1-function.date-parameters">here</a>.</span>
                     </div>
-                </div>
-            </div>
-            <div id="banking" class="tab-pane fade in">
-                <h4>Banking</h4>
-                <div class="form-group">
-                    <label for="bank" class="control-label col-xs-5 col-sm-3 col-lg-2">Bank</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="bank" class="form-control textinput" value="<?php echo$config['bank'];?>" data-dbid="1" data-dbt="config" data-dbc="bank" placeholder="Enter Bank Name...">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="bankAccountName" class="control-label col-xs-5 col-sm-3 col-lg-2">Account Name</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="bankAccountName" class="form-control textinput" value="<?php echo$config['bankAccountName'];?>"data-dbid="1" data-dbt="config" data-dbc="bankAccountName" placeholder="Enter an Account Name...">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="bankAccountNumber" class="control-label col-xs-5 col-sm-3 col-lg-2">Account Number</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="bankAccountNumber" class="form-control textinput" value="<?php echo$config['bankAccountNumber'];?>" data-dbid="1" data-dbt="config" data-dbc="bankAccountNumber" placeholder="Enter an Account Number...">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="bankBSB" class="control-label col-xs-5 col-sm-3 col-lg-2">BSB</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="bankBSB" class="form-control textinput" value="<?php echo$config['bankBSB'];?>" data-dbid="1" data-dbt="config" data-dbc="bankBSB" placeholder="Enter a BSB...">
-                    </div>
-                </div>
-                <h4>PayPal</h4>
-                <div class="form-group">
-                    <label for="bankPayPal" class="control-label col-xs-5 col-sm-3 col-lg-2">Account</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="bankPayPal" class="form-control textinput" value="<?php echo$config['bankPayPal'];?>" data-dbid="1" data-dbt="config" data-dbc="bankPayPal" placeholder="Enter a PayPal Account...">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="ipn" class="control-label col-xs-5 col-sm-3 col-lg-2">IPN</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="ipn" class="form-control" value="" readonly<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
-                    </div>
-                </div>
-                <h4>Order Processing</h4>
-                <div class="form-group">
-                    <label for="orderPayti" class="control-label col-xs-5 col-sm-3 col-lg-2">Allow</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <select id="orderPayti" class="form-control" onchange="update('1','config','orderPayti',$(this).val());">
-                            <option value="0"<?php if($config['orderPayti']==0)echo' selected';?>>0 Days</option>
-                            <option value="604800"<?php if($config['orderPayti']==604800)echo' selected';?>>7 Days</option>
-                            <option value="1209600"<?php if($config['orderPayti']==1209600)echo' selected';?>>14 Days</option>
-                            <option value="1814400"<?php if($config['orderPayti']==1814400)echo' selected';?>>21 Days</option>
-                            <option value="2592000"<?php if($config['orderPayti']==2592000)echo' selected';?>>30 Days</option>
-                        </select>
-                        <div class="input-group-addon">for Payments</div>
-                    </div>
-                </div>
-                <div class="form-group clearfix">
-                    <label for="orderEmailNotes" class="control-label col-xs-5 col-sm-3 col-lg-2">Order Notes</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <form method="post" target="sp" action="core/update.php">
-                            <input type="hidden" name="id" value="1">
-                            <input type="hidden" name="t" value="config">
-                            <input type="hidden" name="c" value="orderEmailNotes">
-                            <textarea id="orderEmailNotes" class="form-control summernote" name="da"><?php echo$config['orderEmailNotes'];?></textarea>
-                        </form>
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</div>
                 </div>
             </div>
             <div id="seo" class="tab-pane fade in">
@@ -264,108 +182,6 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Keywords...">
                     </div>
-                </div>
-            </div>
-            <div id="templates" class="tab-pane fade in">
-                <h4 class="page-header">Contact AutoReply Email Layout</h4>
-                <div class="form-group clearfix">
-                    <label for="contactAutoReplySubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="contactAutoReplySubject" class="form-control textinput" value="<?php echo$config['contactAutoReplySubject'];?>" data-dbid="1" data-dbt="config" data-dbc="contactAutoReplySubject">
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
-                </div>
-                <div class="form-group clearfix">
-                    <label for="contactAutoReplyLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <form method="post" target="sp" action="core/update.php">
-                            <input type="hidden" name="id" value="1">
-                            <input type="hidden" name="t" value="config">
-                            <input type="hidden" name="c" value="contactAutoReplyLayout">
-                            <textarea id="contactAutoReplyLayout" class="form-control summernote" name="da"><?php echo$config['contactAutoReplyLayout'];?></textarea>
-                        </form>
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
-                </div>
-                <h4 class="page-header">Bookings AutoReply Email Layout</h4>
-                <div class="form-group clearfix">
-                    <label for="bookingAutoReplySubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="bookingAutoReplySubject" class="form-control textinput" value="<?php echo$config['bookingAutoReplySubject'];?>" data-dbid="1" data-dbt="config" data-dbc="bookingAutoReplySubject">
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
-                </div>
-                <div class="form-group clearfix">
-                    <label for="bookingAutoReplyLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <form method="post" target="sp" action="core/update.php">
-                            <input type="hidden" name="id" value="1">
-                            <input type="hidden" name="t" value="config">
-                            <input type="hidden" name="c" value="bookingAutoReplyLayout">
-                            <textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['bookingAutoReplyLayout'];?></textarea>
-                        </form>
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date} {booking_date} {service}</div>
-                </div>
-                <h4 class="page-header">Password Reset Email Layout</h4>
-                <div class="form-group clearfix">
-                    <label for="passwordResetSubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="passwordResetSubject" class="form-control textinput" value="<?php echo$config['passwordResetSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="passwordResetSubject">
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
-                </div>
-                <div class="form-group clearfix">
-                    <label for="passwordResetLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <form method="post" target="sp" action="core/update.php">
-                            <input type="hidden" name="id" value="1">
-                            <input type="hidden" name="t" value="config">
-                            <input type="hidden" name="c" value="passwordResetLayout">
-                            <textarea id="passwordResetLayout" class="form-control summernote" name="da"><?php echo$config['passwordResetLayout'];?></textarea>
-                        </form>
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {password}</div>
-                </div>
-                <h4 class="page-header">Sign Up Emails</h4>
-                <div class="form-group clearfix">
-                    <label for="accountActivationSubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="accountActivationSubject" class="form-control textinput" value="<?php echo$config['accountActivationSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="accountActivationSubject">
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
-                </div>
-                <div class="form-group clearfix">
-                    <label for="accountActivationLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <form method="post" target="sp" action="core/update.php">
-                            <input type="hidden" name="id" value="1">
-                            <input type="hidden" name="t" value="config">
-                            <input type="hidden" name="c" value="accountActivationLayout">
-                            <textarea id="accountActivationLayout" class="form-control summernote" name="da"><?php echo$config['accountActivationLayout'];?></textarea>
-                        </form>
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {username} {activation_link} {password}</div>
-                </div>
-                <h4 class="page-header">Order Email</h4>
-                <div class="form-group clearfix">
-                    <label for="orderEmailSubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="orderEmailSubject" class="form-control textinput" value="<?php echo$config['orderEmailSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="orderEmailSubject">
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date} {order_number}</div>
-                </div>
-                <div class="form-group clearfix">
-                    <label for="orderEmailLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <form method="post" target="sp" action="core/update.php">
-                            <input type="hidden" name="id" value="1">
-                            <input type="hidden" name="t" value="config">
-                            <input type="hidden" name="c" value="orderEmailLayout">
-                            <textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['orderEmailLayout'];?></textarea>
-                        </form>
-                    </div>
-                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date} {order_number} {notes}</div>
                 </div>
             </div>
             <div id="backrestore" class="tab-pane fade in">

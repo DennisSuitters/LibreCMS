@@ -8,7 +8,7 @@ if($show=='pages'){?>
         <h4>Pages</h4>
     </div>
     <div class="panel-body">
-        <div class="page-header"><h4>Active Pages</h4></div>
+        <h4 class="page-header">Active Pages</h4>
         <div class="table-responsive">
             <table class="table table-condensed table-striped table-hover">
                 <thead>
@@ -42,7 +42,7 @@ if($show=='pages'){?>
 <?php $s=$db->prepare("SELECT * FROM menu WHERE active!='1' ORDER BY menu DESC, ord ASC");
     $s->execute();
     if($s->rowCount()>0){?>
-            <div class="page-header"><h4>Inactive Pages</h4></div>
+            <h4 class="page-header">Inactive Pages</h4>
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
