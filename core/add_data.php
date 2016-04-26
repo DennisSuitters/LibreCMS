@@ -6,7 +6,8 @@ require'zebra_image.php';
 require'sanitise.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)
     define('PROTOCOL','https://');
-else define('PROTOCOL','http://');
+else
+    define('PROTOCOL','http://');
 define('SESSIONID',session_id());
 define('DS',DIRECTORY_SEPARATOR);
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
@@ -35,12 +36,7 @@ if($act!=''){
             $url=filter_input(INPUT_POST,'url',FILTER_SANITIZE_URL);
             if(filter_var($url,FILTER_VALIDATE_URL)){
                 if($icon=='none'||$url==''){?>
-    window.top.window.$('.notifications').notify({
-        type:'danger',
-        icon:'',message:{
-            text:'Data not Entirely Entered'
-        }
-    }).show();
+    window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
 <?php           }else{
                     $user=kses($user,array());
                     $url=kses($url,array());
@@ -51,63 +47,32 @@ if($act!=''){
                     if(is_null($e[2])){?>
     window.top.window.$('#social').append('<div id="l_<?php echo$id;?>" class="form-group"><label class="control-label hidden-xs col-sm-3 col-md-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-12 col-sm-9 col-md-9 col-lg-10"><div class="input-group-addon"><?php svg('social-'.$icon);?> <?php echo ucfirst($icon);?></div><form target="sp" method="post" action="core/update.php"><input type="hidden" name="t" value="social"><input type="hidden" name="c" value="url"><input type="text"class="form-control" name="da" value="<?php echo$url;?>" placeholder="Enter a URL..."></form><div class="input-group-btn"><form target="sp" action="core/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><button class="btn btn-default trash"><?php svg('trash');?></button></form></div></div></div>');
 <?php               }else{?>
-    window.top.window.$('.notifications').notify({
-        type:'danger',
-        icon:'',
-        message:{
-            text:'There was an issue adding the Social Networking Link'
-        }
-    }).show();
+    window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue adding the Social Networking Link'}}).show();
 <?php               }
                 }
             }else{?>
-    window.top.window.$('.notifications').notify({
-        type:'danger',
-        icon:'',
-        message:{
-            text:'The URL entered is not valid'
-        }
-    }).show();
+    window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'The URL entered is not valid'}}).show();
 <?php       }
             break;
-
-
-
-            case'add_subject':
-                $sub=filter_input(INPUT_POST,'sub',FILTER_SANITIZE_STRING);
-                $eml=filter_input(INPUT_POST,'eml',FILTER_SANITIZE_STRING);
-                if($sub==''){?>
-        window.top.window.$('.notifications').notify({
-            type:'danger',
-            icon:'',message:{
-                text:'Data not Entirely Entered'
+        case'add_subject':
+            $sub=filter_input(INPUT_POST,'sub',FILTER_SANITIZE_STRING);
+            $eml=filter_input(INPUT_POST,'eml',FILTER_SANITIZE_STRING);
+            if($sub==''){?>
+    window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
+<?php       }else{
+                $sub=kses($sub,array());
+                $eml=kses($eml,array());
+                $q=$db->prepare("INSERT INTO choices (contentType,title,url) VALUES ('subject',:title,:url)");
+                $q->execute(array(':title'=>$sub,':url'=>$eml));
+                $id=$db->lastInsertId();
+                $e=$db->errorInfo();
+                if(is_null($e[2])){?>
+    window.top.window.$('#subjects').append('<div id="l_<?php echo$id;?>" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-12 col-sm-9 col-lg-10"><div class="input-group-addon">Subject</div><form target="sp" method="post"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><input type="hidden" name="c" value="title"><input type="text" class="form-control" name="da" value="<?php echo$sub;?>" placeholder="Enter a Subject..."></form><div class="input-group-addon">Email</div><form target="sp" method="post"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><input type="hidden" name="c" value="url"><input type="text" class="form-control" name="da" value="<?php echo$eml;?>" placeholder="Enter an Email..."></form><div class="input-group-btn"><form target="sp" action="core/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><button class="btn btn-default trash"><?php svg('trash');?></button></form></div></div></div>');
+<?php           }else{?>
+    window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue adding the Social Networking Link'}}).show();
+<?php           }
             }
-        }).show();
-<?php           }else{
-                    $sub=kses($sub,array());
-                    $eml=kses($eml,array());
-                    $q=$db->prepare("INSERT INTO choices (contentType,title,url) VALUES ('subject',:title,:url)");
-                    $q->execute(array(':title'=>$sub,':url'=>$eml));
-                    $id=$db->lastInsertId();
-                    $e=$db->errorInfo();
-                    if(is_null($e[2])){?>
-        window.top.window.$('#subjects').append('<div id="l_<?php echo$id;?>" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-12 col-sm-9 col-lg-10"><div class="input-group-addon">Subject</div><form target="sp" method="post"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><input type="hidden" name="c" value="title"><input type="text" class="form-control" name="da" value="<?php echo$sub;?>" placeholder="Enter a Subject..."></form><div class="input-group-addon">Email</div><form target="sp" method="post"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><input type="hidden" name="c" value="url"><input type="text" class="form-control" name="da" value="<?php echo$eml;?>" placeholder="Enter an Email..."></form><div class="input-group-btn"><form target="sp" action="core/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><button class="btn btn-default trash"><?php svg('trash');?></button></form></div></div></div>');
-<?php               }else{?>
-        window.top.window.$('.notifications').notify({
-            type:'danger',
-            icon:'',
-            message:{
-                text:'There was an issue adding the Social Networking Link'
-            }
-        }).show();
-<?php               }
-                }
-
-                break;
-
-
-
-
+            break;
         case'make_client':
             $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
             $q=$db->prepare("SELECT name,email,phone FROM messages WHERE id=:id");
@@ -117,21 +82,9 @@ if($act!=''){
             $q->execute(array(':name'=>$r[name],':email'=>$r['email'],':phone'=>$r['phone'],':ti'=>$ti));
             $e=$db->errorInfo();
             if(is_null($e[2])){?>
-    window.top.window.$('.notifications').notify({
-        type:'success',
-        icon:'',
-        message:{
-            text:'Contact added as Client'
-        }
-    }).show();
+    window.top.window.$('.notifications').notify({type:'success',icon:'',message:{text:'Contact added as Client'}}).show();
 <?php       }else{?>
-    window.top.window.$('.notifications').notify({
-        type:'danger',
-        icon:'',
-        message:{
-            text:'There was an issue Adding new Client'
-        }
-    }).show();
+    window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue Adding new Client'}}).show();
 <?php       }
             break;
         case'add_comment':
@@ -155,43 +108,25 @@ if($act!=''){
                 if(is_null($e[2])){
                     if($c['avatar']!=''&&file_exists('..'.DS.'media'.DS.$c['avatar']))
                         $avatar='media'.DS.'avatar'.DS.$c['avatar'];
-                        elseif($c['gravatar']!=''){
-                            if(stristr($c['gravatar'],'@'))
-                                $avatar='http://gravatar.com/avatar/'.md5($c['gravatar']);
-                            elseif(stristr($c['gravatar'],'gravatar.com/avatar/'))
-                                $avatar=$c['gravatar'];
-                            else
-                                $avatar='core'.DS.'images'.DS.'noavatar.jpg';
-                        }else
+                    elseif($c['gravatar']!=''){
+                        if(stristr($c['gravatar'],'@'))
+                            $avatar='http://gravatar.com/avatar/'.md5($c['gravatar']);
+                        elseif(stristr($c['gravatar'],'gravatar.com/avatar/'))
+                            $avatar=$c['gravatar'];
+                        else
                             $avatar='core'.DS.'images'.DS.'noavatar.jpg';
-                        $html='<div id="l_'.$id.'" class="media bg-danger"><div class="media-object pull-left"><img class="commentavatar img-thumbnail" alt="User" src="'.$avatar.'"></div><div class="media-body"><h4 class="media-heading">Name</h4>'.$da.'</div><hr></div>';?>
-    window.top.window.$('.notifications').notify({
-        type:'success',
-        icon:'',
-        message:{
-            text:'New comment Added, Awaiting Approval'
-        }
-    }).show();
+                    }else
+                        $avatar='core'.DS.'images'.DS.'noavatar.jpg';
+                    $html='<div id="l_'.$id.'" class="media bg-danger"><div class="media-object pull-left"><img class="commentavatar img-thumbnail" alt="User" src="'.$avatar.'"></div><div class="media-body"><h4 class="media-heading">Name</h4>'.$da.'</div><hr></div>';?>
+    window.top.window.$('.notifications').notify({type:'success',icon:'',message:{text:'New comment Added, Awaiting Approval'}}).show();
     window.top.window.$('#comments').append('<?php echo$html;?>');
 <?php           }else{?>
-    window.top.window.$('.notifications').notify({
-        type:'danger',
-        icon:'',
-        message:{
-            text:'There was an issue adding your Comment'
-        }
-    }).show();
+    window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue adding your Comment'}}).show();
 <?php           }
             }else{?>
-    window.top.window.$('.notifications').notify({
-        type:'danger',
-        icon:'',
-        message:{
-            text:'The Email entered is not valid'
-        }
-    }).show();
+    window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'The Email entered is not valid'}}).show();
 <?php       }
-        break;
+            break;
         case'add_avatar':
             $id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
             $tbl=filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING);

@@ -55,7 +55,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
             <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                 <input type="text" id="contactAutoReplySubject" class="form-control textinput" value="<?php echo$config['contactAutoReplySubject'];?>" data-dbid="1" data-dbt="config" data-dbc="contactAutoReplySubject">
             </div>
-            <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
+            <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {business} {date}</div>
         </div>
         <div class="form-group clearfix">
             <label for="contactAutoReplyLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
@@ -67,7 +67,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                     <textarea id="contactAutoReplyLayout" class="form-control summernote" name="da"><?php echo$config['contactAutoReplyLayout'];?></textarea>
                 </form>
             </div>
-            <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
+            <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {business} {date} {name} {subject}</div>
         </div>
     </div>
 </div>
