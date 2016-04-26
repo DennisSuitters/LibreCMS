@@ -220,6 +220,18 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                         <div class="input-group-addon">for Payments</div>
                     </div>
                 </div>
+                <div class="form-group clearfix">
+                    <label for="orderEmailNotes" class="control-label col-xs-5 col-sm-3 col-lg-2">Order Notes</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <form method="post" target="sp" action="core/update.php">
+                            <input type="hidden" name="id" value="1">
+                            <input type="hidden" name="t" value="config">
+                            <input type="hidden" name="c" value="orderEmailNotes">
+                            <textarea id="orderEmailNotes" class="form-control summernote" name="da"><?php echo$config['orderEmailNotes'];?></textarea>
+                        </form>
+                    </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</div>
+                </div>
             </div>
             <div id="seo" class="tab-pane fade in">
                 <h4>Default Analytics</h4>
@@ -255,41 +267,96 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                 </div>
             </div>
             <div id="templates" class="tab-pane fade in">
-                <div class="form-group">
-                    <label for="orderEmailLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Password Email Layout</label>
+                <h4 class="page-header">Contact AutoReply Email Layout</h4>
+                <div class="form-group clearfix">
+                    <label for="contactAutoReplySubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="contactAutoReplySubject" class="form-control textinput" value="<?php echo$config['contactAutoReplySubject'];?>" data-dbid="1" data-dbt="config" data-dbc="contactAutoReplySubject">
+                    </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="contactAutoReplyLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <form method="post" target="sp" action="core/update.php">
                             <input type="hidden" name="id" value="1">
                             <input type="hidden" name="t" value="config">
-                            <input type="hidden" name="c" value="PasswordResetLayout">
-                            <textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['PasswordResetLayout'];?></textarea>
-                            <div class="help-block">You can use the following Tokens: {name} {first} {last} {password}</div>
+                            <input type="hidden" name="c" value="contactAutoReplyLayout">
+                            <textarea id="contactAutoReplyLayout" class="form-control summernote" name="da"><?php echo$config['contactAutoReplyLayout'];?></textarea>
                         </form>
                     </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
+                </div>
+                <h4 class="page-header">Bookings AutoReply Email Layout</h4>
+                <div class="form-group clearfix">
+                    <label for="bookingAutoReplySubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="bookingAutoReplySubject" class="form-control textinput" value="<?php echo$config['bookingAutoReplySubject'];?>" data-dbid="1" data-dbt="config" data-dbc="bookingAutoReplySubject">
+                    </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="bookingAutoReplyLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <form method="post" target="sp" action="core/update.php">
+                            <input type="hidden" name="id" value="1">
+                            <input type="hidden" name="t" value="config">
+                            <input type="hidden" name="c" value="bookingAutoReplyLayout">
+                            <textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['bookingAutoReplyLayout'];?></textarea>
+                        </form>
+                    </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date} {booking_date} {service}</div>
+                </div>
+                <h4 class="page-header">Password Reset Email Layout</h4>
+                <div class="form-group clearfix">
+                    <label for="passwordResetSubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="passwordResetSubject" class="form-control textinput" value="<?php echo$config['passwordResetSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="passwordResetSubject">
+                    </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="passwordResetLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <form method="post" target="sp" action="core/update.php">
+                            <input type="hidden" name="id" value="1">
+                            <input type="hidden" name="t" value="config">
+                            <input type="hidden" name="c" value="passwordResetLayout">
+                            <textarea id="passwordResetLayout" class="form-control summernote" name="da"><?php echo$config['passwordResetLayout'];?></textarea>
+                        </form>
+                    </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {password}</div>
                 </div>
                 <h4 class="page-header">Sign Up Emails</h4>
-                <div class="form-group">
-                    <label for="AccountActivationLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
+                <div class="form-group clearfix">
+                    <label for="accountActivationSubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="accountActivationSubject" class="form-control textinput" value="<?php echo$config['accountActivationSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="accountActivationSubject">
+                    </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date}</div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="accountActivationLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <form method="post" target="sp" action="core/update.php">
                             <input type="hidden" name="id" value="1">
                             <input type="hidden" name="t" value="config">
-                            <input type="hidden" name="c" value="AccountActivationLayout">
-                            <textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['AccountActivationLayout'];?></textarea>
-                            <div class="help-block">You can use the following Tokens: {username} {activation_link} {password}</div>
+                            <input type="hidden" name="c" value="accountActivationLayout">
+                            <textarea id="accountActivationLayout" class="form-control summernote" name="da"><?php echo$config['accountActivationLayout'];?></textarea>
                         </form>
                     </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {username} {activation_link} {password}</div>
                 </div>
-
-                <div class="form-group">
-                    <label for="orderEmailDefaultSubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Email Subject</label>
+                <h4 class="page-header">Order Email</h4>
+                <div class="form-group clearfix">
+                    <label for="orderEmailSubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="orderEmailDefaultSubject" class="form-control textinput" value="<?php echo$config['orderEmailDefaultSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="orderEmailDefaultSubject">
-                        <span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number}</span>
+                        <input type="text" id="orderEmailSubject" class="form-control textinput" value="<?php echo$config['orderEmailSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="orderEmailSubject">
                     </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date} {order_number}</div>
                 </div>
-                <div class="form-group">
-                    <label for="orderEmailLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Email Layout</label>
+                <div class="form-group clearfix">
+                    <label for="orderEmailLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <form method="post" target="sp" action="core/update.php">
                             <input type="hidden" name="id" value="1">
@@ -297,22 +364,9 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                             <input type="hidden" name="c" value="orderEmailLayout">
                             <textarea id="orderEmailLayout" class="form-control summernote" name="da"><?php echo$config['orderEmailLayout'];?></textarea>
                         </form>
-                        <span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</span>
                     </div>
+                    <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Tokens: {name} {first} {last} {date} {order_number} {notes}</div>
                 </div>
-                <div class="form-group">
-                    <label for="orderEmailNotes" class="control-label col-xs-5 col-sm-3 col-lg-2">Order Notes</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <form method="post" target="sp" action="core/update.php">
-                            <input type="hidden" name="id" value="1">
-                            <input type="hidden" name="t" value="config">
-                            <input type="hidden" name="c" value="orderEmailNotes">
-                            <textarea id="orderEmailNotes" class="form-control summernote" name="da"><?php echo$config['orderEmailNotes'];?></textarea>
-                        </form>
-                        <span class="help-block">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</span>
-                    </div>
-                </div>
-
             </div>
             <div id="backrestore" class="tab-pane fade in">
                 <div id="backup" class="well" name="backup">

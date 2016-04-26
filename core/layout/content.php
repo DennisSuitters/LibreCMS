@@ -32,6 +32,9 @@ if($args[0]=='edit'){
     $s->execute(array(':id'=>$args[1]));
     $show='item';
 }
+if($args[0]=='settings'){
+    include'core'.DS.'layout'.DS.'set_content.php';
+}else{
 if($show=='categories'){
     if($args[0]=='type'){
         $s=$db->prepare("SELECT * FROM content WHERE contentType=:contentType AND contentType!='message_primary' ORDER BY pin DESC,ti DESC,title ASC");
@@ -73,7 +76,7 @@ if($show=='categories'){
         <div class="pull-right">
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
             <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>>
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php svg('add');?></button>
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php svg('add');?> <i class="caret"></i></button>
                 <ul class="dropdown-menu pull-right">
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/article">Article</a></li>
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/portfolio">Portfolio</a></li>
@@ -85,6 +88,9 @@ if($show=='categories'){
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/gallery">Gallery</a></li>
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/proofs">Proof</a></li>
                 </ul>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/content/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
             </div>
 <?php }?>
         </div>
@@ -621,3 +627,4 @@ else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
     </div>
 </div>
 <?php }
+}

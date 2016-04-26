@@ -7,7 +7,9 @@
     $q->execute(array(':username'=>$show,':id'=>$args[1]));
     $args[0]='edit';
 }
-if($args[0]=='edit'){
+if($args[0]=='settings'){
+    include'core'.DS.'layout'.DS.'set_accounts.php';
+}elseif($args[0]=='edit'){
     $q=$db->prepare("SELECT * FROM login WHERE id=:id");
     $q->execute(array(':id'=>$args[1]));
     $r=$q->fetch(PDO::FETCH_ASSOC);?>
@@ -426,8 +428,13 @@ if($args[0]=='type'){
                 </li>
             </ol>
         </h4>
-        <div class="btn-group pull-right">
-            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>"><?php svg('add');?></a>
+        <div class="pull-right">
+            <div class="btn-group">
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>><?php svg('add');?></a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+            </div>
         </div>
     </div>
     <div class="panel-body">

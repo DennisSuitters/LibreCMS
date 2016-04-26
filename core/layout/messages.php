@@ -1,5 +1,7 @@
 <?php
-if(isset($args[0])&&$args[0]=='view'||$args[0]=='compose'){
+if($args[0]=='settings'){
+    include'core'.DS.'layout'.DS.'set_messages.php';
+}elseif($args[0]=='view'||$args[0]=='compose'){
     if($args[0]=='view'){
         $q=$db->prepare("UPDATE messages SET status='read' WHERE id=:id");
         $q->execute(array(':id'=>$args[1]));
@@ -67,6 +69,11 @@ if(isset($args[0])&&$args[0]=='view'||$args[0]=='compose'){
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
         <h4 class="col-xs-6">Messages</h4>
+        <div class="pull-right">
+            <div class="btn-group">
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+            </div>
+        </div>
     </div>
     <div class="panel-body">
         <div class="row">

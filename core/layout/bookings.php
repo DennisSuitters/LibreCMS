@@ -6,8 +6,10 @@ if($view=='add'){
     $id=$db->lastInsertId();
     $view='bookings';
     $args[0]='edit';
-}else $id=$args[1];
-if($args[0]=='edit'){
+}elseif(isset($args[1]))$id=$args[1];
+if($args[0]=='settings'){
+    include'core'.DS.'layout'.DS.'set_bookings.php';
+}elseif($args[0]=='edit'){
     $s=$db->prepare("SELECT * FROM content WHERE id=:id");
     $s->execute(array(':id'=>$id));
     $r=$s->fetch(PDO::FETCH_ASSOC);
@@ -16,9 +18,7 @@ if($args[0]=='edit'){
     $rs=$sr->fetch(PDO::FETCH_ASSOC);?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">
-            Bookings
-        </h4>
+        <h4 class="col-xs-6">Bookings</h4>
         <div class="btn-group pull-right">
             <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/bookings"';if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back';?>"><?php svg('back');?></a>
         </div>
@@ -143,11 +143,14 @@ if($sql->rowCount()>0){?>
 <link rel="stylesheet" type="text/css" href="core/css/fullcalendar.theme.css">
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">
-            Bookings
-        </h4>
-        <div class="btn-group pull-right">
-            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/add/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add Booking."';?>><?php svg('add');?></a>
+        <h4 class="col-xs-6">Bookings</h4>
+        <div class="pull-right">
+            <div class="btn-group">
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/add/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>><?php svg('add');?></a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/bookings/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+            </div>
         </div>
     </div>
     <div class="panel-body">

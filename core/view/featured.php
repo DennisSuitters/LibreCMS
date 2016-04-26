@@ -1,14 +1,24 @@
 <?php
-preg_match('/<settings itemcount="([\w\W]*?)" contenttype="([\w\W]*?)">/',$html,$matches);
+preg_match('/<settings itemcount="([\w\W]*?)" contenttype="([\w\W]*?)" order="([\w\W]*?)">/',$html,$matches);
 $html=preg_replace('~<settings.*?>~is','',$html,1);
 $itemCount=$matches[1];
-if($itemCount==0)$itemCount=5;
+$limit=', '.$matches[1];
+if($itemCount==0){
+	$itemCount=5;
+	$limit='';
+}
 $contentType=$matches[2];
 if($contentType=='all')$contentType='%';
+if($matches[3]=='asc'||$matches[3]=='ASC')
+	$order='ti ASC';
+elseif($matches[3]=='rand'||$matches[3]=='random')
+	$order='RAND()';
+else
+	$order='ti DESC';
 preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 $it=$matches[1];
 $items='';
-$s=$db->prepare("SELECT * FROM content WHERE featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY ti DESC");
+$s=$db->prepare("SELECT * FROM content WHERE file!='' AND featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY $order $limit");
 $s->execute(array(':contentType'=>$contentType));
 $indicators='';
 $indicator='';
@@ -22,7 +32,7 @@ if($ii>0){
 	}
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$filechk=basename($r['file']);
-		if(!$r['file']&&!file_exists('media'.DS.$filechk))continue;
+		if(!file_exists('media'.DS.$filechk))continue;
 		$item=$it;
 		$indicatorItem=$indicator;
 		if($i==0){
@@ -37,8 +47,10 @@ if($ii>0){
 			$item=str_replace('<cost>','',$item);
 			$item=str_replace('</cost>','',$item);
 			$item=str_replace('<print content="cost">',$r['cost'],$item);
-		}else$item=preg_replace('~<cost>.*?<\/cost>~is','',$item,1);
-		if($r['caption']!='')$item=str_replace('<print content="caption">',$r['caption'],$item);
+		}else
+			$item=preg_replace('~<cost>.*?<\/cost>~is','',$item,1);
+		if($r['caption']!='')
+			$item=str_replace('<print content="caption">',$r['caption'],$item);
 		$item=str_replace('<print link>',$r['contentType'].'/'.str_replace(' ','-',$r['title']),$item);
 		$item=str_replace('<print content="image">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
 		$item=str_replace('<print content=schemaType>',$r['schemaType'],$item);

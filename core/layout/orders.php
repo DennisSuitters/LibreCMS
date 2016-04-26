@@ -57,7 +57,9 @@ if($args[0]=='to_invoice'){
     if(file_exists('../media/orders/'.$r['qid'].'.pdf'))unlink('../media/orders/'.$r['qid'].'.pdf');
     $args[0]='invoices';
 }
-if($args[0]=='edit'){
+if($args[0]=='settings'){
+    include'core'.DS.'layout'.DS.'set_orders.php';
+}elseif($args[0]=='edit'){
     $q=$db->prepare("SELECT * FROM orders WHERE id=:id");
     $q->execute(array(':id'=>$id));
     $r=$q->fetch(PDO::FETCH_ASSOC);
@@ -443,12 +445,17 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
                 </li>
             </ol>
         </h4>
-        <div class="btn-group pull-right">
-            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-placement="right"><?php svg('plus');?></button>
-            <ul class="dropdown-menu multi-level pull-right">
-                <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/addquote';?>">Quote</a></li>
-                <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/addinvoice';?>">Invoice</a></li>
-            </ul>
+        <div class="pull-right">
+            <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>>
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" data-placement="right"><?php svg('plus');?> <i class="caret"></i></button>
+                <ul class="dropdown-menu multi-level pull-right">
+                    <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/addquote';?>">Quote</a></li>
+                    <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/addinvoice';?>">Invoice</a></li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/orders/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+            </div>
         </div>
     </div>
     <div class="panel-body">
