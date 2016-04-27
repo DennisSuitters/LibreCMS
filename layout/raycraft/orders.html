@@ -1,0 +1,132 @@
+<block include="meta_head.html">
+<block include="header.html">
+<block inbed="orders">
+	<div id="content" class="col-xs-12">
+        <div class="panel panel-default">
+        	<div class="panel-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th class="text-center">Order #</th>
+							<th class="text-center">Status</th>
+							<th class="text-center">Date</th>
+							<th class="text-center">Due Date</th>
+							<th>&nbsp;</th>
+						</tr>
+					</thead>
+					<tbody>
+						<items>
+							<tr>
+								<td class="text-center"><print orders=ordernumber></td>
+								<td class="text-center"><print orders=status></td>
+								<td class="text-center"><print order=date></td>
+								<td class="text-center"><print order=duedate></td>
+								<td class="text-right"><a class="btn btn-info" href="<print link>">View Order</a></td>
+							</tr>
+						</items>
+					</tbody>
+				</table>
+            </div>
+        </div>
+    	<order>
+	        <div class="panel panel-default">
+	        	<div class="panel-body">
+	                <div class="invoice">
+	        			<div class="row header">
+	        				<div class="col-xs-4 border-right">
+	        					<h2>From</h2>
+	        					<div class="form-group"><print config=business></div>
+	        					<div class="form-group">
+	        						ABN: <print config=abn><br>
+	        						<print config=address>, <print config=suburb>, <print config=city>, <print config=state>, <print config=postcode><br>
+	        						Email: <print config=email><br>
+	        						Phone: <print config=phone><br>
+	        						Mobile: <print config=mobile>
+	        					</div>
+	        				</div>
+	        				<div class="col-xs-4 border-right">
+	        					<h2>To</h2>
+	        					<div class="form-group">
+	        						<print user=name>
+	        					</div>
+	        					<div class="form-group form-group-xs">
+	        						<print user=address>, <print user=suburb>, <print user=city>, <print user=state>, <print user=postcode><br>
+									Email: <print user=email><br>
+									Phone: <print user=phone><br>
+									Mobile: <print user=mobile>
+	        					</div>
+	        				</div>
+	        				<div class="col-xs-4">
+	        					<h2>Details</h2>
+	        					<div class="form-group">
+	        						<label class="control-label col-xs-4">Order #</label>
+	        						<div class="input-group col-xs-8"><print order=ordernumber></div>
+	        					</div>
+	        					<div class="form-group">
+	        						<label class="control-label col-xs-4">Order Date</label>
+	        						<div class="input-group col-xs-8"><print order=date></div>
+	        					</div>
+	        					<div class="form-group">
+	        						<label class="control-label col-xs-4">Due Date</label>
+	        						<div class="input-group col-xs-8"><print order=duedate></div>
+	        					</div>
+	        					<div class="form-group">
+	        						<label class="control-label col-xs-4">Status</label>
+	        						<div class="input-group col-xs-8"><print order=status></div>
+	        					</div>
+	        				</div>
+	        			</div>
+	        			<div class="table-responsive">
+	        				<table class="table table-striped table-responsive">
+	        					<thead>
+	        						<tr>
+	        							<th>Code</th>
+	        							<th>Title</th>
+	        							<th class="col-sm-1 text-center">Quantity</th>
+	        							<th class="col-sm-1 text-center">Cost</th>
+	        							<th class="col-sm-1 text-right">Total</th>
+	        						</tr>
+	        					</thead>
+	        					<tbody>
+	                                <items>
+	            						<tr>
+	            							<td class="text-left"><print orderitem=code></td>
+	            							<td class="text-left"><print orderitem=title></td>
+	                                        <td class="col-md-1 text-center"><print orderitem=quantity></td>
+	                                        <td class="col-md-1 text-right"><print orderitem=cost></td>
+	                                        <td class="text-right"><print orderitem=subtotal></td>
+	                                    </tr>
+	                                </items>
+	        						<tr>
+	        							<td colspan="3">&nbsp;</td>
+	        							<td class="text-right"><strong>Total</strong></td>
+	        							<td class="text-right"><strong><print order=total></strong></td>
+	        						</tr>
+	        					</tbody>
+	        					<tfoot>
+	        						<tr>
+	        							<td colspan="3">&nbsp;</td>
+	        							<td colspan="2">
+	        								<div class="pull-right">
+	        									<div class="btn-group">
+	        										<a class="btn btn-info" target="_blank" href="core/email_order.php?id=<print order=id>&act=print"><i class="libre libre-print"></i></a>
+	        									</div>
+	        								</div>
+	        							</td>
+	        						</tr>
+	        					</tfoot>
+	        				</table>
+	        			</div>
+	        			<div class="row">
+	        				<div class="input-group col-xs-12 col-sm-5">
+	        					<div class="well"><print order=notes></div>
+	        				</div>
+	        			</div>
+	        		</div>
+	            </div>
+	        </div>
+    	</order>
+	</div>
+</block>
+<block include="footer.html">
+<block include="meta_footer.html">

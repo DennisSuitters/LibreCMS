@@ -48,12 +48,10 @@ if(!isset($_SERVER['HTTP_MOD_REWRITE'])){
 	$error=1;
 	echo'<div class="alert alert-danger">"mod_rewrite" must be available and enabled for LibreCMS to function correctly.</div>';
 }
-/*
 if(!extension_loaded('gd')&&!function_exists('gd_info')){
 	$error=1;
 	echo'<div class="alert alert-danger">GD-Image is NOT Installed or Enabled.</div>';
 }
-*/
 if(!function_exists('exif_read_data')){
 	echo'<div class="alert alert-info">EXIF Functions are NOT enabled or installed. While not Mandatory, some features won\'t work.</div>';
 }

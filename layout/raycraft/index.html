@@ -1,0 +1,75 @@
+<block include="meta_head.html">
+<block include="header.html">
+<block include="featured.html">
+<block inbed="content">
+	<div class="jumbotron">
+		<print page="cover">
+	</div>
+	<main id="content" class="col-xs-12">
+		<div class="clearfix"><print page="notes"></div>
+		<settings items="4" contenttype="all">
+		<items>
+			<article class="col-xs-12 col-md-3" itemscope itemtype="http://schema.org/<print content=schemaType>">
+				<div class="thumbnail">
+					<div class="contentType"><print content="contentType" container="div"></div>
+					<div class="cover">
+						<print content="thumb">
+					</div>
+					<cost>
+						<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+							<meta itemprop="currency" content="AUD">
+							<h4 itemprop="price">&#36;<print content="cost"></h4>
+						</aside>
+					</cost>
+					<div class="caption">
+						<print content="title" class="text-center" container="h4">
+						<div>
+							<print content="caption" length="150">
+						</div>
+						<div class="text-right">
+							<controls>
+								<view>
+									<a class="btn btn-info" href="<print content=linktitle>">View</a>
+								</view>
+								<service>
+									<a class="btn btn-success" href="bookings/<print content=bookservice>">Book Service</a>
+								</service>
+								<inventory>
+									<button class="btn btn-success" onclick="$('#cart').load('core/add_cart.php?id=<print content=id>');">Add to Cart</button>
+								</inventory>
+							</controls>
+						</div>
+					</div>
+				</div>
+			</article>
+		</items>
+	</main>
+</block>
+<block inbed="testimonials">
+	<settings items="5">
+	<div class="clearfix"></div>
+	<div class="testimonials">
+		<h4 class="page-header">Testimonials <small>Our Clients Love Us!</small></h4>
+		<div class="carousel slide" id="testimonials" data-ride="carousel">
+			<div class="carousel-inner">
+				<items>
+					<div class="item <print content=active>" itemscope itemtype="http://schema.org/<print content=schemaType>">
+						<div class="testimonials">
+							<img class="img-circle pull-left" alt="<print content=name>" src="<print content=avatar>">
+							<div class="col-md-offset-2" itemprop="description">
+								<print content="notes">
+								<strong><small itemprop="name"> - <print content="name"></small></strong>
+							</div>
+						</div>
+					</div>
+				</items>
+			</div>
+		</div>
+		<controls>
+			<div class="pull-right"><a class="left" href="#testimonials" data-slide="prev"><span class="libre libre-chevron-left libre-2x"></span></a><a class="right" href="#testimonials" data-slide="next"><span class="libre libre-chevron-right libre-2x"></span></a></div>
+		</controls>
+	</div>
+	<div class="clearfix"></div>
+</block>
+<block include="footer.html">
+<block include="meta_footer.html">
