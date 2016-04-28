@@ -7,6 +7,7 @@ a **Free** Open Source Content Management System, that is built utilising [PHP](
 - Messaging - Whenever a message is created via the Contact Us page, it is stored in the Messages system as well as emailed.
 - Orders - Create Quotes, Invoices, and recurring Orders. Client viewing of Orders.
 - Media - Upload and manage various types of files for addition into content using elFinder.
+- Featured Content - Can use Content Items as Featured Content, or Images uploaded into the `media/carousel/` folder. Which then will get sorted, and number of items depending on the settings attributes in the `featured.html` template file.
 - Accounts - Create Accounts for co-workers with Account Types for Administrators, Editors (especially good for SEO and Copywriters), Client's, and Visitors.
 - Client Proofs and Commenting
 - Easy Theme Selector
@@ -17,9 +18,9 @@ a **Free** Open Source Content Management System, that is built utilising [PHP](
 You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](https://github.com/StudioJunkyard/LibreCMS-themes)
 
 ### Dependencies
-- PHP/PDO (Tested with MySQL)
+- PHP > 5.5.9 - Must have PDO, and Password Compat support.
 - mod_rewrite
-- PHP-gd (GD-Image)
+- PHP5-gd2 (GD-Image) - LibreCMS will work without GD Support, but things like Thumbnails, and image resizing won't work.
 
 #### Integrated Projects:
 - [LibreICONS](https://github.com/StudioJunkyard/LibreICONS)

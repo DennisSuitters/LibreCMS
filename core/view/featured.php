@@ -32,8 +32,8 @@ if(file_exists('media/carousel/')){
 		$featuredfiles[]=[
 			'contentType'=>'carousel',
 			'file'=>$file,
-			'title'=>'',
-			'link'=>'',
+			'title'=>basename(rtrim($file),3),
+			'link'=>'nolink',
 			'ti'=>$filetime
 		];
 	}
@@ -77,10 +77,19 @@ if($ii>0){
 			$indicatorItem=str_replace('<print active>','',$indicatorItem);
 		}
 		$indicatorItem=str_replace('<print indicatorCount>',$i,$indicatorItem);
-		$item=str_replace('<print link>',$r['contentType'].DS.str_replace(' ','-',$r['title']),$item);
+		if($r['link']=='nolink')
+			$item=preg_replace('~<link>.*?<\/link>~is',$indicators,$item,1);
+		else{
+			$item=str_replace('<link>','',$item);
+			$item=str_replace('</link>','',$item);
+			$item=str_replace('<print link>',$r['contentType'].DS.str_replace(' ','-',$r['title']),$item);
+		}
 		$item=str_replace('<print content="image">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
 		$item=str_replace('<print content=title>',$r['title'],$item);
-		$item=str_replace('<print content="title">',$r['title'],$item);
+		if($r['link']=='nolink')
+			$item=str_replace('<print content="title">','<span class="hidden">'.$r['title'].'</span>',$item);
+		else
+			$item=str_replace('<print content="title">',$r['title'],$item);
 		$items.=$item;
 		$i++;
 		$indicators.=$indicatorItem;
