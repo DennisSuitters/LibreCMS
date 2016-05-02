@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 03, 2016 at 03:02 AM
+-- Generation Time: May 03, 2016 at 03:05 AM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -268,8 +268,7 @@ CREATE TABLE IF NOT EXISTS `login` (
 --
 
 INSERT INTO `login` (`id`, `options`, `username`, `password`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `avatar`, `gravatar`, `business`, `name`, `email`, `emailPassword`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `language`, `timezone`, `rank`, `discount`, `lti`, `ti`) VALUES
-(1, '11111111', 'root', '$2y$10$l2zExmUgh8.L2sGfpHkA0.9gBEvrgViOBBC9TXDulA04iFCInmmFO', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', 0, '', '', '', '', '', 1, '', 'en-AU', 'Australia/Hobart', 1000, '', 0, 0),
-(2, '00000000', 'alan', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', 0, '', '', '', '', '', 1, '', '', '', 0, '', 0, 1461993721);
+(1, '11111111', 'root', '$2y$10$l2zExmUgh8.L2sGfpHkA0.9gBEvrgViOBBC9TXDulA04iFCInmmFO', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', 0, '', '', '', '', '', 1, '', 'en-AU', 'Australia/Hobart', 1000, '', 0, 0);
 
 -- --------------------------------------------------------
 
