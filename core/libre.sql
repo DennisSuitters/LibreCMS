@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 26, 2016 at 09:42 PM
+-- Generation Time: May 03, 2016 at 03:02 AM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `config` (
 --
 
 INSERT INTO `config` (`id`, `maintenance`, `options`, `theme`, `seoTitle`, `seoDescription`, `seoCaption`, `seoKeywords`, `seoRSSTitle`, `seoRSSNotes`, `seoRSSLink`, `seoRSSAuthor`, `seoRSSti`, `business`, `abn`, `address`, `suburb`, `city`, `state`, `country`, `postcode`, `phone`, `mobile`, `email`, `vti`, `sti`, `dateFormat`, `email_check`, `email_interval`, `language`, `timezone`, `orderPayti`, `orderEmailSubject`, `orderEmailLayout`, `orderEmailNotes`, `passwordResetLayout`, `passwordResetSubject`, `accountActivationSubject`, `accountActivationLayout`, `bookingEmailSubject`, `bookingEmailLayout`, `bookingAutoReplySubject`, `bookingAutoReplyLayout`, `contactAutoReplySubject`, `contactAutoReplyLayout`, `bank`, `bankAccountName`, `bankAccountNumber`, `bankBSB`, `bankPayPal`, `showItems`, `idleTime`, `bti`, `backup_ti`, `ti`) VALUES
-(1, 1, '1111111110000000', 'default-bootstrap3', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0, '', '', '', 0, 3600, 'M j, Y g:i A', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b> services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '<p>Hi {name},</p><p>A Password Reset was requested, it is now: {password}</p><p>We recommend changing the above password after logging in.</p>', '', '', '<p>Hi {username},</p><p>This is your activation link, and password.</p><p>Activation Link: {activation_link}</p><p>NOTE: You won''t be able to login until you activate your account.</p><p>Password: {password}</p><p>We recommend changing the password after logging in.</p>', '', '', '', '', '', '', '', '', '', '', '', 10, 24, 0, 0, 0);
+(1, 1, '1111111110000000', 'default-bootstrap3', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', 0, '', '', '', 0, 3600, 'M j, Y g:i A', 1425893894, 3600, 'en-AU', 'Australia/Hobart', 1209600, '', 'Hello {first},<br><br>Please find attached Order {order_number}<br>Note: {notes}', 'Services are considered to be in a <b>Grace Period</b> for a total of <b>14 days</b> whilst this invoice is outstanding. If no payment or contact to make payment arrangements has been forthcoming during the <b>14 Day Grace Period</b>, any unpaid accounts will be <b>suspended</b>, unless other arrangements have been made by contacting us (Details at the top of the Invoice). If <b>30 days</b> without payment or contact has lapsed, we will <b>at our discretion</b> consider <b>terminating</b> services, upon which you will be charged for the following full month as a termination fee. Following another 30 days (60 days or 2 months) from this Order Date, if no contact or resolution has been settled, we will remove/delete any data from our servers at our discretion.', '<p>Hi {name},</p><p>A Password Reset was requested, it is now: {password}</p><p>We recommend changing the above password after logging in.</p>', '', '', '<p>Hi {username},</p><p>This is your activation link, and password.</p><p>Activation Link: {activation_link}</p><p>NOTE: You won''t be able to login until you activate your account.</p><p>Password: {password}</p><p>We recommend changing the password after logging in.</p>', '', '', '', '', '{business} Contact Confirmation on {date}', '<p>Hi {first],</p><p>Thank you for contacting {business}, someone will get back to you ASAP.</p><p>Kind Regards,</p><p>{business}</p><p><br></p>', '', '', '', '', '', 10, 24, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `content` (
   `exifLens` tinytext COLLATE utf8_bin NOT NULL,
   `exifFilename` tinytext COLLATE utf8_bin NOT NULL,
   `exifti` int(10) NOT NULL,
-  `cost` decimal(10,2) unsigned NOT NULL,
+  `cost` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `subject` varchar(60) COLLATE utf8_bin NOT NULL,
   `notes` text COLLATE utf8_bin NOT NULL,
   `attributionContentName` tinytext COLLATE utf8_bin NOT NULL,
@@ -261,14 +261,15 @@ CREATE TABLE IF NOT EXISTS `login` (
   `discount` varchar(4) COLLATE utf8_bin NOT NULL,
   `lti` int(10) NOT NULL,
   `ti` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `login`
 --
 
 INSERT INTO `login` (`id`, `options`, `username`, `password`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `avatar`, `gravatar`, `business`, `name`, `email`, `emailPassword`, `email_check`, `url`, `address`, `suburb`, `city`, `state`, `postcode`, `abn`, `phone`, `mobile`, `notes`, `status`, `active`, `activate`, `language`, `timezone`, `rank`, `discount`, `lti`, `ti`) VALUES
-(1, '11111111', 'root', '$2y$10$l2zExmUgh8.L2sGfpHkA0.9gBEvrgViOBBC9TXDulA04iFCInmmFO', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', 0, '', '', '', '', '', 1, '', 'en-AU', 'Australia/Hobart', 1000, '', 0, 0);
+(1, '11111111', 'root', '$2y$10$l2zExmUgh8.L2sGfpHkA0.9gBEvrgViOBBC9TXDulA04iFCInmmFO', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', 0, '', '', '', '', '', 1, '', 'en-AU', 'Australia/Hobart', 1000, '', 0, 0),
+(2, '00000000', 'alan', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', 0, '', '', '', '', '', 1, '', '', '', 0, '', 0, 1461993721);
 
 -- --------------------------------------------------------
 
@@ -326,17 +327,17 @@ CREATE TABLE IF NOT EXISTS `menu` (
 --
 
 INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `file`, `cover`, `coverURL`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `contentType`, `schemaType`, `seoKeywords`, `seoDescription`, `seoCaption`, `menu`, `notes`, `ord`, `active`, `views`, `eti`) VALUES
-(1, 1, 'root', 'Home', '', '', '', '', '', '', '', 'index', '', '', '', '', 'head', '', 0, 1, 0, 0),
-(2, 1, 'Kenika Suitters', 'Blog', '', 'article', '', '', '', '', '', 'article', '', '', '', '', 'head', '', 5, 1, 0, 0),
-(3, 1, 'Kenika Suitters', 'Portfolio', '', 'portfolio', '', '', '', '', '', 'portfolio', '', '', '', '', 'head', '', 8, 0, 0, 0),
-(4, 1, 'Kenika Suitters', 'Bookings', '', 'bookings', '', '', '', '', '', 'bookings', '', '', '', '', 'head', '', 9, 0, 0, 0),
+(1, 1, 'root', 'Home', '', '', '', '', '', '', '', 'index', '', '', '', '', 'head', '', 0, 1, 1643, 1462101586),
+(2, 1, 'Kenika Suitters', 'Blog', '', 'article', '', '', '', '', '', 'article', '', '', '', '', 'head', '', 5, 1, 96, 0),
+(3, 1, 'Kenika Suitters', 'Portfolio', '', 'portfolio', '', '', '', '', '', 'portfolio', '', '', '', '', 'head', '', 8, 1, 21, 0),
+(4, 1, 'Kenika Suitters', 'Bookings', '', 'bookings', '', '', '', '', '', 'bookings', '', '', '', '', 'head', '', 9, 0, 3, 0),
 (5, 1, 'Kenika Suitters', 'Events', '', 'events', '', '', '', '', '', 'event', '', '', '', '', 'head', '', 7, 0, 0, 0),
 (6, 1, 'Kenika Suitters', 'News', '', 'news', '', '', '', '', '', 'news', '', '', '', '', 'head', '', 6, 0, 0, 0),
-(7, 1, 'Kenika Suitters', 'Testimonials', '', 'testimonials', '', '', '', '', '', 'testimonial', '', '', '', '', 'head', '', 4, 1, 0, 0),
-(8, 1, 'Kenika Suitters', 'Inventory', '', 'inventory', '', '', '', '', '', 'inventory', '', '', '', '', 'head', '', 3, 0, 0, 0),
-(9, 1, 'Kenika Suitters', 'Services', '', 'services', '', '', '', '', '', 'service', '', '', '', '', 'head', '', 2, 1, 2, 0),
-(10, 1, 'Kenika Suitters', 'Gallery', '', 'gallery', '', '', '', '', '', 'gallery', '', '', '', '', 'head', '', 1, 0, 0, 0),
-(11, 1, 'Kenika Suitters', 'Contact', '', 'contactus', '', '', '', '', '', 'contactus', '', '', '', '', 'head', '', 10, 1, 3, 0),
+(7, 1, 'Kenika Suitters', 'Testimonials', '', 'testimonials', '', '', '', '', '', 'testimonial', '', '', '', '', 'head', '', 4, 0, 0, 0),
+(8, 1, 'Kenika Suitters', 'Inventory', '', 'inventory', '', '', '', '', '', 'inventory', '', '', '', '', 'head', '', 3, 1, 5, 0),
+(9, 1, 'Kenika Suitters', 'Services', '', 'services', '', '', '', '', '', 'service', '', '', '', '', 'head', '', 2, 1, 217, 0),
+(10, 1, 'Kenika Suitters', 'Gallery', '', 'gallery', '', '', '', '', '', 'gallery', '', '', '', '', 'head', '', 1, 0, 163, 0),
+(11, 1, 'root', 'Contact', '', 'contactus', '', '', '', '', '', 'contactus', '', '', '', '', 'head', '<p>This is the contact Page</p>', 10, 1, 59, 1462092859),
 (12, 1, 'Kenika Suitters', 'Cart', '', 'cart', '', '', '', '', '', 'cart', '', '', '', '', 'head', '', 11, 0, 0, 0),
 (13, 1, 'Kenika Suitters', 'Terms of Service', '', 'tos', '', '', '', '', '', 'tos', '', '', '', '', 'footer', '', 13, 0, 0, 0),
 (14, 1, 'Kenika Suitters', 'Search', '', 'search', '', '', '', '', '', 'search', '', '', '', '', 'footer', '', 12, 1, 0, 0);
@@ -526,7 +527,7 @@ ALTER TABLE `content`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `logs`
 --

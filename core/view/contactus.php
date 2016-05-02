@@ -55,11 +55,15 @@ if($act=='add_message'){
 							$msg=str_replace('{business}',$config['business'],$msg);
 							$msg=str_replace('{date}',date($config['dateFormat'],$ti),$msg);
 							$msg=str_replace('{name}',$name,$msg);
+							$n=explode(' ',$name);
+							$namefirst=$n[0];
+							$namelast=end($n);
+							$sub=str_replace('{first}',$namefirst,$sub);
+							$sub=str_replace('{last}',$namelast,$sub);
 							$msg=str_replace('{subject}',$subject,$msg);
 							$mail->Body=$msg;
 							$mail->AltBody=$msg;
-							if($mail->Send())
-								$notification=$theme['settings']['contactus_success'];
+							if($mail->Send())$notification=$theme['settings']['contactus_success'];
 							else $notification=$theme['settings']['contactus_error'];
 						}else $notification=$theme['settings']['contactus_error'];
 

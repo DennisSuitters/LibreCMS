@@ -87,8 +87,12 @@ foreach($tags as$tag){
 			break;
 		case'cost':
 			if($r['contentType']=='inventory'||$r['contentType']=='service'){
-				if($r['options']{0}==1){
-					$parsing.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8');
+				if($r['options']{0}==1||$r['cost']!=''){
+					if(is_numeric($r['cost'])&&$r['cost']!=0){
+						$parsing.='<meta itemprop="currency" content="AUD"><h4 itemprop="price">';
+						if(is_numeric($r['cost']))$parsing.='&#36;';
+						$parsing.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</h4>';
+					}else$parsing.='<h4>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</h4>';
 					if($r['contentType']=='service'&&$r['bookable']==1){
 						if(stristr($parse,'<service>')){
 							$parse=str_replace('<service>','',$parse);

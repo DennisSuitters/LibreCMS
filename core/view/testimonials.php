@@ -30,7 +30,8 @@ if($s->rowCount()>0){
 			}else$items=str_replace('<print content=avatar>',$noavatar,$items);
 		}
 		$items=str_replace('<print content="notes">',$r['notes'],$items);
-		$items=str_replace('<print content=name>',$r['name'],$items);
+		$items=str_replace('<print content="business">',$r['business'],$items);
+		$items=str_replace('<print content="name">',$r['name'],$items);
 		$testitems.=$items;
 		$i++;
 	}

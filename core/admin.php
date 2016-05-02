@@ -173,14 +173,6 @@ if($_SESSION['rank']>399){
                     ],
                 },
                 toolbar:[
-<?php if($view=='bookings'||$view=='orders'||$view=='preferences'||$view=='accounts'){?>
-                    ['save',['save']],
-                    ['font',['bold','italic','underline']],
-                    ['insert',['link','hr']],
-<?php if($_SESSION['rank']>399){?>
-                    ['view',['codeview']]
-<?php }
-    }else{?>
                     ['save',['save']],
                     ['style',['style']],
                     ['font',['bold','italic','underline','clear']],
@@ -193,7 +185,6 @@ if($_SESSION['rank']>399){
                     ['insert',['media','link','hr']],
                     ['view',['fullscreen','codeview']],
                     ['help',['help']]
-<?php }?>
                 ]
             });
         </script>

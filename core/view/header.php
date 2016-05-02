@@ -42,4 +42,20 @@ if(isset($_GET['activate'])&&$_GET['activate']!=''){
 }else{
 	$html=str_replace('<activation>','',$html);
 }
+if(stristr($html,'<address')){
+	if($config['address']!='')$address=$config['address'].', ';else $address='';
+	$html=str_replace('<print config="address">',$address,$html);
+	if($config['suburb']!='')$suburb=$config['suburb'].', ';else $suburb='';
+	$html=str_replace('<print config="suburb">',$suburb,$html);
+	if($config['postcode']!=0)$postcode=$config['postcode'].', ';else $postcode='';
+	$html=str_replace('<print config="postcode">',$postcode,$html);
+	if($config['country']!='')$country=$config['country'];else $country='';
+	$html=str_replace('<print config="country">',$country,$html);
+	if($config['email']!='')$email='<a href="contactus/">'.$config['email'].'</a>';else $email='';
+	$html=str_replace('<print config="email">',$email,$html);
+	if($config['phone']!='')$phone='<a href="tel:'.$config['phone'].'">'.$config['phone'].'</a>';else $phone='';
+	$html=str_replace('<print config="phone">',$phone,$html);
+	if($config['mobile']!='')$mobile='<span class="mobile"><a href="tel:'.$config['mobile'].'">'.$config['mobile'].'</a></span>';else $mobile='';
+	$html=str_replace('<print config="mobile">',$mobile,$html);
+}
 $content.=$html;
