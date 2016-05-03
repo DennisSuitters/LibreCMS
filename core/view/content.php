@@ -98,7 +98,7 @@ if($show=='categories'){
 			}
 			require'core'.DS.'parser.php';
 			if($r['contentType']=='testimonials'||$r['contentType']=='testimonial'){
-				if(stristr($items,'<controls>'))	$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
+				if(stristr($items,'<controls>'))$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
 				$controls='';
 			}else{
 				if(stristr($items,'<view>')){
@@ -167,7 +167,8 @@ if($show=='item'){
 	$seoTitle=$r['title'].' - '.$config['seoTitle'];
 	$seoKeywords=$r['keywords'];
 	$seoDescription=$r['caption'];
-	$item=str_replace('<controls>','...more...',$item);
+	if($r['contentType']=='article'||$r['contentType']=='portfolio')
+		$item=preg_replace('~<controls>.*?<\/controls>~is','',$item,1);
 	$html=preg_replace('~<settings.*?>~is','',$html,1);
 	$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);
 	$html=str_replace('<print page="notes">','',$html);
