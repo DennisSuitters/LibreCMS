@@ -301,15 +301,26 @@ if($_SESSION['rank']>399){
             $(document).ready(function(){
 <?php		if($view=='pages'){?>
                 $('#sortable').sortable({
-                    items: "> tr",
-                    placeholder: ".sort-placeholder",
-                    handle: ".handle",
-                    helper: "clone",
-                    axis: "y",
-                    update: function( event, ui ) {
-                        alert (event+' : '+ui);
+                    items:"tr",
+                    placeholder:".ghost",
+                    helper:fixWidthHelper,
+                    axis:"y",
+                    update:function(e,ui){
+                        var order=$("#sortable").sortable("serialize");
+                        $.ajax({
+                            type:"POST",
+                            dataType:"json",
+                            url:"core/reorder.php",
+                            data:order
+                        });
                     }
-                });
+                }).disableSelection();
+                function fixWidthHelper(e,ui){
+                    ui.children().each(function(){
+                        $(this).width($(this).width());
+                    });
+                    return ui;
+                }
 <?php		}?>
 //                $(document).on("hidden.bs.modal",function (e){
 //                    $(e.target).removeData("bs.modal").find(".modal-content").empty()
@@ -344,7 +355,7 @@ if($_SESSION['rank']>399){
                             });
                             $("body").trigger("mousemove");
                         });
-                    })(jQuery)
+                    })(jQuery);
 <?php		}?>
         });
         /*]]>*/</script>

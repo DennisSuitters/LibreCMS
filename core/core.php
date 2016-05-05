@@ -109,6 +109,8 @@ class admin{
 }
 class front{
 	function getconfig($db){$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);return$config;}
+	function about($args=false){$view='aboutus';require'process.php';}
+	function aboutus($args=false){$view='aboutus';require'process.php';}
 	function article($args=false){$view='article';require'process.php';}
 	function articles($args=false){$view='article';require'process.php';}
 	function booking($args=false){$view='bookings';require'process.php';}

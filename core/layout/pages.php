@@ -9,22 +9,25 @@ if($show=='pages'){?>
     </div>
     <div class="panel-body">
         <h4 class="page-header">Active Pages</h4>
+        <small class="text-muted">Active pages can be dragged to change their order.</small>
         <div class="table-responsive">
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
                         <th class="col-xs-8">Title</th>
+                        <th class="col-xs-1 text-center">Menu</th>
                         <th class="col-xs-1 text-center">Views</th>
                         <th class="col-xs-1 text-center">Active</th>
-                        <th class="col-xs-3"></th>
+                        <th class="col-xs-2"></th>
                     </tr>
                 </thead>
-                <tbody id="sortable" class="sortable" data-t="menu" data-c="ord">
+                <tbody id="sortable">
 <?php $s=$db->prepare("SELECT * FROM menu WHERE active='1' ORDER BY menu DESC, ord ASC");
     $s->execute();
     while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-                    <tr id="l_<?php echo$r['id'];?>" class="item" data-id="<?php echo$r['id'];?>">
+                    <tr id="l_<?php echo$r['id'];?>" class="item">
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
+                        <td class="text-center"><?php echo ucfirst($r['menu']);?></td>
                         <td class="text-center"><?php echo$r['views'];?></td>
                         <td class="text-center">
                           <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
@@ -32,7 +35,6 @@ if($show=='pages'){?>
                         </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
                             <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
-                            <button class="btn btn-default handle"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Drag to Change Order"';?>><?php svg('resize-vertical');?></button>
                         </td>
                     </tr>
 <?php }?>
