@@ -99,8 +99,11 @@ $(".textinput").on({
 //		$(this).trigger('keypress')
 	}
 })
-$("#content input[type=checkbox]").on({
-	click:function(event){
+$(document).on(
+	'click','#content input[type=checkbox]',
+	{},
+	function(event){
+
 		var id=$(this).data("dbid");
 		if('#home input[type=checkbox]'){
 			$('#actions').toggleClass('hidden');
@@ -121,11 +124,22 @@ $("#content input[type=checkbox]").on({
 			var t=$(this).data("dbt");
 			var c=$(this).data("dbc");
 			var b=$(this).data("dbb");
-//			$('#'+c+b).before(busy);
-			$('#sp').load('core/toggle.php?id='+id+'&t='+t+'&c='+c+'&b='+b)
+			var a=$(this).data("dba");
+			$('#sp').load('core/toggle.php?id='+id+'&t='+t+'&c='+c+'&b='+b);
+			if(t=='menu'&&c=='active'){
+				var trow=$('#l_'+id).closest('tr');
+				$('#l_'+id).closest('tr').remove();
+				if(a==1){
+					$('#inactive').append(trow);
+					$('#active'+id).attr('data-dba','0');
+				}else{
+					$('#sortable').append(trow);
+					$('#active'+id).attr('data-dba','1');
+				}
+			}
 		}
 	}
-});
+);
 function pinToggle(id,t,c,b){
 	$.ajax({
 		type:"GET",

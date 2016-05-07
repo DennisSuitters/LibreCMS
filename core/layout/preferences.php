@@ -4,14 +4,15 @@
     </div>
     <div class="panel-body">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#theme" data-toggle="tab">Theme</a></li>
-            <li><a href="#contact" data-toggle="tab">Contact</a></li>
-            <li><a href="#interface" data-toggle="tab">Interface</a></li>
-            <li><a href="#seo" data-toggle="tab">SEO</a></li>
-            <li><a href="#backrestore" data-toggle="tab">Backup</a></li>
+            <li class="active"><a href="#preference-theme" data-toggle="tab">Theme</a></li>
+            <li><a href="#preference-contact" data-toggle="tab">Contact</a></li>
+            <li><a href="#preference-social" data-toggle="tab">Social</a></li>
+            <li><a href="#preference-interface" data-toggle="tab">Interface</a></li>
+            <li><a href="#preference-seo" data-toggle="tab">SEO</a></li>
+            <li><a href="#preference-backrestore" data-toggle="tab">Backup</a></li>
         </ul>
         <div class="tab-content">
-            <div id="theme" class="tab-pane fade in active">
+            <div id="preference-theme" name="preference-theme" class="tab-pane fade in active">
                 <div class="row theme-chooser">
 <?php foreach(new DirectoryIterator('layout') as$folder){
     if($folder->isDOT())continue;
@@ -49,7 +50,7 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
 }?>
                 </div>
             </div>
-            <div id="contact" class="tab-pane fade in">
+            <div id="preference-contact" name="preference-contact" class="tab-pane fade in">
                 <div class="form-group">
                     <label for="business" class="control-label col-xs-5 col-sm-3 col-lg-2">Business</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
@@ -117,7 +118,125 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                     </div>
                 </div>
             </div>
-            <div id="interface" name="interface" class="tab-pane fade in">
+            <div id="preference-social" name="preference-social" class="tab-pane">
+                <legend class="control-legend">Social Networking</legend>
+                <div class="form-group">
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
+                        <input type="checkbox" id="options9" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="9"<?php if($config['options']{9}==1)echo' checked';?>>
+                        <label for="options9">
+                    </div>
+                    <label for="options9" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['options']{9}==1)echo' data-toggle="tooltip" title="Toggle RSS Feed Icon."';?>>Show RSS Feed Icon</span></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3 col-lg-2">&nbsp;</label>
+                        <form target="sp" method="post" action="core/add_data.php">
+                            <input type="hidden" name="user" value="0">
+                            <input type="hidden" name="act" value="add_social">
+                            <div class="input-group col-xs-12 col-sm-9 col-lg-10">
+                                <span class="input-group-addon">Network</span>
+                                <select class="form-control" name="icon">
+                                    <option value="">None</option>
+                                    <option value="500px">500px</option>
+                                    <option value="amazon">Amazon</option>
+                                    <option value="behance">Behance</option>
+                                    <option value="bitcoin">Bitcoin</option>
+                                    <option value="blogger">Blogger</option>
+                                    <option value="buffer">Buffer</option>
+                                    <option value="cargo">Cargo</option>
+                                    <option value="codepen">Codepen</option>
+                                    <option value="coroflot">Coroflot</option>
+                                    <option value="creattica">Creattica</option>
+                                    <option value="delicious">Delcicious</option>
+                                    <option value="deviantart">DeviantArt</option>
+                                    <option value="diaspora">Diaspora</option>
+                                    <option value="digg">Digg</option>
+                                    <option value="dribbble">Dribbble</option>
+                                    <option value="dropbox">Dropbox</option>
+                                    <option value="envato">Envato</option>
+                                    <option value="exposure">Exposure</option>
+                                    <option value="facebook">Facebook</option>
+                                    <option value="feedburner">Feedburner</option>
+                                    <option value="flickr">Flickr</option>
+                                    <option value="forrst">Forrst</option>
+                                    <option value="github">GitHub</option>
+                                    <option value="google-plus">Google+</option>
+                                    <option value="gravatar">Gravatar</option>
+                                    <option value="hackernews">Hackernews</option>
+                                    <option value="icq">ICQ</option>
+                                    <option value="instagram">Instagram</option>
+                                    <option value="kickstarter">Kickstarter</option>
+                                    <option value="last-fm">Last FM</option>
+                                    <option value="lego">Lego</option>
+                                    <option value="linkedin">Linkedin</option>
+                                    <option value="livejournal">LiveJournal</option>
+                                    <option value="lynda">Lynda</option>
+                                    <option value="massroots">Massroots</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="netlify">Netlify</option>
+                                    <option value="ovh">OVH</option>
+                                    <option value="paypal">Paypal</option>
+                                    <option value="periscope">Periscope</option>
+                                    <option value="picasa">Picasa</option>
+                                    <option value="pinterest">Pinterest</option>
+                                    <option value="play-store">Play Store</option>
+                                    <option value="quora">Quora</option>
+                                    <option value="redbubble">Red Bubble</option>
+                                    <option value="reddit">Reddit</option>
+                                    <option value="sharethis">Sharethis</option>
+                                    <option value="skype">Skype</option>
+                                    <option value="snapchat">Snapchat</option>
+                                    <option value="soundcloud">Soundcloud</option>
+                                    <option value="stackoverflow">Stackoverflow</option>
+                                    <option value="steam">Steam</option>
+                                    <option value="stumbleupon">StumbleUpon</option>
+                                    <option value="tsu">TSU</option>
+                                    <option value="tumblr">Tumblr</option>
+                                    <option value="twitch">Twitch</option>
+                                    <option value="twitter">Twitter</option>
+                                    <option value="ubiquiti">Ubiquiti</option>
+                                    <option value="unsplash">Unsplash</option>
+                                    <option value="vimeo">Vimeo</option>
+                                    <option value="vine">Vine</option>
+                                    <option value="whatsapp">Whatsapp</option>
+                                    <option value="wikipedia">Wikipedia</option>
+                                    <option value="windows-store">Windows Store</option>
+                                    <option value="xbox-live">Xbox Live</option>
+                                    <option value="yahoo">Yahoo</option>
+                                    <option value="yelp">Yelp</option>
+                                    <option value="youtube">YouTube</option>
+                                    <option value="zerply">Zerply</option>
+                                    <option value="zune">Zune</option>
+                                </select>
+                                <div class="input-group-addon">URL</div>
+                                <input type="text" class="form-control" name="url" value="" placeholder="Enter a URL...">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default"><?php svg('plus');?></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="social">
+<?php $ss=$db->prepare("SELECT * FROM choices WHERE contentType='social' AND uid=0 ORDER BY icon ASC");
+$ss->execute();
+while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
+                        <div id="l_<?php echo$rs['id'];?>" class="form-group">
+                            <label class="control-label hidden-xs col-sm-3 col-lg-2">&nbsp;</label>
+                            <div class="input-group col-xs-12 col-sm-9 col-lg-10">
+                                <div class="input-group-addon"><span class="libre-social"><?php svg('social-'.$rs['icon']);?></span></div>
+                                <input type="text" class="form-control" value="<?php echo$rs['url'];?>" onchange="update('<?php echo$rs['id'];?>','social','url',$(this).val());" placeholder="Enter a URL...">
+                                <div class="input-group-btn">
+                                    <form target="sp" action="core/purge.php">
+                                        <input type="hidden" name="id" value="<?php echo$rs['id'];?>">
+                                        <input type="hidden" name="t" value="choices">
+                                        <button class="btn btn-default trash"><?php svg('trash');?></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+<?php }?>
+                    </div>
+            </div>
+            <div id="preference-interface" name="preference-interface" class="tab-pane fade in">
                 <div class="form-group">
                     <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
                         <input type="checkbox" id="maintenance0" data-dbid="1" data-dbt="config" data-dbc="maintenance" data-dbb="0"<?php if($config['maintenance']{0}==1)echo' checked';?>>
@@ -151,7 +270,7 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                     </div>
                 </div>
             </div>
-            <div id="seo" class="tab-pane fade in">
+            <div id="preference-seo" name="preference-seo" class="tab-pane fade in">
                 <h4>Default Analytics</h4>
                 <div class="form-group">
                     <div class="col-xs-5 col-sm-3 col-lg-2"></div>
@@ -184,8 +303,8 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                     </div>
                 </div>
             </div>
-            <div id="backrestore" class="tab-pane fade in">
-                <div id="backup" class="well" name="backup">
+            <div id="preference-backrestore" name="preference-backrestore" class="tab-pane fade in">
+                <div id="backup" name="backup">
                     <h4>Database Backup/Restore</h4>
                     <div id="backup_info">
 <?php $tid=$ti-2592000;

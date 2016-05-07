@@ -30,8 +30,8 @@ if($show=='pages'){?>
                         <td class="text-center"><?php echo ucfirst($r['menu']);?></td>
                         <td class="text-center"><?php echo$r['views'];?></td>
                         <td class="text-center">
-                          <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
-                          <label for="active<?php echo$r['id'];?>" <?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Active State"';?>></label>
+                          <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0" data-dba="1"<?php if($r['active']==1)echo' checked';?>>
+                          <label for="active<?php echo$r['id'];?>"></label>
                         </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
                             <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
@@ -48,25 +48,29 @@ if($show=='pages'){?>
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
-                        <th class="col-xs-9">Title</th>
+                        <th class="col-xs-8">Title</th>
+                        <th class="col-xs-1 text-center">Menu</th>
+                        <th class="col-xs-1 text-center">Views</th>
                         <th class="col-xs-1 text-center">Active</th>
                         <th class="col-xs-2"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="inactive">
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>">
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
+                        <td class="text-center"><?php echo$r['menu'];?></td>
+                        <td class="text-center"><?php echo$r['views'];?></td>
                         <td class="text-center">
-                          <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
-                          <label for="active<?php echo$r['id'];?>" <?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Active State"';?>></label>
+                            <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0" data-dba="0"<?php if($r['active']==1)echo' checked';?>>
+                            <label for="active<?php echo$r['id'];?>"></label>
                         </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
                             <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
                         </td>
                     </tr>
 <?php }?>
-                    <tr class="ghost hidden"><td colspan="3">&nbsp;</td></tr>
+
                 </tbody>
             </table>
 <?php }?>

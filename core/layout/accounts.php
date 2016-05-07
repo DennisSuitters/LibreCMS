@@ -16,7 +16,7 @@ if($args[0]=='settings'){
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
         <h4 class="col-xs-6">
-            Accounts
+            Account: <?php echo$r['username'];if($r['name']!='')echo':'.$r['name'];?>
         </h4>
         <div class="pull-right">
             <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
@@ -177,7 +177,7 @@ if($args[0]=='settings'){
                                     <option value="cargo">Cargo</option>
                                     <option value="codepen">Codepen</option>
                                     <option value="coroflot">Coroflot</option>
-                                    <option value="creatica">Creatica</option>
+                                    <option value="creattica">Creattica</option>
                                     <option value="delicious">Delcicious</option>
                                     <option value="deviantart">DeviantArt</option>
                                     <option value="diaspora">Diaspora</option>
@@ -254,9 +254,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                         <div id="l_<?php echo$rs['id'];?>" class="form-group">
                             <label class="control-label hidden-xs col-sm-3 col-lg-2">&nbsp;</label>
                             <div class="input-group col-xs-12 col-sm-9 col-lg-10">
-                                <div class="input-group-addon">
-                                    <?php svg('social-'.$rs['icon']);echo' '.ucfirst($rs['icon']);?>
-                                </div>
+                                <div class="input-group-addon"><span class="libre-social"><?php svg('social-'.$rs['icon']);?></span></div>
                                 <input type="text" class="form-control" value="<?php echo$rs['url'];?>" onchange="update('<?php echo$rs['id'];?>','social','url',$(this).val());" placeholder="Enter a URL...">
                                 <div class="input-group-btn">
                                     <form target="sp" action="core/purge.php">

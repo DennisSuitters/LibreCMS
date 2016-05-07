@@ -30,6 +30,32 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
 }
 $html=str_replace('<buildMenu>',$menu.'<buildMenu>',$html);
 $html=preg_replace('~<buildMenu>.*?<\/buildMenu>~is','',$html,1);
+if(stristr($html,'<buildSocial')){
+	preg_match('/<buildSocial>([\w\W]*?)<\/buildSocial>/',$html,$matches);
+	$htmlSocial=$matches[1];
+	$socialItems='';
+	$s=$db->query("SELECT * FROM choices WHERE contentType='social' AND uid=0 ORDER BY icon ASC");
+	if($s->rowCount()>0){
+		while($r=$s->fetch(PDO::FETCH_ASSOC)){
+			$buildSocial=$htmlSocial;
+			$buildSocial=str_replace('<print sociallink>',$r['url'],$buildSocial);
+			$buildSocial=str_replace('<print socialicon>',frontsvg('social-'.$r['icon']),$buildSocial);
+			$socialItems.=$buildSocial;
+		}
+	}else $socialItems='';
+	$html=preg_replace('~<buildSocial>.*?<\/buildSocial>~is',$socialItems,$html,1);
+	if($config['options']{9}==1){
+		$html=str_replace('<rss>','',$html);
+		$html=str_replace('</rss>','',$html);
+		if($page['contentType']!='index')
+			$html=str_replace('<print rsslink>','rss/'.$page['contentType'],$html);
+		else
+			$html=str_replace('<print rsslink>','rss',$html);
+		$html=str_replace('<print rssicon>',frontsvg('social-rss'),$html);
+	}else{
+		$html=preg_replace('~<rss>.*?<\/rss>~is','',$html,1);
+	}
+}
 if(isset($_GET['activate'])&&$_GET['activate']!=''){
 	$activate=filter_input(INPUT_GET,'activate',FILTER_SANITIZE_STRING);
 	$sa=$db->prepare("UPDATE login SET active='1',activate='',rank='100' WHERE activate=:activate");

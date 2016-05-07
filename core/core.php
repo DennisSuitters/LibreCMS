@@ -58,9 +58,14 @@ function svg($svg,$size=null,$color=null){
 	if($size!=null)echo' libre-'.$size;
 	if($color!=null)echo' libre-'.$color;
 	echo'">';
-	include'svg/libre-'.$svg.'.svg';
+	include'svg'.DS.'libre-'.$svg.'.svg';
 	echo'</i>';
 }
+function frontsvg($svg,$size=null,$color=null){
+	$out=file_get_contents(THEME.DS.'svg'.DS.'libre-'.$svg.'.svg');
+	return $out;
+}
+
 function minify($txt){
 	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
 }
