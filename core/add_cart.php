@@ -12,9 +12,11 @@ if($sc->rowCount()>0){
     if(isset($iid)&&$iid!=0){
         $q=$db->prepare("SELECT cost FROM content WHERE id=:id");
         $q->execute(array(':id'=>$iid));
-        $r=$q->fetch();
-        $q=$db->prepare("INSERT INTO cart (iid,quantity,cost,si,ti) VALUES (:iid,'1',:cost,:si,:ti)");
-        $q->execute(array(':iid'=>$iid,':cost'=>$r['cost'],':si'=>$si,':ti'=>$ti));
+        $r=$q->fetch(PDO::FETCH_ASSOC);
+        if(is_numeric($r['cost']&&$r['cost']!=0)){
+            $q=$db->prepare("INSERT INTO cart (iid,quantity,cost,si,ti) VALUES (:iid,'1',:cost,:si,:ti)");
+            $q->execute(array(':iid'=>$iid,':cost'=>$r['cost'],':si'=>$si,':ti'=>$ti));
+        }
     }
 }
 $q=$db->prepare("SELECT SUM(quantity) as quantity FROM cart WHERE si=:si");

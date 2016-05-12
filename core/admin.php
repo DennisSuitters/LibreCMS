@@ -119,6 +119,33 @@ if($_SESSION['rank']>399){
                     width:840,
                     height:450,
                     destroyOnClose:true,
+                    uiOptions:{
+                        cwd:{
+                            getClass:function(file){
+                                if(file.name.match(/archive/i)){
+                                    return'archive-folder';
+                                }else if(file.name.match(/attachment/i)){
+                                    return'attachments-folder';
+                                }else if(file.name.match(/avatar|user|users/i)){
+                                    return'users-folder';
+                                }else if(file.name.match(/backup/i)){
+                                    return'backup-folder';
+                                }else if(file.name.match(/carousel|featured/i)){
+                                    return'featured-folder';
+                                }else if(file.name.match(/order/i)){
+                                    return'orders-folder';
+                                }else if(file.name.match(/photo|picture|image/i)){
+                                    return'picture-folder';
+                                }else if(file.name.match(/doc/i)){
+                                    return'document-folder';
+                                }else if(file.name.match(/vid|mov/i)){
+                                    return'video-folder';
+                                }else{
+                                    return'';
+                                }
+                            }
+                        }
+                    },
                     getFileCallback:function(files,fm){
                         if(id>0){
                             $('#block').css({display:'block'});
@@ -148,6 +175,33 @@ if($_SESSION['rank']>399){
                           .done(function(){eI.exec('quicklook');})
                           .fail(function(){eI.exec('open');});
                       }
+                    },
+                    uiOptions:{
+                        cwd:{
+                            getClass:function(file){
+                                if(file.name.match(/archive/i)){
+                                    return'archive-folder';
+                                }else if(file.name.match(/attachment/i)){
+                                    return'attachments-folder';
+                                }else if(file.name.match(/avatar|user|users/i)){
+                                    return'users-folder';
+                                }else if(file.name.match(/backup/i)){
+                                    return'backup-folder';
+                                }else if(file.name.match(/carousel|featured/i)){
+                                    return'featured-folder';
+                                }else if(file.name.match(/order/i)){
+                                    return'orders-folder';
+                                }else if(file.name.match(/photo|picture|image/i)){
+                                    return'picture-folder';
+                                }else if(file.name.match(/doc/i)){
+                                    return'document-folder';
+                                }else if(file.name.match(/vid|mov/i)){
+                                    return'video-folder';
+                                }else{
+                                    return'';
+                                }
+                            }
+                        }
                     },
                     getFileCallback:function(){
                       return false;
@@ -333,7 +387,7 @@ if($_SESSION['rank']>399){
 <?php		}
     if($view=='preferences'){?>
                 $("div.theme-chooser").not(".disabled").find("div.theme-chooser-item").on("click",function(){
-                    $('#theme .theme-chooser-item').removeClass("panel-success");
+                    $('#preference-theme .theme-chooser-item').removeClass("panel-success");
                     $(this).addClass("panel-success");
                     update("1","config","theme",escape($(this).attr("data-theme")))
                 });

@@ -193,6 +193,10 @@ foreach($tags as$tag){
 			if($attribute=='comments')$parsing.=htmlspecialchars($rc['name'],ENT_QUOTES,'UTF-8');
 			if($attribute=='content')$parsing.=htmlspecialchars($r['name'],ENT_QUOTES,'UTF-8');
 			break;
+		case'caption':
+			if($length!=0)$caption=strtok(wordwrap($r['caption'],$length,"...\n"),"\n");
+			else$caption=$r['caption'];
+			$parsing.=$caption;
 		case'notes':
 			if($attribute=='author')$notes=$author['notes'];
 			if($attribute=='comments')$notes=$rc['notes'];

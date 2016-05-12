@@ -17,6 +17,7 @@ function access($attr,$path,$data,$volume){
 $opts=array(
     'roots'=>array(
         array(
+            'imgLib'=>'gd',
             'driver'=>'LocalFileSystem',
             'path'=>$_SERVER["DOCUMENT_ROOT"].DS.$settings['system']['url'].DS.'media'.DS,
             'URL'=>URL.'media/',
@@ -35,7 +36,7 @@ $opts=array(
             'attributes'=>array(
                 array(
                     'pattern'=>'',
-                    'pattern'=>'!^/orders|backup|avatar!',
+//                    'pattern'=>'!^/orders|backup|avatar!',
                     'hidden'=>true
                 )
             )

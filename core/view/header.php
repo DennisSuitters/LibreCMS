@@ -47,7 +47,7 @@ if(stristr($html,'<buildSocial')){
 	if($config['options']{9}==1){
 		$html=str_replace('<rss>','',$html);
 		$html=str_replace('</rss>','',$html);
-		if($page['contentType']!='index')
+		if($page['contentType']=='article'||$page['contentType']=='portfolio'||$page['contentType']=='event'||$page['contentType']=='news'||$page['contentType']=='inventory'||$page['contentType']=='service')
 			$html=str_replace('<print rsslink>','rss/'.$page['contentType'],$html);
 		else
 			$html=str_replace('<print rsslink>','rss',$html);

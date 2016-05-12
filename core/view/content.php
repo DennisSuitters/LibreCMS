@@ -171,7 +171,7 @@ if($show=='item'){
 		$item=preg_replace('~<controls>.*?<\/controls>~is','',$item,1);
 	$html=preg_replace('~<settings.*?>~is','',$html,1);
 	$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);
-//	$html=str_replace('<print page="notes">',$page['notes'],$html);
+	$html=str_replace('<print page="notes">','',$html);
 /* Comments */
 	if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
 		if(file_exists(THEME.DS.'comments.html')){
