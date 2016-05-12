@@ -342,13 +342,14 @@ if($config['backup_ti']<$tid){
                     <div id="backup" class="form-group">
 <?php foreach(glob("media/backup/*")as$file){
     $fileid=str_replace('.','',$file);
-    $fileid=str_replace('/','',$fileid);?>
+    $fileid=str_replace('/','',$fileid);
+    $filename=basename($file);?>
                         <div id="l_<?php echo$fileid;?>" class="form-group">
                             <label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label>
                             <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                                 <a class="btn btn-default btn-block" href="<?php echo$file;?>">Click to Download <?php echo ltrim($file,'media/backup/');?></a>
                                 <div class="input-group-btn">
-                                    <button class="btn btn-default trash" onclick="removeMedia('<?php echo$file;?>')"><i class="libre libre-trash"></i></button>
+                                    <button class="btn btn-default trash" onclick="removeBackup('<?php echo$fileid;?>','<?php echo$filename;?>')"><?php svg('trash');?></button>
                                 </div>
                             </div>
                         </div>
