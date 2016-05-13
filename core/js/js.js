@@ -188,46 +188,18 @@ function update(id,t,c,da){
 			$('#'+c).remove()
 		}
 		if(t=='content'&&c=='contentType'){
-			if(da=='article'){
-				$('#d1,#d3,#d4,#d15,#d16,#d20,#d21,#d23,#d24').removeClass('hidden');
-				$('#d2,#d5,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d17,#d18,#d19,#d22').addClass('hidden');
-			}
-			if(da=='portfolio'){
-				$('#d1,#d4,#d15,#d16,#d20,#d21,#d23').removeClass('hidden');
-				$('#d2,#d3,#d5,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d17,#d18,#d19,#d22,#d24').addClass('hidden');
-			}
-			if(da=='booking'){
-				$('#d1').removeClass('hidden');
-				$('#d2,#d3,#d4,#d5,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d15,#d16,#d17,#d18,#d19,#d20,#d21,#d22,#d23,#d24').addClass('hidden');
-			}
-			if(da=='events'){
-				$('#d1,#d5,#d9,#d10,#d15,#d16,#d20,#d21,#d22,#d23,#d24').removeClass('hidden');
-				$('#d2,#d3,#d4,#d6,#d7,#d8,#d11,#d12,#d13,#d14,#d17,#d18,#d19').addClass('hidden');
-			}
-			if(da=='news'){
-				$('#d1,#d5,#d12,#d13,#d14,#d15,#d16,#d20,#d21,#d23,#d24').removeClass('hidden');
-				$('#d2,#d3,#d4,#d6,#d7,#d8,#d9,#d10,#d11,#d17,#d18,#d19,#d22').addClass('hidden');
-			}
-			if(da=='testimonials'){
-				$('#d1,#d2,#d11,#d12,#d13').removeClass('hidden');
-				$('#d3,#d4,#d5,#d6,#d7,#d8,#d9,#d10,#d14,#d15,#d16,#d17,#d18,#d19,#d20,#d21,#d22,#d23,#d24').addClass('hidden');
-			}
-			if(da=='inventory'){
-				$('#d1,#d4,#d5,#d6,#d7,#d8,#d15,#d16,#d17,#d18,#d19,#d20,#d21,#d23').removeClass('hidden');
-				$('#d2,#d3,#d9,#d10,#d11,#d12,#d13,#d14,#d22,#d24').addClass('hidden');
-			}
-			if(da=='service'){
-				$('#d1,#d4,#d5,#d15,#d16,#d17,#d18,#d20,#d21,#d22,#d23').removeClass('hidden');
-				$('#d2,#d3,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d19,#d24').addClass('hidden');
-			}
-			if(da=='gallery'){
-				$('#d1,#d4,#d15,#d16,#d20,#d21,#d23').removeClass('hidden');
-				$('#d2,#d3,#d5,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d17,#d18,#d19,#d22,#d24').addClass('hidden');
-			}
-			if(da=='proofs'){
-				$('#d2,#d4,#d14,#d24').removeClass('hidden');
-				$('#d1,#d3,#d5,#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d15,#d16,#d17,#d18,#d19,#d20,#d21,#d22,#d23').addClass('hidden');
-			}
+			$('[id^=d]').removeClass('hidden');
+			var els='';
+			if(da=='article')els='#d5,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d15,#d16,#d19,#d20,#d21,#d54';
+			if(da=='portfolio')els='#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d19,#d20,#d21,#d22,#d24,#d53,#d54';
+			if(da=='events')els='#d5,#d6,#d7,#d8,#d9,#d10,#d21,#d22,#d24,#d53';
+			if(da=='news')els='#d5,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d15,#d16,#d19,#d20,#d21,#d22,#d24,#d54';
+			if(da=='testimonials')els='#d6,#d7,#d8,#d9,#d10,#d11,#d12,#d17,#d18,#d19,#d20,#d21,#d22,#d24,#d026,#d26,#d043,#d43,#d53,#d54';
+			if(da=='inventory')els='#d5,#d6,#d11,#d12,#d13,#d14,#d15,#d16,#d24,#d043,#d43,#d54';
+			if(da=='service')els='#d5,#d6,#d9,#d10,#d11,#d12,#d13,#d14,#d15,#d16,#d21,#d24,#d043,#d43';
+			if(da=='gallery')els='#d5,#d7,#d8,#d9,#d10,#d11,#d12,#d13,#d14,#d15,#d16,#d19,#d20,#d21,#d24,#d043,#d43,#d54';
+			if(da=='proofs')els='#d3,#d7,#d8,#d9,#d10,#d11,#d12,#d19,#d20,#d21,#d22,#d24,#d46,#d47,#d53,#d54';
+			$(els).addClass('hidden');
 		}
 		$('#block').css({display:'none'});
 	})
@@ -344,48 +316,3 @@ $(".starred").on({
 		return false;
 	}
 });
-(function($){
-	$.fn.search_filter=function(options){
-		var settings=$.extend({
-			'filter_inverse':false,
-			'enable_space':true,
-			'el':'#listtype',
-			'cell_selector':'.item'
-		},options);
-		return this.each(function(){
-			var $this=$(this);
-			$this.bind("keyup",function(){
-				var txt=$this.val().toLowerCase();
-				var obj=$(settings.el).find(settings.cell_selector);
-				$.each(obj,function(){
-					var show_el=(settings.filter_inverse)?true:false;
-					var inner_obj=$(this).find(settings.cell_selector);
-					$.each(inner_obj,function(){
-						var el_txt=$.trim($(this).text()).toLowerCase();
-						if(settings.enable_space){
-							var el_array=txt.split(" ");
-							$.each(el_array,function(i){
-								var el_value=el_array[i];
-								if(el_txt.indexOf(el_value)!=-1){
-									show_el=(settings.filter_inverse)?false:true
-								}
-							})
-						}else{
-							if(el_txt.indexOf(txt)!=-1){
-								show_el=(settings.filter_inverse)?false:true
-							}
-						}
-					});
-					if(show_el){
-						$(this).fadeIn('slow')
-					}else{
-						$(this).fadeOut('slow')
-					}
-				});
-				if($.trim(txt)==""){
-					$(settings.el).find(".item").fadeIn('slow')
-				}
-			})
-		})
-	}
-})(jQuery);
