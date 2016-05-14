@@ -351,7 +351,6 @@ if($_SESSION['rank']>399){
         <script src="core/js/cropper.min.js"></script>
         <script src="core/js/js.js"></script>
         <script>/*<![CDATA[*/
-            $('#search').search_filter();
             $(document).ready(function(){
 <?php		if($view=='pages'){?>
                 $('#sortable').sortable({

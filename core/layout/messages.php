@@ -13,7 +13,7 @@ if($args[0]=='settings'){
     <div class="panel-heading clearfix">
         <h4 class="col-xs-6">Messages</h4>
         <div class="btn-group pull-right">
-            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><i class="libre libre-back"></i></a>
+            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('back');?></a>
         </div>
     </div>
     <div class="panel-body">
@@ -76,59 +76,32 @@ if($args[0]=='settings'){
         </div>
     </div>
     <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-3 col-md-2">
-                <ul class="nav nav-pills nav-stacked">
-<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE folder='INBOX' AND status!='read'");
-$s->execute();$cnt=$s->fetch(PDO::FETCH_ASSOC);?>
-                    <li class="<?php if($folder=='INBOX')echo'active';?>"><a href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Inbox </a></li>
-<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE starred='1'");
-$s->execute();$cnt=$s->fetch(PDO::FETCH_ASSOC);?>
-                    <li class="<?php if($folder=='starred')echo'active';?>"><a href="<?php echo URL.$settings['system']['admin'].'/messages/starred';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Starred </a></li>
-<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE folder='DELETE'");
-$s->execute();
-$cnt=$s->fetch(PDO::FETCH_ASSOC);?>
-                    <li class="<?php if($folder=='DELETE')echo'active';?>"><a href="<?php echo URL.$settings['system']['admin'].'/messages/deleted';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Deleted </a></li>
-<?php $s=$db->prepare("SELECT COUNT(id) as cnt FROM messages WHERE important='1'");
-$s->execute();
-$cnt=$s->fetch(PDO::FETCH_ASSOC);?>
-                    <li class="<?php if($folder=='important')echo'active';?>"><a href="<?php echo URL.$settings['system']['admin'].'/messages/important';?>"><?php if($cnt['cnt']>0)echo'<span class="badge pull-right">'.$cnt['cnt'].'</span>';?> Important </a></li>
-                </ul>
-            </div>
-<?php switch($folder){
-    case'starred':
-        $s=$db->prepare("SELECT * FROM messages WHERE starred='1' ORDER BY ti DESC, subject ASC");
-        $s->execute();
-        break;
-    case'important':
-        $s=$db->prepare("SELECT * FROM messages WHERE important='1' ORDER BY ti DESC, subject ASC");
-        $s->execute();
-        break;
-    default:
-        $s=$db->prepare("SELECT * FROM messages WHERE folder=:folder ORDER BY ti DESC, subject ASC");
-        $s->execute(array(':folder'=>$folder));
-    }?>
-            <div class="table-responsive mailbox-messages col-sm-9 col-md-10">
+<?php $s=$db->prepare("SELECT * FROM messages ORDER BY ti DESC, subject ASC");
+        $s->execute(array(':folder'=>$folder));?>
+            <div class="table-responsive mailbox-messages">
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
-                            <th class="mailbox-toggle"><input type="checkbox" id="checktoggle" class="check" data-dbid="checkboxtoggle" name="checkboxtoggle"><label for="checktoggle"></th>
-                            <th class="mailbox-star">&nbsp;</th>
-                            <th class="mailbox-name col-xs-4 text-center">Name</th>
-                            <th class="mailbox-subject col-xs-4 text-center">Subject</th>
-                            <th class="mailbox-date col-xs-2"></th>
+                            <th class="col-xs-4">Subject</th>
+                            <th class="col-xs-4">Name</th>
+                            <th class="col-xs-2 text-center">Date</th>
+                            <th class="col-xs-2"></th>
                         </tr>
                     </thead>
                     <tbody>
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-                        <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['folder']=='DELETE')echo'danger';if($r['status']=='unread')echo' unread';?>">
-                            <td class="mailbox-toggle"><input type="checkbox" id="check<?php echo$r['id'];?>" class="check" sdata-dbid="null" class="checkboxtoggle" name="selected[]"><label for="check<?php echo$r['id'];?>"></td>
-                            <td class="mailbox-star"><span class="starred text-muted" data-dbid="<?php echo$r['id'];?>" data-starred="<?php echo$r['starred'];?>"><i class="libre libre-star<?php if($r['starred']!=1)echo'-o';?>"></i></span></td>
-                            <td class="mailbox-name"><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>" title="<?php echo'&lt;'.$r['from_email'].'&gt;';?>"><?php if($r['from_name']!='')echo$r['from_name'];else echo'&lt;'.$r['from_email'].'&gt;';?></a></td>
-                            <td class="mailbox-subject"><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>"><?php echo $r['subject'];?></a></td>
-                            <td class="mailbox-date"><?php echo date('M j \a\t G:i',$r['ti']);?></td>
+                        <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='delete')echo' danger';?>">
+                            <td ><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>"><?php echo $r['subject'];?></a></td>
+                            <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>" title="<?php echo'&lt;'.$r['from_email'].'&gt;';?>"><?php if($r['from_name']!='')echo$r['from_name'];else echo'&lt;'.$r['from_email'].'&gt;';?></a></td>
+                            <td class="text-center"><?php echo date('M j \a\t G:i',$r['ti']);?></td>
+                            <td id="controls_<?php echo$r['id'];?>" class="text-right">
+                                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'];?>/messages/view/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="View"';?>><?php svg('view');?></a>
+                                <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+                                <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+                                <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','messages')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+                            </td>
                         </tr>
-<?php }?>
+<?php } ?>
                     </tbody>
                 </table>
             </div>

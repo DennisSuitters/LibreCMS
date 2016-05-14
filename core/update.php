@@ -33,7 +33,7 @@ if($tbl=='content'&&$col=='status'&&$da=='published'){
     $q=$db->prepare("UPDATE content SET pti=:pti WHERE id=:id");
     $q->execute(array(':pti'=>$ti,':id'=>$id));
 }
-if($tbl=='config'||$tbl=='login'||$tbl=='orders'||$tbl=='orderitems')$r['contentType']='';
+if($tbl=='config'||$tbl=='login'||$tbl=='orders'||$tbl=='orderitems'||$tbl=='messages')$r['contentType']='';
 $log=['uid'=>0,'rid'=>$id,'view'=>$r['contentType'],'contentType'=>$r['contentType'],'refTable'=>$tbl,'refColumn'=>$col,'oldda'=>$oldda,'newda'=>$da,'action'=>'update','ti'=>$ti];
 if($r['contentType']=='booking')$log['view']=$r['contentType'].'s';
 if(isset($_SESSION['uid'])){
@@ -157,13 +157,13 @@ window.top.window.$('#avatar').attr('src','<?php echo$avatar;?>');
 <?php	}
 }
 if($col=='status'){
-if($da=='archived'){?>
+	if($da=='archived'){?>
 window.top.window.$('#l_<?php echo$id;?>').slideUp(500,function(){$(this).remove()});
 <?php }
-if($tbl!='comments'||$da=='delete'||$da==''){?>
+	if($tbl!='comments'||$da=='delete'||$da==''){?>
 window.top.window.$('#controls_<?php echo$id;?> button.btn').toggleClass('hidden');
 <?php }
-if($da=='delete'){?>
+	if($da=='delete'){?>
 window.top.window.$('#l_<?php echo$id;?>').addClass('danger');
 <?php }else{?>
 window.top.window.$('#l_<?php echo$id;?>').removeClass('danger');
