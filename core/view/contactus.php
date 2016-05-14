@@ -58,8 +58,8 @@ if($act=='add_message'){
 							$n=explode(' ',$name);
 							$namefirst=$n[0];
 							$namelast=end($n);
-							$sub=str_replace('{first}',$namefirst,$sub);
-							$sub=str_replace('{last}',$namelast,$sub);
+							$msg=str_replace('{first}',$namefirst,$msg);
+							$msg=str_replace('{last}',$namelast,$msg);
 							$msg=str_replace('{subject}',$subject,$msg);
 							$mail->Body=$msg;
 							$mail->AltBody=$msg;
