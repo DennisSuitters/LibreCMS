@@ -24,8 +24,8 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 
 #### Integrated Projects:
 - [LibreICONS](https://github.com/StudioJunkyard/LibreICONS)
-  - SVG Version
 - [Summernote](https://github.com/summernote/summernote)
+  - [summernote-cleaner](https://github.com/StudioJunkyard/summernote-cleaner)
   - [summernote-save-button](https://github.com/StudioJunkyard/summernote-save-button)
   - [summernote-image-attributes](https://github.com/StudioJunkyard/summernote-image-attributes)
   - [summernote-ext-elfinder](https://github.com/semplon/summernote-ext-elfinder)
@@ -35,10 +35,11 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 - [PHPMailer](https://github.com/PHPMailer/PHPMailer)
 - [TCPDF](http://www.tcpdf.org/)
 - [Zebra_Image](https://github.com/stefangabos/Zebra_Image)
-- [kses]()
+- [kses](https://github.com/RichardVasquez/kses)
   - We've modified kses to include HTML5, and minified the source.
 - [elFinder](https://github.com/Studio-42/elFinder)
   - [elFinder-bootstrap-theme](https://github.com/StudioJunkyard/LibreICONS/tree/master/themes/elFinder)
+- [bootstrap-tokenfield](https://github.com/sliptree/bootstrap-tokenfield)
 
 ### Tested on:
 - CentOS Linux 7.2.1511 with Webmin 1.791

@@ -36,7 +36,7 @@
                     click:function(){
                         $("#block").css({display:"block"});
                         unsaved=false;
-                        $('.note-save button').removeClass('btn-danger');
+                        $('.note-save .btn').removeClass('btn-danger');
                         this.form.submit();
                     }
                 });
@@ -45,14 +45,14 @@
             this.events={
                 'summernote.change':function(we,e){
                     unsaved=true;
-                    $('.note-save button').addClass('btn-danger');
+                    $('.note-save .btn').addClass('btn-danger');
                 },
                 'summernote.keydown':function(we,e){
                     if(e.keyCode==83&&(navigator.platform.match("Mac")?e.metaKey:e.ctrlKey)){
                         e.preventDefault();
                         $('#block').css({display:"block"});
                         unsaved=false;
-                        $('.note-save button').removeClass('btn-danger');
+                        $('.note-save .btn').removeClass('btn-danger');
                         this.form.submit();
                     }
                 }

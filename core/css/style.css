@@ -44,6 +44,7 @@ h4 .breadcrumb{padding:0;margin:0}
 #sidemenu.toggled{left:0;margin-left:0}
 #content{margin:15px 15px 15px 275px;-webkit-transition: all 0.5s ease;-moz-transition: all 0.5s ease;-o-transition: all 0.5s ease;transition: all 0.5s ease}
 #content.toggled{margin:15px 15px 15px 275px}
+.tab-content{padding-top:20px}
 @media(max-width:767px){
     #menu-toggle{display:block}
     #sidemenu{left:-130px;margin-left:-130px}

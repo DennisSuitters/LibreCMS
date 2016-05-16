@@ -40,6 +40,11 @@ if($_SESSION['rank']>399){
         <link rel="stylesheet" type="text/css" href="core/css/libreicons-svg.css">
         <link rel="stylesheet" type="text/css" href="core/css/summernote.css">
         <link rel="stylesheet" type="text/css" href="core/css/featherlight.min.css">
+        <link rel="stylesheet" type="text/css" href="core/css/bootstrap-tokenfield.min.css">
+        <link rel="stylesheet" type="text/css" href="core/css/tokenfield-typeahead.min.css">
+        <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
+        <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
+        <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons-svg.css">
         <link rel="stylesheet" type="text/css" href="core/css/style.css">
     </head>
     <body>
@@ -98,13 +103,12 @@ if($_SESSION['rank']>399){
         <div class="notifications center"></div>
         <script src="core/js/jquery-2.1.3.min.js"></script>
         <script src="core/js/jquery-ui.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
-        <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
-        <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons-svg.css">
         <script src="core/js/bootstrap.min.js"></script>
+        <script src="core/js/bootstrap-tokenfield.min.js"></script>
         <script src="core/js/summernote.js"></script>
         <script src="core/js/plugin/summernote-save-button/summernote-save-button.js"></script>
         <script src="core/js/plugin/summernote-image-attributes/summernote-image-attributes.js"></script>
+        <script src="core/js/plugin/summernote-cleaner/summernote-cleaner.js"></script>
         <script src="core/js/plugin/elfinder/elfinder.js"></script>
 		<script src="core/elfinder/js/elfinder.min.js"></script>
         <script>
@@ -112,6 +116,25 @@ if($_SESSION['rank']>399){
                 e.preventDefault();
                 $("#sidemenu,#content").toggleClass("toggled");
             });
+<?php $st=$db->prepare("SELECT DISTINCT tags FROM content");
+$st->execute();
+$tags='';
+while($sr=$st->fetch(PDO::FETCH_ASSOC)){
+    if($sr['tags']!=''){
+        $tgs=explode(',',$sr['tags']);
+        foreach($tgs as $ts){
+            if(stristr($tags,$ts))continue;
+            $tags.="'".$ts."',";
+        }
+    }
+}?>
+            $('#tags').tokenfield({
+              autocomplete:{
+                source: [<?php echo$tags;?>],
+                delay:100
+              },
+              showAutocompleteOnFocus:false
+            })
             function mediaDialog(id,t,c){
                 var fm=$('<div/>').dialogelfinder({
                     url:'<?php echo URL;?>core/elfinder/php/connector.php',
@@ -228,6 +251,7 @@ if($_SESSION['rank']>399){
                 },
                 toolbar:[
                     ['save',['save']],
+                    ['cleaner',['cleaner']],
                     ['style',['style']],
                     ['font',['bold','italic','underline','clear']],
                     ['fontname',['fontname']],
@@ -347,8 +371,6 @@ if($_SESSION['rank']>399){
             $("#tis").datetimepicker({format:'M d, yyyy h:ii P'}).on('changeDate',function(ev){update($('#tis').data("dbid"),'content','tis',ev.date)});
             $("#tie").datetimepicker({format:'M d, yyyy h:ii P'}).on('changeDate',function(ev){update($('#tie').data("dbid"),'content','tie',ev.date)});
         </script>
-        <link href="core/css/cropper.min.css" rel="stylesheet">
-        <script src="core/js/cropper.min.js"></script>
         <script src="core/js/js.js"></script>
         <script>/*<![CDATA[*/
             $(document).ready(function(){

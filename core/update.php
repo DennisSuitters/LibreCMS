@@ -20,6 +20,7 @@ if($tbl=='content'||$tbl=='menu'||$tbl=='config'&&$col=='notes'||$col=='Password
     $da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'da',FILTER_SANITIZE_STRING);
     $da=kses($da,array());
 }
+if(strlen($da)<12&&$da=='<p><br></p>')$da=str_replace('<p><br></p>','',$da);
 $si=session_id();
 $ti=time();
 $s=$db->prepare("SELECT * FROM ".$tbl." WHERE id=:id");
