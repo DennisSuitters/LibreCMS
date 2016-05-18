@@ -43,7 +43,7 @@ if($_SESSION['rank']>399){
         <link rel="stylesheet" type="text/css" href="core/css/bootstrap-tokenfield.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/tokenfield-typeahead.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
-        <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.full.css">
+        <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
         <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons-svg.css">
         <link rel="stylesheet" type="text/css" href="core/css/style.css">
     </head>
