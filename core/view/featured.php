@@ -94,7 +94,7 @@ if($ii>0){
 			if($r['thumb']!=''&&file_exists('media'.DS.basename($r['thumb'])))
 				$item=str_replace('<print content="thumb">','<img src="'.$r['thumb'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
 			elseif($r['file']!=''&&file_exists('media'.DS.basename($r['file'])))
-				$item=str_replace('<print content="thumb">','<img src="'.$r['thumb'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
+				$item=str_replace('<print content="thumb">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
 			else$item=str_replace('<print content="thumb">','',$item);
 		}
 		if(stristr($item,'<print content="image">')){
