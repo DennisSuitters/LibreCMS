@@ -43,7 +43,7 @@ if($_SESSION['rank']>399){
         <link rel="stylesheet" type="text/css" href="core/css/bootstrap-tokenfield.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/tokenfield-typeahead.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
-        <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
+        <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.full.css">
         <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons-svg.css">
         <link rel="stylesheet" type="text/css" href="core/css/style.css">
     </head>
@@ -112,6 +112,8 @@ if($_SESSION['rank']>399){
         <script src="core/js/plugin/elfinder/elfinder.js"></script>
 		<script src="core/elfinder/js/elfinder.min.js"></script>
         <script>
+            var btn=$.fn.button.noConflict();
+            $.fn.btn=btn;
             $("#menu-toggle").click(function(e) {
                 e.preventDefault();
                 $("#sidemenu,#content").toggleClass("toggled");

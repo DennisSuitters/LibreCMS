@@ -22,7 +22,7 @@ if($show=='pages'){?>
                     </tr>
                 </thead>
                 <tbody id="sortable">
-<?php $s=$db->prepare("SELECT * FROM menu WHERE active='1' ORDER BY menu DESC, ord ASC");
+<?php $s=$db->prepare("SELECT * FROM menu WHERE active='1' ORDER BY ord ASC");
     $s->execute();
     while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>" class="item">
@@ -41,7 +41,7 @@ if($show=='pages'){?>
                     <tr class="ghost hidden"><td colspan="3">&nbsp;</td></tr>
                 </tbody>
             </table>
-<?php $s=$db->prepare("SELECT * FROM menu WHERE active!='1' ORDER BY menu DESC, ord ASC");
+<?php $s=$db->prepare("SELECT * FROM menu WHERE active!='1' ORDER BY ord ASC");
     $s->execute();
     if($s->rowCount()>0){?>
             <h4 class="page-header">Inactive Pages</h4>
@@ -223,6 +223,7 @@ else echo'<img id="coverimage" src="core/images/nocover.jpg">';?>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <select id="menu" class="form-control" onchange="update('<?php echo$r['id'];?>','menu','menu',$(this).val());">
                             <option value="head"<?php if($r['menu']=='head')echo' selected';?>>Head</option>
+                            <option value="other"<?php if($r['menu']=='other')echo' selected';?>>Other</option>
                             <option value="footer"<?php if($r['menu']=='footer')echo' selected';?>>Footer</option>
                         </select>
                     </div>

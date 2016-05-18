@@ -31,9 +31,12 @@ if(file_exists('media/carousel/')){
 		$filetime=filemtime($file);
 		$featuredfiles[]=[
 			'contentType'=>'carousel',
+			'thumb'=>'',
 			'file'=>$file,
 			'title'=>basename(rtrim($file),3),
 			'link'=>'nolink',
+			'caption'=>'',
+			'notes'=>'',
 			'ti'=>$filetime
 		];
 	}
@@ -45,9 +48,12 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
 	if(file_exists('media'.DS.$filechk)){
 		$featuredfiles[]=[
 			'contentType'=>$r['contentType'],
+			'thumb'=>$r['thumb'],
 			'file'=>$r['file'],
 			'title'=>$r['title'],
 			'link'=>$r['contentType'].DS.str_replace(' ','-',$r['title']),
+			'caption'=>$r['caption'],
+			'notes'=>$r['notes'],
 			'ti'=>$r['ti']
 		];
 	}
@@ -84,12 +90,33 @@ if($ii>0){
 			$item=str_replace('</link>','',$item);
 			$item=str_replace('<print link>',$r['contentType'].DS.str_replace(' ','-',$r['title']),$item);
 		}
-		$item=str_replace('<print content="image">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
+		if(stristr($item,'<print content="thumb">')){
+			if($r['thumb']!=''&&file_exists('media'.DS.basename($r['thumb'])))
+				$item=str_replace('<print content="thumb">','<img src="'.$r['thumb'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
+			elseif($r['file']!=''&&file_exists('media'.DS.basename($r['file'])))
+				$item=str_replace('<print content="thumb">','<img src="'.$r['thumb'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
+			else$item=str_replace('<print content="thumb">','',$item);
+		}
+		if(stristr($item,'<print content="image">')){
+			if($r['file']!=''&&file_exists('media'.DS.basename($r['file'])))
+				$item=str_replace('<print content="image">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
+			else$item=str_replace('<print content="image">','',$item);
+		}
 		$item=str_replace('<print content=title>',$r['title'],$item);
 		if($r['link']=='nolink')
 			$item=str_replace('<print content="title">','<span class="hidden">'.$r['title'].'</span>',$item);
 		else
 			$item=str_replace('<print content="title">',$r['title'],$item);
+		if($r['caption']!='')
+			$item=str_replace('<print content="caption">',strip_tags($r['caption']),$item);
+		elseif($r['notes']!='')
+			$item=str_replace('<print content="caption">',strip_tags($r['notes']),$item);
+		else
+			$item=str_replace('<print content="caption">','',$item);
+		if($r['notes']!='')
+			$item=str_replace('<print content="notes">',strip_tags($r['notes']),$item);
+		else
+			$item=str_replace('<print content="notes">','',$item);
 		$items.=$item;
 		$i++;
 		$indicators.=$indicatorItem;
