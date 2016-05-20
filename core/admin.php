@@ -376,7 +376,10 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
         <script src="core/js/js.js"></script>
         <script>/*<![CDATA[*/
             $(document).ready(function(){
-<?php		if($view=='pages'){?>
+<?php if($view=='dashboard'){?>
+                $('#commits').load('core/layout/git_commits.php');
+<?php	}
+	if($view=='pages'){?>
                 $('#sortable').sortable({
                     items:"tr",
                     placeholder:".ghost",

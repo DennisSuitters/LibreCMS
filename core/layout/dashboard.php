@@ -68,24 +68,6 @@ if($config['backup_ti']<$tid){
                     </div>
                 </div>
             </div>
-<?php if($config['git_ti']<time()-86400||$config['git_commits']==''){
-    function get_json($url){
-        $base="https://api.github.com/";
-        $agent='Mozilla/5.0 (compatible; StudioJunkard/LibreCMS)';
-        $curl=curl_init();
-        curl_setopt($curl,CURLOPT_USERAGENT,$agent);
-        curl_setopt($curl,CURLOPT_URL,$base.$url);
-        curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,false);
-        $content=curl_exec($curl);
-        curl_close($curl);
-        return$content;
-    }
-    $commits=get_json('repos/StudioJunkyard/LibreCMS/commits');
-    $s=$db->prepare("UPDATE config SET git_commits=:commits,git_ti=:ti WHERE id='1'");
-    $s->execute(array(':commits'=>$commits,':ti'=>time()));
-    $config['git_commits']=$commits;
-}?>
             <div class="panel panel-body">
                 <h4 class="page-header">Latest Github Commits</h4>
                 <div class="table-responsive">
@@ -98,18 +80,13 @@ if($config['backup_ti']<$tid){
                                 <th class="col-xs-8">Commit Message</th>
                             </tr>
                         </thead>
-                        <tbody>
-<?php $commits=json_decode($config['git_commits'],true);
-$i=0;
-while($i<10){?>
+                        <tbody id="commits">
                             <tr>
-                                <td><img style="width:20px;" src="<?php echo $commits[$i]["author"]["avatar_url"];?>"></td>
-                                <td class="text-center"><?php $time=strtotime($commits[$i]["commit"]["committer"]["date"]);echo date($config['dateFormat'],$time);?></td>
-                                <td class="text-center"><a href="<?php echo$commits[$i]["author"]["html_url"];?>"><?php echo $commits[$i]["commit"]["committer"]["name"];?></a></td>
-                                <td><a href="<?php echo$commits[$i]["html_url"];?>"><?php echo $commits[$i]["commit"]["message"];?></a></td>
+                                <td><?php svg('spinner-9','animated spin');?></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
-<?php $i++;
-}?>
                         </tbody>
                     </table>
                 </div>
