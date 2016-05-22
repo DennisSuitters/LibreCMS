@@ -30,6 +30,20 @@ if($act!=''){
     $error=0;
     $ti=time();
     switch($act){
+        case'add_dashrss':
+            $url=filter_input(INPUT_POST,'url',FILTER_SANITIZE_URL);
+            if(filter_var($url,FILTER_VALIDATE_URL)){
+                $q=$db->prepare("INSERT INTO choices (uid,contentType,url,ti) VALUES (:uid,'dashrss',:url,'0')");
+                $q->execute(array(':uid'=>$uid,':url'=>$url));
+                $id=$db->lastInsertId();
+                $e=$db->errorInfo();
+                if(is_null($e[2])){?>
+window.top.window.$('#rss').append('<div id="l_<?php echo$id;?>" class="form-group"><label class="control-label hidden-xs col-sm-3 col-md-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-12 col-sm-9 col-md-9 col-lg-10"><form target="sp" method="post" action="core/update.php"><input type="hidden" name="t" value="choices"><input type="hidden" name="c" value="url"><input type="text"class="form-control" name="da" value="<?php echo$url;?>" placeholder="Enter a URL..."></form><div class="input-group-btn"><form target="sp" action="core/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><button class="btn btn-default trash"><?php svg('trash');?></button></form></div></div></div>');
+<?php           }else{?>
+window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue adding the RSS URL'}}).show();
+<?php           }
+            }
+            break;
         case'add_social':
             $user=filter_input(INPUT_POST,'user',FILTER_SANITIZE_NUMBER_INT);
             $icon=filter_input(INPUT_POST,'icon',FILTER_SANITIZE_STRING);

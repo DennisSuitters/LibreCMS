@@ -44,10 +44,10 @@ if(file_exists('core/config.ini')&&!is_writable('core/config.ini')){
 	$error=1;
 	echo'<div class="alert alert-danger">"core/config.ini" Exists, but is not writeable. There is two ways to fix this, either make "core/config.ini" writable, or remove the file.</div>';
 }
-if(!isset($_SERVER['HTTP_MOD_REWRITE'])){
+/*if(!isset($_SERVER['HTTP_MOD_REWRITE'])){
 	$error=1;
 	echo'<div class="alert alert-danger">"mod_rewrite" must be available and enabled for LibreCMS to function correctly.</div>';
-}
+}*/
 if(!extension_loaded('gd')&&!function_exists('gd_info')){
 	$error=1;
 	echo'<div class="alert alert-danger">GD-Image is NOT Installed or Enabled.</div>';

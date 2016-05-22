@@ -379,6 +379,7 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
             $(document).ready(function(){
 <?php if($view=='dashboard'){?>
                 $('#commits').load('core/layout/git_commits.php');
+                $('#rssfeeds').load('core/layout/rss_feeds.php');
 <?php	}
 	if($view=='pages'){?>
                 $('#sortable').sortable({

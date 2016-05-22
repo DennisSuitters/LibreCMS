@@ -1,7 +1,13 @@
-<div class="page-toolbar"></div>
+<?php
+if($args[0]=='settings'){
+    include'core'.DS.'layout'.DS.'set_dashboard.php';
+}else{?>
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Dashboard</h4>
+    <div class="panel-heading clearfix">
+        <h4 class="col-xs-6">Dashboard</h4>
+        <div class="btn-group pull-right">
+            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/dashboard/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+        </div>
     </div>
     <div class="panel-body">
         <noscript>
@@ -68,6 +74,15 @@ if($config['backup_ti']<$tid){
                     </div>
                 </div>
             </div>
+<?php if($config['options']{10}==1){?>
+            <div class="panel panel-body">
+                <h4 class="page-header">RSS Feeds</h4>
+                <div id="rssfeeds">
+                    <?php svg('spinner-9','animated spin');?>
+                </div>
+            </div>
+<?php }
+if($config['options']{11}==1){?>
             <div class="panel panel-body">
                 <h4 class="page-header">Latest Github Commits</h4>
                 <div class="table-responsive">
@@ -91,6 +106,8 @@ if($config['backup_ti']<$tid){
                     </table>
                 </div>
             </div>
+<?php }?>
         </div>
     </div>
 </div>
+<?php }
