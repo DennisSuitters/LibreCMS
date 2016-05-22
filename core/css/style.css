@@ -97,7 +97,7 @@ h4 .breadcrumb{padding:0;margin:0}
 .nav-side-menu input[type=search]:focus::-moz-placeholder{color:#fff;text-shadow:0 1px 1px #000}
 .nav-side-menu input[type=search]:focus:-ms-input-placeholder{color:#fff;text-shadow:0 1px 1px #000}
 .nav-side-menu footer{position:absolute;bottom:5px}
-.nav-side-menu footer li{display:inline;}
+.nav-side-menu footer li{display:inline}
 .nav-side-menu footer li a i{font-size:14px;display:inline-block}
 .nav-side-menu footer li img.logo{display:inline;margin-left:12px}
 .profile{margin:0;padding:10px 10px 20px 10px;background-color:#292E31}
@@ -112,6 +112,7 @@ h4 .breadcrumb{padding:0;margin:0}
 .handle{cursor:move}
 .sort-placeholder,
 .ghost{position:relative;border:1px dashed #000;background:#eee;height:100px;margin:auto auto 10px auto;float:left;width:100%!important}
+textarea.summernote{visibility:hidden}
 @media screen and(min-width:768px){
     .modal-dialog{width:700px;padding-top:20px;padding-bottom:20px}
 }

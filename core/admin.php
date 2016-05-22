@@ -245,12 +245,13 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
                 tabsize:2,
                 popover:{
                     image:[
-                        ['custom',['imageAttributes']],
+                        ['custom',['imageAttributes', 'imageShape']],
                         ['imagesize',['imageSize100','imageSize50','imageSize25']],
                         ['float',['floatLeft','floatRight','floatNone']],
                         ['remove',['removeMedia']],
                     ],
                 },
+                lang: 'en-US',
                 toolbar:[
                     ['save',['save']],
                     ['cleaner',['cleaner']],
