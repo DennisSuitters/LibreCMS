@@ -109,4 +109,4 @@ if(stristr($head,'<print meta=favicon>'))
     $head=str_replace('<print meta=favicon>',FAVICON,$head);
 if(stristr($head,'<print theme>'))
     $head=str_replace('<print theme>',THEME,$head);
-print"<!--\n * Powered by LibreCMS (https://github.com/StudioJunkyard/LibreCMS)\n * Copyleft ".date('Y',time())." Studio Junkyard (http://studiojunkyard.com/)\n * Licensed under GPLv3 <http://www.gnu.org/licenses/>\n-->\n".$head.$content;
+print$head.$content;

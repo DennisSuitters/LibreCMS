@@ -8,6 +8,20 @@
         </div>
     </div>
     <div class="panel-body">
+        <h4 class="page-header">Google Analytics</h4>
+        <div class="form-group">
+            <label for="options12" class="control-label col-xs-5 col-sm-3 col-lg-2">Enable</label>
+            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                <input type="checkbox" id="options12" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="12"<?php if($config['options']{12}==1)echo' checked';?>>
+                <label for="options12">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="ga_clientID" class="control-label col-xs-5 col-sm-3 col-lg-2">clientID</label>
+            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                <input type="text" id="ga_clientID" class="form-control textinput" value="<?php echo$config['ga_clientID'];?>" data-dbid="1" data-dbt="config" data-dbc="ga_clientID" placeholder="Enter Your Google clientID..."<?php if($user['options']{1}==0)echo' readonly';?>>
+            </div>
+        </div>
         <h4 class="page-header">RSS Feeds</h4>
         <div class="form-group">
             <label for="options10" class="control-label col-xs-5 col-sm-3 col-lg-2">Enable</label>

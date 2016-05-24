@@ -74,7 +74,15 @@ if($config['backup_ti']<$tid){
                     </div>
                 </div>
             </div>
-<?php if($config['options']{10}==1){?>
+<?php if($config['options']{12}==1){?>
+            <div class="panel panel-body">
+                <h4 class="page-header">Google Analytics</h4>
+                <div id="ga">
+                    <?php svg('spinner-9','animated spin');?>
+                </div>
+            </div>
+<?php }
+if($config['options']{10}==1){?>
             <div class="panel panel-body">
                 <h4 class="page-header">RSS Feeds</h4>
                 <div id="rssfeeds">

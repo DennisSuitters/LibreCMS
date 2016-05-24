@@ -111,7 +111,7 @@ if($_SESSION['rank']>399){
         <script src="core/js/plugin/summernote-cleaner/summernote-cleaner.js"></script>
         <script src="core/js/plugin/elfinder/elfinder.js"></script>
 		<script src="core/elfinder/js/elfinder.min.js"></script>
-        <script>
+        <script>/*<![CDATA[*/
             var btn=$.fn.button.noConflict();
             $.fn.btn=btn;
             $("#menu-toggle").click(function(e) {
@@ -268,13 +268,13 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
                     ['help',['help']]
                 ]
             });
-        </script>
+        /*]]>*/</script>
         <script src="core/js/jquery.notifications.min.js"></script>
         <script src="core/js/featherlight.min.js"></script>
 <?php if($view=='bookings'){?>
         <script src="core/js/moment.min.js"></script>
         <script src="core/js/fullcalendar.min.js"></script>
-        <script>
+        <script>/*<![CDATA[*/
 <?php   if($args[0]!='add'||$args[0]!='edit'){?>
             $('#calendar').fullCalendar({
                 header:{
@@ -366,20 +366,21 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
                 $('#calendar').fullCalendar('option','height',calHeight);
             });
 <?php 		}?>
-        </script>
+        /*]]>*/</script>
 <?php }?>
         <script src="core/js/bootstrap-datetimepicker.min.js"></script>
-        <script>
+        <script>/*<![CDATA[*/
             $("#pti").datetimepicker({format:'M d, yyyy h:ii P'}).on('changeDate',function(ev){$('#block').css({display:'block'});update($('#pti').data("dbid"),'content','pti',ev.date)});
             $("#tis").datetimepicker({format:'M d, yyyy h:ii P'}).on('changeDate',function(ev){update($('#tis').data("dbid"),'content','tis',ev.date)});
             $("#tie").datetimepicker({format:'M d, yyyy h:ii P'}).on('changeDate',function(ev){update($('#tie').data("dbid"),'content','tie',ev.date)});
-        </script>
+        /*]]>*/</script>
         <script src="core/js/js.js"></script>
         <script>/*<![CDATA[*/
             $(document).ready(function(){
 <?php if($view=='dashboard'){?>
-                $('#commits').load('core/layout/git_commits.php');
+                $('#ga').load('core/layout/ga-feed.php');
                 $('#rssfeeds').load('core/layout/rss_feeds.php');
+                $('#commits').load('core/layout/git_commits.php');
 <?php	}
 	if($view=='pages'){?>
                 $('#sortable').sortable({
