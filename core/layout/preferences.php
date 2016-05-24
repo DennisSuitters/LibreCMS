@@ -302,6 +302,27 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                         <input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Keywords...">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="ga_tracking" class="control-label col-xs-5 col-sm-3 col-lg-2">Google Tracking Code</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <form target="sp" method="post" action="core/update.php">
+                            <input type="hidden" name="id" value="1">
+                            <input type="hidden" name="t" value="config">
+                            <input type="hidden" name="c" value="ga_tracking">
+                            <button type="submit" class="btn btn-default"><?php svg('floppy');?></button>
+                            <textarea id="ga_tracking" class="form-control" style="height:100px" name="da"><?php echo$config['ga_tracking'];?></textarea>
+                        </form>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-5 col-sm-3 col-lg-2"></div>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <span class="help-block">
+                            Go to <a target="_blank" href="https://analytics.google.com">Google Analytics</a> to setup a Google Analytics Account, and get your Page Tracking Code.<br>
+                            The <code>&lt;script&gt;&lt;/script&gt;</code> tags aren't necessary as they will be stripped from the text when saved.
+                        </span>
+                    </div>
+                </div>
             </div>
             <div id="preference-backrestore" name="preference-backrestore" class="tab-pane fade in">
                 <div id="backup" name="backup">

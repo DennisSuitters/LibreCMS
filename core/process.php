@@ -103,10 +103,16 @@ if(stristr($head,'<print meta=rss>')){
         $rss=URL.'rss/'.$view;else$rss=URL.'rss/';
     $head=str_replace('<print meta=rss>',$rss,$head);
 }
+if(stristr($head,'<print meta=ogType>')){
+    if($view=='inventory')$head=str_replace('<print meta=ogType>','product',$head);
+    else$head=str_replace('<print meta=ogType>',$view,$head);
+}
 if(stristr($head,'<print meta=shareImage>'))
     $head=str_replace('<print meta=shareImage>',$shareImage,$head);
 if(stristr($head,'<print meta=favicon>'))
     $head=str_replace('<print meta=favicon>',FAVICON,$head);
 if(stristr($head,'<print theme>'))
     $head=str_replace('<print theme>',THEME,$head);
+if(stristr($head,'<!-- Google Analytics -->'))
+    $head=str_replace('<!-- Google Analytics -->','<script>/*<![CDATA[*/'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'/*]]>*/</script>',$head);
 print$head.$content;
