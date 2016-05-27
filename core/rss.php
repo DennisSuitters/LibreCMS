@@ -4,6 +4,7 @@ include'db.php';
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 if($args[0]==''||$args[0]=='index')$args[0]='%_%';
 $ti=time();?>
+<?xml version="1.0"?>
 <rss version="2.0">
     <channel>
         <title><?php echo$config['seoTitle'];?></title>

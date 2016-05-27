@@ -26,16 +26,21 @@ $fi=0;
 $featuredfiles=array();
 if(file_exists('media/carousel/')){
 	foreach(glob('media/carousel/*.*') as $file){
+		$fileinfo=pathinfo($file);
 		if($file=='.')continue;
 		if($file=='..')continue;
+		if($fileinfo['extension']=='html')continue;
 		$filetime=filemtime($file);
+		$fileinfo=pathinfo($file);
+		$filename=basename($file,'.'.$fileinfo['extension']);
+		if(file_exists('media/carousel/'.$filename.'.html'))$filehtml=file_get_contents('media/carousel/'.$filename.'.html');else$filehtml='';
 		$featuredfiles[]=[
 			'contentType'=>'carousel',
 			'thumb'=>'',
 			'file'=>$file,
 			'title'=>basename(rtrim($file),3),
 			'link'=>'nolink',
-			'caption'=>'',
+			'caption'=>$filehtml,
 			'notes'=>'',
 			'ti'=>$filetime
 		];
@@ -84,7 +89,7 @@ if($ii>0){
 		}
 		$indicatorItem=str_replace('<print indicatorCount>',$i,$indicatorItem);
 		if($r['link']=='nolink')
-			$item=preg_replace('~<link>.*?<\/link>~is',$indicators,$item,1);
+			$item=preg_replace('~<link>.*?<\/link>~is','',$item,1);
 		else{
 			$item=str_replace('<link>','',$item);
 			$item=str_replace('</link>','',$item);
@@ -108,9 +113,10 @@ if($ii>0){
 		else
 			$item=str_replace('<print content="title">',$r['title'],$item);
 		if($r['caption']!='')
-			$item=str_replace('<print content="caption">',strip_tags($r['caption']),$item);
+			$item=str_replace('<print content="caption">',$r['caption'],$item);
 		elseif($r['notes']!='')
 			$item=str_replace('<print content="caption">',strip_tags($r['notes']),$item);
+
 		else
 			$item=str_replace('<print content="caption">','',$item);
 		if($r['notes']!='')
