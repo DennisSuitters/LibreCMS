@@ -271,7 +271,6 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                 </div>
             </div>
             <div id="preference-seo" name="preference-seo" class="tab-pane fade in">
-                <h4>Default Analytics</h4>
                 <div class="form-group">
                     <div class="col-xs-5 col-sm-3 col-lg-2"></div>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
@@ -302,15 +301,22 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                         <input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Keywords...">
                     </div>
                 </div>
+                <h4>Google Analytics</h4>
                 <div class="form-group">
-                    <label for="ga_tracking" class="control-label col-xs-5 col-sm-3 col-lg-2">Google Tracking Code</label>
+                    <label for="ga_verification" class="control-label col-xs-5 col-sm-3 col-lg-2">Site Verification</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <form target="sp" method="post" action="core/update.php">
+                        <input type="text" id="ga_verification" class="form-control textinput" value="<?php echo$config['ga_verification'];?>" data-dbid="1" data-dbt="config" data-dbc="ga_verification" placeholder="Enter Google Site Verification Code...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ga_tracking" class="control-label col-xs-5 col-sm-3 col-lg-2">Tracking Code</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <form target="sp" method="post" action="core/update.php" onsubmit="$('#block').css({'display':'block'});$('#ga_tracking_save').removeClass('btn-danger');">
                             <input type="hidden" name="id" value="1">
                             <input type="hidden" name="t" value="config">
                             <input type="hidden" name="c" value="ga_tracking">
-                            <button type="submit" class="btn btn-default"><?php svg('floppy');?></button>
-                            <textarea id="ga_tracking" class="form-control" style="height:100px" name="da"><?php echo$config['ga_tracking'];?></textarea>
+                            <button type="submit" id="ga_tracking_save" class="btn btn-default"><?php svg('floppy');?></button>
+                            <textarea id="ga_tracking" class="form-control" style="height:100px" name="da" onkeyup="$('#ga_tracking_save').addClass('btn-danger');"><?php echo$config['ga_tracking'];?></textarea>
                         </form>
                     </div>
                 </div>
@@ -347,20 +353,7 @@ if($config['backup_ti']<$tid){
                             </div>
                         </form>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-xs-5 col-sm-3 col-lg-2">Restore</label>
-                        <form target="sp" method="post" enctype="multipart/form-data" action="core/restorebackup.php">
-                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                                <div class="btn btn-default btn-block btn-file">
-                                    Select .sql file to restore<input type="file" id="fu" class="form-control" name="fu" accept="application/sql">
-                                </div>
-                                <div class="input-group-btn">
-                                    <button type="submit" class="btn btn-default" onclick="$('#block').css({'display':'block'});">Restore</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div id="backup" class="form-group">
+                    <div id="backups" class="form-group">
 <?php foreach(glob("media/backup/*")as$file){
     $fileid=str_replace('.','',$file);
     $fileid=str_replace('/','',$fileid);
@@ -375,6 +368,19 @@ if($config['backup_ti']<$tid){
                             </div>
                         </div>
 <?php }?>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-5 col-sm-3 col-lg-2">Restore</label>
+                        <form target="sp" method="post" enctype="multipart/form-data" action="core/restorebackup.php">
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <div class="btn btn-default btn-block btn-file">
+                                    Select .sql file to restore<input type="file" id="fu" class="form-control" name="fu" accept="application/sql">
+                                </div>
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-default" onclick="$('#block').css({'display':'block'});">Restore</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
