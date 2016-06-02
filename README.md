@@ -3,11 +3,11 @@ a **Free** Open Source Content Management System, that is built utilising [PHP](
 
 ### FAQ
 - Why no Version Numbers?
-- - Some people have asked why we don't use a Versioning System of some sorts. Well, as this is an ever changing and growing project, rather than having version numbers, we're going to be doing releases instead. (We're actually pretty close to release 1). The other reason, is due to my laziness. I originally was updating version numbers to files, but laziness, and neglectfulness got the better of me, so I just stopped doing that completely.
+  - Some people have asked why we don't use a Versioning System of some sorts. Well, as this is an ever changing and growing project, rather than having version numbers, we're going to be doing releases instead. (We're actually pretty close to release 1). The other reason, is due to my laziness. I originally was updating version numbers to files, but laziness, and neglectfulness got the better of me, so I just stopped doing that completely.
 - Why are some files Minified (or Uglified as some call it)?
-- - Files that are minified, are considered to be done with, or complete. Others, are still in the process of being fixed, edited, added to, or modified, but will eventually also be minified. The reason we do this, isn't to make it harder for contributors, but as we're the main users of LibreCMS, minifying the source helps to minimise the footprint. And despite what others think, and claim to have tested, which we have tested. Minifying the source can help improve the speed, and also the download time for outputted data.
+  - Files that are minified, are considered to be done with, or complete. Others, are still in the process of being fixed, edited, added to, or modified, but will eventually also be minified. The reason we do this, isn't to make it harder for contributors, but as we're the main users of LibreCMS, minifying the source helps to minimise the footprint. And despite what others think, and claim to have tested, which we have tested. Minifying the source can help improve the speed, and also the download time for outputted data.
 - Why is English the only Language available?
-- - LibreCMS was, and is targetted towards English Speaking Australian Business's, and Small Business's. We may in the future decide, or if someone wants to add Language support, then we may do that.
+  - LibreCMS was, and is targetted towards English Speaking Australian Business's, and Small Business's. We may in the future decide, or if someone wants to add Language support, then we may do that.
 
 ### Features
 - Installer when first Opened.
