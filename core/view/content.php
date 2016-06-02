@@ -96,6 +96,7 @@ if($show=='categories'){
 					$si++;
 				}
 			}
+			$r['notes']=strip_tags($r['notes']);
 			require'core'.DS.'parser.php';
 			if($r['contentType']=='testimonials'||$r['contentType']=='testimonial'){
 				if(stristr($items,'<controls>'))$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
@@ -162,11 +163,27 @@ if($show=='item'){
 	}else$item=preg_replace('~<service>.*?<\/service>~is','',$item,1);
 	$address='';
 	$edit='';
-	require'core'.DS.'parser.php';
-	$authorHTML='';
-	$seoTitle=$r['title'].' - '.$config['seoTitle'];
-	$seoKeywords=$r['keywords'];
-	$seoDescription=$r['caption'];
+
+	$contentQuantity='';
+	if($r['contentType']=='inventory'){
+		if(is_numeric($r['quantity'])&&$r['quantity']!=0){
+			$contentQuantity='<link itemprop="availability" href="http://schema.org/InStock">';
+			$contentQuantity.='<h5 class="quantity">Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</h5>';
+		}elseif(is_numeric($r['quantity'])&&$r['quantity']==0){
+			$contentQuantity='<link itemprop="availability" href="http://schema.org/OutOfStock">';
+			$contentQuantity.='<h5 class="quantity">Out of Stock</h5>';
+		}else$contentQuantity.='<h5>Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</h5>';
+		$item=str_replace('<print content="quantity">',$contentQuantity,$item);
+	}else{
+		$item=str_replace('<print content="quantity">','',$item);
+	}
+
+require'core'.DS.'parser.php';
+$authorHTML='';
+$seoTitle=$r['title'].' - '.$config['seoTitle'];
+$seoKeywords=$r['keywords'];
+$seoDescription=$r['caption'];
+
 	if($r['contentType']=='article'||$r['contentType']=='portfolio')
 		$item=preg_replace('~<controls>.*?<\/controls>~is','',$item,1);
 	$html=preg_replace('~<settings.*?>~is','',$html,1);

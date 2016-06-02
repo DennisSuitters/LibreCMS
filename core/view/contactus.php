@@ -73,6 +73,17 @@ if($act=='add_message'){
 		}
 	}
 }
+if(stristr($html,'<address')){
+	$html=str_replace('<print config="address">',$config['address'],$html);
+	$html=str_replace('<print config="state">',$config['state'],$html);
+	$html=str_replace('<print config="suburb">',$config['suburb'],$html);
+	$html=str_replace('<print config="country">',$config['country'],$html);
+	$html=str_replace('<print config="postcode">',$config['postcode'],$html);
+	$html=str_replace('<print config=phone>',$config['phone'],$html);
+	$html=str_replace('<print config="phone">',$config['phone'],$html);
+	$html=str_replace('<print config=mobile>',$config['mobile'],$html);
+	$html=str_replace('<print config="mobile">',$config['mobile'],$html);
+}
 $s=$db->prepare("SELECT * FROM choices WHERE contentType='subject' ORDER BY title ASC");
 $s->execute();
 if($s->rowCount()>0){

@@ -1,6 +1,53 @@
 <?php
 if(file_exists(THEME.DS.'side_menu.html')){
 	$sideTemp=file_get_contents(THEME.DS.'side_menu.html');
+	if($show=='item'&&($view=='service'||$view=='inventory')){
+		$sideCost='';
+		if(is_numeric($r['cost'])&&$r['cost']!=0){
+			$sideCost='<meta itemprop="currency" content="AUD">';
+			$sideCost.='<span itemprop="price" content="'.$r['cost'].'">';
+			$sideCost.='<h4 class="cost" itemprop="price">';
+			if(is_numeric($r['cost']))$sideCost.='&#36;';
+			$sideCost.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</h4>';
+		}else$sideCost='<h4>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</h4>';
+		$sideTemp=str_replace('<print content="cost">',$sideCost,$sideTemp);
+		$sideTemp=str_replace('<print content=id>',$r['id'],$sideTemp);
+
+		$sideQuantity='';
+		if($r['contentType']=='inventory'){
+			if(is_numeric($r['quantity'])&&$r['quantity']!=0){
+				$sideQuantity='<link itemprop="availability" href="http://schema.org/InStock">';
+				$sideQuantity.='<h5 class="quantity">Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</h5>';
+			}elseif(is_numeric($r['quantity'])&&$r['quantity']==0){
+				$sideQuantity='<link itemprop="availability" href="http://schema.org/OutOfStock">';
+				$sideQuantity.='<h5 class="quantity">Out of Stock</h5>';
+			}else$sideQuantity.='<h5>Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</h5>';
+			$sideTemp=str_replace('<print content="quantity">',$sideQuantity,$sideTemp);
+		}else{
+			$sideTemp=str_replace('<print content="quantity">','',$sideTemp);
+
+		}
+		if($r['contentType']=='service'){
+			if($r['bookable']==1){
+				if(stristr($sideTemp,'<service>')){
+					$sideTemp=str_replace('<print content=bookservice>',URL.'bookings/'.$r['id'],$sideTemp);
+					$sideTemp=str_replace('<service>','',$sideTemp);
+					$sideTemp=str_replace('</service>','',$sideTemp);
+					$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
+				}
+			}else$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
+		}else$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
+		if($r['contentType']=='inventory'){
+			if(stristr($sideTemp,'<inventory>')){
+				$sideTemp=str_replace('<inventory>','',$sideTemp);
+				$sideTemp=str_replace('</inventory>','',$sideTemp);
+				$sideTemp=preg_replace('~<service>.*?<\/service>~is','',$sideTemp,1);
+			}elseif(stristr($sideTemp,'<inventory>')&&$r['contentType']!='inventory')$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
+		}else$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
+		$sideTemp=str_replace('<controls>','',$sideTemp);
+		$sideTemp=str_replace('</controls>','',$sideTemp);
+	}else
+		$sideTemp=preg_replace('/<controls>([\w\W]*?)<\/controls>/','',$sideTemp,1);
 	preg_match('/<item>([\w\W]*?)<\/item>/',$sideTemp,$matches);
 	$outside=$matches[1];
 	$show='';

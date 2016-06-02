@@ -33,10 +33,9 @@ time{display:block}
 .contentType div{position:relative;top:0;left:0;color:#fff;text-transform:capitalize;text-shadow:1px 1px 5px #000,0 0 10px #000,0 0 20px #000;white-space:nowrap;font-weight:700;font-size:9px}
 .contentType:empty{display:none}
 .notes{height:100px}
-.price{position:absolute;display:block;top:0;right:0;padding:10px 15px 0 15px;color:#fff;text-shadow:1px 1px 5px #000,0 0 10px #000,0 0 20px #000}
-.price:before{position:absolute;top:0;left:5px;content:'Price:';font-size:14px}
-.price .btn{color:inherit;text-shadow:none}
-article,.thumbnail{position:relative;margin-bottom:20px;padding:0}
+.price{position:absolute;display:block;top:0;right:0;padding:0 15px;color:#fff;text-shadow:1px 1px 5px #000,0 0 10px #000,0 0 20px #000}
+article,
+.thumbnail{position:relative;margin-bottom:20px;padding:0}
 .cover{width:100%}
 article{width:100%}
 .thumbnail .cover{height:150px;overflow:hidden}
@@ -60,7 +59,20 @@ figure{display:inline-block}
 figure figcaption{display:inline-block;width:100%;background-color:#dedede}
 #comments{margin:20px}
 main{display:inline-table}
+.side_menu{margin-top:20px}
 .side_menu_gallery{max-width:50px;max-height:50px}
+.price_side .side_price,
+.side_price{position:relative;width:100%;min-height:70px}
+.price_side .side_price .cost,
+.side_price .cost,
+.price_side .side_price .quantity,
+.side_price .quantity{position:absolute;width:70%}
+.price_side .side_price .cost,
+.side_price .cost{left:10px;font-size:34px;font-weight:700;color:#000}
+.price_side .side_price .quantity,
+.side_price .quantity{right:10px;width:30%;text-align:center;font-size:16px}
+.price_side .side_price .btn,
+.side_price .btn{margin:10px auto 10px auto}
 .list-group-item.link{padding:0 5px}
 .list-group-item-text .time{font-size:8px;color:#888}
 #cart:empty{display:none}
@@ -71,4 +83,24 @@ main{display:inline-table}
 .theme a .cms{color:#000}
 .jumbotron{padding:0;margin-top:-75px;margin-bottom:75px}
 .jumbotron img{width:100%}
-#content .jumbotron{margin-top:0}
+#content{margin-top:20px;padding:20px}
+#content .jumbotron{margin-top:-20px}
+@media(min-width:320px){
+    #content{margin-top:0}
+    .price_side{display:none}
+    .price_content{display:block;width:100%}
+}
+@media(min-width:480px){
+    .price_content{width:50%;margin:0 0 10px 20px}
+}
+@media(min-width:600px){}
+@media(min-width:768px){
+    #content{margin-top:20px}
+    .price_side{display:block}
+    .price_content{display:none}
+}
+@media(min-width:800px){}
+@media(min-width:1024px){
+    .price_side{display:block}
+    .price_content{display:none}
+}

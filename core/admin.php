@@ -276,6 +276,7 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
         <script src="core/js/fullcalendar.min.js"></script>
         <script>/*<![CDATA[*/
 <?php   if($args[0]!='add'||$args[0]!='edit'){?>
+            var $contextMenu = $("#contextMenu");
             $('#calendar').fullCalendar({
                 header:{
                     left:'prev,next',

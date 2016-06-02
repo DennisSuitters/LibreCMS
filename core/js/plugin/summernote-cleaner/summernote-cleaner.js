@@ -62,8 +62,8 @@
                             unsaved=true;
                             var text=cleanText($(options.element).text());
                             $(options.element).summernote("code",text);
-                            $('.note-resizebar').append('<div id="cleanerAlert" style="position:absolute;bottom:0;left:2px;font-size:10px;">'+lang.cleaner.notification+'</div>');
-                            setTimeout(function(){$('#cleanerAlert').remove();},options.time);
+                            $('.note-resizebar').append('<div class="cleanerAlert" style="position:absolute;bottom:0;left:2px;font-size:10px;">'+lang.cleaner.notification+'</div>');
+                            setTimeout(function(){$('.cleanerAlert').remove();},options.time);
                         }
                     });
                     return button.render();
@@ -73,12 +73,18 @@
                 'summernote.paste':function(we,e){
                     if(options.action=='both'||options.action=='paste'){
                         e.preventDefault();
-                        var text=e.originalEvent.clipboardData.getData('text/plain');
+                        var ua=window.navigator.userAgent;
+                        var msie=ua.indexOf("MSIE ");
+                        if (msie>0||!!navigator.userAgent.match(/Trident.*rv\:11\./)){
+                            var text=window.clipboardData.getData("Text");
+                        }else{
+                            var text=e.originalEvent.clipboardData.getData('text/plain');
+                        }
                         var text=cleanText(text);
                         var $dom=$('<div class="pasted"/>').html(text);
                         $note.summernote('insertNode',$dom[0]);
-                        $('.note-resizebar').append('<div id="cleanerAlert" style="position:absolute;bottom:0;left:2px;font-size:10px;">'+lang.cleaner.notification+'</div>');
-                        setTimeout(function(){$('#cleanerAlert').remove();},options.time);
+                        $('.note-resizebar').append('<div class="cleanerAlert" style="position:absolute;bottom:0;left:2px;font-size:10px;">'+lang.cleaner.notification+'</div>');
+                        setTimeout(function(){$('.cleanerAlert').remove();},options.time);
                     }
                 }
             }

@@ -112,17 +112,25 @@ if($ii>0){
 			$item=str_replace('<print content="title">','<span class="hidden">'.$r['title'].'</span>',$item);
 		else
 			$item=str_replace('<print content="title">',$r['title'],$item);
-		if($r['caption']!='')
-			$item=str_replace('<print content="caption">',$r['caption'],$item);
-		elseif($r['notes']!='')
-			$item=str_replace('<print content="caption">',strip_tags($r['notes']),$item);
-
-		else
-			$item=str_replace('<print content="caption">','',$item);
-		if($r['notes']!='')
-			$item=str_replace('<print content="notes">',strip_tags($r['notes']),$item);
-		else
-			$item=str_replace('<print content="notes">','',$item);
+		if($r['contentType']=='carousel')
+			$item=preg_replace('~<caption>.*?<\/caption>~is',$r['caption'],$item,1);
+		else{
+			$r['notes']=strip_tags($r['notes']);
+			$pos=strpos($r['notes'],' ',300);
+			$r['notes']=substr($r['notes'],0,$pos).'...';
+			if($r['caption']!='')
+				$item=str_replace('<print content="caption">',$r['caption'],$item);
+			elseif($r['notes']!=''){
+				$item=str_replace('<print content="caption">',strip_tags($r['notes']),$item);
+			}else
+				$item=str_replace('<print content="caption">','',$item);
+			if($r['notes']!=''){
+				$item=str_replace('<print content="notes">',strip_tags($r['notes']),$item);
+			}else
+				$item=str_replace('<print content="notes">','',$item);
+			$item=str_replace('<caption>','',$item);
+			$item=str_replace('</caption>','',$item);
+		}
 		$items.=$item;
 		$i++;
 		$indicators.=$indicatorItem;

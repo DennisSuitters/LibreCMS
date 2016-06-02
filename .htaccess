@@ -18,8 +18,8 @@
 	RewriteRule ^(.*) index.php?url=$1 [L,QSA]
 </IfModule>
 # Block Access to .ini, .db, .sql, .htaccess Files
-#<FilesMatch "(^.*\.([Ii][Nn][Ii]|[Dd][Bb]|[Ss][Qq][Ll]|[Hh][Tt][Aa])|~)$">
-#    Order allow,deny
-#    Deny from all
-#    Satisfy All
-#</FilesMatch>
+<FilesMatch "(^.*\.([Ii][Nn][Ii]|[Dd][Bb]|[Ss][Qq][Ll]|[Hh][Tt][Aa])|~)$">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</FilesMatch>

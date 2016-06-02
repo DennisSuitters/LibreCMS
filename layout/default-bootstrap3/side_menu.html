@@ -1,4 +1,20 @@
-<nav class="col-xs-12 col-md-4" role="complementary">
+<nav class="side_menu col-xs-12 col-sm-4" role="complementary">
+	<controls>
+		<div class="list-group price_side">
+			<div class="list-group-item" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+				<div class="side_price">
+					<print content="cost">
+					<print content="quantity">
+				</div>
+				<service>
+					<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>">Book Service</a>
+				</service>
+				<inventory>
+					<button class="btn btn-success btn-block" onclick="$('#cart').load('core/add_cart.php?id=<print content=id>');">Add to Cart</button>
+				</inventory>
+			</div>
+		</div>
+	</controls>
 	<item>
 		<settings items="all" contenttype="current">
 		<div class="list-group">
