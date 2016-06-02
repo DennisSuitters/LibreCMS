@@ -1,6 +1,14 @@
 ![LibreCMS](core/images/librecms.png)  
 a **Free** Open Source Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/StudioJunkyard/LibreICONS). Built to take advantage of HTML5 and CSS3, and injects necessary SEO attributes that fit in with Google's recommendations, and Micro-formats to help with Search Engine ranking.
 
+### FAQ
+- Why no Version Numbers?
+- - Some people have asked why we don't use a Versioning System of some sorts. Well, as this is an ever changing and growing project, rather than having version numbers, we're going to be doing releases instead. (We're actually pretty close to release 1). The other reason, is due to my laziness. I originally was updating version numbers to files, but laziness, and neglectfulness got the better of me, so I just stopped doing that completely.
+- Why are some files Minified (or Uglified as some call it)?
+- - Files that are minified, are considered to be done with, or complete. Others, are still in the process of being fixed, edited, added to, or modified, but will eventually also be minified. The reason we do this, isn't to make it harder for contributors, but as we're the main users of LibreCMS, minifying the source helps to minimise the footprint. And despite what others think, and claim to have tested, which we have tested. Minifying the source can help improve the speed, and also the download time for outputted data.
+- Why is English the only Language available?
+- - LibreCMS was, and is targetted towards English Speaking Australian Business's, and Small Business's. We may in the future decide, or if someone wants to add Language support, then we may do that.
+
 ### Features
 - Installer when first Opened.
 - Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs.
@@ -50,6 +58,7 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 - Windows 7 + WAMP + PHP 5.5 + MySQL
 
 ### TODO:
+- Fix the Installer.
 - Add Content to the Wiki Pages on how to use LibreCMS and how to create Templates.
 - Once at a Stable Platform, create a release candidate, and create a proper gh-page site.
 - Create Free Templates.
