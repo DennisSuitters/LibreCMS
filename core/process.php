@@ -117,4 +117,14 @@ if(stristr($head,'<print googleVerification>'))
     $head=str_replace('<print googleVerification>',$config['ga_verification'],$head);
 if(stristr($head,'<!-- Google Analytics -->'))
     $head=str_replace('<!-- Google Analytics -->','<script>/*<![CDATA[*/'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'/*]]>*/</script>',$head);
+if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme'])){
+    $doc=new DOMDocument;
+    @$doc->loadHTML($content); // load the HTML data
+    foreach($doc->getElementsByTagName('a')as$link){
+        $link->setAttribute('href',$link->getAttribute('href').'?theme='.$_GET['theme']);
+    }
+    $content=preg_replace('/^<!DOCTYPE.+?>/','',str_replace(array('<html>','</html>','<body>','</body>'),array('','','',''),$doc->saveHTML())).'</body></html>';
+    $warning='<div style="width:100%;height:auto;color:#8a6d3b;background-color:#fcf8e3;font-size:14px;padding:15px;border:1px solid #faebcc;border-radius:4px">Note: Your are viewing this website in "Theme Proof Mode". Content Displayed and Display Menu Items are for representation only.</div>';
+    $content=$warning.$content;
+}
 print$head.$content;
