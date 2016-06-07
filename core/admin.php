@@ -296,12 +296,10 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
                     {
                         id:'<?php echo$r['id'];?>',
                         title:'<?php if($br['contentType']=='events'){?>Event: <?php echo$br['title'];}elseif($br['contentType']!=''){echo ucfirst(rtrim($br['contentType'],'s')).': '.$br['title'];}else echo$r['name'];?>',
-                        start:'<?php if($br['contentType']=='events'){echo date("Y-m-d H:i:s",$r['ti']);}else{echo date("Y-m-d H:i:s",$r['tis']);}?>',
-<?php				if($br['contentType']=='services'){
-            if($r['tie']>$r['tis']){
-        echo'End: '.date("Y-m-d H:i:s",$r['tie']).'\',';
-            }
-        }?>
+                        start:'<?php echo date("Y-m-d H:i:s",$r['tis']);?>',
+<?php            if($r['tie']>$r['tis']){
+        echo'eventend: \''.date("Y-m-d H:i:s",$r['tie']).'\',';
+            }?>
                         allDay:false,
                         color:'<?php if($r['status']=='confirmed')echo'#5cb85c';else echo'#d9534f';?>',
                         description:'<?php if($r['business'])echo'Business: '.$r['business'].'<br>';
@@ -317,10 +315,17 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
                     if(event.status=="unconfirmed")layer+='<span id="cbut'+event.id+'" class="btn btn-default btn-xs"><?php svg('approve');?></span> ';
                     layer+='<span id="edbut'+event.id+'" class="btn btn-default btn-xs"><?php svg('edit');?></span> <span id="delbut'+event.id+'" class="btn btn-default trash btn-xs"><?php svg('trash');?></span></div>';
                     var content='Start: '+$.fullCalendar.moment(event.start).format('HH:mm');
-                    if(event.end>event.start)content+='<br>End: '+$.fullCalendar.moment(event.end).format('HH:mm');
+<?php               if($r['tie']>$r['tis']){?>
+                    content+='<br>End: '+$.fullCalendar.moment(event.eventend).format('HH:mm');
+<?php               }?>
                     if(event.description!='')content+='<br>'+event.description;
-                    $(this).append(layer);
                     var el=$(this);
+                    el.append(layer);
+                    if(event.eventend!=''||event.eventend!=null||event.eventend!=0){
+                        var eventEndClass='eventEnd';
+                        if(event.status=='confirmed')eventEndClass='eventEndConfirmed';
+                        $('[data-date="'+moment(event.eventend).format('YYYY-MM-DD')+'"]').addClass(eventEndClass);
+                    }
                     $("#cbut"+event.id).click(function(){
                         $("#cbut"+event.id).remove();
                         $("#events-layer").remove();
@@ -334,7 +339,6 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
                         window.top.window.purge(event.id,"content");
                         window.top.window.$(el).remove();
                         window.top.window.$(".popover").remove();
-
                     });
                     $("#edbut"+event.id).click(function(){
                         window.location="<?php echo$settings['system']['admin'];?>/bookings/edit/"+event.id;
@@ -345,11 +349,14 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
                         html:true,
                         container:"body",
                         content:content,
-                    }).popover("show")
+                    }).popover("show");
                 },
                 eventMouseout:function(event){
                     $("#events-layer").remove();
                     $(this).not(event).popover("hide")
+                    var eventEndClass='eventEnd';
+                    if(event.status=='confirmed')eventEndClass='eventEndConfirmed';
+                    $('[data-date="'+moment(event.eventend).format('YYYY-MM-DD')+'"]').removeClass(eventEndClass);
                 },
                 dayClick:function(date,jsEvent,view){
                     if(view.name=='month'||view.name=='basicWeek'){

@@ -220,8 +220,47 @@ if($show=='item'){
             <div id="d26" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials')echo' hidden';?>">
                 <fieldset lass="control-fieldset"><legend class="control-legend">Images</legend>
                     <div id="d27" class="form-group"><label for="file" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="fileURL" class="form-control textinput" value="<?php echo$r['fileURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fileURL" placeholder="Enter a URL..."><div class="input-group-btn"><button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><?php svg('trash');?></button></div></div></div>
-                    <div id="d28" class="form-group clearfix"><div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right"><input id="file" type="text" class="form-control" value="<?php echo$r['file'];?>" readonly><div class="input-group-btn"><button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','file');"><?php svg('browse-media');?></button></div><div class="input-group-addon img"><?php if($r['file']!='')echo'<a href="'.$r['file'].'" data-featherlight="image"><img id="fileimage" src="'.$r['file'].'"></a>';elseif($r['fileURL']!=''&&file_exists('media'.DS.$r['fileURL']))echo'<a href="media/'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="media/'.$r['fileURL'].'"></a>';elseif($r['fileURL']!='')echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="'.$r['fileURL'].'"></a>';else echo'<img id="fileimage" src="core/images/noimage.jpg">';?></div><div class="input-group-btn"><button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('trash');?></button></div></div></div>
-                    <div id="d29" class="form-group clearfix"><label for="thumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Thumbnail</label><div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right"><input id="thumb" type="text" class="form-control" value="<?php echo$r['thumb'];?>" readonly><div class="input-group-btn"><button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','thumb');"><?php svg('browse-media');?></button></div><div class="input-group-addon img"><?php if($r['thumb']!='')echo'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="media/'.$r['thumb'].'"></a>';else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?></div><div class="input-group-btn"><button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('trash');?></button></div></div><div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div></div>
+                    <div id="d28" class="form-group clearfix">
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
+                            <input id="file" type="text" class="form-control" value="<?php echo$r['file'];?>" readonly>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','file');"><?php svg('browse-media');?></button>
+                            </div>
+                            <div class="input-group-addon img">
+<?php
+$rfile=basename($r['file']);
+if($r['file']!=''&&file_exists('media'.DS.$rfile))
+    echo'<a href="media/'.$r['file'].'" data-featherlight="image"><img id="fileimage" src="media/'.$r['file'].'"></a>';
+elseif($r['fileURL']!='')
+    echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="'.$r['fileURL'].'"></a>';
+else
+    echo'<img id="fileimage" src="core/images/noimage.jpg">';?>
+                            </div>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('trash');?></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="d29" class="form-group clearfix">
+                        <label for="thumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Thumbnail</label>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
+                            <input id="thumb" type="text" class="form-control" value="<?php echo$r['thumb'];?>" readonly>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','thumb');"><?php svg('browse-media');?></button>
+                            </div>
+                            <div class="input-group-addon img">
+<?php
+$rthumb=basename($r['thumb']);
+if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))
+    echo'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="'.$r['thumb'].'"></a>';
+else
+    echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
+                            </div>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('trash');?></button>
+                            </div>
+                        </div>
+                        <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div></div>
                     <fieldset id="d30" class="control-fieldset"><legend class="control-legend">Exif Information</legend>
                         <div id="d31" class="form-group"><label for="exifFilename" class="control-label col-xs-5 col-sm-3 col-lg-2">Original Filename</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" class="form-control" value="<?php echo$r['exifFilename'];?>" placeholder="Original Filename..." readonly></div></div>
                         <div id="d32" class="form-group"><label for="exifCamera" class="control-label col-xs-5 col-sm-3 col-lg-2">Camera</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifCamera" class="form-control textinput" value="<?php echo$r['exifCamera'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifCamera" placeholder="Enter Camera Brand..."></div></div>

@@ -10,6 +10,7 @@
 		<settings items="4" contenttype="all">
 		<items>
 			<article class="col-xs-12 col-sm-6 col-md-3 col-lg-3" itemscope itemtype="http://schema.org/<print content=schemaType>">
+				<print content="title" class="text-center" container="h4">
 				<div class="thumbnail">
 					<div class="contentType"><print content="contentType" container="div"></div>
 					<div class="cover">
@@ -21,10 +22,7 @@
 						</aside>
 					</cost>
 					<div class="caption">
-						<print content="title" class="text-center" container="h4">
-						<div>
-							<print content="caption" length="150">
-						</div>
+						<print content="caption" length="150" container="p">
 						<div class="text-right">
 							<controls>
 								<view>
@@ -34,7 +32,7 @@
 									<a class="btn btn-success" href="bookings/<print content=bookservice>">Book Service</a>
 								</service>
 								<inventory>
-									<button class="btn btn-success" onclick="$('#cart').load('core/add_cart.php?id=<print content=id>');">Add to Cart</button>
+									<button class="addCart btn btn-success" data-id="<print content=id>">Add to Cart</button>
 								</inventory>
 							</controls>
 						</div>

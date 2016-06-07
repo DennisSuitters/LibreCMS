@@ -14,7 +14,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
     $s2->execute(array(':contentType'=>$r['contentType']));
     while($r2=$s2->fetch(PDO::FETCH_ASSOC)){?>
     <url>
-        <loc><?php echo URL.$r['contentType'].'/'.str_replace(' ','-',$r2['title']);?></loc>
+        <loc><?php echo URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r2['title']));?></loc>
         <changefreq>daily</changefreq>
         <priority>0.85</priority>
     </url>

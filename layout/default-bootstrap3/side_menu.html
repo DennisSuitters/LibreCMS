@@ -10,7 +10,7 @@
 					<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>">Book Service</a>
 				</service>
 				<inventory>
-					<button class="btn btn-success btn-block" onclick="$('#cart').load('core/add_cart.php?id=<print content=id>');">Add to Cart</button>
+					<button class="addCart btn btn-success btn-block" data-id="<print content=id>">Add to Cart</button>
 				</inventory>
 			</div>
 		</div>
@@ -28,7 +28,7 @@
 					<h6 class="list-group-item-heading" itemprop="headline"><print content="title"></h6>
 					<meta itemprop="datePublished" content="<print metaDate>"/>
 					<p class="list-group-item-text text-muted">
-						<time><small><print time></small></time>
+						<small><time datetime="<print metaDate>"><print time></time></small>
 						<small><small><print content="caption"></small></small>
 					</p>
 				</a>

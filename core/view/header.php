@@ -81,9 +81,11 @@ if(stristr($html,'<address')){
 	$html=str_replace('<print config="country">',$country,$html);
 	if($config['email']!='')$email='<a href="contactus/">'.$config['email'].'</a>';else$email='';
 	$html=str_replace('<print config="email">',$email,$html);
-	if($config['phone']!='')$phone='<a href="tel:'.$config['phone'].'">'.$config['phone'].'</a>';else$phone='';
+	if($config['phone']!='')$phone='<a href="tel:'.str_replace(' ','',$config['phone']).'">'.$config['phone'].'</a>';else$phone='';
+	$html=str_replace('<print config=phone>',$phone,$html);
 	$html=str_replace('<print config="phone">',$phone,$html);
-	if($config['mobile']!='')$mobile='<span class="mobile"><a href="tel:'.$config['mobile'].'">'.$config['mobile'].'</a></span>';else$mobile='';
+	if($config['mobile']!='')$mobile='<span class="mobile"><a href="tel:'.str_replace(' ','',$config['mobile']).'">'.$config['mobile'].'</a></span>';else$mobile='';
+	$html=str_replace('<print config=mobile>',$mobile,$html);
 	$html=str_replace('<print config="mobile">',$mobile,$html);
 }
 $content.=$html;

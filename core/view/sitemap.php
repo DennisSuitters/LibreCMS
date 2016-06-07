@@ -6,7 +6,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
 	$ss=$db->prepare("SELECT DISTINCT id,title FROM content WHERE contentType=:content_type AND title!='' AND status='published' AND internal!='1' ORDER BY contentType ASC, ord ASC, ti DESC");
 	$ss->execute(array(':content_type'=>$r['contentType']));
 	while($rs=$ss->fetch(PDO::FETCH_ASSOC)){
-		$content.='<a href="'.$r['contentType'].'/'.str_replace(' ','-',$rs['title']).'">'.$rs['title'].'</a><br>';
+		$content.='<a href="'.$r['contentType'].'/'.urlencode(str_replace(' ','-',$rs['title'])).'">'.$rs['title'].'</a><br>';
 	}
 	$content.='</div></div>';
 }

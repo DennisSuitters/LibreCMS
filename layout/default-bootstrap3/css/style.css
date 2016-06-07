@@ -57,7 +57,8 @@ article,
 article{width:100%}
 .thumbnail .cover{height:150px;overflow:hidden}
 .thumbnail img{width:100%}
-article .caption{text-align:justify}
+article h4{position:absolute;width:100%;top:150px;right:0;left:0;text-align:center;z-index:+1}
+article .caption{margin-top:20px;text-align:justify}
 .article{margin:0 5px}
 article .vcard{font-size:12px}
 article .vcard h4{display:none}

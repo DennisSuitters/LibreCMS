@@ -7,6 +7,7 @@
 	<main id="content" class="col-xs-12 col-sm-8">
 		<item>
 			<article class="article" itemscope itemtype="http://schema.org/<print content=schemaType>">
+				<print content="title" container="h3">
 				<print content="image">
 				<div class="caption">
 					<cost>
@@ -21,13 +22,12 @@
 										<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>">Book Service</a>
 									</service>
 									<inventory>
-										<button class="btn btn-success btn-block" onclick="$('#cart').load('core/add_cart.php?id=<print content=id>');">Add to Cart</button>
+										<button class="addCart btn btn-success btn-block" data-cartid="<print content=id>">Add to Cart</button>
 									</inventory>
 								</div>
 							</div>
 						</div>
 					</cost>
-					<print content="title" container="h3">
 					<print content="dateCreated" userrank="399" class="text-muted" container="h6" leadingtext="Created: ">
 					<print content="datePublished" class="text-muted" container="h6" leadingtext="Published: ">
 					<print content="dateEdited" userrank="399" class="text-muted" container="h6" leadingtext="Edited: ">
@@ -50,6 +50,7 @@
 		<settings itemCount="10">
 		<items>
 			<article class="col-xs-12 col-sm-6 col-md-6 col-lg-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
+				<print content="title" class="text-center" container="h4">
 				<div class="thumbnail articles">
 					<div class="cover">
 						<print content="thumb">
@@ -60,13 +61,12 @@
 						</aside>
 					</cost>
 					<div class="caption">
-						<print content="title" class="text-center" container="h4">
 						<print content="dateCreated" userrank="399" class="text-muted" container="h6" leadingtext="Created: ">
 						<print content="datePublished" class="text-muted" container="h6" leadingtext="Published: ">
 						<print content="dateEdited" userrank="399" class="text-muted" container="h6" leadingtext="Edited: ">
 						<print content="dateEvent" class="text-muted" container="h6" leadingtext="Event Date: ">
 						<print content="categories" class="text-muted" container="h6" leadingtext="Categories: ">
-						<print content="caption" length="200">
+						<print content="caption" length="200" container="p">
 						<div class="text-right">
 							<controls>
 								<view>
@@ -76,7 +76,7 @@
 									<a class="btn btn-success" href="<print content=bookservice>">Book Service</a>
 								</service>
 								<inventory>
-									<button class="btn btn-success" onclick="$('#cart').load('core/add_cart.php?id=<print content=id>');">Add to Cart</button>
+									<button class="addCart btn btn-success" data-cartid="<print content=id>">Add to Cart</button>
 								</inventory>
 							</controls>
 						</div>

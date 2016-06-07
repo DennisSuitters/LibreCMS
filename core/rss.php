@@ -1,6 +1,6 @@
 <?php
 header('Content-Type:application/rss+xml;charset=ISO-8859-1');
-include'db.php';
+require'db.php';
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 if($args[0]==''||$args[0]=='index')$args[0]='%_%';
 $ti=time();?>
@@ -54,7 +54,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
         <item>
             <title><?php echo$r['title'].' - '.ucfirst($r['contentType']).' - '.$config['seoTitle'];?></title>
             <description><?php if($r['caption']==""){echo strip_tags($r['notes']);}else{echo$r['caption'];}?></description>
-            <link><?php echo URL.$r['contentType'].'/'.str_replace(' ','-',$r['title']);?></link>
+            <link><?php echo URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title']));?></link>
             <pubDate><?php echo strftime("%a, %d %b %Y %T %Z",$r['ti']);?></pubDate>
             <enclosure url="<?php echo$img;?>" length="<?php echo$length;?>" type="<?php echo$filetype;?>"/>
         </item>

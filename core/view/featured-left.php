@@ -7,7 +7,7 @@ if(stristr($html,'<categories')){
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$items=$cat;
-		$items=str_replace('<print content=link>',URL.'inventory/'.str_replace(' ','-',$r['category_1']),$items);
+		$items=str_replace('<print content=link>',URL.'inventory/'.urlencode(str_replace(' ','-',$r['category_1'])),$items);
         $items=str_replace('<print content="category_1">',$r['category_1'],$items);
 		$output.=$items;
 	}

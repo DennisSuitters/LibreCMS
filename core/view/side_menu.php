@@ -5,11 +5,10 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		$sideCost='';
 		if(is_numeric($r['cost'])&&$r['cost']!=0){
 			$sideCost='<meta itemprop="currency" content="AUD">';
-			$sideCost.='<span itemprop="price" content="'.$r['cost'].'">';
-			$sideCost.='<h4 class="cost" itemprop="price">';
+			$sideCost.='<span class="cost" itemprop="price" content="'.$r['cost'].'">';
 			if(is_numeric($r['cost']))$sideCost.='&#36;';
-			$sideCost.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</h4>';
-		}else$sideCost='<h4>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</h4>';
+			$sideCost.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
+		}else$sideCost='<span>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
 		$sideTemp=str_replace('<print content="cost">',$sideCost,$sideTemp);
 		$sideTemp=str_replace('<print content=id>',$r['id'],$sideTemp);
 
@@ -17,11 +16,11 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		if($r['contentType']=='inventory'){
 			if(is_numeric($r['quantity'])&&$r['quantity']!=0){
 				$sideQuantity='<link itemprop="availability" href="http://schema.org/InStock">';
-				$sideQuantity.='<h5 class="quantity">Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</h5>';
+				$sideQuantity.='<div class="quantity">Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</div>';
 			}elseif(is_numeric($r['quantity'])&&$r['quantity']==0){
 				$sideQuantity='<link itemprop="availability" href="http://schema.org/OutOfStock">';
-				$sideQuantity.='<h5 class="quantity">Out of Stock</h5>';
-			}else$sideQuantity.='<h5>Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</h5>';
+				$sideQuantity.='<div class="quantity">Out of Stock</div>';
+			}else$sideQuantity.='<div>Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</div>';
 			$sideTemp=str_replace('<print content="quantity">',$sideQuantity,$sideTemp);
 		}else{
 			$sideTemp=str_replace('<print content="quantity">','',$sideTemp);
@@ -37,7 +36,7 @@ if(file_exists(THEME.DS.'side_menu.html')){
 				}
 			}else$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
 		}else$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
-		if($r['contentType']=='inventory'){
+		if($r['contentType']=='inventory'&&is_numeric($r['cost'])){
 			if(stristr($sideTemp,'<inventory>')){
 				$sideTemp=str_replace('<inventory>','',$sideTemp);
 				$sideTemp=str_replace('</inventory>','',$sideTemp);
@@ -83,7 +82,7 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		}else$inside=preg_replace('/<media>([\w\W]*?)<\/media>/','',$insides,1);
 		$items=$inside;
 		$items=str_replace('<print content=thumb>',URL.'media/'.$r['thumb'],$items);
-		$items=str_replace('<print link>',URL.$r['contentType'].'/'.str_replace(' ','-',$r['title']),$items);
+		$items=str_replace('<print link>',URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$items);
 		$items=str_replace('<print content=schematype>',$r['schemaType'],$items);
 		$items=str_replace('<print metaDate',date('Y-m-d',$r['ti']),$items);
 		$items=str_replace('<print content="title">',$r['title'],$items);

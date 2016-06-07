@@ -75,25 +75,24 @@ foreach($tags as$tag){
 			break;
 		case'categories':
 			if($r['category_1']!=''){
-				$parsing.=' <a href="'.$view.'/'.str_replace(' ','-',htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8')).'">'.htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8').'</a>';
-				if($r['category_2']!='')$parsing.=' / <a href="'.$view.'/'.str_replace(' ','-',htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8').'/'.htmlspecialchars($r['category_2'],ENT_QUOTES,'UTF-8')).'">'.htmlspecialchars($r['category_2'],ENT_QUOTES,'UTF-8').'</a>';
+				$parsing.=' <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'">'.htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8').'</a>';
+				if($r['category_2']!='')$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'">'.htmlspecialchars($r['category_2'],ENT_QUOTES,'UTF-8').'</a>';
 			}else$container=$parsing='';
 			break;
 		case'tags':
 			if($r['tags']!=''){
 				$tags=explode(',',$r['tags']);
-				foreach($tags as$tag)$parsing.='<a href="search/'.htmlspecialchars(str_replace(' ','-',$tag),ENT_QUOTES,'UTF-8').'">#'.htmlspecialchars($tag,ENT_QUOTES,'UTF-8').'</a> ';
+				foreach($tags as$tag)$parsing.='<a href="search/'.urlencode(str_replace(' ','-',$tag)).'">#'.htmlspecialchars($tag,ENT_QUOTES,'UTF-8').'</a> ';
 			}else$container=$parsing='';
 			break;
 		case'cost':
 			if($r['contentType']=='inventory'||$r['contentType']=='service'){
 				if($r['options']{0}==1||$r['cost']!=''){
 					if(is_numeric($r['cost'])&&$r['cost']!=0){
-						$parsing.='<meta itemprop="currency" content="AUD"><span itemprop="price" content="'.$r['cost'].'">';
-						$parsing.='<h4 class="cost" itemprop="price">';
+						$parsing.='<meta itemprop="currency" content="AUD"><span class="cost" itemprop="price" content="'.$r['cost'].'">';
 						if(is_numeric($r['cost']))$parsing.='&#36;';
-						$parsing.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</h4>';
-					}else$parsing.='<h4 class="cost">'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</h4>';
+						$parsing.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
+					}else$parsing.='<span class="cost">'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
 					if($r['contentType']=='service'&&$r['bookable']==1){
 						if(stristr($parse,'<service>')){
 							$parse=str_replace('<service>','',$parse);
@@ -102,7 +101,7 @@ foreach($tags as$tag){
 						}elseif(stristr($parse,'<service>')&&$r['contentType']!='service')
 							$parse=preg_replace('~<service>.*?<\/service>~is','',$parse,1);
 					}else$parse=preg_replace('~<service>.*?<\/service>~is','',$parse,1);
-					if($r['contentType']=='inventory'){
+					if($r['contentType']=='inventory'&&is_numeric($r['cost'])){
 						if(stristr($parse,'<inventory>')){
 							$parse=str_replace('<inventory>','',$parse);
 							$parse=str_replace('</inventory>','',$parse);
@@ -184,7 +183,7 @@ foreach($tags as$tag){
 					$parsing.=THEME.DS.'images'.DS.'noavatar.jpg';
 				$parsing.='" alt="'.$rc['name'].'"';
 			}
-			$parsing.='">';
+			$parsing.='>';
 			break;
 		case'name':
 			if($attribute=='author'){

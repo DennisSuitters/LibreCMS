@@ -1,4 +1,5 @@
-<?php require'core'.DS.'db.php';
+<?php
+require'core'.DS.'db.php';
 $config=$this->getconfig($db);
 $theme=parse_ini_file(THEME.DS.'theme.ini',TRUE);
 $ti=time();
@@ -23,13 +24,11 @@ if($_SESSION['rank']>699)$status="%";else$status="published";
 $content='';
 if($config['maintenance']{0}==1&&(isset($_SESSION['rank'])&&$_SESSION['rank']<400)){
     if(file_exists(THEME.DS.'maintenance.html'))$template=file_get_contents(THEME.DS.'maintenance.html');else{
-        include'core'.DS.'layout'.DS.'maintenance.php';
+        require'core'.DS.'layout'.DS.'maintenance.php';
         die();
     }
-}elseif(file_exists(THEME.DS.$view.'.html'))
-    $template=file_get_contents(THEME.DS.$view.'.html');
-elseif(file_exists(THEME.DS.'default.html'))
-    $template=file_get_contents(THEME.DS.'default.html');
+}elseif(file_exists(THEME.DS.$view.'.html'))$template=file_get_contents(THEME.DS.$view.'.html');
+elseif(file_exists(THEME.DS.'default.html'))$template=file_get_contents(THEME.DS.'default.html');
 else$template=file_get_contents(THEME.DS.'content.html');
 $newDom=new DOMDocument();
 @$newDom->loadHTML($template);
@@ -39,10 +38,8 @@ foreach($tag as$tag1){
     $inbed=$tag1->getAttribute('inbed');
     if($include!=''){
         $include=rtrim($include,'.html');
-        if(file_exists(THEME.DS.$include.'.html'))
-            $html=file_get_contents(THEME.DS.$include.'.html');
-        else
-            $html='';
+        if(file_exists(THEME.DS.$include.'.html'))$html=file_get_contents(THEME.DS.$include.'.html');
+        else$html='';
         require'view'.DS.$include.'.php';
         $req=$include;
     }
@@ -57,74 +54,31 @@ foreach($tag as$tag1){
     }
 }
 if(stristr($head,'<print meta=seoTitle>')){
-    if($view=='index')
-        $seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
-        else{
-            if(!isset($seoTitle)||$seoTitle=='')$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'].' - '.$config['seoTitle'];
-        }
-        $head=str_replace('<print meta=seoTitle>',$seoTitle,$head);
+    if($view=='index')$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
+    else{
+        if(!isset($seoTitle)||$seoTitle=='')$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'].' - '.$config['seoTitle'];
+    }
+    $head=str_replace('<print meta=seoTitle>',$seoTitle,$head);
 }
 if(stristr($head,'<print meta=seoCaption>')){
-    if(!isset($seoCaption)||$seoCaption=='')
-        $seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
-    if(!isset($seoDescription)||$seoDescription=='')
-        $seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
-    if($view=='index'&&$seoDescription!='')
-        $head=str_replace('<print meta=seoCaption>',$seoDescription,$head);
-    else
-        $head=str_replace('<print meta=seoCaption>',$seoCaption,$head);
+    if(!isset($seoCaption)||$seoCaption=='')$seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
+    if(!isset($seoDescription)||$seoDescription=='')$seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
+    if($view=='index'&&$seoDescription!='')$head=str_replace('<print meta=seoCaption>',$seoDescription,$head);
+    else$head=str_replace('<print meta=seoCaption>',$seoCaption,$head);
 }
-if(stristr($head,'<print meta=seoKeywords>')){
-    if(isset($args[1])&&$args[1]!=''&&isset($r['keywords']))
-        $seoKeywords=$r['keywords'];
-    elseif(!isset($seoKeywords)||$seoKeywords=='')
-        $seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
-    $head=str_replace('<print meta=seoKeywords>',$seoKeywords,$head);
-}
-if(stristr($head,'<print meta=dateAtom>')){
-    if(!isset($contentTime)){
-        if($page['eti']>$config['ti'])
-            $contentTime=$page['eti'];
-        else
-            $contentTime=$config['ti'];
-    }
-    $head=str_replace('<print meta=dateAtom>',date(DATE_ATOM,$contentTime),$head);
-}
+if(stristr($head,'<print meta=seoKeywords>')){if(isset($args[1])&&$args[1]!=''&&isset($r['keywords']))$seoKeywords=$r['keywords'];elseif(!isset($seoKeywords)||$seoKeywords=='')$seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];$head=str_replace('<print meta=seoKeywords>',$seoKeywords,$head);}
+if(stristr($head,'<print meta=dateAtom>')){if(!isset($contentTime)){if($page['eti']>$config['ti'])$contentTime=$page['eti'];else$contentTime=$config['ti'];}$head=str_replace('<print meta=dateAtom>',date(DATE_ATOM,$contentTime),$head);}
 if(stristr($head,'<print meta=canonical>')){
-    if(!isset($canonical)||$canonical=='')
-        $canonical=URL.$view.'/';$head=str_replace('<print meta=canonical>',$canonical,$head);
+    if(!isset($canonical)||$canonical=='')$canonical=URL.$view.'/';
+    $head=str_replace('<print meta=canonical>',$canonical,$head);
 }
-if(stristr($head,'<print meta=url>'))
-    $head=str_replace('<print meta=url>',URL,$head);
-if(stristr($head,'<print meta=view>'))
-    $head=str_replace('<print meta=view>',$view,$head);
-if(stristr($head,'<print meta=rss>')){
-    if($args[0]!=''||$args[0]!='index'||$args[0]!='bookings'||$args[0]!='contactus'||$args[0]!='cart'||$args[0]!='proofs'||$args[0]!='settings'||$args[0]!='accounts')
-        $rss=URL.'rss/'.$view;else$rss=URL.'rss/';
-    $head=str_replace('<print meta=rss>',$rss,$head);
-}
-if(stristr($head,'<print meta=ogType>')){
-    if($view=='inventory')$head=str_replace('<print meta=ogType>','product',$head);
-    else$head=str_replace('<print meta=ogType>',$view,$head);
-}
-if(stristr($head,'<print meta=shareImage>'))
-    $head=str_replace('<print meta=shareImage>',$shareImage,$head);
-if(stristr($head,'<print meta=favicon>'))
-    $head=str_replace('<print meta=favicon>',FAVICON,$head);
-if(stristr($head,'<print theme>'))
-    $head=str_replace('<print theme>',THEME,$head);
-if(stristr($head,'<print googleVerification>'))
-    $head=str_replace('<print googleVerification>',$config['ga_verification'],$head);
-if(stristr($head,'<!-- Google Analytics -->'))
-    $head=str_replace('<!-- Google Analytics -->','<script>/*<![CDATA[*/'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'/*]]>*/</script>',$head);
-if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme'])){
-    $doc=new DOMDocument;
-    @$doc->loadHTML($content); // load the HTML data
-    foreach($doc->getElementsByTagName('a')as$link){
-        $link->setAttribute('href',$link->getAttribute('href').'?theme='.$_GET['theme']);
-    }
-    $content=preg_replace('/^<!DOCTYPE.+?>/','',str_replace(array('<html>','</html>','<body>','</body>'),array('','','',''),$doc->saveHTML())).'</body></html>';
-    $warning='<div style="width:100%;height:auto;color:#8a6d3b;background-color:#fcf8e3;font-size:14px;padding:15px;border:1px solid #faebcc;border-radius:4px">Note: Your are viewing this website in "Theme Proof Mode". Content Displayed and Display Menu Items are for representation only.</div>';
-    $content=$warning.$content;
-}
-print$head.$content;
+if(stristr($head,'<print meta=url>'))$head=str_replace('<print meta=url>',URL,$head);
+if(stristr($head,'<print meta=view>'))$head=str_replace('<print meta=view>',$view,$head);
+if(stristr($head,'<print meta=rss>')){if($args[0]!=''||$args[0]!='index'||$args[0]!='bookings'||$args[0]!='contactus'||$args[0]!='cart'||$args[0]!='proofs'||$args[0]!='settings'||$args[0]!='accounts')$rss=URL.'rss/'.$view;else$rss=URL.'rss/';$head=str_replace('<print meta=rss>',$rss,$head);}
+if(stristr($head,'<print meta=ogType>')){if($view=='inventory')$head=str_replace('<print meta=ogType>','product',$head);else$head=str_replace('<print meta=ogType>',$view,$head);}
+if(stristr($head,'<print meta=shareImage>'))$head=str_replace('<print meta=shareImage>',$shareImage,$head);
+if(stristr($head,'<print meta=favicon>'))$head=str_replace('<print meta=favicon>',FAVICON,$head);
+if(stristr($head,'<print theme>'))$head=str_replace('<print theme>',THEME,$head);
+if(stristr($head,'<print googleVerification>'))$head=str_replace('<print googleVerification>',$config['ga_verification'],$head);
+if(stristr($head,'<!-- Google Analytics -->'))$head=str_replace('<!-- Google Analytics -->','<script>/*<![CDATA[*/'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'/*]]>*/</script>',$head);
+if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme'])){$doc=new DOMDocument;@$doc->loadHTML($content);foreach($doc->getElementsByTagName('a')as$link){$link->setAttribute('href',$link->getAttribute('href').'?theme='.$_GET['theme']);}$content=preg_replace('/^<!DOCTYPE.+?>/','',str_replace(array('<html>','</html>','<body>','</body>'),array('','','',''),$doc->saveHTML())).'</body></html>';$warning='<div style="width:100%;height:auto;color:#8a6d3b;background-color:#fcf8e3;font-size:14px;padding:15px;border:1px solid #faebcc;-webkit-border-radius:4px;border-radius:4px">Note: Your are viewing this website in "Theme Proof Mode". Content Displayed and Display Menu Items are for representation only.</div>';$content=$warning.$content;}if(MINIFY==1)print minify($head.$content);else print$head.$content;

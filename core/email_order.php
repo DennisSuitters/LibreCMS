@@ -1,6 +1,6 @@
 <?php
-include'db.php';
-require_once'tcpdf/tcpdf.php';
+require'db.php';
+require'tcpdf/tcpdf.php';
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $w=filter_input(INPUT_GET,'w',FILTER_SANITIZE_STRING);

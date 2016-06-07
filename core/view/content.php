@@ -20,7 +20,7 @@ if($view=='index'){
 	$s->execute(array(':contentType'=>$contentType.'%',':status'=>$status,':ti'=>time()));
 }elseif($view=='search'){
 	$search='%';
-	if(isset($args[0]))$search='%'.str_replace('-',' ',$args[0]).'%';else$search='%'.str_replace('-',' ',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING)).'%';
+	if(isset($args[0]))$search='%'.html_entity_decode(str_replace('-',' ',$args[0])).'%';else$search='%'.html_entity_decode(str_replace('-',' ',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING))).'%';
 	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(keywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(caption) LIKE LOWER(:caption) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' AND pti < :ti ORDER BY ti DESC");
 	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':notes'=>$search,':ti'=>$ti));
 }elseif($view=='bookings'){
@@ -36,17 +36,17 @@ if($view=='index'){
 	$show='categories';
 }elseif(isset($args[1])){
 	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND LOWER(category_2) LIKE LOWER(:category_2) AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
-	$s->execute(array(':contentType'=>$view,':category_1'=>str_replace('-',' ',$args[0]),':category_2'=>str_replace('-',' ',$args[1]),':status'=>$status,':ti'=>time()));
+	$s->execute(array(':contentType'=>$view,':category_1'=>html_entity_decode(str_replace('-',' ',$args[0])),':category_2'=>html_entity_decode(str_replace('-',' ',$args[1])),':status'=>$status,':ti'=>time()));
 }elseif(isset($args[0])){
 	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
-	$s->execute(array(':contentType'=>$view.'%',':category_1'=>str_replace('-',' ',$args[0]),':status'=>$status,':ti'=>time()));
+	$s->execute(array(':contentType'=>$view.'%',':category_1'=>html_entity_decode(str_replace('-',' ',$args[0])),':status'=>$status,':ti'=>time()));
 	if($s->rowCount()<1){
 		if($view=='proofs'||$view=='proof'){
 			$status='%';
 			if($_SESSION['loggedin']==false)die();
 		}
 		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND LOWER(title) LIKE LOWER(:title) AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
-		$s->execute(array(':contentType'=>$view.'%',':title'=>str_replace('-',' ',$args[0]),':status'=>$status,':ti'=>time()));
+		$s->execute(array(':contentType'=>$view.'%',':title'=>html_entity_decode(str_replace('-',' ',$args[0])),':status'=>$status,':ti'=>time()));
 		$show='item';
 	}
 }else{
@@ -103,7 +103,7 @@ if($show=='categories'){
 				$controls='';
 			}else{
 				if(stristr($items,'<view>')){
-					$items=str_replace('<print content=linktitle>',URL.$r['contentType'].'/'.str_replace(' ','-',htmlentities($r['title'],ENT_QUOTES,'UTF-8')),$items);
+					$items=str_replace('<print content=linktitle>',URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$items);
 					$items=str_replace('<view>','',$items);
 					$items=str_replace('</view>','',$items);
 				}
@@ -117,12 +117,12 @@ if($show=='categories'){
 						}
 					}else$items=preg_replace('~<service.*?>.*?<\/service>~is','',$items,1);
 				}else$items=preg_replace('~<service>.*?<\/service>~is','',$items,1);
-				if($r['contentType']=='inventory'){
+				if($r['contentType']=='inventory'&&is_numeric($r['cost'])){
 					if(stristr($items,'<inventory>')){
 						$items=str_replace('<inventory>','',$items);
 						$items=str_replace('</inventory>','',$items);
 						$items=preg_replace('~<service>.*?<\/service>~is','',$items,1);
-					}elseif(stristr($items,'<inventory>')&&$r['contentType']!='inventory')$items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
+					}elseif(stristr($items,'<inventory>')&&$r['contentType']!='inventory'&&!is_numeric($r['cost']))$items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
 				}else$items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
 				$items=str_replace('<controls>','',$items);
 				$items=str_replace('</controls>','',$items);
@@ -148,7 +148,7 @@ if($show=='item'){
 	if($r['caption']!='')$seoDescription=$seoCaption=htmlspecialchars($r['caption'],ENT_QUOTES,'UTF-8');else$seoDescription=$seoCaption=htmlspecialchars(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
 	if($r['eti']>$r['ti'])$contentTime=$r['eti'];else$contentTime=$r['ti'];
 	$seoKeywords=htmlspecialchars($r['keywords'],ENT_QUOTES,'UTF-8');
-	$canonical=URL.$view.'/'.str_replace(' ','-',htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'));
+	$canonical=URL.$view.'/'.urlencode(str_replace(' ','-',$r['title']));
 	preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);
 	$item=$matches[1];
 	if($r['contentType']=='service'){
@@ -163,29 +163,24 @@ if($show=='item'){
 	}else$item=preg_replace('~<service>.*?<\/service>~is','',$item,1);
 	$address='';
 	$edit='';
-
 	$contentQuantity='';
 	if($r['contentType']=='inventory'){
 		if(is_numeric($r['quantity'])&&$r['quantity']!=0){
 			$contentQuantity='<link itemprop="availability" href="http://schema.org/InStock">';
-			$contentQuantity.='<h5 class="quantity">Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</h5>';
+			$contentQuantity.='<div class="quantity">Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</div>';
 		}elseif(is_numeric($r['quantity'])&&$r['quantity']==0){
 			$contentQuantity='<link itemprop="availability" href="http://schema.org/OutOfStock">';
-			$contentQuantity.='<h5 class="quantity">Out of Stock</h5>';
-		}else$contentQuantity.='<h5>Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</h5>';
+			$contentQuantity.='<div class="quantity">Out of Stock</div>';
+		}else$contentQuantity.='<div class="quantity">Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</div>';
 		$item=str_replace('<print content="quantity">',$contentQuantity,$item);
-	}else{
+	}else
 		$item=str_replace('<print content="quantity">','',$item);
-	}
-
-require'core'.DS.'parser.php';
-$authorHTML='';
-$seoTitle=$r['title'].' - '.$config['seoTitle'];
-$seoKeywords=$r['keywords'];
-$seoDescription=$r['caption'];
-
-	if($r['contentType']=='article'||$r['contentType']=='portfolio')
-		$item=preg_replace('~<controls>.*?<\/controls>~is','',$item,1);
+	require'core'.DS.'parser.php';
+	$authorHTML='';
+	$seoTitle=$r['title'].' - '.$config['seoTitle'];
+	$seoKeywords=$r['keywords'];
+	$seoDescription=$r['caption'];
+	if($r['contentType']=='article'||$r['contentType']=='portfolio')$item=preg_replace('~<controls>.*?<\/controls>~is','',$item,1);
 	$html=preg_replace('~<settings.*?>~is','',$html,1);
 	$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);
 	$html=str_replace('<print page="notes">','',$html);

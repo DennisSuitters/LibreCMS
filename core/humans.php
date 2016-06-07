@@ -1,6 +1,6 @@
 <?php
 header("Content-Type:text/plain");
-include'core'.DS.'db.php';
+require'core'.DS.'db.php';
 $config=$db->query("SELECT seoTitle,theme FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $theme=parse_ini_file('layout'.DS.$config['theme'].DS.'theme.ini',true);
 if($config['seoTitle']!='')$siteTitle=$config['seoTitle'];else$siteTitle=URL;

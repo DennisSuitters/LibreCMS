@@ -46,7 +46,7 @@ if(file_exists('media/carousel/')){
 		];
 	}
 }
-$s=$db->prepare("SELECT * FROM content WHERE file!='' AND featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY $order $limit");
+$s=$db->prepare("SELECT * FROM content WHERE file!='' OR thumb!='' AND featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY $order $limit");
 $s->execute(array(':contentType'=>$contentType));
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
 	$filechk=basename($r['file']);
@@ -56,7 +56,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
 			'thumb'=>$r['thumb'],
 			'file'=>$r['file'],
 			'title'=>$r['title'],
-			'link'=>$r['contentType'].DS.str_replace(' ','-',$r['title']),
+			'link'=>$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),
 			'caption'=>$r['caption'],
 			'notes'=>$r['notes'],
 			'ti'=>$r['ti']
@@ -93,14 +93,14 @@ if($ii>0){
 		else{
 			$item=str_replace('<link>','',$item);
 			$item=str_replace('</link>','',$item);
-			$item=str_replace('<print link>',$r['contentType'].DS.str_replace(' ','-',$r['title']),$item);
+			$item=str_replace('<print link>',$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$item);
 		}
 		if(stristr($item,'<print content="thumb">')){
 			if($r['thumb']!='')
 				$item=str_replace('<print content="thumb">','<img src="'.$r['thumb'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
 			elseif($r['file']!='')
 				$item=str_replace('<print content="thumb">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
-			else$item=str_replace('<print content="thumb">','',$item);
+			else$item=str_replace('<print content="thumb">','thumb',$item);
 		}
 		if(stristr($item,'<print content="image">')){
 			if($r['file']!='')
