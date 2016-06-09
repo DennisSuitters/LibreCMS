@@ -50,6 +50,13 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
 }?>
                 </div>
             </div>
+            <script>
+                $("div.theme-chooser").not(".disabled").find("div.theme-chooser-item").on("click",function(){
+                    $('#preference-theme .theme-chooser-item').removeClass("panel-success");
+                    $(this).addClass("panel-success");
+                    update("1","config","theme",escape($(this).attr("data-theme")))
+                });
+            </script>
             <div id="preference-contact" name="preference-contact" class="tab-pane fade in">
                 <div class="form-group">
                     <label for="business" class="control-label col-xs-5 col-sm-3 col-lg-2">Business</label>

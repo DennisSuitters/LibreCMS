@@ -68,13 +68,12 @@ if($tbl=='login'&&$col=='username'){
     if($uc1->rowCount()<1){
         $q=$db->prepare("UPDATE login SET username=:da WHERE id=:id");
         $q->execute(array(':da'=>$da,':id'=>$id));?>
-window.top.window.$('#uerror').removeClass('has-error');
+window.top.window.$('#uerror').addClass('hidden');
 <?php  }else{
         $uc2=$db->prepare("SELECT username FROM login WHERE id=:id");
         $uc2->execute(array(':id'=>$id));
         $uc=$uc2->fetch(PDO::FETCH_ASSOC);?>
-window.top.window.$('#uerror').addClass('has-error');
-window.top.window.$('#username').val('<?php echo$uc['username'];?>');
+window.top.window.$('#uerror').removeClass('hidden');
 <?php }
 }else{
     $q=$db->prepare("UPDATE $tbl SET $col=:da WHERE id=:id");
@@ -159,15 +158,15 @@ window.top.window.$('#avatar').attr('src','<?php echo$avatar;?>');
 }
 if($col=='status'){
 	if($da=='archived'){?>
-window.top.window.$('#l_<?php echo$id;?>').slideUp(500,function(){$(this).remove()});
+		window.top.window.$('#l_<?php echo$id;?>').slideUp(500,function(){$(this).remove()});
 <?php }
 	if($tbl!='comments'||$da=='delete'||$da==''){?>
-window.top.window.$('#controls_<?php echo$id;?> button.btn').toggleClass('hidden');
+		window.top.window.$('#controls_<?php echo$id;?> button.btn').toggleClass('hidden');
 <?php }
 	if($da=='delete'){?>
-window.top.window.$('#l_<?php echo$id;?>').addClass('danger');
+		window.top.window.$('#l_<?php echo$id;?>').addClass('danger');
 <?php }else{?>
-window.top.window.$('#l_<?php echo$id;?>').removeClass('danger');
+	window.top.window.$('#l_<?php echo$id;?>').removeClass('danger');
 <?php }
 }?>
 window.top.window.$('#block').css("display","none");

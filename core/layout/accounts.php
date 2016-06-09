@@ -37,11 +37,13 @@ if($args[0]=='settings'){
                         <input type="text" id="ti" class="form-control textinput" value="<?php echo date($config['dateFormat'],$r['ti']);?>" readonly>
                     </div>
                 </div>
-                <div id="uerror" class="form-group">
+                <div class="form-group">
                     <label for="username" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Username</label>
                     <div class="input-group col-xs-8 col-sm-9 col-lg-10">
                         <input type="text" id="username" class="form-control textinput" value="<?php echo$r['username'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="username" placeholder="Enter a Username...">
                     </div>
+                    <div id="uerror" class="help-block col-xs-8 col-sm-9 col-lg-10 pull-right hidden"><span class="text-danger">Username already exists!</span></div>
+                    <div class="clearfix"></div>
                 </div>
                 <div class="form-group">
                     <label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label>

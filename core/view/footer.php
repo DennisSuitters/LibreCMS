@@ -1,12 +1,12 @@
 <?php
-if($_SESSION['rank']>0)$link='<a href="?act=logout"><small>Logout</small></a>';
+if($_SESSION['rank']>0)$link='<a href="?act=logout">Logout</a>';
 else{
 	if($config['options']{3}==1)$link_x=' or Sign Up';
 	else{
 		$link_x='';
 		$html=preg_replace('~<block signup>.*?<\/block signup>~is','',$html,1);
 	}
-	if($config['options']{2}==1)$link='<a href="login/"><small>Login'.$link_x.'</small></a>';else$link='<a href="login/"><small>Login'.$link_x.'</small></a>';
+	if($config['options']{2}==1)$link='<a href="login/">Login'.$link_x.'</a>';else$link='<a href="login/">Login'.$link_x.'</a>';
 }
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $html=str_replace('<print theme="title">',$theme['title'],$html);
@@ -29,6 +29,22 @@ if(stristr($html,'<address')){
 	$html=str_replace('<print config="phone">',$phone,$html);
 	if($config['mobile']!='')$mobile='<span class="mobile"><a href="tel:'.$config['mobile'].'">'.$config['mobile'].'</a></span>';else$mobile='';
 	$html=str_replace('<print config="mobile">',$mobile,$html);
+}
+if(stristr($html,'<buildMenu')){
+	$s=$db->query("SELECT * FROM menu WHERE menu='footer' AND active='1' ORDER BY ord ASC");
+	preg_match('/<buildMenu>([\w\W]*?)<\/buildMenu>/',$html,$matches);
+	$htmlMenu=$matches[1];
+	$menu='';
+	while($r=$s->fetch(PDO::FETCH_ASSOC)){
+		$buildMenu=$htmlMenu;
+		if($view==$r['contentType']||$view==$r['contentType'].'s')$buildMenu=str_replace('<print active=menu>',' active',$buildMenu);else$buildMenu=str_replace('<print active=menu>','',$buildMenu);
+		if($r['contentType']!='index')$buildMenu=str_replace('<print menu=contentType>',$r['contentType'],$buildMenu);else$buildMenu=str_replace('<print menu=contentType>','',$buildMenu);
+		$buildMenu=str_replace('<print menu="title">',$r['title'],$buildMenu);
+		if($r['contentType']=='cart')$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);else$buildMenu=str_replace('<menuCart>','',$buildMenu);
+		$menu.=$buildMenu;
+	}
+	$html=str_replace('<buildMenu>',$menu.'<buildMenu>',$html);
+	$html=preg_replace('~<buildMenu>.*?<\/buildMenu>~is','',$html,1);
 }
 if(stristr($html,'<buildSocial')){
 	preg_match('/<buildSocial>([\w\W]*?)<\/buildSocial>/',$html,$matches);

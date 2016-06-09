@@ -11,14 +11,13 @@ if(stristr($html,'<events')){
 		$items=str_replace('<print content="title">',$r['title'],$items);
 		$items=str_replace('<print metaDate>',date($config['dateFormat'],$r['tis']),$items);
 		$items=str_replace('<print time',date($config['dateFormat'],$r['tis']),$items);
-		$items=str_replace('<print link>',URL.'events/'.str_replace(' ','-',htmlentities($r['title'])),$items);
+		$items=str_replace('<print link>',URL.'events/'.urlencode(str_replace(' ','-',$r['title'])),$items);
 		if($r['caption']=='')$r['caption']=strip_tags($r['notes']);
 		$items=str_replace('<print content="caption">',preg_replace('/\s+?(\S+)?$/','',substr($r['caption'],0,151)),$items);
 		$output.=$items;
 	}
 	$html=preg_replace('~<events>.*?<\/events>~is',$output,$html,1);
 }
-
 if(stristr($html,'<news')){
 	preg_match('/<news>([\w\W]*?)<\/news>/',$html,$matches);
 	$news=$matches[1];
@@ -38,5 +37,4 @@ if(stristr($html,'<news')){
 	}
 	$html=preg_replace('~<news>.*?<\/news>~is',$output,$html,1);
 }
-
 $content.=$html;

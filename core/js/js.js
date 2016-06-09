@@ -1,6 +1,12 @@
+var btn=$.fn.button.noConflict();
+$.fn.btn=btn;
+$("#menu-toggle").click(function(e){
+	e.preventDefault();
+	$("#sidemenu,#content").toggleClass("toggled");
+});
 function purge(id,t){
 	$('#busy').css({'display':'inline-block'});
-	$('#sp').load('core/purge.php?id='+id+'&t='+t)
+	$('#sp').load('core/purge.php?id='+id+'&t='+t);
 }
 function restore(id){
 	$('#busy').css({'display':'inline-block'});
@@ -103,7 +109,6 @@ $(document).on(
 	'click','#content input[type=checkbox]',
 	{},
 	function(event){
-
 		var id=$(this).data("dbid");
 		if('#home input[type=checkbox]'){
 			$('#actions').toggleClass('hidden');

@@ -118,7 +118,7 @@ if($show=='categories'){
     $sc=$db->prepare("SELECT COUNT(id) as cnt FROM comments WHERE rid=:id AND status='unapproved'");
     $sc->execute(array(':id'=>$r['id']));
     $cnt=$sc->fetch(PDO::FETCH_ASSOC);?>
-                            <a class="btn btn-default btn-sm" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>#comments"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><?php svg('comments');?> <?php echo$cnt['cnt'];?></a>
+                            <a class="btn btn-default btn-sm" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>#d43"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><?php svg('comments');?> <?php echo$cnt['cnt'];?></a>
 <?php }?>
                         </td>
                         <td class="text-center"><?php echo$r['views'];?></td>
@@ -139,12 +139,11 @@ if($show=='categories'){
     </div>
 </div>
 <?php }
-
 if($show=='item'){
     $r=$s->fetch(PDO::FETCH_ASSOC);?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">
+        <h4 class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
             <ol class="breadcrumb">
                 <li><a href="<?php echo URL.$settings['system']['admin'];?>/content/">Content</a></li>
                 <li><a href="<?php echo URL.$settings['system']['admin'];?>/content/type/<?php echo$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a></li>
@@ -284,18 +283,18 @@ else
                     <h3>Comments</h3>
 <?php $sc=$db->prepare("SELECT * FROM comments WHERE contentType=:contentType AND rid=:rid ORDER BY ti ASC");$sc->execute(array(':contentType'=>$r['contentType'],':rid'=>$r['id']));while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
                     <div id="l_<?php echo$rc['id'];?>" class="media clearfix<?php if($rc['status']=='delete')echo' danger';if($rc['status']=='unapproved')echo' warning';?>">
-                        <div class="media-object pull-left">
+                        <div class="media-object col-xs-2 col-sm-1 pull-left">
 <?php $su=$db->prepare("SELECT * FROM login WHERE id=:id");$su->execute(array(':id'=>$rc['uid']));$ru=$su->fetch(PDO::FETCH_ASSOC);?>
-                            <img class="commentavatar img-thumbnail" src="<?php if($ru['avatar']!=''&&file_exists('media/avatar/'.$ru['avatar']))echo'media/avatar/'.$ru['avatar'];elseif($ru['gravatar']!='')echo md5($ru['gravatar']);else echo$noavatar;?>">
+                            <img class="commentavatar img-thumbnail img-responsive" src="<?php if($ru['avatar']!=''&&file_exists('media/avatar/'.$ru['avatar']))echo'media/avatar/'.$ru['avatar'];elseif($ru['gravatar']!='')echo md5($ru['gravatar']);else echo$noavatar;?>">
                         </div>
                         <div class="media-body">
-                            <div class="well">
+                            <div class="well clearfix">
                                 <h5 class="media-heading"><?php echo$rc['name'];?></h5>
-                                <time><small class="text-muted"><?php echo date($config['dateFormat'],$rc['ti']);?></small></time>
+                                <time><small class="text-muted"><?php echo date($config['dateFormat'],$rc['ti']);?></small></time><br>
                                 <?php echo strip_tags($rc['notes']);?>
                                 <div id="controls-<?php echo$rc['id'];?>" class="btn-group pull-right">
-                                    <button id="approve_<?php echo$rc['id'];?>" class="btn btn-success btn-sm<?php if($rc['status']!='unapproved')echo' hidden';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','approved')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Approve"';?>><i class="libre libre-approve"></i></button>
-                                    <button class="btn btn-danger btn-sm" onclick="purge('<?php echo$rc['id'];?>','comments')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><i class="libre libre-trash"></i></button>
+                                    <button id="approve_<?php echo$rc['id'];?>" class="btn btn-default btn-sm<?php if($rc['status']!='unapproved')echo' hidden';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','approved')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Approve"';?>><?php svg('approve');?></button>
+                                    <button class="btn btn-default btn-sm trash" onclick="purge('<?php echo$rc['id'];?>','comments')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
                                 </div>
                             </div>
                         </div>
@@ -307,20 +306,20 @@ else
                             <input type="hidden" name="act" value="add_comment">
                             <input type="hidden" name="rid" value="<?php echo$r['id'];?>">
                             <input type="hidden" name="contentType" value="<?php echo$r['contentType'];?>">
-                            <label for="email" class="control-label col-xs-5 col-md-3 col-lg-2">Email</label>
-                            <div class="input-group col-xs-7 col-md-9 col-lg-10">
-                                <input type="text" class="form-control" name="email" value="<?php echo$user['email'];?>" readonly>
+                            <label for="email" class="control-label col-xs-4 col-md-3 col-lg-2">Email</label>
+                            <div class="input-group col-xs-8 col-md-9 col-lg-10">
+                                <input type="text" class="form-control" name="email" value="<?php echo$user['email'];?>">
                             </div>
-                            <label for="name" class="control-label col-xs-5 col-md-3 col-lg-2">Name</label>
-                            <div class="input-group col-xs-7 col-md-9 col-lg-10">
-                                <input type="text" class="form-control" name="name" value="<?php echo$user['name'];?>" readonly>
+                            <label for="name" class="control-label col-xs-4 col-md-3 col-lg-2">Name</label>
+                            <div class="input-group col-xs-8 col-md-9 col-lg-10">
+                                <input type="text" class="form-control" name="name" value="<?php echo$user['name'];?>">
                             </div>
-                            <label for="da" class="control-label col-xs-5 col-md-3 col-lg-2">Comment</label>
-                            <div class="input-group col-xs-7 col-md-9 col-lg-10">
+                            <label for="da" class="control-label col-xs-4 col-md-3 col-lg-2">Comment</label>
+                            <div class="input-group col-xs-8 col-md-9 col-lg-10">
                                 <textarea id="da" class="form-control" name="da" placeholder="Enter a Comment..." required></textarea>
                             </div>
-                            <label class="control-label col-xs-5 col-md-3 col-lg-2">&nbsp;</label>
-                            <div class="input-group col-xs-7 col-md-9 col-lg-10">
+                            <label class="control-label col-xs-4 col-md-3 col-lg-2">&nbsp;</label>
+                            <div class="input-group col-xs-8 col-md-9 col-lg-10">
                                 <button class="btn btn-default btn-block">Add Comment</button>
                             </div>
                         </form>

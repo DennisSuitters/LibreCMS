@@ -159,4 +159,107 @@ if($sql->rowCount()>0){?>
         </div>
     </div>
 </div>
+<script src="core/js/moment.min.js"></script>
+<script src="core/js/fullcalendar.min.js"></script>
+<script>/*<![CDATA[*/
+<?php   if($args[0]!='add'||$args[0]!='edit'){?>
+            var $contextMenu = $("#contextMenu");
+            $('#calendar').fullCalendar({
+                header:{
+                    left:'prev,next',
+                    center:'title',
+                    right:'month,basicWeek,basicDay'
+                },
+                eventLimit:true,
+                selectable:true,
+                editable:true,
+                height:$(window).height()*0.83,
+                events:[
+<?php			$s=$db->query("SELECT * FROM content WHERE contentType='booking'");
+    while($r=$s->fetch(PDO::FETCH_ASSOC)){
+        $bs=$db->prepare("SELECT contentType,title,tis,tie,ti FROM content WHERE id=:id");
+        $bs->execute(array(':id'=>$r['rid']));
+        $br=$bs->fetch(PDO::FETCH_ASSOC);?>
+                    {
+                        id:'<?php echo$r['id'];?>',
+                        title:'<?php if($br['contentType']=='events'){?>Event: <?php echo$br['title'];}elseif($br['contentType']!=''){echo ucfirst(rtrim($br['contentType'],'s')).': '.$br['title'];}else echo$r['name'];?>',
+                        start:'<?php echo date("Y-m-d H:i:s",$r['tis']);?>',
+<?php            if($r['tie']>$r['tis']){
+        echo'eventend: \''.date("Y-m-d H:i:s",$r['tie']).'\',';
+            }?>
+                        allDay:false,
+                        color:'<?php if($r['status']=='confirmed')echo'#5cb85c';else echo'#d9534f';?>',
+                        description:'<?php if($r['business'])echo'Business: '.$r['business'].'<br>';
+                        if($r['name'])echo'Name'.': '.$r['name'].'<br>';
+                        if($r['email'])echo'Email'.': <a href="mailto:'.$r['email'].'">'.$r['email'].'</a><br>';
+                        if($r['phone'])echo'Phone'.': '.$r['phone'].'<br>';?>',
+                        status:'<?php echo$r['status'];?>',
+                    },
+<?php			}?>
+                ],
+                eventMouseover:function(event,domEvent,view){
+                    var layer='<div id="events-layer" class="fc-transparent">';
+                    if(event.status=="unconfirmed")layer+='<span id="cbut'+event.id+'" class="btn btn-default btn-xs"><?php svg('approve');?></span> ';
+                    layer+='<span id="edbut'+event.id+'" class="btn btn-default btn-xs"><?php svg('edit');?></span> <span id="delbut'+event.id+'" class="btn btn-default trash btn-xs"><?php svg('trash');?></span></div>';
+                    var content='Start: '+$.fullCalendar.moment(event.start).format('HH:mm');
+<?php               if($r['tie']>$r['tis']){?>
+                    content+='<br>End: '+$.fullCalendar.moment(event.eventend).format('HH:mm');
+<?php               }?>
+                    if(event.description!='')content+='<br>'+event.description;
+                    var el=$(this);
+                    el.append(layer);
+                    if(event.eventend!=''||event.eventend!=null||event.eventend!=0){
+                        var eventEndClass='eventEnd';
+                        if(event.status=='confirmed')eventEndClass='eventEndConfirmed';
+                        $('[data-date="'+moment(event.eventend).format('YYYY-MM-DD')+'"]').addClass(eventEndClass);
+                    }
+                    $("#cbut"+event.id).click(function(){
+                        $("#cbut"+event.id).remove();
+                        $("#events-layer").remove();
+                        event.color="#5cb85c";
+                        event.status="confirmed";
+                        update(event.id,"content","status","confirmed");
+                        $("#calendar").fullCalendar("updateEvent",event);
+                    });
+                    $("#delbut"+event.id).click(function(){
+                        $('#calendar').fullCalendar('removeEvents', event.id);
+                        window.top.window.purge(event.id,"content");
+                        window.top.window.$(el).remove();
+                        window.top.window.$(".popover").remove();
+                    });
+                    $("#edbut"+event.id).click(function(){
+                        window.location="<?php echo$settings['system']['admin'];?>/bookings/edit/"+event.id;
+                    });
+                    $(this).popover({
+                        title:event.title,
+                        placement:"top",
+                        html:true,
+                        container:"body",
+                        content:content,
+                    }).popover("show");
+                },
+                eventMouseout:function(event){
+                    $("#events-layer").remove();
+                    $(this).not(event).popover("hide")
+                    var eventEndClass='eventEnd';
+                    if(event.status=='confirmed')eventEndClass='eventEndConfirmed';
+                    $('[data-date="'+moment(event.eventend).format('YYYY-MM-DD')+'"]').removeClass(eventEndClass);
+                },
+                dayClick:function(date,jsEvent,view){
+                    if(view.name=='month'||view.name=='basicWeek'){
+                        $('#calendar').fullCalendar('changeView','basicDay');
+                        $('#calendar').fullCalendar('gotoDate',date);
+                    }
+                },
+                eventDrop:function(event){
+                    $('#block').css({'display':'block'});
+                    update(event.id,"content","tis",event.start.format());
+                }
+            });
+            $(window).resize(function(){
+                var calHeight=$(window).height()*0.83;
+                $('#calendar').fullCalendar('option','height',calHeight);
+            });
+<?php 		}?>
+/*]]>*/</script>
 <?php }

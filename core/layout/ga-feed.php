@@ -58,6 +58,12 @@ $config=$db->query("SELECT ga_clientID FROM config WHERE id=1")->fetch(PDO::FETC
 <div id="auth-container"></div>
 <div class="dashboard" style="display:none">
     <div class="row">
+        <div class="col-xs-12">
+            <a class="btn btn-primary btn-block" target="_blank" href="https://analytics.google.com/">Open Google Analytics Web Interface</a>
+        </div>
+    </div>
+    <br>
+    <div class="row">
         <div id="visitsTimeline" class="Chart col-xs-12">
             <header class="Titles">
                 <h1 class="Titles-main">Site Traffic</h1>

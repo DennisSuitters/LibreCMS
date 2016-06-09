@@ -27,6 +27,7 @@ $pdf->setPrintFooter(false);
 $pdf->SetFont('helvetica','',12);
 $pdf->AddPage();
 $html='<style>';
+$html.='body{margin:0;padding:0;}';
 $html.='table{border:0;margin:0;}';
 $html.='table,table tr{background-color:#fff;}';
 $html.='table tr th{background-color:#000;color:#fff;}';
@@ -37,8 +38,33 @@ $html.='.col-250{width:250px;}';
 $html.='.text-center{text-align:center;}';
 $html.='.text-right{text-align:right;}';
 $html.='.pending{color:#080;}';
-$html.='.overdue{color:#f00;}';
-$html.='</style><body>';
+$html.='.overdue{color:#800;}';
+$html.='</style>';
+$html.='<body>';
+$pdflogo='';
+if(file_exists('../layout/'.$config['theme'].'/images/orderheading.png'))
+	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.png';
+elseif(file_exists('../layout/'.$config['theme'].'images/orderheading.jpg'))
+	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.jpg';
+elseif(file_exists('../layout/'.$config['theme'].'images/orderheading.gif'))
+	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.gif';
+elseif(file_exists('../media/orderheading.png'))
+	$pdflogo='../media/orderheading.png';
+elseif(file_exists('../media/orderheading.jpg'))
+	$pdflogo='../media/orderheading.jpg';
+elseif(file_exists('../media/orderheading.gif'))
+	$pdflogo='../media/orderheading.gif';
+else
+	$pdflogo='';
+if($pdflogo!=''){
+	$html.='<table class="table">';
+		$html.='<tr>';
+			$html.='<td style="text-align:right;">';
+				$html.='<img src="'.$pdflogo.'">';
+			$html.='</td>';
+		$html.='</tr>';
+	$html.='</table>';
+}
 	$html.='<table class="table">';
 		$html.='<tr>';
 			$html.='<td>';
@@ -59,12 +85,12 @@ $html.='</style><body>';
 			$html.='</td>';
 			$html.='<td>';
 				$html.='<h3>Details</h3>';
-				$html.='<p>';
+				$html.='<p><small>';
 					$html.='Order <strong>#'.$r['qid'].$r['iid'].'</strong><br />';
 					$html.='Order Date <strong>'.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']).'</strong><br />';
-					$html.='Due Date: <strong class="'.$r['status'].'">'.date($config[dateFormat],$r['due_ti']).'</strong><br />';
+					$html.='Due Date: <strong class="'.$r['status'].'">'.date($config['dateFormat'],$r['due_ti']).'</strong><br />';
 					$html.='Status: <strong class="'.$r['status'].'">'.ucfirst($r['status']).'</strong>';
-				$html.='</p>';
+				$html.='</small></p>';
 			$html.='</td>';
 		$html.='</tr>';
 	$html.='</table>';
@@ -126,15 +152,13 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 						$html.='BSB: <strong>'.$config['bankBSB'].'</strong>';
 					$html.='</small></p>';
 				$html.='</td>';
-				$html.='<td>';
-
-				$html.='</td>';
 			$html.='</tr>';
 		$html.='</tbody>';
 	$html.='</table>';
 $html.='</body>';
 $pdf->writeHTML($html,true,false,true,false,'');
-$pdf->Output('../media/orders/'.$oid.'.pdf','F');
+//$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+$pdf->Output(__DIR__.'/../media/orders/'.$oid.'.pdf','F');
 chmod('../media/orders/'.$oid.'.pdf',0777);?>
 <script>/*<![CDATA[*/
 	window.top.window.$('#busy').css("display","none");
@@ -145,8 +169,8 @@ chmod('../media/orders/'.$oid.'.pdf',0777);?>
 	$mail=new PHPMailer();
 	$mail->IsSMTP();
 	$toname=$c['name'];
-	$mail->SetFrom($config[email],$config[business]);
-	$mail->AddAddress($c[email]);
+	$mail->SetFrom($config['email'],$config['business']);
+	$mail->AddAddress($c['email']);
 	$mail->IsHTML(true);
 	$mail->Subject='Order #'.$oid;
 	$msg=$config['orderEmailLayout'];
@@ -154,7 +178,7 @@ chmod('../media/orders/'.$oid.'.pdf',0777);?>
 	$name=explode(' ',$c['name']);
 	$msg=str_replace('{first}',$name[0],$msg);
 	$msg=str_replace('{last}',$name[1],$msg);
-	$msg=str_replace('{date}',date($config[dateFormat],$r['ti']),$msg);
+	$msg=str_replace('{date}',date($config['dateFormat'],$r['ti']),$msg);
 	$msg=str_replace('{order_number}',$oid,$msg);
 	$msg=str_replace('{notes}',$r['notes'],$msg);
 	$mail->Body=$msg;

@@ -8,7 +8,8 @@ if($itemCount==0){
 	$limit='';
 }
 $contentType=$matches[2];
-if($contentType=='all')$contentType='%';
+$cT=$matches[2];
+if($contentType=='all'||$contentType=='mixed')$contentType='%';
 if($matches[3]=='asc'||$matches[3]=='ASC'){
 	$order='ti ASC';
 	$arrayOrder='asc';
@@ -24,43 +25,47 @@ $it=$matches[1];
 $items='';
 $fi=0;
 $featuredfiles=array();
-if(file_exists('media/carousel/')){
-	foreach(glob('media/carousel/*.*') as $file){
-		$fileinfo=pathinfo($file);
-		if($file=='.')continue;
-		if($file=='..')continue;
-		if($fileinfo['extension']=='html')continue;
-		$filetime=filemtime($file);
-		$fileinfo=pathinfo($file);
-		$filename=basename($file,'.'.$fileinfo['extension']);
-		if(file_exists('media/carousel/'.$filename.'.html'))$filehtml=file_get_contents('media/carousel/'.$filename.'.html');else$filehtml='';
-		$featuredfiles[]=[
-			'contentType'=>'carousel',
-			'thumb'=>'',
-			'file'=>$file,
-			'title'=>basename(rtrim($file),3),
-			'link'=>'nolink',
-			'caption'=>$filehtml,
-			'notes'=>'',
-			'ti'=>$filetime
-		];
+if($cT=='all'||$cT=='mixed'||$cT=='folder'){
+	if(file_exists('media'.DS.'carousel'.DS)){
+		foreach(glob('media'.DS.'carousel'.DS.'*.*') as $file){
+			$fileinfo=pathinfo($file);
+			if($file=='.')continue;
+			if($file=='..')continue;
+			if($fileinfo['extension']=='html')continue;
+			$filetime=filemtime($file);
+			$fileinfo=pathinfo($file);
+			$filename=basename($file,'.'.$fileinfo['extension']);
+			if(file_exists('media'.DS.'carousel'.DS.$filename.'.html'))$filehtml=file_get_contents('media'.DS.'carousel'.DS.$filename.'.html');else$filehtml='';
+			$featuredfiles[]=[
+				'contentType'=>'carousel',
+				'thumb'=>'',
+				'file'=>$file,
+				'title'=>basename(rtrim($file),3),
+				'link'=>'nolink',
+				'caption'=>$filehtml,
+				'notes'=>'',
+				'ti'=>$filetime
+			];
+		}
 	}
 }
-$s=$db->prepare("SELECT * FROM content WHERE file!='' OR thumb!='' AND featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY $order $limit");
-$s->execute(array(':contentType'=>$contentType));
-while($r=$s->fetch(PDO::FETCH_ASSOC)){
-	$filechk=basename($r['file']);
-	if(file_exists('media'.DS.$filechk)){
-		$featuredfiles[]=[
-			'contentType'=>$r['contentType'],
-			'thumb'=>$r['thumb'],
-			'file'=>$r['file'],
-			'title'=>$r['title'],
-			'link'=>$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),
-			'caption'=>$r['caption'],
-			'notes'=>$r['notes'],
-			'ti'=>$r['ti']
-		];
+if($cT!='folder'){
+	$s=$db->prepare("SELECT * FROM content WHERE file!='' OR thumb!='' AND featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY $order $limit");
+	$s->execute(array(':contentType'=>$contentType));
+	while($r=$s->fetch(PDO::FETCH_ASSOC)){
+		$filechk=basename($r['file']);
+		if(file_exists('media'.DS.$filechk)){
+			$featuredfiles[]=[
+				'contentType'=>$r['contentType'],
+				'thumb'=>$r['thumb'],
+				'file'=>$r['file'],
+				'title'=>$r['title'],
+				'link'=>$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),
+				'caption'=>$r['caption'],
+				'notes'=>$r['notes'],
+				'ti'=>$r['ti']
+			];
+		}
 	}
 }
 $indicators='';

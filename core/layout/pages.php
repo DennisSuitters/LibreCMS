@@ -59,7 +59,7 @@ if($show=='pages'){?>
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>">
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
-                        <td class="text-center"><?php echo$r['menu'];?></td>
+                        <td class="text-center"><?php echo ucfirst($r['menu']);?></td>
                         <td class="text-center"><?php echo$r['views'];?></td>
                         <td class="text-center">
                             <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0" data-dba="0"<?php if($r['active']==1)echo' checked';?>>
@@ -77,6 +77,29 @@ if($show=='pages'){?>
         </div>
     </div>
 </div>
+<script>
+$('#sortable').sortable({
+    items:"tr",
+    placeholder:".ghost",
+    helper:fixWidthHelper,
+    axis:"y",
+    update:function(e,ui){
+        var order=$("#sortable").sortable("serialize");
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"core/reorder.php",
+            data:order
+        });
+    }
+}).disableSelection();
+function fixWidthHelper(e,ui){
+    ui.children().each(function(){
+        $(this).width($(this).width());
+    });
+    return ui;
+}
+</script>
 <?php }
 if($show=='item'){
     $s=$db->prepare("SELECT * FROM menu WHERE id=:id");

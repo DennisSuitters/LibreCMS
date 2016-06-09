@@ -81,6 +81,9 @@ if($config['backup_ti']<$tid){
                     <?php svg('spinner-9','animated spin');?>
                 </div>
             </div>
+            <script>
+                $('#ga').load('core/layout/ga-feed.php');
+            </script>
 <?php }
 if($config['options']{10}==1){?>
             <div class="panel panel-body">
@@ -89,6 +92,9 @@ if($config['options']{10}==1){?>
                     <?php svg('spinner-9','animated spin');?>
                 </div>
             </div>
+            <script>
+                $('#rssfeeds').load('core/layout/rss_feeds.php');
+            </script>
 <?php }
 if($config['options']{11}==1){?>
             <div class="panel panel-body">
@@ -114,6 +120,9 @@ if($config['options']{11}==1){?>
                     </table>
                 </div>
             </div>
+            <script>
+                $('#commits').load('core/layout/git_commits.php');
+            </script>
 <?php }?>
         </div>
     </div>

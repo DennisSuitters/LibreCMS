@@ -24,13 +24,15 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     $length=$deflength;
     if($r['contentType']!='gallery'){
         if($r['thumb']!=''){
-            $img=URL.DS.'media'.DS.$r['thumb'];
-            $filetype=image_type_to_mime_type(exif_imagetype('media'.DS.$r['thumb']));
-            $length=filesize('media'.DS.$r['thumb']);
+            $img=$r['thumb'];
+            $filetype=image_type_to_mime_type(exif_imagetype($r['thumb']));
+            $file=basename($r['thumb']);
+            $length=filesize('media/'.$file);
         }elseif($r['file']){
-            $img=URL.DS.'media'.DS.$r['file'];
-            $filetype=image_type_to_mime_type(exif_imagetype('media'.DS.$r['file']));
-            $length=filesize('media'.DS.$r['file']);
+            $img=$r['file'];
+            $filetype=image_type_to_mime_type(exif_imagetype($r['file']));
+            $file=basename($r['file']);
+            $length=filesize('media/'.$file);
         }else{
             $match=preg_match('/(src=["\'](.*?)["\'])/',$r['notes'],$match);
             $split=preg_split('/["\']/',$match[0]);
