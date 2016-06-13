@@ -85,8 +85,8 @@ $(".textinput").on({
 		}
 		var da=$(this).val();
 		if(t=='menu'){
-			$('#'+c+id+'save').remove();
-			$('#'+c+id).after('<div id="'+c+id+'save" class="input-group-btn"><button class="btn '+button_style+'">'+button_icon+'</button></div>');
+			$('#'+c+'save').remove();
+			$('#'+c).after('<div id="'+c+'save" class="input-group-btn"><button class="btn '+button_style+'">'+button_icon+'</button></div>');
 		}else{
 			$('#'+c+'save').remove();
 			$('#'+c).after('<div id="'+c+'save" class="input-group-btn"><button class="btn '+button_style+'">'+button_icon+'</button></div>');
@@ -186,7 +186,7 @@ function update(id,t,c,da){
 		}
 		if(t!='comments'){
 			if(t=='menu'){
-				$('#'+c+id+'save').remove()
+				$('#'+c+'save').remove()
 			}else{
 				$('#'+c+'save').remove()
 			}

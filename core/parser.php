@@ -130,14 +130,14 @@ foreach($tags as$tag){
 		case'thumb':
 			$filechk=basename($r['file']);
 			$thumbchk=basename($r['thumb']);
-			if($r['thumb']!=''&&file_exists('media'.DS.$thumbchk))
+			if($r['thumb']!=''&&(file_exists('media'.DS.$thumbchk)||file_exists('../../media'.DS.$thumbchk)))
 				$parsing.='<img src="'.$r['thumb'].'" alt="'.$r['title'].'">';
-			elseif($r['file']!=''&&file_exists('media'.DS.$filechk))
-				$parsing.='<img src="'.$r['file'].'" alt="'.$r['title'].'">';
+			elseif($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('../../media'.DS.$filechk)))
+				$parsing.='<img src="'.$r['file'].'" alt="3'.$r['title'].'">';
 			break;
 		case'image':
 			$filechk=basename($r['file']);
-			if($r['file']&&file_exists('media'.DS.$filechk))
+			if($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('../../media'.DS.$filechk)))
 				$parsing.='<img src="'.$r['file'].'" alt="'.$r['title'].'">';
 			break;
 		case'avatar':
@@ -194,8 +194,8 @@ foreach($tags as$tag){
 			if($attribute=='content')$parsing.=htmlspecialchars($r['name'],ENT_QUOTES,'UTF-8');
 			break;
 		case'caption':
-			if($length!=0)$caption=strtok(wordwrap($r['caption'],$length,"...\n"),"\n");
-			else$caption=$r['caption'];
+			if($length!=0)$caption=strtok(wordwrap($r['seoCaption'],$length,"...\n"),"\n");
+			else$caption=$r['seoCaption'];
 			$parsing.=$caption;
 		case'notes':
 			if($attribute=='author')$notes=$author['notes'];

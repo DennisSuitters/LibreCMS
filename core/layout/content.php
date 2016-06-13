@@ -103,8 +103,8 @@ if($show=='categories'){
                         <th class="col-xs-6">Title</th>
                         <th class="col-xs-1"></th>
                         <th class="col-xs-1 text-center">Comments</th>
-                        <th class="col-xs-1 text-center">Views</th>
-                        <th class="col-xs-3"></th>
+                        <th class="col-xs-2 text-center">Views</th>
+                        <th class="col-xs-2"></th>
                     </tr>
                 </thead>
                 <tbody id="listtype" class="list" data-t="menu" data-c="ord">
@@ -112,24 +112,10 @@ if($show=='categories'){
                     <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='delete')echo' danger';elseif($r['status']=='unpublished')echo'warning';?>">
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
                         <td class="text-center"><?php echo ucfirst($r['contentType']);?></td>
-                        <td class="text-center">
-<?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){
-    $cnt=0;
-    $sc=$db->prepare("SELECT COUNT(id) as cnt FROM comments WHERE rid=:id AND status='unapproved'");
-    $sc->execute(array(':id'=>$r['id']));
-    $cnt=$sc->fetch(PDO::FETCH_ASSOC);?>
-                            <a class="btn btn-default btn-sm" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>#d43"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><?php svg('comments');?> <?php echo$cnt['cnt'];?></a>
-<?php }?>
-                        </td>
-                        <td class="text-center"><?php echo$r['views'];?></td>
+                        <td class="text-center"><?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){$cnt=0;$sc=$db->prepare("SELECT COUNT(id) as cnt FROM comments WHERE rid=:id AND status='unapproved'");$sc->execute(array(':id'=>$r['id']));$cnt=$sc->fetch(PDO::FETCH_ASSOC);?><a class="btn btn-default btn-sm" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>#d43"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><?php svg('comments');?> <?php echo$cnt['cnt'];?></a><?php }?></td>
+                        <td class="text-center"><span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span> <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','content','views','0');"><?php svg('eraser');?></button></td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
-                            <a id="pin<?php echo$r['id'];?>" class="btn btn-default<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin"';?>><?php svg('pin');?></a>
-                            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'];?>/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
-<?php if($user['rank']==1000||$user['options']{0}==1){?>
-                            <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
-                            <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
-                            <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
-                        </td>
+<a id="pin<?php echo$r['id'];?>" class="btn btn-default<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin"';?>><?php svg('pin');?></a> <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'];?>/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a> <?php if($user['rank']==1000||$user['options']{0}==1){?><button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button> <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button> <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button></td>
                     </tr>
 <?php }
 }?>
@@ -147,13 +133,7 @@ if($show=='item'){
             <ol class="breadcrumb">
                 <li><a href="<?php echo URL.$settings['system']['admin'];?>/content/">Content</a></li>
                 <li><a href="<?php echo URL.$settings['system']['admin'];?>/content/type/<?php echo$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a></li>
-                <li class="active relative"><?php $so=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND id NOT LIKE :id ORDER BY title ASC, ti DESC");$so->execute(array(':id'=>$r['id'],':contentType'=>$r['contentType'].'%'));?><a class="dropdown-toggle" data-toggle="dropdown"><?php echo$r['title'];?><i class="caret"></i></a>
-                    <ul class="dropdown-menu pull-right">
-<?php while($ro=$so->fetch(PDO::FETCH_ASSOC)){?>
-                        <li><a href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$ro['id'];?>"><?php echo$ro['title'];?></a></li>
-<?php }?>
-                    </ul>
-                </li>
+                <li class="active relative"><?php $so=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND id NOT LIKE :id ORDER BY title ASC, ti DESC");$so->execute(array(':id'=>$r['id'],':contentType'=>$r['contentType'].'%'));?><a class="dropdown-toggle" data-toggle="dropdown"><?php echo$r['title'];?> <i class="caret"></i></a><ul class="dropdown-menu"><?php while($ro=$so->fetch(PDO::FETCH_ASSOC)){?><li><a href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$ro['id'];?>"><?php echo$ro['title'];?></a></li><?php }?></ul></li>
             </ol>
         </h4>
         <div class="pull-right">
@@ -219,48 +199,10 @@ if($show=='item'){
             <div id="d26" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials')echo' hidden';?>">
                 <fieldset lass="control-fieldset"><legend class="control-legend">Images</legend>
                     <div id="d27" class="form-group"><label for="file" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="fileURL" class="form-control textinput" value="<?php echo$r['fileURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fileURL" placeholder="Enter a URL..."><div class="input-group-btn"><button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><?php svg('trash');?></button></div></div></div>
-                    <div id="d28" class="form-group clearfix">
-                        <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
-                            <input id="file" type="text" class="form-control" value="<?php echo$r['file'];?>" readonly>
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','file');"><?php svg('browse-media');?></button>
-                            </div>
-                            <div class="input-group-addon img">
-<?php
-$rfile=basename($r['file']);
-if($r['file']!=''&&file_exists('media'.DS.$rfile))
-    echo'<a href="media/'.$r['file'].'" data-featherlight="image"><img id="fileimage" src="media/'.$r['file'].'"></a>';
-elseif($r['fileURL']!='')
-    echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="'.$r['fileURL'].'"></a>';
-else
-    echo'<img id="fileimage" src="core/images/noimage.jpg">';?>
-                            </div>
-                            <div class="input-group-btn">
-                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('trash');?></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="d29" class="form-group clearfix">
-                        <label for="thumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Thumbnail</label>
-                        <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
-                            <input id="thumb" type="text" class="form-control" value="<?php echo$r['thumb'];?>" readonly>
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','thumb');"><?php svg('browse-media');?></button>
-                            </div>
-                            <div class="input-group-addon img">
-<?php
-$rthumb=basename($r['thumb']);
-if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))
-    echo'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="'.$r['thumb'].'"></a>';
-else
-    echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
-                            </div>
-                            <div class="input-group-btn">
-                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('trash');?></button>
-                            </div>
-                        </div>
-                        <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div></div>
-                    <fieldset id="d30" class="control-fieldset"><legend class="control-legend">Exif Information</legend>
+                    <div id="d28" class="form-group clearfix"><div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right"><input id="file" type="text" class="form-control" value="<?php echo$r['file'];?>" readonly><div class="input-group-btn"><button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','file');"><?php svg('browse-media');?></button></div><div class="input-group-addon img"><?php $rfile=basename($r['file']);if($r['file']!=''&&file_exists('media'.DS.$rfile))echo'<a href="media/'.$r['file'].'" data-featherlight="image"><img id="fileimage" src="media/'.$r['file'].'"></a>';elseif($r['fileURL']!='')echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="'.$r['fileURL'].'"></a>';else echo'<img id="fileimage" src="core/images/noimage.jpg">';?></div><div class="input-group-btn"><button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('trash');?></button></div></div></div>
+                    <div id="d29" class="form-group clearfix"><label for="thumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Thumbnail</label><div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right"><input id="thumb" type="text" class="form-control" value="<?php echo$r['thumb'];?>" readonly><div class="input-group-btn"><button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','thumb');"><?php svg('browse-media');?></button></div><div class="input-group-addon img"><?php $rthumb=basename($r['thumb']);if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="'.$r['thumb'].'"></a>';else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?></div><div class="input-group-btn"><button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('trash');?></button></div></div><div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div></div>
+                    <fieldset id="d30" class="control-fieldset">
+                        <legend class="control-legend">Exif Information</legend>
                         <div id="d31" class="form-group"><label for="exifFilename" class="control-label col-xs-5 col-sm-3 col-lg-2">Original Filename</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" class="form-control" value="<?php echo$r['exifFilename'];?>" placeholder="Original Filename..." readonly></div></div>
                         <div id="d32" class="form-group"><label for="exifCamera" class="control-label col-xs-5 col-sm-3 col-lg-2">Camera</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifCamera" class="form-control textinput" value="<?php echo$r['exifCamera'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifCamera" placeholder="Enter Camera Brand..."></div></div>
                         <div id="d33" class="form-group"><label for="exifLens" class="control-label col-xs-5 col-sm-3 col-lg-2">Lens</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifLens" class="form-control textinput" value="<?php echo$r['exifLens'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifLens" placeholder="Enter Lens..."></div></div>
@@ -270,7 +212,8 @@ else
                         <div id="d37" class="form-group"><label for="exifISO" class="control-label col-xs-5 col-sm-3 col-lg-2">ISO</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifISO" class="form-control textinput" value="<?php echo$r['exifISO'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifISO" placeholder="Enter ISO..."></div></div>
                         <div id="d38" class="form-group"><label for="exifti" class="control-label col-xs-5 col-sm-3 col-lg-2">Taken</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifti" class="form-control textinput" value="<?php if($r['exifti']!=0){echo date($config['dateFormat'],$r['exifti']);}?>" placeholder="Select the Date/Time Image was Taken..." readonly></div></div>
                     </fieldset>
-                    <fieldset id="d39" class="control-fieldset"><legend class="control-legend">Image Atrribution</legend>
+                    <fieldset id="d39" class="control-fieldset">
+                        <legend class="control-legend">Image Atrribution</legend>
                         <div id="d40" class="form-group"><label for="attributionImageTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="attributionImageTitle" class="form-control textinput" value="<?php echo$r['attributionImageTitle'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageTitle" placeholder="Enter a Title..."></div></div>
                         <div id="d41" class="form-group"><label for="attributionImageName" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="attributionImageName" class="form-control textinput" value="<?php echo$r['attributionImageName'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageName" placeholder="Enter a Name..."></div></div>
                         <div id="d42" class="form-group"><label for="attributionImageURL" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="attributionImageURL" class="form-control textinput" value="<?php echo$r['attributionImageURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageURL" placeholder="Enter a URL..."></div></div>
@@ -329,9 +272,10 @@ else
             <div id="d44" role="tabpanel" class="tab-pane" id="content-seo">
                 <div id="d45" class="form-group"><label for="views" class="control-label col-xs-5 col-sm-3 col-lg-2">Views</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="views" class="form-control textinput" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="views"<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
                 <div id="d46" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>"><label for="schemaType" class="control-label col-xs-5 col-sm-3 col-lg-2">Schema Type</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Schema for Microdata Content."';?>><option value="blogPost"<?php if($r['schemaType']=='blogPost')echo' selected';?>>blogPost for Articles</option><option value="Product"<?php if($r['schemaType']=='Product')echo' selected';?>>Product for Inventory</option><option value="Service"<?php if($r['schemaType']=='Service')echo' selected';?>>Service for Services</option><option value="ImageGallery"<?php if($r['schemaType']=='ImageGallery')echo' selected';?>>ImageGallery for Gallery Images</option><option value="Review"<?php if($r['schemaType']=='Review')echo' selected';?>>Review for Testimonials</option><option value="NewsArticle"<?php if($r['schemaType']=='NewsArticle')echo' selected';?>>NewsArticle for News</option><option value="Event"<?php if($r['schemaType']=='Event')echo' selected';?>>Event for Events</option><option value="CreativeWork"<?php if($r['schemaType']=='CreativeWork')echo' selected';?>>CreativeWork for Portfolio/Proofs</option></select></div></div>
-                <div id="d47" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>"><label for="keywords" class="control-label col-xs-5 col-sm-3 col-lg-2">Keywords</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="keywords" class="form-control textinput" value="<?php echo$r['keywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="keywords" placeholder="Enter Keywords..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
+                <div id="d47" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>"><label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">Keywords</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$r['seoKeywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoKeywords" placeholder="Enter Keywords..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
                 <div id="d48" class="form-group"><label for="tags" class="control-label col-xs-5 col-sm-3 col-lg-2">Tags</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="tags" class="form-control textinput" value="<?php echo$r['tags'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tags" placeholder="Enter Tags..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d49" class="form-group"><label for="caption" class="control-label col-xs-5 col-sm-3 col-lg-2">Caption</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="caption" class="form-control textinput" value="<?php echo$r['caption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="caption" placeholder="Enter a Caption..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
+                <div id="d49" class="form-group"><label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">Caption</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$r['seoCaption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoCaption" placeholder="Enter a Caption..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
+                <div id="d49a" class="form-group"><label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">Description</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$r['seoDescription'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoDescription" placeholder="Enter a Description..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
             </div>
             <div id="d50" role="tabpanel" class="tab-pane">
                 <div id="d51" class="form-group"><label for="published" class="control-label col-xs-5 col-sm-3 col-lg-2">Status</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><select id="status" class="form-control" onchange="update('<?php echo$r['id'];?>','content','status',$(this).val());"<?php if($user['options']{1}==0)echo' readonly';if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>><option value="unpublished"<?php if($r['status']=='unpublished')echo' selected';?>>Unpublished</option><option value="published"<?php if($r['status']=='published')echo' selected';?>>Published</option><option value="delete"<?php if($r['status']=='delete')echo' selected';?>>Delete</option></select></div></div>

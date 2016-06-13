@@ -49,7 +49,7 @@
 		<print page="notes">
 		<settings itemCount="10">
 		<items>
-			<article class="col-xs-12 col-sm-6 col-md-6 col-lg-6" itemscope itemtype="http://schema.org/<print content=schemaType>">
+			<article class="col-xs-12 col-sm-6 col-md-6 col-lg-6 animated slideInDown" itemscope itemtype="http://schema.org/<print content=schemaType>">
 				<print content="title" class="text-center" container="h4">
 				<div class="thumbnail articles">
 					<div class="cover">
@@ -61,10 +61,7 @@
 						</aside>
 					</cost>
 					<div class="caption">
-						<print content="dateCreated" userrank="399" class="text-muted" container="h6" leadingtext="Created: ">
 						<print content="datePublished" class="text-muted" container="h6" leadingtext="Published: ">
-						<print content="dateEdited" userrank="399" class="text-muted" container="h6" leadingtext="Edited: ">
-						<print content="dateEvent" class="text-muted" container="h6" leadingtext="Event Date: ">
 						<print content="categories" class="text-muted" container="h6" leadingtext="Categories: ">
 						<print content="caption" length="200" container="p">
 						<div class="text-right">
@@ -84,6 +81,9 @@
 				</div>
 			</article>
 		</items>
+		<more>
+			<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>">More</button>
+		</more>
 	</main>
 </block>
 <block include="side_menu.html">

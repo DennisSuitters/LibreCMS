@@ -23,15 +23,17 @@ if($_SESSION['rank']>399){
     	if($_SESSION['rank']==1000)$rankText='Developer';
     }else $rankText='Visitor';?>
 <!DOCTYPE HTML>
-<html lang="<?php echo$config['language'];?>" id="libreCMS">
-    <head>
+<html lang="en-AU" id="libreCMS">
+	<head>
+		<meta charset="UTF-8">
         <meta name="generator" content="LibreCMS">
         <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
         <title>Administration - LibreCMS</title>
         <base href="<?php echo URL;?>">
         <link rel="alternate" media="handheld" href="<?php echo URL;?>">
         <link rel="alternate" hreflang="x-default" href="<?php echo URL;?>">
-        <link rel="alternate" hreflang="AU-en" href="<?php echo URL;?>">
+        <link rel="alternate" hreflang="x" href="<?php echo URL;?>">
+        <link rel="alternate" hreflang="EN-au" href="<?php echo URL;?>">
         <link rel="icon" href="<?php echo URL.$favicon;?>">
         <link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>">
         <meta name="viewport" content="initial-scale=1.0">
@@ -55,6 +57,7 @@ if($_SESSION['rank']>399){
         <script src="core/js/plugin/summernote-save-button/summernote-save-button.js"></script>
         <script src="core/js/plugin/summernote-image-attributes/summernote-image-attributes.js"></script>
         <script src="core/js/plugin/summernote-cleaner/summernote-cleaner.js"></script>
+        <script src="core/js/plugin/summernote-seo/summernote-seo.js"></script>
         <script src="core/js/plugin/elfinder/elfinder.js"></script>
 		<script src="core/elfinder/js/elfinder.min.js"></script>
         <script src="core/js/jquery.notifications.min.js"></script>
@@ -264,7 +267,7 @@ if($_SESSION['rank']>399){
                 lang:'en-US',
                 toolbar:[
                     ['save',['save']],
-                    ['cleaner',['cleaner']],
+                    ['cleaner',['cleaner','seo']],
                     ['style',['style']],
                     ['font',['bold','italic','underline','clear']],
                     ['fontname',['fontname']],

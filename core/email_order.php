@@ -42,18 +42,18 @@ $html.='.overdue{color:#800;}';
 $html.='</style>';
 $html.='<body>';
 $pdflogo='';
-if(file_exists('../layout/'.$config['theme'].'/images/orderheading.png'))
-	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.png';
-elseif(file_exists('../layout/'.$config['theme'].'images/orderheading.jpg'))
-	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.jpg';
-elseif(file_exists('../layout/'.$config['theme'].'images/orderheading.gif'))
-	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.gif';
-elseif(file_exists('../media/orderheading.png'))
+if(file_exists('../media/orderheading.png'))
 	$pdflogo='../media/orderheading.png';
 elseif(file_exists('../media/orderheading.jpg'))
 	$pdflogo='../media/orderheading.jpg';
 elseif(file_exists('../media/orderheading.gif'))
 	$pdflogo='../media/orderheading.gif';
+elseif(file_exists('../layout/'.$config['theme'].'/images/orderheading.png'))
+	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.png';
+elseif(file_exists('../layout/'.$config['theme'].'images/orderheading.jpg'))
+	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.jpg';
+elseif(file_exists('../layout/'.$config['theme'].'images/orderheading.gif'))
+	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.gif';
 else
 	$pdflogo='';
 if($pdflogo!=''){

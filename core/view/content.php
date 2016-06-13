@@ -3,6 +3,7 @@ $rank=0;
 $show='categories';
 $status='published';
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
+$itemCount=$config['showItems'];
 if($view=='index'){
 	if(stristr($html,'<settings')){
 		preg_match('/<settings items="([\w\W]*?)" contenttype="([\w\W]*?)">/',$html,$matches);
@@ -56,11 +57,12 @@ if($view=='index'){
 			$s->execute(array(':cid'=>$_SESSION['uid']));
 		}
 	}else{
-		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+		$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC LIMIT $itemCount");
 		$s->execute(array(':contentType'=>$view,':status'=>$status,':ti'=>time()));
 	}
 }
 if($show=='categories'){
+	$contentType=$view;
 	if(stristr($html,'<settings')){
 		$matches=preg_match_all('/<settings items="(.*?)" contenttype="(.*?)">/',$html,$matches);
 		$count=$matches[1];
@@ -85,6 +87,7 @@ if($show=='categories'){
 		$si=1;
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
 			$items=$item;
+			$contentType=$r['contentType'];
 			if($si==1){
 				$filechk=basename($r['file']);
 				$thumbchk=basename($r['thumb']);
@@ -135,6 +138,17 @@ if($show=='categories'){
 	$html=preg_replace('~<item>.*?<\/item>~is','',$html,1);
 	$html=str_replace('<items>','',$html);
 	$html=str_replace('</items>','',$html);
+	if(stristr($html,'<more')){
+		if($s->rowCount()<$config['showItems']){
+			$html=preg_replace('~<more>.*?<\/more>~is','',$html,1);
+		}else{
+			$html=str_replace('<more>','',$html);
+			$html=str_replace('</more>','',$html);
+			$html=str_replace('<print view>',$view,$html);
+			$html=str_replace('<print contentType>',$contentType,$html);
+			$html=str_replace('<print config=showItems>',$config['showItems'],$html);
+		}
+	}
 }
 if($show=='item'){
 	$r=$s->fetch(PDO::FETCH_ASSOC);
@@ -183,6 +197,7 @@ if($show=='item'){
 	if($r['contentType']=='article'||$r['contentType']=='portfolio')$item=preg_replace('~<controls>.*?<\/controls>~is','',$item,1);
 	$html=preg_replace('~<settings.*?>~is','',$html,1);
 	$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);
+	$html=preg_replace('~<more>.*?<\/more>~is','',$html,1);
 	$html=str_replace('<print page="notes">','',$html);
 /* Comments */
 	if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
