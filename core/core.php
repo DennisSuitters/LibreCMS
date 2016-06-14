@@ -10,32 +10,9 @@ if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme']))$config['theme
 define('THEME','layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
-if(file_exists(THEME.DS.'images'.DS.'favicon.png'))
-	define('FAVICON',THEME.DS.'images'.DS.'favicon.png');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif'))
-	define('FAVICON',THEME.DS.'images'.DS.'favicon.gif');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg'))
-	define('FAVICON',THEME.DS.'images'.DS.'favicon.jpg');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico'))
-	define('FAVICON',THEME.DS.'images'.DS.'favicon.ico');
-else
-	define('FAVICON','core'.DS.'images'.DS.'favicon.png');
-if(file_exists(THEME.DS.'images'.DS.'noimage.png'))
-	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');
-elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))
-	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.gif');
-elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))
-	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');
-else
-	define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
-if(file_exists(THEME.DS.'images'.DS.'noavatar.png'))
-	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.png');
-elseif(file_exists(THEME.DS.'images'.DS.'noavatar.gif'))
-	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.gif');
-elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))
-	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.jpg');
-else
-	define('NOAVATAR','core'.DS.'images'.DS.'noavatar.jpg');
+if(file_exists(THEME.DS.'images'.DS.'favicon.png'))define('FAVICON',THEME.DS.'images'.DS.'favicon.png');elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif'))define('FAVICON',THEME.DS.'images'.DS.'favicon.gif');elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg'))define('FAVICON',THEME.DS.'images'.DS.'favicon.jpg');elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico'))define('FAVICON',THEME.DS.'images'.DS.'favicon.ico');else define('FAVICON','core'.DS.'images'.DS.'favicon.png');
+if(file_exists(THEME.DS.'images'.DS.'noimage.png'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.gif');elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');else define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
+if(file_exists(THEME.DS.'images'.DS.'noavatar.png'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.png');elseif(file_exists(THEME.DS.'images'.DS.'noavatar.gif'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.gif');elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.jpg');else define('NOAVATAR','core'.DS.'images'.DS.'noavatar.jpg');
 define('YANDEX','trnsl.1.1.20151010T141347Z.abb6d53e6280191b.5decd3b201ae911048617d1869e766124de2023d');
 require'login.php';
 function rank($txt){

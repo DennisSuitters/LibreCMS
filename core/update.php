@@ -15,7 +15,6 @@ $tbl=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filt
 $col=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
 if($tbl=='content'||$tbl=='menu'||$tbl=='config'&&$col=='notes'||$col=='PasswordResetLayout'||$col=='orderEmailLayout'||$col=='orderEmailNotes'||$col=='passwordResetLayout'||$col=='accountActivationLayout'||$col=='bookingEmailLayout'||$col=='bookingAutoReplyLayout'||$col=='contactAutoReplyLayout'){
     $da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_UNSAFE_RAW):filter_input(INPUT_GET,'da',FILTER_UNSAFE_RAW);
-//    $da=kses($da);
 }else{
     $da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'da',FILTER_SANITIZE_STRING);
     $da=kses($da,array());
@@ -94,6 +93,7 @@ if($tbl=='content'&&$col=='file'&&$da==''){
     if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.jpg'))unlink('..'.DS.'media'.DS.'file_'.$id.'.jpg');
     if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.png'))unlink('..'.DS.'media'.DS.'file_'.$id.'.png');
     if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.gif'))unlink('..'.DS.'media'.DS.'file_'.$id.'.gif');
+	if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.tif'))unlink('..'.DS.'media'.DS.'file_'.$id.'.tif');
 }
 if($tbl=='orderitems'||$tbl=='cart'){
     if($tbl=='cart'&&$col=='quantity'){
@@ -171,6 +171,5 @@ if($col=='status'){
 }?>
 window.top.window.$('#block').css("display","none");
 /*]]>*/</script>
-<?php /* Update Logs */
-$s=$db->prepare("INSERT INTO logs (uid,rid,view,contentType,refTable,refColumn,oldda,newda,action,ti) VALUES (:uid,:rid,:view,:contentType,:refTable,:refColumn,:oldda,:newda,:action,:ti)");
+<?php $s=$db->prepare("INSERT INTO logs (uid,rid,view,contentType,refTable,refColumn,oldda,newda,action,ti) VALUES (:uid,:rid,:view,:contentType,:refTable,:refColumn,:oldda,:newda,:action,:ti)");
 $s->execute(array(':uid'=>$log['uid'],':rid'=>$log['rid'],':view'=>$log['view'],':contentType'=>$log['contentType'],':refTable'=>$log['refTable'],':refColumn'=>$log['refColumn'],':oldda'=>$log['oldda'],':newda'=>$log['newda'],':action'=>$log['action'],':ti'=>$log['ti']));

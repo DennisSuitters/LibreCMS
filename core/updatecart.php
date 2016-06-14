@@ -2,10 +2,7 @@
 <?php
 session_start();
 include'db.php';
-if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)
-    define('PROTOCOL','https://');
-else
-    define('PROTOCOL','http://');
+if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
 define('DS',DIRECTORY_SEPARATOR);
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
@@ -46,7 +43,7 @@ if($act=='quantity'){
     $total=0;
     $s=$db->prepare("SELECT * FROM cart WHERE si=:si ORDER BY ti DESC");
     $s->execute(array(':si'=>SESSIONID));
-    $html=file_get_contents(THEME.'/cart.html');
+    $html=file_get_contents(THEME.DS.'cart.html');
     preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
     $cartloop=$matches[1];
     $cartitems='';

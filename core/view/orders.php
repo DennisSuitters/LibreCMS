@@ -50,12 +50,10 @@ else{
             $order=str_replace('<print config="email">',$config['email'],$order);
             $order=str_replace('<print config="phone">',$config['phone'],$order);
             $order=str_replace('<print config="mobile">',$config['mobile'],$order);
-
             $order=str_replace('<print config="bank">',$config['bank'],$order);
             $order=str_replace('<print config="bankAccountName">',$config['bankAccountName'],$order);
             $order=str_replace('<print config="bankAccountNumber">',$config['bankAccountNumber'],$order);
             $order=str_replace('<print config="bankBSB">',$config['bankBSB'],$order);
-
             $order=str_replace('<print user="name">',$ru['name'].' ['.$ru['username'].']',$order);
             $order=str_replace('<print user="address">',$ru['address'],$order);
             $order=str_replace('<print user="suburb">',$ru['suburb'],$order);

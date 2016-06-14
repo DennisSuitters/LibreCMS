@@ -157,7 +157,6 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 	$html.='</table>';
 $html.='</body>';
 $pdf->writeHTML($html,true,false,true,false,'');
-//$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 $pdf->Output(__DIR__.'/../media/orders/'.$oid.'.pdf','F');
 chmod('../media/orders/'.$oid.'.pdf',0777);?>
 <script>/*<![CDATA[*/

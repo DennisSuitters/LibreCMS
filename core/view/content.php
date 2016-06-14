@@ -22,7 +22,7 @@ if($view=='index'){
 }elseif($view=='search'){
 	$search='%';
 	if(isset($args[0]))$search='%'.html_entity_decode(str_replace('-',' ',$args[0])).'%';else$search='%'.html_entity_decode(str_replace('-',' ',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING))).'%';
-	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(keywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(caption) LIKE LOWER(:caption) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(seoKeywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(seoCaption) LIKE LOWER(:caption) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' AND pti < :ti ORDER BY ti DESC");
 	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':notes'=>$search,':ti'=>$ti));
 }elseif($view=='bookings'){
 	if(isset($args[0]))$id=(int)$args[0];else$id=0;
@@ -159,10 +159,12 @@ if($show=='item'){
 	elseif($r['thumb']!='')
 		$shareImage=$r['thumb'];
 	$seoTitle=$r['title'].' - '.ucfirst($r['contentType']).' - '.htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8');
-	if($r['caption']!='')$seoDescription=$seoCaption=htmlspecialchars($r['caption'],ENT_QUOTES,'UTF-8');else$seoDescription=$seoCaption=htmlspecialchars(strip_tags($r['caption']),ENT_QUOTES,'UTF-8');
-	if($r['eti']>$r['ti'])$contentTime=$r['eti'];else$contentTime=$r['ti'];
-	$seoKeywords=htmlspecialchars($r['keywords'],ENT_QUOTES,'UTF-8');
+	if($r['seoCaption'])$seoCaption=htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8');elseif($page['seoCaption'])$seoCaption=htmlspecialchars($page['seoCaption'],ENT_QUOTES,'UTF-8');else$seoCaption=htmlspecialchars($config['seoCaption'],ENT_QUOTES,'UTF-8');
+	if($r['seoDescription'])$seoDescription=htmlspecialchars($r['seoDescription'],ENT_QUOTES,'UTF-8');
+elseif($page['seoDescription'])$seoDescription=htmlspecialchars($page['seoDescription'],ENT_QUOTES,'UTF-8');else$seoDescription=htmlspecialchars($config['seoDescription'],ENT_QUOTES,'UTF-8');
+	if($r['seoKeywords'])$seoKeywords=htmlspecialchars($r['seoKeywords'],ENT_QUOTES,'UTF-8');elseif($page['seoKeywords'])$seoKeywords=htmlspecialchars($page['seoKeywords'],ENT_QUOTES,'UTF-8');else$seoKeywords=htmlspecialchars($config['seoKeywords'],ENT_QUOTES,'UTF-8');
 	$canonical=URL.$view.'/'.urlencode(str_replace(' ','-',$r['title']));
+	if($r['eti']>$r['ti'])$contentTime=$r['eti'];else$contentTime=$r['ti'];
 	preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);
 	$item=$matches[1];
 	if($r['contentType']=='service'){
@@ -192,8 +194,6 @@ if($show=='item'){
 	require'core'.DS.'parser.php';
 	$authorHTML='';
 	$seoTitle=$r['title'].' - '.$config['seoTitle'];
-	$seoKeywords=$r['keywords'];
-	$seoDescription=$r['caption'];
 	if($r['contentType']=='article'||$r['contentType']=='portfolio')$item=preg_replace('~<controls>.*?<\/controls>~is','',$item,1);
 	$html=preg_replace('~<settings.*?>~is','',$html,1);
 	$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);

@@ -55,7 +55,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     }?>
         <item>
             <title><?php echo$r['title'].' - '.ucfirst($r['contentType']).' - '.$config['seoTitle'];?></title>
-            <description><?php if($r['caption']==""){echo strip_tags($r['notes']);}else{echo$r['caption'];}?></description>
+            <description><?php if($r['seoCaption']==""){echo strip_tags($r['notes']);}else{echo$r['seoCaption'];}?></description>
             <link><?php echo URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title']));?></link>
             <pubDate><?php echo strftime("%a, %d %b %Y %T %Z",$r['ti']);?></pubDate>
             <enclosure url="<?php echo$img;?>" length="<?php echo$length;?>" type="<?php echo$filetype;?>"/>

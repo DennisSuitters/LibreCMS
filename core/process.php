@@ -66,7 +66,7 @@ if(stristr($head,'<print meta=seoCaption>')){
     if($view=='index'&&$seoDescription!='')$head=str_replace('<print meta=seoCaption>',$seoDescription,$head);
     else$head=str_replace('<print meta=seoCaption>',$seoCaption,$head);
 }
-if(stristr($head,'<print meta=seoKeywords>')){if(isset($args[1])&&$args[1]!=''&&isset($r['keywords']))$seoKeywords=$r['keywords'];elseif(!isset($seoKeywords)||$seoKeywords=='')$seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];$head=str_replace('<print meta=seoKeywords>',$seoKeywords,$head);}
+if(stristr($head,'<print meta=seoKeywords>')){if(isset($args[1])&&$args[1]!=''&&isset($r['seoKeywords']))$seoKeywords=$r['seoKeywords'];elseif(!isset($seoKeywords)||$seoKeywords=='')$seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];$head=str_replace('<print meta=seoKeywords>',$seoKeywords,$head);}
 if(stristr($head,'<print meta=dateAtom>')){if(!isset($contentTime)){if($page['eti']>$config['ti'])$contentTime=$page['eti'];else$contentTime=$config['ti'];}$head=str_replace('<print meta=dateAtom>',date(DATE_ATOM,$contentTime),$head);}
 if(stristr($head,'<print meta=canonical>')){
     if(!isset($canonical)||$canonical=='')$canonical=URL.$view.'/';

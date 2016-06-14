@@ -11,7 +11,6 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		}else$sideCost='<span>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
 		$sideTemp=str_replace('<print content="cost">',$sideCost,$sideTemp);
 		$sideTemp=str_replace('<print content=id>',$r['id'],$sideTemp);
-
 		$sideQuantity='';
 		if($r['contentType']=='inventory'){
 			if(is_numeric($r['quantity'])&&$r['quantity']!=0){
@@ -106,7 +105,8 @@ if(file_exists(THEME.DS.'side_menu.html')){
 			}
 		}
 		$items=str_replace('<print time>',$time,$items);
-		$items=str_replace('<print content="caption">',$r['caption'],$items);
+		if($r['seoCaption']!='')$items=str_replace('<print content="caption">',$r['seoCaption'],$items);
+		else$items=str_replace('<print content="caption">',substr(strip_tags($r['notes']),0,100).'...',$items);
 		$output.=$items;
 	}
 	$outside=preg_replace('~<heading>.*?<\/heading>~is',$heading,$outside,1);
