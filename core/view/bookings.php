@@ -81,21 +81,15 @@ if($act=='add_booking'){
 						$msg=str_replace('{first}',$namefirst,$msg);
 						$msg=str_replace('{last}',$namelast,$msg);
 						$msg=str_replace('{date}',date($config['dateFormat'],$ti),$msg);
-						if($tis!=0)
-							$msg=str_replace('{booking_date}',date($config['dateFormat'],$tis),$msg);
-						else
-							$msg=str_replace('{booking_date}','',$msg);
-						if($rid!=0)
-							$msg=str_replace('{service}',ucfirst(rtrim($r['contentType'],'s')).' - '.$r['title'],$msg);
-						else
-							$msg=str_replace('{service}','',$msg);
+						if($tis!=0)$msg=str_replace('{booking_date}',date($config['dateFormat'],$tis),$msg);else$msg=str_replace('{booking_date}','',$msg);
+						if($rid!=0)$msg=str_replace('{service}',ucfirst(rtrim($r['contentType'],'s')).' - '.$r['title'],$msg);else$msg=str_replace('{service}','',$msg);
 						$mail->Body=$msg;
 						$mail->AltBody=strip_tags($msg);
-						if($mail->Send()) $notification=$theme['settings']['booking_success'];
-						else $notification=$theme['settings']['booking_error'];
-					}else $notification=$theme['settings']['booking_error'];
+						if($mail->Send())$notification=$theme['settings']['booking_success'];
+						else$notification=$theme['settings']['booking_error'];
+					}else$notification=$theme['settings']['booking_error'];
 				}
-			}else $notification=$theme['settings']['booking_error'];
+			}else$notification=$theme['settings']['booking_error'];
 		}
 	}
 }else{

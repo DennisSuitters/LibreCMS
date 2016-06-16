@@ -10,7 +10,7 @@ else{
 }
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $html=str_replace('<print theme="title">',$theme['title'],$html);
-$html=str_replace('<print theme="creator">','<a target="_blank" href="'.$theme['creator_url'].'">'.$theme['creator'].'</a>',$html);
+$html=str_replace('<print theme="creator">',$theme['creator'],$html);
 $html=str_replace('<login>',$link,$html);
 if(stristr($html,'<address')){
 	if($config['business']!='')$business=$config['business'];else$business='';

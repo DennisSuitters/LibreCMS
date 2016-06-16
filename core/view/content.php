@@ -22,8 +22,8 @@ if($view=='index'){
 }elseif($view=='search'){
 	$search='%';
 	if(isset($args[0]))$search='%'.html_entity_decode(str_replace('-',' ',$args[0])).'%';else$search='%'.html_entity_decode(str_replace('-',' ',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING))).'%';
-	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(seoKeywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(seoCaption) LIKE LOWER(:caption) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' AND pti < :ti ORDER BY ti DESC");
-	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':notes'=>$search,':ti'=>$ti));
+	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(seoKeywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(seoCaption) LIKE LOWER(:caption) OR LOWER(seoDescription) LIKE LOWER(:description) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':description'=>$search,':notes'=>$search,':ti'=>$ti));
 }elseif($view=='bookings'){
 	if(isset($args[0]))$id=(int)$args[0];else$id=0;
 }elseif(isset($args[1])&&strlen($args[1])==2){
@@ -68,16 +68,30 @@ if($show=='categories'){
 		$count=$matches[1];
 		$html=preg_replace('~<settings.*?>~is','',$html,1);
 	}else$count=1;
-	if(stristr($html,'<print page="cover">')){
-		$page['cover']=basename($page['cover']);
-		if($page['cover']!=''&&file_exists('media'.DS.$page['cover']))
-			$html=str_replace('<print page="cover">','<img src="media'.DS.$page['cover'].'">',$html);
-		elseif($page['coverURL']!='')
-			$html=str_replace('<print page="cover">','<img src="'.$page['coverURL'].'">',$html);
-		else
-			$html=str_replace('<print page="cover">','',$html);
+	if(stristr($html,'<print page="cover"')){
+		if($page['cover']!=''||$page['coverURL']!=''){
+			$cover=basename($page['cover']);
+			$coverHTML='<img src="';
+			if(file_exists('media'.DS.$cover))$cover='media'.DS.$page['cover'];elseif($page['coverURL']!='')$cover=$page['coverURL'];
+			$coverHTML.='" alt="';
+			if($page['attributionImageTitle']==''&&$page['attributionImageName']==''&&$page['attributionImageURL']==''){
+				if($page['attributionImageTitle']){
+					$cover.=$page['attributionImageTitle'];
+					if($page['attributionImageName'])$cover.=' - ';
+				}
+				if($page['attributionImageName']){
+					$cover.=$page['attributionImageName'];
+					if($page['attributionImageURL'])$cover.=' - ';
+				}
+				if($page['attributionImageURL'])$cover.=$page['attributionImageURL'];
+			}else{
+				if($page['seoTitle'])$cover.=$page['seoTitle'];else$config['seoTitle'];
+			}
+			if($page['seoTitle']==''&&$config['seoTitle']=='')$cover.=basename($page['cover']);
+				$cover.='">';
+		}else$cover='';
+		$html=str_replace('<print page="cover">',$cover,$html);
 	}
-	$html=str_replace('<print page="cover">','',$html);
 	$html=str_replace('<print page="notes">',$page['notes'],$html);
 	if($config['business'])$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'),$html);else$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
 	if(stristr($html,'<items>')){

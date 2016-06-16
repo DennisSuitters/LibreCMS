@@ -100,23 +100,39 @@ if($ii>0){
 			$item=str_replace('<print link>',$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$item);
 		}
 		if(stristr($item,'<print content="thumb">')){
-			if($r['thumb']!='')$item=str_replace('<print content="thumb">','<img src="'.$r['thumb'].'" class="img-responsive" alt="'.$r['title'].'">',$item);elseif($r['file']!='')$item=str_replace('<print content="thumb">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);else$item=str_replace('<print content="thumb">','thumb',$item);
+			if($r['thumb']!='')
+				$item=str_replace('<print content="thumb">','<img src="'.$r['thumb'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
+			elseif($r['file']!='')
+				$item=str_replace('<print content="thumb">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
+			else
+				$item=str_replace('<print content="thumb">','thumb',$item);
 		}
 		if(stristr($item,'<print content="image">')){
-			if($r['file']!='')$item=str_replace('<print content="image">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);else$item=str_replace('<print content="image">','',$item);
+			if($r['file']!='')
+				$item=str_replace('<print content="image">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
+			else
+				$item=str_replace('<print content="image">','',$item);
 		}
 		$item=str_replace('<print content=title>',$r['title'],$item);
-		if($r['link']=='nolink')$item=str_replace('<print content="title">','<span class="hidden">'.$r['title'].'</span>',$item);else$item=str_replace('<print content="title">',$r['title'],$item);
-		if($r['contentType']=='carousel')$item=preg_replace('~<caption>.*?<\/caption>~is',$r['caption'],$item,1);
+		if($r['link']=='nolink')
+			$item=str_replace('<print content="title">','<span class="hidden">'.$r['title'].'</span>',$item);
+		else
+			$item=str_replace('<print content="title">',$r['title'],$item);
+		if($r['contentType']=='carousel')
+			$item=preg_replace('~<caption>.*?<\/caption>~is',$r['seoCaption'],$item,1);
 		else{
 			$r['notes']=strip_tags($r['notes']);
 			$pos=strpos($r['notes'],' ',300);
 			$r['notes']=substr($r['notes'],0,$pos).'...';
-			if($r['seoCaption']!='')$item=str_replace('<print content="caption">',$r['seoCaption'],$item);
-elseif($r['notes']!='')$item=str_replace('<print content="caption">',strip_tags($r['notes']),$item);else$item=str_replace('<print content="caption">','',$item);
-			if($r['notes']!=''){
+			if($r['seoCaption']!='')
+				$item=str_replace('<print content="caption">',$r['seoCaption'],$item);
+			elseif($r['notes']!='')
+				$item=str_replace('<print content="caption">',strip_tags($r['notes']),$item);
+			else
+				$item=str_replace('<print content="caption">','',$item);
+			if($r['notes']!='')
 				$item=str_replace('<print content="notes">',strip_tags($r['notes']),$item);
-			}else
+			else
 				$item=str_replace('<print content="notes">','',$item);
 			$item=str_replace('<caption>','',$item);
 			$item=str_replace('</caption>','',$item);

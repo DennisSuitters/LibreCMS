@@ -246,6 +246,8 @@ if($_SESSION['rank']>399){
             $('.summernote').summernote({
                 height:<?php if($view=='bookings'||$view=='orders'||$view=='preferences'||$view=='accounts')echo'100';else echo'300';?>,
                 tabsize:2,
+                styleTags:// ['p','blockquote','pre','h1','h2','h3','h4','h5','h6'],
+                        ['p','blockquote','pre','h2','h3'],
                 popover:{
                     image:[
                         ['custom',['imageAttributes', 'imageShape']],

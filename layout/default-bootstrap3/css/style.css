@@ -24,12 +24,7 @@ time{display:block}
 .carousel .item{width:100%;}
 .carousel .item img{width:100%}
 .carousel-caption{background:#000;background:rgba(0,0,0,.75);color:#fff;top:auto;right:0;bottom:0;left:0;padding:20px;text-align:left;text-shadow:0 0 25px #000,0 0 20px #000,0 0 15px #000,0 0 10px #000}
-.carousel-caption h1,
-.carousel-caption h2,
-.carousel-caption h3,
-.carousel-caption h4,
-.carousel-caption h5,
-.carousel-caption h6{margin:0}
+.carousel-caption .title{font-size:1.2em;font-weight:700}
 .carousel .left .libre,
 .carousel .right .libre{margin-top:50%}
 .carousel-indicators{position:absolute;right:5px;bottom:-5px;left:auto;z-index:15;width:60%;padding-left:0;margin-left:-30%;text-align:right;list-style:none}
@@ -50,15 +45,15 @@ time{display:block}
 .contentType div{position:relative;top:0;left:0;color:#fff;text-transform:capitalize;text-shadow:1px 1px 5px #000,0 0 10px #000,0 0 20px #000;white-space:nowrap;font-weight:700;font-size:9px}
 .contentType:empty{display:none}
 .notes{height:100px}
-.price{position:absolute;display:block;top:0;right:0;padding:0 15px;color:#fff;text-shadow:1px 1px 5px #000,0 0 10px #000,0 0 20px #000}
+.price{position:absolute;display:block;top:0;right:0;padding:0 15px;font-size:2em;color:#fff;text-shadow:1px 1px 5px #000,0 0 10px #000,0 0 20px #000}
 article,
 .thumbnail{position:relative;margin-bottom:20px;padding:0}
 .cover{width:100%}
 article{width:100%}
 .thumbnail .cover{height:150px;overflow:hidden}
 .thumbnail img{width:100%}
-article h4{position:absolute;width:100%;top:150px;right:0;left:0;text-align:center;z-index:+1}
-article .caption{margin-top:20px;text-align:justify}
+article h1{font-size:1.4em}
+article .caption{margin-top:5px;text-align:justify}
 .article{margin:0 5px}
 article .vcard{font-size:12px}
 article .vcard h4{display:none}

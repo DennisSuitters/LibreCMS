@@ -54,7 +54,7 @@ h4 .breadcrumb{padding:0;margin:0}
     #content,
     #content.toggled{margin:15px 15px 15px 15px}
 }
-.nav-side-menu{overflow:auto;font-size:14px;font-weight:200;background-color:#386386;position:fixed;top:0;width:260px;height:100%;color:#fff}
+.nav-side-menu{overflow:auto;font-size:20px;font-weight:200;background-color:#386386;position:fixed;top:0;width:260px;height:100%;color:#fff}
 .nav-side-menu ul,
 .nav-side-menu li{list-style:none;padding:0;margin:2px 0;line-height:30px;font-weight:300;cursor:pointer}
 .nav-side-menu ul :not(collapsed) .arrow:before,
@@ -73,9 +73,9 @@ h4 .breadcrumb{padding:0;margin:0}
 .nav-side-menu li{text-align:left;padding:0 10px}
 .nav-side-menu li a{text-decoration:none;color:#ccc}
 .nav-side-menu li a:hover{color:#fff;text-shadow:0 1px 1px #000}
-.nav-side-menu li.search input[type=search]{display:inline;width:220px;padding:0;margin:-2px 0 0 -1px;border:0 none transparent;background-color:transparent;-webkit-box-shadow:0 0 0 transparent;box-shadow:0 0 0 transparent}
-.nav-side-menu li.search input[type=search]:hover{display:inline;width:220px;padding:0;margin:-2px 0 0 -1px;border:0 none transparent;background-color:transparent;cursor:pointer}
-.nav-side-menu li.search i.libre{display:inline-block;width:15px;font-size:12px;line-height:14px;background-color:transparent;color:#ccc;text-shadow:0 0 0 none;border-width:0;padding:0;border-radius:0;-webkit-box-shadow:0 0 0 transparent;box-shadow:0 0 0 transparent}
+.nav-side-menu li.search input[type=search]{display:inline;font-size:20px;width:220px;padding:0;padding-left:4px;margin:-2px 0 0 -1px;border:0 none transparent;background-color:transparent;-webkit-box-shadow:0 0 0 transparent;box-shadow:0 0 0 transparent}
+.nav-side-menu li.search input[type=search]:hover{display:inline;width:220px;padding:0;padding-left:4px;margin:-2px 0 0 -1px;border:0 none transparent;background-color:transparent;cursor:pointer}
+.nav-side-menu li.search i.libre{display:inline-block;width:15px;line-height:14px;background-color:transparent;color:#ccc;text-shadow:0 0 0 none;border-width:0;padding:0;border-radius:0;-webkit-box-shadow:0 0 0 transparent;box-shadow:0 0 0 transparent}
 .nav-side-menu li.search:hover i.libre,
 .nav-side-menu li.search:focus i.libre,
 .nav-side-menu li.search.active i.libre{display:inline-block;width:15px;background-color:transparent;color:#fff;text-shadow:0 1px 5px #000;border-width:0;padding:0;border-radius:0}
