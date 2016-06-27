@@ -165,19 +165,19 @@ if (!defined('PDF_MARGIN_FOOTER')) {
 }
 
 if (!defined('PDF_MARGIN_TOP')) {
-	define ('PDF_MARGIN_TOP', 5);
+	define ('PDF_MARGIN_TOP', 27);
 }
 
 if (!defined('PDF_MARGIN_BOTTOM')) {
-	define ('PDF_MARGIN_BOTTOM', 5);
+	define ('PDF_MARGIN_BOTTOM', 25);
 }
 
 if (!defined('PDF_MARGIN_LEFT')) {
-	define ('PDF_MARGIN_LEFT', 3);
+	define ('PDF_MARGIN_LEFT', 15);
 }
 
 if (!defined('PDF_MARGIN_RIGHT')) {
-	define ('PDF_MARGIN_RIGHT', 3);
+	define ('PDF_MARGIN_RIGHT', 15);
 }
 
 if (!defined('PDF_FONT_NAME_MAIN')) {

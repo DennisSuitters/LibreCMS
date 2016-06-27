@@ -91,7 +91,7 @@ if($s->rowCount()>0){
 	$html=str_replace('</subjectSelect>','',$html);
 	$options='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
-		$options.='<option value="'.$r['id'].'">'.$r['title'].'</option>';
+		$options.='<option value="'.$r['id'].'" role="option">'.$r['title'].'</option>';
 	}
 	$html=str_replace('<subjectOptions>',$options,$html);
 }else{

@@ -114,6 +114,14 @@ h4 .breadcrumb{padding:0;margin:0}
 .handle{cursor:move}
 .sort-placeholder,
 .ghost{position:relative;border:1px dashed #000;background:#eee;height:100px;margin:auto auto 10px auto;float:left;width:100%!important}
+.danger{background-color:#f2dede!important}
+.danger .well{background-color:transparent!important}
+.rat{display:inline-block;unicode-bidi:bidi-override;direction:rtl}
+.rat > span{position:relative;width:1em;text-shadow:0 1px 1px #000}
+.rat > span.set,
+.rat > span.set ~ span{color:transparent}
+.rat > span.set:after,
+.rat > span.set ~ span:after{content:"\2605";position:absolute;left:0;color:gold}
 textarea.summernote{visibility:hidden}
 @media screen and(min-width:768px){
     .modal-dialog{width:700px;padding-top:20px;padding-bottom:20px}

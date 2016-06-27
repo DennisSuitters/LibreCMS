@@ -1,18 +1,18 @@
 <footer class="clearfix">
-	<nav class="navbar navbar-default col-xs-12">
+	<nav class="navbar navbar-default col-xs-12" role="navigation">
 		<ul class="nav navbar-nav navbar-right">
 			<buildMenu>
-				<li><a href="<print menu=contentType>"><print menu="title"></a></li>
+				<li role="listitem"><a href="<print menu=contentType>"><print menu="title"></a></li>
 			</buildMenu>
-			<li><a href="sitemap">Sitemap</a></li>
-			<li><login></li>
-			<li>
-				<form class="navbar-form" method="post" action="search">
+			<li role="listitem"><a href="sitemap">Sitemap</a></li>
+			<li role="listitem"><login></li>
+			<li role="listitem">
+				<form class="navbar-form" method="post" action="search" role="form">
 					<div class="form-group">
 						<div class="input-group">
-							<input type="text" class="form-control" name="search" placeholder="Enter a Search Term...">
+							<input type="text" class="form-control" name="search" placeholder="Enter a Search Term..." role="textbox">
 							<div class="input-group-btn">
-								<button type="submit" class="btn btn-info">Search</button>
+								<button type="submit" class="btn btn-info" role="button">Search</button>
 							</div>
 						</div>
 					</div>

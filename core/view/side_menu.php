@@ -44,8 +44,12 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		}else$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
 		$sideTemp=str_replace('<controls>','',$sideTemp);
 		$sideTemp=str_replace('</controls>','',$sideTemp);
-	}else
+		$sideTemp=str_replace('<review>','',$sideTemp);
+		$sideTemp=str_replace('</review>','',$sideTemp);
+	}else{
 		$sideTemp=preg_replace('/<controls>([\w\W]*?)<\/controls>/','',$sideTemp,1);
+		$sideTemp=preg_replace('/<review>([\w\W]*?)<\/review>/','',$sideTemp,1);
+	}
 	preg_match('/<item>([\w\W]*?)<\/item>/',$sideTemp,$matches);
 	$outside=$matches[1];
 	$show='';

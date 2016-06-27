@@ -2,72 +2,82 @@
 <block include="header.html">
 <block include="featured.html">
 <block inbed="content">
-	<div class="jumbotron">
-		<print page="cover">
-	</div>
-	<main id="content" class="col-xs-12">
+	<main id="content" class="col-xs-12" role="main">
 		<div class="clearfix"><print page="notes"></div>
 		<settings items="4" contenttype="all">
 		<items>
-			<article class="col-xs-12 col-sm-6 col-md-3 col-lg-3 animated slideInDown" itemscope itemtype="http://schema.org/<print content=schemaType>">
-				<print content="title" class="text-center" container="h4">
-				<div class="thumbnail">
-					<div class="contentType"><print content="contentType" container="div"></div>
-					<div class="cover">
-						<print content="thumb">
-					</div>
-					<cost>
-						<aside class="price text-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
-							<print content="cost">
-						</aside>
-					</cost>
-					<div class="caption">
-						<print content="caption" length="150" container="p">
-						<div class="text-right">
-							<controls>
-								<view>
-									<a class="btn btn-info" href="<print content=linktitle>">View</a>
-								</view>
-								<service>
-									<a class="btn btn-success" href="bookings/<print content=bookservice>">Book Service</a>
-								</service>
-								<inventory>
-									<button class="addCart btn btn-success" data-id="<print content=id>">Add to Cart</button>
-								</inventory>
-							</controls>
-						</div>
-					</div>
-				</div>
-			</article>
+			<article class="col-md-3 col-sm-3" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+                <div class="content-item">
+                    <div class="content-item-image">
+                        <a href="<print content=linktitle>">
+							<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>" role="img">
+                        </a>
+                    </div>
+                    <div class="content-item-info clearfix">
+						<controls>
+							<view>
+								<div class="content-item-title">
+									<a href="<print content=linktitle>" itemprop="name" role="link"><print content="title"></a>
+								</div>
+							</view>
+							<service>
+								<a class="btn btn-success btn-sm" href="bookings/<print content=bookservice>" role="link">Book Service</a>
+							</service>
+							<inventory>
+								<button class="addCart btn btn-success btn-sm" data-cartid="<print content=id>" role="button">Add to Cart</button>
+							</inventory>
+						</controls>
+						<cost>
+							<span class="content-item-price pull-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+								<print content="cost">
+							</span>
+						</cost>
+                    </div>
+                </div>
+            </article>
 		</items>
 		<more>
-			<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>">More</button>
+			<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
 		</more>
 	</main>
 </block>
 <block inbed="testimonials">
 	<settings items="5">
-	<div class="clearfix"></div>
-	<div class="testimonials">
-		<h4 class="page-header">Testimonials <small>Our Clients Love Us!</small></h4>
-		<div class="carousel slide" id="testimonials" data-ride="carousel">
-			<div class="carousel-inner">
-				<items>
-					<div class="item <print content=active>" itemscope itemtype="http://schema.org/<print content=schemaType>">
-						<div class="testimonials">
-							<img class="img-circle pull-left" alt="<print content=name>" src="<print content=avatar>">
-							<div class="col-md-offset-2" itemprop="description">
-								<print content="notes">
-								<strong><small itemprop="name"> - <print content="name"></small></strong>
-							</div>
+	<div class="col-xs-12">
+		<h3 role="heading">Testimonials <small>Our Clients Love Us!</small></h3>
+		<div class="testimonials">
+			<div class="carousel slide" id="testimonials" data-ride="carousel" data-interval="10000">
+				<div class="carousel-inner">
+					<items>
+						<div class="item <print content=active> margin-btm-20" itemscope itemtype="http://schema.org/Review">
+							<meta itemprop="datePublished" content="<print datePub>">
+				            <div class="quote">
+				                <blockquote>
+				                    <p itemprop="description">
+										<print content="notes">
+				                    </p>
+				                </blockquote>
+				            </div>
+				            <div class="quote-footer text-right">
+				                <div class="quote-author-img">
+				                    <img src="<print content=avatar>" alt="">
+				                </div>
+				                <h4  itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><print content="name"></span></h4>
+				                <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+				                    <strong itemprop="name"><print content="business"></strong>
+				                </p>
+				            </div>
+				        </div>
+					</items>
+					<controls>
+						<div class="controls pull-right">
+							<a class="left" href="#testimonials" data-slide="prev"><i class="libre"><svg xmlns="http://www.w3.org/2000/svg" id="libre-chevron-left" viewBox="0 0 14 14"><path d="M 10.71464,3.04715 6.76179,7 l 3.95285,3.95285 q 0.14144,0.14144 0.14144,0.33499 0,0.19355 -0.14144,0.33499 L 9.47891,12.85856 Q 9.33747,13 9.14392,13 8.95037,13 8.80893,12.85856 L 3.28536,7.33499 Q 3.14392,7.19355 3.14392,7 q 0,-0.19355 0.14144,-0.33499 L 8.80893,1.14144 Q 8.95037,1 9.14392,1 9.33747,1 9.47891,1.14144 l 1.23573,1.23573 q 0.14144,0.14144 0.14144,0.33499 0,0.19355 -0.14144,0.33499 z"/></svg></i></a>
+							<a class="right" href="#testimonials" data-slide="next"><i class="libre"><svg xmlns="http://www.w3.org/2000/svg" id="libre-chevron-right" viewBox="0 0 14 14"><path d="M 10.71464,7.33499 5.19107,12.85856 Q 5.04963,13 4.85608,13 4.66253,13 4.52109,12.85856 L 3.28536,11.62283 q -0.14144,-0.14144 -0.14144,-0.33499 0,-0.19355 0.14144,-0.33499 L 7.23821,7 3.28536,3.04715 Q 3.14392,2.90571 3.14392,2.71216 q 0,-0.19355 0.14144,-0.33499 L 4.52109,1.14144 Q 4.66253,1 4.85608,1 5.04963,1 5.19107,1.14144 l 5.52357,5.52357 Q 10.85608,6.80645 10.85608,7 q 0,0.19355 -0.14144,0.33499 z"/></svg></i></a>
 						</div>
-					</div>
-				</items>
+					</controls>
+				</div>
 			</div>
 		</div>
-		<controls>
-			<div class="pull-right"><a class="left" href="#testimonials" data-slide="prev"><span class="libre libre-chevron-left libre-2x"></span></a><a class="right" href="#testimonials" data-slide="next"><span class="libre libre-chevron-right libre-2x"></span></a></div>
-		</controls>
 	</div>
 	<div class="clearfix"></div>
 </block>

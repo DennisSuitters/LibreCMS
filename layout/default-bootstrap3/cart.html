@@ -1,59 +1,59 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="cart">
-	<div id="content" class="col-md-12">
+	<main id="content" class="col-sm-12" role="main">
 		<emptycart>
 			<iframe id="sp" name="sp" class="hidden"></iframe>
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<div class="invoice table-responsive">
-						<table class="table table-striped table-condensed">
-							<thead>
-								<tr>
-									<th>Code</th>
-									<th>Title</th>
-									<th class="text-center col-sm-1">Quantity</th>
-									<th class="col-md-1 text-center">Cost</th>
-									<th class="col-md-2 text-right">Total</th>
-									<th class="col-sm-1"></th>
+						<table class="table table-striped table-condensed" role="table">
+							<thead role="rowgroup">
+								<tr role="row">
+									<th role="rowheader">Code</th>
+									<th role="rowheader">Title</th>
+									<th class="text-center col-sm-1" role="rowheader">Quantity</th>
+									<th class="col-md-1 text-center" role="rowheader">Cost</th>
+									<th class="col-md-2 text-right" role="rowheader">Total</th>
+									<th class="col-sm-1" role="rowheader"></th>
 								</tr>
 							</thead>
-							<tbody id="orderitems">
+							<tbody id="orderitems" role="rowgroup">
 								<items>
-									<tr>
-										<td class="text-left"><print content="code"></td>
-										<td class="text-left"><print content="title"></td>
-										<td class="text-center">
-											<form target="sp" method="post" action="core/updatecart.php">
+									<tr role="row">
+										<td class="text-left" row="cell"><print content="code"></td>
+										<td class="text-left" row="cell"><print content="title"></td>
+										<td class="text-center" row="cell">
+											<form target="sp" method="post" action="core/updatecart.php" role="form">
 												<input type="hidden" name="act" value="quantity">
 												<input type="hidden" name="id" value="<print cart=id>">
 												<input type="hidden" name="t" value="cart">
 												<input type="hidden" name="c" value="quantity">
-												<input type="text" class="form-control text-center" name="da" value="<print cart=quantity>">
+												<input type="text" class="form-control text-center" name="da" value="<print cart=quantity>" role="textbox">
 											</form>
 										</td>
-										<td class="col-md-1 text-right">
-											<input class="form-control text-center" value="<print cart=cost>" readonly>
+										<td class="col-md-1 text-right" row="cell">
+											<input type="text" class="form-control text-center" value="<print cart=cost>" readonly>
 										</td>
-										<td class="text-right"><print itemscalculate></td>
-										<td class="text-right">
-											<form target="sp" method="post" action="core/updatecart.php">
+										<td class="text-right" row="cell"><print itemscalculate></td>
+										<td class="text-right" row="cell">
+											<form target="sp" method="post" action="core/updatecart.php" role="form">
 												<input type="hidden" name="act" value="quantity">
 												<input type="hidden" name="id" value="<print cart=id>">
 												<input type="hidden" name="t" value="cart">
 												<input type="hidden" name="c" value="quantity">
 												<input type="hidden" name="da" value="0">
-												<button class="btn btn-danger"><i class="libre libre-white"><svg xmlns="http://www.w3.org/2000/svg" id="libre-trash" viewBox="0 0 14 14"><path d="m 5.4999377,5.7501979 v 4.5001871 q 0,0.109505 -0.070503,0.179508 -0.070503,0.07 -0.1795074,0.0705 H 4.7499064 q -0.1095045,0 -0.1795075,-0.0705 -0.070003,-0.0705 -0.070503,-0.179508 V 5.7501979 q 0,-0.1095045 0.070503,-0.1795075 0.070503,-0.070003 0.1795075,-0.070503 h 0.5000209 q 0.1095045,0 0.1795074,0.070503 0.070003,0.070503 0.070503,0.1795075 z m 2.0000833,0 v 4.5001871 q 0,0.109505 -0.070503,0.179508 -0.070503,0.07 -0.1795075,0.0705 H 6.7499898 q -0.1095046,0 -0.1795075,-0.0705 -0.070003,-0.0705 -0.070503,-0.179508 V 5.7501979 q 0,-0.1095045 0.070503,-0.1795075 0.070503,-0.070003 0.1795075,-0.070503 h 0.5000208 q 0.1095046,0 0.1795075,0.070503 0.070003,0.070503 0.070503,0.1795075 z m 2.0000833,0 v 4.5001871 q 0,0.109505 -0.070503,0.179508 -0.070503,0.07 -0.1795075,0.0705 H 8.7500731 q -0.1095046,0 -0.1795075,-0.0705 -0.070003,-0.0705 -0.070503,-0.179508 V 5.7501979 q 0,-0.1095045 0.070503,-0.1795075 0.070503,-0.070003 0.1795075,-0.070503 H 9.250094 q 0.1095046,0 0.1795075,0.070503 0.070003,0.070503 0.070503,0.1795075 z M 10.500146,11.406934 V 4.000625 H 3.4998543 v 7.406309 q 0,0.172007 0.054502,0.316513 0.054502,0.144506 0.1135047,0.211009 0.059003,0.0665 0.082004,0.0665 h 6.500271 q 0.0235,0 0.082,-0.0665 0.0585,-0.0665 0.113504,-0.211009 0.055,-0.144506 0.0545,-0.316513 z M 5.2499273,3.0000833 H 8.7500731 L 8.3750575,2.0860453 Q 8.3205552,2.0155423 8.2420519,2.0000417 H 5.7654487 q -0.078003,0.015501 -0.1330055,0.086004 z m 7.2503017,0.2500105 v 0.5000208 q 0,0.1095046 -0.0705,0.1795075 -0.0705,0.070003 -0.179507,0.070503 h -0.750031 v 7.4063089 q 0,0.648527 -0.367016,1.121046 Q 10.766157,13 10.250136,13 H 3.7498648 Q 3.2343433,13 2.866828,12.542981 2.4993126,12.085962 2.4998127,11.437435 V 3.999625 H 1.7497814 q -0.1095046,0 -0.1795075,-0.070503 Q 1.500271,3.8586191 1.499771,3.7496146 V 3.2495937 q 0,-0.1095045 0.070503,-0.1795074 0.070503,-0.070003 0.1795075,-0.070503 H 4.163882 L 4.7109048,1.695029 Q 4.8279097,1.4060169 5.1329224,1.2030085 5.4379351,1 5.7499481,1 H 8.2500523 Q 8.5625653,1 8.867078,1.2030085 9.1715907,1.4060169 9.2890956,1.695029 l 0.5470227,1.3045543 h 2.4141007 q 0.109504,0 0.179507,0.070503 0.07,0.070503 0.0705,0.1795074 z"/></svg></i></button>
+												<button class="btn btn-danger" role="button"><i class="libre libre-white"><svg xmlns="http://www.w3.org/2000/svg" id="libre-trash" viewBox="0 0 14 14"><path d="m 5.4999377,5.7501979 v 4.5001871 q 0,0.109505 -0.070503,0.179508 -0.070503,0.07 -0.1795074,0.0705 H 4.7499064 q -0.1095045,0 -0.1795075,-0.0705 -0.070003,-0.0705 -0.070503,-0.179508 V 5.7501979 q 0,-0.1095045 0.070503,-0.1795075 0.070503,-0.070003 0.1795075,-0.070503 h 0.5000209 q 0.1095045,0 0.1795074,0.070503 0.070003,0.070503 0.070503,0.1795075 z m 2.0000833,0 v 4.5001871 q 0,0.109505 -0.070503,0.179508 -0.070503,0.07 -0.1795075,0.0705 H 6.7499898 q -0.1095046,0 -0.1795075,-0.0705 -0.070003,-0.0705 -0.070503,-0.179508 V 5.7501979 q 0,-0.1095045 0.070503,-0.1795075 0.070503,-0.070003 0.1795075,-0.070503 h 0.5000208 q 0.1095046,0 0.1795075,0.070503 0.070003,0.070503 0.070503,0.1795075 z m 2.0000833,0 v 4.5001871 q 0,0.109505 -0.070503,0.179508 -0.070503,0.07 -0.1795075,0.0705 H 8.7500731 q -0.1095046,0 -0.1795075,-0.0705 -0.070003,-0.0705 -0.070503,-0.179508 V 5.7501979 q 0,-0.1095045 0.070503,-0.1795075 0.070503,-0.070003 0.1795075,-0.070503 H 9.250094 q 0.1095046,0 0.1795075,0.070503 0.070003,0.070503 0.070503,0.1795075 z M 10.500146,11.406934 V 4.000625 H 3.4998543 v 7.406309 q 0,0.172007 0.054502,0.316513 0.054502,0.144506 0.1135047,0.211009 0.059003,0.0665 0.082004,0.0665 h 6.500271 q 0.0235,0 0.082,-0.0665 0.0585,-0.0665 0.113504,-0.211009 0.055,-0.144506 0.0545,-0.316513 z M 5.2499273,3.0000833 H 8.7500731 L 8.3750575,2.0860453 Q 8.3205552,2.0155423 8.2420519,2.0000417 H 5.7654487 q -0.078003,0.015501 -0.1330055,0.086004 z m 7.2503017,0.2500105 v 0.5000208 q 0,0.1095046 -0.0705,0.1795075 -0.0705,0.070003 -0.179507,0.070503 h -0.750031 v 7.4063089 q 0,0.648527 -0.367016,1.121046 Q 10.766157,13 10.250136,13 H 3.7498648 Q 3.2343433,13 2.866828,12.542981 2.4993126,12.085962 2.4998127,11.437435 V 3.999625 H 1.7497814 q -0.1095046,0 -0.1795075,-0.070503 Q 1.500271,3.8586191 1.499771,3.7496146 V 3.2495937 q 0,-0.1095045 0.070503,-0.1795074 0.070503,-0.070003 0.1795075,-0.070503 H 4.163882 L 4.7109048,1.695029 Q 4.8279097,1.4060169 5.1329224,1.2030085 5.4379351,1 5.7499481,1 H 8.2500523 Q 8.5625653,1 8.867078,1.2030085 9.1715907,1.4060169 9.2890956,1.695029 l 0.5470227,1.3045543 h 2.4141007 q 0.109504,0 0.179507,0.070503 0.07,0.070503 0.0705,0.1795074 z"/></svg></i></button>
 											</form>
 										</td>
 									</tr>
 								</items>
 							</tbody>
-							<tfoot>
+							<tfoot row="rowgroup">
 								<tr>
-									<td colspan="3">&nbsp;</td>
-									<td class="text-right"><strong>Total</strong></td>
-									<td class="text-right"><strong id="total"><print totalcalculate></strong></td>
+									<td colspan="3" row="cell">&nbsp;</td>
+									<td class="text-right" row="cell"><strong>Total</strong></td>
+									<td class="text-right" row="cell"><strong id="total"><print totalcalculate></strong></td>
 									<td></td>
 								</tr>
 							</tfoot>
@@ -61,13 +61,13 @@
 					</div>
 				</div>
 			</div>
-			<form method="post" action="cart/confirm">
+			<form method="post" action="cart/confirm" role="form">
 				<input type="hidden" name="emailtrap" value="">
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<loggedin>
 							<div class="panel-heading">
-								<h3 class="panel-title">Create or Add to Existing Account</h3>
+								<h3 class="panel-title" role="heading">Create or Add to Existing Account</h3>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-sm-2">&nbsp;</label>
@@ -82,62 +82,62 @@
 								<div class="input-group col-sm-10 text-danger">Red Highlighted Fields are Required</div>
 							</div>
 							<div class="form-group">
-								<label for="email" class="control-label col-md-2 col-xs-4 text-danger">Email</label>
-								<div class="input-group col-md-10 col-xs-8 has-error">
-									<input type="text" id="email" class="form-control" name="email" value="" placeholder="Enter an Email" required>
+								<label for="email" class="control-label col-xs-4 col-md-2 text-danger">Email</label>
+								<div class="input-group col-xs-8 col-md-10 has-error">
+									<input type="email" id="email" class="form-control" name="email" value="" placeholder="Enter an Email" required aria-required="true" role="textbox">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="business" class="control-label col-md-2 col-xs-4">Business</label>
-								<div class="input-group col-md-10 col-xs-8">
-									<input type="text" id="business" class="form-control" name="business" value="" placeholder="Enter a Business...">
+								<label for="business" class="control-label col-xs-4 col-md-2">Business</label>
+								<div class="input-group col-xs-8 col-md-10">
+									<input type="text" id="business" class="form-control" name="business" value="" placeholder="Enter a Business..." role="textbox">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="address" class="control-label col-md-2 col-xs-4">Address</label>
-								<div class="input-group col-md-10 col-xs-8">
-									<input type="text" id="address" class="form-control" name="address" value="" placeholder="Enter an Address...">
+								<label for="address" class="control-label col-xs-4 col-md-2">Address</label>
+								<div class="input-group col-xs-8 col-md-10">
+									<input type="text" id="address" class="form-control" name="address" value="" placeholder="Enter an Address..." role="textbox">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="suburb" class="control-label col-md-2 col-xs-4">Suburb</label>
-								<div class="input-group col-md-10 col-xs-8">
-									<input type="text" id="suburb" class="form-control" name="suburb" value="" placeholder="Enter a Suburb...">
+								<label for="suburb" class="control-label col-xs-4 col-md-2">Suburb</label>
+								<div class="input-group col-xs-8 col-md-10">
+									<input type="text" id="suburb" class="form-control" name="suburb" value="" placeholder="Enter a Suburb..." role="textbox">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="city" class="control-label col-md-2 col-xs-4">City</label>
-								<div class="input-group col-md-10 col-xs-8">
-									<input type="text" id="city" class="form-control" name="city" value="" placeholder="Enter a City...">
+								<label for="city" class="control-label col-xs-4 col-md-2">City</label>
+								<div class="input-group col-xs-8 col-md-10">
+									<input type="text" id="city" class="form-control" name="city" value="" placeholder="Enter a City..." role="textbox">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="state" class="control-label col-md-2 col-xs-4">State</label>
-								<div class="input-group col-md-10 col-xs-8">
-									<input type="text" id="state" class="form-control" name="state" value="" placeholder="Enter a State...">
+								<label for="state" class="control-label col-xs-4 col-md-2">State</label>
+								<div class="input-group col-xs-8 col-md-10">
+									<input type="text" id="state" class="form-control" name="state" value="" placeholder="Enter a State..." role="textbox">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="postcode" class="control-label col-md-2 col-xs-4">Postcode</label>
-									<div class="input-group col-md-10 col-xs-8">
-									<input type="text" id="postcode" class="form-control" name="postcode" value="" placeholder="Enter a Postcode...">
+								<label for="postcode" class="control-label col-xs-4 col-md-2">Postcode</label>
+									<div class="input-group col-xs-8 col-md-10">
+									<input type="text" id="postcode" class="form-control" name="postcode" value="" placeholder="Enter a Postcode..." role="textbox">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="phone" class="control-label col-md-2 col-xs-4">Phone</label>
-								<div class="input-group col-md-10 col-xs-8">
-									<input type="text" id="phone" class="form-control" name="phone" value="" placeholder="Enter a Phone Number...">
+								<label for="phone" class="control-label col-xs-4 col-md-2">Phone</label>
+								<div class="input-group col-xs-8 col-md-10">
+									<input type="tel" id="phone" class="form-control" name="phone" value="" placeholder="Enter a Phone Number..." role="textbox">
 								</div>
 							</div>
 						</loggedin>
-						<div class="pull-right">
-							<button type="submit" class="btn btn-success">Confirm Order</button>
+						<div class="pull-right col-xs-8 col-md-10">
+							<button type="submit" class="btn btn-success btn-block" role="button">Confirm Order</button>
 						</div>
 					</div>
 				</div>
 			</form>
 		</emptycart>
-	</div>
+	</main>
 </block>
 <block include="footer.html">
 <block include="meta_footer.html">

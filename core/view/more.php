@@ -34,25 +34,35 @@ if(stristr($html,'<items>')){
     $si=1;
     while($r=$s->fetch(PDO::FETCH_ASSOC)){
         $items=$item;
+        $contentType=$r['contentType'];
         if($si==1){
             $filechk=basename($r['file']);
             $thumbchk=basename($r['thumb']);
-            if($r['file']!=''&&file_exists('../../media'.DS.$filechk)){
+            if($r['file']!=''&&file_exists('media'.DS.$filechk)){
                 $shareImage=$r['file'];
                 $si++;
-            }elseif($r['thumb']!=''&&file_exists('../../media'.DS.$thumbchk)){
+            }elseif($r['thumb']!=''&&file_exists('media'.DS.$thumbchk)){
                 $shareImage=$r['thumb'];
                 $si++;
             }
         }
+        if(stristr($items,'<print content=thumb>')){
+            $r['thumb']=str_replace(URL,'',$r['thumb']);
+            if($r['thumb'])
+                $items=str_replace('<print content=thumb>',$r['thumb'],$items);
+            else
+                $items=str_replace('<print content=thumb>','layout/'.$config['theme'].'/images/noimage.jpg',$items);
+        }
+        if(stristr($items,'<print content=alttitle>'))
+            $items=str_replace('<print content=alttitle>',$r['title'],$items);
         $r['notes']=strip_tags($r['notes']);
-        require'../../core'.DS.'parser.php';
         if($r['contentType']=='testimonials'||$r['contentType']=='testimonial'){
             if(stristr($items,'<controls>'))$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
             $controls='';
         }else{
             if(stristr($items,'<view>')){
                 $items=str_replace('<print content=linktitle>',URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$items);
+                $items=str_replace('<print content="title">',$r['title'],$items);
                 $items=str_replace('<view>','',$items);
                 $items=str_replace('</view>','',$items);
             }
@@ -76,6 +86,7 @@ if(stristr($html,'<items>')){
             $items=str_replace('<controls>','',$items);
             $items=str_replace('</controls>','',$items);
         }
+        require'..'.DS.'parser.php';
         $output.=$items;
     }
     $html=$output;

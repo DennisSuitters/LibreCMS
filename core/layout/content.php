@@ -103,19 +103,46 @@ if($show=='categories'){
                         <th class="col-xs-6">Title</th>
                         <th class="col-xs-1"></th>
                         <th class="col-xs-1 text-center">Comments</th>
-                        <th class="col-xs-2 text-center">Views</th>
+                        <th class="col-xs-1 text-center"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Reviews/score"';?>>Reviews</th>
+                        <th class="col-xs-1 text-center">Views</th>
                         <th class="col-xs-2"></th>
                     </tr>
                 </thead>
                 <tbody id="listtype" class="list" data-t="menu" data-c="ord">
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='delete')echo' danger';elseif($r['status']=='unpublished')echo'warning';?>">
-                        <td><a href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
-                        <td class="text-center"><?php echo ucfirst($r['contentType']);?></td>
-                        <td class="text-center"><?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){$cnt=0;$sc=$db->prepare("SELECT COUNT(id) as cnt FROM comments WHERE rid=:id AND status='unapproved'");$sc->execute(array(':id'=>$r['id']));$cnt=$sc->fetch(PDO::FETCH_ASSOC);?><a class="btn btn-default btn-sm" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>#d43"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><?php svg('comments');?> <?php echo$cnt['cnt'];?></a><?php }?></td>
-                        <td class="text-center"><span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span> <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','content','views','0');"><?php svg('eraser');?></button></td>
+                        <td>
+                            <a href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>"><?php echo$r['title'];?></a>
+                        </td>
+                        <td class="text-center">
+                            <?php echo ucfirst($r['contentType']);?>
+                        </td>
+                        <td class="text-center">
+<?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){
+    $sc=$db->prepare("SELECT COUNT(id) as cnt FROM comments WHERE rid=:id AND status='unapproved'");
+    $sc->execute(array(':id'=>$r['id']));
+    $cnt=$sc->fetch(PDO::FETCH_ASSOC);?>
+                            <a class="btn btn-default btn-sm" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>#d43"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><?php svg('comments');?> <?php echo$cnt['cnt'];?></a>
+<?php }?>
+                        </td>
+                        <td class="text-center">
+<?php $sr=$db->prepare("SELECT COUNT(id) as num,SUM(cid) as cnt FROM comments WHERE contentType='review' AND rid=:rid AND status='approved'");
+    $sr->execute(array(':rid'=>$r['id']));
+    $rr=$sr->fetch(PDO::FETCH_ASSOC);
+    if($rr['num']!=0)
+    echo'<a href="'.URL.$settings['system']['admin'].'/content/edit/'.$r['id'].'#d60">'.$rr['num'].'/'.$rr['cnt'].'</a>';?>
+                        </td>
+                        <td class="text-center">
+                            <span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span> <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','content','views','0');"><?php svg('eraser');?></button>
+                        </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
-<a id="pin<?php echo$r['id'];?>" class="btn btn-default<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin"';?>><?php svg('pin');?></a> <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'];?>/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a> <?php if($user['rank']==1000||$user['options']{0}==1){?><button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button> <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button> <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button></td>
+                            <a id="pin<?php echo$r['id'];?>" class="btn btn-default<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin"';?>><?php svg('pin');?></a>
+                            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'];?>/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+<?php if($user['rank']==1000||$user['options']{0}==1){?>
+                            <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+                            <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+                            <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+                        </td>
                     </tr>
 <?php }
 }?>
@@ -163,67 +190,322 @@ if($show=='item'){
             <li id="d000" role="presentation" class="active"><a href="#d0" aria-controls="d0" role="tab" data-toggle="tab">Content</a></li>
             <li id="d026" class="<?php if($r['contentType']=='testimonials')echo'hidden';?>" role="presentation"><a href="#d26" aria-controls="d26" role="tab" data-toggle="tab">Images</a></li>
             <li id="d043" class="<?php if($r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo'hidden';?>" role="presentation"><a href="#d43" aria-controls="d43" role="tab" data-toggle="tab">Comments</a></li>
+            <li id="d060" class="<?php if($r['contentType']=='testimonials'||$r['contentType']=='event'||$r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='news'||$r['contentType']=='portfolio'||$r['contentType']=='proof')echo'hidden';?>" role="presentation"><a href="#d60" aria-controls="d60" role="tab" data-toggle="tab">Reviews</a></li>
             <li id="d044" role="presentation"><a href="#d44" aria-controls="d44" role="tab" data-toggle="tab">SEO</a></li>
             <li id="d050" role="presentation"><a href="#d50" aria-controls="d50" role="tab" data-toggle="tab">Settings</a></li>
         </ul>
         <div class="tab-content">
+<?php /* content */ ?>
             <div id="d0" role="tabpanel" class="tab-pane active">
-                <div id="d1" class="form-group"><label for="title" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title" data-bs="btn-danger" placeholder="Content MUST contain a title or it won't be accessible..."></div></div>
-                <div id="d2" class="form-group"><label for="ti" class="control-label col-xs-5 col-sm-3 col-lg-2">Created</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="ti" class="form-control" value="<?php echo date($config['dateFormat'],$r['ti']);?>" readonly></div></div>
-                <div id="d3" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>"><label for="pti" class="control-label col-xs-5 col-sm-3 col-lg-2">Published On</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="pti" class="form-control" data-dbid="<?php echo$r['id'];?>" value="<?php if($r['pti']>0)echo date($config['dateFormat'],$r['pti']);?>"></div></div>
-                <div id="d4" class="form-group"><label for="eti" class="control-label col-xs-5 col-sm-3 col-lg-2">Edited</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="eti" class="form-control" value="<?php echo date($config['dateFormat'],$r['eti']).' by '.$r['login_user'];?>" readonly></div></div>
-                <div id="d5" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>"><label for="cid" class="control-label col-xs-5 col-sm-3 col-lg-2">Client</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><select id="cid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','cid',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';?>><option value="0">Select Client</option><?php $cs=$db->query("SELECT * FROM login ORDER BY name ASC, username ASC");while($cr=$cs->fetch(PDO::FETCH_ASSOC)){?><option value="<?php echo$cr['id'];?>"<?php if($r['cid']==$cr['id'])echo' selected';?>><?php echo$cr['username'].':'.$cr['name'];?></option><?php }?></select></div></div>
-                <div id="d6" class="form-group<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service')echo' hidden';?>"><label for="author" class="control-label col-xs-5 col-sm-3 col-lg-2">Author</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><select id="uid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','uid',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';?>><?php $su=$db->query("SELECT id,username,name FROM login WHERE username!='' AND status!='delete' ORDER BY username ASC, name ASC");while($ru=$su->fetch(PDO::FETCH_ASSOC)){?><option value="<?php echo$ru['id'];?>"<?php if($ru['id']==$r['uid'])echo' selected';echo'>'.$ru['username'].':'.$ru['name'];?></option><?php }?></select></div></div>
-                <div id="d7" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><label for="code" class="control-label col-xs-5 col-sm-3 col-lg-2">Code</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="code" class="form-control textinput" value="<?php echo$r['code'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="code" placeholder="Enter a Code..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d8" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><label for="barcode" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Barcode</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="barcode" class="form-control textinput" value="<?php echo$r['barcode'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="barcode" placeholder="Enter a Barcode..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d9" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><label for="fccid" class="control-label col-xs-5 col-sm-3 col-lg-2">FCCID</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="fccid" class="form-control textinput" value="<?php echo$r['fccid'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fccid" placeholder="Enter an FCC ID..."<?php if($user['options']{1}==0)echo' readonly';?>><div class="help-block"><a target="_blank" href="https://fccid.io/">fccid.io</a> for more information or to look up an FCC ID.</div></div></div>
-                <div id="d10" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><label for="brand" class="control-label col-xs-5 col-sm-3 col-lg-2">Brand</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="brand" class="form-control textinput" value="<?php echo$r['brand'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="brand" placeholder="Enter a Brand..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d11" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><label for="tis" class="control-label col-xs-5 col-sm-3 col-lg-2">Event Start</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="tis" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tis']==0){echo'Select a Date/Time..."';}else{echo date($config['dateFormat'],$r['tis']).'"';}}?> value="<?php if($r['tis']!=0)echo date('Y-m-d h:m',$r['tis']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tis" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d12" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><label for="tie" class="control-label col-xs-5 col-sm-3 col-lg-2">Event End</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="tie" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tie']==0)echo'Select a Date/Time..."';else echo date($config['dateFormat'],$r['tie']).'"';}?> value="<?php if($r['tie']!=0)echo date('Y-m-d h:m',$r['tie']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d13" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>"><label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="email" class="form-control textinput" value="<?php echo$r['email'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="email" placeholder="Enter an Email..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d14" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>"><label for="name" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="name" class="form-control textinput" value="<?php echo$r['name'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="name" placeholder="Enter a Name..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d15" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>"><label for="url" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="url" class="form-control textinput" value="<?php echo$r['url'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="url" placeholder="Enter a URL..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d16" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>"><label for="business" class="control-label col-xs-5 col-sm-3 col-lg-2">Business</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="business" class="form-control textinput" value="<?php echo$r['business'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="business" placeholder="Enter a Business..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d17" class="form-group<?php if($r['contentType']=='testimonials')echo' hidden';?>"><label for="category_1" class="control-label col-xs-5 col-sm-3 col-lg-2">Category Primary</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input id="category_1" list="category_1_options" type="text" class="form-control textinput" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_1" placeholder="Enter a Category/Select from List..."<?php if($user['options']{1}==0)echo' readonly';?>><datalist id="category_1_options"><?php $s=$db->query("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"/>';?></datalist></div></div>
-                <div id="d18" class="form-group<?php if($r['contentType']=='testimonials')echo' hidden';?>"><label for="category_2" class="control-label col-xs-5 col-sm-3 col-lg-2">Category Secondary</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input id="category_2" list="category_2_options" type="text" class="form-control textinput" value="<?php echo$r['category_2'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_2" placeholder="Enter a Category/Select from List..."<?php if($user['options']{1}==0)echo' readonly';?>><datalist id="category_2_options"><?php $s=$db->query("SELECT DISTINCT category_2 FROM content WHERE category_2!='' ORDER BY category_2 ASC");while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_2'].'"/>';?></datalist></div></div>
-                <div id="d19" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><label for="cost" class="control-label col-xs-5 col-sm-3 col-lg-2">Cost</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><div class="input-group-addon">$</div><input type="text" id="cost" class="form-control textinput" value="<?php echo$r['cost'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="cost" placeholder="Enter a Cost..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d20" class="form-group clearfix<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><label class="control-label col-xs-5 col-sm-3 col-lg-2">Show Cost</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';?>><label for="options0"></div></div>
-                <div id="d21" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><label for="quantity" class="control-label col-xs-5 col-sm-3 col-lg-2">Quantity</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="quantity" class="form-control textinput" value="<?php echo$r['quantity'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="quantity" placeholder="Enter a Quantity..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d22" class="form-group clearfix<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='proofs')echo' hidden';?>"><label class="control-label col-xs-5 col-sm-3 col-lg-2">Featured</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="checkbox" id="featured0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="featured" data-dbb="0"<?php if($r['featured']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';?>><label for="featured0"></div></div>
-                <div id="d23" class="form-group"><div class="input-group col-xs-12"><form id="summernote" method="post" target="sp" action="core/update.php"><input type="hidden" name="id" value="<?php echo$r['id'];?>"><input type="hidden" name="t" value="content"><input type="hidden" name="c" value="notes"><textarea id="notes" class="form-control summernote" name="da" readonly><?php echo$r['notes'];?></textarea></form></div></div>
-                <fieldset id="d24" class="control-fieldset<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><legend class="control-legend">Content Attribution</legend>
-                    <div id="d25" class="form-group"><label for="attributionContentName" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="attributionContentName" class="form-control textinput" value="<?php echo$r['attributionContentName'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionContentName" placeholder="Enter a Name..."></div></div>
-                    <div id="d25" class="form-group"><label for="attributionContentURL" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="attributionContentURL" class="form-control textinput" value="<?php echo$r['attributionContentURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionContentURL" placeholder="Enter a URL..."></div></div>
+                <div id="d1" class="form-group">
+                    <label for="title" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title" data-bs="btn-danger" placeholder="Content MUST contain a title or it won't be accessible...">
+                    </div>
+                </div>
+                <div id="d2" class="form-group">
+                    <label for="ti" class="control-label col-xs-5 col-sm-3 col-lg-2">Created</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="ti" class="form-control" value="<?php echo date($config['dateFormat'],$r['ti']);?>" readonly>
+                    </div>
+                </div>
+                <div id="d3" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="pti" class="control-label col-xs-5 col-sm-3 col-lg-2">Published On</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="pti" class="form-control" data-dbid="<?php echo$r['id'];?>" value="<?php if($r['pti']>0)echo date($config['dateFormat'],$r['pti']);?>">
+                    </div>
+                </div>
+                <div id="d4" class="form-group">
+                    <label for="eti" class="control-label col-xs-5 col-sm-3 col-lg-2">Edited</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="eti" class="form-control" value="<?php echo date($config['dateFormat'],$r['eti']).' by '.$r['login_user'];?>" readonly>
+                    </div>
+                </div>
+                <div id="d5" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
+                    <label for="cid" class="control-label col-xs-5 col-sm-3 col-lg-2">Client</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <select id="cid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','cid',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';?>>
+                            <option value="0">Select Client</option>
+<?php $cs=$db->query("SELECT * FROM login ORDER BY name ASC, username ASC");while($cr=$cs->fetch(PDO::FETCH_ASSOC)){?>
+                            <option value="<?php echo$cr['id'];?>"<?php if($r['cid']==$cr['id'])echo' selected';?>><?php echo$cr['username'].':'.$cr['name'];?></option>
+<?php }?>
+                        </select>
+                    </div>
+                </div>
+                <div id="d6" class="form-group<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service')echo' hidden';?>">
+                    <label for="author" class="control-label col-xs-5 col-sm-3 col-lg-2">Author</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <select id="uid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','uid',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';?>>
+<?php $su=$db->query("SELECT id,username,name FROM login WHERE username!='' AND status!='delete' ORDER BY username ASC, name ASC");while($ru=$su->fetch(PDO::FETCH_ASSOC)){?>
+                            <option value="<?php echo$ru['id'];?>"<?php if($ru['id']==$r['uid'])echo' selected';echo'>'.$ru['username'].':'.$ru['name'];?></option><?php }?>
+                        </select>
+                    </div>
+                </div>
+                <div id="d7" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="code" class="control-label col-xs-5 col-sm-3 col-lg-2">Code</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="code" class="form-control textinput" value="<?php echo$r['code'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="code" placeholder="Enter a Code..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d8" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="barcode" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Barcode</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="barcode" class="form-control textinput" value="<?php echo$r['barcode'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="barcode" placeholder="Enter a Barcode..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d9" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="fccid" class="control-label col-xs-5 col-sm-3 col-lg-2">FCCID</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="fccid" class="form-control textinput" value="<?php echo$r['fccid'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fccid" placeholder="Enter an FCC ID..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                        <div class="help-block"><a target="_blank" href="https://fccid.io/">fccid.io</a> for more information or to look up an FCC ID.</div>
+                    </div>
+                </div>
+                <div id="d10" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="brand" class="control-label col-xs-5 col-sm-3 col-lg-2">Brand</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="brand" class="form-control textinput" value="<?php echo$r['brand'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="brand" placeholder="Enter a Brand..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d11" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="tis" class="control-label col-xs-5 col-sm-3 col-lg-2">Event Start</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="tis" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tis']==0){echo'Select a Date/Time..."';}else{echo date($config['dateFormat'],$r['tis']).'"';}}?> value="<?php if($r['tis']!=0)echo date('Y-m-d h:m',$r['tis']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tis" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d12" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="tie" class="control-label col-xs-5 col-sm-3 col-lg-2">Event End</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="tie" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tie']==0)echo'Select a Date/Time..."';else echo date($config['dateFormat'],$r['tie']).'"';}?> value="<?php if($r['tie']!=0)echo date('Y-m-d h:m',$r['tie']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d13" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
+                    <label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="email" class="form-control textinput" value="<?php echo$r['email'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="email" placeholder="Enter an Email..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d14" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
+                    <label for="name" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="name" class="form-control textinput" value="<?php echo$r['name'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="name" placeholder="Enter a Name..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d15" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
+                    <label for="url" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="url" class="form-control textinput" value="<?php echo$r['url'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="url" placeholder="Enter a URL..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d16" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
+                    <label for="business" class="control-label col-xs-5 col-sm-3 col-lg-2">Business</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="business" class="form-control textinput" value="<?php echo$r['business'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="business" placeholder="Enter a Business..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d17" class="form-group<?php if($r['contentType']=='testimonials')echo' hidden';?>">
+                    <label for="category_1" class="control-label col-xs-5 col-sm-3 col-lg-2">Category Primary</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input id="category_1" list="category_1_options" type="text" class="form-control textinput" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_1" placeholder="Enter a Category/Select from List..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                        <datalist id="category_1_options">
+<?php $s=$db->query("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"/>';?>
+                        </datalist>
+                    </div>
+                </div>
+                <div id="d18" class="form-group<?php if($r['contentType']=='testimonials')echo' hidden';?>">
+                    <label for="category_2" class="control-label col-xs-5 col-sm-3 col-lg-2">Category Secondary</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input id="category_2" list="category_2_options" type="text" class="form-control textinput" value="<?php echo$r['category_2'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_2" placeholder="Enter a Category/Select from List..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                        <datalist id="category_2_options">
+<?php $s=$db->query("SELECT DISTINCT category_2 FROM content WHERE category_2!='' ORDER BY category_2 ASC");while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_2'].'"/>';?>
+                        </datalist>
+                    </div>
+                </div>
+                <div id="d19" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="cost" class="control-label col-xs-5 col-sm-3 col-lg-2">Cost</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <div class="input-group-addon">$</div>
+                        <input type="text" id="cost" class="form-control textinput" value="<?php echo$r['cost'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="cost" placeholder="Enter a Cost..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d20" class="form-group clearfix<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label class="control-label col-xs-5 col-sm-3 col-lg-2">Show Cost</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';?>>
+                        <label for="options0">
+                    </div>
+                </div>
+                <div id="d21" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="quantity" class="control-label col-xs-5 col-sm-3 col-lg-2">Quantity</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="quantity" class="form-control textinput" value="<?php echo$r['quantity'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="quantity" placeholder="Enter a Quantity..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d22" class="form-group clearfix<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label class="control-label col-xs-5 col-sm-3 col-lg-2">Featured</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="checkbox" id="featured0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="featured" data-dbb="0"<?php if($r['featured']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';?>>
+                        <label for="featured0">
+                    </div>
+                </div>
+                <div id="d23" class="form-group">
+                    <div class="input-group col-xs-12">
+                        <form id="summernote" method="post" target="sp" action="core/update.php">
+                            <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                            <input type="hidden" name="t" value="content">
+                            <input type="hidden" name="c" value="notes">
+                            <textarea id="notes" class="form-control summernote" name="da" readonly><?php echo$r['notes'];?></textarea>
+                        </form>
+                    </div>
+                </div>
+                <fieldset id="d24" class="control-fieldset<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <legend class="control-legend">Content Attribution</legend>
+                    <div id="d25" class="form-group">
+                        <label for="attributionContentName" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <input type="text" id="attributionContentName" class="form-control textinput" value="<?php echo$r['attributionContentName'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionContentName" placeholder="Enter a Name...">
+                        </div>
+                    </div>
+                    <div id="d25" class="form-group">
+                        <label for="attributionContentURL" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <input type="text" id="attributionContentURL" class="form-control textinput" value="<?php echo$r['attributionContentURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionContentURL" placeholder="Enter a URL...">
+                        </div>
+                    </div>
                 </fieldset>
             </div>
+<?php /* images */ ?>
             <div id="d26" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials')echo' hidden';?>">
-                <fieldset lass="control-fieldset"><legend class="control-legend">Images</legend>
-                    <div id="d27" class="form-group"><label for="file" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="fileURL" class="form-control textinput" value="<?php echo$r['fileURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fileURL" placeholder="Enter a URL..."><div class="input-group-btn"><button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><?php svg('trash');?></button></div></div></div>
-                    <div id="d28" class="form-group clearfix"><div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right"><input id="file" type="text" class="form-control" value="<?php echo$r['file'];?>" readonly><div class="input-group-btn"><button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','file');"><?php svg('browse-media');?></button></div><div class="input-group-addon img"><?php $rfile=basename($r['file']);if($r['file']!=''&&file_exists('media'.DS.$rfile))echo'<a href="media/'.$r['file'].'" data-featherlight="image"><img id="fileimage" src="media/'.$r['file'].'"></a>';elseif($r['fileURL']!='')echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="'.$r['fileURL'].'"></a>';else echo'<img id="fileimage" src="core/images/noimage.jpg">';?></div><div class="input-group-btn"><button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('trash');?></button></div></div></div>
-                    <div id="d29" class="form-group clearfix"><label for="thumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Thumbnail</label><div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right"><input id="thumb" type="text" class="form-control" value="<?php echo$r['thumb'];?>" readonly><div class="input-group-btn"><button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','thumb');"><?php svg('browse-media');?></button></div><div class="input-group-addon img"><?php $rthumb=basename($r['thumb']);if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="'.$r['thumb'].'"></a>';else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?></div><div class="input-group-btn"><button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('trash');?></button></div></div><div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div></div>
+                <fieldset class="control-fieldset">
+                    <div id="d27" class="form-group">
+                        <label for="file" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <input type="text" id="fileURL" class="form-control textinput" value="<?php echo$r['fileURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fileURL" placeholder="Enter a URL...">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><?php svg('trash');?></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="d28" class="form-group clearfix">
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
+                            <input id="file" type="text" class="form-control" value="<?php echo$r['file'];?>" readonly>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','file');"><?php svg('browse-media');?></button>
+                            </div>
+                            <div class="input-group-addon img">
+<?php $rfile=basename($r['file']);
+if($r['file']!=''&&file_exists('media'.DS.$rfile))
+    echo'<a href="media/'.$r['file'].'" data-featherlight="image"><img id="fileimage" src="media/'.$r['file'].'"></a>';
+elseif($r['fileURL']!='')
+    echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="'.$r['fileURL'].'"></a>';
+else echo'<img id="fileimage" src="core/images/noimage.jpg">';?>
+                            </div>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('trash');?></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="d29" class="form-group clearfix">
+                        <label for="thumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Thumbnail</label>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
+                            <input id="thumb" type="text" class="form-control" value="<?php echo$r['thumb'];?>" readonly>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','thumb');"><?php svg('browse-media');?></button>
+                            </div>
+                            <div class="input-group-addon img">
+<?php $rthumb=basename($r['thumb']);
+if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))
+    echo'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="'.$r['thumb'].'"></a>';
+else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
+                            </div>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('trash');?></button>
+                            </div>
+                        </div>
+                        <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div>
+                    </div>
                     <fieldset id="d30" class="control-fieldset">
                         <legend class="control-legend">Exif Information</legend>
-                        <div id="d31" class="form-group"><label for="exifFilename" class="control-label col-xs-5 col-sm-3 col-lg-2">Original Filename</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" class="form-control" value="<?php echo$r['exifFilename'];?>" placeholder="Original Filename..." readonly></div></div>
-                        <div id="d32" class="form-group"><label for="exifCamera" class="control-label col-xs-5 col-sm-3 col-lg-2">Camera</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifCamera" class="form-control textinput" value="<?php echo$r['exifCamera'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifCamera" placeholder="Enter Camera Brand..."></div></div>
-                        <div id="d33" class="form-group"><label for="exifLens" class="control-label col-xs-5 col-sm-3 col-lg-2">Lens</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifLens" class="form-control textinput" value="<?php echo$r['exifLens'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifLens" placeholder="Enter Lens..."></div></div>
-                        <div id="d34" class="form-group"><label for="exifAperture" class="control-label col-xs-5 col-sm-3 col-lg-2">Aperture</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifAperture" class="form-control textinput" value="<?php echo$r['exifAperture'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifAperture" placeholder="Enter Aperture/FStop..."></div></div>
-                        <div id="d35" class="form-group"><label for="exifFocalLength" class="control-label col-xs-5 col-sm-3 col-lg-2">Focal Length</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifFocalLength" class="form-control textinput" value="<?php echo$r['exifFocalLength'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifFocalLength" placeholder="Enter Focal Length..."></div></div>
-                        <div id="d36" class="form-group"><label for="exifShutterSpeed" class="control-label col-xs-5 col-sm-3 col-lg-2">Shutter Speed</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifShutterSpeed" class="form-control textinput" value="<?php echo$r['exifShutterSpeed'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifShutterSpeed" placeholder="Enter Shutter Speed..."></div></div>
-                        <div id="d37" class="form-group"><label for="exifISO" class="control-label col-xs-5 col-sm-3 col-lg-2">ISO</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifISO" class="form-control textinput" value="<?php echo$r['exifISO'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifISO" placeholder="Enter ISO..."></div></div>
-                        <div id="d38" class="form-group"><label for="exifti" class="control-label col-xs-5 col-sm-3 col-lg-2">Taken</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="exifti" class="form-control textinput" value="<?php if($r['exifti']!=0){echo date($config['dateFormat'],$r['exifti']);}?>" placeholder="Select the Date/Time Image was Taken..." readonly></div></div>
+                        <div id="d31" class="form-group">
+                            <label for="exifFilename" class="control-label col-xs-5 col-sm-3 col-lg-2">Original Filename</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" class="form-control" value="<?php echo$r['exifFilename'];?>" placeholder="Original Filename..." readonly>
+                            </div>
+                        </div>
+                        <div id="d32" class="form-group">
+                            <label for="exifCamera" class="control-label col-xs-5 col-sm-3 col-lg-2">Camera</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" id="exifCamera" class="form-control textinput" value="<?php echo$r['exifCamera'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifCamera" placeholder="Enter Camera Brand...">
+                            </div>
+                        </div>
+                        <div id="d33" class="form-group">
+                            <label for="exifLens" class="control-label col-xs-5 col-sm-3 col-lg-2">Lens</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" id="exifLens" class="form-control textinput" value="<?php echo$r['exifLens'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifLens" placeholder="Enter Lens...">
+                            </div>
+                        </div>
+                        <div id="d34" class="form-group">
+                            <label for="exifAperture" class="control-label col-xs-5 col-sm-3 col-lg-2">Aperture</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" id="exifAperture" class="form-control textinput" value="<?php echo$r['exifAperture'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifAperture" placeholder="Enter Aperture/FStop...">
+                            </div>
+                        </div>
+                        <div id="d35" class="form-group">
+                            <label for="exifFocalLength" class="control-label col-xs-5 col-sm-3 col-lg-2">Focal Length</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" id="exifFocalLength" class="form-control textinput" value="<?php echo$r['exifFocalLength'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifFocalLength" placeholder="Enter Focal Length...">
+                            </div>
+                        </div>
+                        <div id="d36" class="form-group">
+                            <label for="exifShutterSpeed" class="control-label col-xs-5 col-sm-3 col-lg-2">Shutter Speed</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" id="exifShutterSpeed" class="form-control textinput" value="<?php echo$r['exifShutterSpeed'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifShutterSpeed" placeholder="Enter Shutter Speed...">
+                            </div>
+                        </div>
+                        <div id="d37" class="form-group">
+                            <label for="exifISO" class="control-label col-xs-5 col-sm-3 col-lg-2">ISO</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" id="exifISO" class="form-control textinput" value="<?php echo$r['exifISO'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifISO" placeholder="Enter ISO...">
+                            </div>
+                        </div>
+                        <div id="d38" class="form-group">
+                            <label for="exifti" class="control-label col-xs-5 col-sm-3 col-lg-2">Taken</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" id="exifti" class="form-control textinput" value="<?php if($r['exifti']!=0){echo date($config['dateFormat'],$r['exifti']);}?>" placeholder="Select the Date/Time Image was Taken..." readonly>
+                            </div>
+                        </div>
                     </fieldset>
                     <fieldset id="d39" class="control-fieldset">
                         <legend class="control-legend">Image Atrribution</legend>
-                        <div id="d40" class="form-group"><label for="attributionImageTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="attributionImageTitle" class="form-control textinput" value="<?php echo$r['attributionImageTitle'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageTitle" placeholder="Enter a Title..."></div></div>
-                        <div id="d41" class="form-group"><label for="attributionImageName" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="attributionImageName" class="form-control textinput" value="<?php echo$r['attributionImageName'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageName" placeholder="Enter a Name..."></div></div>
-                        <div id="d42" class="form-group"><label for="attributionImageURL" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="attributionImageURL" class="form-control textinput" value="<?php echo$r['attributionImageURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageURL" placeholder="Enter a URL..."></div></div>
+                        <div id="d40" class="form-group">
+                            <label for="attributionImageTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" id="attributionImageTitle" class="form-control textinput" value="<?php echo$r['attributionImageTitle'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageTitle" placeholder="Enter a Title...">
+                            </div>
+                        </div>
+                        <div id="d41" class="form-group">
+                            <label for="attributionImageName" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" id="attributionImageName" class="form-control textinput" value="<?php echo$r['attributionImageName'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageName" placeholder="Enter a Name...">
+                            </div>
+                        </div>
+                        <div id="d42" class="form-group">
+                            <label for="attributionImageURL" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
+                            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                                <input type="text" id="attributionImageURL" class="form-control textinput" value="<?php echo$r['attributionImageURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageURL" placeholder="Enter a URL...">
+                            </div>
+                        </div>
                     </fieldset>
                 </fieldset>
             </div>
+<?php /* comments */ ?>
             <div id="d43" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
-                <div class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">Comments</label><div class="input-group col-xs-7 col-md-9 col-lg-10"><input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>><label for="options1"></div></div>
+                <div class="form-group">
+                    <label class="control-label col-xs-5 col-sm-3 col-lg-2">Comments</label>
+                    <div class="input-group col-xs-7 col-md-9 col-lg-10">
+                        <input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>><label for="options1">
+                    </div>
+                </div>
                 <div id="comments">
-                    <h3>Comments</h3>
 <?php $sc=$db->prepare("SELECT * FROM comments WHERE contentType=:contentType AND rid=:rid ORDER BY ti ASC");$sc->execute(array(':contentType'=>$r['contentType'],':rid'=>$r['id']));while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
                     <div id="l_<?php echo$rc['id'];?>" class="media clearfix<?php if($rc['status']=='delete')echo' danger';if($rc['status']=='unapproved')echo' warning';?>">
                         <div class="media-object col-xs-2 col-sm-1 pull-left">
@@ -269,19 +551,118 @@ if($show=='item'){
                     </div>
                 </div>
             </div>
-            <div id="d44" role="tabpanel" class="tab-pane" id="content-seo">
-                <div id="d45" class="form-group"><label for="views" class="control-label col-xs-5 col-sm-3 col-lg-2">Views</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="views" class="form-control textinput" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="views"<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d46" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>"><label for="schemaType" class="control-label col-xs-5 col-sm-3 col-lg-2">Schema Type</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Schema for Microdata Content."';?>><option value="blogPost"<?php if($r['schemaType']=='blogPost')echo' selected';?>>blogPost for Articles</option><option value="Product"<?php if($r['schemaType']=='Product')echo' selected';?>>Product for Inventory</option><option value="Service"<?php if($r['schemaType']=='Service')echo' selected';?>>Service for Services</option><option value="ImageGallery"<?php if($r['schemaType']=='ImageGallery')echo' selected';?>>ImageGallery for Gallery Images</option><option value="Review"<?php if($r['schemaType']=='Review')echo' selected';?>>Review for Testimonials</option><option value="NewsArticle"<?php if($r['schemaType']=='NewsArticle')echo' selected';?>>NewsArticle for News</option><option value="Event"<?php if($r['schemaType']=='Event')echo' selected';?>>Event for Events</option><option value="CreativeWork"<?php if($r['schemaType']=='CreativeWork')echo' selected';?>>CreativeWork for Portfolio/Proofs</option></select></div></div>
-                <div id="d47" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>"><label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">Keywords</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$r['seoKeywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoKeywords" placeholder="Enter Keywords..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d48" class="form-group"><label for="tags" class="control-label col-xs-5 col-sm-3 col-lg-2">Tags</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="tags" class="form-control textinput" value="<?php echo$r['tags'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tags" placeholder="Enter Tags..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d49" class="form-group"><label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">Caption</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$r['seoCaption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoCaption" placeholder="Enter a Caption..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
-                <div id="d49a" class="form-group"><label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">Description</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$r['seoDescription'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoDescription" placeholder="Enter a Description..."<?php if($user['options']{1}==0)echo' readonly';?>></div></div>
+<?php /* reviews */ ?>
+            <div id="d60" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials'||$r['contentType']=='event'||$r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='news'||$r['contentType']=='portfolio'||$r['contentType']=='proof')echo'hidden';?>">
+<?php $sr=$db->prepare("SELECT * FROM comments WHERE contentType='review' AND rid=:rid ORDER BY ti DESC");
+$sr->execute(array(':rid'=>$r['id']));
+while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
+                <div id="l_<?php echo$rr['id'];?>" class="media<?php if($rr['status']=='unapproved')echo' danger';?>">
+                    <div class="media-body well">
+                        <span class="rat">
+                            <span<?php if($rr['cid']==5)echo' class="set"';?>>☆</span>
+                            <span<?php if($rr['cid']==4)echo' class="set"';?>>☆</span>
+                            <span<?php if($rr['cid']==3)echo' class="set"';?>>☆</span>
+                            <span<?php if($rr['cid']==2)echo' class="set"';?>>☆</span>
+                            <span<?php if($rr['cid']==1)echo' class="set"';?>>☆</span>
+                        </span>
+                        <div id="controls-<?php echo$rr['id'];?>" class="btn-group pull-right">
+                            <button id="approve_<?php echo$rr['id'];?>" class="btn btn-default btn-sm<?php if($rr['status']=='approved')echo' hidden';?>" onclick="update('<?php echo$rr['id'];?>','comments','status','approved')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Approve"';?>><?php svg('approve');?></button>
+                            <button class="btn btn-default btn-sm trash" onclick="purge('<?php echo$rr['id'];?>','comments')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+                        </div>
+                        <h6 class="media-heading"><?php echo$rr['name'].', '.date($config['dateFormat'],$rr['ti']);?></h6>
+                        <p><?php echo$rr['notes'];?></p>
+                    </div>
+                </div>
+<?php }?>
             </div>
+<?php /* seo */ ?>
+            <div id="d44" role="tabpanel" class="tab-pane">
+                <div id="d45" class="form-group">
+                    <label for="views" class="control-label col-xs-5 col-sm-3 col-lg-2">Views</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="views" class="form-control textinput" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="views"<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d46" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="schemaType" class="control-label col-xs-5 col-sm-3 col-lg-2">Schema Type</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Schema for Microdata Content."';?>>
+                            <option value="blogPost"<?php if($r['schemaType']=='blogPost')echo' selected';?>>blogPost for Articles</option>
+                            <option value="Product"<?php if($r['schemaType']=='Product')echo' selected';?>>Product for Inventory</option>
+                            <option value="Service"<?php if($r['schemaType']=='Service')echo' selected';?>>Service for Services</option>
+                            <option value="ImageGallery"<?php if($r['schemaType']=='ImageGallery')echo' selected';?>>ImageGallery for Gallery Images</option>
+                            <option value="Review"<?php if($r['schemaType']=='Review')echo' selected';?>>Review for Testimonials</option>
+                            <option value="NewsArticle"<?php if($r['schemaType']=='NewsArticle')echo' selected';?>>NewsArticle for News</option>
+                            <option value="Event"<?php if($r['schemaType']=='Event')echo' selected';?>>Event for Events</option>
+                            <option value="CreativeWork"<?php if($r['schemaType']=='CreativeWork')echo' selected';?>>CreativeWork for Portfolio/Proofs</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="d47" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>">
+                    <label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">Keywords</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$r['seoKeywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoKeywords" placeholder="Enter Keywords..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d48" class="form-group">
+                    <label for="tags" class="control-label col-xs-5 col-sm-3 col-lg-2">Tags</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="tags" class="form-control textinput" value="<?php echo$r['tags'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tags" placeholder="Enter Tags..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d49" class="form-group">
+                    <label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">Caption</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$r['seoCaption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoCaption" placeholder="Enter a Caption..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+                <div id="d49a" class="form-group">
+                    <label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">Description</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$r['seoDescription'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoDescription" placeholder="Enter a Description..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                </div>
+            </div>
+<?php /* settings */ ?>
             <div id="d50" role="tabpanel" class="tab-pane">
-                <div id="d51" class="form-group"><label for="published" class="control-label col-xs-5 col-sm-3 col-lg-2">Status</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><select id="status" class="form-control" onchange="update('<?php echo$r['id'];?>','content','status',$(this).val());"<?php if($user['options']{1}==0)echo' readonly';if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>><option value="unpublished"<?php if($r['status']=='unpublished')echo' selected';?>>Unpublished</option><option value="published"<?php if($r['status']=='published')echo' selected';?>>Published</option><option value="delete"<?php if($r['status']=='delete')echo' selected';?>>Delete</option></select></div></div>
-                <div id="d52" class="form-group"><label for="contentType" class="control-label col-xs-5 col-sm-3 col-lg-2">Content Type</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><select id="contentType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','contentType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Change the Type of Content this Item belongs to."';?>><option value="article"<?php if($r['contentType']=='article')echo' selected';?>>Article</option><option value="portfolio"<?php if($r['contentType']=='portfolio')echo' selected';?>>Portfolio</option><option value="events"<?php if($r['contentType']=='events')echo' selected';?>>Event</option><option value="news"<?php if($r['contentType']=='news')echo' selected';?>>News</option><option value="testimonials"<?php if($r['contentType']=='testimonials')echo' selected';?>>Testimonial</option><option value="inventory"<?php if($r['contentType']=='inventory')echo' selected';?>>Inventory</option><option value="service"<?php if($r['contentType']=='service')echo' selected';?>>Service</option><option value="gallery"<?php if($r['contentType']=='gallery')echo' selected';?>>Gallery</option><option value="proofs"<?php if($r['contentType']=='proofs')echo' selected';?>>Proof</option></select></div></div>
-                <div id="d53" class="form-group clearfix<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='testimonials'||$r['contentType']=='gallery')echo' hidden';?>"><label class="control-label col-xs-5 col-sm-3 col-lg-2">Internal</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="checkbox" id="internal0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="internal" data-dbb="0"<?php if($r['internal']==1)echo' checked';?><?php if($user['options']{1}==0)echo' readonly';?>><label for="internal0"></div></div>
-                <div id="d54" class="form-group clearfix<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>"><label class="control-label col-xs-5 col-sm-3 col-lg-2">Bookable</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="checkbox" id="bookable0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="bookable" data-dbb="0"<?php if($r['bookable']==1)echo' checked';?><?php if($user['options']{1}==0)echo' readonly';?>><label for="bookable0"></div></div>
+                <div id="d51" class="form-group">
+                    <label for="published" class="control-label col-xs-5 col-sm-3 col-lg-2">Status</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <select id="status" class="form-control" onchange="update('<?php echo$r['id'];?>','content','status',$(this).val());"<?php if($user['options']{1}==0)echo' readonly';if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+                            <option value="unpublished"<?php if($r['status']=='unpublished')echo' selected';?>>Unpublished</option>
+                            <option value="published"<?php if($r['status']=='published')echo' selected';?>>Published</option>
+                            <option value="delete"<?php if($r['status']=='delete')echo' selected';?>>Delete</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="d52" class="form-group">
+                    <label for="contentType" class="control-label col-xs-5 col-sm-3 col-lg-2">Content Type</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <select id="contentType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','contentType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Change the Type of Content this Item belongs to."';?>>
+                            <option value="article"<?php if($r['contentType']=='article')echo' selected';?>>Article</option>
+                            <option value="portfolio"<?php if($r['contentType']=='portfolio')echo' selected';?>>Portfolio</option>
+                            <option value="events"<?php if($r['contentType']=='events')echo' selected';?>>Event</option>
+                            <option value="news"<?php if($r['contentType']=='news')echo' selected';?>>News</option>
+                            <option value="testimonials"<?php if($r['contentType']=='testimonials')echo' selected';?>>Testimonial</option>
+                            <option value="inventory"<?php if($r['contentType']=='inventory')echo' selected';?>>Inventory</option>
+                            <option value="service"<?php if($r['contentType']=='service')echo' selected';?>>Service</option>
+                            <option value="gallery"<?php if($r['contentType']=='gallery')echo' selected';?>>Gallery</option>
+                            <option value="proofs"<?php if($r['contentType']=='proofs')echo' selected';?>>Proof</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="d53" class="form-group clearfix<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='testimonials'||$r['contentType']=='gallery')echo' hidden';?>">
+                    <label class="control-label col-xs-5 col-sm-3 col-lg-2">Internal</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="checkbox" id="internal0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="internal" data-dbb="0"<?php if($r['internal']==1)echo' checked';?><?php if($user['options']{1}==0)echo' readonly';?>><label for="internal0">
+                    </div>
+                </div>
+                <div id="d54" class="form-group clearfix<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
+                    <label class="control-label col-xs-5 col-sm-3 col-lg-2">Bookable</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="checkbox" id="bookable0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="bookable" data-dbb="0"<?php if($r['bookable']==1)echo' checked';?><?php if($user['options']{1}==0)echo' readonly';?>><label for="bookable0">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

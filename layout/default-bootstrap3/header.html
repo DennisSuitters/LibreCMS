@@ -2,8 +2,8 @@
 	<nav class="navbar navbar-inverse no-margin" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-collapse">
-					<span class="sr-only">Administration</span>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-collapse" role="button">
+					<span class="sr-only">Menu</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -11,16 +11,16 @@
 			</div>
 			<div class="collapse navbar-collapse" id="admin-collapse">
 				<ul class="nav navbar-nav pull-right relative" style="margin-right:20px;">
-					<li<print active="proofs">><a href="proofs">Proofs</a></li>
-					<li<print active="orders">><a href="orders">Orders</a></li>
-					<li<print active="settings">><a href="settings">Settings</a></li>
+					<li <print active="proofs">><a href="proofs">Proofs</a></li>
+					<li <print active="orders">><a href="orders">Orders</a></li>
+					<li <print active="settings">><a href="settings">Settings</a></li>
 				</ul>
 				<img id="avatar" class="pull-right img-circle" src="<print user=avatar>">
 			</div>
 		</div>
 	</nav>
 </accountmenu>
-<header>
+<header role="header">
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -30,12 +30,12 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<span class="navbar-brand"><a href=""><print config="seoTitle"></a></span>
+				<span class="navbar-brand text-white" role="banner"><a href=""><print config="seoTitle"></a></span>
 			</div>
 			<div class="collapse navbar-collapse" id="libreCMS-collapse">
-				<ul class="nav navbar-nav navbar-right">
+				<ul class="nav navbar-nav navbar-right" role="list">
 					<buildMenu>
-						<li class="<print active=menu>"><a href="<print menu=contentType>"><small><print menu="title"></small></a><menuCart></li>
+						<li role="listitem" class="<print active=menu>"><a href="<print menu=contentType>" role="link"><print menu="title"></a><menuCart></li>
 					</buildMenu>
 				</ul>
 			</div>

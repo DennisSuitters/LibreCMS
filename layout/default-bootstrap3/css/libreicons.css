@@ -5,22 +5,25 @@
 */
 .libre{
     display:inline-block;
-    font: normal normal normal 1em/1;
-    font-size:1em;
     width:1em;
     height:1em;
     vertical-align:-5%;
-    text-rendering: auto;
-    fill:currentColor; /* This allows the Icon Color to Inherit the parent containers color value */
+    text-rendering:auto;
+    fill:currentColor;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale
 }
-.libre-lg{
+.libre svg{
+    font-size:1em;
+    width:14px!important;
+    height:14px!important;
+}
+.libre-lg svg{
     font-size:1.33333333em;
     line-height:.75em;
     vertical-align:-15%
 }
-.libre-2x{
+.libre-2x svg{
     font-size:2em
 }
 .libre-3x{

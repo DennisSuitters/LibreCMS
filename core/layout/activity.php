@@ -28,7 +28,7 @@
                 </thead>
                 <tbody id="l_activity">
 <?php $is=0;
-$ie=$config['showItems'];
+$ie=50;
 if(isset($args[1]))
     $action=$args[1];
 else

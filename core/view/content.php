@@ -68,7 +68,7 @@ if($show=='categories'){
 		$count=$matches[1];
 		$html=preg_replace('~<settings.*?>~is','',$html,1);
 	}else$count=1;
-	if(stristr($html,'<print page="cover"')){
+	if(stristr($html,'<print page="cover">')){
 		if($page['cover']!=''||$page['coverURL']!=''){
 			$cover=basename($page['cover']);
 			$coverHTML='<img src="';
@@ -113,14 +113,23 @@ if($show=='categories'){
 					$si++;
 				}
 			}
+			if(stristr($items,'<print content=thumb>')){
+				$r['thumb']=str_replace(URL,'',$r['thumb']);
+				if($r['thumb'])
+					$items=str_replace('<print content=thumb>',$r['thumb'],$items);
+				else
+					$items=str_replace('<print content=thumb>','layout/'.$config['theme'].'/images/noimage.jpg',$items);
+			}
+			if(stristr($items,'<print content=alttitle>'))
+				$items=str_replace('<print content=alttitle>',$r['title'],$items);
 			$r['notes']=strip_tags($r['notes']);
-			require'core'.DS.'parser.php';
 			if($r['contentType']=='testimonials'||$r['contentType']=='testimonial'){
 				if(stristr($items,'<controls>'))$items=preg_replace('~<controls>.*?<\/controls>~is','',$items,1);
 				$controls='';
 			}else{
 				if(stristr($items,'<view>')){
 					$items=str_replace('<print content=linktitle>',URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$items);
+					$items=str_replace('<print content="title">',$r['title'],$items);
 					$items=str_replace('<view>','',$items);
 					$items=str_replace('</view>','',$items);
 				}
@@ -144,6 +153,7 @@ if($show=='categories'){
 				$items=str_replace('<controls>','',$items);
 				$items=str_replace('</controls>','',$items);
 			}
+			require'core'.DS.'parser.php';
 			$output.=$items;
 		}
 		$html=preg_replace('~<items>.*?<\/items>~is',$output,$html,1);
@@ -179,6 +189,7 @@ elseif($page['seoDescription'])$seoDescription=htmlspecialchars($page['seoDescri
 	if($r['seoKeywords'])$seoKeywords=htmlspecialchars($r['seoKeywords'],ENT_QUOTES,'UTF-8');elseif($page['seoKeywords'])$seoKeywords=htmlspecialchars($page['seoKeywords'],ENT_QUOTES,'UTF-8');else$seoKeywords=htmlspecialchars($config['seoKeywords'],ENT_QUOTES,'UTF-8');
 	$canonical=URL.$view.'/'.urlencode(str_replace(' ','-',$r['title']));
 	if($r['eti']>$r['ti'])$contentTime=$r['eti'];else$contentTime=$r['ti'];
+	if(stristr($html,'<print page="cover">'))$html=str_replace('<print page="cover">','',$html);
 	preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);
 	$item=$matches[1];
 	if($r['contentType']=='service'){

@@ -26,7 +26,7 @@ if($config['backup_ti']<$tid){
 }
 ?>
         <div class="row">
-<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM comments WHERE status='unapproved'")->fetch(PDO::FETCH_ASSOC);?>
+<?php $r=$db->query("SELECT COUNT(status) AS cnt FROM comments WHERE contentType!='review' AND status='unapproved'")->fetch(PDO::FETCH_ASSOC);?>
             <div class="col-xs-12 col-sm-6 col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
@@ -34,6 +34,18 @@ if($config['backup_ti']<$tid){
                             <?php svg('comments','3x');?>
                             <span class="libre-2x pull-right"><?php echo$r['cnt'];?></span>
                             <div class="clearfix text-right">New Comments!</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+<?php $r=$db->query("SELECT COUNT(id) AS cnt FROM comments WHERE contentType='review' AND  status='unapproved'")->fetch(PDO::FETCH_ASSOC);?>
+            <div class="col-xs-12 col-sm-6 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
+                        <a class="text-black" href="<?php echo URL.$settings['system']['admin'];?>/content">
+                            <?php svg('layout-timeline','3x');?>
+                            <span class="libre-2x pull-right"><?php echo$r['cnt'];?></span>
+                            <div class="clearfix text-right">New Reviews!</div>
                         </a>
                     </div>
                 </div>
@@ -74,6 +86,32 @@ if($config['backup_ti']<$tid){
                     </div>
                 </div>
             </div>
+<?php $r=$db->query("SELECT COUNT(id) AS cnt FROM login WHERE activate!='' AND active=0")->fetch(PDO::FETCH_ASSOC);?>
+            <div class="col-xs-12 col-sm-6 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
+                        <a class="text-black" href="<?php echo URL.$settings['system']['admin'];?>/accounts">
+                            <?php svg('users','3x');?>
+                            <span class="libre-2x pull-right"><?php echo$r['cnt'];?></span>
+                            <div class="clearfix text-right">New Users!</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+<?php $r=$db->query("SELECT COUNT(id) AS cnt FROM content WHERE contentType='testimonial' AND status!='confirmed' AND active!=1")->fetch(PDO::FETCH_ASSOC);?>
+            <div class="col-xs-12 col-sm-6 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
+                        <a class="text-black" href="<?php echo URL.$settings['system']['admin'];?>/bookings">
+                            <?php svg('signature','3x');?>
+                            <span class="libre-2x pull-right"><?php echo$r['cnt'];?></span>
+                            <div class="clearfix text-right">New Testimonials!</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
 <?php if($config['options']{12}==1){?>
             <div class="panel panel-body">
                 <h4 class="page-header">Google Analytics</h4>
