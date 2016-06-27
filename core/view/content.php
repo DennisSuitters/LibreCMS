@@ -184,8 +184,7 @@ if($show=='item'){
 		$shareImage=$r['thumb'];
 	$seoTitle=$r['title'].' - '.ucfirst($r['contentType']).' - '.htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8');
 	if($r['seoCaption'])$seoCaption=htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8');elseif($page['seoCaption'])$seoCaption=htmlspecialchars($page['seoCaption'],ENT_QUOTES,'UTF-8');else$seoCaption=htmlspecialchars($config['seoCaption'],ENT_QUOTES,'UTF-8');
-	if($r['seoDescription'])$seoDescription=htmlspecialchars($r['seoDescription'],ENT_QUOTES,'UTF-8');
-elseif($page['seoDescription'])$seoDescription=htmlspecialchars($page['seoDescription'],ENT_QUOTES,'UTF-8');else$seoDescription=htmlspecialchars($config['seoDescription'],ENT_QUOTES,'UTF-8');
+	if($r['seoDescription'])$seoDescription=htmlspecialchars($r['seoDescription'],ENT_QUOTES,'UTF-8');elseif($page['seoDescription'])$seoDescription=htmlspecialchars($page['seoDescription'],ENT_QUOTES,'UTF-8');else$seoDescription=htmlspecialchars($config['seoDescription'],ENT_QUOTES,'UTF-8');
 	if($r['seoKeywords'])$seoKeywords=htmlspecialchars($r['seoKeywords'],ENT_QUOTES,'UTF-8');elseif($page['seoKeywords'])$seoKeywords=htmlspecialchars($page['seoKeywords'],ENT_QUOTES,'UTF-8');else$seoKeywords=htmlspecialchars($config['seoKeywords'],ENT_QUOTES,'UTF-8');
 	$canonical=URL.$view.'/'.urlencode(str_replace(' ','-',$r['title']));
 	if($r['eti']>$r['ti'])$contentTime=$r['eti'];else$contentTime=$r['ti'];
@@ -216,6 +215,61 @@ elseif($page['seoDescription'])$seoDescription=htmlspecialchars($page['seoDescri
 		$item=str_replace('<print content="quantity">',$contentQuantity,$item);
 	}else
 		$item=str_replace('<print content="quantity">','',$item);
+	if(stristr($item,'<review>')){
+		preg_match('/<review>([\w\W]*?)<\/review>/',$item,$matches);
+		$review=$matches[1];
+		$sr=$db->prepare("SELECT * FROM comments WHERE contentType='review' AND status='approved' AND rid=:rid");
+		$sr->execute(array(':rid'=>$r['id']));
+		$reviews='';
+		while($rr=$sr->fetch(PDO::FETCH_ASSOC)){
+			$reviewitem=$review;
+			$reviewitem=str_replace('<print review=rating>',$rr['cid'],$reviewitem);
+			if($rr['cid']==5){
+				$reviewitem=str_replace('<print review=set5>','set',$reviewitem);
+				$reviewitem=str_replace('<print review=set4>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set3>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set2>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set1>','',$reviewitem);
+			}
+			if($rr['cid']==4){
+				$reviewitem=str_replace('<print review=set5>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set4>','set',$reviewitem);
+				$reviewitem=str_replace('<print review=set3>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set2>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set1>','',$reviewitem);
+			}
+			if($rr['cid']==3){
+				$reviewitem=str_replace('<print review=set5>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set4>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set3>','set',$reviewitem);
+				$reviewitem=str_replace('<print review=set2>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set1>','',$reviewitem);
+			}
+			if($rr['cid']==2){
+				$reviewitem=str_replace('<print review=set5>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set4>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set3>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set2>','set',$reviewitem);
+				$reviewitem=str_replace('<print review=set1>','',$reviewitem);
+			}
+			if($rr['cid']==1){
+				$reviewitem=str_replace('<print review=set5>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set4>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set3>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set2>','',$reviewitem);
+				$reviewitem=str_replace('<print review=set1>','set',$reviewitem);
+			}
+			$reviewitem=str_replace('<print review="name">',$rr['name'],$reviewitem);
+// 2011-04-01
+			$reviewitem=str_replace('<print review=dateAtom>',date('Y-m-d',$rr['ti']),$reviewitem);
+
+			$reviewitem=str_replace('<print review="date">',date($config['dateFormat'],$rr['ti']),$reviewitem);
+
+			$reviewitem=str_replace('<print review="review">',strip_tags($rr['notes']),$reviewitem);
+			$reviews.=$reviewitem;
+		}
+		$item=preg_replace('~<review>.*?<\/review>~is',$reviews,$item,1);
+	}
 	require'core'.DS.'parser.php';
 	$authorHTML='';
 	$seoTitle=$r['title'].' - '.$config['seoTitle'];

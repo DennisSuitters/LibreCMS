@@ -42,29 +42,26 @@
 						<print author="email" type="icon" class="libre libre-2x libre-envelope"> <print author="social" type="icon" class="libre libre-2x libre-">
 					</aside>
 				</author>
+				<hr role="seperator">
+				<h4 role="heading">Customer Reviews</h4>
 				<review>
-					<hr role="seperator">
-					<h4 role="heading">Customer Reviews</h4>
 					<div class="media" itemprop="review" itemscope itemtype="http://schema.org/Review">
 						<div class="media-body">
 							<div class="well">
 								<span itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
 									<meta itemprop="worstRating" content="1">
-									<meta itemprop="ratingValue" content="1">
+									<meta itemprop="ratingValue" content="<print review=rating>">
 									<meta itemprop="bestRating" content="5">
 									<span class="rat">
-										<span>☆</span>
-										<span>☆</span>
-										<span>☆</span>
-										<span>☆</span>
-										<span class="set">☆</span>
+										<span class="<print review=set5>">☆</span>
+										<span class="<print review=set4>">☆</span>
+										<span class="<print review=set3>">☆</span>
+										<span class="<print review=set2>">☆</span>
+										<span class="<print review=set1>">☆</span>
 									</span>
 								</span>
-								<h6 class="media-heading">
-									<span itemprop="name">Not a happy camper</span> - by <span itemprop="author">Ellie</span>,
-									<meta itemprop="datePublished" content="2011-04-01">April 1, 2011
-								</h6>
-								<p itemprop="description">The lamp burned out and now I have to replace it.</p>
+								<h6 class="media-heading"><span itemprop="name"><print review="name"></span> - <meta itemprop="datePublished" content="<print review=dateAtom>"><print review="date"></h6>
+								<p itemprop="description"><print review="review"></p>
 							</div>
 						</div>
 					</div>
