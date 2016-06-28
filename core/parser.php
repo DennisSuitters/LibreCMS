@@ -75,8 +75,8 @@ foreach($tags as$tag){
 			break;
 		case'categories':
 			if($r['category_1']!=''){
-				$parsing.=' <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'">'.htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8').'</a>';
-				if($r['category_2']!='')$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'">'.htmlspecialchars($r['category_2'],ENT_QUOTES,'UTF-8').'</a>';
+				$parsing.=' <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'" rel="tag">'.htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8').'</a>';
+				if($r['category_2']!='')$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'" rel="tag">'.htmlspecialchars($r['category_2'],ENT_QUOTES,'UTF-8').'</a>';
 			}else$container=$parsing='';
 			break;
 		case'tags':
@@ -89,7 +89,7 @@ foreach($tags as$tag){
 			if($r['contentType']=='inventory'||$r['contentType']=='service'){
 				if($r['options']{0}==1||$r['cost']!=''){
 					if(is_numeric($r['cost'])&&$r['cost']!=0){
-						$parsing.='<meta itemprop="currency" content="AUD"><span class="cost" itemprop="price" content="'.$r['cost'].'">';
+						$parsing.='<meta itemprop="priceCurrency" content="AUD"><span class="cost" itemprop="price" content="'.$r['cost'].'">';
 						if(is_numeric($r['cost']))$parsing.='&#36;';
 						$parsing.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
 					}else$parsing.='<span class="cost">'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';

@@ -216,6 +216,7 @@ if($show=='item'){
 	}else
 		$item=str_replace('<print content="quantity">','',$item);
 	if(stristr($item,'<review>')){
+// http://ablognotlimited.com/index.php/articles/getting-semantic-with-microformats-part-1-rel/
 		preg_match('/<review>([\w\W]*?)<\/review>/',$item,$matches);
 		$review=$matches[1];
 		$sr=$db->prepare("SELECT * FROM comments WHERE contentType='review' AND status='approved' AND rid=:rid");
@@ -260,11 +261,9 @@ if($show=='item'){
 				$reviewitem=str_replace('<print review=set1>','set',$reviewitem);
 			}
 			$reviewitem=str_replace('<print review="name">',$rr['name'],$reviewitem);
-// 2011-04-01
 			$reviewitem=str_replace('<print review=dateAtom>',date('Y-m-d',$rr['ti']),$reviewitem);
-
+			$reviewitem=str_replace('<print review=datetime>',date('Y-m-d H:i:s',$rr['ti']),$reviewitem);
 			$reviewitem=str_replace('<print review="date">',date($config['dateFormat'],$rr['ti']),$reviewitem);
-
 			$reviewitem=str_replace('<print review="review">',strip_tags($rr['notes']),$reviewitem);
 			$reviews.=$reviewitem;
 		}

@@ -4,7 +4,7 @@ if(file_exists(THEME.DS.'side_menu.html')){
 	if($show=='item'&&($view=='service'||$view=='inventory')){
 		$sideCost='';
 		if(is_numeric($r['cost'])&&$r['cost']!=0){
-			$sideCost='<meta itemprop="currency" content="AUD">';
+			$sideCost='<meta itemprop="priceCurrency" content="AUD">';
 			$sideCost.='<span class="cost" itemprop="price" content="'.$r['cost'].'">';
 			if(is_numeric($r['cost']))$sideCost.='&#36;';
 			$sideCost.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';

@@ -78,6 +78,7 @@ if(stristr($head,'<print meta=rss>')){if($args[0]!=''||$args[0]!='index'||$args[
 if(stristr($head,'<print meta=ogType>')){if($view=='inventory')$head=str_replace('<print meta=ogType>','product',$head);else$head=str_replace('<print meta=ogType>',$view,$head);}
 if(stristr($head,'<print meta=shareImage>'))$head=str_replace('<print meta=shareImage>',$shareImage,$head);
 if(stristr($head,'<print meta=favicon>'))$head=str_replace('<print meta=favicon>',FAVICON,$head);
+if(stristr($head,'<print microid>'))$head=str_replace('<print microid>',microid($config['email'],$canonical),$head);
 if(stristr($head,'<print theme>'))$head=str_replace('<print theme>',THEME,$head);
 if(stristr($head,'<print googleVerification>'))$head=str_replace('<print googleVerification>',$config['ga_verification'],$head);
 if(stristr($head,'<!-- Google Analytics -->'))$head=str_replace('<!-- Google Analytics -->','<script>/*<![CDATA[*/'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'/*]]>*/</script>',$head);

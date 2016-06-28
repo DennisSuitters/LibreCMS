@@ -17,6 +17,7 @@
 		<meta name="identifier-url" content="<print meta=url>">
 		<meta name="distribution" content="global">
 		<meta name="rating" content="general">
+		<meta name="microid" content="<print microid>" />
 		<title><print meta=seoTitle></title>
 		<base href="<print meta=url>">
 		<link rel="alternate" media="all" href="<print meta=url>">
@@ -44,19 +45,13 @@
 		<meta itemprop="name" content="<print meta=contentTitle>">
 		<meta itemprop="description" content="<print meta=seoCaption>">
 		<meta itemprop="image" content="<print meta=shareImage>">
+		<link rel="home" href="<print meta=url>" title="Home page" />
 		<link rel="stylesheet" type="text/css" href="<print theme>/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="<print theme>/css/libreicons.css">
 		<link rel="stylesheet" type="text/css" href="<print theme>/css/style.css">
 		<script src="<print theme>/js/jquery-2.1.3.min.js"></script>
 		<script src="<print theme>/js/bootstrap.min.js"></script>
 		<script src="<print theme>/js/js.js"></script>
-		<script>/*<![CDATA[*/
-			$(document).ready(function(){
-				var bgArray=['i0','i1','i2','i3','i4'];
-				var bg=bgArray[Math.floor(Math.random()*bgArray.length)];
-				$('body').addClass(bg);
-			});
-		/*]]>*/</script>
 		<!-- Google Analytics -->
 	</head>
 	<body itemscope itemtype="http://schema.org/WebPage" role="document">

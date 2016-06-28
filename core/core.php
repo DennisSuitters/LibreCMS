@@ -40,7 +40,25 @@ function frontsvg($svg,$size=null,$color=null){
 	$out=file_get_contents(THEME.DS.'svg'.DS.'libre-'.$svg.'.svg');
 	return $out;
 }
-
+function microid($identity,$service,$algorithm='sha1'){
+	$microid=substr($identity,0,strpos($identity,':'))."+".substr($service,0,strpos($service,':')).":".strtolower($algorithm).":";
+	if(function_exists('hash')){
+		if(in_array(strtolower($algorithm),hash_algos())){
+			return$microid.=hash($algorithm,hash($algorithm,$identity).hash($algorithm,$service));
+		}
+	}
+	if(function_exists('mhash')){
+		$hash_method=@constant('MHASH_'.strtoupper($algorithm));
+		if($hash_method!=null){
+			$identity_hash=bin2hex(mhash($hash_method,$identity));
+			$service_hash=bin2hex(mhash($hash_method,$service));
+			return$microid.=bin2hex(mhash($hash_method,$identity_hash.$service_hash));
+		}
+	}
+	if(function_exists($algorithm)){
+		return$microid.=$algorithm($algorithm($identity).$algorithm($service));
+	}
+}
 function minify($txt){
 	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
 }
