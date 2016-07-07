@@ -6,7 +6,7 @@
 		<item>
 			<article class="article" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
 				<h1 class="title" itemprop="name" role="heading"><print content="title"></h1>
-				<print content="image">
+				<print class="img-responsive" content="image">
 				<div itemprop="description" class="caption">
 					<cost>
 						<div class="price_content col-xs-12 visible-xs pull-right">
@@ -42,7 +42,7 @@
 						<print author="email" type="icon" class="libre libre-2x libre-envelope"> <print author="social" type="icon" class="libre libre-2x libre-">
 					</aside>
 				</author>
-				<hr role="seperator">
+				<hr role="separator">
 				<h4 role="heading">Customer Reviews</h4>
 				<review>
 					<div class="hreview-aggregate media" itemprop="review" itemscope itemtype="http://schema.org/Review">
@@ -74,7 +74,7 @@
 			<article class="col-sm-4 col-md-4" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
                 <div class="content-item">
                     <div class="content-item-image">
-                        <a href="<print content=linktitle>">
+                        <a href="<print content=linktitle>" role="link">
 							<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>">
                         </a>
                     </div>
@@ -93,7 +93,7 @@
 							</inventory>
 						</controls>
 						<cost>
-							<span class="content-item-price pull-right" itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+							<span class="content-item-price pull-right" itemscope itemtype="http://schema.org/Offer">
 								<print content="cost">
 							</span>
 						</cost>
@@ -102,7 +102,7 @@
             </article>
 		</items>
 		<more>
-			<button id="more<print config=showItems>" class="addMore btn btn-raised btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
+			<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
 		</more>
 	</main>
 </block>

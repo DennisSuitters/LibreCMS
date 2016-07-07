@@ -7,7 +7,7 @@ else{
         $order=$matches[1];
         $html=preg_replace('~<order>.*?<\/order>~is','<order>',$html,1);
     }
-    if(stristr($html,'<items')){
+    if(stristr($html,'<items>')){
         preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
         $items=$matches[1];
         $output='';

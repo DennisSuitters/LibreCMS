@@ -21,11 +21,6 @@ body{background-color:#ededed;margin:0;padding:0}
 #busy{position:fixed;bottom:5px;left:5px;display:none}
 .busy{position:absolute;top:2px;left:-32px;z-index:1000}
 .busycheck{position:absolute;top:-8px;left:-32px;z-index:1000}
-input[type=checkbox]{display:none}
-input[type=checkbox]+label{display:inline-block;width:14px;height:14px;cursor:pointer}
-input[type=checkbox]+label::before{display:inline-block;content:url(../svg/libre-form-checkbox.svg);width:14px;height:14px;vertical-align:middle}
-input[type=checkbox]:checked+label{display:inline-block;width:14px;height:14px;cursor:pointer}
-input[type=checkbox]:checked+label::before{display:inline-block;content:url(../svg/libre-form-checkbox-checked.svg);width:14px;height:14px;vertical-align:middle}
 #events-layer{position:absolute;top:-1px;right:0;z-index:100;width:65px;height:17px;text-align:right;padding-right:5px}
 #events-layer .btn{padding:0;line-height:13px;font-size:12px}
 #events-layer .btn-xs{width:14px;height:14px}

@@ -9,11 +9,13 @@
     </div>
     <div class="panel-body">
         <div class="form-group">
-            <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                <input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>>
-                <label for="options3">
+            <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                <div class="checkbox checkbox-success">
+                    <input type="checkbox" id="options3" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="3"<?php if($config['options']{3}==1)echo' checked';?>>
+                    <label for="options3"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Allow Users to Create Accounts."';?>>Enable Account Sign Ups</label>
+                </div>
             </div>
-            <label for="options3" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Allow Users to Create Accounts."';?>>Enable Account Sign Ups</span></label>
         </div>
         <h4 class="page-header">Password Reset Email Layout</h4>
         <div class="form-group clearfix">

@@ -274,13 +274,6 @@ if($args[0]=='settings'){
 <?php }?>
                         </div>
                     </div>
-                    <div class="form-group form-group-xs">
-                        <label class="control-label label-xs col-xs-3 col-lg-2">Recurring</label>
-                        <div class="input-group col-xs-9 col-lg-10">
-                            <input type="checkbox" id="recurring0" data-dbid="<?php echo$r['id'];?>" data-dbt="orders" data-dbc="recurring" data-dbb="0"<?php if($r['recurring']==1)echo' checked';if($r['status']=='archived')echo' disabled';?>>
-                            <label for="recurring0">
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="table-responsive">

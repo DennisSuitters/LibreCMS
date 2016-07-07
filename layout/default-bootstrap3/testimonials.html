@@ -1,26 +1,25 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="content">
-	<div class="col-xs-12 col-sm-10 col-sm-offset-1">
+	<main id="content" class="col-xs-12 col-sm-10 col-sm-offset-1" role="main">
 		<print page="notes">
-	</div>
 </block>
 <block inbed="testimonials">
-	<main id="content" class="col-xs-12 col-sm-10 col-sm-offset-1" role="main">
 		<div class="col-xs-12 col-sm-6">
 			<items>
 				<div class="margin-btm-20" itemscope itemtype="http://schema.org/Review">
+					<meta itemprop="itemReviewed" content="<print config=title>">
 					<meta itemprop="datePublished" content="<print datePub>">
 		            <div class="quote">
 		                <blockquote>
-		                    <p itemprop="description">
+		                    <p itemprop="reviewBody">
 								<print content="notes">
 		                    </p>
 		                </blockquote>
 		            </div>
 		            <div class="quote-footer text-right">
 		                <div class="quote-author-img">
-		                    <img src="<print content=avatar>" alt="">
+		                    <img src="<print content=avatar>" role="img">
 		                </div>
 		                <h4 itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><print content="name"></span></h4>
 		                <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">

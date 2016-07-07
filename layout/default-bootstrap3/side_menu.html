@@ -7,7 +7,7 @@
 					<print content="quantity">
 				</div>
 				<service>
-					<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>" role="button">Book Service</a>
+					<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>" role="link">Book Service</a>
 				</service>
 				<inventory>
 					<button class="addCart btn btn-success btn-block" data-cartid="<print content=id>" role="button">Add to Cart</button>
@@ -17,10 +17,10 @@
 	</controls>
 	<review>
 		<div id="review" class="list-group">
-			<form id="reviewform" target="review" class="list-group-item" method="post" action="core/add_review.php">
+			<form id="reviewform" target="review" class="list-group-item" method="post" action="core/add_review.php" role="form">
 				<input type="hidden" name="id" value="<print content=id>">
 				<input type="hidden" name="emailtrap" value="">
-				<h4>Add a Review</h4>
+				<h4 role="heading">Add a Review</h4>
 				<div class="form-group form-group-sm">
 					<label class="control-label col-xs-3"><small>Rating</small></label>
 					<div class="input-group col-xs-9 rating">
@@ -39,13 +39,13 @@
 				<div class="form-group form-group-sm">
 					<label for="email" class="control-label col-xs-3"><small>Email</small></label>
 					<div class="input-group col-xs-9">
-						<input type="text" id="email" class="form-control input-sm input-sm" name="email" value="" required aria-required="true" role="textbox">
+						<input type="text" id="email" class="form-control input-sm" name="email" value="" required aria-required="true" role="textbox">
 					</div>
 				</div>
 				<div class="form-group form-group-sm">
 					<label for="name" class="control-label col-xs-3"><small>Name</small></label>
 					<div class="input-group col-xs-9">
-						<input type="text" id="name" class="form-control input-sm" name="name" value="">
+						<input type="text" id="name" class="form-control input-sm" name="name" value="" role="textbox">
 					</div>
 				</div>
 				<div class="form-group form-group-sm">
@@ -55,7 +55,7 @@
 					</div>
 				</div>
 				<div class="form-group form-group-sm">
-					<button class="btn btn-success btn-block btn-sm">Add Review</button>
+					<button type="submit" class="btn btn-success btn-block btn-sm" role="button">Add Review</button>
 				</div>
 			</form>
 		</div>
@@ -72,14 +72,14 @@
 		<settings items="all" contenttype="current">
 		<div class="list-group">
 			<heading>
-				<a class="list-group-item" href="<print viewlink>">
+				<a class="list-group-item" href="<print viewlink>" role="link">
 					<span class="list-group-item-heading"><print view></span>
 				</a>
 			</heading>
 			<items>
 				<a class="list-group-item" href="<print link>" itemscope role="link">
 					<span class="list-group-item-heading" itemprop="headline"><print content="title"></span>
-					<meta itemprop="datePublished" content="<print metaDate>"/>
+					<meta itemprop="datePublished" content="<print metaDate>">
 					<p class="list-group-item-text text-muted">
 						<small><time datetime="<print metaDate>"><print time></time></small>
 						<small><small><print content="caption"></small></small>
@@ -91,7 +91,7 @@
 							<span class="media-left">
 								<img class="img-thumbnail side_menu_gallery pull-left" src="<print content=thumb>" role="img">
 							</span>
-							<meta itemprop="datePublished" content="<print metaDate>"/>
+							<meta itemprop="datePublished" content="<print metaDate>">
 							<span class="media-body text-muted">
 								<span class="media-heading"><print content="title"></span>
 								<small><small><print content="caption"></small></small>

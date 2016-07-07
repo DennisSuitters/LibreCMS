@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 15, 2016 at 01:27 AM
+-- Generation Time: Jul 08, 2016 at 01:21 AM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.17
 
@@ -20,7 +20,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `cart`
 --
 
-DROP TABLE IF EXISTS `cart`;
 CREATE TABLE IF NOT EXISTS `cart` (
   `id` bigint(20) unsigned NOT NULL,
   `iid` bigint(20) unsigned NOT NULL,
@@ -30,13 +29,17 @@ CREATE TABLE IF NOT EXISTS `cart` (
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Truncate table before insert `cart`
+--
+
+TRUNCATE TABLE `cart`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `choices`
 --
 
-DROP TABLE IF EXISTS `choices`;
 CREATE TABLE IF NOT EXISTS `choices` (
   `id` bigint(20) unsigned NOT NULL,
   `uid` bigint(20) unsigned NOT NULL,
@@ -49,13 +52,17 @@ CREATE TABLE IF NOT EXISTS `choices` (
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Truncate table before insert `choices`
+--
+
+TRUNCATE TABLE `choices`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `comments`
 --
 
-DROP TABLE IF EXISTS `comments`;
 CREATE TABLE IF NOT EXISTS `comments` (
   `id` bigint(20) unsigned NOT NULL,
   `contentType` varchar(16) COLLATE utf8_bin NOT NULL,
@@ -74,13 +81,17 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Truncate table before insert `comments`
+--
+
+TRUNCATE TABLE `comments`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `config`
 --
 
-DROP TABLE IF EXISTS `config`;
 CREATE TABLE IF NOT EXISTS `config` (
   `id` tinyint(1) unsigned NOT NULL,
   `maintenance` int(1) NOT NULL,
@@ -145,6 +156,11 @@ CREATE TABLE IF NOT EXISTS `config` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
+-- Truncate table before insert `config`
+--
+
+TRUNCATE TABLE `config`;
+--
 -- Dumping data for table `config`
 --
 
@@ -157,7 +173,6 @@ INSERT INTO `config` (`id`, `maintenance`, `options`, `theme`, `seoTitle`, `seoD
 -- Table structure for table `content`
 --
 
-DROP TABLE IF EXISTS `content`;
 CREATE TABLE IF NOT EXISTS `content` (
   `id` bigint(20) unsigned NOT NULL,
   `options` varchar(8) COLLATE utf8_bin NOT NULL DEFAULT '00000000',
@@ -230,13 +245,17 @@ CREATE TABLE IF NOT EXISTS `content` (
   `pti` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Truncate table before insert `content`
+--
+
+TRUNCATE TABLE `content`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `login`
 --
 
-DROP TABLE IF EXISTS `login`;
 CREATE TABLE IF NOT EXISTS `login` (
   `id` bigint(20) unsigned NOT NULL,
   `options` varchar(8) COLLATE utf8_bin NOT NULL DEFAULT '00000000',
@@ -276,6 +295,11 @@ CREATE TABLE IF NOT EXISTS `login` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
+-- Truncate table before insert `login`
+--
+
+TRUNCATE TABLE `login`;
+--
 -- Dumping data for table `login`
 --
 
@@ -288,7 +312,6 @@ INSERT INTO `login` (`id`, `options`, `username`, `password`, `cover`, `coverURL
 -- Table structure for table `logs`
 --
 
-DROP TABLE IF EXISTS `logs`;
 CREATE TABLE IF NOT EXISTS `logs` (
   `id` bigint(20) NOT NULL,
   `uid` bigint(20) NOT NULL,
@@ -303,19 +326,23 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `ti` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Truncate table before insert `logs`
+--
+
+TRUNCATE TABLE `logs`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `menu`
 --
 
-DROP TABLE IF EXISTS `menu`;
 CREATE TABLE IF NOT EXISTS `menu` (
   `id` bigint(20) unsigned NOT NULL,
   `uid` bigint(20) NOT NULL,
   `login_user` varchar(128) COLLATE utf8_bin NOT NULL,
   `title` varchar(60) COLLATE utf8_bin NOT NULL,
-  `seoTitle` varchar(60) COLLATE utf8_bin NOT NULL,
+  `seoTitle` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `file` tinytext COLLATE utf8_bin NOT NULL,
   `cover` varchar(128) COLLATE utf8_bin NOT NULL,
   `coverURL` varchar(256) COLLATE utf8_bin NOT NULL,
@@ -335,6 +362,11 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `eti` int(10) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Truncate table before insert `menu`
+--
+
+TRUNCATE TABLE `menu`;
 --
 -- Dumping data for table `menu`
 --
@@ -362,7 +394,6 @@ INSERT INTO `menu` (`id`, `uid`, `login_user`, `title`, `seoTitle`, `file`, `cov
 -- Table structure for table `messages`
 --
 
-DROP TABLE IF EXISTS `messages`;
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` bigint(20) NOT NULL,
   `uid` bigint(20) NOT NULL,
@@ -395,13 +426,17 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `ti` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Truncate table before insert `messages`
+--
+
+TRUNCATE TABLE `messages`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `orderitems`
 --
 
-DROP TABLE IF EXISTS `orderitems`;
 CREATE TABLE IF NOT EXISTS `orderitems` (
   `id` bigint(20) NOT NULL,
   `oid` bigint(20) unsigned NOT NULL,
@@ -413,13 +448,17 @@ CREATE TABLE IF NOT EXISTS `orderitems` (
   `ti` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Truncate table before insert `orderitems`
+--
+
+TRUNCATE TABLE `orderitems`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` bigint(20) NOT NULL,
   `cid` bigint(20) unsigned NOT NULL,
@@ -441,6 +480,11 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `eti` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Truncate table before insert `orders`
+--
+
+TRUNCATE TABLE `orders`;
 --
 -- Indexes for dumped tables
 --

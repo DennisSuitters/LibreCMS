@@ -1,10 +1,10 @@
 <footer class="clearfix">
 	<nav class="navbar navbar-default col-xs-12" role="navigation">
-		<ul class="nav navbar-nav navbar-right">
+		<ul class="nav navbar-nav navbar-right" role="list">
 			<buildMenu>
-				<li role="listitem"><a href="<print menu=contentType>"><print menu="title"></a></li>
+				<li role="listitem"><a href="<print menu=contentType>" role="link"><print menu="title"></a></li>
 			</buildMenu>
-			<li role="listitem"><a href="sitemap">Sitemap</a></li>
+			<li role="listitem"><a href="sitemap" role="link">Sitemap</a></li>
 			<li role="listitem"><login></li>
 			<li role="listitem">
 				<form class="navbar-form" method="post" action="search" role="form">
@@ -12,7 +12,7 @@
 						<div class="input-group">
 							<input type="text" class="form-control" name="search" placeholder="Enter a Search Term..." role="textbox">
 							<div class="input-group-btn">
-								<button type="submit" class="btn btn-info" role="button">Search</button>
+								<button type="submit" class="btn btn-default" role="button">Search</button>
 							</div>
 						</div>
 					</div>
@@ -22,6 +22,6 @@
 	</nav>
 </footer>
 <div class="theme">
-	<print theme="title"> Theme by <print theme="creator"><br>
+	<print theme="title"> Theme by <a href="<print theme=creator_url>" role="link" rel="nofollow"><print theme="creator"></a><br>
 	Powered by <a target="_blank" href="https://github.com/StudioJunkyard/LibreCMS"><span class="libre">Libre</span><span class="cms">CMS</span></a><br>
 </div>

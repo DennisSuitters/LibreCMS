@@ -24,18 +24,18 @@
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#libreCMS-collapse">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#libreCMS-collapse" role="button">
 					<span class="sr-only">Menu</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<span class="navbar-brand text-white" role="banner"><a href=""><print config="seoTitle"></a></span>
+				<span class="navbar-brand text-white" role="banner"><a href="" role="link"><print config="seoTitle"></a></span>
 			</div>
 			<div class="collapse navbar-collapse" id="libreCMS-collapse">
 				<ul class="nav navbar-nav navbar-right" role="list">
 					<buildMenu>
-						<li role="listitem" class="<print active=menu>"><a href="<print menu=contentType>" role="link" rel="<print rel=contentType>"><print menu="title"></a><menuCart></li>
+						<li class="<print active=menu>" role="listitem"><a href="<print menu=contentType>" role="link" rel="<print rel=contentType>"><print menu="title"></a><menuCart></li>
 					</buildMenu>
 				</ul>
 			</div>

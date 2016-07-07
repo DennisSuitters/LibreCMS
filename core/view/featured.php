@@ -99,21 +99,21 @@ if($ii>0){
 			$item=str_replace('</link>','',$item);
 			$item=str_replace('<print link>',$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$item);
 		}
-		if(stristr($item,'<print content="thumb">')){
-			if($r['thumb']!='')
-				$item=str_replace('<print content="thumb">','<img src="'.$r['thumb'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
-			elseif($r['file']!='')
-				$item=str_replace('<print content="thumb">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
-			else
-				$item=str_replace('<print content="thumb">','thumb',$item);
-		}
-		if(stristr($item,'<print content="image">')){
-			if($r['file']!='')
-				$item=str_replace('<print content="image">','<img src="'.$r['file'].'" class="img-responsive" alt="'.$r['title'].'">',$item);
-			else
-				$item=str_replace('<print content="image">','',$item);
-		}
 		$item=str_replace('<print content=title>',$r['title'],$item);
+		if(stristr($item,'<print content=thumb>')){
+			if($r['thumb']!='')
+				$item=str_replace('<print content=thumb>',$r['thumb'],$item);
+			elseif($r['file']!='')
+				$item=str_replace('<print content=thumb>',$r['file'],$item);
+			else
+				$item=str_replace('<print content=thumb>','',$item);
+		}
+		if(stristr($item,'<print content=image>')){
+			if($r['file']!='')
+				$item=str_replace('<print content=image>',$r['file'],$item);
+			else
+				$item=str_replace('<print content=image>','',$item);
+		}
 		if($r['link']=='nolink')
 			$item=str_replace('<print content="title">','<span class="hidden">'.$r['title'].'</span>',$item);
 		else

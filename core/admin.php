@@ -38,6 +38,7 @@ if($_SESSION['rank']>399){
         <link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>">
         <meta name="viewport" content="initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="core/css/awesome-bootstrap-checkbox.css">
         <link rel="stylesheet" type="text/css" href="core/css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/summernote.css">
         <link rel="stylesheet" type="text/css" href="core/css/libreicons-svg.css">
@@ -46,6 +47,8 @@ if($_SESSION['rank']>399){
         <link rel="stylesheet" type="text/css" href="core/css/tokenfield-typeahead.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
+        <link rel="stylesheet" type="text/css" href="core/css/codemirror.css">
+        <link rel="stylesheet" type="text/css" href="core/css/eclipse.css">
         <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons-svg.css">
         <link rel="stylesheet" type="text/css" href="core/css/style.css">
         <script src="core/js/jquery-2.1.3.min.js"></script>
@@ -60,6 +63,13 @@ if($_SESSION['rank']>399){
         <script src="core/js/plugin/summernote-seo/summernote-seo.js"></script>
         <script src="core/js/plugin/elfinder/elfinder.js"></script>
 		<script src="core/elfinder/js/elfinder.min.js"></script>
+        <script src="core/js/codemirror.js"></script>
+        <script src="core/js/xml.js"></script>
+        <script src="core/js/autorefresh.js"></script>
+        <script src="core/js/htmlmixed.js"></script>
+        <script src="core/js/matchbrackets.js"></script>
+        <script src="core/js/matchtags.js"></script>
+        <script src="core/js/hardwrap.js"></script>
         <script src="core/js/jquery.notifications.min.js"></script>
         <script src="core/js/featherlight.min.js"></script>
         <script src="core/js/bootstrap-datetimepicker.min.js"></script>

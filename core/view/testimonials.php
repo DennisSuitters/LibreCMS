@@ -15,6 +15,7 @@ if($s->rowCount()>0){
 		$items=$item;
 		if($i==0)$items=str_replace('<print content=active>',' active',$items);else$items=str_replace('<print content=active>','',$items);
 		$items=str_replace('<print content=schemaType>',$r['schemaType'],$items);
+		$items=str_replace('<print config=title>',$config['seoTitle'],$items);
 		$items=str_replace('<print datePub>',date('Y-d-m',$r['ti']),$items);
 		if(stristr($items,'<print content=avatar>')){
 			if($r['cid']!=0){

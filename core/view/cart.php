@@ -11,6 +11,7 @@ if($args[0]=="confirm"){
 			if($s->rowCount()>0){
 				$ru=$s->fetch(PDO::FETCH_ASSOC);
 				if($ru['status']=='delete'||$ru['status']=='disabled')$notification.=$theme['settings']['account_suspend'];
+				else$uid=$ru['id'];
 			}else{
 				$business=filter_input(INPUT_POST,'business',FILTER_SANITIZE_EMAIL);
 				$address=filter_input(INPUT_POST,'address',FILTER_SANITIZE_EMAIL);
@@ -25,9 +26,10 @@ if($args[0]=="confirm"){
 				$id=$db->lastInsertId();
 				$q=$db->prepare("UPDATE login SET username=:username WHERE id=:id");
 				$q->execute(array(':id'=>$id,':username'=>$username[0].$id));
-				$su=$db->prepare("SELECT id FROM login WHERE id='$id'");
+				$su=$db->prepare("SELECT id FROM login WHERE id=:id");
 				$su->execute(array(':id'=>$id));
 				$ru=$su->fetch(PDO::FETCH_ASSOC);
+				$uid=$r['id'];
 			}
 			$r=$db->query("SELECT MAX(id) as id FROM orders")->fetch(PDO::FETCH_ASSOC);
 			$dti=$ti+$config['orderPayti'];

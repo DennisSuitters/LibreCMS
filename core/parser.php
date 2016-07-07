@@ -138,7 +138,7 @@ foreach($tags as$tag){
 		case'image':
 			$filechk=basename($r['file']);
 			if($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('../../media'.DS.$filechk)))
-				$parsing.='<img src="'.$r['file'].'" alt="'.$r['title'].'">';
+				$parsing.='<img class="'.$class.'" src="'.$r['file'].'" alt="'.$r['title'].'">';
 			break;
 		case'avatar':
 			$parsing.='<img class="'.$class.'" src="';

@@ -1,14 +1,22 @@
 <?php
 $rank=0;
 $show='pages';
-if($args[0]=='edit')$show='item';
-if($show=='pages'){?>
+if($args[0]=='settings'){
+    include'core'.DS.'layout'.DS.'set_pages.php';
+}else{
+    if($args[0]=='edit')$show='item';
+    if($show=='pages'){?>
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h4>Pages</h4>
+    <div class="panel-heading clearfix">
+        <h4 class="col-xs-6">Pages</h4>
+        <div class="pull-right">
+            <div class="btn-group">
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+            </div>
+        </div>
     </div>
     <div class="panel-body">
-        <h4 class="page-header">Active Pages</h4>
+        <h4 class="page-heading">Active Pages</h4>
         <small class="text-muted">Active pages can be dragged to change their order.</small>
         <div class="table-responsive">
             <table class="table table-condensed table-striped table-hover">
@@ -29,7 +37,11 @@ if($show=='pages'){?>
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
                         <td class="text-center"><?php echo ucfirst($r['menu']);?></td>
                         <td class="text-center"><span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span> <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','menu','views','0');"><?php svg('eraser');?></button></td>
-                        <td class="text-center"><input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0" data-dba="1"<?php if($r['active']==1)echo' checked';?>><label for="active<?php echo$r['id'];?>"></label></td>
+                        <td class="text-center">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0" data-dba="1"<?php if($r['active']==1)echo' checked';?>><label for="active<?php echo$r['id'];?>"></label>
+                            </div>
+                        </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right"><a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a></td>
                     </tr>
 <?php }?>
@@ -39,7 +51,7 @@ if($show=='pages'){?>
 <?php $s=$db->prepare("SELECT * FROM menu WHERE active!='1' ORDER BY ord ASC");
     $s->execute();
     if($s->rowCount()>0){?>
-            <h4 class="page-header">Inactive Pages</h4>
+            <h4 class="page-heading">Inactive Pages</h4>
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
@@ -56,7 +68,11 @@ if($show=='pages'){?>
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
                         <td class="text-center"><?php echo ucfirst($r['menu']);?></td>
                         <td class="text-center"><span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span> <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','menu','views','0');"><?php svg('eraser');?></button></td>
-                        <td class="text-center"><input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0" data-dba="0"<?php if($r['active']==1)echo' checked';?>><label for="active<?php echo$r['id'];?>"></label></td>
+                        <td class="text-center">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0" data-dba="0"<?php if($r['active']==1)echo' checked';?>><label for="active<?php echo$r['id'];?>"></label>
+                            </div>
+                        </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right"><a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a></td>
                     </tr>
 <?php }?>
@@ -90,6 +106,7 @@ function fixWidthHelper(e,ui){
 }
 </script>
 <?php }
+}
 if($show=='item'){
     $s=$db->prepare("SELECT * FROM menu WHERE id=:id");
     $s->execute(array(':id'=>$args[1]));
@@ -137,9 +154,16 @@ if($show=='item'){
                 <div class="form-group"><label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Keywords</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$r['seoKeywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoKeywords" placeholder="Enter Keywords..."></div></div>
             </div>
             <div role="tabpanel" class="tab-pane" id="page-settings">
-                <div class="form-group"><label for="active" class="control-label col-xs-5 col-sm-3 col-lg-2">Active</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="checkbox" id="active" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>><label for="active"></div></div>
+                <div class="form-group">
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2"></div>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="active" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0"<?php if($r['active']==1)echo' checked';?>>
+                            <label for="active">Active</label>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group"><label for="menu" class="control-label col-xs-5 col-sm-3 col-lg-2">Menu</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><select id="menu" class="form-control" onchange="update('<?php echo$r['id'];?>','menu','menu',$(this).val());"><option value="head"<?php if($r['menu']=='head')echo' selected';?>>Head</option><option value="other"<?php if($r['menu']=='other')echo' selected';?>>Other</option><option value="footer"<?php if($r['menu']=='footer')echo' selected';?>>Footer</option></select></div></div>
-                <div class="form-group"><label for="file" class="control-label col-xs-5 col-sm-3 col-lg-2">Template File</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="file" class="form-control textinput" value="<?php echo$r['file'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="file" placeholder="Enter HTML Template File..."></div></div>
             </div>
         </div>
     </div>

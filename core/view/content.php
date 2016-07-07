@@ -22,7 +22,7 @@ if($view=='index'){
 }elseif($view=='search'){
 	$search='%';
 	if(isset($args[0]))$search='%'.html_entity_decode(str_replace('-',' ',$args[0])).'%';else$search='%'.html_entity_decode(str_replace('-',' ',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING))).'%';
-	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(seoKeywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(seoCaption) LIKE LOWER(:caption) OR LOWER(seoDescription) LIKE LOWER(:description) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'message%' AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+	$s=$db->prepare("SELECT * FROM content WHERE code=:code OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(seoKeywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(seoCaption) LIKE LOWER(:caption) OR LOWER(seoDescription) LIKE LOWER(:description) OR LOWER(notes) LIKE LOWER(:notes) AND contentType NOT LIKE 'testimonials' AND contentType NOT LIKE 'message%' AND internal!='1' AND pti < :ti ORDER BY ti DESC");
 	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':description'=>$search,':notes'=>$search,':ti'=>$ti));
 }elseif($view=='bookings'){
 	if(isset($args[0]))$id=(int)$args[0];else$id=0;
@@ -113,6 +113,7 @@ if($show=='categories'){
 					$si++;
 				}
 			}
+			if(stristr($items,'<print content=title>'))$items=str_replace('<print content=title>',$r['title'],$items);
 			if(stristr($items,'<print content=thumb>')){
 				$r['thumb']=str_replace(URL,'',$r['thumb']);
 				if($r['thumb'])

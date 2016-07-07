@@ -328,10 +328,12 @@ if($show=='item'){
                     </div>
                 </div>
                 <div id="d20" class="form-group clearfix<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
-                    <label class="control-label col-xs-5 col-sm-3 col-lg-2">Show Cost</label>
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2"></div>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';?>>
-                        <label for="options0">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';?>>
+                            <label for="options0">Show Cost</label>
+                        </div>
                     </div>
                 </div>
                 <div id="d21" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
@@ -341,10 +343,12 @@ if($show=='item'){
                     </div>
                 </div>
                 <div id="d22" class="form-group clearfix<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='proofs')echo' hidden';?>">
-                    <label class="control-label col-xs-5 col-sm-3 col-lg-2">Featured</label>
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2"></div>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="checkbox" id="featured0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="featured" data-dbb="0"<?php if($r['featured']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';?>>
-                        <label for="featured0">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="featured0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="featured" data-dbb="0"<?php if($r['featured']{0}==1)echo' checked';if($user['options']{1}==0)echo' readonly';?>>
+                            <label for="featured0">Featured</label>
+                        </div>
                     </div>
                 </div>
                 <div id="d23" class="form-group">
@@ -500,9 +504,12 @@ else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
 <?php /* comments */ ?>
             <div id="d43" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
                 <div class="form-group">
-                    <label class="control-label col-xs-5 col-sm-3 col-lg-2">Comments</label>
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2"></div>
                     <div class="input-group col-xs-7 col-md-9 col-lg-10">
-                        <input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>><label for="options1">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>>
+                            <label for="options1">Enable Comments</label>
+                        </div>
                     </div>
                 </div>
                 <div id="comments">
@@ -652,15 +659,21 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
                     </div>
                 </div>
                 <div id="d53" class="form-group clearfix<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='testimonials'||$r['contentType']=='gallery')echo' hidden';?>">
-                    <label class="control-label col-xs-5 col-sm-3 col-lg-2">Internal</label>
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2"></div>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="checkbox" id="internal0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="internal" data-dbb="0"<?php if($r['internal']==1)echo' checked';?><?php if($user['options']{1}==0)echo' readonly';?>><label for="internal0">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="internal0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="internal" data-dbb="0"<?php if($r['internal']==1)echo' checked';?><?php if($user['options']{1}==0)echo' readonly';?>>
+                            <label for="internal0">Internal</label>
+                        </div>
                     </div>
                 </div>
                 <div id="d54" class="form-group clearfix<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
-                    <label class="control-label col-xs-5 col-sm-3 col-lg-2">Bookable</label>
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2"></div>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="checkbox" id="bookable0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="bookable" data-dbb="0"<?php if($r['bookable']==1)echo' checked';?><?php if($user['options']{1}==0)echo' readonly';?>><label for="bookable0">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="bookable0" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="bookable" data-dbb="0"<?php if($r['bookable']==1)echo' checked';?><?php if($user['options']{1}==0)echo' readonly';?>>
+                            <label for="bookable0">Bookable</label>
+                        </div>
                     </div>
                 </div>
             </div>

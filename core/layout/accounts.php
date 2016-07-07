@@ -34,7 +34,7 @@ if($args[0]=='settings'){
                 <div class="form-group">
                     <label for="ti" class="control-label col-xs-4 col-sm-3 col-lg-2">Created</label>
                     <div class="input-group col-xs-8 col-sm-9 col-lg-10">
-                        <input type="text" id="ti" class="form-control textinput" value="<?php echo date($config['dateFormat'],$r['ti']);?>" readonly>
+                        <input type="text" id="ti" class="form-control textinput" value="<?php echo date('M jS, Y g:i A',$r['ti']);?>" readonly>
                     </div>
                 </div>
                 <div class="form-group">
@@ -307,76 +307,76 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                 <div class="well">
                     <h4>Account Permissions</h4>
                     <div class="form-group">
-                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                            <input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1)echo' checked';?>>
-                            <label for="options0">
+                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1)echo' checked';?>>
+                                <label for="options0">Add/Remove Content</label>
+                            </div>
                         </div>
-                        <label for="options0" div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <strong>Add/Remove Content</strong>
-                        </label>
                     </div>
                     <div class="form-group">
-                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                            <input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>>
-                            <label for="options1">
+                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>>
+                                <label for="options1">Edit Content</label>
+                            </div>
                         </div>
-                        <label for="options1" class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <strong>Edit Content</strong>
-                        </label>
                     </div>
                     <div class="form-group">
-                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                            <input type="checkbox" id="options2" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="2"<?php if($r['options']{2}==1)echo' checked';?>>
-                            <label for="options2">
+                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="options2" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="2"<?php if($r['options']{2}==1)echo' checked';?>>
+                                <label for="options2">Add/Edit Bookings</label>
+                            </div>
                         </div>
-                        <label for="options2" class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <strong>Add/Edit Bookings</strong>
-                        </label>
                     </div>
                     <div class="form-group">
-                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                            <input type="checkbox" id="options3" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="3"<?php if($r['options']{3}==1)echo' checked';?>>
-                            <label for="options3">
+                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="options3" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="3"<?php if($r['options']{3}==1)echo' checked';?>>
+                                <label for="options3">Message Viewing/Editing</label>
+                            </div>
                         </div>
-                        <label for="options3" class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <strong>Message Viewing/Editing</strong>
-                        </label>
                     </div>
                     <div class="form-group">
-                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                            <input type="checkbox" id="options4" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="4"<?php if($r['options']{4}==1)echo' checked';?>>
-                            <label for="options4">
+                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="options4" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="4"<?php if($r['options']{4}==1)echo' checked';?>>
+                                <label for="options4">Orders Viewing/Editing</label>
+                            </div>
                         </div>
-                        <label for="options4" div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <strong>Orders Viewing/Editing</strong>
-                        </label>
                     </div>
                     <div class="form-group">
-                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                            <input type="checkbox" id="options5" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="options" data-dbb="5"<?php if($r['options']{5}==1)echo' checked';?>>
-                            <label for="options5">
+                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="options5" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="options" data-dbb="5"<?php if($r['options']{5}==1)echo' checked';?>>
+                                <label for="options5">User Accounts Viewing/Editing</strong>
+                            </div>
                         </div>
-                        <label for="options5" class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <strong>User Accounts Viewing/Editing</strong>
-                        </label>
                     </div>
                     <div class="form-group">
-                        <div for="options6" class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                            <input type="checkbox" id="options6" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="6"<?php if($r['options']{6}==1)echo' checked';?>>
-                            <label for="options6">
+                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="options6" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="6"<?php if($r['options']{6}==1)echo' checked';?>>
+                                <label for="options6">SEO Viewing/Editing</label>
+                            </div>
                         </div>
-                        <label for="options6" class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <strong>SEO Viewing/Editing</strong>
-                        </label>
                     </div>
                     <div class="form-group">
-                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                            <input type="checkbox" id="options7" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="7"<?php if($r['options']{7}==1)echo' checked';?>>
-                            <label for="options7">
+                        <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" id="options7" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="7"<?php if($r['options']{7}==1)echo' checked';?>>
+                                <label for="options7">Preferences Viewing/Editing</label>
+                            </div>
                         </div>
-                        <label for="options7" div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                            <strong>Preferences Viewing/Editing</strong>
-                        </label>
                     </div>
                 </div>
             </div>

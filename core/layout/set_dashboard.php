@@ -10,10 +10,12 @@
     <div class="panel-body">
         <h4 class="page-header">Google Analytics</h4>
         <div class="form-group">
-            <label for="options12" class="control-label col-xs-5 col-sm-3 col-lg-2">Enable</label>
+            <div class="control-label col-xs-5 col-sm-3 col-lg-2"></div>
             <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                <input type="checkbox" id="options12" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="12"<?php if($config['options']{12}==1)echo' checked';?>>
-                <label for="options12">
+                <div class="checkbox checkbox-success">
+                    <input type="checkbox" id="options12" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="12"<?php if($config['options']{12}==1)echo' checked';?>>
+                    <label for="options12">Enable</label>
+                </div>
             </div>
         </div>
         <div class="form-group">
@@ -24,10 +26,12 @@
         </div>
         <h4 class="page-header">RSS Feeds</h4>
         <div class="form-group">
-            <label for="options10" class="control-label col-xs-5 col-sm-3 col-lg-2">Enable</label>
+            <div class="control-label col-xs-5 col-sm-3 col-lg-2"></div>
             <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                <input type="checkbox" id="options10" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="10"<?php if($config['options']{10}==1)echo' checked';?>>
-                <label for="options10">
+                <div class="checkbox checkbox-success">
+                    <input type="checkbox" id="options10" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="10"<?php if($config['options']{10}==1)echo' checked';?>>
+                    <label for="options10">Enable</label>
+                </div>
             </div>
         </div>
         <div class="form-group">
@@ -65,10 +69,12 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
         </div>
         <h4 class="page-header">LibreCMS Git Commits</h4>
         <div class="form-group">
-            <label for="options11" class="control-label col-xs-5 col-sm-3 col-lg-2">Enable</label>
+            <div class="control-label col-xs-5 col-sm-3 col-lg-2"></div>
             <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                <input type="checkbox" id="options11" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="11"<?php if($config['options']{11}==1)echo' checked';?>>
-                <label for="options11">
+                <div class="checkbox checkbox-success">
+                    <input type="checkbox" id="options11" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="11"<?php if($config['options']{11}==1)echo' checked';?>>
+                    <label for="options11">Enable</label>
+                </div>
             </div>
         </div>
     </div>

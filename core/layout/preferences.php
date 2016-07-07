@@ -128,12 +128,14 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
             <div id="preference-social" name="preference-social" class="tab-pane">
                 <legend class="control-legend">Social Networking</legend>
                 <div class="form-group">
-                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                        <input type="checkbox" id="options9" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="9"<?php if($config['options']{9}==1)echo' checked';?>>
-                        <label for="options9">
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="options9" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="9"<?php if($config['options']{9}==1)echo' checked';?>>
+                            <label for="options9"<?php if($config['options']{9}==1)echo' data-toggle="tooltip" title="Toggle RSS Feed Icon."';?>>Show RSS Feed Icon</label>
+                        </div>
                     </div>
-                    <label for="options9" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['options']{9}==1)echo' data-toggle="tooltip" title="Toggle RSS Feed Icon."';?>>Show RSS Feed Icon</span></label>
-                    </div>
+                </div>
                     <div class="form-group">
                         <label class="control-label col-sm-3 col-lg-2">&nbsp;</label>
                         <form target="sp" method="post" action="core/add_data.php">
@@ -245,18 +247,22 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
             </div>
             <div id="preference-interface" name="preference-interface" class="tab-pane fade in">
                 <div class="form-group">
-                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                        <input type="checkbox" id="maintenance0" data-dbid="1" data-dbt="config" data-dbc="maintenance" data-dbb="0"<?php if($config['maintenance']{0}==1)echo' checked';?>>
-                        <label for="maintenance0">
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="maintenance0" data-dbid="1" data-dbt="config" data-dbc="maintenance" data-dbb="0"<?php if($config['maintenance']{0}==1)echo' checked';?>>
+                            <label for="maintenance0"<?php if($config['maintenance']{0}==1)echo' data-toggle="tooltip" title="Toggle Site Maintenance Mode."';?>>Maintenance</label>
+                        </div>
                     </div>
-                    <label for="maintenance0" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['maintenance']{0}==1)echo' data-toggle="tooltip" title="Toggle Site Maintenance Mode."';?>>Maintenance</span></label>
                 </div>
                 <div class="form-group clearfix">
-                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right">
-                        <input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>>
-                        <label for="options4">
+                    <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>>
+                            <label for="options4"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Administration Tooltops, like this one."';?>>Enable Tooltips</label>
+                        </div>
                     </div>
-                    <label for="options4" class="input-group col-xs-7 col-sm-9 col-lg-10"><span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Display Administration Tooltops, like this one."';?>>Enable Tooltips</span></label>
                 </div>
                 <div class="form-group">
                     <label for="idleTime" class="control-label col-xs-5 col-sm-3 col-lg-2">Idle Timeout</label>

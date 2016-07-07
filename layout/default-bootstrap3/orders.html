@@ -6,14 +6,14 @@ https://www.w3.org/TR/html-aria/#allowed-aria-roles-states-and-properties-1
         <div class="panel panel-default">
         	<div class="panel-body">
 				<div class="table-responsive">
-					<table class="table table-striped table-responsive" role="table">
+					<table class="table table-striped" role="table">
 						<thead role="rowgroup">
 							<tr role="row">
 								<th class="text-center" role="rowheader">Order #</th>
 								<th class="text-center" role="rowheader">Status</th>
 								<th class="text-center" role="rowheader">Date</th>
 								<th class="text-center" role="rowheader">Due Date</th>
-								<th>&nbsp;</th>
+								<th role="rowheader">&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody role="rowgroup">
@@ -23,7 +23,7 @@ https://www.w3.org/TR/html-aria/#allowed-aria-roles-states-and-properties-1
 									<td class="text-center" role="cell"><print order="status"></td>
 									<td class="text-center" role="cell"><print order="date"></td>
 									<td class="text-center" role="cell"><print order="duedate"></td>
-									<td class="text-right" role="cell"><a class="btn btn-default" href="<print link>">View Order</a></td>
+									<td class="text-right" role="cell"><a class="btn btn-default" href="<print link>" role="link">View Order</a></td>
 								</tr>
 							</items>
 						</tbody>
@@ -80,7 +80,7 @@ https://www.w3.org/TR/html-aria/#allowed-aria-roles-states-and-properties-1
 	        				</div>
 	        			</div>
 	        			<div class="table-responsive">
-	        				<table class="table table-striped table-responsive" role="table">
+	        				<table class="table table-striped" role="table">
 	        					<thead role="rowgroup">
 	        						<tr role="row">
 	        							<th role="columnheader">Code</th>
