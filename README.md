@@ -38,6 +38,7 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
   - [summernote-image-attributes](https://github.com/StudioJunkyard/summernote-image-attributes)
   - [summernote-ext-elfinder](https://github.com/semplon/summernote-ext-elfinder)
   - [summernote-libreICONS-svg](https://github.com/StudioJunkyard/LibreICONS/tree/master/themes/summernote)
+- [CodeMirror](https://github.com/codemirror/CodeMirror)
 - [FullCalendar](https://github.com/fullcalendar/fullcalendar)
   - fullcalendar-bootstrap-theme (Unreleased, but within LibreCMS, WIP)
 - [PHPMailer](https://github.com/PHPMailer/PHPMailer)
@@ -58,6 +59,7 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 - Windows 7 + WAMP + PHP 5.5 + MySQL
 
 ### TODO:
+- Fix Avatar Image Uploads for Testimonials.
 - Fix the Installer.
 - Add Content to the Wiki Pages on how to use LibreCMS and how to create Templates.
 - Once at a Stable Platform, create a release candidate, and create a proper gh-page site.
