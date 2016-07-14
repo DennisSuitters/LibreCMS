@@ -2,50 +2,56 @@
 <block include="header.html">
 <block inbed="settings">
 	<main id="content" class="col-xs-12" role="main">
-		<div class="well relative">
-			<div class="form-group">
-				<label for="avatar" class="control-label col-xs-4 col-sm-2 col-lg-1">Avatar</label>
-				<iframe id="sp" name="sp" class="hidden"></iframe>
-				<form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php" role="form">
-					<div class="input-group col-xs-8 col-sm-10 col-lg-11">
-						<input type="hidden" name="id" value="<print user=id>">
-						<input type="hidden" name="act" value="add_avatar">
-						<input type="file" name="fu" class="form-control" data-classButton="btn btn-default" data-icon="false">
-						<div class="input-group-btn">
-							<button class="btn btn-default" role="button">Upload</button>
+		<div class="panel panel-default">
+			<div class="panel-body relative">
+				<div class="form-group">
+					<label for="avatar" class="control-label col-xs-4 col-sm-2 col-lg-1">Avatar</label>
+					<iframe id="sp" name="sp" class="hidden"></iframe>
+					<form target="sp" method="post" enctype="multipart/form-data" 	action="core/add_data.php" role="form">
+						<div class="input-group col-xs-8 col-sm-10 col-lg-11">
+							<input type="hidden" name="id" value="<print user=id>">
+							<input type="hidden" name="act" value="add_avatar">
+							<input type="file" name="fu" class="form-control" data-classButton="btn btn-default" data-icon="false">
+							<div class="input-group-btn">
+								<button class="btn btn-default" role="button">Upload</button>
+							</div>
 						</div>
+					</form>
+				</div>
+				<div class="form-group">
+					<label for="gravatar" class="control-label col-xs-4 col-sm-2 col-lg-1">Gravatar</label>
+					<div class="input-group col-xs-8 col-sm-10 col-lg-11">
+						<input type="text" id="gravatar" class="form-control" value="<print user=gravatar>" placeholder="Enter Gravatar Link..." role="textbox">
+						<div id="gravatarsave" class="input-group-btn hidden"><button class="btn btn-danger" role="button"><i class="fa fa-save"></i></button></div>
 					</div>
-				</form>
-			</div>
-			<div class="form-group">
-				<label for="gravatar" class="control-label col-xs-4 col-sm-2 col-lg-1">Gravatar</label>
-				<div class="input-group col-xs-8 col-sm-10 col-lg-11">
-					<input type="text" id="gravatar" class="form-control" value="<print user=gravatar>" placeholder="Enter Gravatar Link..." role="textbox">
-					<div id="gravatarsave" class="input-group-btn hidden"><button class="btn btn-danger" role="button"><i class="fa fa-save"></i></button></div>
 				</div>
 			</div>
 		</div>
 		<form method="post" action="settings" role="form">
 			<input type="hidden" name="act" value="updatePassword">
 			<input type="hidden" name="emailtrap" value="">
-			<div class="well">
-				<h4 role="heading">Reset Password</h4>
-				<div class="alert alert-danger<error currentPassHidden>">The Password you entered was incorrect!</div>
-				<div class="alert alert-danger<error matchPassHidden>">The New &amp; Confirm Passwords do NOT match!</div>
-				<div class="alert alert-success<success passUpdated>">Password Successfully Updated!</div>
-				<div class="form-group clearfix">
-					<div class="input-group col-xs-8 col-sm-10 col-lg-11 pull-right">
-						<div class="help-block">Changing Password will Sign you Out</div>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="form-group">
+						<h4 role="heading">Reset Password</h4>
+						<div class="alert alert-danger<error currentPassHidden>">The Password you entered was incorrect!</div>
+						<div class="alert alert-danger<error matchPassHidden>">The New &amp; Confirm Passwords do NOT match!</div>
+						<div class="alert alert-success<success passUpdated>">Password Successfully Updated!</div>
+						<div class="form-group clearfix">
+							<div class="input-group col-xs-8 col-sm-10 col-lg-11 pull-right">
+								<div class="help-block">Changing Password will Sign you Out</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password" class="control-label col-xs-4 col-sm-2 col-lg-1">Password</label>
+							<div class="input-group col-xs-8 col-sm-10 col-lg-11<error matchPassCSS>">
+								<input type="password" id="password" class="form-control" name="newPass" value="" placeholder="Enter New Password..." required aria-required="true" role="textbox">
+							</div>
+						</div>
+						<div class="form-group clearfix">
+							<button class="btn btn-success pull-right" type="submit" role="button">Update Password</button>
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="password" class="control-label col-xs-4 col-sm-2 col-lg-1">Password</label>
-					<div class="input-group col-xs-8 col-sm-10 col-lg-11<error matchPassCSS>">
-						<input type="password" id="password" class="form-control" name="newPass" value="" placeholder="Enter New Password..." required aria-required="true" role="textbox">
-					</div>
-				</div>
-				<div class="form-group clearfix">
-					<button class="btn btn-success pull-right" type="submit" role="button">Update Password</button>
 				</div>
 			</div>
 		</form>
@@ -53,9 +59,9 @@
 			<input type="hidden" name="act" value="updateAccount">
 			<input type="hidden" name="emailTrap" value="">
 			<div class="panel panel-default">
-				<div class="alert alert-success<success accountHidden>">Account Details Updated!</div>
-				<div class="alert alert-danger<error accountHidden>">There was an Issue Updating your Account Details!</div>
 				<div class="panel-body">
+					<div class="alert alert-success<success accountHidden>">Account Details Updated!</div>
+					<div class="alert alert-danger<error accountHidden>">There was an Issue Updating your Account Details!</div>
 					<div class="form-group">
 						<label for="ti" class="control-label col-xs-4 col-sm-2 col-lg-1">Created</label>
 						<div class="input-group col-xs-8 col-sm-10 col-lg-11">
@@ -138,7 +144,6 @@
 						<label for="postcode" class="control-label col-xs-4 col-sm-2 col-lg-1">Postcode</label>
 						<div class="input-group col-xs-8 col-sm-10 col-lg-11">
 							<input type="text" id="postcode" class="form-control" name="postcode" value="<print user=postcode>" placeholder="Enter a Postcode..." role="textbox">
-							</div>
 						</div>
 					</div>
 					<div class="form-group clearfix">

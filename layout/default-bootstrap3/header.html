@@ -2,7 +2,7 @@
 	<nav class="navbar navbar-inverse no-margin" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-collapse" role="button">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-collapse" aria-expanded="false" role="button">
 					<span class="sr-only">Menu</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -11,11 +11,11 @@
 			</div>
 			<div class="collapse navbar-collapse" id="admin-collapse">
 				<ul class="nav navbar-nav pull-right relative" style="margin-right:20px;">
-					<li <print active="proofs">><a href="proofs">Proofs</a></li>
-					<li <print active="orders">><a href="orders">Orders</a></li>
-					<li <print active="settings">><a href="settings">Settings</a></li>
+					<li role="listitem" <print active="proofs">><a href="proofs" role="link">Proofs</a></li>
+					<li role="listitem" <print active="orders">><a href="orders" role="link">Orders</a></li>
+					<li role="listitem" <print active="settings">><a href="settings" role="link">Settings</a></li>
 				</ul>
-				<img id="avatar" class="pull-right img-circle" src="<print user=avatar>">
+				<img id="avatar" class="pull-right img-circle" src="<print user=avatar>" alt="Avatar" role="img">
 			</div>
 		</div>
 	</nav>
@@ -24,7 +24,7 @@
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#libreCMS-collapse" role="button">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#libreCMS-collapse" aria-expanded="false" role="button">
 					<span class="sr-only">Menu</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
