@@ -188,7 +188,7 @@ if($show=='item'){
     <div class="panel-body">
         <ul class="nav nav-tabs" role="tablist">
             <li id="d000" role="presentation" class="active"><a href="#d0" aria-controls="d0" role="tab" data-toggle="tab">Content</a></li>
-            <li id="d026" class="<?php if($r['contentType']=='testimonials')echo'hidden';?>" role="presentation"><a href="#d26" aria-controls="d26" role="tab" data-toggle="tab">Images</a></li>
+            <li id="d026" class="" role="presentation"><a href="#d26" aria-controls="d26" role="tab" data-toggle="tab">Images</a></li>
             <li id="d043" class="<?php if($r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo'hidden';?>" role="presentation"><a href="#d43" aria-controls="d43" role="tab" data-toggle="tab">Comments</a></li>
             <li id="d060" class="<?php if($r['contentType']=='testimonials'||$r['contentType']=='event'||$r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='news'||$r['contentType']=='portfolio'||$r['contentType']=='proof')echo'hidden';?>" role="presentation"><a href="#d60" aria-controls="d60" role="tab" data-toggle="tab">Reviews</a></li>
             <li id="d044" role="presentation"><a href="#d44" aria-controls="d44" role="tab" data-toggle="tab">SEO</a></li>
@@ -201,7 +201,9 @@ if($show=='item'){
                     <label for="title" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title" data-bs="btn-danger" placeholder="Content MUST contain a title or it won't be accessible...">
+                        <small class="help-block">Content MUST contain a Title, or it won't be accessible...</small>
                     </div>
+
                 </div>
                 <div id="d2" class="form-group">
                     <label for="ti" class="control-label col-xs-5 col-sm-3 col-lg-2">Created</label>
@@ -224,7 +226,7 @@ if($show=='item'){
                 <div id="d5" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
                     <label for="cid" class="control-label col-xs-5 col-sm-3 col-lg-2">Client</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <select id="cid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','cid',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';?>>
+                        <select id="cid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','cid',$(this).val());$('#tstavinfo').toggleClass('hidden');"<?php if($user['options']{1}==0)echo' disabled';?>>
                             <option value="0">Select Client</option>
 <?php $cs=$db->query("SELECT * FROM login ORDER BY name ASC, username ASC");while($cr=$cs->fetch(PDO::FETCH_ASSOC)){?>
                             <option value="<?php echo$cr['id'];?>"<?php if($r['cid']==$cr['id'])echo' selected';?>><?php echo$cr['username'].':'.$cr['name'];?></option>
@@ -357,7 +359,7 @@ if($show=='item'){
                             <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                             <input type="hidden" name="t" value="content">
                             <input type="hidden" name="c" value="notes">
-                            <textarea id="notes" class="form-control summernote" name="da" readonly><?php echo$r['notes'];?></textarea>
+                            <textarea id="notes" class="form-control summernote" name="da"><?php echo$r['notes'];?></textarea>
                         </form>
                     </div>
                 </div>
@@ -378,8 +380,34 @@ if($show=='item'){
                 </fieldset>
             </div>
 <?php /* images */ ?>
-            <div id="d26" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials')echo' hidden';?>">
-                <fieldset class="control-fieldset">
+            <div id="d26" role="tabpanel" class="tab-pane">
+                <fieldset id="d26t" class="control-fieldset<?php if($r['contentType']!='testimonials'){echo' hidden';}?>">
+                    <div class="form-group">
+                        <div id="tstavinfo" class="alert alert-info<?php if($r['cid']==0)echo' hidden';?>">Currently using the Avatar associated with the chosen Client Account.</div>
+                        <label for="avatar" class="control-label col-xs-5 col-sm-3 col-lg-2">Avatar</label>
+                        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                            <input type="text" class="form-control" value="<?php echo$r['file'];?>" readonly>
+                            <div class="input-group-btn">
+                                <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
+                                    <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                                    <input type="hidden" name="act" value="add_tstavatar">
+                                    <div class="btn btn-default btn-file">
+                                        <?php svg('browse-computer');?>
+                                        <input type="file" name="fu">
+                                    </div>
+                                    <button class="btn btn-default" type="submit"><?php svg('upload');?></button>
+                                </form>
+                            </div>
+                            <div class="input-group-addon img">
+                                <img id="tstavatar" src="<?php if($r['file']!=''&&file_exists('media'.DS.'avatar'.DS.$r['file']))echo'media/avatar/'.$r['file'];else echo'core/images/noavatar.jpg';?>">
+                            </div>
+                            <div class="input-group-btn">
+                                <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file','');"><?php svg('trash');?></button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset id="d26nt" class="control-fieldset<?php if($r['contentType']=='testimonials')echo' hidden';?>">
                     <div id="d27" class="form-group">
                         <label for="file" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
                         <div class="input-group col-xs-7 col-sm-9 col-lg-10">
@@ -398,7 +426,7 @@ if($show=='item'){
                             <div class="input-group-addon img">
 <?php $rfile=basename($r['file']);
 if($r['file']!=''&&file_exists('media'.DS.$rfile))
-    echo'<a href="media/'.$r['file'].'" data-featherlight="image"><img id="fileimage" src="media/'.$r['file'].'"></a>';
+    echo'<a href="'.$r['file'].'" data-featherlight="image"><img id="fileimage" src="'.$r['file'].'"></a>';
 elseif($r['fileURL']!='')
     echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="'.$r['fileURL'].'"></a>';
 else echo'<img id="fileimage" src="core/images/noimage.jpg">';?>

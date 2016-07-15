@@ -139,6 +139,7 @@ if($act!=''){
 <?php       }
             break;
         case'add_avatar':
+		case'add_tstavatar':
             $id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
             $tbl=filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING);
             $tbl=kses($tbl,array());
@@ -154,16 +155,26 @@ if($act!=''){
                         if($ft=="image/jpeg"||$ft=="image/pjpeg")$fn=$col.'_'.$id.'.jpg';
                         if($ft=="image/png")$fn=$col.'_'.$id.'.png';
                         if($ft=="image/gif")$fn=$col.'_'.$id.'.gif';
-                        $q=$db->prepare("UPDATE login SET avatar=:avatar WHERE id=:id");
-                        $q->execute(array(':avatar'=>'avatar'.$fn,':id'=>$id));
+						if($act=='add_tstavatar'){
+							$fn='tst'.$fn;
+							$q=$db->prepare("UPDATE content SET file=:avatar WHERE id=:id");
+							$q->execute(array(':avatar'=>'avatar'.$fn,':id'=>$id));
+						}else{
+                        	$q=$db->prepare("UPDATE login SET avatar=:avatar WHERE id=:id");
+                        	$q->execute(array(':avatar'=>'avatar'.$fn,':id'=>$id));
+						}
                         $image=new Zebra_image();
                         $image->source_path=$tp;
                         $image->target_path='..'.DS.'media'.DS.'avatar'.DS.'avatar'.$fn;
                         $image->resize(150,150,ZEBRA_IMAGE_CROP_CENTER);
-                        rename($tp,'..'.DS.'media'.DS.'avatar'.DS.'avatar'.$fn);?>
+                        rename($tp,'..'.DS.'media'.DS.'avatar'.DS.'avatar'.$fn);
+						if($act=='add_tstavatar'){?>
+	window.top.window.$('#tstavatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
+<?php 					}else{?>
     window.top.window.$('#avatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
     window.top.window.$('#menu_avatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
-<?php               }
+<?php 					}
+					}
                 }
             }?>
     window.top.window.$('#block').css("display","none");

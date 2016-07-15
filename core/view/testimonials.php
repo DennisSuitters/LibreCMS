@@ -24,15 +24,15 @@ if($s->rowCount()>0){
 				$ru=$su->fetch(PDO::FETCH_ASSOC);
 				if($ru['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$ru['avatar']))
 					$items=str_replace('<print content=avatar>','media/avatar/'.$ru['avatar'],$items);
-				elseif($r['thumb']&&file_exists('media'.DS.basename($r['thumb'])))
-					$items=str_replace('<print content=avatar>',$r['thumb'],$items);
+				elseif($r['file']&&file_exists('media'.DS.'avatar'.DS.basename($r['file'])))
+					$items=str_replace('<print content=avatar>','media/avatar/'.$r['file'],$items);
 				elseif(stristr($ru['gravatar'],'@'))
 					$items=str_replace('<print content=avatar>','http://gravatar.com/avatar/'.md5($ru['gravatar']),$items);
 				elseif(stristr($ru['gravatar'],'gravatar.com'))
 					$items=str_replace('<print content=avatar>',$ru['gravatar'],$items);
 				else$items=str_replace('<print content=avatar>',$noavatar,$items);
-			}elseif($r['thumb']&&file_exists('media'.DS.basename($r['thumb'])))
-				$items=str_replace('<print content=avatar>',$r['thumb'],$items);
+			}elseif($r['file']&&file_exists('media'.DS.'avatar'.DS.basename($r['file'])))
+				$items=str_replace('<print content=avatar>','media/avatar/'.$r['file'],$items);
 			else$items=str_replace('<print content=avatar>',$noavatar,$items);
 		}
 		$items=str_replace('<print content="notes">',strip_tags($r['notes']),$items);
