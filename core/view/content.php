@@ -137,7 +137,7 @@ if($show=='categories'){
 				if($r['contentType']=='service'){
 					if($r['bookable']==1){
 						if(stristr($items,'<service>')){
-							$items=str_replace('<print content=bookservice>',URL.'bookings/'.$r['id'],$items);
+							$items=str_replace('<print content=bookservice>',$r['id'],$items);
 							$items=str_replace('<service>','',$items);
 							$items=str_replace('</service>','',$items);
 							$items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
@@ -195,7 +195,7 @@ if($show=='item'){
 	if($r['contentType']=='service'){
 		if($r['bookable']==1){
 			if(stristr($item,'<service>')){
-				$item=str_replace('<print content=bookservice>',URL.'bookings/'.$r['id'],$item);
+				$item=str_replace('<print content=bookservice>',$r['id'],$item);
 				$item=str_replace('<service>','',$item);
 				$item=str_replace('</service>','',$item);
 				$item=preg_replace('~<inventory>.*?<\/inventory>~is','',$item,1);

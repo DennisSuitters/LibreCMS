@@ -97,7 +97,9 @@ if($act=='add_booking'){
 	if($sql->rowCount()>0){
 		$bookable='';
 		while($row=$sql->fetch(PDO::FETCH_ASSOC)){
-			$bookable.='<option value="'.htmlentities($row['id'],ENT_QUOTES,'UTF-8').'" role="option">'.ucfirst(htmlentities($row['contentType'],ENT_QUOTES,'UTF-8'));
+			$bookable.='<option value="'.htmlentities($row['id'],ENT_QUOTES,'UTF-8').'" role="option"';
+			if($row['id']==$args[0])$bookable.=' selected';
+			$bookable.='>'.ucfirst(htmlentities($row['contentType'],ENT_QUOTES,'UTF-8'));
 			if($row['code']!='')$bookable.=':'.htmlentities($row['code'],ENT_QUOTES,'UTF-8');
 			$bookable.=':'.htmlentities($row['title'],ENT_QUOTES,'UTF-8').'</option>';
 		}

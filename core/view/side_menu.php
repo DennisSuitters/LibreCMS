@@ -28,7 +28,7 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		if($r['contentType']=='service'){
 			if($r['bookable']==1){
 				if(stristr($sideTemp,'<service>')){
-					$sideTemp=str_replace('<print content=bookservice>',URL.'bookings/'.$r['id'],$sideTemp);
+					$sideTemp=str_replace('<print content=bookservice>',$r['id'],$sideTemp);
 					$sideTemp=str_replace('<service>','',$sideTemp);
 					$sideTemp=str_replace('</service>','',$sideTemp);
 					$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
