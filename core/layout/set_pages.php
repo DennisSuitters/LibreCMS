@@ -56,7 +56,7 @@ foreach(glob("layout/".$config['theme']."/*.html")as$file){
                 event.preventDefault();
                 var url=$('#filesEditSelect').val();
                 $.ajax({
-                    url:url,
+                    url:url+'?<?php echo time();?>',
                     dataType:"text",
                     success:function(data){
                         $('#block').css("display","none");

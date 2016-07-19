@@ -112,6 +112,32 @@ if($config['backup_ti']<$tid){
             </div>
         </div>
         <div class="row">
+            <div class="panel panel-body">
+                <h4 class="page-header">Handy Links to help with SEO</h4>
+                <div class="media">
+                    <div class="media-body">
+                        <h4 class="media-heading"><a target="_blank" href="https://www.grammarly.com/">Free Grammar Checker.</a></h4>
+                        <small><small class="text-muted">From: <a target="_blank" href="https://www.grammarly.com/">Grammarly.com</a></small></small><br>
+                        Instantly check for 250 types of grammatical, spelling, and punctuation mistakes. Recommended by PCMag, Gizmodo, and Forbes. Trusted by millions of users.
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-body">
+                        <h4 class="media-heading"><a target="_blank" href="https://moz.com/beginners-guide-to-seo">The Beginner's Guide to Search Engine Optimization.</a></h4>
+                        <small><small class="text-muted">From: <a target="_blank" href="https://moz.com/">Moz.com</a></small></small><br>
+                        New to SEO? Need to polish up your knowledge? The Beginner&#039;s Guide to SEO has been read over 3 million times and provides the information you need to get on the road to professional quality SEO.
+                    </div>
+                </div>
+                <div class="media">
+                    <div class="media-body">
+                        <h4 class="media-heading"><a target="_blank" href="http://backlinko.com/link-building">Link Building for SEO (The Definitive Guide).</a></h4>
+                        <small><small class="text-muted">From: <a target="_blank" href="http://backlinko.com/">BackLinko.com</a></small></small><br>
+                        The complete guide to link building (yes, really). This expert-written guide covers email outreach, content marketing and more.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
 <?php if($config['options']{12}==1){?>
             <div class="panel panel-body">
                 <h4 class="page-header">Google Analytics</h4>

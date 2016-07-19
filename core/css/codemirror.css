@@ -3,7 +3,7 @@
   height: 450px;
   color: black;
 }
-#code{visibility:hidden}
+textarea#code{visibility:hidden}
 .CodeMirror-lines {
   padding: 4px 0;
 }

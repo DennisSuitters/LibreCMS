@@ -197,13 +197,12 @@ if($show=='item'){
         <div class="tab-content">
 <?php /* content */ ?>
             <div id="d0" role="tabpanel" class="tab-pane active">
-                <div id="d1" class="form-group">
+                <div id="d1" class="form-group clearfix">
                     <label for="title" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title" data-bs="btn-danger" placeholder="Content MUST contain a title or it won't be accessible...">
-                        <small class="help-block">Content MUST contain a Title, or it won't be accessible...</small>
                     </div>
-
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Content MUST contain a Title, or it won't be accessible...</small>
                 </div>
                 <div id="d2" class="form-group">
                     <label for="ti" class="control-label col-xs-5 col-sm-3 col-lg-2">Created</label>
