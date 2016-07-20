@@ -6,7 +6,7 @@ $s->execute();
 $cnt=$config['showItems'] / $s->rowCount();
 $cnt=round($cnt,0,PHP_ROUND_HALF_UP);
 if($cnt==0)$cnt=1;
-$cache_time = 3600*24; // 24 hours
+$cache_time=3600*24*7; // 1 week
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
     $cache_file='../../media/cache/feed'.$r['id'].'.rss';
     $timedif=@(time()-filemtime($cache_file));
