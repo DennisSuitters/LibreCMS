@@ -100,12 +100,12 @@ if($show=='categories'){
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
-                        <th class="col-xs-6">Title</th>
+                        <th class="col-xs-5">Title</th>
                         <th class="col-xs-1"></th>
                         <th class="col-xs-1 text-center">Comments</th>
                         <th class="col-xs-1 text-center"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Reviews/score"';?>>Reviews</th>
                         <th class="col-xs-1 text-center">Views</th>
-                        <th class="col-xs-2"></th>
+                        <th class="col-xs-3"></th>
                     </tr>
                 </thead>
                 <tbody id="listtype" class="list" data-t="menu" data-c="ord">

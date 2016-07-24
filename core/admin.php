@@ -338,6 +338,11 @@ if($_SESSION['rank']>399){
               });
             });
         });
+        $('[data-toggle="tooltip"]').on({
+            mouseleave:function(){
+                $('*').tooltip('hide');
+            }
+        });
         /*]]>*/</script>
         <iframe id="sp" name="sp" class="hidden"></iframe>
         <div class="notifications center"></div>

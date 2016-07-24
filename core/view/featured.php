@@ -53,6 +53,7 @@ if($cT!='folder'){
 	$s=$db->prepare("SELECT * FROM content WHERE file!='' OR thumb!='' AND featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY $order $limit");
 	$s->execute(array(':contentType'=>$contentType));
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
+		if($r['featured']!=1||$r['internal']==1)continue;
 		$filechk=basename($r['file']);
 		if(file_exists('media'.DS.$filechk)){
 			$featuredfiles[]=[
