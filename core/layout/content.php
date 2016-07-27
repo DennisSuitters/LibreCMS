@@ -279,11 +279,14 @@ if($show=='item'){
                         <input type="text" id="tie" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tie']==0)echo'Select a Date/Time..."';else echo date($config['dateFormat'],$r['tie']).'"';}?> value="<?php if($r['tie']!=0)echo date('Y-m-d h:m',$r['tie']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>>
                     </div>
                 </div>
-                <div id="d13" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
+                <div id="d13" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?> clearfix">
                     <label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <input type="text" id="email" class="form-control textinput" value="<?php echo$r['email'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="email" placeholder="Enter an Email..."<?php if($user['options']{1}==0)echo' readonly';?>>
                     </div>
+<?php if($r['ip']!=''){?>
+                    <span class="col-xs-7 col-sm-9 col-lg-10 pull-right help-block"><?php echo$r['ip'];?></span>
+<?php }?>
                 </div>
                 <div id="d14" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
                     <label for="name" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label>
