@@ -75,7 +75,7 @@ if(file_exists(THEME.DS.'side_menu.html')){
 	}
 	preg_match('/<items>([\w\W]*?)<\/items>/',$outside,$matches);
 	$insides=$matches[1];
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND internal!='1' ORDER BY featured DESC, ti DESC $show");
+	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND internal!='1' AND status='published' ORDER BY featured DESC, ti DESC $show");
 	$s->execute(array(':contentType'=>$contentType.'%'));
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){

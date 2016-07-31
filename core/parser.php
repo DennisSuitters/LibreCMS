@@ -41,6 +41,7 @@ foreach($tags as$tag){
 	if($tag->hasAttribute('class'))$class=$tag->getAttribute('class');else$class='';
 	if($tag->hasAttribute('alt'))$alt=$tag->getAttribute('alt');else$alt='';
 	if($tag->hasAttribute('type'))$type=$tag->getAttribute('type');else$type='text';
+	if($tag->hasAttribute('strip')&&$tag->getAttribute('type')=='true')$strip=true;else$strip=false;
 	$print=$tag->getAttribute($attribute);
 	if($container!=''){
 		$parsing.='<'.$container;
@@ -140,6 +141,8 @@ foreach($tags as$tag){
 			if($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('../../media'.DS.$filechk)))
 				$parsing.='<img class="'.$class.'" src="'.$r['file'].'" alt="'.$r['title'].'">';
 			break;
+		case'imageURL':
+			$parsing.=$r['file'];
 		case'avatar':
 			$parsing.='<img class="'.$class.'" src="';
 			if($attribute=='author'){
@@ -202,9 +205,16 @@ foreach($tags as$tag){
 			if($attribute=='comments')$notes=$rc['notes'];
 			if($attribute=='page')$notes=$page['notes'];
 			if($attribute=='content')$notes=$r['notes'];
+			if($strip==true)$notes=strip_tags($notes);
 			if($length!=0)$notes=strtok(wordwrap($notes,$length,"...\n"),"\n");
 			$parsing.=$notes;
 			break;
+		case'notesCount':
+			if($attribute=='author')$notesCount=strlen($author['notes']);
+			if($attribute=='comments')$notesCount=strlen($rc['notes']);
+			if($attribute=='page')$notesCount=strlen($page['notes']);
+			if($attribute=='content')$notesCount=strlen($r['notes']);
+			$parsing.=$notesCount;
 		case'email':
 			if($attribute=='author'){
 				if($author['email']){

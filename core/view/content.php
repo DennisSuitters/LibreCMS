@@ -129,7 +129,7 @@ if($show=='categories'){
 				$controls='';
 			}else{
 				if(stristr($items,'<view>')){
-					$items=str_replace('<print content=linktitle>',URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$items);
+					$items=str_replace('<print content=linktitle>',URL.$r['contentType'].'/'.url_encode($r['title']),$items);
 					$items=str_replace('<print content="title">',$r['title'],$items);
 					$items=str_replace('<view>','',$items);
 					$items=str_replace('</view>','',$items);
@@ -163,7 +163,7 @@ if($show=='categories'){
 	$html=preg_replace('~<item>.*?<\/item>~is','',$html,1);
 	$html=str_replace('<items>','',$html);
 	$html=str_replace('</items>','',$html);
-	if(stristr($html,'<more')){
+	if(stristr($html,'<more>')){
 		if($s->rowCount()<$config['showItems']){
 			$html=preg_replace('~<more>.*?<\/more>~is','',$html,1);
 		}else{
@@ -201,7 +201,8 @@ if($show=='item'){
 				$item=preg_replace('~<inventory>.*?<\/inventory>~is','',$item,1);
 			}
 		}else$item=preg_replace('~<service.*?>.*?<\/service>~is','',$item,1);
-	}else$item=preg_replace('~<service>.*?<\/service>~is','',$item,1);
+	}else
+		$item=preg_replace('~<service>.*?<\/service>~is','',$item,1);
 	$address='';
 	$edit='';
 	$contentQuantity='';
@@ -216,8 +217,27 @@ if($show=='item'){
 		$item=str_replace('<print content="quantity">',$contentQuantity,$item);
 	}else
 		$item=str_replace('<print content="quantity">','',$item);
+	if(stristr($item,'<json-ld>')){
+		$jsonld='<script type="application/ld+json">{';
+			$jsonld.='"@context": "http://schema.org","@type": "'.$r['schemaType'].'",';
+			$jsonld.='"headline":"'.$r['title'].'",';
+			$jsonld.='"alternativeHeadline":"'.$r['title'].'",';
+			$jsonld.='"image":"';if($r['thumb']!='')$jsonld.=$r['thumb'];elseif($r['file']!='')$jsonld.=$r['file'];$jsonld.='",';
+			$jsonld.='"author":"'.$r['name'].'",';
+			$jsonld.='"genre":"'.$r['category_1'];if($r['category_2']!='')$jsonld.=" > ".$r['category_2'];$jsonld.='",';
+			$jsonld.='"keywords":"'.$r['seoKeywords'].'",';
+			$jsonld.='"wordcount":"'.strlen(strip_tags($r['notes'])).'",';
+			$jsonld.='"publisher":"'.$r['business'].'",';
+			$jsonld.='"url":"'.URL.$view.'/'.'",';
+			$jsonld.='"datePublished":"'.date('Y-m-d',$r['pti']).'",';
+			$jsonld.='"dateCreated":"'.date('Y-m-d',$r['ti']).'",';
+			$jsonld.='"dateModified":"'.date('Y-m-d',$r['eti']).'",';
+			$jsonld.='"description":"'.$r['seoDescription'].'",';
+			$jsonld.='"articleBody":"'.strip_tags($r['notes']).'"';
+		$jsonld.='}</script>';
+		$item=str_replace('<json-ld>',$jsonld,$item);
+	}
 	if(stristr($item,'<review>')){
-// http://ablognotlimited.com/index.php/articles/getting-semantic-with-microformats-part-1-rel/
 		preg_match('/<review>([\w\W]*?)<\/review>/',$item,$matches);
 		$review=$matches[1];
 		$sr=$db->prepare("SELECT * FROM comments WHERE contentType='review' AND status='approved' AND rid=:rid");
@@ -225,6 +245,23 @@ if($show=='item'){
 		$reviews='';
 		while($rr=$sr->fetch(PDO::FETCH_ASSOC)){
 			$reviewitem=$review;
+			if(stristr($reviewitem,'<json-ld-review>')){
+				$jsonldreview='<script type="application/ld+json">{';
+					$jsonldreview.='"@context":"http://schema.org",';
+					$jsonldreview.='"@type":"Review",';
+					$jsonldreview.='"author":"'.$rr['name'].'",';
+					$jsonldreview.='"datePublished":"'.date('Y-m-d',$rr['ti']).'",';
+					$jsonldreview.='"description":"'.strip_tags($rr['notes']).'",';
+					$jsonldreview.='"name":"'.$rr['name'].'",';
+					$jsonldreview.='"reviewRating":{';
+						$jsonldreview.='"@type":"Rating",';
+						$jsonldreview.='"bestRating":"5",';
+						$jsonldreview.='"ratingValue":"'.$rr['cid'].'",';
+						$jsonldreview.='"worstRating":"1"';
+					$jsonldreview.='}';
+				$jsonldreview.='}</script>';
+				$reviewitem=str_replace('<json-ld-review>',$jsonldreview,$reviewitem);
+			}
 			$reviewitem=str_replace('<print review=rating>',$rr['cid'],$reviewitem);
 			if($rr['cid']==5){
 				$reviewitem=str_replace('<print review=set5>','set',$reviewitem);

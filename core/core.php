@@ -79,6 +79,18 @@ function _ago($time){
 		$timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
 	return$timeDiff;
 }
+function url_encode($str){
+	$str=str_replace(chr(149),"%2D",$str);
+	$str=str_replace(chr(150),"%2D",$str);
+	$str=str_replace(chr(151),"%2D",$str);
+	$str=str_replace(chr(45),"%2D",$str);
+	$str=trim(strtolower($str));
+    $ent=array('%21','%2A',"%27","%28","%29","%3B","%3A","%40","%26","%3D","%2B","%24","%2C","%2F","%3F","%23","%5B","%5D");
+    $rep=array('!','*',"'","(",")",";",":","@","&","=","+","$",",","/","?","#","[","]");
+	$str=str_replace($rep,$ent,$str);
+	$str=str_replace(' ','-',$str);
+	return$str;
+}
 class internal{
 	function getconfig($db){$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);return$config;}
 	function humans($args=false){require'core'.DS.'humans.php';}

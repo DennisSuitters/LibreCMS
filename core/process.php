@@ -68,10 +68,7 @@ if(stristr($head,'<print meta=seoCaption>')){
 }
 if(stristr($head,'<print meta=seoKeywords>')){if(isset($args[1])&&$args[1]!=''&&isset($r['seoKeywords']))$seoKeywords=$r['seoKeywords'];elseif(!isset($seoKeywords)||$seoKeywords=='')$seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];$head=str_replace('<print meta=seoKeywords>',$seoKeywords,$head);}
 if(stristr($head,'<print meta=dateAtom>')){if(!isset($contentTime)){if($page['eti']>$config['ti'])$contentTime=$page['eti'];else$contentTime=$config['ti'];}$head=str_replace('<print meta=dateAtom>',date(DATE_ATOM,$contentTime),$head);}
-if(stristr($head,'<print meta=canonical>')){
-    if(!isset($canonical)||$canonical=='')$canonical=URL.$view.'/';
-    $head=str_replace('<print meta=canonical>',$canonical,$head);
-}
+if(stristr($head,'<print meta=canonical>')){if(!isset($canonical)||$canonical==''){if($view=='index')$canonical=URL;else$canonical=URL.$view.'/';}$head=str_replace('<print meta=canonical>',$canonical,$head);}
 if(stristr($head,'<print meta=url>'))$head=str_replace('<print meta=url>',URL,$head);
 if(stristr($head,'<print meta=view>'))$head=str_replace('<print meta=view>',$view,$head);
 if(stristr($head,'<print meta=rss>')){if($args[0]!=''||$args[0]!='index'||$args[0]!='bookings'||$args[0]!='contactus'||$args[0]!='cart'||$args[0]!='proofs'||$args[0]!='settings'||$args[0]!='accounts')$rss=URL.'rss/'.$view;else$rss=URL.'rss/';$head=str_replace('<print meta=rss>',$rss,$head);}
@@ -79,6 +76,7 @@ if(stristr($head,'<print meta=ogType>')){if($view=='inventory')$head=str_replace
 if(stristr($head,'<print meta=shareImage>'))$head=str_replace('<print meta=shareImage>',$shareImage,$head);
 if(stristr($head,'<print meta=favicon>'))$head=str_replace('<print meta=favicon>',FAVICON,$head);
 if(stristr($head,'<print microid>'))$head=str_replace('<print microid>',microid($config['email'],$canonical),$head);
+if(stristr($head,'<print meta=author>')){if(isset($r['name'])&&$r['name']!='')$head=str_replace('<print meta=author>',$r['name'],$head);elseif(isset($config['business'])&&$config['business']!='')$head=str_replace('<print meta=author>',$config['business'],$head);else$head=str_replace('<print meta=author>',$config['seoTitle'],$head);}
 if(stristr($head,'<print theme>'))$head=str_replace('<print theme>',THEME,$head);
 if(stristr($head,'<print google_verification>'))$head=str_replace('<print google_verification>',$config['ga_verification'],$head);
 if(stristr($head,'<!-- Google Analytics -->'))$head=str_replace('<!-- Google Analytics -->','<script>/*<![CDATA[*/'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'/*]]>*/</script>',$head);

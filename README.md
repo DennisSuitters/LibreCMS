@@ -7,13 +7,13 @@ a **Free** Open Source Content Management System, that is built utilising [PHP](
 - Why are some files Minified (or Uglified as some call it)?
   - Files that are minified, are considered to be done with, or complete. Others, are still in the process of being fixed, edited, added to, or modified, but will eventually also be minified. The reason we do this, isn't to make it harder for contributors, but as we're the main users of LibreCMS, minifying the source helps to minimise the footprint. And despite what others think, and claim to have tested, which we have tested. Minifying the source can help improve the speed, and also the download time for outputted data.
 - Why is English the only Language available?
-  - LibreCMS was, and is targetted towards English Speaking Australian Business's, and Small Business's. We may in the future decide, or if someone wants to add Language support, then we may do that.
+  - LibreCMS was, and is targetted towards English Speaking Australian Business's. We may in the future decide, or if someone wants to add Language support, then we may do that.
 
 ### Features
 - Installer when first Opened.
 - Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs.
 - Messaging - Whenever a message is created via the Contact Us page, it is stored in the Messages system as well as emailed.
-- Orders - Create Quotes, Invoices, and recurring Orders. Client viewing of Orders.
+- Orders - Create Quotes, Invoices. Client viewing of Orders.
 - Media - Upload and manage various types of files for addition into content using elFinder.
 - Featured Content - Can use Content Items as Featured Content, or Images uploaded into the `media/carousel/` folder. Which then will get sorted, and number of items depending on the settings attributes in the `featured.html` template file.
 - Accounts - Create Accounts for co-workers with Account Types for Administrators, Editors (especially good for SEO and Copywriters), Client's, and Visitors.
