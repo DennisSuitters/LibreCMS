@@ -105,6 +105,39 @@ $(".textinput").on({
 //		$(this).trigger('keypress')
 	}
 })
+$('#seoTitle').keyup(function(){
+	var length=$(this).val().length;
+	var max=70;
+	var length=max-length;
+	$("#seoTitlecnt").text(length);
+	if(length<0){
+		$("#seoTitlecnt").addClass('text-danger');
+	}else{
+		$("#seoTitlecnt").removeClass('text-danger');
+	}
+});
+$('#seoCaption').keyup(function(){
+	var length=$(this).val().length;
+	var max=160;
+	var length=max-length;
+	$("#seoCaptioncnt").text(length);
+	if(length<0){
+		$("#seoCaptioncnt").addClass('text-danger');
+	}else{
+		$("#seoCaptioncnt").removeClass('text-danger');
+	}
+});
+$('#seoDescription').keyup(function(){
+	var length=$(this).val().length;
+	var max=160;
+	var length=max-length;
+	$("#seoDescriptioncnt").text(length);
+	if(length<0){
+		$("#seoDescriptioncnt").addClass('text-danger');
+	}else{
+		$("#seoDescriptioncnt").removeClass('text-danger');
+	}
+});
 $(document).on(
 	'click','#content input[type=checkbox]',
 	{},

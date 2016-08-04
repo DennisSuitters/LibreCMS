@@ -7,7 +7,6 @@ echo'<?xml version="1.0" encoding="UTF-8"?>';?>
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
     <url>
         <loc><?php echo URL.$r['contentType'];?></loc>
-        <xhtml:link rel="alternate" hreflang="en-au" href="<?php echo URL.$r['contentType'];?>">
         <changefreq>daily</changefreq>
         <priority>0.64</priority>
     </url>
@@ -15,8 +14,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
     $s2->execute(array(':contentType'=>$r['contentType']));
     while($r2=$s2->fetch(PDO::FETCH_ASSOC)){?>
     <url>
-        <loc><?php echo URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r2['title']));?></loc>
-        <xhtml:link rel="alternate" hreflang="en-au" href="<?php echo URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r2['title']));?>">
+        <loc><?php echo URL.$r['contentType'].'/'.url_encode($r2['title']);?></loc>
         <changefreq>daily</changefreq>
         <priority>0.64</priority>
     </url>

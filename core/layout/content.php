@@ -589,7 +589,7 @@ else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
                 </div>
             </div>
 <?php /* reviews */ ?>
-            <div id="d60" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials'||$r['contentType']=='event'||$r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='news'||$r['contentType']=='portfolio'||$r['contentType']=='proof')echo'hidden';?>">
+            <div id="d60" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials'||$r['contentType']=='event'||$r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='news'||$r['contentType']=='portfolio'||$r['contentType']=='proof')echo' hidden';?>">
 <?php $sr=$db->prepare("SELECT * FROM comments WHERE contentType='review' AND rid=:rid ORDER BY ti DESC");
 $sr->execute(array(':rid'=>$r['id']));
 while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
@@ -635,6 +635,32 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
                         </select>
                     </div>
                 </div>
+                <div id="d49" class="form-group clearfix">
+                    <label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">Caption</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php $cntc=160-strlen($r['seoCaption']);if($cntc<0){$cnt=abs($cntc);$cnt=number_format($cnt)*-1;}else{$cnt=number_format($cntc);}?>
+                        <div class="input-group-addon">
+                            <span id="seoCaptioncnt" class="text-success<?php if($cnt<0)echo' text-danger';?>"><?php echo$cnt;?></span>
+                        </div>
+                        <input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$r['seoCaption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoCaption" placeholder="Enter a Caption..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        The recommended character count for Captions is 160, as sometime Captions may be used in Descriptions.
+                    </small>
+                </div>
+                <div id="d49a" class="form-group clearfix">
+                    <label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">Description</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php $cntc=160-strlen($r['seoDescription']);if($cntc<0){$cnt=abs($cntc);$cnt=number_format($cnt)*-1;}else{$cnt=number_format($cntc);}?>
+                        <div class="input-group-addon">
+                            <span id="seoDescriptioncnt" class="text-success<?php if($cnt<0)echo' text-danger';?>"><?php echo$cnt;?></span>
+                        </div>
+                        <input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$r['seoDescription'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoDescription" placeholder="Enter a Description..."<?php if($user['options']{1}==0)echo' readonly';?>>
+                    </div>
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        The recommended character count for Descriptions is 160.
+                    </small>
+                </div>
                 <div id="d47" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>">
                     <label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">Keywords</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
@@ -645,18 +671,6 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
                     <label for="tags" class="control-label col-xs-5 col-sm-3 col-lg-2">Tags</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <input type="text" id="tags" class="form-control textinput" value="<?php echo$r['tags'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tags" placeholder="Enter Tags..."<?php if($user['options']{1}==0)echo' readonly';?>>
-                    </div>
-                </div>
-                <div id="d49" class="form-group">
-                    <label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">Caption</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$r['seoCaption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoCaption" placeholder="Enter a Caption..."<?php if($user['options']{1}==0)echo' readonly';?>>
-                    </div>
-                </div>
-                <div id="d49a" class="form-group">
-                    <label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">Description</label>
-                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                        <input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$r['seoDescription'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoDescription" placeholder="Enter a Description..."<?php if($user['options']{1}==0)echo' readonly';?>>
                     </div>
                 </div>
             </div>

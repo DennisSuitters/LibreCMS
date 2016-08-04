@@ -147,11 +147,60 @@ if($show=='item'){
                 </fieldset>
             </div>
             <div role="tabpanel" class="tab-pane" id="page-seo">
-                <div class="form-group"><label for="views" class="control-label col-xs-5 col-sm-3 col-lg-2">Views</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="number" id="views" class="form-control textinput" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="views"><div class="input-group-btn"><button class="btn btn-default trash" onclick="$('#views').val('0');update('<?php echo$r['id'];?>','menu','views','0');"><?php svg('eraser');?></button></div></div></div>
-                <div class="form-group"><label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Title</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$r['seoTitle'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoTitle" placeholder="Enter an SEO Title..."></div></div>
-                <div class="form-group"><label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Caption</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$r['seoCaption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoCaption" placeholder="Enter a Caption..."></div></div>
-                <div class="form-group"><label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Description</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$r['seoDescription'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoDescription" placeholder="Enter a Description..."></div></div>
-                <div class="form-group"><label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Keywords</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$r['seoKeywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoKeywords" placeholder="Enter Keywords..."></div></div>
+                <div class="form-group">
+                    <label for="views" class="control-label col-xs-5 col-sm-3 col-lg-2">Views</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="number" id="views" class="form-control textinput" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="views">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default trash" onclick="$('#views').val('0');update('<?php echo$r['id'];?>','menu','views','0');"><?php svg('eraser');?></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Title</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php $cntc=70-strlen($r['seoTitle']);if($cntc<0){$cnt=abs($cntc);$cnt=number_format($cnt)*-1;}else{$cnt=number_format($cntc);}?>
+                        <div class="input-group-addon">
+                            <span id="seoTitlecnt" class="text-success<?php if($cnt<0)echo' text-danger';?>"><?php echo$cnt;?></span>
+                        </div>
+                        <input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$r['seoTitle'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoTitle" placeholder="Enter an SEO Title...">
+                    </div>
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        The recommended character count for Title's is 70.
+                    </small>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Caption</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php $cntc=160-strlen($r['seoCaption']);if($cntc<0){$cnt=abs($cntc);$cnt=number_format($cnt)*-1;}else{$cnt=number_format($cntc);}?>
+                        <div class="input-group-addon">
+                            <span id="seoCaptioncnt" class="text-success<?php if($cnt<0)echo' text-danger';?>"><?php echo$cnt;?></span>
+                        </div>
+                        <input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$r['seoCaption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoCaption" placeholder="Enter a Caption...">
+                    </div>
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        The recommended character count for Captions is 160, as sometime Captions may be used in Descriptions.
+                    </small>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Description</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php $cntc=160-strlen($r['seoDescription']);if($cntc<0){$cnt=abs($cntc);$cnt=number_format($cnt)*-1;}else{$cnt=number_format($cntc);}?>
+                        <div class="input-group-addon">
+                            <span id="seoDescriptioncnt" class="text-success<?php if($cnt<0)echo' text-danger';?>"><?php echo$cnt;?></span>
+                        </div>
+                        <input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$r['seoDescription'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoDescription" placeholder="Enter a Description...">
+                    </div>
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        The recommended character count for Descriptions is 160.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Keywords</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$r['seoKeywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="seoKeywords" placeholder="Enter Keywords...">
+                    </div>
+                </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="page-settings">
                 <div class="form-group">

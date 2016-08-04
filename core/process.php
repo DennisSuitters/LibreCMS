@@ -53,19 +53,8 @@ foreach($tag as$tag1){
         $req=$inbed;
     }
 }
-if(stristr($head,'<print meta=seoTitle>')){
-    if($view=='index')$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
-    else{
-        if(!isset($seoTitle)||$seoTitle=='')$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'].' - '.$config['seoTitle'];
-    }
-    $head=str_replace('<print meta=seoTitle>',$seoTitle,$head);
-}
-if(stristr($head,'<print meta=seoCaption>')){
-    if(!isset($seoCaption)||$seoCaption=='')$seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
-    if(!isset($seoDescription)||$seoDescription=='')$seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
-    if($view=='index'&&$seoDescription!='')$head=str_replace('<print meta=seoCaption>',$seoDescription,$head);
-    else$head=str_replace('<print meta=seoCaption>',$seoCaption,$head);
-}
+if(stristr($head,'<print meta=seoTitle>')){if($view=='index')$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];else{if(!isset($seoTitle)||$seoTitle=='')$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'].' - '.$config['seoTitle'];}$head=str_replace('<print meta=seoTitle>',$seoTitle,$head);}
+if(stristr($head,'<print meta=seoCaption>')){if(!isset($seoCaption)||$seoCaption=='')$seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];if(!isset($seoDescription)||$seoDescription=='')$seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];if($view=='index'&&$seoDescription!='')$head=str_replace('<print meta=seoCaption>',$seoDescription,$head);else$head=str_replace('<print meta=seoCaption>',$seoCaption,$head);}
 if(stristr($head,'<print meta=seoKeywords>')){if(isset($args[1])&&$args[1]!=''&&isset($r['seoKeywords']))$seoKeywords=$r['seoKeywords'];elseif(!isset($seoKeywords)||$seoKeywords=='')$seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];$head=str_replace('<print meta=seoKeywords>',$seoKeywords,$head);}
 if(stristr($head,'<print meta=dateAtom>')){if(!isset($contentTime)){if($page['eti']>$config['ti'])$contentTime=$page['eti'];else$contentTime=$config['ti'];}$head=str_replace('<print meta=dateAtom>',date(DATE_ATOM,$contentTime),$head);}
 if(stristr($head,'<print meta=canonical>')){if(!isset($canonical)||$canonical==''){if($view=='index')$canonical=URL;else$canonical=URL.$view.'/';}$head=str_replace('<print meta=canonical>',$canonical,$head);}

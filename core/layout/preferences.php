@@ -290,23 +290,44 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                         <span class="help-block">These will be used if Page or Content Seo Fields are empty.</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group clearfix">
                     <label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Title</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php $cntc=70-strlen($config['seoTitle']);if($cntc<0){$cnt=abs($cntc);$cnt=number_format($cnt)*-1;}else{$cnt=number_format($cntc);}?>
+                        <div class="input-group-addon">
+                            <span id="seoTitlecnt" class="text-success<?php if($cnt<0)echo' text-danger';?>"><?php echo$cnt;?></span>
+                        </div>
                         <input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$config['seoTitle'];?>" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="Enter an SEO Title...">
                     </div>
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        The recommended character count for Title's is 70.
+                    </small>
                 </div>
-                <div class="form-group">
+                <div class="form-group clearfix">
                     <label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Caption</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php $cntc=160-strlen($config['seoCaption']);if($cntc<0){$cnt=abs($cntc);$cnt=number_format($cnt)*-1;}else{$cnt=number_format($cntc);}?>
+                        <div class="input-group-addon">
+                            <span id="seoCaptioncnt" class="text-success<?php if($cnt<0)echo' text-danger';?>"><?php echo$cnt;?></span>
+                        </div>
                         <input type="text" id="seoCaption" class="form-control textinput" value="<?php echo$config['seoCaption'];?>" data-dbid="1" data-dbt="config" data-dbc="seoCaption" placeholder="Enter a Caption...">
                     </div>
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        The recommended character count for Captions is 160, as sometime Captions may be used in Descriptions.
+                    </small>
                 </div>
-                <div class="form-group">
+                <div class="form-group clearfix">
                     <label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Description</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php $cntc=160-strlen($config['seoDescription']);if($cntc<0){$cnt=abs($cntc);$cnt=number_format($cnt)*-1;}else{$cnt=number_format($cntc);}?>
+                        <div class="input-group-addon">
+                            <span id="seoDescriptioncnt" class="text-success<?php if($cnt<0)echo' text-danger';?>"><?php echo$cnt;?></span>
+                        </div>
                         <input type="text" id="seoDescription" class="form-control textinput" value="<?php echo$config['seoDescription'];?>" data-dbid="1" data-dbt="config" data-dbc="seoDescription" placeholder="Enter a Description...">
                     </div>
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        The recommended character count for Descriptions is 160.
+                    </small>
                 </div>
                 <div class="form-group">
                     <label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Keywords</label>
