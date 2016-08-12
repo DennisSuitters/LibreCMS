@@ -61,7 +61,7 @@ if($cT!='folder'){
 				'thumb'=>$r['thumb'],
 				'file'=>$r['file'],
 				'title'=>$r['title'],
-				'link'=>$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),
+				'link'=>$r['contentType'].'/'.url_encode($r['title']),
 				'seoCaption'=>$r['seoCaption'],
 				'notes'=>$r['notes'],
 				'ti'=>$r['ti']
@@ -108,6 +108,16 @@ if($ii>0){
 				$item=str_replace('<print content=thumb>',$r['file'],$item);
 			else
 				$item=str_replace('<print content=thumb>','',$item);
+		}
+		if(stristr($item,'<print content=alt>')){
+			if($r['file']!=''){
+				$alt=pathinfo($r['file']);
+				$alt=$alt['filename'];
+				$alt=str_replace('-',' ',$alt);
+				$alt=ucfirst($alt);
+			}else
+				$alt=$r['title'];
+			$item=str_replace('<print content=alt>',$alt,$item);
 		}
 		if(stristr($item,'<print content=image>')){
 			if($r['file']!='')

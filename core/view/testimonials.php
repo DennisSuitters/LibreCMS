@@ -46,7 +46,7 @@ if($s->rowCount()>0){
 				$jsonldreview.='"author":"'.$r['name'].'",';
 				$jsonldreview.='"datePublished":"'.date('Y-m-d',$r['ti']).'",';
 				$jsonldreview.='"description":"'.strip_tags($r['notes']).'",';
-				$jsonldreview.='"name":"'.$config['seoTitle'].'",';
+				$jsonldreview.='"name":"'.$config['seoTitle'];
 			$jsonldreview.='}</script>';
 			$items=str_replace('<json-ld-review>',$jsonldreview,$items);
 		}

@@ -78,6 +78,9 @@ if($_SESSION['rank']>399){
         <div id="sidemenu">
             <a href="#menu-toggle" class="btn btn-primary" id="menu-toggle"><?php svg('layout-list');?></a>
             <aside class="nav-side-menu">
+                <ul class="header">
+                    <li><img class="logo" src="core/images/librecms-white-120.png"></li>
+                </ul>
                 <div class="profile clearfix">
                     <div class="profile-usertitle">
                         <div class="profile-usertitle-name"><?php if($user['name']!='')echo$user['name'];else echo$user['username'];?></div>
@@ -109,14 +112,11 @@ if($_SESSION['rank']>399){
                         </li>
                     </ul>
                 </div>
-                <footer>
-                    <ul>
-                        <li><img class="logo" src="core/images/librecms-white-60.png"></li>
-                        <li><a class="btn btn-libre btn-xs" target="_blank" href="https://github.com/StudioJunkyard/LibreCMS/wiki" title="Wiki"><?php svg('social-wikipedia');?></a></li>
-                        <li><a class="btn btn-libre btn-xs" href="<?php echo URL;?>" title="Front"><?php svg('desktop');?></i></a></li>
-                        <li><a class="btn btn-libre btn-xs" href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out"><?php svg('sign-out');?></a></li>
-                    </ul>
-                </footer>
+                <ul class="footer pull-right">
+                    <li><a class="btn btn-libre btn-xs" target="_blank" href="https://github.com/StudioJunkyard/LibreCMS/wiki" title="Wiki"><?php svg('social-wikipedia');?></a></li>
+                    <li><a class="btn btn-libre btn-xs" href="<?php echo URL;?>" title="Front"><?php svg('desktop');?></i></a></li>
+                    <li><a class="btn btn-libre btn-xs" href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out"><?php svg('sign-out');?></a></li>
+                </ul>
             </aside>
         </div>
         <main id="content">
