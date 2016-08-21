@@ -22,11 +22,8 @@
     });
     $.extend($.summernote.plugins,{
         'save':function(context){
-            var self=this;
             var ui=$.summernote.ui;
-            var $note=context.layoutInfo.note;
             var $editor=context.layoutInfo.editor;
-            var $editable=context.layoutInfo.editable;
             var options=context.options;
             var lang=options.langInfo;
             context.memo('button.save',function(){

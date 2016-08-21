@@ -115,9 +115,14 @@ if($config['backup_ti']<$tid){
             <div class="panel panel-body">
                 <h4 class="page-header">Handy Links to help with SEO</h4>
                 <div class="media">
+                    <h4 class="media-heading"><a target="_blank" href="https://static.googleusercontent.com/media/www.google.com/en/us/webmasters/docs/search-engine-optimization-starter-guide.pdf">Google's Search Engine Optimisation Starter Guide.</a></h4>
+                    <small><small class="text-muted">From: <a target="_blank" href="https://www.google.com/">Google</a></small></small>
+                </div>
+
+                <div class="media">
                     <h4 class="media-heading"><a target="_blank" href="http://www.therecipeforseosuccess.com.au/devel/26">Boost rankings, improve traffic and increase coversions with The Recipe for SEO Success eCourse.</a></h4>
                     <small><small class="text-muted">From: <a target="_blank" href="http://www.therecipeforseosuccess.com.au/devel/26">The Recipe For SEO Success</a></small></small><br>
-                    <a href="http://www.therecipeforseosuccess.com.au/devel/34"><img src="http://www.therecipeforseosuccess.com.au/wp-content/uploads/2016/01/Recipe2016_728x90_NoDate_v1.jpg" width="728" height="90" /></a>
+                    <a href="http://www.therecipeforseosuccess.com.au/devel/34"><img src="http://www.therecipeforseosuccess.com.au/wp-content/uploads/2016/01/Recipe2016_728x90_NoDate_v1.jpg" width="728" height="90"></a>
                 </div>
                 <div class="media">
                     <div class="media-body">

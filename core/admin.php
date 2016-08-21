@@ -106,7 +106,7 @@ if($_SESSION['rank']>399){
                         <li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><?php svg('activity');?> Activity</a></li>
                         <li class="search<?php if($view=='search')echo' active';?>">
                             <form class="" method="post" action="admin/search">
-                                <?php svg('search');?>
+                                <a href="<?php echo URL.$settings['system']['admin'].'/search';?>"<?php svg('search');?></a>
                                 <input class="form-control" type="search" name="search" value="" placeholder="Search" onblur="$(this).val('');$('#menu_search_icon').toggleClass('hidden');" onfocus="$('#menu_search_icon').toggleClass('hidden');">
                             </form>
                         </li>

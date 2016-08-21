@@ -212,10 +212,29 @@ if($show=='item'){
 		$shareImage=$r['file'];
 	elseif($r['thumb']!='')
 		$shareImage=$r['thumb'];
-	$seoTitle=$r['title'].' - '.ucfirst($r['contentType']).' - '.htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8');
-	if($r['seoCaption'])$seoCaption=htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8');elseif($page['seoCaption'])$seoCaption=htmlspecialchars($page['seoCaption'],ENT_QUOTES,'UTF-8');else$seoCaption=htmlspecialchars($config['seoCaption'],ENT_QUOTES,'UTF-8');
-	if($r['seoDescription'])$seoDescription=htmlspecialchars($r['seoDescription'],ENT_QUOTES,'UTF-8');elseif($page['seoDescription'])$seoDescription=htmlspecialchars($page['seoDescription'],ENT_QUOTES,'UTF-8');else$seoDescription=htmlspecialchars($config['seoDescription'],ENT_QUOTES,'UTF-8');
-	if($r['seoKeywords'])$seoKeywords=htmlspecialchars($r['seoKeywords'],ENT_QUOTES,'UTF-8');elseif($page['seoKeywords'])$seoKeywords=htmlspecialchars($page['seoKeywords'],ENT_QUOTES,'UTF-8');else$seoKeywords=htmlspecialchars($config['seoKeywords'],ENT_QUOTES,'UTF-8');
+	$r['seoTitle']=trim($r['seoTitle']);
+	if($r['seoTitle']!='')
+		$seoTitle=$r['seoTitle'];
+	else
+		$seoTitle=$r['title'];
+	if($r['seoCaption']!='')
+		$seoCaption=htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8');
+	elseif($page['seoCaption']!='')
+		$seoCaption=htmlspecialchars($page['seoCaption'],ENT_QUOTES,'UTF-8');
+	else
+		$seoCaption=htmlspecialchars($config['seoCaption'],ENT_QUOTES,'UTF-8');
+	if($r['seoDescription']!='')
+		$seoDescription=htmlspecialchars($r['seoDescription'],ENT_QUOTES,'UTF-8');
+	elseif($page['seoDescription'])
+		$seoDescription=htmlspecialchars($page['seoDescription'],ENT_QUOTES,'UTF-8');
+	else
+		$seoDescription=htmlspecialchars($config['seoDescription'],ENT_QUOTES,'UTF-8');
+	if($r['seoKeywords'])
+		$seoKeywords=htmlspecialchars($r['seoKeywords'],ENT_QUOTES,'UTF-8');
+	elseif($page['seoKeywords'])
+		$seoKeywords=htmlspecialchars($page['seoKeywords'],ENT_QUOTES,'UTF-8');
+	else
+		$seoKeywords=htmlspecialchars($config['seoKeywords'],ENT_QUOTES,'UTF-8');
 	$canonical=URL.$view.'/'.url_encode($r['title']);
 	if($r['eti']>$r['ti'])$contentTime=$r['eti'];else$contentTime=$r['ti'];
 	if(stristr($html,'<print page="cover">'))$html=str_replace('<print page="cover">','',$html);
@@ -359,6 +378,7 @@ if($show=='item'){
 			preg_match('/<items>([\w\W]*?)<\/items>/',$commentsHTML,$matches);
 			while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
 				$comment=$matches[1];
+				$rc['notes']=strip_tags($rc['notes']);
 				require'core'.DS.'parser.php';
 				$comments.=$comment;
 			}

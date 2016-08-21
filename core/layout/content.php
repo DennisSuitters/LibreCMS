@@ -635,6 +635,22 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
                         </select>
                     </div>
                 </div>
+                <div class="form-group clearfix">
+                    <label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Title</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php $cntc=70-strlen($r['seoTitle']);if($cntc<0){$cnt=abs($cntc);$cnt=number_format($cnt)*-1;}else{$cnt=number_format($cntc);}?>
+                        <div class="input-group-addon">
+                            <span id="seoTitlecnt" class="text-success<?php if($cnt<0)echo' text-danger';?>"><?php echo$cnt;?></span>
+                        </div>
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" onclick="removeStopWords('seoTitle',$('#seoTitle').val());"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Remove Stop Words."';?>><?php svg('magic');?></button>
+                        </div>
+                        <input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$r['seoTitle'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoTitle" placeholder="Enter an SEO Title...">
+                    </div>
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        The recommended character count for Title's is 70.
+                    </small>
+                </div>
                 <div id="d49" class="form-group clearfix">
                     <label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">Caption</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">

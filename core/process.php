@@ -53,21 +53,93 @@ foreach($tag as$tag1){
         $req=$inbed;
     }
 }
-if(stristr($head,'<print meta=seoTitle>')){if($view=='index')$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];else{if(!isset($seoTitle)||$seoTitle=='')$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'].' - '.$config['seoTitle'];}$head=str_replace('<print meta=seoTitle>',$seoTitle,$head);}
-if(stristr($head,'<print meta=seoCaption>')){if(!isset($seoCaption)||$seoCaption=='')$seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];if(!isset($seoDescription)||$seoDescription=='')$seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];if($view=='index'&&$seoDescription!='')$head=str_replace('<print meta=seoCaption>',$seoDescription,$head);else$head=str_replace('<print meta=seoCaption>',$seoCaption,$head);}
-if(stristr($head,'<print meta=seoKeywords>')){if(isset($args[1])&&$args[1]!=''&&isset($r['seoKeywords']))$seoKeywords=$r['seoKeywords'];elseif(!isset($seoKeywords)||$seoKeywords=='')$seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];$head=str_replace('<print meta=seoKeywords>',$seoKeywords,$head);}
-if(stristr($head,'<print meta=dateAtom>')){if(!isset($contentTime)){if($page['eti']>$config['ti'])$contentTime=$page['eti'];else$contentTime=$config['ti'];}$head=str_replace('<print meta=dateAtom>',date(DATE_ATOM,$contentTime),$head);}
-if(stristr($head,'<print meta=canonical>')){if(!isset($canonical)||$canonical==''){if($view=='index')$canonical=URL;else$canonical=URL.$view.'/';}$head=str_replace('<print meta=canonical>',$canonical,$head);}
-if(stristr($head,'<print meta=url>'))$head=str_replace('<print meta=url>',URL,$head);
-if(stristr($head,'<print meta=view>'))$head=str_replace('<print meta=view>',$view,$head);
-if(stristr($head,'<print meta=rss>')){if($args[0]!=''||$args[0]!='index'||$args[0]!='bookings'||$args[0]!='contactus'||$args[0]!='cart'||$args[0]!='proofs'||$args[0]!='settings'||$args[0]!='accounts')$rss=URL.'rss/'.$view;else$rss=URL.'rss/';$head=str_replace('<print meta=rss>',$rss,$head);}
-if(stristr($head,'<print meta=ogType>')){if($view=='inventory')$head=str_replace('<print meta=ogType>','product',$head);else$head=str_replace('<print meta=ogType>',$view,$head);}
-if(stristr($head,'<print meta=shareImage>'))$head=str_replace('<print meta=shareImage>',$shareImage,$head);
-if(stristr($head,'<print meta=favicon>'))$head=str_replace('<print meta=favicon>',FAVICON,$head);
-if(stristr($head,'<print microid>'))$head=str_replace('<print microid>',microid($config['email'],$canonical),$head);
-if(stristr($head,'<print meta=author>')){if(isset($r['name'])&&$r['name']!='')$head=str_replace('<print meta=author>',$r['name'],$head);elseif(isset($config['business'])&&$config['business']!='')$head=str_replace('<print meta=author>',$config['business'],$head);else$head=str_replace('<print meta=author>',$config['seoTitle'],$head);}
-if(stristr($head,'<print theme>'))$head=str_replace('<print theme>',THEME,$head);
-if(stristr($head,'<print google_verification>'))$head=str_replace('<print google_verification>',$config['ga_verification'],$head);
-if(stristr($head,'<!-- Google Analytics -->'))$head=str_replace('<!-- Google Analytics -->','<script>/*<![CDATA[*/'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'/*]]>*/</script>',$head);
-if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme'])){$doc=new DOMDocument;@$doc->loadHTML($content);foreach($doc->getElementsByTagName('a')as$link){$link->setAttribute('href',$link->getAttribute('href').'?theme='.$_GET['theme']);}$content=preg_replace('/^<!DOCTYPE.+?>/','',str_replace(array('<html>','</html>','<body>','</body>'),array('','','',''),$doc->saveHTML())).'</body></html>';}
-if(MINIFY==1)print minify($head.$content);else print$head.$content;
+if(stristr($head,'<print meta=seoTitle>')){
+    if($view=='index')
+        $seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
+    else{
+        if(!isset($seoTitle)||$seoTitle=='')
+            $seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'].' - '.$config['seoTitle'];
+    }
+    $head=str_replace('<print meta=seoTitle>',$seoTitle,$head);
+}
+if(stristr($head,'<print meta=seoCaption>')){
+    if(!isset($seoCaption)||$seoCaption=='')
+        $seoCaption=empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
+        if(!isset($seoDescription)||$seoDescription=='')
+            $seoDescription=empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
+            if($view=='index'&&$seoDescription!='')
+                $head=str_replace('<print meta=seoCaption>',$seoDescription,$head);
+            else
+                $head=str_replace('<print meta=seoCaption>',$seoCaption,$head);
+}
+if(stristr($head,'<print meta=seoKeywords>')){
+    if(isset($args[1])&&$args[1]!=''&&isset($r['seoKeywords']))
+        $seoKeywords=$r['seoKeywords'];
+    elseif(!isset($seoKeywords)||$seoKeywords=='')
+        $seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
+        $head=str_replace('<print meta=seoKeywords>',$seoKeywords,$head);
+}
+if(stristr($head,'<print meta=dateAtom>')){
+    if(!isset($contentTime)){
+        if($page['eti']>$config['ti'])
+            $contentTime=$page['eti'];
+        else
+            $contentTime=$config['ti'];}$head=str_replace('<print meta=dateAtom>',date(DATE_ATOM,$contentTime),$head);
+}
+if(stristr($head,'<print meta=canonical>')){
+    if(!isset($canonical)||$canonical==''){
+        if($view=='index')
+            $canonical=URL;
+        else
+            $canonical=URL.$view.'/';
+    }
+    $head=str_replace('<print meta=canonical>',$canonical,$head);
+}
+if(stristr($head,'<print meta=url>'))
+    $head=str_replace('<print meta=url>',URL,$head);
+if(stristr($head,'<print meta=view>'))
+    $head=str_replace('<print meta=view>',$view,$head);
+if(stristr($head,'<print meta=rss>')){
+    if($args[0]!=''||$args[0]!='index'||$args[0]!='bookings'||$args[0]!='contactus'||$args[0]!='cart'||$args[0]!='proofs'||$args[0]!='settings'||$args[0]!='accounts')
+        $rss=URL.'rss/'.$view;
+    else
+        $rss=URL.'rss/';$head=str_replace('<print meta=rss>',$rss,$head);
+}
+if(stristr($head,'<print meta=ogType>')){
+    if($view=='inventory')
+        $head=str_replace('<print meta=ogType>','product',$head);
+    else
+        $head=str_replace('<print meta=ogType>',$view,$head);
+}
+if(stristr($head,'<print meta=shareImage>'))
+    $head=str_replace('<print meta=shareImage>',$shareImage,$head);
+if(stristr($head,'<print meta=favicon>'))
+    $head=str_replace('<print meta=favicon>',FAVICON,$head);
+if(stristr($head,'<print microid>'))
+    $head=str_replace('<print microid>',microid($config['email'],$canonical),$head);
+if(stristr($head,'<print meta=author>')){
+    if(isset($r['name'])&&$r['name']!='')
+        $head=str_replace('<print meta=author>',$r['name'],$head);
+    elseif(isset($config['business'])&&$config['business']!='')
+        $head=str_replace('<print meta=author>',$config['business'],$head);
+    else
+        $head=str_replace('<print meta=author>',$config['seoTitle'],$head);
+}
+if(stristr($head,'<print theme>'))
+    $head=str_replace('<print theme>',THEME,$head);
+if(stristr($head,'<print google_verification>'))
+    $head=str_replace('<print google_verification>',$config['ga_verification'],$head);
+if(stristr($head,'<!-- Google Analytics -->'))
+    $head=str_replace('<!-- Google Analytics -->','<script>/*<![CDATA[*/'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'/*]]>*/</script>',$head);
+if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme'])){
+    $doc=new DOMDocument;
+    @$doc->loadHTML($content);
+    foreach($doc->getElementsByTagName('a')as$link){
+        $link->setAttribute('href',$link->getAttribute('href').'?theme='.$_GET['theme']);
+    }
+    $content=preg_replace('/^<!DOCTYPE.+?>/','',str_replace(array('<html>','</html>','<body>','</body>'),array('','','',''),$doc->saveHTML())).'</body></html>';
+}
+if(MINIFY==1)
+    print minify($head.$content);
+else
+    print$head.$content;

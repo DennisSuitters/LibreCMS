@@ -58,8 +58,7 @@ if(file_exists(THEME.DS.'side_menu.html')){
 	if($matches[1]!=''){
 		$heading=$matches[1];
 		$heading=str_replace('<print viewlink>',URL.$view,$heading);
-		if($view=='article'||$view=='service')$suffix='s';else$suffix='';
-		$heading=str_replace('<print view>',ucfirst($view).$suffix,$heading);
+		$heading=str_replace('<print view>',ucfirst($view),$heading);
 	}else$heading='';
 	if(stristr($sideTemp,'<settings')){
 		preg_match('/<settings items="(.*?)" contenttype="(.*?)">/',$outside,$matches);
@@ -90,7 +89,7 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		$items=str_replace('<print metaDate>',date('Y-m-d',$r['ti']),$items);
 		$items=str_replace('<print content="title">',$r['title'],$items);
 		$time=date($config['dateFormat'],$r['ti']);
-		if($r['contentType']=='events'||$r['contentType']=='news'){
+		if($r['contentType']=='event'||$r['contentType']=='news'){
 			if($r['tis']!=0){
 				$sDay=date('dS',$r['tis']);
 				$sMonth=date('M',$r['tis']);

@@ -14,12 +14,15 @@ if($show=='item'){
 		$parse=$items;
 	}else$parse='';
 }
-if(stristr($parse,'<print content=id>'))$parse=str_replace('<print content=id>',$r['id'],$parse);
-if(stristr($parse,'<print content=schemaType>'))$parse=str_replace('<print content=schemaType>',htmlentities($r['schemaType'],ENT_QUOTES,'UTF-8'),$parse);
+if(stristr($parse,'<print content=id>'))
+	$parse=str_replace('<print content=id>',$r['id'],$parse);
+if(stristr($parse,'<print content=schemaType>'))
+	$parse=str_replace('<print content=schemaType>',htmlentities($r['schemaType'],ENT_QUOTES,'UTF-8'),$parse);
 if(preg_match('/<author>([\w\W]*?)<\/author>/',$parse)&&$view=='article'&&$r['uid']!=0){
 	$parse=str_replace('<author>','',$parse);
 	$parse=str_replace('</author>','',$parse);
-}else $parse=preg_replace('~<author>.*?<\/author>~is','',$parse,1);
+}else
+	$parse=preg_replace('~<author>.*?<\/author>~is','',$parse,1);
 $tags=$doc->getElementsByTagName('print');
 foreach($tags as$tag){
 	$parsing='';

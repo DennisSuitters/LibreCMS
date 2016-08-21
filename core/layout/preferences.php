@@ -297,6 +297,9 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                         <div class="input-group-addon">
                             <span id="seoTitlecnt" class="text-success<?php if($cnt<0)echo' text-danger';?>"><?php echo$cnt;?></span>
                         </div>
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" onclick="removeStopWords('seoTitle',$('#seoTitle').val());"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Remove Stop Words."';?>><?php svg('magic');?></button>
+                        </div>
                         <input type="text" id="seoTitle" class="form-control textinput" value="<?php echo$config['seoTitle'];?>" data-dbid="1" data-dbt="config" data-dbc="seoTitle" placeholder="Enter an SEO Title...">
                     </div>
                     <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
