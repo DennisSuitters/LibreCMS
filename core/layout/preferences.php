@@ -1,6 +1,11 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">Preferences</h4>
+        <h4 class="col-xs-8">Preferences</h4>
+        <div class="pull-right">
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#preferences"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+            </div>
+        </div>
     </div>
     <div class="panel-body">
         <ul class="nav nav-tabs">
@@ -219,7 +224,7 @@ if(isset($theme['description'])&&$theme['description']!='')echo'<small class="de
                                 <div class="input-group-addon">URL</div>
                                 <input type="text" class="form-control" name="url" value="" placeholder="Enter a URL...">
                                 <div class="input-group-btn">
-                                    <button class="btn btn-default"><?php svg('plus');?></button>
+                                    <button class="btn btn-default add"><?php svg('plus');?></button>
                                 </div>
                             </div>
                         </form>

@@ -90,6 +90,10 @@ if($_SESSION['rank']>399){
                         <div class="profile-userpic">
                             <img id="menu_avatar" class="img-thumbnail" src="<?php if($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))	echo'media/avatar/'.$user['avatar'];elseif($user['gravatar']!=''){if(stristr($user['gravatar'],'@'))echo'http://gravatar.com/avatar/'.md5($user['gravatar']);elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))echo$user['gravatar'];else echo$noavatar;}else echo$noavatar;?>">
                         </div>
+                        <ul class="footer pull-right">
+                            <li><a class="btn btn-libre btn-xs" href="<?php echo URL;?>" title="Front"><?php svg('desktop');?></i></a></li>
+                            <li><a class="btn btn-libre btn-xs" href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out"><?php svg('sign-out');?></a></li>
+                        </ul>
                     </div>
                 </div>
                 <div class="menu-list">
@@ -112,11 +116,6 @@ if($_SESSION['rank']>399){
                         </li>
                     </ul>
                 </div>
-                <ul class="footer pull-right">
-                    <li><a class="btn btn-libre btn-xs" target="_blank" href="https://github.com/StudioJunkyard/LibreCMS/wiki" title="Wiki"><?php svg('social-wikipedia');?></a></li>
-                    <li><a class="btn btn-libre btn-xs" href="<?php echo URL;?>" title="Front"><?php svg('desktop');?></i></a></li>
-                    <li><a class="btn btn-libre btn-xs" href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out"><?php svg('sign-out');?></a></li>
-                </ul>
             </aside>
         </div>
         <main id="content">

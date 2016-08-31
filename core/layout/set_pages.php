@@ -1,9 +1,12 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">Page Settings</h4>
+        <h4 class="col-xs-8">Page Settings</h4>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/pages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+            </div>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#pages-settings"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
             </div>
         </div>
     </div>

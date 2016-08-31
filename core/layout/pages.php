@@ -8,10 +8,13 @@ if($args[0]=='settings'){
     if($show=='pages'){?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">Pages</h4>
+        <h4 class="col-xs-8">Pages</h4>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/pages/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+            </div>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#pages"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
             </div>
         </div>
     </div>
@@ -22,11 +25,10 @@ if($args[0]=='settings'){
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
-                        <th class="col-xs-7">Title</th>
-                        <th class="col-xs-1 text-center">Menu</th>
-                        <th class="col-xs-2 text-center">Views</th>
-                        <th class="col-xs-1 text-center">Active</th>
-                        <th class="col-xs-2"></th>
+                        <th class="col-xs-10 col-sm-7">Title</th>
+                        <th class="col-sm-1 text-center hidden-xs">Menu</th>
+                        <th class="col-sm-2 text-center hidden-xs">Views</th>
+                        <th class="col-xs-2 col-sm-2"></th>
                     </tr>
                 </thead>
                 <tbody id="sortable">
@@ -35,14 +37,9 @@ if($args[0]=='settings'){
     while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>" class="item">
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
-                        <td class="text-center"><?php echo ucfirst($r['menu']);?></td>
-                        <td class="text-center"><span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span> <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','menu','views','0');"><?php svg('eraser');?></button></td>
-                        <td class="text-center">
-                            <div class="checkbox checkbox-success">
-                                <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0" data-dba="1"<?php if($r['active']==1)echo' checked';?>><label for="active<?php echo$r['id'];?>"></label>
-                            </div>
-                        </td>
-                        <td id="controls_<?php echo$r['id'];?>" class="text-right"><a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a></td>
+                        <td class="text-center hidden-xs"><?php echo ucfirst($r['menu']);?></td>
+                        <td class="text-center hidden-xs"><span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span> <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','menu','views','0');"><?php svg('eraser');?></button></td>
+                        <td id="controls_<?php echo$r['id'];?>" class="text-right"><a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a></td>
                     </tr>
 <?php }?>
                     <tr class="ghost hidden"><td colspan="3">&nbsp;</td></tr>
@@ -55,25 +52,19 @@ if($args[0]=='settings'){
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
-                        <th class="col-xs-7">Title</th>
-                        <th class="col-xs-1 text-center">Menu</th>
-                        <th class="col-xs-2 text-center">Views</th>
-                        <th class="col-xs-1 text-center">Active</th>
-                        <th class="col-xs-2"></th>
+                        <th class="col-xs-10 col-sm-7">Title</th>
+                        <th class="col-sm-1 text-center hidden-xs">Menu</th>
+                        <th class="col-sm-2 text-center hidden-xs">Views</th>
+                        <th class="col-xs-2 col-sm-2"></th>
                     </tr>
                 </thead>
                 <tbody id="inactive">
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>">
                         <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
-                        <td class="text-center"><?php echo ucfirst($r['menu']);?></td>
-                        <td class="text-center"><span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span> <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','menu','views','0');"><?php svg('eraser');?></button></td>
-                        <td class="text-center">
-                            <div class="checkbox checkbox-success">
-                                <input type="checkbox" id="active<?php echo$r['id'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0" data-dba="0"<?php if($r['active']==1)echo' checked';?>><label for="active<?php echo$r['id'];?>"></label>
-                            </div>
-                        </td>
-                        <td id="controls_<?php echo$r['id'];?>" class="text-right"><a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a></td>
+                        <td class="text-center hidden-xs"><?php echo ucfirst($r['menu']);?></td>
+                        <td class="text-center hidden-xs"><span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span> <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','menu','views','0');"><?php svg('eraser');?></button></td>
+                        <td id="controls_<?php echo$r['id'];?>" class="text-right"><a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a></td>
                     </tr>
 <?php }?>
                 </tbody>
@@ -113,13 +104,20 @@ if($show=='item'){
     $r=$s->fetch(PDO::FETCH_ASSOC);?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">
+        <h4 class="col-xs-8">
             <ol class="breadcrumb">
                 <li><a href="<?php echo URL.$settings['system']['admin'].'/pages';?>">Pages</a></li>
                 <li class="active relative"><?php $so=$db->prepare("SELECT * FROM menu WHERE active='1' AND id NOT LIKE :id ORDER BY ord ASC,menu ASC");$so->execute(array(':id'=>$r['id']));?><a class="dropdown-toggle" data-toggle="dropdown"><?php echo$r['title'];?> <i class="caret"></i></a><ul class="dropdown-menu"><?php while($ro=$so->fetch(PDO::FETCH_ASSOC)){?><li><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$ro['id'];?>"><?php echo$ro['title'];?></a></li><?php }?></ul></li>
             </ol>
         </h4>
-        <a class="btn btn-default pull-right" href="<?php echo URL.$settings['system']['admin'].'/pages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+        <div class="pull-right">
+            <div class="btn-group">
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/pages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+            </div>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#pages-edit-content"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+            </div>
+        </div>
     </div>
     <div class="panel-body">
         <ul class="nav nav-tabs" role="tablist">

@@ -28,8 +28,9 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
         <h4 class="media-heading"><a target="_blank" href="<?php echo$rss->channel->item[$i]->link;?>"><?php echo$rss->channel->item[$i]->title;?></a></h4>
         <small><small class="text-muted">From: <a target="_blank" href="<?php echo$rss->channel->link;?>"><?php echo$rss->channel->title;?></a></small></small><br>
         <small class="text-muted"><?php $time=strtotime($rss->channel->item[$i]->pubDate);echo date($config['dateFormat'],$time);?></small><br>
-        <?php echo strip_tags($rss->channel->item[$i]->description);?>
+        <span class="hidden-xs"><?php echo strip_tags($rss->channel->item[$i]->description);?></small>
     </div>
+    <hr class="visible-xs">
 </div>
 <?php   }
     }

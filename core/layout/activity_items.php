@@ -50,31 +50,35 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     }
     $su=$db->prepare("SELECT id,username,name,rank FROM login WHERE id=:id");
     $su->execute(array(':id'=>$r['uid']));
-    $u=$su->fetch(PDO::FETCH_ASSOC);?>
+    $u=$su->fetch(PDO::FETCH_ASSOC);
+    $action='<strong>Action:</strong> '.ucfirst($r['contentType']);
+    if($r['action']=='create')$action.=' Created<Br>';
+    if($r['action']=='update')$action.=' Updated<br>';
+    if($r['action']=='purge')$action.=' Purged<br>';
+    if(isset($c['title'])&&$c['title']!=''){
+        $action.='<strong>Title:</strong> '.$c['title'].'<br>';
+        if($r['action']=='update')$action.='<strong>Table:</strong> '.$r['refTable'].'<br>';
+        $action.='<strong>Column:</strong> '.$r['refColumn'].'<br>';
+        $action.='<strong>Data:</strong> '.strip_tags(substr($r['oldda'],0,300)).'<br>';
+        $action.='<strong>Changed To:</strong> '.strip_tags(substr($r['newda'],0,300)).'<br>';
+    }
+    $action.='<strong>by</strong> '.$u['username'].':'.$u['name'];?>
 <tr id="l_<?php echo$r['id'];?>">
     <td>
-        <?php echo date($config['dateFormat'],$r['ti']);?><br>
+        <small><?php echo date($config['dateFormat'],$r['ti']);?></small><br>
         <small><?php echo _ago($r['ti']);?></small>
+        <div class="visible-xs">
+            <?php echo$action;?>
+        </div>
     </td>
-    <td class="break-word">
-        <strong>Action:</strong> <?php echo ucfirst($r['contentType']);
-        if($r['action']=='create')echo' Created';
-        if($r['action']=='update')echo' Updated';
-        if($r['action']=='purge')echo' Purged';?><br>
-<?php if(isset($c['title'])&&$c['title']!=''){
-    echo'<strong>Title:</strong> '.$c['title'].'<br>';
-    if($r['action']=='update')echo'<strong>Table:</strong> '.$r['refTable'].'<br>';
-    echo'<strong>Column:</strong> '.$r['refColumn'].'<br>';
-    echo'<strong>Data:</strong> '.strip_tags(substr($r['oldda'],0,300)).'<br>';
-    echo'<strong>Changed To:</strong> '.strip_tags(substr($r['newda'],0,300)).'<br>';
-    }
-    echo'<strong>by</strong> '.$u['username'].':'.$u['name'];?>
+    <td class="break-word hidden-xs">
+        <?php echo$action;?>
     </td>
     <td id="controls_<?php echo$r['id'];?>" class="text-right">
 <?php if($r['action']=='update'){?>
-        <button class="btn btn-default" onclick="restore('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+        <button class="btn btn-default btn-xs" onclick="restore('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
 <?php }?>
-        <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','logs')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('trash');?></button>
+        <button class="btn btn-default btn-xs trash" onclick="purge('<?php echo$r['id'];?>','logs')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('trash');?></button>
     </td>
 </tr>
 <?php }

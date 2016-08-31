@@ -15,11 +15,14 @@ if($args[0]=='settings'){
     $r=$q->fetch(PDO::FETCH_ASSOC);?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">
-            Account: <?php echo$r['username'];if($r['name']!='')echo':'.$r['name'];?>
-        </h4>
+        <h4 class="col-xs-8">Account: <?php echo$r['username'];if($r['name']!='')echo':'.$r['name'];?></h4>
         <div class="pull-right">
-            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+            <div class="btn-group">
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+            </div>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#accounts-edit"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+            </div>
         </div>
     </div>
     <div class="panel-body">
@@ -244,7 +247,7 @@ if($args[0]=='settings'){
                                 <div class="input-group-addon">URL</div>
                                 <input type="text" class="form-control" name="url" value="" placeholder="Enter a URL...">
                                 <div class="input-group-btn">
-                                    <button class="btn btn-default"><?php svg('plus');?></button>
+                                    <button class="btn btn-default add"><?php svg('plus');?></button>
                                 </div>
                             </div>
                         </form>
@@ -406,7 +409,7 @@ if($args[0]=='type'){
 }?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">
+        <h4 class="col-xs-8">
             <ol class="breadcrumb">
                 <li><a href="<?php echo URL.$settings['system']['admin'];?>/accounts">Accounts</a></li>
                 <li>
@@ -430,10 +433,13 @@ if($args[0]=='type'){
         </h4>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>><?php svg('add');?></a>
+                <a class="btn btn-default btn-xs add" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>><?php svg('add');?></a>
             </div>
             <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/accounts/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+            </div>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#accounts"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
             </div>
         </div>
     </div>
@@ -455,11 +461,11 @@ if($args[0]=='type'){
                         <td class="text-center"><?php echo rank($r['rank']);?></td>
                         <td class="text-center"><?php echo$r['status'];?></td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
-                            <a class="btn btn-default" href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+                            <a class="btn btn-default btn-xs" href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
 <?php if($r['rank']!=1000){?>
-                            <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
-                            <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
-                            <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+                            <button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+                            <button class="btn btn-default btn-xs trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+                            <button class="btn btn-default btn-xs trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
 <?php }?>
                         </td>
                     </tr>

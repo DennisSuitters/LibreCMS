@@ -15,10 +15,18 @@ $commits=json_decode($string,true);
 $i=0;
 while($i<10){?>
 <tr>
-<td class="col-xs-1"><img class="img-responsive" src="<?php echo $commits[$i]["author"]["avatar_url"];?>"></td>
-<td><?php $time=strtotime($commits[$i]["commit"]["committer"]["date"]);echo date('M jS, Y g:i A',$time);?></td>
-<td class="text-center"><a href="<?php echo$commits[$i]["author"]["html_url"];?>"><?php echo $commits[$i]["commit"]["committer"]["name"];?></a></td>
-<td><a href="<?php echo$commits[$i]["html_url"];?>"><?php echo $commits[$i]["commit"]["message"];?></a></td>
+<td class="hidden-xs"><img src="<?php echo $commits[$i]["author"]["avatar_url"];?>" style="width:50px;"></td>
+<td class="hidden-xs"><?php $time=strtotime($commits[$i]["commit"]["committer"]["date"]);echo date('M jS, Y g:i A',$time);?></td>
+<td class="text-center hidden-xs"><a href="<?php echo$commits[$i]["author"]["html_url"];?>"><?php echo $commits[$i]["commit"]["committer"]["name"];?></a></td>
+<td>
+    <div class="visible-xs">
+        <small>
+            <a href="<?php echo$commits[$i]["author"]["html_url"];?>"><?php echo $commits[$i]["commit"]["committer"]["name"];?></a><br>
+            <?php $time=strtotime($commits[$i]["commit"]["committer"]["date"]);echo date('M jS, Y g:i A',$time);?>
+        </small>
+    </div>
+    <a href="<?php echo$commits[$i]["html_url"];?>"><?php echo $commits[$i]["commit"]["message"];?></a>
+</td>
 </tr>
 <?php $i++;
 }

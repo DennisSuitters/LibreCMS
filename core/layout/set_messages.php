@@ -1,9 +1,12 @@
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">Messages Settings</h4>
+        <h4 class="col-xs-8">Messages Settings</h4>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+            </div>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#messages-settings"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
             </div>
         </div>
     </div>
@@ -22,7 +25,7 @@
                     <div class="input-group-addon">Email</div>
                     <input type="text" class="form-control" name="eml" value="" placeholder="Enter an Email...">
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><?php svg('plus');?></button>
+                        <button class="btn btn-default add" type="submit"><?php svg('plus');?></button>
                     </div>
                 </div>
             </form>

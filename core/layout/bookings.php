@@ -18,9 +18,14 @@ if($args[0]=='settings'){
     $rs=$sr->fetch(PDO::FETCH_ASSOC);?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">Bookings</h4>
-        <div class="btn-group pull-right">
-            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/bookings"';if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back';?>"><?php svg('back');?></a>
+        <h4 class="col-xs-8">Bookings</h4>
+        <div class="pull-right">
+            <div class="btn-group">
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/bookings"';if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back';?>"><?php svg('back');?></a>
+            </div>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#bookings-edit"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+            </div>
         </div>
     </div>
     <div class="panel-body">
@@ -143,19 +148,60 @@ if($sql->rowCount()>0){?>
 <link rel="stylesheet" type="text/css" href="core/css/fullcalendar.theme.css">
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">Bookings</h4>
+        <h4 class="col-xs-8">Bookings</h4>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/add/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>><?php svg('add');?></a>
+                <a class="btn btn-default btn-xs add" href="<?php echo URL.$settings['system']['admin'].'/add/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>><?php svg('add');?></a>
             </div>
             <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/bookings/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/bookings/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+            </div>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#bookings"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
             </div>
         </div>
     </div>
     <div class="panel-body">
-        <div class="col-xs-12">
+        <div class="col-xs-12 hidden-xs">
             <div id="calendar"></div>
+        </div>
+        <div class="table-responsive visible-xs">
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th class="col-xs-3"></th>
+                    </tr>
+                </thead>
+                <tbody id="bookings">
+<?php $s=$db->query("SELECT * FROM content WHERE contentType='booking' ORDER BY ti DESC");
+    while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
+                    <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='unconfirmed')echo' danger';?>">
+                        <td>
+                            <small>
+<?php echo date($config['dateFormat'],$r['ti']).'<br>Start: '.date($config['dateFormat'],$r['tis']);
+    if($r['tie']>$r['tis'])
+        echo'<br>End: '.date($config['dateFormat'],$r['tie']);
+    if($r['business'])
+        echo'<br>Business: '.$r['business'];
+    if($r['name'])
+        echo'<br>Name'.': '.$r['name'];
+    if($r['email'])
+        echo'<br>Email'.': <a href="mailto:'.$r['email'].'">'.$r['email'].'</a>';
+    if($r['phone'])
+        echo'<br>Phone'.': '.$r['phone'];?>
+                            </small>
+                        </td>
+                        <td id="controls_<?php echo$r['id'];?>" class="text-right">
+                            <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'];?>/bookings/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+                            <button class="btn btn-default btn-xs<?php if($r['status']!='delete'){echo' hidden';}?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+                            <button class="btn btn-default btn-xs trash<?php if($r['status']=='delete'){echo' hidden';}?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+                            <button class="btn btn-default btn-xs trash<?php if($r['status']!='delete'){echo' hidden';}?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+                        </td>
+                    </tr>
+<?php }?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -188,7 +234,7 @@ if($sql->rowCount()>0){?>
         echo'eventend: \''.date("Y-m-d H:i:s",$r['tie']).'\',';
             }?>
                         allDay:false,
-                        color:'<?php if($r['status']=='confirmed')echo'#5cb85c';else echo'#d9534f';?>',
+                        color:'<?php if($r['status']=='confirmed')echo'#88f288';else echo'#f28888';?>',
                         description:'<?php if($r['business'])echo'Business: '.$r['business'].'<br>';
                         if($r['name'])echo'Name'.': '.$r['name'].'<br>';
                         if($r['email'])echo'Email'.': <a href="mailto:'.$r['email'].'">'.$r['email'].'</a><br>';
@@ -199,7 +245,7 @@ if($sql->rowCount()>0){?>
                 ],
                 eventMouseover:function(event,domEvent,view){
                     var layer='<div id="events-layer" class="fc-transparent">';
-                    if(event.status=="unconfirmed")layer+='<span id="cbut'+event.id+'" class="btn btn-default btn-xs"><?php svg('approve');?></span> ';
+                    if(event.status=="unconfirmed")layer+='<span id="cbut'+event.id+'" class="btn btn-default btn-xs add"><?php svg('approve');?></span> ';
                     layer+='<span id="edbut'+event.id+'" class="btn btn-default btn-xs"><?php svg('edit');?></span> <span id="delbut'+event.id+'" class="btn btn-default trash btn-xs"><?php svg('trash');?></span></div>';
                     var content='Start: '+$.fullCalendar.moment(event.start).format('HH:mm');
 <?php               if($r['tie']>$r['tis']){?>
@@ -216,7 +262,7 @@ if($sql->rowCount()>0){?>
                     $("#cbut"+event.id).click(function(){
                         $("#cbut"+event.id).remove();
                         $("#events-layer").remove();
-                        event.color="#5cb85c";
+                        event.color="#88f288";
                         event.status="confirmed";
                         update(event.id,"content","status","confirmed");
                         $("#calendar").fullCalendar("updateEvent",event);

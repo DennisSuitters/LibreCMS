@@ -5,40 +5,12 @@ $status=isset($_POST['status'])?filter_input(INPUT_POST,'status',FILTER_SANITIZE
 $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):'desc';?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">Search</h4>
+        <h4 class="col-xs-8">Search</h4>
     </div>
     <div class="panel-body">
         <form method="post" action="admin/search">
             <div class="form-group input-group">
-                <div class="input-group-addon">Search for</div>
                 <input type="text" class="form-control" name="search" value="<?php echo trim($search);?>" placeholder="Enter a Search Phrase...">
-            </div>
-            <div class="form-group input-group">
-                <div class="input-group-addon">in</div>
-                <div class="input-group-btn">
-                    <select class="form-control" name="what">
-                        <option value="content"<?php if($what=='content')echo' selected';?>>Content</option>
-                        <option value="comments"<?php if($what=='comments')echo' selected';?>>Comments</option>
-                        <option value="messages"<?php if($what=='messages')echo' selected';?>>Messages</option>
-                        <option value="orders"<?php if($what=='orders')echo' selected';?>>Orders</option>
-                        <option value="pages"<?php if($what=='pages')echo' selected';?>>Pages</option>
-                    </select>
-                </div>
-                <div class="input-group-addon">where Status is</div>
-                <div class="input-group-btn">
-                    <select class="form-control" name="status">
-                        <option value="all"<?php if($status=='all')echo' selected';?>>All</option>
-                        <option value="published"<?php if($status=='published')echo' selected';?>>Published</option>
-                        <option value="unpublished"<?php if($status=='unpublished')echo' selected';?>>Unpublished</option>
-                    </select>
-                </div>
-                <div class="input-group-addon">Order By</div>
-                <div class="input-group-btn">
-                    <select class="form-control" name="ord">
-                        <option value="desc"<?php if($ord=='desc')echo' selected';?>>Descending</option>
-                        <option value="asc"<?php if($ord=='asc')echo' selected';?>>Ascending</option>
-                    </select>
-                </div>
                 <div class="input-group-btn">
                     <button class="btn btn-default">Go</button>
                 </div>

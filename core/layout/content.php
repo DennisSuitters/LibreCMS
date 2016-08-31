@@ -53,7 +53,7 @@ if($show=='categories'){
     }?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">
+        <h4 class="col-xs-8">
             <ol class="breadcrumb">
                 <li><a href="<?php echo URL.$settings['system']['admin'].'/content';?>">Content</a></li>
                 <li class="active relative">
@@ -76,7 +76,7 @@ if($show=='categories'){
         <div class="pull-right">
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
             <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>>
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php svg('add');?> <i class="caret"></i></button>
+                <button class="btn btn-default add btn-xs dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php svg('add');?></button>
                 <ul class="dropdown-menu pull-right">
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/article">Article</a></li>
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/portfolio">Portfolio</a></li>
@@ -90,9 +90,12 @@ if($show=='categories'){
                 </ul>
             </div>
             <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/content/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/content/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
             </div>
 <?php }?>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#content"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+            </div>
         </div>
     </div>
     <div class="panel-body">
@@ -101,10 +104,10 @@ if($show=='categories'){
                 <thead>
                     <tr>
                         <th class="col-xs-5">Title</th>
-                        <th class="col-xs-1"></th>
-                        <th class="col-xs-1 text-center">Comments</th>
-                        <th class="col-xs-1 text-center"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Reviews/score"';?>>Reviews</th>
-                        <th class="col-xs-1 text-center">Views</th>
+                        <th class="col-xs-1 hidden-xs"></th>
+                        <th class="col-xs-1 text-center hidden-xs">Comments</th>
+                        <th class="col-xs-1 text-center hidden-xs"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Reviews/score"';?>>Reviews</th>
+                        <th class="col-xs-1 text-center hidden-xs">Views</th>
                         <th class="col-xs-3"></th>
                     </tr>
                 </thead>
@@ -112,36 +115,37 @@ if($show=='categories'){
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='delete')echo' danger';elseif($r['status']=='unpublished')echo'warning';?>">
                         <td>
+                            <div class="visible-xs"><small><?php echo ucfirst($r['contentType']);?></small></div>
                             <a href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>"><?php echo$r['title'];?></a>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center hidden-xs">
                             <?php echo ucfirst($r['contentType']);?>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center hidden-xs">
 <?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='proofs'){
     $sc=$db->prepare("SELECT COUNT(id) as cnt FROM comments WHERE rid=:id AND status='unapproved'");
     $sc->execute(array(':id'=>$r['id']));
     $cnt=$sc->fetch(PDO::FETCH_ASSOC);?>
-                            <a class="btn btn-default btn-sm" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>#d43"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><?php svg('comments');?> <?php echo$cnt['cnt'];?></a>
+                            <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>#d43"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Comments"';?>><?php svg('comments');?> <?php echo$cnt['cnt'];?></a>
 <?php }?>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center hidden-xs">
 <?php $sr=$db->prepare("SELECT COUNT(id) as num,SUM(cid) as cnt FROM comments WHERE contentType='review' AND rid=:rid AND status='approved'");
     $sr->execute(array(':rid'=>$r['id']));
     $rr=$sr->fetch(PDO::FETCH_ASSOC);
     if($rr['num']!=0)
     echo'<a href="'.URL.$settings['system']['admin'].'/content/edit/'.$r['id'].'#d60">'.$rr['num'].'/'.$rr['cnt'].'</a>';?>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center hidden-xs">
                             <span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span> <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','content','views','0');"><?php svg('eraser');?></button>
                         </td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">
-                            <a id="pin<?php echo$r['id'];?>" class="btn btn-default<?php if($r['pin']{0}==1)echo' btn-success';?>" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin"';?>><?php svg('pin');?></a>
-                            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'];?>/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+                            <a id="pin<?php echo$r['id'];?>" class="btn btn-default<?php if($r['pin']{0}==1)echo' btn-success';?> btn-xs hidden-xs" onclick="pinToggle('<?php echo$r['id'];?>','content','pin','0')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Pin"';?>><?php svg('pin');?></a>
+                            <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'];?>/content/edit/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
-                            <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
-                            <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
-                            <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+                            <button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+                            <button class="btn btn-default btn-xs trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+                            <button class="btn btn-default btn-xs trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
                         </td>
                     </tr>
 <?php }
@@ -156,7 +160,7 @@ if($show=='item'){
     $r=$s->fetch(PDO::FETCH_ASSOC);?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-12 col-sm-9 col-md-10 col-lg-10">
+        <h4 class="col-xs-8">
             <ol class="breadcrumb">
                 <li><a href="<?php echo URL.$settings['system']['admin'];?>/content/">Content</a></li>
                 <li><a href="<?php echo URL.$settings['system']['admin'];?>/content/type/<?php echo$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a></li>
@@ -165,11 +169,11 @@ if($show=='item'){
         </h4>
         <div class="pull-right">
             <div class="btn-group">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/content/type/'.$r['contentType'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/content/type/'.$r['contentType'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
             </div>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
             <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>>
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php svg('add');?></button>
+                <button class="btn btn-default add btn-xs dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php svg('add');?></button>
                 <ul class="dropdown-menu pull-right">
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/article">Article</a></li>
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/portfolio">Portfolio</a></li>
@@ -181,6 +185,9 @@ if($show=='item'){
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/gallery">Gallery</a></li>
                     <li><a href="<?php echo URL.$settings['system']['admin'];?>/add/proofs">Proof</a></li>
                 </ul>
+            </div>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#content-edit"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
             </div>
         </div>
     </div>
@@ -618,6 +625,9 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
                     <label for="views" class="control-label col-xs-5 col-sm-3 col-lg-2">Views</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <input type="text" id="views" class="form-control textinput" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="views"<?php if($user['options']{1}==0)echo' readonly';?>>
+                        <div class="input-group-btn">
+                            <button class="btn btn-default trash" onclick="$('#views').val('0');update('<?php echo$r['id'];?>','content','views','0');"><?php svg('eraser');?></button>
+                        </div>
                     </div>
                 </div>
                 <div id="d46" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>">

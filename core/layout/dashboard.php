@@ -4,9 +4,14 @@ if($args[0]=='settings'){
 }else{?>
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="col-xs-6">Dashboard</h4>
-        <div class="btn-group pull-right">
-            <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/dashboard/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+        <h4 class="col-xs-8">Dashboard</h4>
+        <div class="pull-right">
+            <div class="btn-group">
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/dashboard/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+            </div>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#dashboard"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+            </div>
         </div>
     </div>
     <div class="panel-body">
@@ -23,11 +28,57 @@ if($config['backup_ti']<$tid){
 <?php }else{?>
         <div class="alert alert-danger">It has been more than 30 days since a Backup has been performed.</div>
 <?php }
-}
-?>
+}?>
+        <div class="row visible-xs">
+            <div class="col-xs-4">
+                <div class="panel panel-default text-center">
+                    <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><?php svg('content');?><br>Pages</a>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default text-center">
+                    <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/content';?>"><?php svg('content');?><br>Content</a>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default text-center">
+                    <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><?php svg('calendar');?><br>Bookings</a>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default text-center">
+                    <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><?php svg('order');?><br>Orders</a>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default text-center">
+                    <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/media';?>"><?php svg('picture');?><br>Media</a>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default text-center">
+                    <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('envelope');?><br>Messages</a>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default text-center">
+                    <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><?php svg('users');?><br>Accounts</a>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default text-center">
+                    <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><?php svg('settings');?><br>Preferences</a>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="panel panel-default text-center">
+                    <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><?php svg('activity');?><br>Activity</a>
+                </div>
+            </div>
+        </div>
         <div class="row">
 <?php $r=$db->query("SELECT COUNT(status) AS cnt FROM comments WHERE contentType!='review' AND status='unapproved'")->fetch(PDO::FETCH_ASSOC);?>
-            <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="col-xs-12 col-sm-3 col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
                         <a class="text-black" href="<?php echo URL.$settings['system']['admin'];?>/content">
@@ -39,7 +90,7 @@ if($config['backup_ti']<$tid){
                 </div>
             </div>
 <?php $r=$db->query("SELECT COUNT(id) AS cnt FROM comments WHERE contentType='review' AND  status='unapproved'")->fetch(PDO::FETCH_ASSOC);?>
-            <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="col-xs-12 col-sm-3 col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
                         <a class="text-black" href="<?php echo URL.$settings['system']['admin'];?>/content">
@@ -51,7 +102,7 @@ if($config['backup_ti']<$tid){
                 </div>
             </div>
 <?php $r=$db->query("SELECT COUNT(status) AS cnt FROM messages WHERE status='unread'")->fetch(PDO::FETCH_ASSOC);?>
-            <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="col-xs-12 col-sm-3 col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
                         <a class="text-black" href="<?php echo URL.$settings['system']['admin'];?>/messages">
@@ -63,7 +114,7 @@ if($config['backup_ti']<$tid){
                 </div>
             </div>
 <?php $r=$db->query("SELECT COUNT(status) AS cnt FROM orders WHERE status='pending'")->fetch(PDO::FETCH_ASSOC);?>
-            <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="col-xs-12 col-sm-3 col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
                         <a class="text-black" href="<?php echo URL.$settings['system']['admin'];?>/orders/pending">
@@ -75,7 +126,7 @@ if($config['backup_ti']<$tid){
                 </div>
             </div>
 <?php $r=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE contentType='booking' AND status!='confirmed'")->fetch(PDO::FETCH_ASSOC);?>
-            <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="col-xs-12 col-sm-3 col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
                         <a class="text-black" href="<?php echo URL.$settings['system']['admin'];?>/bookings">
@@ -87,7 +138,7 @@ if($config['backup_ti']<$tid){
                 </div>
             </div>
 <?php $r=$db->query("SELECT COUNT(id) AS cnt FROM login WHERE activate!='' AND active=0")->fetch(PDO::FETCH_ASSOC);?>
-            <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="col-xs-12 col-sm-3 col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
                         <a class="text-black" href="<?php echo URL.$settings['system']['admin'];?>/accounts">
@@ -99,7 +150,7 @@ if($config['backup_ti']<$tid){
                 </div>
             </div>
 <?php $r=$db->query("SELECT COUNT(id) AS cnt FROM content WHERE contentType='testimonial' AND status!='confirmed' AND active!=1")->fetch(PDO::FETCH_ASSOC);?>
-            <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="col-xs-12 col-sm-3 col-md-3">
                 <div class="panel panel-default">
                     <div class="panel-body bg-<?php if($r['cnt']>0)echo'danger';?>">
                         <a class="text-black" href="<?php echo URL.$settings['system']['admin'];?>/bookings">
@@ -115,14 +166,19 @@ if($config['backup_ti']<$tid){
             <div class="panel panel-body">
                 <h4 class="page-header">Handy Links to help with SEO</h4>
                 <div class="media">
-                    <h4 class="media-heading"><a target="_blank" href="https://static.googleusercontent.com/media/www.google.com/en/us/webmasters/docs/search-engine-optimization-starter-guide.pdf">Google's Search Engine Optimisation Starter Guide.</a></h4>
-                    <small><small class="text-muted">From: <a target="_blank" href="https://www.google.com/">Google</a></small></small>
+                    <div class="media-body">
+                        <h4 class="media-heading"><a target="_blank" href="https://static.googleusercontent.com/media/www.google.com/en/us/webmasters/docs/search-engine-optimization-starter-guide.pdf">Google's Search Engine Optimisation Starter Guide.</a></h4>
+                        <small><small class="text-muted">From: <a target="_blank" href="https://www.google.com/">Google</a></small></small>
+                    </div>
+                    <hr>
                 </div>
-
                 <div class="media">
-                    <h4 class="media-heading"><a target="_blank" href="http://www.therecipeforseosuccess.com.au/devel/26">Boost rankings, improve traffic and increase coversions with The Recipe for SEO Success eCourse.</a></h4>
-                    <small><small class="text-muted">From: <a target="_blank" href="http://www.therecipeforseosuccess.com.au/devel/26">The Recipe For SEO Success</a></small></small><br>
-                    <a href="http://www.therecipeforseosuccess.com.au/devel/34"><img src="http://www.therecipeforseosuccess.com.au/wp-content/uploads/2016/01/Recipe2016_728x90_NoDate_v1.jpg" width="728" height="90"></a>
+                    <div class="media-body">
+                        <h4 class="media-heading"><a target="_blank" href="http://www.therecipeforseosuccess.com.au/devel/26">Boost rankings, improve traffic and increase coversions with The Recipe for SEO Success eCourse.</a></h4>
+                        <small><small class="text-muted">From: <a target="_blank" href="http://www.therecipeforseosuccess.com.au/devel/26">The Recipe For SEO Success</a></small></small><br>
+                        <a href="http://www.therecipeforseosuccess.com.au/devel/34"><img class="img-responsive" src="http://www.therecipeforseosuccess.com.au/wp-content/uploads/2016/01/Recipe2016_728x90_NoDate_v1.jpg" width="728" height="90"></a>
+                    </div>
+                    <hr>
                 </div>
                 <div class="media">
                     <div class="media-body">
@@ -130,6 +186,7 @@ if($config['backup_ti']<$tid){
                         <small><small class="text-muted">From: <a target="_blank" href="https://www.grammarly.com/">Grammarly.com</a></small></small><br>
                         Instantly check for 250 types of grammatical, spelling, and punctuation mistakes. Recommended by PCMag, Gizmodo, and Forbes. Trusted by millions of users.
                     </div>
+                    <hr>
                 </div>
                 <div class="media">
                     <div class="media-body">
@@ -137,6 +194,7 @@ if($config['backup_ti']<$tid){
                         <small><small class="text-muted">From: <a target="_blank" href="https://moz.com/">Moz.com</a></small></small><br>
                         New to SEO? Need to polish up your knowledge? The Beginner&#039;s Guide to SEO has been read over 3 million times and provides the information you need to get on the road to professional quality SEO.
                     </div>
+                    <hr>
                 </div>
                 <div class="media">
                     <div class="media-body">
@@ -144,6 +202,7 @@ if($config['backup_ti']<$tid){
                         <small><small class="text-muted">From: <a target="_blank" href="http://backlinko.com/">BackLinko.com</a></small></small><br>
                         The complete guide to link building (yes, really). This expert-written guide covers email outreach, content marketing and more.
                     </div>
+                    <hr>
                 </div>
             </div>
         </div>
@@ -177,18 +236,15 @@ if($config['options']{11}==1){?>
                     <table class="table table-condensed table-striped table-hover">
                         <thead>
                             <tr>
-                                <th style="width:20px;"></th>
-                                <th class="col-xs-2 text-center">Date</th>
-                                <th class="col-xs-2 text-center">User</th>
-                                <th class="col-xs-8">Commit Message</th>
+                                <th class="hidden-xs"></th>
+                                <th class="col-xs-2 text-center hidden-xs">Date</th>
+                                <th class="col-xs-2 text-center hidden-xs">User</th>
+                                <th>Commit</th>
                             </tr>
                         </thead>
                         <tbody id="commits">
                             <tr>
-                                <td><?php svg('spinner-9','animated spin');?></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td colspan="4"><?php svg('spinner-9','animated spin');?></td>
                             </tr>
                         </tbody>
                     </table>
