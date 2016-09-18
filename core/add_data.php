@@ -65,6 +65,25 @@ if($act!=''){
     window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'The URL entered is not valid'}}).show();
 <?php       }
             break;
+			case'add_option':
+	            $rid=filter_input(INPUT_POST,'rid',FILTER_SANITIZE_NUMBER_INT);
+	            $ttl=filter_input(INPUT_POST,'ttl',FILTER_SANITIZE_STRING);
+				$qty=filter_input(INPUT_POST,'qty',FILTER_SANITIZE_NUMBER_INT);
+	            if($ttl==''){?>
+	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
+<?php     		}else{
+					$ttl=kses($ttl,array());
+	                $q=$db->prepare("INSERT INTO choices (uid,rid,contentType,title,ti) VALUES (:uid,:rid,'option',:title,:ti)");
+	                $q->execute(array(':uid'=>$uid,':rid'=>$rid,':title'=>$ttl,':ti'=>$qty));
+	                $id=$db->lastInsertId();
+	                $e=$db->errorInfo();
+	                if(is_null($e[2])){?>
+	window.top.window.$('#itemoptions').append('<div id="l_<?php echo$id;?>" class="form-group"><label class="control-label hidden-xs col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-12 col-sm-9 col-lg-10"><span class="input-group-addon">Option</span><form target="sp" method="post"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><input type="hidden" name="c" value="title"><input type="text" class="form-control" name="da" value="<?php echo$ttl;?>" placeholder="Enter an Option Title..."></form><span class="input-group-addon">Quantity</span><form target="sp" method="post"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><input type="hidden" name="c" value="ti"><input type="text" class="form-control" name="da" value="<?php echo$qty;?>" placeholder="Quantity"></form><div class="input-group-btn"><form target="sp" action="core/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="choices"><button class="btn btn-default trash"><?php svg('trash');?></button></form></div></div></div>');
+<?php           }else{?>
+	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue adding the Social Networking Link'}}).show();
+<?php           }
+            }
+            break;
         case'add_subject':
             $sub=filter_input(INPUT_POST,'sub',FILTER_SANITIZE_STRING);
             $eml=filter_input(INPUT_POST,'eml',FILTER_SANITIZE_STRING);

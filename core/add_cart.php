@@ -2,9 +2,10 @@
 include'db.php';
 $si=session_id();
 $iid=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
+$cid=filter_input(INPUT_GET,'cid',FILTER_SANITIZE_NUMBER_INT);
 $ti=time();
-$sc=$db->prepare("SELECT id FROM cart WHERE iid=:iid AND si=:si");
-$sc->execute(array(':iid'=>$iid,':si'=>$si));
+$sc=$db->prepare("SELECT id FROM cart WHERE iid=:iid AND cid=:cid AND si=:si");
+$sc->execute(array(':iid'=>$iid,':cid'=>$cid,':si'=>$si));
 if($sc->rowCount()>0){
     $q=$db->prepare("UPDATE cart SET quantity=quantity+1 WHERE iid=:iid AND si=:si");
     $q->execute(array(':iid'=>$iid,':si'=>$si));
@@ -14,8 +15,8 @@ if($sc->rowCount()>0){
         $q->execute(array(':id'=>$iid));
         $r=$q->fetch(PDO::FETCH_ASSOC);
         if(is_numeric($r['cost'])){
-            $q=$db->prepare("INSERT INTO cart (iid,quantity,cost,si,ti) VALUES (:iid,'1',:cost,:si,:ti)");
-            $q->execute(array(':iid'=>$iid,':cost'=>$r['cost'],':si'=>$si,':ti'=>$ti));
+            $q=$db->prepare("INSERT INTO cart (iid,cid,quantity,cost,si,ti) VALUES (:iid,:cid,'1',:cost,:si,:ti)");
+            $q->execute(array(':iid'=>$iid,':cid'=>$cid,':cost'=>$r['cost'],':si'=>$si,':ti'=>$ti));
         }
     }
 }

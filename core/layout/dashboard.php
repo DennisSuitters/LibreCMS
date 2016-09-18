@@ -19,14 +19,14 @@ if($args[0]=='settings'){
             <div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div>
         </noscript>
 <?php if($config['maintenance']{0}==1){?>
-        <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#interface';?>">Maintenance Mode</a></div>
+        <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-interface';?>">Maintenance Mode</a></div>
 <?php }
 $tid=$ti-2592000;
 if($config['backup_ti']<$tid){
     if($config['backup_ti']==0){?>
-        <div class="alert alert-info">A Backup has yet to be performed.</div>
+        <div class="alert alert-info">A <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-backrestore';?>">Backup</a> has yet to be performed.</div>
 <?php }else{?>
-        <div class="alert alert-danger">It has been more than 30 days since a Backup has been performed.</div>
+        <div class="alert alert-danger">It has been more than 30 days since a <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-backrestore';?>">Backup</a> has been performed.</div>
 <?php }
 }?>
         <div class="row visible-xs">

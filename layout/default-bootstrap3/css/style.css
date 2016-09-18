@@ -23,7 +23,9 @@ header .navbar-default .navbar-nav>.active>a:hover{color:#fff;background-color:t
 .carousel-control:focus,
 .carousel-control:hover{color:#fff;text-decoration:none;outline:0;opacity:.9}
 .carousel-caption .content{position:absolute;top:-300px;left:0;right:0;text-align:center}
+.carousel-caption img{width:auto!important;height:auto!important}
 .carousel-caption .title{color:#fff;font-size:1.2em;font-weight:700}
+
 .carousel-caption .attribution{position:absolute;top:10px;right:5px;text-align:right;color:#fff;font-size:.8em;font-weight:400}
 .carousel-caption .attribution:before{content:'Photo Attribution';position:absolute;right:0;top:-10px;color:#fff;font-size:.75em;font-weight:400}
 .attribution .title,

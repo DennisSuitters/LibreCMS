@@ -6,7 +6,7 @@ $(document).on(
 	"click",
 	".addCart",
 		function(){
-			$('#cart').load('core/add_cart.php?id='+$(this).data('cartid'));
+			$('#cart').load('core/add_cart.php?id='+$(this).data('cartid')+'&cid='+$(this).data('cartchoice'));
 		}
 );
 $(document).on(

@@ -3,16 +3,40 @@ ini_set('session.use_cookies',1);
 ini_set('session.use_only_cookies',1);
 define('DS',DIRECTORY_SEPARATOR);
 require_once'db.php';
-if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
+if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)
+	define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme']))$config['theme']=$_GET['theme'];
 define('THEME','layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
-if(file_exists(THEME.DS.'images'.DS.'favicon.png'))define('FAVICON',THEME.DS.'images'.DS.'favicon.png');elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif'))define('FAVICON',THEME.DS.'images'.DS.'favicon.gif');elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg'))define('FAVICON',THEME.DS.'images'.DS.'favicon.jpg');elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico'))define('FAVICON',THEME.DS.'images'.DS.'favicon.ico');else define('FAVICON','core'.DS.'images'.DS.'favicon.png');
-if(file_exists(THEME.DS.'images'.DS.'noimage.png'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.gif');elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');else define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
-if(file_exists(THEME.DS.'images'.DS.'noavatar.png'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.png');elseif(file_exists(THEME.DS.'images'.DS.'noavatar.gif'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.gif');elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.jpg');else define('NOAVATAR','core'.DS.'images'.DS.'noavatar.jpg');
+if(file_exists(THEME.DS.'images'.DS.'favicon.png'))
+	define('FAVICON',THEME.DS.'images'.DS.'favicon.png');
+elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif'))
+	define('FAVICON',THEME.DS.'images'.DS.'favicon.gif');
+elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg'))
+	define('FAVICON',THEME.DS.'images'.DS.'favicon.jpg');
+elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico'))
+	define('FAVICON',THEME.DS.'images'.DS.'favicon.ico');
+else
+	define('FAVICON','core'.DS.'images'.DS.'favicon.png');
+if(file_exists(THEME.DS.'images'.DS.'noimage.png'))
+	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');
+elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))
+	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.gif');
+elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))
+	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');
+else
+	define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
+if(file_exists(THEME.DS.'images'.DS.'noavatar.png'))
+	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.png');
+elseif(file_exists(THEME.DS.'images'.DS.'noavatar.gif'))
+	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.gif');
+elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))
+	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.jpg');
+else
+	define('NOAVATAR','core'.DS.'images'.DS.'noavatar.jpg');
 define('YANDEX','trnsl.1.1.20151010T141347Z.abb6d53e6280191b.5decd3b201ae911048617d1869e766124de2023d');
 require'login.php';
 function rank($txt){
@@ -30,8 +54,10 @@ function rank($txt){
 }
 function svg($svg,$size=null,$color=null){
 	echo'<i class="libre';
-	if($size!=null)echo' libre-'.$size;
-	if($color!=null)echo' libre-'.$color;
+	if($size!=null)
+		echo' libre-'.$size;
+	if($color!=null)
+		echo' libre-'.$color;
 	echo'">';
 	include'svg'.DS.'libre-'.$svg.'.svg';
 	echo'</i>';
@@ -43,9 +69,8 @@ function frontsvg($svg,$size=null,$color=null){
 function microid($identity,$service,$algorithm='sha1'){
 	$microid=substr($identity,0,strpos($identity,':'))."+".substr($service,0,strpos($service,':')).":".strtolower($algorithm).":";
 	if(function_exists('hash')){
-		if(in_array(strtolower($algorithm),hash_algos())){
+		if(in_array(strtolower($algorithm),hash_algos()))
 			return$microid.=hash($algorithm,hash($algorithm,$identity).hash($algorithm,$service));
-		}
 	}
 	if(function_exists('mhash')){
 		$hash_method=@constant('MHASH_'.strtoupper($algorithm));
@@ -92,64 +117,219 @@ function url_encode($str){
 	return$str;
 }
 class internal{
-	function getconfig($db){$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);return$config;}
-	function humans($args=false){require'core'.DS.'humans.php';}
-	function sitemap($args=false){require'core'.DS.'sitemap.php';}
-	function robots($args=false){require'core'.DS.'robots.php';}
-	function rss($args=false){require'core'.DS.'rss.php';}
+	function getconfig($db){
+		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);return$config;
+	}
+	function humans($args=false){
+		require'core'.DS.'humans.php';
+	}
+	function sitemap($args=false){
+		require'core'.DS.'sitemap.php';
+	}
+	function robots($args=false){
+		require'core'.DS.'robots.php';
+	}
+	function rss($args=false){
+		require'core'.DS.'rss.php';
+	}
 }
 class admin{
-	function getconfig($db){$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);return$config;}
-	function favicon(){return'core'.DS.'images'.DS.'favicon.png';}
-	function noimage(){return'core'.DS.'images'.DS.'noimage.jpg';}
-	function noavatar(){return'core'.DS.'images'.DS.'noavatar.jpg';}
-	function accounts($args=false){$view='accounts';require'admin.php';}
-	function activity($args=false){$view='activity';require'admin.php';}
-	function add($args=false){$view='add';require'admin.php';}
-	function bookings($args=false){$view='bookings';require'admin.php';}
-	function content($args=false){$view='content';require'admin.php';}
-	function dashboard($args=false){$view='dashboard';require'admin.php';}
-	function logout($args=false){$act='logout';$view='';require'admin.php';}
-	function media($args=false){$view='media';require'admin.php';}
-	function messages($args=false){$view='messages';require'admin.php';}
-	function orders($args=false){$view='orders';require'admin.php';}
-	function pages($args=false){$view='pages';require'admin.php';}
-	function preferences($args=false){$view='preferences';require'admin.php';}
-	function search($args=false){$view='search';require'admin.php';}
+	function getconfig($db){
+		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);return$config;
+	}
+	function favicon(){
+		return'core'.DS.'images'.DS.'favicon.png';
+	}
+	function noimage(){
+		return'core'.DS.'images'.DS.'noimage.jpg';
+	}
+	function noavatar(){
+		return'core'.DS.'images'.DS.'noavatar.jpg';
+	}
+	function accounts($args=false){
+		$view='accounts';
+		require'admin.php';
+	}
+	function activity($args=false){
+		$view='activity';
+		require'admin.php';
+	}
+	function add($args=false){
+		$view='add';
+		require'admin.php';
+	}
+	function bookings($args=false){
+		$view='bookings';
+		require'admin.php';
+	}
+	function content($args=false){
+		$view='content';
+		require'admin.php';
+	}
+	function dashboard($args=false){
+		$view='dashboard';
+		require'admin.php';
+	}
+	function logout($args=false){
+		$act='logout';
+		$view='';
+		require'admin.php';
+	}
+	function media($args=false){
+		$view='media';
+		require'admin.php';
+	}
+	function messages($args=false){
+		$view='messages';
+		require'admin.php';
+	}
+	function orders($args=false){
+		$view='orders';
+		require'admin.php';
+	}
+	function pages($args=false){
+		$view='pages';
+		require'admin.php';
+	}
+	function preferences($args=false){
+		$view='preferences';
+		require'admin.php';
+	}
+	function search($args=false){
+		$view='search';
+		require'admin.php';
+	}
 }
 class front{
-	function getconfig($db){$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);return$config;}
-	function about($args=false){$view='aboutus';require'process.php';}
-	function aboutus($args=false){$view='aboutus';require'process.php';}
-	function article($args=false){$view='article';require'process.php';}
-	function articles($args=false){$view='article';require'process.php';}
-	function booking($args=false){$view='bookings';require'process.php';}
-	function bookings($args=false){$view='bookings';require'process.php';}
-	function cart($args=false){$view='cart';require'process.php';}
-	function contactus($args=false){$view='contactus';require'process.php';}
-	function error($args=false){$view='error';require'process.php';}
-	function event($args=false){$view='events';require'process.php';}
-	function events($args=false){$view='events';require'process.php';}
-	function gallery($args=false){$view='gallery';require'process.php';}
-	function index($args=false){$view='index';require'process.php';}
-	function inventory($args=false){$view='inventory';require'process.php';}
-	function login($args=false){$view='login';require'process.php';}
-	function logout($args=false){$act='logout';$view='index';require'process.php';}
-	function news($args=false){$view='news';require'process.php';}
-	function order($args=false){$view='orders';require'process.php';}
-	function orders($args=false){$view='orders';require'process.php';}
-	function portfolio($args=false){$view='portfolio';require'process.php';}
-	function proof($args=false){$view='proofs';require'process.php';}
-	function proofs($args=false){$view='proofs';require'process.php';}
-	function search($args=false){$view='search';require'process.php';}
-	function service($args=false){$view='service';require'process.php';}
-	function services($args=false){$view='service';require'process.php';}
-	function settings($args=false){$view='settings';require'process.php';}
-	function sitemap($args=false){$view='sitemap';require'process.php';}
-	function testimonial($args=false){$view='testimonials';require'process.php';}
-	function testimonials($args=false){$view='testimonials';require'process.php';}
-	function tos($args=false){$view='tos';require'process.php';}
-	function content($args=false){$view='';require'process.php';}
+	function getconfig($db){
+		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+		return$config;
+	}
+	function about($args=false){
+		$view='aboutus';
+		require'process.php';
+	}
+	function aboutus($args=false){
+		$view='aboutus';
+		require'process.php';
+	}
+	function article($args=false){
+		$view='article';
+		require'process.php';
+	}
+	function articles($args=false){
+		$view='article';
+		require'process.php';
+	}
+	function booking($args=false){
+		$view='bookings';
+		require'process.php';
+	}
+	function bookings($args=false){
+		$view='bookings';
+		require'process.php';
+	}
+	function cart($args=false){
+		$view='cart';
+		require'process.php';
+	}
+	function contactus($args=false){
+		$view='contactus';
+		require'process.php';
+	}
+	function error($args=false){
+		$view='error';
+		require'process.php';
+	}
+	function event($args=false){
+		$view='events';
+		require'process.php';
+	}
+	function events($args=false){
+		$view='events';
+		require'process.php';
+	}
+	function gallery($args=false){
+		$view='gallery';
+		require'process.php';
+	}
+	function index($args=false){
+		$view='index';
+		require'process.php';
+	}
+	function inventory($args=false){
+		$view='inventory';
+		require'process.php';
+	}
+	function login($args=false){
+		$view='login';
+		require'process.php';
+	}
+	function logout($args=false){
+		$act='logout';
+		$view='index';
+		require'process.php';
+	}
+	function news($args=false){
+		$view='news';
+		require'process.php';
+	}
+	function order($args=false){
+		$view='orders';
+		require'process.php';
+	}
+	function orders($args=false){
+		$view='orders';
+		require'process.php';
+	}
+	function portfolio($args=false){
+		$view='portfolio';
+		require'process.php';
+	}
+	function proof($args=false){
+		$view='proofs';
+		require'process.php';
+	}
+	function proofs($args=false){
+		$view='proofs';
+		require'process.php';
+	}
+	function search($args=false){
+		$view='search';
+		require'process.php';
+	}
+	function service($args=false){
+		$view='service';
+		require'process.php';
+	}
+	function services($args=false){
+		$view='service';
+		require'process.php';
+	}
+	function settings($args=false){
+		$view='settings';
+		require'process.php';
+	}
+	function sitemap($args=false){
+		$view='sitemap';
+		require'process.php';
+	}
+	function testimonial($args=false){
+		$view='testimonials';
+		require'process.php';
+	}
+	function testimonials($args=false){
+		$view='testimonials';
+		require'process.php';
+	}
+	function tos($args=false){
+		$view='tos';
+		require'process.php';
+	}
+	function content($args=false){
+		$view='';
+		require'process.php';
+	}
 }
 /* Router */
 $route=new router();
@@ -230,6 +410,7 @@ class router{
 		if(is_array($call)){
 			$call_obj=new$call[0]();
 			$call_obj->$call[1]($this->route_call_args);
-		}else$call($this->route_call_args);
+		}else
+			$call($this->route_call_args);
 	}
 }

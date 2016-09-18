@@ -10,7 +10,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
         <changefreq>daily</changefreq>
         <priority>0.64</priority>
     </url>
-<?php $s2=$db->prepare("SELECT contentType,title FROM content WHERE contentType=:contentType AND status='published' AND internal!='1' ORDER BY ti DESC");
+<?php $s2=$db->prepare("SELECT contentType,title FROM content WHERE contentType=:contentType AND contentType!='testimonials' AND status='published' AND internal!='1' ORDER BY ti DESC");
     $s2->execute(array(':contentType'=>$r['contentType']));
     while($r2=$s2->fetch(PDO::FETCH_ASSOC)){?>
     <url>

@@ -358,7 +358,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                         <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
                         <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                             <div class="checkbox checkbox-success">
-                                <input type="checkbox" id="options5" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="options" data-dbb="5"<?php if($r['options']{5}==1)echo' checked';?>>
+                                <input type="checkbox" id="options5" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="5"<?php if($r['options']{5}==1)echo' checked';?>>
                                 <label for="options5">User Accounts Viewing/Editing</strong>
                             </div>
                         </div>

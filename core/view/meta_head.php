@@ -1,5 +1,6 @@
 <?php
-if(stristr($template,'<block include="meta_head.html">')&&file_exists(THEME.DS.'meta_head.html'))$head=file_get_contents(THEME.DS.'meta_head.html');
+if(stristr($template,'<block include="meta_head.html">')&&file_exists(THEME.$amp.DS.'meta_head.html'))
+	$head=file_get_contents(THEME.$amp.DS.'meta_head.html');
 elseif(stristr($template,'</head>')){
 	preg_match('/<head>([\w\W]*?)<\/head>/',$template,$matches);
 	$head=$matches[1];

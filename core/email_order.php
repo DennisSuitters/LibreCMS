@@ -30,10 +30,12 @@ $html='<style>';
 $html.='body{margin:0;padding:0;}';
 $html.='table{border:0;margin:0;}';
 $html.='table,table tr{background-color:#fff;}';
-$html.='table tr th{background-color:#000;color:#fff;}';
+$html.='table tr th{background-color:#000;color:#fff;font-size:10px;}';
 $html.='h1,h2,h3,h4,h5,h6,p{margin:0;}';
+$html.='.col-50{width:50px;}';
 $html.='.col-75{width:75px;}';
 $html.='.col-100{width:100px;}';
+$html.='.col-150{width:150px;}';
 $html.='.col-250{width:250px;}';
 $html.='.text-center{text-align:center;}';
 $html.='.text-right{text-align:right;}';
@@ -98,32 +100,50 @@ if($pdflogo!=''){
 	$html.='<table class="table table-striped">';
 		$html.='<thead>';
 			$html.='<tr>';
-				$html.='<th class="col-100">Item Code</th>';
-				$html.='<th class="col-250">Title</th>';
-				$html.='<th class="col-75 text-center">Quantity</th>';
-				$html.='<th class="col-75 text-right">Cost</th>';
-				$html.='<th class="col-75 text-right">Total</th>';
+				$html.='<th class="col-75">Item Code</th>';
+				$html.='<th class="col-150">Title</th>';
+				$html.='<th class="col-150">Option</th>';
+				$html.='<th class="col-50 text-center">Quantity</th>';
+				$html.='<th class="col-50 text-right">Cost</th>';
+				$html.='<th class="col-50 text-right">Total</th>';
 			$html.='</tr>';
 		$html.='</thead>';
 		$html.='<tbody>';
-$s=$db->prepare("SELECT iid,title,quantity,cost FROM orderitems WHERE oid=:oid AND status!='delete'");
+		$i=13;
+		$ot=0;
+		$st=0;
+		$pwc=0;
+		$zeb=1;
+$s=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid AND status!='delete'");
 $s->execute(array(':oid'=>$id));
-$i=13;
-$ot=0;
-$st=0;
-$pwc=0;
-$zeb=1;
 while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 	$si=$db->prepare("SELECT code,title FROM content WHERE id=:id");
 	$si->execute(array(':id'=>$ro['iid']));
 	$i=$si->fetch(PDO::FETCH_ASSOC);
-			$html.='<tr';if($zeb==1){$html.=' style="background-color:#f4f4f4;"';$zeb=0;}else{$html.=' style="backgroound-color:#fff;"';$zeb=1;}$html.='>';
-				$html.='<td class="col-100"><small>'.$i['code'].'</small></td>';
-				$html.='<td class="col-250"><small>';if($ro['title']==''){$html.=$i['title'];}else{$html.=$ro['title'];}$html.='</small></td>';
-				$html.='<td class="col-75 text-center"><small>'.$ro['quantity'].'</small></td>';
-				$html.='<td class="col-75 text-right"><small>'.$ro['cost'].'</small></td>';
+	$sc=$db->prepare("SELECT * FROM choices WHERE id=:id");
+	$sc->execute(array(':id'=>$ro['cid']));
+	$c=$sc->fetch(PDO::FETCH_ASSOC);
+			$html.='<tr';
+				if($zeb==1){
+					$html.=' style="background-color:#f4f4f4;"';
+					$zeb=0;
+				}else{
+					$html.=' style="backgroound-color:#fff;"';
+					$zeb=1;
+				}
+				$html.='>';
+				$html.='<td class="col-75"><small>'.$i['code'].'</small></td>';
+				$html.='<td class="col-150"><small>';
+	if($ro['title']=='')
+					$html.=$i['title'];
+	else
+					$html.=$ro['title'];
+				$html.='</small></td>';
+				$html.='<td class="col-150"><small>'.$c['title'].'</small></td>';
+				$html.='<td class="col-50 text-center"><small>'.$ro['quantity'].'</small></td>';
+				$html.='<td class="col-50 text-right"><small>'.$ro['cost'].'</small></td>';
 	$st=$ro['cost']*$ro['quantity'];
-				$html.='<td class="col-75 text-right">'.$st;$ot=$ot+$st;$html.='</td>';
+				$html.='<td class="col-50 text-right">'.$st;$ot=$ot+$st;$html.='</td>';
 			$html.='</tr>';
 }
 		$html.='</tbody>';

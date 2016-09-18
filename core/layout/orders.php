@@ -282,7 +282,7 @@ if($args[0]=='settings'){
                     <thead>
 <?php if($r['status']!='archived'){?>
                         <tr>
-                            <th colspan="6">
+                            <th colspan="7">
                                 <div class="form-group">
                                     <div class="input-group col-xs-12">
                                         <select id="addItem" class="form-control">
@@ -302,6 +302,7 @@ echo'<option value="'.$i['id'].'">'.ucfirst(rtrim($i['contentType'],'s')).$i['co
                         <tr>
                             <th>Code<span class="visible-xs">/Title</span></th>
                             <th class="hidden-xs">Title</th>
+                            <th class="hidden-xs">Option</th>
                             <th class="col-sm-1 text-center">Quantity</th>
                             <th class="col-sm-1 text-center">Cost</th>
                             <th class="col-sm-1 text-right">Total</th>
@@ -315,14 +316,22 @@ $total=0;
 while($oi=$s->fetch(PDO::FETCH_ASSOC)){
     $is=$db->prepare("SELECT id,code,title FROM content WHERE id=:id");
     $is->execute(array(':id'=>$oi['iid']));
-    $i=$is->fetch(PDO::FETCH_ASSOC);?>
+    $i=$is->fetch(PDO::FETCH_ASSOC);
+    $sc=$db->prepare("SELECT * FROM choices WHERE id=:id");
+    $sc->execute(array(':id'=>$oi['cid']));
+    $c=$sc->fetch(PDO::FETCH_ASSOC);
+    ?>
                         <tr>
                             <td class="text-left">
                                 <?php echo$i['code'];?>
                                 <div class="visible-xs"><?php echo$i['title'];?></div>
+                                <div class="visible-xs">Option: <?php echo$c['title'];?></div>
                             </td>
                             <td class="text-left hidden-xs">
                                 <?php echo$i['title'];?>
+                            </td>
+                            <td class="text-left hidden-xs">
+                                <?php echo$c['title'];?>
                             </td>
                             <td class="col-md-1 text-center">
 <?php if($oi['iid']!=0){?>

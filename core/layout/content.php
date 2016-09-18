@@ -5,31 +5,60 @@ if($view=='add'){
     $ti=time();
     $schema='';
     $comments=0;
-    if($args[0]=='article')$schema='blogPost';
-    if($args[0]=='inventory')$schema='Product';
-    if($args[0]=='service')$schema='Service';
-    if($args[0]=='gallery')$schema='ImageGallery';
-    if($args[0]=='testimonial')$schema='Review';
-    if($args[0]=='news')$schema='NewsArticle';
-    if($args[0]=='event')$schema='Event';
-    if($args[0]=='portfolio')$schema='CreativeWork';
-    if($args[0]=='proof'){$schema='CreativeWork';$comments=1;}
+    if($args[0]=='article')
+        $schema='blogPost';
+    if($args[0]=='inventory')
+        $schema='Product';
+    if($args[0]=='service')
+        $schema='Service';
+    if($args[0]=='gallery')
+        $schema='ImageGallery';
+    if($args[0]=='testimonial')
+        $schema='Review';
+    if($args[0]=='news')
+        $schema='NewsArticle';
+    if($args[0]=='event')
+        $schema='Event';
+    if($args[0]=='portfolio')
+        $schema='CreativeWork';
+    if($args[0]=='proof'){
+        $schema='CreativeWork';
+        $comments=1;
+    }
     $q=$db->prepare("INSERT INTO content (options,uid,login_user,contentType,schemaType,status,active,ti,eti,pti) VALUES ('00000000',:uid,:login_user,:contentType,:schemaType,'unpublished','1',:ti,:ti,:ti)");
-    if(isset($user['id']))$uid=$user['id'];else$uid=0;
-    if($user['name']!='')$login_user=$user['name'];else$login_user=$user['username'];
-    $q->execute(array(':contentType'=>$args[0],':uid'=>$uid,':login_user'=>$login_user,':schemaType'=>$schema,':ti'=>$ti));
+    if(isset($user['id']))
+        $uid=$user['id'];
+    else
+        $uid=0;
+    if($user['name']!='')
+        $login_user=$user['name'];
+    else
+        $login_user=$user['username'];
+    $q->execute(array(
+        ':contentType'=>$args[0],
+        ':uid'=>$uid,
+        ':login_user'=>$login_user,
+        ':schemaType'=>$schema,
+        ':ti'=>$ti
+    ));
     $id=$db->lastInsertId();
     $args[0]=ucfirst($args[0]).' '.$id;
     $s=$db->prepare("UPDATE content SET title=:title WHERE id=:id");
-    $s->execute(array(':title'=>$args[0],':id'=>$id));
-    if($view!='bookings')$show='item';
+    $s->execute(array(
+        ':title'=>$args[0],
+        ':id'=>$id
+    ));
+    if($view!='bookings')
+        $show='item';
     $rank=0;
     $args[0]='edit';
     $args[1]=$id;
 }
 if($args[0]=='edit'){
     $s=$db->prepare("SELECT * FROM content WHERE id=:id");
-    $s->execute(array(':id'=>$args[1]));
+    $s->execute(array(
+        ':id'=>$args[1]
+    ));
     $show='item';
 }
 if($args[0]=='settings'){
@@ -37,17 +66,37 @@ if($args[0]=='settings'){
 }else{
 if($show=='categories'){
     if($args[0]=='type'){
-        $s=$db->prepare("SELECT * FROM content WHERE contentType=:contentType AND contentType!='message_primary' ORDER BY pin DESC,ti DESC,title ASC");
-        $s->execute(array(':contentType'=>$args[1]));
+        $s=$db->prepare("SELECT * FROM content WHERE
+            contentType=:contentType
+            AND contentType!='message_primary'
+            ORDER BY pin DESC,ti DESC,title ASC");
+        $s->execute(array(
+            ':contentType'=>$args[1]
+        ));
     }else{
         if(isset($args[1])){
-            $s=$db->prepare("SELECT * FROM content WHERE LOWER(category_1) LIKE LOWER(:category_1) AND LOWER(category_2) LIKE LOWER(:category_2) AND contentType!='message_primary' ORDER BY pin DESC,ti DESC,title ASC");
-            $s->execute(array(':category_1'=>str_replace('-',' ',$args[0]),':category_2'=>str_replace('-',' ',$args[1])));
+            $s=$db->prepare("SELECT * FROM content WHERE
+                LOWER(category_1) LIKE LOWER(:category_1)
+                AND LOWER(category_2) LIKE LOWER(:category_2)
+                AND contentType!='message_primary'
+                ORDER BY pin DESC,ti DESC,title ASC");
+            $s->execute(array(
+                ':category_1'=>str_replace('-',' ',$args[0]),
+                ':category_2'=>str_replace('-',' ',$args[1])
+            ));
         }elseif(isset($args[0])){
-            $s=$db->prepare("SELECT * FROM content WHERE LOWER(category_1) LIKE LOWER(:category_1) AND contentType!='message_primary' ORDER BY pin DESC,ti ASC,title ASC");
-            $s->execute(array(':category_1'=>str_replace('-',' ',$args[0])));
+            $s=$db->prepare("SELECT * FROM content WHERE
+                LOWER(category_1) LIKE LOWER(:category_1)
+                AND contentType!='message_primary'
+                ORDER BY pin DESC,ti ASC,title ASC");
+            $s->execute(array(
+                ':category_1'=>str_replace('-',' ',$args[0])
+            ));
         }else{
-            $s=$db->prepare("SELECT * FROM content WHERE contentType!='booking' AND contentType!='message_primary' ORDER BY pin DESC,ti DESC,title ASC");
+            $s=$db->prepare("SELECT * FROM content WHERE
+                contentType!='booking' AND
+                contentType!='message_primary'
+                ORDER BY pin DESC,ti DESC,title ASC");
             $s->execute();
         }
     }?>
@@ -196,6 +245,7 @@ if($show=='item'){
         <ul class="nav nav-tabs" role="tablist">
             <li id="d000" role="presentation" class="active"><a href="#d0" aria-controls="d0" role="tab" data-toggle="tab">Content</a></li>
             <li id="d026" class="" role="presentation"><a href="#d26" aria-controls="d26" role="tab" data-toggle="tab">Images</a></li>
+            <li id="o0pts" class="" role="presentation"><a href="#opts" aria-controls="opts" role="tab" data-toggle="tab">Options</a></li>
             <li id="d043" class="<?php if($r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo'hidden';?>" role="presentation"><a href="#d43" aria-controls="d43" role="tab" data-toggle="tab">Comments</a></li>
             <li id="d060" class="<?php if($r['contentType']=='testimonials'||$r['contentType']=='event'||$r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='news'||$r['contentType']=='portfolio'||$r['contentType']=='proof')echo'hidden';?>" role="presentation"><a href="#d60" aria-controls="d60" role="tab" data-toggle="tab">Reviews</a></li>
             <li id="d044" role="presentation"><a href="#d44" aria-controls="d44" role="tab" data-toggle="tab">SEO</a></li>
@@ -538,6 +588,50 @@ else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
                     </fieldset>
                 </fieldset>
             </div>
+<?php /* options */ ?>
+            <div id="opts" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
+                <fieldset class="control-fieldset">
+                    <legend class="control-legend">Options</legend>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3 col-lg-2">&nbsp;</label>
+                        <form target="sp" method="post" action="core/add_data.php">
+                            <input type="hidden" name="rid" value="<?php echo$r['id'];?>">
+                            <input type="hidden" name="act" value="add_option">
+                            <div class="input-group col-xs-12 col-sm-9 col-lg-10">
+                                <span class="input-group-addon">Option</span>
+                                <input type="text" class="form-control" name="ttl" value="" placeholder="Enter an Option Title...">
+                                <span class="input-group-addon">Quantity</span>
+                                <input type="text" class="form-control" name="qty" value="" placeholder="Quantity">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default add"><?php svg('plus');?></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="itemoptions">
+<?php $ss=$db->prepare("SELECT * FROM choices WHERE rid=:rid ORDER BY title ASC");
+    $ss->execute(array(':rid'=>$r['id']));
+    while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
+                        <div id="l_<?php echo$rs['id'];?>" class="form-group">
+                            <label class="control-label hidden-xs col-sm-3 col-lg-2">&nbsp;</label>
+                            <div class="input-group col-xs-12 col-sm-9 col-lg-10">
+                                <span class="input-group-addon">Option</span>
+                                <input type="text" class="form-control" value="<?php echo$rs['title'];?>" onchange="update('<?php echo$rs['id'];?>','choices,'title',$(this).val());" placeholder="Enter an Option Title...">
+                                <span class="input-group-addon">Quantity</span>
+                                <input type="text" class="form-control" value="<?php echo$rs['ti'];?>" onchange="update('<?php echo$rs['id'];?>','choices,'ti',$(this).val());" placeholder="Quantity...">
+                                <div class="input-group-btn">
+                                    <form target="sp" action="core/purge.php">
+                                        <input type="hidden" name="id" value="<?php echo$rs['id'];?>">
+                                        <input type="hidden" name="t" value="choices">
+                                        <button class="btn btn-default trash"><?php svg('trash');?></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+<?php }?>
+                    </div>
+                </fieldset>
+            </div>
 <?php /* comments */ ?>
             <div id="d43" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
                 <div class="form-group">
@@ -629,6 +723,15 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
                             <button class="btn btn-default trash" onclick="$('#views').val('0');update('<?php echo$r['id'];?>','content','views','0');"><?php svg('eraser');?></button>
                         </div>
                     </div>
+                </div>
+                <div class="form-group clearfix">
+                    <label for="metaRobots" class="control-label col-xs-5 col-sm-3 col-lg-2">Meta Robots</label>
+                    <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                        <input type="text" id="metaRobots" class="form-control textinput" value="<?php echo$r['metaRobots'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="metaRobots" placeholder="Enter a Robots Option as Below...">
+                    </div>
+                    <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">
+                        Options for Meta Robots: <span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Allow search engines robots to index the page, you don’t have to add this to your pages, as it’s the default."';?>>index</span>,<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Disallow search engines from showing this page in their results."';?>>noindex</span>,<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Disallow search engines from spidering images on that page. Of course if images are linked to directly from elsewhere, Google can still index them, so using an X-Robots-Tag HTTP header is a better idea."';?>>noimageIndex</span>,<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="This is a shortcut for noindex,nofollow, or basically saying to search engines: don’t do anything with this page at all."';?>>none</span>,<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Tells the search engines robots to follow the links on the page, whether it can index it or not."';?>>follow</span>,<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Tells the search engines robots to not follow any links on the page at all."';?>>nofollow</span>,<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Prevents the search engines from showing a cached copy of this page."';?>>noarchive</span>,<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Same as noarchive, but only used by MSN/Live."';?>>nocache</span>,<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Prevents the search engines from showing a snippet of this page in the search results and prevents them from caching the page."';?>>nosnippet</span>,<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Blocks search engines from using the description for this page in DMOZ (aka ODP) as the snippet for your page in the search results."';?>>noodp</span>,<span<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Blocks Yahoo! from using the description for this page in the Yahoo! directory as the snippet for your page in the search results. No other search engines use the Yahoo! directory for this purpose, so they don’t support the tag."';?>>noydir</span>
+                    </small>
                 </div>
                 <div id="d46" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>">
                     <label for="schemaType" class="control-label col-xs-5 col-sm-3 col-lg-2">Schema Type</label>

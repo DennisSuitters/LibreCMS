@@ -1,0 +1,48 @@
+<div id="comments" class="clearfix">
+	<h3 role="heading">Discussion</h3>
+	<items>
+		<div class="media">
+			<div class="media-object pull-left">
+				<print comments="avatar" class="commentavatar img-thumbnail">
+			</div>
+			<div class="media-body">
+				<div class="well">
+					<print comments="name" class="media-heading" container="h6" leadingtext="Name: ">
+					<time><small class="text-muted"><print comments="dateCreated"></small></time>
+					<print comments="notes">
+				</div>
+			</div>
+		</div>
+	</items>
+	<comment>
+		<div id="notification" class="media col-xs-12">
+			<div class="media-body">
+				<iframe name="comments" id="comments" class="hidden"></iframe>
+				<form target="comments" method="post" action="core/add_comment.php" role="form">
+					<input type="hidden" name="emailtrap" value="">
+					<input type="hidden" name="act" value="add_comment">
+					<input type="hidden" name="rid" value="<print content=id>">
+					<input type="hidden" name="ct" value="<print content=contentType>">
+					<div class="form-group">
+						<label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label>
+						<div class="input-group col-xs-7 col-sm-9 col-lg-10">
+							<input type="text" class="form-control" name="email" value="" placeholder="Enter an Email..." required aria-requied="true" role="textbox">
+						</div>
+						<label for="name" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label>
+						<div class="input-group col-xs-7 col-sm-9 col-lg-10">
+							<input type="text" class="form-control" name="name" value="" placeholder="Enter a Name..." required aria-required="true" role="textbox">
+						</div>
+						<label for="notes" class="control-label col-xs-5 col-sm-3 col-lg-2">Comment</label>
+						<div class="input-group col-xs-7 col-sm-9 col-lg-10">
+							<textarea id="notes" class="form-control" name="notes" placeholder="Enter a Comment..." required aria-require="true" role="textbox"></textarea>
+						</div>
+						<label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label>
+						<div class="input-group col-xs-7 col-sm-9 col-lg-10">
+							<button class="btn btn-success btn-block" type="submit">Add Comment</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</comment>
+</div>

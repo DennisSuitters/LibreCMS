@@ -1,14 +1,16 @@
 <?php
 if(file_exists(THEME.DS.'side_menu.html')){
 	$sideTemp=file_get_contents(THEME.DS.'side_menu.html');
-	if($show=='item'&&($view=='service'||$view=='inventory')){
+	if($show=='item'&&($view=='service'||$view=='inventory'||$view=='events')){
 		$sideCost='';
 		if(is_numeric($r['cost'])&&$r['cost']!=0){
 			$sideCost='<meta itemprop="priceCurrency" content="AUD">';
 			$sideCost.='<span class="cost" itemprop="price" content="'.$r['cost'].'">';
-			if(is_numeric($r['cost']))$sideCost.='&#36;';
+			if(is_numeric($r['cost']))
+				$sideCost.='&#36;';
 			$sideCost.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
-		}else$sideCost='<span>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
+		}else
+			$sideCost='<span>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
 		$sideTemp=str_replace('<print content="cost">',$sideCost,$sideTemp);
 		$sideTemp=str_replace('<print content=id>',$r['id'],$sideTemp);
 		$sideQuantity='';
@@ -21,11 +23,25 @@ if(file_exists(THEME.DS.'side_menu.html')){
 				$sideQuantity.='<div class="quantity">Out of Stock</div>';
 			}else$sideQuantity.='<div>Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</div>';
 			$sideTemp=str_replace('<print content="quantity">',$sideQuantity,$sideTemp);
+			if(stristr($sideTemp,'<choices>')){
+				$scq=$db->prepare("SELECT * FROM choices WHERE rid=:id ORDER BY title ASC");
+				$scq->execute(array(':id'=>$r['id']));
+				if($scq->rowCount()>0){
+					$choices='<select class="form-control" onchange="$(\'.addCart\').data(\'cartchoice\',$(this).val());"><option value="0">Select an Option</option>';
+					while($rcq=$scq->fetch(PDO::FETCH_ASSOC)){
+						if($rcq['ti']==0)continue;
+						$choices.='<option value="'.$rcq['id'].'">'.$rcq['title'].':'.$rcq['ti'].'</option>';
+					}
+					$choices.='</select>';
+					$sideTemp=str_replace('<choices>',$choices,$sideTemp);
+				}else
+					$sideTemp=str_replace('<choices>','',$sideTemp);
+			}else
+				$sideTemp=str_replace('<choices>','',$sideTemp);
 		}else{
 			$sideTemp=str_replace('<print content="quantity">','',$sideTemp);
-
 		}
-		if($r['contentType']=='service'){
+		if($r['contentType']=='service'||$r['contentType']=='events'){
 			if($r['bookable']==1){
 				if(stristr($sideTemp,'<service>')){
 					$sideTemp=str_replace('<print content=bookservice>',$r['id'],$sideTemp);
@@ -33,8 +49,10 @@ if(file_exists(THEME.DS.'side_menu.html')){
 					$sideTemp=str_replace('</service>','',$sideTemp);
 					$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
 				}
-			}else$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
-		}else$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
+			}else
+				$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
+		}else
+			$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
 		if($r['contentType']=='inventory'&&is_numeric($r['cost'])){
 			if(stristr($sideTemp,'<inventory>')){
 				$sideTemp=str_replace('<inventory>','',$sideTemp);

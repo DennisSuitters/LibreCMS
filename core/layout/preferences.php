@@ -45,8 +45,7 @@ if(isset($theme['framework_name'])&&$theme['framework_name']!=''){
     if(isset($theme['framework_url'])&&$theme['framework_url']!='')echo': <a target="_blank" href="'.$theme['framework_url'].'">'.$theme['framework_name'].'</a>';
     else echo$theme['framework_name'];
     echo'</small><br>';
-}
-if(isset($theme['description'])&&$theme['description']!='')echo'<small class="description">'.$theme['description'].'</small>';?>
+}?>
                                 </p>
                             </div>
                         </div>

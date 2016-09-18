@@ -178,12 +178,13 @@ h4 .breadcrumb{
     margin:5px
 }
 .theme-chooser-item.panel{
-    border:1px solid #000;
+    border:1px solid #888;
+    background-color:#fff;
     margin:10px
 }
 .theme-chooser-item.panel.panel-success{
-    border:3px solid #4aa03f;
-    margin:9px
+    border:1px solid #4aa03f;
+    background-color:#cfc
 }
 .theme-chooser-item .panel-image{
     position:relative;

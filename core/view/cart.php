@@ -46,8 +46,8 @@ if($args[0]=="confirm"){
 				$quantity=$i['quantity']-$r['quantity'];
 				$qry=$db->prepare("UPDATE content SET quantity=:quantity WHERE id=:id");
 				$qry->execute(array(':quantity'=>$quantity,':id'=>$r['iid']));
-				$sq=$db->prepare("INSERT INTO orderitems (oid,iid,title,quantity,cost,ti) VALUES (:oid,:iid,:title,:quantity,:cost,:ti)");
-				$sq->execute(array(':oid'=>$oid,':iid'=>$r['iid'],':title'=>$i['title'],':quantity'=>$r['quantity'],':cost'=>$r['cost'],':ti'=>$ti));
+				$sq=$db->prepare("INSERT INTO orderitems (oid,iid,cid,title,quantity,cost,ti) VALUES (:oid,:iid,:cid,:title,:quantity,:cost,:ti)");
+				$sq->execute(array(':oid'=>$oid,':iid'=>$r['iid'],':cid'=>$r['cid'],':title'=>$i['title'],':quantity'=>$r['quantity'],':cost'=>$r['cost'],':ti'=>$ti));
 			}
 			$q=$db->prepare("DELETE FROM cart WHERE si=:si");
 			$q->execute(array(':si'=>SESSIONID));
@@ -87,8 +87,12 @@ if($args[0]=="confirm"){
 			$si=$db->prepare("SELECT * FROM content WHERE id=:id");
 			$si->execute(array(':id'=>$ci['iid']));
 			$i=$si->fetch(PDO::FETCH_ASSOC);
+			$sc=$db->prepare("SELECT * FROM choices WHERE id=:id");
+			$sc->execute(array(':id'=>$ci['cid']));
+			$c=$sc->fetch(PDO::FETCH_ASSOC);
 			$cartitem=str_replace('<print content="code">',$i['code'],$cartitem);
 			$cartitem=str_replace('<print content="title">',$i['title'],$cartitem);
+			$cartitem=str_replace('<print choice>',$c['title'],$cartitem);
 			$cartitem=str_replace('<print cart=id>',$ci['id'],$cartitem);
 			$cartitem=str_replace('<print cart=quantity>',$ci['quantity'],$cartitem);
 			$cartitem=str_replace('<print cart=cost>',$ci['cost'],$cartitem);
