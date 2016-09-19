@@ -27,7 +27,7 @@ if(file_exists(THEME.DS.'side_menu.html')){
 				$scq=$db->prepare("SELECT * FROM choices WHERE rid=:id ORDER BY title ASC");
 				$scq->execute(array(':id'=>$r['id']));
 				if($scq->rowCount()>0){
-					$choices='<select class="form-control" onchange="$(\'.addCart\').data(\'cartchoice\',$(this).val());"><option value="0">Select an Option</option>';
+					$choices='<select class="choices form-control" onchange="$(\'.addCart\').data(\'cartchoice\',$(this).val());$(\'.choices\').val($(this).val());"><option value="0">Select an Option</option>';
 					while($rcq=$scq->fetch(PDO::FETCH_ASSOC)){
 						if($rcq['ti']==0)continue;
 						$choices.='<option value="'.$rcq['id'].'">'.$rcq['title'].':'.$rcq['ti'].'</option>';

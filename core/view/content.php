@@ -292,6 +292,21 @@ if($show=='item'){
 			$item=str_replace('<print content="quantity">',$contentQuantity,$item);
 		}else
 			$item=str_replace('<print content="quantity">','',$item);
+		if(stristr($item,'<choices>')){
+			$scq=$db->prepare("SELECT * FROM choices WHERE rid=:id ORDER BY title ASC");
+			$scq->execute(array(':id'=>$r['id']));
+			if($scq->rowCount()>0){
+				$choices='<select class="choices form-control" onchange="$(\'.addCart\').data(\'cartchoice\',$(this).val());$(\'.choices\').val($(this).val());"><option value="0">Select an Option</option>';
+				while($rcq=$scq->fetch(PDO::FETCH_ASSOC)){
+					if($rcq['ti']==0)continue;
+					$choices.='<option value="'.$rcq['id'].'">'.$rcq['title'].':'.$rcq['ti'].'</option>';
+				}
+				$choices.='</select>';
+				$item=str_replace('<choices>',$choices,$item);
+			}else
+				$item=str_replace('<choices>','',$item);
+		}else
+			$item=str_replace('<choices>','',$item);
 		if(stristr($item,'<json-ld>')){
 			$jsonld='<script type="application/ld+json">{';
 				$jsonld.='"@context": "http://schema.org","@type": "'.$r['schemaType'].'",';
