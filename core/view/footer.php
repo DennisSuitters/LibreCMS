@@ -38,10 +38,19 @@ if(stristr($html,'<buildMenu')){
 	$menu='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$buildMenu=$htmlMenu;
-		if($view==$r['contentType']||$view==$r['contentType'].'s')$buildMenu=str_replace('<print active=menu>',' active',$buildMenu);else$buildMenu=str_replace('<print active=menu>','',$buildMenu);
-		if($r['contentType']!='index')$buildMenu=str_replace('<print menu=contentType>',$r['contentType'],$buildMenu);else$buildMenu=str_replace('<print menu=contentType>','',$buildMenu);
+		if($view==$r['contentType']||$view==$r['contentType'].'s')
+			$buildMenu=str_replace('<print active=menu>',' active',$buildMenu);
+		else
+			$buildMenu=str_replace('<print active=menu>','',$buildMenu);
+		if($r['contentType']!='index')
+			$buildMenu=str_replace('<print menu=url>',URL.$r['contentType'],$buildMenu);
+		else
+			$buildMenu=str_replace('<print menu=url>','',$buildMenu);
 		$buildMenu=str_replace('<print menu="title">',$r['title'],$buildMenu);
-		if($r['contentType']=='cart')$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);else$buildMenu=str_replace('<menuCart>','',$buildMenu);
+		if($r['contentType']=='cart')
+			$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);
+		else
+			$buildMenu=str_replace('<menuCart>','',$buildMenu);
 		$menu.=$buildMenu;
 	}
 	$html=str_replace('<buildMenu>',$menu.'<buildMenu>',$html);

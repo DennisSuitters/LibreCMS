@@ -96,6 +96,7 @@ if(isset($user)&&$user['rank']>0){
 	}
 }else{
 	$html='';
-	if(file_exists(THEME.DS.'noaccess.html'))$html=file_get_contents(THEME.DS.'noaccess.html');
+	if(file_exists(THEME.DS.$amp.DS.'noaccess.html'))
+		$html=file_get_contents(THEME.DS.$amp.DS.'noaccess.html');
 }
 $content.=$html;

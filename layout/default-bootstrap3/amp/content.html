@@ -1,13 +1,13 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="content">
-	<div class="jumbotron"><print page="cover"></div>
+	<div class="space-2"></div>
 	<main id="content" class="col-xs-12 col-sm-9" role="main">
 		<item>
 			<article class="article" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
 				<json-ld>
 				<h1 class="title" itemprop="name" role="heading"><print content="title"></h1>
-				<print class="img-responsive" content="image">
+				<print content="image">
 				<div class="caption" itemprop="description">
 					<cost>
 						<div class="price_content col-xs-12 visible-xs pull-right">
@@ -17,13 +17,6 @@
 										<print content="cost">
 										<print content="quantity">
 									</div>
-									<service>
-										<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>" role="link">Book Service</a>
-									</service>
-									<inventory>
-										<choices>
-										<button class="addCart btn btn-success btn-block" data-cartid="<print content=id>" role="button">Add to Cart</button>
-									</inventory>
 								</div>
 							</div>
 						</div>
@@ -39,7 +32,6 @@
 				<author>
 					<hr role="separator">
 					<aside class="vcard clearfix">
-						<print author="avatar" alt="name" class="pull-left col-xs-2 col-sm-1 avatar img-thumbnail">
 						This article was written by <strong><span class="fn"><print author="name"></span></strong>. <print author="notes"><br>
 						<print author="email" type="icon" class="libre libre-2x libre-envelope"> <print author="social" type="icon" class="libre libre-2x libre-">
 					</aside>
@@ -74,39 +66,22 @@
 		<print page="notes">
 		<settings itemCount="10">
 		<items>
-			<article class="col-sm-4 col-md-4" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
-                <div class="content-item">
-                    <div class="content-item-image">
-                        <a href="<print content=linktitle>" role="link">
-							<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>">
-                        </a>
-                    </div>
-                    <div class="content-item-info clearfix">
-						<controls>
-							<view>
-								<div class="content-item-title">
-									<a href="<print content=linktitle>" itemprop="name" role="link"><print content="title"></a>
-								</div>
-							</view>
-							<service>
-								<a class="btn btn-success btn-sm" href="bookings/<print content=bookservice>" role="link">Book Service</a>
-							</service>
-							<inventory>
-								<button class="addCart btn btn-success btn-sm" data-cartid="<print content=id>" role="button">Add to Cart</button>
-							</inventory>
-						</controls>
-						<cost>
-							<span class="content-item-price pull-right" itemscope itemtype="http://schema.org/Offer">
-								<print content="cost">
-							</span>
-						</cost>
-                    </div>
-                </div>
-            </article>
+			<article class="blog-item clearfix" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+				<amp-img src="<print content=thumb>" alt="<print content=alttitle>" width="320" height="250" layout="responsive"></amp-img>
+				<h3 class="margin-0"><print content="title"></h3>
+				<div class="details">
+					<print content="notes" length="200">
+				</div>
+				<div class="pull-right">
+					<controls>
+						<view>
+							<a href="<print content=linktitle>">Go to Post</a>
+						</view>
+					</controls>
+				</div>
+			</article>
+			<div class="divider-30 colored"></div>
 		</items>
-		<more>
-			<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
-		</more>
 	</main>
 </block>
 <block include="side_menu.html">

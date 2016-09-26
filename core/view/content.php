@@ -86,7 +86,11 @@ if($show=='categories'){
 	if(stristr($html,'<print page="cover">')){
 		if($page['cover']!=''||$page['coverURL']!=''){
 			$cover=basename($page['cover']);
-			$coverHTML='<img src="';
+			list($width,$height)=getimagesize($page['cover']);
+			if($amp=='/amp')
+				$coverHTML='<amp-img src="';
+			else
+				$coverHTML='<img src="';
 			if(file_exists('media'.DS.$cover))
 				$coverHTML.=$page['cover'];
 			elseif($page['coverURL']!='')
@@ -113,7 +117,11 @@ if($show=='categories'){
 			}
 			if($page['seoTitle']==''&&$config['seoTitle']=='')
 				$coverHTML.=basename($page['cover']);
-			$coverHTML.='">';
+			$coverHTML.='"';
+			if($amp=='/amp')
+				$coverHTML.=' width="'.$width.'" height="'.$height.'"';
+			$coverHTML.='>';
+			if($amp=='/amp')$coverHTML.='</amp-img>';
 		}else
 			$coverHTML='';
 		$html=str_replace('<print page="cover">',$coverHTML,$html);
@@ -252,13 +260,29 @@ if($show=='item'){
 		$contentTime=$r['ti'];
 	if(stristr($html,'<print page="cover">')){
 		if($r['file'])
-			$html=str_replace('<print page="cover">','<img src="'.$r['file'].'" alt="'.$r['title'].'" role="image">',$html);
+			if($amp=='/amp'){
+				list($width,$height)=getimagesize($r['file']);
+				$html=str_replace('<print page="cover">','<amp-img src="'.$r['file'].'" alt="'.$r['title'].'" width="'.$width.'" height="'.$height.'"></amp-img>',$html);
+			}else
+				$html=str_replace('<print page="cover">','<img src="'.$r['file'].'" alt="'.$r['title'].'" role="image">',$html);
 		elseif($r['fileURL'])
-			$html=str_replace('<print page="cover">','<img src="'.$r['fileURL'].'" alt="'.$r['title'].'" role="image">',$html);
+			if($amp=='/amp'){
+				list($width,$height)=getimagesize($r['fileURL']);
+				$html=str_replace('<print page="cover">','<amp-img src="'.$r['fileURL'].'" alt="'.$r['title'].'" width="'.$width.'" height="'.$height.'"></amp-img>',$html);
+			}else
+				$html=str_replace('<print page="cover">','<img src="'.$r['fileURL'].'" alt="'.$r['title'].'" role="image">',$html);
 		elseif($page['cover'])
-			$html=str_replace('<print page="cover">','<img src="'.$page['cover'].'" alt="'.$r['title'].'" role="image">',$html);
+			if($amp=='/amp'){
+				list($width,$height)=getimagesize($page['cover']);
+				$html=str_replace('<print page="cover">','<amp-img src="'.$page['cover'].'" alt="'.$r['title'].'" width="'.$width.'" height="'.$height.'"></amp-img>',$html);
+			}else
+				$html=str_replace('<print page="cover">','<img src="'.$page['cover'].'" alt="'.$r['title'].'" role="image">',$html);
 		elseif($page['coverURL'])
-			$html=str_replace('<print page="cover">','<img src="'.$page['coverURL'].'" alt="'.$r['title'].'" role="image">',$html);
+			if($amp=='/amp'){
+				list($width,$height)=getimagesize($page['coverURL']);
+				$html=str_replace('<print page="cover">','<amp-img src="'.$page['coverURL'].'" alt="'.$r['title'].'" width="'.$width.'" height="'.$height.'"></amp-img>',$html);
+			}else
+				$html=str_replace('<print page="cover">','<img src="'.$page['coverURL'].'" alt="'.$r['title'].'" role="image">',$html);
 		else
 			$html=str_replace('<print page="cover">','',$html);
 	}
@@ -408,12 +432,12 @@ if($show=='item'){
 		$html=str_replace('<print page="notes">','',$html);
 	/* Comments */
 		if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
-			if(file_exists(THEME.DS.'comments.html')){
+			if(file_exists(THEME.$amp.DS.'comments.html')){
 				$comments='';
 				$commentsHTML='';
 				$sc=$db->prepare("SELECT * FROM comments WHERE contentType=:contentType AND rid=:rid AND status!='unapproved' ORDER BY ti ASC");
 				$sc->execute(array(':contentType'=>$view,':rid'=>$r['id']));
-				$commentsHTML=file_get_contents(THEME.DS.'comments.html');
+				$commentsHTML=file_get_contents(THEME.$amp.DS.'comments.html');
 				if(stristr($commentsHTML,'<print content=id>'))
 					$commentsHTML=str_replace('<print content=id>',$r['id'],$commentsHTML);
 				if(stristr($commentsHTML,'<print content=contentType>'))
@@ -436,7 +460,7 @@ if($show=='item'){
 				$commentsHTML=preg_replace('~<items>.*?<\/items>~is','',$commentsHTML,1);
 				$item.=$commentsHTML;
 			}else
-				$item.='Comments for this post is Enabled, but no <strong>"'.THEME.DS.'comments.html"</strong> template file exists';
+				$item.='Comments for this post is Enabled, but no <strong>"'.THEME.$amp.DS.'comments.html"</strong> template file exists';
 		}
 		$html=preg_replace('~<item>.*?<\/item>~is',$item,$html,1);
 	}

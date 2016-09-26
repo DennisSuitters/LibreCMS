@@ -1,6 +1,6 @@
 <?php
-if(file_exists(THEME.DS.'side_menu.html')){
-	$sideTemp=file_get_contents(THEME.DS.'side_menu.html');
+if(file_exists(THEME.$amp.DS.'side_menu.html')){
+	$sideTemp=file_get_contents(THEME.$amp.DS.'side_menu.html');
 	if($show=='item'&&($view=='service'||$view=='inventory'||$view=='events')){
 		$sideCost='';
 		if(is_numeric($r['cost'])&&$r['cost']!=0){
@@ -72,12 +72,15 @@ if(file_exists(THEME.DS.'side_menu.html')){
 	$outside=$matches[1];
 	$show='';
 	$contentType=$view;
-	preg_match('/<heading>([\w\W]*?)<\/heading>/',$outside,$matches);
-	if($matches[1]!=''){
-		$heading=$matches[1];
-		$heading=str_replace('<print viewlink>',URL.$view,$heading);
-		$heading=str_replace('<print view>',ucfirst($view),$heading);
-	}else$heading='';
+	if(stristr($outside,'<heading>')){
+		preg_match('/<heading>([\w\W]*?)<\/heading>/',$outside,$matches);
+		if($matches[1]!=''){
+			$heading=$matches[1];
+			$heading=str_replace('<print viewlink>',URL.$view,$heading);
+			$heading=str_replace('<print view>',ucfirst($view),$heading);
+		}else$heading='';
+		$outside=preg_replace('~<heading>.*?<\/heading>~is',$heading,$outside,1);
+	}
 	if(stristr($sideTemp,'<settings')){
 		preg_match('/<settings items="(.*?)" contenttype="(.*?)">/',$outside,$matches);
 		if(isset($matches[1])){
@@ -106,22 +109,12 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		$items=str_replace('<print content=schematype>',$r['schemaType'],$items);
 		$items=str_replace('<print metaDate>',date('Y-m-d',$r['ti']),$items);
 		$items=str_replace('<print content="title">',$r['title'],$items);
-		$time=date($config['dateFormat'],$r['ti']);
-		if($r['contentType']=='event'||$r['contentType']=='news'){
+		$time='<time datetime='.date('Y-m-d',$r['ti']).'">'.date($config['dateFormat'],$r['ti']).'</time>';
+		if($r['contentType']=='events'||$r['contentType']=='news'){
 			if($r['tis']!=0){
-				$sDay=date('dS',$r['tis']);
-				$sMonth=date('M',$r['tis']);
-				$sTime=date('H:i',$r['tis']);
-				$time=$sDay.' '.$sMonth.' '.$sTime;
+				$time='<time datetime="'.date('Y-m-d',$r['tis']).'">'.date('dS M H:i',$r['tis']).'</time>';
 				if($r['tie']!=0){
-					$eDay=date('dS',$rm['tie']);
-					$eMonth=date('M',$rm['tie']);
-					$eTime=date('H:i',$rm['tie']);
-					$time.=' &rarr; <time><small>';
-					if($sDay!=$eDay)$time.=$eDay.' ';
-					if($sMonth!=$eMonth)$time.=$eMonth.' ';
-					if($sTime!=$eTime)$time.=$eTime;
-					$time.='</small></time>';
+					$time.=' &rarr; <time datetime="'.date('Y-m-d',$r['tie']).'">'.date('dS M H:i',$r['tie']).'</time>';
 				}
 			}
 		}
@@ -130,7 +123,6 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		else$items=str_replace('<print content="caption">',substr(strip_tags($r['notes']),0,100).'...',$items);
 		$output.=$items;
 	}
-	$outside=preg_replace('~<heading>.*?<\/heading>~is',$heading,$outside,1);
 	$outside=preg_replace('~<items>.*?<\/items>~is',$output,$outside,1);
 	$outside=preg_replace('~<settings.*?>~is','',$outside,1);
 	$sideTemp=preg_replace('~<item>.*?<\/item>~is',$outside,$sideTemp,1);

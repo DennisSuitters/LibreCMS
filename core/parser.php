@@ -173,34 +173,57 @@ foreach($tags as$tag){
 			if($attribute=='page'){
 				$coverchk=basename($page['cover']);
 				if($page['cover']!=''&&file_exists('media'.DS.$coverchk))
-					$parsing.='<img class="'.$class.'" src="'.$page['cover'].'">';
-				elseif($page['coverURL']!='')
-					$parsing.='<img class="'.$class.'" src="'.$page['coverURL'].'">';
-				else
+					if($amp=='/amp'){
+						list($width,$height)=getimagesize($page['cover']);
+						$parsing.='<amp-img class="'.$class.'" src="'.$page['cover'].'" layout="responsive" width="'.$width.'" height="'.$height.'"><amp-img>';
+					}else
+						$parsing.='<img class="'.$class.'" src="'.$page['cover'].'">';
+				elseif($page['coverURL']!=''){
+					if($amp=='/amp'){
+						list($width,$height)=getimagesize($page['coverURL']);
+						$parsing.='<amp-img class="'.$class.'" src="'.$page['coverURL'].'" layout="responsive" width="'.$width.'"></amp-img>';
+					}else
+						$parsing.='<img class="'.$class.'" src="'.$page['coverURL'].'">';
+				}else
 					$parsing.='';
 			}
 			break;
 		case'thumb':
 			$filechk=basename($r['file']);
 			$thumbchk=basename($r['thumb']);
-			if($r['thumb']!=''&&(file_exists('media'.DS.$thumbchk)||file_exists('../../media'.DS.$thumbchk)))
-				$parsing.='<img src="'.$r['thumb'].'" alt="'.$r['title'].'">';
-			elseif($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('../../media'.DS.$filechk)))
-				$parsing.='<img src="'.$r['file'].'" alt="'.$r['title'].'">';
-			else
+			if($r['thumb']!=''&&(file_exists('media'.DS.$thumbchk)||file_exists('../../media'.DS.$thumbchk))){
+				if($amp=='/amp'){
+					list($width,$height)=getimagesize($r['thumb']);
+					$parsing.='<amp-img src="'.$r['thumb'].'" alt="'.$r['title'].'" layout="responsive" width="'.$width.'" height="'.$height.'"></amp-img>';
+				}else
+					$parsing.='<img src="'.$r['thumb'].'" alt="'.$r['title'].'">';
+			}elseif($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('../../media'.DS.$filechk))){
+				if($amp=='/amp'){
+					list($width,$height)=getimagesize($r['file']);
+					$parsing.='<amp-img src="'.$r['file'].'" alt="'.$r['title'].'" layout="responsive" width="'.$width.'" height="'.$height.'"></amp-img>';
+				}else
+					$parsing.='<img src="'.$r['file'].'" alt="'.$r['title'].'">';
+			}else
 				$parsing.=NOIMAGE;
 			break;
 		case'image':
 			$filechk=basename($r['file']);
-			if($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('../../media'.DS.$filechk)))
-				$parsing.='<img class="'.$class.'" src="'.$r['file'].'" alt="'.$r['title'].'">';
-			else
+			if($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('../../media'.DS.$filechk))){
+				if($amp=='/amp'){
+					list($width,$height)=getimagesize($r['file']);
+					$parsing.='<amp-img class="'.$class.'" src="'.$r['file'].'" alt="'.$r['title'].'" layout="responsive" width="'.$width.'" height="'.$height.'"></amp-img>';
+				}else
+					$parsing.='<img class="'.$class.'" src="'.$r['file'].'" alt="'.$r['title'].'">';
+			}else
 				$parsing.='';
 			break;
 		case'imageURL':
 			$parsing.=$r['file'];
 		case'avatar':
-			$parsing.='<img class="'.$class.'" src="';
+			$parsing.='<';
+			if($amp=='/amp')
+				$parsing.='amp-';
+			$parsing.='img class="'.$class.'" src="';
 			if($attribute=='author'){
 				$authour['avatar']=basename($author['avatar']);
 				if($author['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$author['avatar']))
@@ -246,6 +269,8 @@ foreach($tags as$tag){
 				$parsing.='" alt="'.$rc['name'].'"';
 			}
 			$parsing.='>';
+			if($amp=='/amp')
+				$parsing.='</amp-img>';
 			break;
 		case'name':
 			if($attribute=='author'){

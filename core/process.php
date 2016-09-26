@@ -34,7 +34,7 @@ if($config['maintenance']{0}==1&&(isset($_SESSION['rank'])&&$_SESSION['rank']<40
     if(file_exists(THEME.$amp.DS.'maintenance.html'))
         $template=file_get_contents(THEME.$amp.DS.'maintenance.html');
     else{
-        require'core'.DS.'layout'.DS.$amp.'maintenance.php';
+        require'core'.DS.'layout'.DS.'maintenance.php';
         die();
     }
 }elseif(file_exists(THEME.$amp.DS.$view.'.html'))
@@ -165,9 +165,10 @@ if(isset($_GET['amp'])&&$_GET['amp']=='amped'){
     $doc=new DOMDocument;
     @$doc->loadHTML($content);
     foreach($doc->getElementsByTagName('a')as$link){
-        $link->setAttribute('href',$link->getAttribute('href').'?amp=amped');
+        $link->setAttribute('href',rtrim($link->getAttribute('href'),'/').'?amp=amped');
     }
     $content=preg_replace('/^<!DOCTYPE.+?>/','',str_replace(array('<html>','</html>','<body>','</body>'),array('','','',''),$doc->saveHTML())).'</body></html>';
+	$content=preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3',$content);
 }
 if(MINIFY==1)
     print minify($head.$content);
