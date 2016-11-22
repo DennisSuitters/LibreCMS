@@ -34,3 +34,7 @@ if($act=='logout'){
     $_SESSION['loggedin']=false;
     $_SESSION['rank']=0;
 }
+if(isset($_SESSION['loggedin'])&&$_SESSION['loggedin']==true){
+    $q=$db->prepare("UPDATE login SET lti=:lti WHERE id=:id");
+    $q->execute(array(':lti'=>time(),':id'=>$_SESSION['uid']));
+}

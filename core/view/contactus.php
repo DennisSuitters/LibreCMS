@@ -39,33 +39,52 @@ if($act=='add_message'){
 						$msg.='Message: '.$notes;
 						$mail->Body=$msg;
 						$mail->AltBody=$msg;
-						if($mail->Send()){
+						if($mail->Send())
 							$notification=$theme['settings']['contactus_success'];
-							$mail=new PHPMailer();
-							$mail->IsSMTP();
-							$mail->SetFrom($config['email'],$config['business']);
-							$toname=$email;
-							$mail->AddAddress($email);
-							$mail->IsHTML(true);
-							$sub=$config['contactAutoReplySubject'];
-							$sub=str_replace('{business}',$config['business'],$sub);
-							$sub=str_replace('{date}',date($config['dateFormat'],$ti),$sub);
-							$mail->Subject=$sub;
-							$msg=$config['contactAutoReplyLayout'];
-							$msg=str_replace('{business}',$config['business'],$msg);
-							$msg=str_replace('{date}',date($config['dateFormat'],$ti),$msg);
-							$msg=str_replace('{name}',$name,$msg);
+						else
+							$notification=$theme['settings']['contactus_error'];
+						$mail2=new PHPMailer();
+						$mail2->IsSMTP();
+						$mail2->SetFrom($config['email'],$config['business']);
+						$toname=$email;
+						$mail2->AddAddress($email);
+						$mail2->IsHTML(true);
+						if($config['contactAutoReplySubject']!=''){
+							$subject=$config['contactAutoReplySubject'];
+							if(stristr($subject,'{business}'))$subject=str_replace('{business}',$config['business'],$subject);
+							if(stristr($subject,'{date}'))$subject=str_replace('{date}',date($config['dateFormat'],$ti),$subject);
+						}else$subject='Thank you for contacting '.$config['business'];
+						$mail2->Subject=$subject;
+						if($config['contactAutoReplyLayout']!=''){
+							$msg2=$config['contactAutoReplyLayout'];
+							if(stristr($msg2,'{business}'))$msg2=str_replace('{business}',$config['business'],$msg2);
+							if(stristr($msg2,'{date}'))$msg2=str_replace('{date}',date($config['dateFormat'],$ti),$msg2);
+							if(stristr($msg2,'{name}'))$msg2=str_replace('{name}',$name,$msg2);
 							$n=explode(' ',$name);
 							$namefirst=$n[0];
 							$namelast=end($n);
-							$msg=str_replace('{first}',$namefirst,$msg);
-							$msg=str_replace('{last}',$namelast,$msg);
-							$msg=str_replace('{subject}',$subject,$msg);
-							$mail->Body=$msg;
-							$mail->AltBody=$msg;
-							if($mail->Send())$notification=$theme['settings']['contactus_success'];
-							else$notification=$theme['settings']['contactus_error'];
-						}else$notification=$theme['settings']['contactus_error'];
+							if(stristr($msg2,'{first}'))$msg2=str_replace('{first}',$namefirst,$msg2);
+							if(stristr($msg2,'{last}'))$msg2=str_replace('{last}',$namelast,$msg2);
+							if(stristr($msg2,'{subject}'))$msg2=str_replace('{subject}',$subject,$msg2);
+						}else{
+							$msg2='Thank you for ';
+							if($config['business']!='')
+								$msg2.=' Contacting '.$config['business'];
+							else
+								$msg2.=' us.';
+							$msg2.='<br />';
+							$msg2.='Someone will be in touch to respond to your request.<br />';
+							if($config['business']!=''){
+								$msg2.='Kind Regards,<br />';
+								$msg2.=$config['business'];
+							}
+						}
+						$mail2->Body=$msg2;
+						$mail2->AltBody=$msg2;
+						if($mail2->Send())
+							$notification=$theme['settings']['contactus_success'];
+						else
+							$notification=$theme['settings']['contactus_error'];
 					}
 				}
 			}else$notification=$theme['settings']['contactus_error'];

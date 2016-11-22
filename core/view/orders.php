@@ -77,9 +77,13 @@ else{
                 $is=$db->prepare("SELECT id,code,title FROM content WHERE id=:id");
 				$is->execute(array(':id'=>$oir['iid']));
 				$i=$is->fetch(PDO::FETCH_ASSOC);
+                $sc=$db->prepare("SELECT * FROM choices WHERE id=:id");
+                $sc->execute(array(':id'=>$oir['cid']));
+                $c=$sc->fetch(PDO::FETCH_ASSOC);
                 $item=$orderItem;
                 $item=str_replace('<print orderitem="code">',$i['code'],$item);
                 $item=str_replace('<print orderitem="title">',$i['title'],$item);
+                $cartitem=str_replace('<print choice>',$c['title'],$cartitem);
                 $item=str_replace('<print orderitem="quantity">',$oir['quantity'],$item);
                 $item=str_replace('<print orderitem="cost">',$oir['cost'],$item);
                 $item=str_replace('<print orderitem="subtotal">',$oir['cost']*$oir['quantity'],$item);

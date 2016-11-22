@@ -90,7 +90,7 @@ if($show=='categories'){
 			if($amp=='/amp')
 				$coverHTML='<amp-img src="';
 			else
-				$coverHTML='<img src="';
+				$coverHTML='<img class="img-responsive" src="';
 			if(file_exists('media'.DS.$cover))
 				$coverHTML.=$page['cover'];
 			elseif($page['coverURL']!='')
@@ -128,7 +128,7 @@ if($show=='categories'){
 	}
 	$html=str_replace('<print page="notes">',$page['notes'],$html);
 	if($config['business'])
-		$html=str_replace('<print 	content=seoTitle>',htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'),$html);
+		$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'),$html);
 	else
 		$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
 	if(stristr($html,'<items>')){
@@ -152,6 +152,12 @@ if($show=='categories'){
 			}
 			if(stristr($items,'<print content=title>'))
 				$items=str_replace('<print content=title>',$r['title'],$items);
+			if(stristr($items,'<print author=name>'))
+				$items=str_replace('<print author=name>',$r['name'],$items);
+			if(stristr($items,'<print content=datePublished>'))
+				$items=str_replace('<print content=datePublished>',date('Y-m-d',$r['pti']),$items);
+			if(stristr($items,'<print content=dateEdited>'))
+				$items=str_replace('<print content=dateEdited>',date('Y-m-d',$r['eti']),$items);
 			if(stristr($items,'<print content=thumb>')){
 				$r['thumb']=str_replace(URL,'',$r['thumb']);
 				if($r['thumb'])
@@ -159,6 +165,8 @@ if($show=='categories'){
 				else
 					$items=str_replace('<print content=thumb>',NOIMAGE,$items);
 			}
+			if(stristr($items,'<print content=contentType>'))
+				$items=str_replace('<print content=contentType>',$r['contentType'],$items);
 			if(stristr($items,'<print content=alttitle>'))
 				$items=str_replace('<print content=alttitle>',$r['title'],$items);
 			$r['notes']=strip_tags($r['notes']);
@@ -264,7 +272,7 @@ if($show=='item'){
 				list($width,$height)=getimagesize($r['file']);
 				$html=str_replace('<print page="cover">','<amp-img src="'.$r['file'].'" alt="'.$r['title'].'" width="'.$width.'" height="'.$height.'"></amp-img>',$html);
 			}else
-				$html=str_replace('<print page="cover">','<img src="'.$r['file'].'" alt="'.$r['title'].'" role="image">',$html);
+				$html=str_replace('<print page="cover">','<img class="img-responsive" src="'.$r['file'].'" alt="'.$r['title'].'" role="image">',$html);
 		elseif($r['fileURL'])
 			if($amp=='/amp'){
 				list($width,$height)=getimagesize($r['fileURL']);
@@ -333,7 +341,7 @@ if($show=='item'){
 			$item=str_replace('<choices>','',$item);
 		if(stristr($item,'<json-ld>')){
 			$jsonld='<script type="application/ld+json">{';
-				$jsonld.='"@context": "http://schema.org","@type": "'.$r['schemaType'].'",';
+				$jsonld.='"@context": "http://schema.org/","@type": "'.$r['schemaType'].'",';
 				$jsonld.='"headline":"'.$r['title'].'",';
 				$jsonld.='"alternativeHeadline":"'.$r['title'].'",';
 				$jsonld.='"image":"';if($r['thumb']!='')$jsonld.=$r['thumb'];elseif($r['file']!='')$jsonld.=$r['file'];$jsonld.='",';
@@ -346,8 +354,8 @@ if($show=='item'){
 				$jsonld.='"datePublished":"'.date('Y-m-d',$r['pti']).'",';
 				$jsonld.='"dateCreated":"'.date('Y-m-d',$r['ti']).'",';
 				$jsonld.='"dateModified":"'.date('Y-m-d',$r['eti']).'",';
-				$jsonld.='"description":"'.$r['seoDescription'].'",';
-				$jsonld.='"articleBody":"'.strip_tags($r['notes']).'"';
+				$jsonld.='"description":"'.strip_tags(escaper($r['seoDescription'])).'",';
+				$jsonld.='"articleBody":"'.strip_tags(escaper($r['notes'])).'"';
 			$jsonld.='}</script>';
 			$item=str_replace('<json-ld>',$jsonld,$item);
 		}
@@ -365,7 +373,7 @@ if($show=='item'){
 						$jsonldreview.='"@type":"Review",';
 						$jsonldreview.='"author":"'.$rr['name'].'",';
 						$jsonldreview.='"datePublished":"'.date('Y-m-d',$rr['ti']).'",';
-						$jsonldreview.='"description":"'.strip_tags($rr['notes']).'",';
+						$jsonldreview.='"description":"'.strip_tags(escaper($r['notes'])).'",';
 						$jsonldreview.='"name":"'.$rr['name'].'",';
 						$jsonldreview.='"reviewRating":{';
 							$jsonldreview.='"@type":"Rating",';

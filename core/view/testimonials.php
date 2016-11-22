@@ -39,17 +39,6 @@ if($s->rowCount()>0){
 		$items=str_replace('<print content="business">',$r['business'],$items);
 		$items=str_replace('<print content=name>',$r['name'],$items);
 		$items=str_replace('<print content="name">',$r['name'],$items);
-		if(stristr($items,'<json-ld-review>')){
-			$jsonldreview='<script type="application/ld+json">{';
-				$jsonldreview.='"@context":"http://schema.org",';
-				$jsonldreview.='"@type":"Review",';
-				$jsonldreview.='"author":"'.$r['name'].'",';
-				$jsonldreview.='"datePublished":"'.date('Y-m-d',$r['ti']).'",';
-				$jsonldreview.='"description":"'.strip_tags($r['notes']).'",';
-				$jsonldreview.='"name":"'.$config['seoTitle'];
-			$jsonldreview.='}</script>';
-			$items=str_replace('<json-ld-review>',$jsonldreview,$items);
-		}
 		$testitems.=$items;
 		$i++;
 	}

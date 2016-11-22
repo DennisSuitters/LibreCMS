@@ -18,9 +18,9 @@
                         File:
                     </div>
                     <select id="filesEditSelect" class="form-control" name="file">
-<?php $fileDefault='meta_head.html';
+<?php if($user['rank']==1000)$fileDefault='theme.ini';else$fileDefault='meta_head.html';
 $files=array();
-foreach(glob("layout/".$config['theme']."/*.html")as$file){
+foreach(glob("layout/".$config['theme']."/*.{html,ini}",GLOB_BRACE)as$file){
     echo'<option value="'.$file.'"';
     if(stristr($file,$fileDefault)){
         echo' selected';

@@ -5,60 +5,35 @@ if($view=='add'){
     $ti=time();
     $schema='';
     $comments=0;
-    if($args[0]=='article')
-        $schema='blogPost';
-    if($args[0]=='inventory')
-        $schema='Product';
-    if($args[0]=='service')
-        $schema='Service';
-    if($args[0]=='gallery')
-        $schema='ImageGallery';
-    if($args[0]=='testimonial')
-        $schema='Review';
-    if($args[0]=='news')
-        $schema='NewsArticle';
-    if($args[0]=='event')
-        $schema='Event';
-    if($args[0]=='portfolio')
-        $schema='CreativeWork';
+    if($args[0]=='article')$schema='blogPosting';
+    if($args[0]=='inventory')$schema='Product';
+    if($args[0]=='service')$schema='Service';
+    if($args[0]=='gallery')$schema='ImageGallery';
+    if($args[0]=='testimonial')$schema='Review';
+    if($args[0]=='news')$schema='NewsArticle';
+    if($args[0]=='event')$schema='Event';
+    if($args[0]=='portfolio')$schema='CreativeWork';
     if($args[0]=='proof'){
         $schema='CreativeWork';
         $comments=1;
     }
     $q=$db->prepare("INSERT INTO content (options,uid,login_user,contentType,schemaType,status,active,ti,eti,pti) VALUES ('00000000',:uid,:login_user,:contentType,:schemaType,'unpublished','1',:ti,:ti,:ti)");
     if(isset($user['id']))
-        $uid=$user['id'];
-    else
-        $uid=0;
-    if($user['name']!='')
-        $login_user=$user['name'];
-    else
-        $login_user=$user['username'];
-    $q->execute(array(
-        ':contentType'=>$args[0],
-        ':uid'=>$uid,
-        ':login_user'=>$login_user,
-        ':schemaType'=>$schema,
-        ':ti'=>$ti
-    ));
+$uid=$user['id'];else$uid=0;
+    if($user['name']!='')$login_user=$user['name'];else$login_user=$user['username'];
+    $q->execute(array(':contentType'=>$args[0],':uid'=>$uid,':login_user'=>$login_user,':schemaType'=>$schema,':ti'=>$ti));
     $id=$db->lastInsertId();
     $args[0]=ucfirst($args[0]).' '.$id;
     $s=$db->prepare("UPDATE content SET title=:title WHERE id=:id");
-    $s->execute(array(
-        ':title'=>$args[0],
-        ':id'=>$id
-    ));
-    if($view!='bookings')
-        $show='item';
+    $s->execute(array(':title'=>$args[0],':id'=>$id));
+    if($view!='bookings')$show='item';
     $rank=0;
     $args[0]='edit';
     $args[1]=$id;
 }
 if($args[0]=='edit'){
     $s=$db->prepare("SELECT * FROM content WHERE id=:id");
-    $s->execute(array(
-        ':id'=>$args[1]
-    ));
+    $s->execute(array(':id'=>$args[1]));
     $show='item';
 }
 if($args[0]=='settings'){
@@ -66,37 +41,17 @@ if($args[0]=='settings'){
 }else{
 if($show=='categories'){
     if($args[0]=='type'){
-        $s=$db->prepare("SELECT * FROM content WHERE
-            contentType=:contentType
-            AND contentType!='message_primary'
-            ORDER BY pin DESC,ti DESC,title ASC");
-        $s->execute(array(
-            ':contentType'=>$args[1]
-        ));
+        $s=$db->prepare("SELECT * FROM content WHERE contentType=:contentType AND contentType!='message_primary' ORDER BY pin DESC,ti DESC,title ASC");
+        $s->execute(array(':contentType'=>$args[1]));
     }else{
         if(isset($args[1])){
-            $s=$db->prepare("SELECT * FROM content WHERE
-                LOWER(category_1) LIKE LOWER(:category_1)
-                AND LOWER(category_2) LIKE LOWER(:category_2)
-                AND contentType!='message_primary'
-                ORDER BY pin DESC,ti DESC,title ASC");
-            $s->execute(array(
-                ':category_1'=>str_replace('-',' ',$args[0]),
-                ':category_2'=>str_replace('-',' ',$args[1])
-            ));
+            $s=$db->prepare("SELECT * FROM content WHERE LOWER(category_1) LIKE LOWER(:category_1) AND LOWER(category_2) LIKE LOWER(:category_2) AND contentType!='message_primary' ORDER BY pin DESC,ti DESC,title ASC");
+            $s->execute(array(':category_1'=>str_replace('-',' ',$args[0]),':category_2'=>str_replace('-',' ',$args[1])));
         }elseif(isset($args[0])){
-            $s=$db->prepare("SELECT * FROM content WHERE
-                LOWER(category_1) LIKE LOWER(:category_1)
-                AND contentType!='message_primary'
-                ORDER BY pin DESC,ti ASC,title ASC");
-            $s->execute(array(
-                ':category_1'=>str_replace('-',' ',$args[0])
-            ));
+            $s=$db->prepare("SELECT * FROM content WHERE LOWER(category_1) LIKE LOWER(:category_1) AND contentType!='message_primary' ORDER BY pin DESC,ti ASC,title ASC");
+            $s->execute(array(':category_1'=>str_replace('-',' ',$args[0])));
         }else{
-            $s=$db->prepare("SELECT * FROM content WHERE
-                contentType!='booking' AND
-                contentType!='message_primary'
-                ORDER BY pin DESC,ti DESC,title ASC");
+            $s=$db->prepare("SELECT * FROM content WHERE contentType!='booking' AND contentType!='message_primary' ORDER BY pin DESC,ti DESC,title ASC");
             $s->execute();
         }
     }?>
@@ -161,7 +116,13 @@ if($show=='categories'){
                     </tr>
                 </thead>
                 <tbody id="listtype" class="list" data-t="menu" data-c="ord">
-<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
+<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){
+    if($r['schemaType']=='blogPost'){
+        $r['schemaType']='blogPosting';
+        $fgs=$db->prepare("UPDATE content set schemaType=:schemaType WHERE id=:id");
+        $fgs->execute(array('schemaType'=>$r['schemaType'],':id'=>$r['id']));
+    }
+    ?>
                     <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='delete')echo' danger';elseif($r['status']=='unpublished')echo'warning';?>">
                         <td>
                             <div class="visible-xs"><small><?php echo ucfirst($r['contentType']);?></small></div>
@@ -440,6 +401,7 @@ if($show=='item'){
             </div>
 <?php /* images */ ?>
             <div id="d26" role="tabpanel" class="tab-pane">
+                <div id="error"></div>
                 <fieldset id="d26t" class="control-fieldset<?php if($r['contentType']!='testimonials'){echo' hidden';}?>">
                     <div class="form-group">
                         <div id="tstavinfo" class="alert alert-info<?php if($r['cid']==0)echo' hidden';?>">Currently using the Avatar associated with the chosen Client Account.</div>
@@ -482,6 +444,13 @@ if($show=='item'){
                             <div class="input-group-btn">
                                 <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','file');"><?php svg('browse-media');?></button>
                             </div>
+                            <div class="input-group-btn">
+                                <form target="sp" method="post" action="core/magicimage.php">
+                                    <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                                    <input type="hidden" name="act" value="file">
+                                    <button class="btn btn-default"><?php svg('magic');?></button>
+                                </form>
+                            </div>
                             <div class="input-group-addon img">
 <?php $rfile=basename($r['file']);
 if($r['file']!=''&&file_exists('media'.DS.$rfile))
@@ -494,6 +463,7 @@ else echo'<img id="fileimage" src="core/images/noimage.jpg">';?>
                                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('trash');?></button>
                             </div>
                         </div>
+                        <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Using the <?php svg('magic');?> button will resize the uploaded image. (<?php echo$theme['settings']['image_width'].'x'.$theme['settings']['image_height'];?>)</small>
                     </div>
                     <div id="d29" class="form-group clearfix">
                         <label for="thumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Thumbnail</label>
@@ -501,6 +471,13 @@ else echo'<img id="fileimage" src="core/images/noimage.jpg">';?>
                             <input id="thumb" type="text" class="form-control" value="<?php echo$r['thumb'];?>" readonly>
                             <div class="input-group-btn">
                                 <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','thumb');"><?php svg('browse-media');?></button>
+                            </div>
+                            <div class="input-group-btn">
+                                <form target="sp" method="post" action="core/magicimage.php">
+                                    <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                                    <input type="hidden" name="act" value="thumb">
+                                    <button class="btn btn-default"><?php svg('magic');?></button>
+                                </form>
                             </div>
                             <div class="input-group-addon img">
 <?php $rthumb=basename($r['thumb']);
@@ -512,7 +489,7 @@ else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
                                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('trash');?></button>
                             </div>
                         </div>
-                        <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Uploaded Images take Precedence over URL's.</div>
+                        <small class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right">Using the <?php svg('magic');?> button will create a Thumbnail from the Center of the above uploaded image. (<?php echo$theme['settings']['thumb_width'].'x'.$theme['settings']['thumb_height'];?>)<br>Uploaded Images take Precedence over URL's.</small>
                     </div>
                     <fieldset id="d30" class="control-fieldset">
                         <legend class="control-legend">Exif Information</legend>
@@ -737,7 +714,7 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
                     <label for="schemaType" class="control-label col-xs-5 col-sm-3 col-lg-2">Schema Type</label>
                     <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                         <select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Schema for Microdata Content."';?>>
-                            <option value="blogPost"<?php if($r['schemaType']=='blogPost')echo' selected';?>>blogPost for Articles</option>
+                            <option value="blogPosting"<?php if($r['schemaType']=='blogPosting')echo' selected';?>>blogPosting for Articles</option>
                             <option value="Product"<?php if($r['schemaType']=='Product')echo' selected';?>>Product for Inventory</option>
                             <option value="Service"<?php if($r['schemaType']=='Service')echo' selected';?>>Service for Services</option>
                             <option value="ImageGallery"<?php if($r['schemaType']=='ImageGallery')echo' selected';?>>ImageGallery for Gallery Images</option>

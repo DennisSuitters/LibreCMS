@@ -37,7 +37,13 @@ if($args[0]=='settings'){
                 <div class="form-group">
                     <label for="ti" class="control-label col-xs-4 col-sm-3 col-lg-2">Created</label>
                     <div class="input-group col-xs-8 col-sm-9 col-lg-10">
-                        <input type="text" id="ti" class="form-control textinput" value="<?php echo date('M jS, Y g:i A',$r['ti']);?>" readonly>
+                        <input type="text" id="ti" class="form-control" value="<?php echo date('M jS, Y g:i A',$r['ti']);?>" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lti" class="control-label col-xs-4 col-sm-3 col-lg-2">Last Login</label>
+                    <div class="input-group col-xs-8 col-sm-9 col-lg-10">
+                        <input type="text" id="lti" class="form-control" value="<?php echo _ago($r['lti']);?>" readonly>
                     </div>
                 </div>
                 <div class="form-group">
@@ -448,7 +454,8 @@ if($args[0]=='type'){
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                     <tr>
-                        <th class="col-xs-7">Username/Name</th>
+                        <th class="col-xs-5">Username/Name</th>
+                        <th class="col-xs-2 text-center">Last Login</th>
                         <th class="col-xs-1 text-center">Rank</th>
                         <th class="col-xs-1 text-center">Status</th>
                         <th class="col-xs-3"></th>
@@ -458,6 +465,7 @@ if($args[0]=='type'){
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>" class="item">
                         <td><?php echo$r['username'].':'.$r['name'];?></td>
+                        <td class="text-center"><?php echo _ago($r['lti']);?></td>
                         <td class="text-center"><?php echo rank($r['rank']);?></td>
                         <td class="text-center"><?php echo$r['status'];?></td>
                         <td id="controls_<?php echo$r['id'];?>" class="text-right">

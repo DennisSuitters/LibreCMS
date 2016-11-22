@@ -84,6 +84,7 @@
 	        						<tr role="row">
 	        							<th role="columnheader">Code</th>
 	        							<th role="columnheader">Title</th>
+										<th role="columnheader">Option</th>
 	        							<th class="col-sm-1 text-center" role="columnheader">Quantity</th>
 	        							<th class="col-sm-1 text-center" role="columnheader">Cost</th>
 	        							<th class="col-sm-1 text-right" role="columnheader">Total</th>
@@ -94,20 +95,21 @@
 	            						<tr role="row">
 	            							<td class="text-left" role="cell"><print orderitem="code"></td>
 	            							<td class="text-left" role="cell"><print orderitem="title"></td>
+											<td class="text-left" role="cell"><print choice></td>
 	                                        <td class="col-md-1 text-center" role="cell"><print orderitem="quantity"></td>
 	                                        <td class="col-md-1 text-right" role="cell"><print orderitem="cost"></td>
 	                                        <td class="text-right" role="cell"><print orderitem="subtotal"></td>
 	                                    </tr>
 	                                </items>
 	        						<tr role="row">
-	        							<td colspan="3" role="cell">&nbsp;</td>
+	        							<td colspan="4" role="cell">&nbsp;</td>
 	        							<td class="text-right" role="cell"><strong>Total</strong></td>
 	        							<td class="text-right" role="cell"><strong><print order="total"></strong></td>
 	        						</tr>
 	        					</tbody>
 	        					<tfoot role="rowgroup">
 	        						<tr role="row">
-	        							<td colspan="3" role="cell">&nbsp;</td>
+	        							<td colspan="4" role="cell">&nbsp;</td>
 	        							<td colspan="2" role="cell">
 	        								<div class="pull-right">
 	        									<div class="btn-group">

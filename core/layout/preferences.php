@@ -15,6 +15,9 @@
             <li><a href="#preference-interface" data-toggle="tab">Interface</a></li>
             <li><a href="#preference-seo" data-toggle="tab">SEO</a></li>
             <li><a href="#preference-backrestore" data-toggle="tab">Backup</a></li>
+<?php if($user['rank']>899){?>
+            <li><a href="#preference-info" data-toggle="tab">Info</a></li>
+<?php }?>
         </ul>
         <div class="tab-content">
             <div id="preference-theme" name="preference-theme" class="tab-pane fade in active">
@@ -425,6 +428,21 @@ if($config['backup_ti']<$tid){
                     </div>
                 </div>
             </div>
+<?php if($user['rank']>899){?>
+            <div id="preference-info" name="preference-info" class="tab-pane fade in">
+                <h4>Information</h4>
+                <div class="form-group">
+<?php   ob_start();
+        phpinfo();
+        preg_match('%<style type="text/css">(.*?)</style>.*?(<body>.*</body>)%s',ob_get_clean(),$matches);
+        echo"<div class='phpinfodisplay'><style type='text/css'>\n",join("\n",array_map(create_function('$i','return ".phpinfodisplay ".preg_replace("/,/",",.phpinfodisplay ",$i);'),preg_split('/\n/',$matches[1]))),"</style>\n",$matches[2],"\n</div>\n";?>
+                </div>
+            </div>
+            <style>
+                .phpinfodisplay table{table-layout:fixed}
+                .phpinfodisplay td,.phpinfodisplay th{white-space:normal;word-wrap:break-word;}
+            </style>
+<?php }?>
         </div>
     </div>
 </div>

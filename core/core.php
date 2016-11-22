@@ -3,40 +3,16 @@ ini_set('session.use_cookies',1);
 ini_set('session.use_only_cookies',1);
 define('DS',DIRECTORY_SEPARATOR);
 require_once'db.php';
-if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)
-	define('PROTOCOL','https://');else define('PROTOCOL','http://');
+if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme']))$config['theme']=$_GET['theme'];
 define('THEME','layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
-if(file_exists(THEME.DS.'images'.DS.'favicon.png'))
-	define('FAVICON',THEME.DS.'images'.DS.'favicon.png');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif'))
-	define('FAVICON',THEME.DS.'images'.DS.'favicon.gif');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg'))
-	define('FAVICON',THEME.DS.'images'.DS.'favicon.jpg');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico'))
-	define('FAVICON',THEME.DS.'images'.DS.'favicon.ico');
-else
-	define('FAVICON','core'.DS.'images'.DS.'favicon.png');
-if(file_exists(THEME.DS.'images'.DS.'noimage.png'))
-	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');
-elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))
-	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.gif');
-elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))
-	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');
-else
-	define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
-if(file_exists(THEME.DS.'images'.DS.'noavatar.png'))
-	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.png');
-elseif(file_exists(THEME.DS.'images'.DS.'noavatar.gif'))
-	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.gif');
-elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))
-	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.jpg');
-else
-	define('NOAVATAR','core'.DS.'images'.DS.'noavatar.jpg');
+if(file_exists(THEME.DS.'images'.DS.'favicon.png'))define('FAVICON',THEME.DS.'images'.DS.'favicon.png');elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif'))define('FAVICON',THEME.DS.'images'.DS.'favicon.gif');elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg'))define('FAVICON',THEME.DS.'images'.DS.'favicon.jpg');elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico'))define('FAVICON',THEME.DS.'images'.DS.'favicon.ico');else define('FAVICON','core'.DS.'images'.DS.'favicon.png');
+if(file_exists(THEME.DS.'images'.DS.'noimage.png'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.gif');elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');else define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
+if(file_exists(THEME.DS.'images'.DS.'noavatar.png'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.png');elseif(file_exists(THEME.DS.'images'.DS.'noavatar.gif'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.gif');elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.jpg');else define('NOAVATAR','core'.DS.'images'.DS.'noavatar.jpg');
 define('YANDEX','trnsl.1.1.20151010T141347Z.abb6d53e6280191b.5decd3b201ae911048617d1869e766124de2023d');
 require'login.php';
 function rank($txt){
@@ -54,23 +30,19 @@ function rank($txt){
 }
 function svg($svg,$size=null,$color=null){
 	echo'<i class="libre';
-	if($size!=null)
-		echo' libre-'.$size;
-	if($color!=null)
-		echo' libre-'.$color;
+	if($size!=null)echo' libre-'.$size;
+	if($color!=null)echo' libre-'.$color;
 	echo'">';
 	include'svg'.DS.'libre-'.$svg.'.svg';
 	echo'</i>';
 }
-function frontsvg($svg,$size=null,$color=null){
-	$out=file_get_contents(THEME.DS.'svg'.DS.'libre-'.$svg.'.svg');
-	return $out;
+function frontsvg($svg){
+	return file_get_contents(THEME.DS.'svg'.DS.'libre-'.$svg.'.svg');
 }
 function microid($identity,$service,$algorithm='sha1'){
 	$microid=substr($identity,0,strpos($identity,':'))."+".substr($service,0,strpos($service,':')).":".strtolower($algorithm).":";
 	if(function_exists('hash')){
-		if(in_array(strtolower($algorithm),hash_algos()))
-			return$microid.=hash($algorithm,hash($algorithm,$identity).hash($algorithm,$service));
+		if(in_array(strtolower($algorithm),hash_algos()))return$microid.=hash($algorithm,hash($algorithm,$identity).hash($algorithm,$service));
 	}
 	if(function_exists('mhash')){
 		$hash_method=@constant('MHASH_'.strtoupper($algorithm));
@@ -80,9 +52,7 @@ function microid($identity,$service,$algorithm='sha1'){
 			return$microid.=bin2hex(mhash($hash_method,$identity_hash.$service_hash));
 		}
 	}
-	if(function_exists($algorithm)){
-		return$microid.=$algorithm($algorithm($identity).$algorithm($service));
-	}
+	if(function_exists($algorithm))return$microid.=$algorithm($algorithm($identity).$algorithm($service));
 }
 function minify($txt){
 	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
@@ -115,6 +85,12 @@ function url_encode($str){
 	$str=str_replace($rep,$ent,$str);
 	$str=str_replace(' ','-',$str);
 	return$str;
+}
+function escaper($val){
+    $esc=array("\\","/","\"","\n","\r","\t","\x08","\x0c");
+    $rep=array("\\\\","\\/","\\\"","\\n","\\r","\\t","\\f","\\b");
+    $res=str_replace($esc,$rep,$val);
+    return$res;
 }
 class internal{
 	function getconfig($db){
@@ -364,10 +340,7 @@ $rts=array(
 $s=$db->prepare("SELECT * FROM menu");
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
-	if(method_exists('front',$r['file']))
-		$rts[$r['contentType']]=array('front',$r['contentType']);
-	else
-		$rts[$r['contentType']]=array('front','content');
+	if(method_exists('front',$r['file']))$rts[$r['contentType']]=array('front',$r['contentType']);else$rts[$r['contentType']]=array('front','content');
 }
 $route->setRoutes($rts);
 $route->routeURL(preg_replace("|/$|","",filter_input(INPUT_GET,'url',FILTER_SANITIZE_URL)));

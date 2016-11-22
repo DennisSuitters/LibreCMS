@@ -6,6 +6,7 @@ $favicon=$this->favicon();
 $share_image=$favicon;
 $noimage=$this->noimage();
 $noavatar=$this->noavatar();
+$theme=parse_ini_file(THEME.DS.'theme.ini',TRUE);
 $sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
 $sp->execute(array(':contentType'=>$view));
 require'core/login.php';
@@ -324,16 +325,13 @@ if($_SESSION['rank']>399){
             })(jQuery);
 <?php }?>
         $(function() {
-              // Javascript to enable link to tab
-              var hash = document.location.hash;
-              if (hash) {
+              var hash=document.location.hash;
+              if(hash){
                 console.log(hash);
                 $('.nav-tabs a[href='+hash+']').tab('show');
               }
-
-              // Change hash for page-reload
-              $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-                window.location.hash = e.target.hash;
+              $('a[data-toggle="tab"]').on('show.bs.tab',function(e){
+                window.location.hash=e.target.hash;
               });
             });
         });

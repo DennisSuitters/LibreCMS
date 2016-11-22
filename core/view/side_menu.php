@@ -104,10 +104,11 @@ if(file_exists(THEME.$amp.DS.'side_menu.html')){
 			$inside=$matches[1];
 		}else$inside=preg_replace('/<media>([\w\W]*?)<\/media>/','',$insides,1);
 		$items=$inside;
-		$items=str_replace('<print content=thumb>',URL.'media/'.$r['thumb'],$items);
+		$items=str_replace('<print content=thumb>',$r['thumb'],$items);
 		$items=str_replace('<print link>',URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$items);
 		$items=str_replace('<print content=schematype>',$r['schemaType'],$items);
 		$items=str_replace('<print metaDate>',date('Y-m-d',$r['ti']),$items);
+		$items=str_replace('<print content=title>',$r['title'],$items);
 		$items=str_replace('<print content="title">',$r['title'],$items);
 		$time='<time datetime='.date('Y-m-d',$r['ti']).'">'.date($config['dateFormat'],$r['ti']).'</time>';
 		if($r['contentType']=='events'||$r['contentType']=='news'){
