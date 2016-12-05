@@ -49,7 +49,6 @@ if($_SESSION['rank']>399){
         <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
         <link rel="stylesheet" type="text/css" href="core/css/codemirror.css">
-        <link rel="stylesheet" type="text/css" href="core/css/eclipse.css">
         <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons-svg.css">
         <link rel="stylesheet" type="text/css" href="core/css/style.css">
         <script src="core/js/jquery-2.1.3.min.js"></script>
@@ -57,13 +56,6 @@ if($_SESSION['rank']>399){
         <script src="core/js/jquery-ui.min.js"></script>
         <script src="core/js/bootstrap.min.js"></script>
         <script src="core/js/bootstrap-tokenfield.min.js"></script>
-        <script src="core/js/summernote.js"></script>
-        <script src="core/js/plugin/summernote-save-button/summernote-save-button.js"></script>
-        <script src="core/js/plugin/summernote-image-attributes/summernote-image-attributes.js"></script>
-        <script src="core/js/plugin/summernote-cleaner/summernote-cleaner.js"></script>
-        <script src="core/js/plugin/summernote-seo/summernote-seo.js"></script>
-        <script src="core/js/plugin/elfinder/elfinder.js"></script>
-		<script src="core/elfinder/js/elfinder.min.js"></script>
         <script src="core/js/codemirror.js"></script>
         <script src="core/js/xml.js"></script>
         <script src="core/js/autorefresh.js"></script>
@@ -71,6 +63,14 @@ if($_SESSION['rank']>399){
         <script src="core/js/matchbrackets.js"></script>
         <script src="core/js/matchtags.js"></script>
         <script src="core/js/hardwrap.js"></script>
+        <script src="core/js/summernote.js"></script>
+        <script src="core/js/plugin/summernote-save-button/summernote-save-button.js"></script>
+        <script src="core/js/plugin/summernote-image-attributes/summernote-image-attributes.js"></script>
+        <script src="core/js/plugin/summernote-video-attributes/summernote-video-attributes.js"></script>
+        <script src="core/js/plugin/summernote-cleaner/summernote-cleaner.js"></script>
+        <script src="core/js/plugin/summernote-seo/summernote-seo.js"></script>
+        <script src="core/js/plugin/elfinder/elfinder.js"></script>
+		<script src="core/elfinder/js/elfinder.min.js"></script>
         <script src="core/js/jquery.notifications.min.js"></script>
         <script src="core/js/featherlight.min.js"></script>
         <script src="core/js/bootstrap-datetimepicker.min.js"></script>
@@ -193,7 +193,15 @@ if($_SESSION['rank']>399){
                             $('#'+c+'image').attr('src',files.url);
                             update(id,t,c,files.url);
                         }else{
+                          if(files.url.match(/\.(jpeg|jpg|gif|png)$/)){
                             $('.summernote').summernote('editor.insertImage',files.url);
+                          }else{
+                            $('.summernote').summernote('createLink', {
+                              text: files.name,
+                              url: files.url,
+                              newWindow: true
+                            });
+                          }
                         }
                     },
                     commandsOptions:{
@@ -255,12 +263,18 @@ if($_SESSION['rank']>399){
 <?php }?>
             $('.summernote').summernote({
                 height:<?php if($view=='bookings'||$view=='orders'||$view=='preferences'||$view=='accounts')echo'100';else echo'300';?>,
+                codemirror: { // codemirror options
+                    theme: 'default',
+                    lineNumbers:true,
+                    lineWrapping:true,
+                    mode:"text/html"
+                },
                 tabsize:2,
                 styleTags:// ['p','blockquote','pre','h1','h2','h3','h4','h5','h6'],
                         ['p','blockquote','pre','h2','h3'],
                 popover:{
                     image:[
-                        ['custom',['imageAttributes', 'imageShape']],
+                        ['custom',['imageAttributes','imageShape']],
                         ['imagesize',['imageSize100','imageSize50','imageSize25']],
                         ['float',['floatLeft','floatRight','floatNone']],
                         ['remove',['removeMedia']],
@@ -273,7 +287,7 @@ if($_SESSION['rank']>399){
                       ['font',['bold','underline','clear']],
                       ['para',['ul','paragraph']],
                       ['table',['table']],
-                      ['insert',['link','picture']]
+                      ['insert',['media','link','picture']]
                     ]
                 },
                 lang:'en-US',
@@ -288,7 +302,7 @@ if($_SESSION['rank']>399){
                     ['para',['ul','ol','paragraph']],
                     ['height',['height']],
                     ['table',['table']],
-                    ['insert',['media','link','hr']],
+                    ['insert',['videoAttributes','media','link','hr']],
                     ['view',['fullscreen','codeview']],
                     ['help',['help']]
                 ]

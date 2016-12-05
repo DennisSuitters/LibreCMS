@@ -206,7 +206,7 @@ if($show=='item'){
         <ul class="nav nav-tabs" role="tablist">
             <li id="d000" role="presentation" class="active"><a href="#d0" aria-controls="d0" role="tab" data-toggle="tab">Content</a></li>
             <li id="d026" class="" role="presentation"><a href="#d26" aria-controls="d26" role="tab" data-toggle="tab">Images</a></li>
-            <li id="o0pts" class="" role="presentation"><a href="#opts" aria-controls="opts" role="tab" data-toggle="tab">Options</a></li>
+            <li id="o0pts" class="<?php if($r['contentType']!='inventory')echo'hidden';?>" role="presentation"><a href="#opts" aria-controls="opts" role="tab" data-toggle="tab">Options</a></li>
             <li id="d043" class="<?php if($r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo'hidden';?>" role="presentation"><a href="#d43" aria-controls="d43" role="tab" data-toggle="tab">Comments</a></li>
             <li id="d060" class="<?php if($r['contentType']=='testimonials'||$r['contentType']=='event'||$r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='news'||$r['contentType']=='portfolio'||$r['contentType']=='proof')echo'hidden';?>" role="presentation"><a href="#d60" aria-controls="d60" role="tab" data-toggle="tab">Reviews</a></li>
             <li id="d044" role="presentation"><a href="#d44" aria-controls="d44" role="tab" data-toggle="tab">SEO</a></li>
@@ -566,7 +566,7 @@ else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
                 </fieldset>
             </div>
 <?php /* options */ ?>
-            <div id="opts" role="tabpanel" class="tab-pane<?php if($r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
+            <div id="opts" role="tabpanel" class="tab-pane<?php if($r['contentType']!='inventory')echo' hidden';?>">
                 <fieldset class="control-fieldset">
                     <legend class="control-legend">Options</legend>
                     <div class="form-group">

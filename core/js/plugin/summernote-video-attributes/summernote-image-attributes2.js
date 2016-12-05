@@ -7,19 +7,6 @@
         factory(window.jQuery);
     }
 }(function($){
-    var readFileAsDataURL=function(file){
-        return $.Deferred(function(deferred){
-            $.extend(new FileReader(),{
-                onload:function(e){
-                    var sDataURL=e.target.result;
-                    deferred.resolve(sDataURL);
-                },
-                onerror:function(){
-                    deferred.reject(this);
-                }
-            }).readAsDataURL(file);
-        }).promise();
-    };
     $.extend(true,$.summernote.lang,{
         'en-US':{ /* English */
             imageAttributes:{
@@ -30,8 +17,6 @@
                 pluginImageTitle:'Image Attributes',
                 pluginLinkTitle:'Link Attributes',
                 title:'Title',
-                src:'Source',
-                srcHelp:'Selecting an image will replace existing image with an Inlined Image.',
                 alt:'Alt',
                 class:'Class',
                 classSelect:'Select Class',
@@ -39,9 +24,9 @@
                 role:'Role',
                 href:'URL',
                 target:'Target',
-                linkClass:'Class',
+                linkClass:'Link Class',
                 linkRole:'Role',
-                rel:'Rel',
+                rel:'Link Rel',
                 relBlank:'Do not use Rel Attribute',
                 relAlternate:'Alternate: Links to an alternate version of the document',
                 relAuthor:'Author: Links to the Author of the Document',
@@ -66,8 +51,6 @@
                 pluginImageTitle:'Atributos de la Imagen',
                 pluginLinkTitle:'Atributos del Enlace',
                 title:'Titulo',
-                src:'Fuente',
-                srcHelp:'La selección de una imagen reemplazará la imagen existente con una imagen Inline.',
                 alt:'Alternativo',
                 class:'Clases',
                 classSelect:'Selecciona Forma',
@@ -102,8 +85,6 @@
                 pluginImageTitle:'Attributs de l\'image',
                 pluginLinkTitle:'Attributs du lien',
                 title:'Titre',
-                src:'La source',
-                srcHelp:'La sélection d\'une image remplacera l\'image existante par une Image Inline.',
                 alt:'Alt',
                 class:'Class CSS',
                 classSelect:'Choisir une Class',
@@ -134,12 +115,10 @@
                 dialogTitle:'圖片提示',
                 tooltip:'圖片提示',
                 tooltipShape:'圖片形狀',
-                tooltipShapeOptions: ['響應式', '圓角', '圓形', '縮圖', '無'],
+                tooltipShapeOptions: [ '圓角', '圓形', '縮圖', '無' ],
                 pluginImageTitle:'圖片屬性',
                 pluginLinkTitle:'連結屬性',
                 title:'標題',
-                src:'資源',
-                srcHelp:'選擇圖像將用內聯圖像替換現有圖像.',
                 alt:'圖片說明',
                 class:'类',
                 classSelect:'選擇 类',
@@ -176,8 +155,6 @@
                 pluginImageTitle:'Attributi Immagine',
                 pluginLinkTitle:'Attributi Collegamento',
                 title:'Titolo',
-                src:'Fonte',
-                srcHelp:'elezione di un\'immagine sostituirà immagine esistente con un inline Immagine.',
                 alt:'Alt',
                 class:'Classe',
                 classSelect:'Seleziona Classe',
@@ -212,8 +189,6 @@
                 pluginImageTitle:'Bild Eigenschaften',
                 pluginLinkTitle:'Link Eigenschaften',
                 title:'Titel',
-                src:'Quelle',
-                srcHelp:'Wenn Sie ein Bild auswählen, wird das bestehende Bild durch ein Inlined Image ersetzt.',
                 alt:'Alt Tag',
                 class:'CSS Klasse',
                 classSelect:'w&auml;hle CSS Klasse',
@@ -238,50 +213,13 @@
                 relSearch:'Search: Link zur Dokumentsuche',
                 relTag:'Tag: Ein Schl&uuml;sselwort (keyword) f&uuml;r diese Seite'
             }
-        },
-        'tr-TR':{ /* Turkish */
-            imageAttributes:{
-                dialogTitle:'Resim Özellikleri',
-                tooltip:'Resim Özellikleri',
-                tooltipShape:'Resim Şekli',
-                tooltipShapeOptions:['Responsive','Yuvarlatılmış','Daire','Önİzleme','Hiçbiri'],
-                pluginImageTitle:'Resim Özellikleri',
-                pluginLinkTitle:'Bağlantı Özellikleri',
-                title:'Başlık',
-                src:'Kaynak',
-                srcHelp:'Bir görüntüyü seçmek, var olan resmi Inlined Image ile değiştirecektir.',
-                alt:'Alt. Metin',
-                class:'Sınıf',
-                classSelect:'Sınıf Seçin',
-                style:'Stil',
-                role:'Rol',
-                href:'URL',
-                target:'Hedef',
-                linkClass:'Bağlantı Sınıfı',
-                linkRole:'Rol',
-                rel:'Bağlantı İlişkisi(Rel)',
-                relBlank:'İlişki özelliğini kullanma',
-                relAlternate:'Alternatif: Belgenin farklı bir versiyonuna bağlantı',
-                relAuthor:'Yazar: Belgenin yazarına bağlantı',
-                relBookmark:'Yer İmi: Yer İmi eklemek için kalıcı adres',
-                relHelp:'Yardım: Yardım dökümanına giden bağlantı',
-                relLicense:'Lisans: Belgenin telif hakkı bilgisine bağlantı',
-                relNext:'Sonraki: Sıradaki belgeye giden bağlantı',
-                relNofollow:'Takip Etme (NoFollow): Arama motorlarının bu bağlantıyı takip etmemesini sağlar',
-                relNoreferrer:'Referanssız (NoReferrer): Tarayıcının bu bağlantıya referans adresi göndermemesi gerektiğini belirtir',
-                relPrefetch:'ÖnBellek(PreFetch): Hedef bağlantının ön belleğe alınması gerektiğini belirtir',
-                relPrev:'Önceki: Önceki belgeye giden bağlantı',
-                relSearch:'Arama: Belge için bir arama aracına bağlantı olduğunu belirtir.',
-                relTag:'Etiket: Belge için bir etiket olduğunu belirtir'
-            }
         }
     });
     $.extend($.summernote.options,{
         imageDialogLayout:'default', /* default|horizontal */
         imageAttributes:{
             icon:'<i class="note-icon-pencil"/>',
-            removeEmpty:true,
-            imageSelect:false
+            removeEmpty:true
         },
         imageShape:{
             icon:'<i class="note-icon-picture"/>',
@@ -298,12 +236,6 @@
             var $editable=context.layoutInfo.editable;
             var options=context.options;
             var lang=options.langInfo;
-            var imageLimitation='';
-            if(options.maximumImageFileSize){
-                var unit=Math.floor(Math.log(options.maximumImageFileSize)/Math.log(1024));
-                var readableSize=(options.maximumImageFileSize/Math.pow(1024,unit)).toFixed(2)*1+' '+' KMGTP'[unit]+'B';
-                imageLimitation='<small>'+lang.image.maximumFileSize+' : '+readableSize+'</small>';
-            }
             context.memo('button.imageAttributes',function(){
                 var button=ui.button({
                     contents:options.imageAttributes.icon,
@@ -324,12 +256,6 @@
                     var body='<dl class="dl-horizontal">'+
                             '<dt><label for="note-image-attributes-title">'+lang.imageAttributes.title+'</label></dt>'+
                             '<dd><input type="text" id="note-image-attributes-title" class="note-image-attributes-title form-control"></dd>'+
-                            '<dt><label for="note-image-attributes-src">'+lang.imageAttributes.src+'</label></dt>'+
-                            '<dd><input type="text" id="note-image-attributes-src" class="note-image-attributes-src form-control"></dd>'+
-                            '<dt><label for="note-group-select-from-files"></label></dt>'+
-                            '<dd><input type="file" id="note-group-select-from-files" name="file" accept="image/*" class="note-image-input form-control">'+imageLimitation+'</dd>'+
-                            '<dt></dt>'+
-                            '<dd><small class="help-block">'+lang.imageAttributes.srcHelp+'</small></dd>'+
                             '<dt><label for="note-image-attributes-alt">'+lang.imageAttributes.alt+'</label></dt>'+
                             '<dd><input type="text" id="note-image-attributes-alt" class="note-image-attributes-alt form-control"></dd>'+
                             '<dt><label for="note-image-attributes-class">'+lang.imageAttributes.class+'</label></dt>'+
@@ -382,19 +308,6 @@
                                 '<label for="note-image-attributes-title" class="control-label col-xs-2">'+lang.imageAttributes.title+'</label>'+
                                 '<div class="input-group col-xs-10">'+
                                     '<input type="text" id="note-image-attributes-title" class="note-image-attributes-title form-control">'+
-                                '</div>'+
-                            '</div>'+
-                            '<div class="form-group">'+
-                                '<label for="note-image-attributes-src" class="control-label col-xs-2">'+lang.imageAttributes.src+'</label>'+
-                                '<div class="input-group col-xs-10">'+
-                                '<input type="text" id="note-image-attributes-src" class="note-image-attributes-src form-control">'+
-                                '</div>'+
-                            '</div>'+
-                            '<div class="form-group note-group-select-from-files">'+
-                                '<label class="control-label col-xs-2"></label>'+
-                                '<div class="input-group col-xs-10">'+
-                                '<input class="note-image-input form-control" type="file" name="file" accept="image/*" />'+imageLimitation+
-                                '<small class="help-block">'+lang.imageAttributes.srcHelp+'</small>'+
                                 '</div>'+
                             '</div>'+
                             '<div class="form-group">'+
@@ -513,7 +426,6 @@
                 var imgInfo={
                     imgDom:$img,
                     title:$img.attr('title'),
-                    src:$img.attr('src'),
                     alt:$img.attr('alt'),
                     role:$img.attr('role'),
                     class:$img.attr('class'),
@@ -534,11 +446,6 @@
                                 $img.attr('title',imgInfo.title);
                             }else{
                                 $img.removeAttr('title');
-                            }
-                            if(imgInfo.src){
-                                $img.attr('src',imgInfo.src);
-                            }else{
-                                $img.attr('src', '#');
                             }
                             if(imgInfo.class){
                                 $img.attr('class',imgInfo.class);
@@ -582,8 +489,6 @@
             this.showLinkDialog=function(imgInfo){
                 return $.Deferred(function(deferred){
                     var $imageTitle=self.$dialog.find('.note-image-attributes-title'),
-                        $imageInput = self.$dialog.find('.note-image-input'),
-                        $imageSrc = self.$dialog.find('.note-image-attributes-src'),
                         $imageAlt=self.$dialog.find('.note-image-attributes-alt'),
                         $imageClass=self.$dialog.find('.note-image-attributes-class'),
                         $imageStyle=self.$dialog.find('.note-image-attributes-style'),
@@ -607,26 +512,11 @@
                     }
                     ui.onDialogShown(self.$dialog,function(){
                         context.triggerEvent('dialog.shown');
-                        $imageInput.replaceWith($imageInput.clone()
-                                   .on('change',function(){
-                                       var callbacks=options.callbacks;
-                                       if(callbacks.onImageUpload){
-                                           context.triggerEvent('image.upload',this.files[0]);
-                                       }else{
-                                           readFileAsDataURL(this.files[0]).then(function(dataURL){
-                                               $imageSrc.val(dataURL)
-                                           }).fail(function(){
-                                               context.triggerEvent('image.upload.error');
-                                           });
-                                       }
-                                   }).val('')
-                        );
                         $editBtn.click(function(e){
                             e.preventDefault();
                             deferred.resolve({
                                 imgDom:imgInfo.imgDom,
                                 title:$imageTitle.val(),
-                                src: $imageSrc.val(),
                                 alt:$imageAlt.val(),
                                 class:$imageClass.val(),
                                 style:$imageStyle.val(),
@@ -639,7 +529,6 @@
                             });
                         });
                         $imageTitle.val(imgInfo.title).focus;
-                        $imageSrc.val(imgInfo.src)
                         $imageAlt.val(imgInfo.alt);
                         $imageClass.val(imgInfo.class);
                         $imageStyle.val(imgInfo.style);
@@ -683,6 +572,7 @@
                                 $button.data('value'),
                                 lang.imageAttributes.tooltipShapeOptions
                             );
+        					/* Options are mutually exclusive, so we just remove the others before adding */
         					$.each(options.imageShape.shapes,function(index,value){
                                 $img.removeClass(value);
                             });

@@ -26,7 +26,8 @@ $opts=array(
             ),
             'uploadAllow'=>array(
                 'image',
-                'text/plain'
+                'text/plain',
+                'application/pdf'
             ),
             'uploadOrder'=>array(
                 'deny',
