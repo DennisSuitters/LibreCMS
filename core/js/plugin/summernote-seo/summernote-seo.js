@@ -7,162 +7,159 @@
     factory(window.jQuery);
   }
 }(function($){
-    $.extend(true,$.summernote.lang,{
-        'en-US':{
-            seo:{
-                tooltip:'SEO',
-                keyNot:'Keywords Extracted, you should review them!!!',
-                keyNotError:'Something went wrong!!!',
-                capNot:'Caption has been Copied!!!',
-                capNotError:'You haven\'t Selected Any Text for the Caption!!!',
-                desNot:'Description has been Copied!!!',
-                desNotError:'You haven\'t Selected Any Text for the Description!!!',
+  $.extend(true,$.summernote.lang,{
+    'en-US':{
+      seo:{
+        tooltip:'SEO',
+        keyNot:'Keywords Extracted, you should review them!!!',
+        keyNotError:'Something went wrong!!!',
+        capNot:'Caption has been Copied!!!',
+        capNotError:'You haven\'t Selected Any Text for the Caption!!!',
+        desNot:'Description has been Copied!!!',
+        desNotError:'You haven\'t Selected Any Text for the Description!!!',
+      }
+    }
+  });
+  $.extend($.summernote.options,{
+    seo:{
+      el:'.summernote', // Element ID or Class used to Initialise Summernote.
+      notTime:2400, // Time to display Notifications.
+      keyEl:'#seoKeywords', // ID or Class of the Target Element to place Keywords.
+      keyElType:'input', // input|html
+      capEl:'#seoCaption', // ID or Class of the Target Element to place Caption.
+      capElType:'input', // input|html
+      desEl:'#seoDescription', // ID or Class of the Target Element to place Description.
+      desElType:'input', // input|html
+      triggerInput:true, // Set this to True if like me you use AJAX to update single fields
+      action:'replace', // replace|append Replace or Append Content.
+      successClass:'alert alert-success',
+      errorClass:'alert alert-danger',
+      icon:'<i class="note-icon"><svg xmlns="http://www.w3.org/2000/svg" id="libre-seo" viewBox="0 0 14 14"><path d="m 5.900978,8.5734763 c 0.57772,0 1.122935,0.12568 1.606781,0.34835 -0.377331,-0.42276 -0.96108,-0.6955 -1.618199,-0.6955 -0.666351,0 -1.257265,0.28066 -1.633576,0.71365 0.493486,-0.23377 1.052332,-0.3665 1.644994,-0.3665 z m 1.654664,-5.33156 c -0.899973,-0.89998 -2.353986,-0.89272 -3.254134,0.007 -0.899973,0.89992 -0.906148,2.35737 -0.0061,3.25714 l 1.6258,1.61694 1.629325,-1.62956 c 0.900031,-0.90006 0.905012,-2.35177 0.0052,-3.2517101 z m -1.62845,3.00577 c -0.765672,0 -1.386324,-0.62074 -1.386324,-1.38623 0,-0.7658201 0.620652,-1.38647 1.386324,-1.38647 0.765817,0 1.386498,0.62079 1.386498,1.38647 0,0.7653799 -0.620506,1.38623 -1.386498,1.38623 z m 3.482804,-3.80628 c -1.92114,-1.92163005 -5.047381,-1.92163005 -6.968813,0 -1.921577,1.9211399 -1.921577,5.0475299 0,6.96881 1.855519,1.8554897 4.834556,1.9186397 6.767084,0.19043 l 0.390671,0.39082 c -0.09728,0.2489997 -0.04628,0.5424197 0.154807,0.7435297 l 2.061471,2.06145 c 0.270991,0.27116 0.710564,0.27116 0.98141,0 0.271165,-0.27085 0.271165,-0.71031 0,-0.98159 L 10.735329,9.7538263 c -0.201262,-0.20141 -0.494797,-0.25238 -0.743827,-0.15496 l -0.39067,-0.39081 c 1.728528,-1.93241 1.6648,-4.91145 -0.190836,-6.76665 z m -6.379938,6.38008 c -1.596673,-1.59649 -1.596673,-4.19476 0,-5.7914401 1.596528,-1.59667 4.19471,-1.59667 5.791354,0 1.596674,1.59668 1.596674,4.1949201 0,5.7914401 -1.596644,1.5964997 -4.194826,1.5964997 -5.791354,0 z"/></svg></i> &nbsp;<span class="caret"></span>',
+      menu:[
+        'Extract Keywords',
+        'Copy Caption',
+        'Copy Description'
+      ]
+    }
+  });
+  $.extend($.summernote.plugins,{
+    'seo':function(context){
+      var self=this;
+      var ui=$.summernote.ui;
+      var $note=context.layoutInfo.note;
+      var $editor=context.layoutInfo.editor;
+      var $editable=context.layoutInfo.editable;
+      var options=context.options;
+      var lang=options.langInfo;
+      context.memo('button.seo',function(){
+        var button=ui.buttonGroup([
+          ui.button({
+            className:'dropdown-toggle',
+            contents:options.seo.icon,
+            tooltip:lang.seo.tooltip,
+            data:{
+              toggle:'dropdown'
             }
-        }
-    });
-    $.extend($.summernote.options,{
-        seo:{
-            el:'.summernote', // Element ID or Class used to Initialise Summernote.
-            notTime:2400, // Time to display Notifications.
-            keyEl:'#seoKeywords', // ID or Class of the Target Element to place Keywords.
-            keyElType:'input', // input|html
-            capEl:'#seoCaption', // ID or Class of the Target Element to place Caption.
-            capElType:'input', // input|html
-            desEl:'#seoDescription', // ID or Class of the Target Element to place Description.
-            desElType:'input', // input|html
-            triggerInput:true, // Set this to True if like me you use AJAX to update single fields
-            action:'replace', // replace|append Replace or Append Content.
-            successClass:'alert alert-success',
-            errorClass:'alert alert-danger',
-            icon:'<i class="note-icon"><svg xmlns="http://www.w3.org/2000/svg" id="libre-seo" viewBox="0 0 14 14"><path d="m 5.900978,8.5734763 c 0.57772,0 1.122935,0.12568 1.606781,0.34835 -0.377331,-0.42276 -0.96108,-0.6955 -1.618199,-0.6955 -0.666351,0 -1.257265,0.28066 -1.633576,0.71365 0.493486,-0.23377 1.052332,-0.3665 1.644994,-0.3665 z m 1.654664,-5.33156 c -0.899973,-0.89998 -2.353986,-0.89272 -3.254134,0.007 -0.899973,0.89992 -0.906148,2.35737 -0.0061,3.25714 l 1.6258,1.61694 1.629325,-1.62956 c 0.900031,-0.90006 0.905012,-2.35177 0.0052,-3.2517101 z m -1.62845,3.00577 c -0.765672,0 -1.386324,-0.62074 -1.386324,-1.38623 0,-0.7658201 0.620652,-1.38647 1.386324,-1.38647 0.765817,0 1.386498,0.62079 1.386498,1.38647 0,0.7653799 -0.620506,1.38623 -1.386498,1.38623 z m 3.482804,-3.80628 c -1.92114,-1.92163005 -5.047381,-1.92163005 -6.968813,0 -1.921577,1.9211399 -1.921577,5.0475299 0,6.96881 1.855519,1.8554897 4.834556,1.9186397 6.767084,0.19043 l 0.390671,0.39082 c -0.09728,0.2489997 -0.04628,0.5424197 0.154807,0.7435297 l 2.061471,2.06145 c 0.270991,0.27116 0.710564,0.27116 0.98141,0 0.271165,-0.27085 0.271165,-0.71031 0,-0.98159 L 10.735329,9.7538263 c -0.201262,-0.20141 -0.494797,-0.25238 -0.743827,-0.15496 l -0.39067,-0.39081 c 1.728528,-1.93241 1.6648,-4.91145 -0.190836,-6.76665 z m -6.379938,6.38008 c -1.596673,-1.59649 -1.596673,-4.19476 0,-5.7914401 1.596528,-1.59667 4.19471,-1.59667 5.791354,0 1.596674,1.59668 1.596674,4.1949201 0,5.7914401 -1.596644,1.5964997 -4.194826,1.5964997 -5.791354,0 z"/></svg></i> &nbsp;<span class="caret"></span>',
-            menu:[
-                'Extract Keywords',
-                'Copy Caption',
-                'Copy Description'
-            ]
-        }
-    });
-    $.extend($.summernote.plugins,{
-        'seo':function(context){
-            var self=this;
-            var ui=$.summernote.ui;
-            var $note=context.layoutInfo.note;
-            var $editor=context.layoutInfo.editor;
-            var $editable=context.layoutInfo.editable;
-            var options=context.options;
-            var lang=options.langInfo;
-            context.memo('button.seo',function(){
-                var button=ui.buttonGroup([
-                    ui.button({
-                        className:'dropdown-toggle',
-                        contents:options.seo.icon,
-                        tooltip:lang.seo.tooltip,
-                        data:{
-                            toggle:'dropdown'
-                        }
-                    }),
-                    ui.dropdown({
-                        className:'dropdown-template',
-                        items:options.seo.menu,
-                        click:function(event){
-                            var $button=$(event.target);
-                            var value=$button.data('value');
-                            event.preventDefault();
-                            switch(value){
-                                case'Copy Caption':
-                                    var text=$(options.seo.el).summernote('createRange');
-                                    text.toString();
-                                    if(text==''){
-                                        $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.errorClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.capNotError+'</div>');
-                                        setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
-                                    }else{
-                                        if(options.seo.capElType=='input'){
-                                            if(options.seo.action=='replace'){
-                                                $(options.seo.capEl).val(text);
-                                            }else{
-                                                var preText=$(options.seo.capEl).val();
-                                                if(preText!='')preText+=', ';
-                                                $(options.seo.capEl).val(preText+text);
-                                            }
-                                            if(options.seo.triggerInput==true)$(options.seo.capEl).trigger("change");
-                                        }else{
-                                            if(options.seo.action=='replace'){
-                                                $(options.seo.capEl).html(text);
-                                            }else{
-                                                var preText=$(options.seo.capEl).html();
-                                                $(options.seo.capEl).html(preText+text);
-                                            }
-                                        }
-                                        $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.capNot+'</div>');
-                                        setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
-                                    }
-                                    break;
-                                case'Copy Description':
-                                    var text=$(options.seo.el).summernote('createRange');
-                                    text.toString();
-                                    if(text==''){
-                                        $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.errorClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.desNotError+'</div>');
-                                        setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
-                                    }else{
-                                        if(options.seo.desElType=='input'){
-                                            if(options.seo.action=='replace'){
-                                                $(options.seo.desEl).val(text);
-                                            }else{
-                                                var preText=$(options.seo.desEl).val();
-                                                if(preText!='')preText+=', ';
-                                                $(options.seo.desEl).val(preText+text);
-                                            }
-                                            if(options.seo.triggerInput==true)$(options.seo.desEl).trigger("change");
-                                        }else{
-                                            if(options.seo.action=='replace'){
-                                                $(options.seo.desEl).html(text);
-                                            }else{
-                                                var preText=$(options.seo.desEl).html();
-                                                $(options.seo.desEl).html(preText+text);
-                                            }
-                                        }
-                                        $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.desNot+'</div>');
-                                        setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
-                                    }
-                                    break;
-                                case'Extract Keywords':
-                                    var text=getKeywords($(options.seo.el).text());
-                                    if(options.seo.keyElType=='input'){
-                                        if(options.seo.action=='replace'){
-                                            $(options.seo.keyEl).val(text);
-                                        }else{
-                                            var preText=$(options.seo.keyEl).val();
-                                            if(preText!='')preText+=',';
-                                            $(options.seo.keyEl).val(preText+','+text);
-                                        }
-                                        if(options.seo.triggerInput==true)$(options.seo.keyEl).trigger("change");
-                                    }else{
-                                        if(options.seo.action=='replace'){
-                                            $(options.seo.keyEl).html(text);
-                                        }else{
-                                            var preText=$(options.seo.keyEl).html();
-                                            $(options.seo.keyEl).html(preText+','+text);
-                                        }
-                                    }
-                                    $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.keyNot+'</div>');
-                                    setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
-                                    break;
-                            }
-                        }
-                    })
-                ]);
-                return button.render();
-            });
-        }
-    });
+          }),
+          ui.dropdown({
+            className:'dropdown-template',
+            items:options.seo.menu,
+            click:function(event){
+              var $button=$(event.target);
+              var value=$button.data('value');
+              event.preventDefault();
+              switch(value){
+                case'Copy Caption':
+                  var text=$(options.seo.el).summernote('createRange');
+                  text.toString();
+                  if(text==''){
+                    $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.errorClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.capNotError+'</div>');
+                    setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
+                  }else{
+                    if(options.seo.capElType=='input'){
+                      if(options.seo.action=='replace'){
+                        $(options.seo.capEl).val(text);
+                      }else{
+                        var preText=$(options.seo.capEl).val();
+                        if(preText!='')preText+=', ';
+                        $(options.seo.capEl).val(preText+text);
+                      }
+                      if(options.seo.triggerInput==true)$(options.seo.capEl).trigger("change");
+                    }else{
+                      if(options.seo.action=='replace'){
+                        $(options.seo.capEl).html(text);
+                      }else{
+                        var preText=$(options.seo.capEl).html();
+                        $(options.seo.capEl).html(preText+text);
+                      }
+                    }
+                    $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.capNot+'</div>');
+                    setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
+                  }
+                  break;
+                case'Copy Description':
+                  var text=$(options.seo.el).summernote('createRange');
+                  text.toString();
+                  if(text==''){
+                    $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.errorClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.desNotError+'</div>');
+                    setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
+                  }else{
+                    if(options.seo.desElType=='input'){
+                      if(options.seo.action=='replace'){
+                        $(options.seo.desEl).val(text);
+                      }else{
+                        var preText=$(options.seo.desEl).val();
+                        if(preText!='')preText+=', ';
+                        $(options.seo.desEl).val(preText+text);
+                      }
+                      if(options.seo.triggerInput==true)$(options.seo.desEl).trigger("change");
+                    }else{
+                      if(options.seo.action=='replace'){
+                        $(options.seo.desEl).html(text);
+                      }else{
+                        var preText=$(options.seo.desEl).html();
+                        $(options.seo.desEl).html(preText+text);
+                      }
+                    }
+                    $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.desNot+'</div>');
+                    setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
+                  }
+                  break;
+                case'Extract Keywords':
+                  var text=getKeywords($(options.seo.el).text());
+                  if(options.seo.keyElType=='input'){
+                    if(options.seo.action=='replace'){
+                      $(options.seo.keyEl).val(text);
+                    }else{
+                      var preText=$(options.seo.keyEl).val();
+                      if(preText!='')preText+=',';
+                      $(options.seo.keyEl).val(preText+','+text);
+                    }
+                    if(options.seo.triggerInput==true)$(options.seo.keyEl).trigger("change");
+                  }else{
+                    if(options.seo.action=='replace'){
+                      $(options.seo.keyEl).html(text);
+                    }else{
+                      var preText=$(options.seo.keyEl).html();
+                      $(options.seo.keyEl).html(preText+','+text);
+                    }
+                  }
+                  $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.keyNot+'</div>');
+                  setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
+                  break;
+                }
+              }
+            })
+          ]);
+          return button.render();
+        });
+      }
+  });
 }));
 var soundex={
-    codes:{A:{0:[0,-1,-1],I:[[0,1,-1]],J:[[0,1,-1]],Y:[[0,1,-1]],U:[[0,7,-1]]},B:[[7,7,7]],C:{0:[5,5,5],1:[4,4,4],Z:{0:[4,4,4],S:[[4,4,4]]},S:{0:[4,4,4],Z:[[4,4,4]]},K:[[5,5,5],[45,45,45]],H:{0:[5,5,5],1:[4,4,4],S:[[5,54,54]]}},D:{0:[3,3,3],T:[[3,3,3]],Z:{0:[4,4,4],H:[[4,4,4]],S:[[4,4,4]]},S:{0:[4,4,4],H:[[4,4,4]],Z:[[4,4,4]]},R:{S:[[4,4,4]],Z:[[4,4,4]]}},E:{0:[0,-1,-1],I:[[0,1,-1]],J:[[0,1,-1]],Y:[[0,1,-1]],U:[[1,1,-1]],W:[[1,1,-1]]},F:{0:[7,7,7],B:[[7,7,7]]},G:[[5,5,5]],H:[[5,5,-1]],I:{0:[0,-1,-1],A:[[1,-1,-1]],E:[[1,-1,-1]],O:[[1,-1,-1]],U:[[1,-1,-1]]},J:[[4,4,4]],K:{0:[5,5,5],H:[[5,5,5]],S:[[5,54,54]]},L:[[8,8,8]],M:{0:[6,6,6],N:[[66,66,66]]},N:{0:[6,6,6],M:[[66,66,66]]},O:{0:[0,-1,-1],I:[[0,1,-1]],J:[[0,1,-1]],Y:[[0,1,-1]]},P:{0:[7,7,7],F:[[7,7,7]],H:[[7,7,7]]},Q:[[5,5,5]],R:{0:[9,9,9],Z:[[94,94,94],[94,94,94]],S:[[94,94,94],[94,94,94]]},S:{0:[4,4,4],Z:{0:[4,4,4],T:[[2,43,43]],C:{Z:[[2,4,4]],S:[[2,4,4]]},D:[[2,43,43]]},D:[[2,43,43]],T:{0:[2,43,43],R:{Z:[[2,4,4]],S:[[2,4,4]]},C:{H:[[2,4,4]]},S:{H:[[2,4,4]],C:{H:[[2,4,4]]}}},C:{0:[2,4,4],H:{0:[4,4,4],T:{0:[2,43,43],S:{C:{H:[[2,4,4]]},H:[[2,4,4]]},C:{H:[[2,4,4]]}},D:[[2,43,43]]}},H:{0:[4,4,4],T:{0:[2,43,43],C:{H:[[2,4,4]]},S:{H:[[2,4,4]]}},C:{H:[[2,4,4]]},D:[[2,43,43]]}},T:{0:[3,3,3],C:{0:[4,4,4],H:[[4,4,4]]},Z:{0:[4,4,4],S:[[4,4,4]]},S:{0:[4,4,4],Z:[[4,4,4]],H:[[4,4,4]],C:{H:[[4,4,4]]}},T:{S:{0:[4,4,4],Z:[[4,4,4]],C:{H:[[4,4,4]]}},C:{H:[[4,4,4]]},Z:[[4,4,4]]},H:[[3,3,3]],R:{Z:[[4,4,4]],S:[[4,4,4]]}},U:{0:[0,-1,-1],E:[[0,-1,-1]],I:[[0,1,-1]],J:[[0,1,-1]],Y:[[0,1,-1]]},V:[[7,7,7]],W:[[7,7,7]],X:[[5,54,54]],Y:[[1,-1,-1]],Z:{0:[4,4,4],D:{0:[2,43,43],Z:{0:[2,4,4],H:[[2,4,4]]}},H:{0:[4,4,4],D:{0:[2,43,43],Z:{H:[[2,4,4]]}}},S:{0:[4,4,4],H:[[4,4,4]],C:{H:[[4,4,4]]}}}},
-    en:['A','a','B','b','V','v','G','g','D','d','E','e','E','e','ZH','zh','Z','z',
-    'I','i','I','i','K','k','L','l','M','m','N','n','O','o','P','p','R','r',
-    'S','s','T','t','U','u','F','f','H','h','C','c','CH','ch','SH','sh','SCH','sch',
-    '\'','\'','Y','y','\'','\'','E','e','YU','Yu','YA','ya'],
-    accented:{
+  codes:{A:{0:[0,-1,-1],I:[[0,1,-1]],J:[[0,1,-1]],Y:[[0,1,-1]],U:[[0,7,-1]]},B:[[7,7,7]],C:{0:[5,5,5],1:[4,4,4],Z:{0:[4,4,4],S:[[4,4,4]]},S:{0:[4,4,4],Z:[[4,4,4]]},K:[[5,5,5],[45,45,45]],H:{0:[5,5,5],1:[4,4,4],S:[[5,54,54]]}},D:{0:[3,3,3],T:[[3,3,3]],Z:{0:[4,4,4],H:[[4,4,4]],S:[[4,4,4]]},S:{0:[4,4,4],H:[[4,4,4]],Z:[[4,4,4]]},R:{S:[[4,4,4]],Z:[[4,4,4]]}},E:{0:[0,-1,-1],I:[[0,1,-1]],J:[[0,1,-1]],Y:[[0,1,-1]],U:[[1,1,-1]],W:[[1,1,-1]]},F:{0:[7,7,7],B:[[7,7,7]]},G:[[5,5,5]],H:[[5,5,-1]],I:{0:[0,-1,-1],A:[[1,-1,-1]],E:[[1,-1,-1]],O:[[1,-1,-1]],U:[[1,-1,-1]]},J:[[4,4,4]],K:{0:[5,5,5],H:[[5,5,5]],S:[[5,54,54]]},L:[[8,8,8]],M:{0:[6,6,6],N:[[66,66,66]]},N:{0:[6,6,6],M:[[66,66,66]]},O:{0:[0,-1,-1],I:[[0,1,-1]],J:[[0,1,-1]],Y:[[0,1,-1]]},P:{0:[7,7,7],F:[[7,7,7]],H:[[7,7,7]]},Q:[[5,5,5]],R:{0:[9,9,9],Z:[[94,94,94],[94,94,94]],S:[[94,94,94],[94,94,94]]},S:{0:[4,4,4],Z:{0:[4,4,4],T:[[2,43,43]],C:{Z:[[2,4,4]],S:[[2,4,4]]},D:[[2,43,43]]},D:[[2,43,43]],T:{0:[2,43,43],R:{Z:[[2,4,4]],S:[[2,4,4]]},C:{H:[[2,4,4]]},S:{H:[[2,4,4]],C:{H:[[2,4,4]]}}},C:{0:[2,4,4],H:{0:[4,4,4],T:{0:[2,43,43],S:{C:{H:[[2,4,4]]},H:[[2,4,4]]},C:{H:[[2,4,4]]}},D:[[2,43,43]]}},H:{0:[4,4,4],T:{0:[2,43,43],C:{H:[[2,4,4]]},S:{H:[[2,4,4]]}},C:{H:[[2,4,4]]},D:[[2,43,43]]}},T:{0:[3,3,3],C:{0:[4,4,4],H:[[4,4,4]]},Z:{0:[4,4,4],S:[[4,4,4]]},S:{0:[4,4,4],Z:[[4,4,4]],H:[[4,4,4]],C:{H:[[4,4,4]]}},T:{S:{0:[4,4,4],Z:[[4,4,4]],C:{H:[[4,4,4]]}},C:{H:[[4,4,4]]},Z:[[4,4,4]]},H:[[3,3,3]],R:{Z:[[4,4,4]],S:[[4,4,4]]}},U:{0:[0,-1,-1],E:[[0,-1,-1]],I:[[0,1,-1]],J:[[0,1,-1]],Y:[[0,1,-1]]},V:[[7,7,7]],W:[[7,7,7]],X:[[5,54,54]],Y:[[1,-1,-1]],Z:{0:[4,4,4],D:{0:[2,43,43],Z:{0:[2,4,4],H:[[2,4,4]]}},H:{0:[4,4,4],D:{0:[2,43,43],Z:{H:[[2,4,4]]}}},S:{0:[4,4,4],H:[[4,4,4]],C:{H:[[4,4,4]]}}}},
+  en:['A','a','B','b','V','v','G','g','D','d','E','e','E','e','ZH','zh','Z','z','I','i','I','i','K','k','L','l','M','m','N','n','O','o','P','p','R','r','S','s','T','t','U','u','F','f','H','h','C','c','CH','ch','SH','sh','SCH','sch','\'','\'','Y','y','\'','\'','E','e','YU','Yu','YA','ya'],
+  accented:{
     'A': /[Aa\xaa\xc0-\xc5\xe0-\xe5\u0100-\u0105\u01cd\u01ce\u0200-\u0203\u0226\u0227\u1d2c\u1d43\u1e00\u1e01\u1e9a\u1ea0-\u1ea3\u2090\u2100\u2101\u213b\u249c\u24b6\u24d0\u3371-\u3374\u3380-\u3384\u3388\u3389\u33a9-\u33af\u33c2\u33ca\u33df\u33ff\uff21\uff41]/ig,
     'B': /[Bb\u1d2e\u1d47\u1e02-\u1e07\u212c\u249d\u24b7\u24d1\u3374\u3385-\u3387\u33c3\u33c8\u33d4\u33dd\uff22\uff42]/ig,
     'C': /[Cc\xc7\xe7\u0106-\u010d\u1d9c\u2100\u2102\u2103\u2105\u2106\u212d\u216d\u217d\u249e\u24b8\u24d2\u3376\u3388\u3389\u339d\u33a0\u33a4\u33c4-\u33c7\uff23\uff43]/ig,
@@ -189,74 +186,74 @@ var soundex={
     'X': /[Xx\u02e3\u1e8a-\u1e8d\u2093\u213b\u2168-\u216b\u2178-\u217b\u24b3\u24cd\u24e7\u33d3\uff38\uff58]/ig,
     'Y': /[Yy\xdd\xfd\xff\u0176-\u0178\u0232\u0233\u02b8\u1e8e\u1e8f\u1e99\u1ef2-\u1ef9\u24b4\u24ce\u24e8\u33c9\uff39\uff59]/ig,
     'Z': /[Zz\u0179-\u017e\u01f1-\u01f3\u1dbb\u1e90-\u1e95\u2124\u2128\u24b5\u24cf\u24e9\u3390-\u3394\uff3a\uff5a]/ig},
-    cache:{},
-    word:function(str,iscyr){
-        var l=str.length,
-            output='',
-            i=0,
-            iscyr=iscyr||true,
-            previous=-1,
-            power=6;
-        while(i<l){
-            var current=last=this.codes[str[i]];
-            for(var j=k=1;k<power+1;k++){
-                if(!str[i+k]||!current[str[i+k]])break;
-                current=current[str[i+k]];
-                if(current[0]){
-                    last=current;
-                    j=k+1;
-                }
-            }
-            var code;
-            if(i==0){
-                code=last[0][0];
-            }else if(!str[i+j]||this.codes[str[i+j]][0][0]!=0){
-                code=iscyr?(last.length>1?last[1][2]:last[0][2]):last[0][2];
-            }else{
-                code=iscyr?(last.length>1?last[1][1]:last[0][1]):last[0][1];
-            }
-            if((code!=-1)&&(code!=previous))output+=code;
-            previous=code;
-            i+=j;
+  cache:{},
+  word:function(str,iscyr){
+    var l=str.length,
+      output='',
+      i=0,
+      iscyr=iscyr||true,
+      previous=-1,
+      power=6;
+      while(i<l){
+        var current=last=this.codes[str[i]];
+        for(var j=k=1;k<power+1;k++){
+          if(!str[i+k]||!current[str[i+k]])break;
+          current=current[str[i+k]];
+          if(current[0]){
+            last=current;
+            j=k+1;
+          }
         }
-        if(output&&output.length<3)output+=(new Array(3-output.length+1)).join('0');
-        return output;
+        var code;
+        if(i==0){
+          code=last[0][0];
+        }else if(!str[i+j]||this.codes[str[i+j]][0][0]!=0){
+          code=iscyr?(last.length>1?last[1][2]:last[0][2]):last[0][2];
+        }else{
+          code=iscyr?(last.length>1?last[1][1]:last[0][1]):last[0][1];
+        }
+        if((code!=-1)&&(code!=previous))output+=code;
+        previous=code;
+        i+=j;
+      }
+      if(output&&output.length<3)output+=(new Array(3-output.length+1)).join('0');
+      return output;
     },
     calc:function(str){
-        var str=str.toUpperCase(),
-            iscyr=false,
-            trans=str.match(/[А-Я]/g);
-        for(var letter in this.accented){
-            str.replace(this.accented[letter],letter);
+      var str=str.toUpperCase(),
+        iscyr=false,
+        trans=str.match(/[А-Я]/g);
+      for(var letter in this.accented){
+        str.replace(this.accented[letter],letter);
+      }
+      if(trans){
+        str=this.translit(str,trans);
+        iscyr=true;
+      }
+      str=str.replace(/[^\s^A-Z]/g,'').replace(/\s{2,}/g,' ').replace(/^\s+|\s+$/g,'');
+      if(!str)return null;
+      var matches=str.split(' ');
+      for(var i=0,l=matches.length;i<l;i++){
+        var word=matches[i];
+        if(this.cache[word]){
+          matches[i]=this.cache[word];
+        }else{
+          matches[i]=this.cache[word]=this.word(word,iscyr);
         }
-        if(trans){
-            str=this.translit(str,trans);
-            iscyr=true;
-        }
-        str=str.replace(/[^\s^A-Z]/g,'').replace(/\s{2,}/g,' ').replace(/^\s+|\s+$/g,'');
-        if(!str)return null;
-        var matches=str.split(' ');
-        for(var i=0,l=matches.length;i<l;i++){
-            var word=matches[i];
-            if(this.cache[word]){
-                matches[i]=this.cache[word];
-            }else{
-                matches[i]=this.cache[word]=this.word(word,iscyr);
-            }
-        }
-        matches=matches.toString().substr(0,4);
-        return matches;
+      }
+      matches=matches.toString().substr(0,4);
+      return matches;
     },
     translit:function(str,matches){
-        for(var i=0,l=matches.length;i<l;i++){
-            var index=$.inArray(matches[i],this.ru);
-            str=str.replace(matches[i],this.en[index]);
-        }
-        return str;
+      for(var i=0,l=matches.length;i<l;i++){
+        var index=$.inArray(matches[i],this.ru);
+        str=str.replace(matches[i],this.en[index]);
+      }
+      return str;
     }
 };
 function getKeywords(sourceText){
-    var start=Date.now();
+  var start=Date.now();
 	sourceText=sourceText.replace(/<style([\s\S]*?)\/style>/ig," ");
 	sourceText=sourceText.replace(/<script([\s\S]*?)\/script>/ig," ");
 	sourceText=sourceText.replace(/<\/?[a-z][a-z0-9]*[^<>]*>/ig," ");

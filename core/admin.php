@@ -197,9 +197,9 @@ if($_SESSION['rank']>399){
                             $('.summernote').summernote('editor.insertImage',files.url);
                           }else{
                             $('.summernote').summernote('createLink', {
-                              text: files.name,
-                              url: files.url,
-                              newWindow: true
+                              text:files.name,
+                              url:files.url,
+                              newWindow:true
                             });
                           }
                         }
@@ -263,15 +263,15 @@ if($_SESSION['rank']>399){
 <?php }?>
             $('.summernote').summernote({
                 height:<?php if($view=='bookings'||$view=='orders'||$view=='preferences'||$view=='accounts')echo'100';else echo'300';?>,
-                codemirror: { // codemirror options
-                    theme: 'default',
+                codemirror:{
+                    theme:'default',
                     lineNumbers:true,
                     lineWrapping:true,
                     mode:"text/html"
                 },
                 tabsize:2,
-                styleTags:// ['p','blockquote','pre','h1','h2','h3','h4','h5','h6'],
-                        ['p','blockquote','pre','h2','h3'],
+                styleTags:
+                        ['p','blockquote','pre','h2','h3','h4','h5','h6'],
                 popover:{
                     image:[
                         ['custom',['imageAttributes','imageShape']],
@@ -330,9 +330,11 @@ if($_SESSION['rank']>399){
                         clearTimeout(idleTimer);
                         idleState=false;
                         idleTimer=setTimeout(function(){
-                            var newUrl="<?php echo URL.$settings['system']['admin'].'/logout';?>";
-                            document.location.href=newUrl;
-                            idleState=true},idleWait);
+                          idleState=true;
+                          unsaved=false;
+                          var newUrl="<?php echo URL.$settings['system']['admin'].'/logout';?>";
+                          document.location.href=newUrl;
+                        },idleWait);
                         });
                         $("body").trigger("mousemove");
                     });
@@ -341,7 +343,6 @@ if($_SESSION['rank']>399){
         $(function() {
               var hash=document.location.hash;
               if(hash){
-                console.log(hash);
                 $('.nav-tabs a[href='+hash+']').tab('show');
               }
               $('a[data-toggle="tab"]').on('show.bs.tab',function(e){

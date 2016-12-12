@@ -1,6 +1,10 @@
 ![LibreCMS](core/images/librecms.png)  
 a **Free** Open Source Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/StudioJunkyard/LibreICONS). Built to take advantage of HTML5 and CSS3, and injects necessary SEO attributes that fit in with Google's recommendations, and Micro-formats to help with Search Engine ranking.
 
+(https://youtu.be/ssYaSJWPgMQ)[https://youtu.be/ssYaSJWPgMQ]
+
+[![LibreCMS Introduction](http://img.youtube.com/vi/ssYaSJWPgMQ/0.jpg)](https://youtu.be/ssYaSJWPgMQ "LibreCMS Introduction")
+
 ### FAQ
 - Why no Version Numbers?
   - Some people have asked why we don't use a Versioning System of some sorts. Well, as this is an ever changing and growing project, rather than having version numbers, we're going to be doing releases instead. (We're actually pretty close to release 1). The other reason, is due to my laziness. I originally was updating version numbers to files, but laziness, and neglectfulness got the better of me, so I just stopped doing that completely.
