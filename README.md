@@ -39,7 +39,7 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
   - [summernote-cleaner](https://github.com/StudioJunkyard/summernote-cleaner)
   - [summernote-save-button](https://github.com/StudioJunkyard/summernote-save-button)
   - [summernote-image-attributes](https://github.com/StudioJunkyard/summernote-image-attributes)
-  -[summernote-video-attributes](https://github.com/StudioJunkyard/summernote-video-attributes)
+  - [summernote-video-attributes](https://github.com/StudioJunkyard/summernote-video-attributes)
   - [summernote-ext-elfinder](https://github.com/semplon/summernote-ext-elfinder)
   - [summernote-libreICONS-svg](https://github.com/StudioJunkyard/LibreICONS/tree/master/themes/summernote)
 - [CodeMirror](https://github.com/codemirror/CodeMirror)
