@@ -30,7 +30,8 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 ### Dependencies
 - PHP > 5.5.9 - Must have PDO, and Password Compat support.
 - mod_rewrite
-- PHP5-gd2 (GD-Image) - LibreCMS will work without GD Support, but things like Thumbnails, and image resizing won't work.
+- PHP5-gd2 (GD-Image) & Imagemagick- LibreCMS will work without them, but things like Thumbnails, and image resizing won't work.
+- mail services - Are need for mail notification sending, and for the Newsletters.
 
 #### Integrated Projects:
 - [LibreICONS](https://github.com/StudioJunkyard/LibreICONS)
@@ -64,7 +65,7 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 ### TODO:
 - Fix the Installer.
 - Add Content to the Wiki Pages on how to use LibreCMS and how to create Templates.
-- Add Instructional [https://www.youtube.com/channel/UCv-uQgGqZ9d-1SLXeEcFa-w](Videos to the LibreCMS YouTube Channel).
+- Add Instructional [Videos to the LibreCMS YouTube Channel](https://www.youtube.com/channel/UCv-uQgGqZ9d-1SLXeEcFa-w).
 - Once at a Stable Platform, create a release candidate, and create a proper gh-page site.
 - Create Free Templates.
 - Testing, and Bug Squashing, as per the usual with ongoing projects.
@@ -75,3 +76,14 @@ By downloading LibreCMS you hereby agree not to hold Studio Junkyard liable for 
 ### Contributors:
 - [Raycraft Computer Services](https://www.raycraft.com.au/)
   - Live Testing, Suggestions, and witty Banter.
+
+### LibreCMS Live Sites by StudioJunkyard:
+- [Alzim PTY LTD](http://www.alzim.com.au)
+- [Anime Excess](https://www.animeexcess.com.au/)
+- [Fast Track Business Club](https://www.fasttrackbusinessclub.com.au/)
+- [Gold Coast Chocolate Fountains](https://www.goldcoastchocolatefountains.com.au/)
+- [Live Lightly Centre](https://www.livelightlycentre.com.au/)
+- [Powerline Automotive Services](https://www.powerlineauto.com.au/)
+- [Raycraft Computer Services](https://www.raycraft.com.au/)
+- [Sparx Early Learning Centre](https://www.sparxelc.com.au/)
+- [StudioJunkyard](https://www.studiojunkyard.com/)
