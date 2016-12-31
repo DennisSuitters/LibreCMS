@@ -1,10 +1,9 @@
 <?php
 $file=$_POST['file'];
 $code=$_POST['code'];
-//file_put_contents('../layout/animeexcess/index.html',$code);
 $fp=fopen('../'.$file,'w');
 fwrite($fp,$code);
 fclose($fp);?>
-<script>
+<script>/*<![CDATA[*/
     window.top.window.$('#block').css("display","none");
-</script>
+/*]]>*/</script>

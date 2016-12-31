@@ -237,6 +237,11 @@ h4 .breadcrumb{
 .tab-content{
     padding-top:20px
 }
+img.table-thumb{
+  width:25px;
+  max-height:25px;
+  margin:5px;
+}
 @media(max-width:767px){
     #menu-toggle{
         display:block
@@ -336,7 +341,7 @@ h4 .breadcrumb{
     display:inline;
     width:155px;
     padding:0;
-    margin:-2px 0 0 -1px;
+    margin:-2px 0 0 10px;
     border:0 transparent;
     background-color:transparent
 }

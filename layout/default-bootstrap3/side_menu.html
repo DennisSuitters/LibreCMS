@@ -69,6 +69,31 @@
 			});
 		</script>
 	</review>
+	<newsletters>
+		<div id="newsletters" class="list-group">
+			<form id="newslettersform" target="review" class="list-group-item" method="post" action="core/add_subscriber.php" role="form">
+				<input type="hidden" name="emailtrap" value="">
+				<h4 role="heading">Subscribe to our Newsletters</h4>
+				<div class="form-group form-group-sm">
+					<label for="email" class="control-label col-xs-3"><small>Email</small></label>
+					<div class="input-group col-xs-9">
+						<input type="text" id="email" class="form-control input-sm" name="email" value="" required aria-required="true" role="textbox">
+					</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<button type="submit" class="btn btn-success btn-block" role="button">Subscribe</button>
+				</div>
+			</form>
+		</div>
+		<script>
+			$("#newslettersform").submit(function(){
+				$.post($(this).attr("action"),$(this).serialize(),function(data){
+					$("#newsletters").html(data);
+				});
+				return false;
+			});
+		</script>
+	</newsletters>
 	<item>
 		<settings items="all" contenttype="current">
 		<div class="list-group">

@@ -1,11 +1,11 @@
 ![LibreCMS](core/images/librecms.png)  
-a **Free** Open Source Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/StudioJunkyard/LibreICONS). Built to take advantage of HTML5 and CSS3, and injects necessary SEO attributes that fit in with Google's recommendations, and Micro-formats to help with Search Engine ranking.
+a **Free** Open Source Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/StudioJunkyard/LibreICONS). Built to take advantage of HTML5 and CSS3, with necessary SEO attributes that fit in with Google's recommendations, Micro-formats, and AMP (Accelerated Mobile Pages) to help with Search Engine ranking.
 
 [![LibreCMS Introduction](http://img.youtube.com/vi/ssYaSJWPgMQ/0.jpg)](https://youtu.be/ssYaSJWPgMQ "LibreCMS Introduction")
 
 ### FAQ
 - Why no Version Numbers?
-  - Some people have asked why we don't use a Versioning System of some sorts. Well, as this is an ever changing and growing project, rather than having version numbers, we're going to be doing releases instead. (We're actually pretty close to release 1). The other reason, is due to my laziness. I originally was updating version numbers to files, but laziness, and neglectfulness got the better of me, so I just stopped doing that completely.
+  - Some people have asked why we don't use a Versioning System of some sorts. Well, as this is an ever changing and growing project, rather than having version numbers, we're going to be doing releases instead. The other reason, is due to my laziness. I originally was updating version numbers to files, but laziness, and neglectfulness got the better of me, so I just stopped doing that completely.
 - Why are some files Minified (or Uglified as some call it)?
   - Files that are minified, are considered to be done with, or complete. Others, are still in the process of being fixed, edited, added to, or modified, but will eventually also be minified. The reason we do this, isn't to make it harder for contributors, but as we're the main users of LibreCMS, minifying the source helps to minimise the footprint. And despite what others think, and claim to have tested, which we have tested. Minifying the source can help improve the speed, and also the download time for outputted data.
 - Why is English the only Language available?
@@ -13,7 +13,7 @@ a **Free** Open Source Content Management System, that is built utilising [PHP](
 
 ### Features
 - Installer when first Opened.
-- Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs.
+- Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs, Messages, and Newsletters.
 - Messaging - Whenever a message is created via the Contact Us page, it is stored in the Messages system as well as emailed.
 - Orders - Create Quotes, Invoices. Client viewing of Orders.
 - Media - Upload and manage various types of files for addition into content using elFinder.
@@ -38,6 +38,7 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
   - [summernote-cleaner](https://github.com/StudioJunkyard/summernote-cleaner)
   - [summernote-save-button](https://github.com/StudioJunkyard/summernote-save-button)
   - [summernote-image-attributes](https://github.com/StudioJunkyard/summernote-image-attributes)
+  -[summernote-video-attributes](https://github.com/StudioJunkyard/summernote-video-attributes)
   - [summernote-ext-elfinder](https://github.com/semplon/summernote-ext-elfinder)
   - [summernote-libreICONS-svg](https://github.com/StudioJunkyard/LibreICONS/tree/master/themes/summernote)
 - [CodeMirror](https://github.com/codemirror/CodeMirror)
@@ -61,9 +62,9 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 - Windows 7 + WAMP + PHP 5.5 + MySQL
 
 ### TODO:
-- Fix Avatar Image Uploads for Testimonials.
 - Fix the Installer.
 - Add Content to the Wiki Pages on how to use LibreCMS and how to create Templates.
+- Add Instructional [https://www.youtube.com/channel/UCv-uQgGqZ9d-1SLXeEcFa-w](Videos to the LibreCMS YouTube Channel).
 - Once at a Stable Platform, create a release candidate, and create a proper gh-page site.
 - Create Free Templates.
 - Testing, and Bug Squashing, as per the usual with ongoing projects.

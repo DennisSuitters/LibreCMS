@@ -1,27 +1,27 @@
-<?php if($args[0]=='add'){
-    $type=filter_input(INPUT_GET,'type',FILTER_SANITIZE_STRING);$q=$db->prepare("INSERT INTO login (options,rank,active,ti) VALUES ('00000000','0','1',:ti)");
-    $q->execute(array(':ti'=>$ti));
-    $args[1]=$db->lastInsertId();
-    $show="User ".$args[1];
-    $q=$db->prepare("UPDATE login SET username=:username WHERE id=:id");
-    $q->execute(array(':username'=>$show,':id'=>$args[1]));
-    $args[0]='edit';
-}
-if($args[0]=='settings'){
-    include'core'.DS.'layout'.DS.'set_accounts.php';
-}elseif($args[0]=='edit'){
-    $q=$db->prepare("SELECT * FROM login WHERE id=:id");
-    $q->execute(array(':id'=>$args[1]));
-    $r=$q->fetch(PDO::FETCH_ASSOC);?>
+<?php
+if($args[0]=='add'){
+  $type=filter_input(INPUT_GET,'type',FILTER_SANITIZE_STRING);
+  $q=$db->prepare("INSERT INTO login (options,rank,active,ti) VALUES ('00000000','0','1',:ti)");
+  $q->execute(array(':ti'=>$ti));
+  $args[1]=$db->lastInsertId();
+  $show="User ".$args[1];
+  $q=$db->prepare("UPDATE login SET username=:username WHERE id=:id");
+  $q->execute(array(':username'=>$show,':id'=>$args[1]));
+  $args[0]='edit';
+}elseif($args[0]=='settings')include'core'.DS.'layout'.DS.'set_accounts.php';
+elseif($args[0]=='edit'){
+  $q=$db->prepare("SELECT * FROM login WHERE id=:id");
+  $q->execute(array(':id'=>$args[1]));
+  $r=$q->fetch(PDO::FETCH_ASSOC);?>
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 class="col-xs-8">Account: <?php echo$r['username'];if($r['name']!='')echo':'.$r['name'];?></h4>
     <div class="pull-right">
       <div class="btn-group">
-        <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
       </div>
       <div class="btn-group">
-        <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#accounts-edit"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+        <a target="_blank" class="btn btn-default info" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#accounts-edit"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@ if($args[0]=='settings'){
         <div class="form-group">
           <label for="ti" class="control-label col-xs-4 col-sm-3 col-lg-2">Created</label>
           <div class="input-group col-xs-8 col-sm-9 col-lg-10">
-            <input type="text" id="ti" class="form-control" value="<?php echo date('M jS, Y g:i A',$r['ti']);?>" readonly>
+            <input type="text" id="ti" class="form-control" value="<?php echo date($config['dateFormat'],$r['ti']);?>" readonly>
           </div>
         </div>
         <div class="form-group">
@@ -57,6 +57,15 @@ if($args[0]=='settings'){
           <label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
             <input type="text" id="email" class="form-control textinput" value="<?php echo$r['email'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="email" placeholder="Enter an Email...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="newsletter" class="control-label check col-xs-5 col-sm-3 col-lg-2"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Newsletter Subscription."';?>>Subscriber</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <div class="checkbox checkbox-success">
+              <input type="checkbox" id="newsletter" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="newsletter" data-dbb="0"<?php if($r['newsletter']{0}==1)echo' checked';?>>
+              <label for="newsletter"/>
+            </div>
           </div>
         </div>
         <div class="form-group">
@@ -120,7 +129,7 @@ if($args[0]=='settings'){
           </div>
         </div>
         <div class="form-group">
-          <label for="order_notes" class="control-label col-xs-5 col-sm-3 col-lg-2">About</label>
+          <label for="notes" class="control-label col-xs-5 col-sm-3 col-lg-2">About</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
             <form method="post" target="sp" action="core/update.php">
               <input type="hidden" name="id" value="<?php echo$r['id'];?>">
@@ -140,11 +149,11 @@ if($args[0]=='settings'){
               <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
                 <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                 <input type="hidden" name="act" value="add_avatar">
-                <div class="btn btn-default btn-file">
+                <div class="btn btn-default btn-file"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Browse Computer for Image."';?>>
                   <?php svg('browse-computer');?>
                   <input type="file" name="fu">
                 </div>
-                <button class="btn btn-default" type="submit"><?php svg('upload');?></button>
+                <button class="btn btn-default" type="submit"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Upload Selected Image."';?>><?php svg('upload');?></button>
               </form>
             </div>
             <div class="input-group-addon img">
@@ -155,21 +164,20 @@ if($args[0]=='settings'){
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group clearfix">
           <label for="gravatar" class="control-label col-xs-5 col-sm-3 col-lg-2">Gravatar</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
             <input type="text" id="gravatar" class="form-control textinput" value="<?php echo$r['gravatar'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="gravatar" placeholder="Enter Gravatar Link...">
           </div>
-          <div class="help-block col-xs-7 col-sm-9 col-lg-10 pull-right"><a target="_blank" href="http://www.gravatar.com/">Gravatar</a> Link will override any image uploaded as your Avatar.</div>
+          <small class="help-block text-right"><a target="_blank" href="http://www.gravatar.com/">Gravatar</a> Link will override any image uploaded as your Avatar.</small>
         </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="account-social">
         <div class="form-group">
-          <div class="control-label col-sm-3 col-lg-2"></div>
           <form target="sp" method="post" action="core/add_data.php">
             <input type="hidden" name="user" value="<?php echo$r['id'];?>">
             <input type="hidden" name="act" value="add_social">
-            <div class="input-group col-xs-12 col-sm-9 col-lg-10">
+            <div class="input-group col-xs-12">
               <span class="input-group-addon">Network</span>
               <select class="form-control" name="icon">
                 <option value="">None</option>
@@ -257,9 +265,10 @@ if($args[0]=='settings'){
 $ss->execute(array(':uid'=>$r['id']));
 while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
           <div id="l_<?php echo$rs['id'];?>" class="form-group">
-            <div class="control-label hidden-xs col-sm-3 col-lg-2"></div>
-            <div class="input-group col-xs-12 col-sm-9 col-lg-10">
-              <div class="input-group-addon"><span class="libre-social"><?php svg('social-'.$rs['icon']);?></span></div>
+            <div class="input-group col-xs-12">
+              <div class="input-group-addon">
+                <span class="libre-social"><?php svg('social-'.$rs['icon']);?></span>
+              </div>
               <input type="text" class="form-control" value="<?php echo$rs['url'];?>" onchange="update('<?php echo$rs['id'];?>','social','url',$(this).val());" placeholder="Enter a URL...">
               <div class="input-group-btn">
                 <form target="sp" action="core/purge.php">
@@ -288,6 +297,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
             </div>
           </form>
         </div>
+<?php if($user['rank']>899){?>
         <div class="form-group">
           <label for="rank" class="control-label col-xs-4 col-sm-3 col-lg-2">Rank</label>
           <div class="input-group col-xs-8 col-sm-9 col-lg-10">
@@ -306,106 +316,109 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
             </select>
           </div>
         </div>
+<?php }
+if($user['rank']>899){?>
         <div class="well">
           <h4>Account Permissions</h4>
-          <div class="form-group">
-            <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
-            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+          <div class="form-group clearfix">
+            <label for="options0" class="control-label check col-xs-6 col-sm-4 col-lg-3">Add/Remove Content</label>
+            <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
                 <input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="0"<?php if($r['options']{0}==1)echo' checked';?>>
-                <label for="options0">Add/Remove Content</label>
+                <label for="options0"/>
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
-            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+          <div class="form-group clearfix">
+            <label for="options1" class="control-label check col-xs-6 col-sm-4 col-lg-3">Edit Content</label>
+            <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
                 <input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="1"<?php if($r['options']{1}==1)echo' checked';?>>
-                <label for="options1">Edit Content</label>
+                <label for="options1"/>
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
-            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+          <div class="form-group clearfix">
+            <label for="options2" class="control-label check col-xs-6 col-sm-4 col-lg-3">Add/Edit Bookings</label>
+            <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
                 <input type="checkbox" id="options2" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="2"<?php if($r['options']{2}==1)echo' checked';?>>
-                <label for="options2">Add/Edit Bookings</label>
+                <label for="options2"/>
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
-            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+          <div class="form-group clearfix">
+            <label for="options3" class="control-label check col-xs-6 col-sm-4 col-lg-3">Message Viewing/Editing</label>
+            <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
                 <input type="checkbox" id="options3" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="3"<?php if($r['options']{3}==1)echo' checked';?>>
-                <label for="options3">Message Viewing/Editing</label>
+                <label for="options3"/>
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
-            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+          <div class="form-group clearfix">
+            <label for="options4" class="control-label check col-xs-6 col-sm-4 col-lg-3">Orders Viewing/Editing</label>
+            <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
                 <input type="checkbox" id="options4" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="4"<?php if($r['options']{4}==1)echo' checked';?>>
-                <label for="options4">Orders Viewing/Editing</label>
+                <label for="options4"/>
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
-            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+          <div class="form-group clearfix">
+            <label for="options5" class="control-label check col-xs-6 col-sm-4 col-lg-3">User Accounts Viewing/Editing</label>
+            <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
                 <input type="checkbox" id="options5" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="5"<?php if($r['options']{5}==1)echo' checked';?>>
-                <label for="options5">User Accounts Viewing/Editing</strong>
+                <label for="options5"/>
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
-            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+          <div class="form-group clearfix">
+            <label for="options6" class="control-label check col-xs-6 col-sm-4 col-lg-3">SEO Viewing/Editing</label>
+            <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
                 <input type="checkbox" id="options6" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="6"<?php if($r['options']{6}==1)echo' checked';?>>
-                <label for="options6">SEO Viewing/Editing</label>
+                <label for="options6"/>
               </div>
             </div>
           </div>
-          <div class="form-group">
-            <div class="control-label col-xs-5 col-sm-3 col-lg-2 text-right"></div>
-            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+          <div class="form-group clearfix">
+            <label for="options7" class="control-label check col-xs-6 col-sm-4 col-lg-3">Preferences Viewing/Editing</label>
+            <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
                 <input type="checkbox" id="options7" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="7"<?php if($r['options']{7}==1)echo' checked';?>>
-                <label for="options7">Preferences Viewing/Editing</label>
+                <label for="options7"/>
               </div>
             </div>
           </div>
         </div>
+<?php }?>
       </div>
     </div>
   </div>
 </div>
 <?php }else{
-if($args[0]=='type'){
+  if($args[0]=='type'){
     if(isset($args[1])){
-        $rank=0;
-        if($args[1]=='subscriber')$rank=100;
-        if($args[1]=='member')$rank=200;
-        if($args[1]=='client')$rank==300;
-        if($args[1]=='contributor')$rank=400;
-        if($args[1]=='author')$rank=500;
-        if($args[1]=='editor')$rank=600;
-        if($args[1]=='moderator')$rank=700;
-        if($args[1]=='manager')$rank=800;
-        if($args[1]=='administrator')$rank=900;
-        if($args[1]=='developer')$rank=1000;
+      $rank=0;
+      if($args[1]=='subscriber')$rank=100;
+      if($args[1]=='member')$rank=200;
+      if($args[1]=='client')$rank==300;
+      if($args[1]=='contributor')$rank=400;
+      if($args[1]=='author')$rank=500;
+      if($args[1]=='editor')$rank=600;
+      if($args[1]=='moderator')$rank=700;
+      if($args[1]=='manager')$rank=800;
+      if($args[1]=='administrator')$rank=900;
+      if($args[1]=='developer')$rank=1000;
     }
     $s=$db->prepare("SELECT * FROM login WHERE rank=:rank ORDER BY ti DESC");
     $s->execute(array(':rank'=>$rank));
-}else{
+  }else{
     $s=$db->prepare("SELECT * FROM login WHERE rank<:rank ORDER BY ti DESC");
     $s->execute(array(':rank'=>$_SESSION['rank']+1));
-}?>
+  }?>
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 class="col-xs-8">
@@ -432,13 +445,13 @@ if($args[0]=='type'){
     </h4>
     <div class="pull-right">
       <div class="btn-group">
-        <a class="btn btn-default btn-xs add" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>><?php svg('add');?></a>
+        <a class="btn btn-default add" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>><?php svg('add');?></a>
       </div>
       <div class="btn-group">
-        <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/accounts/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
       </div>
       <div class="btn-group">
-        <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#accounts"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+        <a target="_blank" class="btn btn-default info" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#accounts"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
       </div>
     </div>
   </div>
@@ -454,27 +467,26 @@ if($args[0]=='type'){
             <th class="col-xs-3"></th>
           </tr>
         </thead>
-      <tbody>
+        <tbody>
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-        <tr id="l_<?php echo$r['id'];?>" class="item">
-          <td><a href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php echo$r['username'].':'.$r['name'];?></a></td>
-          <td class="text-center"><?php echo _ago($r['lti']);?></td>
-          <td class="text-center"><?php echo rank($r['rank']);?></td>
-          <td class="text-center"><?php echo$r['status'];?></td>
-          <td id="controls_<?php echo$r['id'];?>" class="text-right">
-            <a class="btn btn-default btn-xs" href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+          <tr id="l_<?php echo$r['id'];?>" class="item">
+            <td><a href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php echo$r['username'].':'.$r['name'];?></a></td>
+            <td class="text-center"><?php echo _ago($r['lti']);?></td>
+            <td class="text-center"><?php echo rank($r['rank']);?></td>
+            <td class="text-center"><?php echo$r['status'];?></td>
+            <td id="controls_<?php echo$r['id'];?>" class="text-right">
+              <a class="btn btn-default" href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
 <?php if($r['rank']!=1000){?>
-            <button class="btn btn-default btn-xs<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
-            <button class="btn btn-default btn-xs trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
-            <button class="btn btn-default btn-xs trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+              <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+              <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+              <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','login')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
 <?php }?>
-          </td>
-        </tr>
+            </td>
+          </tr>
 <?php }?>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
-<?php
-}?>
+<?php }?>
 </div>

@@ -27,20 +27,20 @@ $pdf->setPrintFooter(false);
 $pdf->SetFont('helvetica','',12);
 $pdf->AddPage();
 $html='<style>';
-$html.='body{margin:0;padding:0;}';
-$html.='table{border:0;margin:0;}';
-$html.='table,table tr{background-color:#fff;}';
-$html.='table tr th{background-color:#000;color:#fff;font-size:10px;}';
-$html.='h1,h2,h3,h4,h5,h6,p{margin:0;}';
-$html.='.col-50{width:50px;}';
-$html.='.col-75{width:75px;}';
-$html.='.col-100{width:100px;}';
-$html.='.col-150{width:150px;}';
-$html.='.col-250{width:250px;}';
-$html.='.text-center{text-align:center;}';
-$html.='.text-right{text-align:right;}';
-$html.='.pending{color:#080;}';
-$html.='.overdue{color:#800;}';
+	$html.='body{margin:0;padding:0}';
+	$html.='table{border:0;margin:0}';
+	$html.='table,table tr{background-color:#fff}';
+	$html.='table tr th{background-color:#000;color:#fff;font-size:10px}';
+	$html.='h1,h2,h3,h4,h5,h6,p{margin:0}';
+	$html.='.col-50{width:50px}';
+	$html.='.col-75{width:75px}';
+	$html.='.col-100{width:100px}';
+	$html.='.col-150{width:150px}';
+	$html.='.col-250{width:250px}';
+	$html.='.text-center{text-align:center}';
+	$html.='.text-right{text-align:right}';
+	$html.='.pending{color:#080}';
+	$html.='.overdue{color:#800}';
 $html.='</style>';
 $html.='<body>';
 $pdflogo='';
@@ -61,9 +61,7 @@ else
 if($pdflogo!=''){
 	$html.='<table class="table">';
 		$html.='<tr>';
-			$html.='<td style="text-align:right;">';
-				$html.='<img src="'.$pdflogo.'">';
-			$html.='</td>';
+			$html.='<td style="text-align:right"><img src="'.$pdflogo.'"></td>';
 		$html.='</tr>';
 	$html.='</table>';
 }
@@ -81,22 +79,22 @@ if($pdflogo!=''){
 				$html.='<h3>To</h3>';
 				$html.='<p>';
 					$html.='<strong>'.$c['business'].'</strong><br />';
-					$html.=$c['name'].'<br />';
-					$html.=$c['address'].', '.$c['suburb'].', '.$c['city'].', '.$c['state'].', '.$c['postcode'];
+					$html.=$c['name'].'<br />'.$c['address'].', '.$c['suburb'].', '.$c['city'].', '.$c['state'].', '.$c['postcode'];
 				$html.='</p>';
 			$html.='</td>';
 			$html.='<td>';
 				$html.='<h3>Details</h3>';
-				$html.='<p><small>';
-					$html.='Order <strong>#'.$r['qid'].$r['iid'].'</strong><br />';
+				$html.='<p>';
+					$html.='<small>Order <strong>#'.$r['qid'].$r['iid'].'</strong><br />';
 					$html.='Order Date <strong>'.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']).'</strong><br />';
 					$html.='Due Date: <strong class="'.$r['status'].'">'.date($config['dateFormat'],$r['due_ti']).'</strong><br />';
-					$html.='Status: <strong class="'.$r['status'].'">'.ucfirst($r['status']).'</strong>';
-				$html.='</small></p>';
+					$html.='Status: <strong class="'.$r['status'].'">'.ucfirst($r['status']).'</strong></small>';
+				$html.='</p>';
 			$html.='</td>';
 		$html.='</tr>';
 	$html.='</table>';
-	$html.='<br /><br />';
+	$html.='<br />';
+	$html.='<br />';
 	$html.='<table class="table table-striped">';
 		$html.='<thead>';
 			$html.='<tr>';
@@ -109,11 +107,11 @@ if($pdflogo!=''){
 			$html.='</tr>';
 		$html.='</thead>';
 		$html.='<tbody>';
-		$i=13;
-		$ot=0;
-		$st=0;
-		$pwc=0;
-		$zeb=1;
+$i=13;
+$ot=0;
+$st=0;
+$pwc=0;
+$zeb=1;
 $s=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid AND status!='delete'");
 $s->execute(array(':oid'=>$id));
 while($ro=$s->fetch(PDO::FETCH_ASSOC)){
@@ -124,14 +122,14 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 	$sc->execute(array(':id'=>$ro['cid']));
 	$c=$sc->fetch(PDO::FETCH_ASSOC);
 			$html.='<tr';
-				if($zeb==1){
-					$html.=' style="background-color:#f4f4f4;"';
-					$zeb=0;
-				}else{
-					$html.=' style="backgroound-color:#fff;"';
-					$zeb=1;
-				}
-				$html.='>';
+	if($zeb==1){
+				$html.=' style="background-color:#f4f4f4;"';
+		$zeb=0;
+	}else{
+				$html.=' style="backgroound-color:#fff;"';
+		$zeb=1;
+	}
+			$html.='>';
 				$html.='<td class="col-75"><small>'.$i['code'].'</small></td>';
 				$html.='<td class="col-150"><small>';
 	if($ro['title']=='')
@@ -148,29 +146,30 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 }
 		$html.='</tbody>';
 		$html.='<tfoot>';
-			$html.='<tr style="background-color:#f0f0f0;">';
+			$html.='<tr style="background-color:#f0f0f0">';
 				$html.='<td colspan="3">&nbsp;</td>';
 				$html.='<td class="col-75 text-right"><strong>Total</strong></td>';
 				$html.='<td class="col-75 text-right '.$r['status'].'"><strong>'.$ot.'</strong></td>';
 			$html.='</tr>';
 		$html.='</tfoot>';
 	$html.='</table>';
-	$html.='<br /><br />';
+	$html.='<br />';
+	$html.='<br />';
 	$html.='<table class="table">';
 		$html.='<tbody>';
 			$html.='<tr>';
 				$html.='<td>';
 					$html.='<h4>Notes</h4>';
-					$html.='<p style="font-size:8px;">'.$r['notes'].'</p>';
+					$html.='<p style="font-size:8px">'.$r['notes'].'</p>';
 				$html.='</td>';
 				$html.='<td>';
 					$html.='<h4>Banking Details</h4>';
-					$html.='<p><small>';
-						$html.='Bank: <strong>'.$config['bank'].'</strong><br />';
+					$html.='<p>';
+						$html.='<small>Bank: <strong>'.$config['bank'].'</strong><br />';
 						$html.='Account Name: <strong>'.$config['bankAccountName'].'</strong><br />';
 						$html.='Account Number: <strong>'.$config['bankAccountNumber'].'</strong><br />';
-						$html.='BSB: <strong>'.$config['bankBSB'].'</strong>';
-					$html.='</small></p>';
+						$html.='BSB: <strong>'.$config['bankBSB'].'</strong></small>';
+					$html.='</p>';
 				$html.='</td>';
 			$html.='</tr>';
 		$html.='</tbody>';

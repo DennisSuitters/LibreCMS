@@ -1,32 +1,30 @@
 <block include="meta_head.html">
 <block include="header.html">
-<block inbed="content">
+<block inbed="testimonials">
 	<main id="content" class="col-xs-12 col-sm-10 col-sm-offset-1" role="main">
 		<print page="notes">
-</block>
-<block inbed="testimonials">
 		<div class="col-xs-12 col-sm-6">
 			<items>
 				<div class="margin-btm-20" itemscope itemtype="http://schema.org/Review">
 					<meta itemprop="itemReviewed" content="<print config=title>">
 					<meta itemprop="datePublished" content="<print datePub>">
-		            <div class="quote">
-		                <blockquote>
-		                    <p itemprop="reviewBody">
+          <div class="quote">
+            <blockquote>
+              <p itemprop="reviewBody">
 								<print content="notes">
-		                    </p>
-		                </blockquote>
-		            </div>
-		            <div class="quote-footer text-right">
-		                <div class="quote-author-img">
-		                    <img src="<print content=avatar>" role="img">
-		                </div>
-		                <h4 itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><print content="name"></span></h4>
-		                <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-		                    <strong itemprop="name"><print content="business"></strong>
-		                </p>
-		            </div>
-		        </div>
+		          </p>
+		        </blockquote>
+		      </div>
+		      <div class="quote-footer text-right">
+		        <div class="quote-author-img">
+		          <img src="<print content=avatar>" role="img">
+		      	</div>
+		        <h4 itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><print content="name"></span></h4>
+		        <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+		          <strong itemprop="name"><print content="business"></strong>
+		        </p>
+		      </div>
+		    </div>
 			</items>
 		</div>
 		<div id="testimonial" class="col-xs-12 col-sm-6">
@@ -35,13 +33,15 @@
 				<input type="hidden" name="emailtrap" value="">
 				<div class="form-group">
 					<label class="control-label">
-						We would love to have you to share your experience with us.
+						We would love to have you share your experience with us.
 					</label>
 				</div>
 				<div class="form-group">
 					<div class="alert alert-info">
-						Entering your email is only for our records, we don't use it for displaying your Testimonial.<br>
-						<span class="text-danger">Red Highlighted fields are required.</span>
+						Entering your email is only for our records, we don't use it for displaying your Testimonial.
+					</div>
+					<div class="alert alert-danger">
+						Red Highlighted fields are required.
 					</div>
 				</div>
 				<div class="form-group">
@@ -75,10 +75,10 @@
 		</div>
 		<script>
 			$("#testimonialform").submit(function(){
-			    $.post($(this).attr("action"),$(this).serialize(),function(data){
-			        $("#testimonial").html(data);
-			    });
-			    return false;
+		    $.post($(this).attr("action"),$(this).serialize(),function(data){
+	        $("#testimonial").html(data);
+		    });
+	    	return false;
 			});
 		</script>
 	</main>

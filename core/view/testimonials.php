@@ -3,6 +3,7 @@ if(stristr($html,'<settings')){
 	preg_match('/<settings items="(.*?)">/',$html,$matches);
 	$count=$matches[1];
 }else$count=4;
+if(stristr($html,'<print page="notes">'))$html=str_replace('<print page="notes">',$page['notes'],$html);
 $html=preg_replace('~<settings.*?>~is','',$html,1);
 preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 $item=$matches[1];
@@ -42,10 +43,10 @@ if($s->rowCount()>0){
 		$testitems.=$items;
 		$i++;
 	}
-	if($i>0){
-		$html=str_replace('<controls>','',$html);
-		$html=str_replace('</controls>','',$html);
-	}else$html=preg_replace('~<controls>.*?<\/controls>~is','',$html,1);
-	$html=preg_replace('~<items>.*?<\/items>~is',$testitems,$html,1);
-	$content.=$html;
 }
+if($i>0){
+	$html=str_replace('<controls>','',$html);
+	$html=str_replace('</controls>','',$html);
+}else$html=preg_replace('~<controls>.*?<\/controls>~is','',$html,1);
+$html=preg_replace('~<items>.*?<\/items>~is',$testitems,$html,1);
+$content.=$html;

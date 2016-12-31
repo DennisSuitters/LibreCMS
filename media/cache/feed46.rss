@@ -15,7 +15,7 @@ xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0/play-podcasts.
 	<atom:link href="http://www.therecipeforseosuccess.com.au/feed/" rel="self" type="application/rss+xml" />
 	<link>http://www.therecipeforseosuccess.com.au</link>
 	<description>The 8-week SEO eCourse</description>
-	<lastBuildDate>Sun, 04 Dec 2016 23:16:53 +0000</lastBuildDate>
+	<lastBuildDate>Tue, 20 Dec 2016 03:18:38 +0000</lastBuildDate>
 	<language>en-AU</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
@@ -49,6 +49,21 @@ We&#039;ll focus on different aspects of SEO from link building and local to e-c
 		<itunes:category text="Management &amp; Marketing" />
 	</itunes:category>
 	<item>
+		<title>Google My Business: tips and strategies to boost your business.</title>
+		<link>http://www.therecipeforseosuccess.com.au/google-business-tips-strategies-boost-business/</link>
+		<comments>http://www.therecipeforseosuccess.com.au/google-business-tips-strategies-boost-business/#comments</comments>
+		<pubDate>Tue, 06 Dec 2016 21:02:56 +0000</pubDate>
+		<dc:creator><![CDATA[kate]]></dc:creator>
+				<category><![CDATA[Podcast]]></category>
+
+		<guid isPermaLink="false">http://www.therecipeforseosuccess.com.au/?p=6997</guid>
+		<description><![CDATA[<p>Tim Capper shares his Google My Business wisdom Google My Business, we all know it’s an awesome way to promote your business locally, but why does it have to be so dang complicated? In this week’s pod we  to tackle all the basics of Google My business as well as some top advanced tips. It’s [&#8230;]</p>
+<p>The post <a rel="nofollow" href="http://www.therecipeforseosuccess.com.au/google-business-tips-strategies-boost-business/">Google My Business: tips and strategies to boost your business.</a> appeared first on <a rel="nofollow" href="http://www.therecipeforseosuccess.com.au">THE RECIPE FOR SEO SUCCESS</a>.</p>
+]]></description>
+		<wfw:commentRss>http://www.therecipeforseosuccess.com.au/google-business-tips-strategies-boost-business/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
 		<title>SEO TOOLS: The good, the bad and the crappy!</title>
 		<link>http://www.therecipeforseosuccess.com.au/seo-tools-the-good-the-bad-and-the-crappy/</link>
 		<comments>http://www.therecipeforseosuccess.com.au/seo-tools-the-good-the-bad-and-the-crappy/#respond</comments>
@@ -184,21 +199,6 @@ We&#039;ll focus on different aspects of SEO from link building and local to e-c
 ]]></description>
 		<wfw:commentRss>http://www.therecipeforseosuccess.com.au/wordpress-seo-peter-mead/feed/</wfw:commentRss>
 		<slash:comments>3</slash:comments>
-		</item>
-		<item>
-		<title>How to change your WordPress permalinks</title>
-		<link>http://www.therecipeforseosuccess.com.au/change-wordpress-permalinks/</link>
-		<comments>http://www.therecipeforseosuccess.com.au/change-wordpress-permalinks/#respond</comments>
-		<pubDate>Tue, 23 Aug 2016 05:52:33 +0000</pubDate>
-		<dc:creator><![CDATA[kate]]></dc:creator>
-				<category><![CDATA[SEO Questions]]></category>
-
-		<guid isPermaLink="false">http://www.therecipeforseosuccess.com.au/?p=6486</guid>
-		<description><![CDATA[<p>Today, I’m answering another question from my I LOVE SEO Facebook Community, which you’re welcome to join. Today’s question is: “How do I change my WordPress permalinks and what are your tips for an SEO-friendly URL How to change your WordPress permalinks  #SEO? #SEOTIPSClick To Tweet Now for those of you that don’t know, permalinks [&#8230;]</p>
-<p>The post <a rel="nofollow" href="http://www.therecipeforseosuccess.com.au/change-wordpress-permalinks/">How to change your WordPress permalinks</a> appeared first on <a rel="nofollow" href="http://www.therecipeforseosuccess.com.au">THE RECIPE FOR SEO SUCCESS</a>.</p>
-]]></description>
-		<wfw:commentRss>http://www.therecipeforseosuccess.com.au/change-wordpress-permalinks/feed/</wfw:commentRss>
-		<slash:comments>0</slash:comments>
 		</item>
 	</channel>
 </rss>

@@ -1,29 +1,27 @@
 <?php
 if($args[0]=='settings'){
-    include'core'.DS.'layout'.DS.'set_dashboard.php';
+  include'core'.DS.'layout'.DS.'set_dashboard.php';
 }else{?>
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 class="col-xs-8">Dashboard</h4>
     <div class="pull-right">
       <div class="btn-group">
-        <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/dashboard/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/dashboard/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
       </div>
       <div class="btn-group">
-        <a target="_blank" class="btn btn-default info btn-xs" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#dashboard"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+        <a target="_blank" class="btn btn-default info" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#dashboard"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <noscript>
-      <div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div>
-    </noscript>
+    <noscript><div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div></noscript>
 <?php if($config['maintenance']{0}==1){?>
     <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-interface';?>">Maintenance Mode</a></div>
 <?php }
 $tid=$ti-2592000;
 if($config['backup_ti']<$tid){
-    if($config['backup_ti']==0){?>
+  if($config['backup_ti']==0){?>
     <div class="alert alert-info">A <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-backrestore';?>">Backup</a> has yet to be performed.</div>
 <?php }else{?>
     <div class="alert alert-danger">It has been more than 30 days since a <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-backrestore';?>">Backup</a> has been performed.</div>

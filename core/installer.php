@@ -9,7 +9,7 @@ if($_POST['emailtrap']==''){
 	$dbusername=filter_input(INPUT_POST,'dbusername',FILTER_SANITIZE_STRING);
 	$dbpassword=filter_input(INPUT_POST,'dbpassword',FILTER_SANITIZE_STRING);
 	try{
-   		$db=new PDO($dbtype.':host='.$dbhost.';port='.$dbport.';dbname='.$dbschema,$dbusername,$dbpassword);
+ 		$db=new PDO($dbtype.':host='.$dbhost.';port='.$dbport.';dbname='.$dbschema,$dbusername,$dbpassword);
 		$db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 	}catch(PDOException $e){
 		$error=1;?>
@@ -38,7 +38,8 @@ if($_POST['emailtrap']==''){
 		$txt.='[system]'.PHP_EOL;
 		$txt.='url = '.$sysurl.PHP_EOL;
 		if($sysadmin=='')$txt.='admin = admin'.PHP_EOL;
-		else $txt.='admin = '.$sysadmin.PHP_EOL;
+		else$txt.='admin = '.$sysadmin.PHP_EOL;
+		if(file_exists('config.ini'))unlink('config.ini');
 		$oFH=fopen("config.ini",'w');
 		fwrite($oFH,$txt);
 		fclose($oFH);
@@ -47,8 +48,8 @@ if($_POST['emailtrap']==''){
 		$aUsername=filter_input(INPUT_POST,'aUsername',FILTER_SANITIZE_STRING);
 		$aPassword=filter_input(INPUT_POST,'aPassword',FILTER_SANITIZE_STRING);
 		$hash=password_hash($aPassword,PASSWORD_DEFAULT);
-		$q=$db->prepare("UPDATE login SET name=:aName,email=:aEmail,username=:aUsername,password=:aPassword WHERE id='1'");
-		$q->execute(array(':aName'=>$aName,':aEmail'=>$aEmail,':aUsername'=>$aUsername,':aPassword'=>$hash));
+		$q=$db->prepare("UPDATE login SET name=:aName,email=:aEmail,hash=:hashusername=:aUsername,password=:aPassword WHERE id='1'");
+		$q->execute(array(':aName'=>$aName,':aEmail'=>$aEmail,':hash'=>md5($aEmail),':aUsername'=>$aUsername,':aPassword'=>$hash));
 		$q=$db->prepare("UPDATE config SET maintenance='1',seoTitle=:seoTitle,seoRSSTitle=:seoRSSTitle,theme=:systheme WHERE id='1'");
 		$q->execute(array(':seoTitle'=>$sysname,':seoRSSTitle'=>$sysname,':systheme'=>$systheme));
 		$e=$db->errorInfo();

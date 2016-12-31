@@ -4,49 +4,53 @@ $("#menu-toggle").click(function(e){
 	e.preventDefault();
 	$("#sidemenu,#content").toggleClass("toggled");
 });
+function getExif(id,t,c){
+	$('#busy').css({'display':'inline-block'});
+	$('#sp').load('core/getexif.php?id='+id+'&t='+t+'&c='+c);
+}
 function purge(id,t){
 	$('#busy').css({'display':'inline-block'});
 	$('#sp').load('core/purge.php?id='+id+'&t='+t);
 }
 function restore(id){
 	$('#busy').css({'display':'inline-block'});
-	$('#sp').load('core/restore.php?id='+id)
+	$('#sp').load('core/restore.php?id='+id);
 }
 function makeClient(id){
 	$('#busy').css({'display':'inline-block'});
-	$('#sp').load('core/add_data.php?id='+id+'&act=make_client')
+	$('#sp').load('core/add_data.php?id='+id+'&act=make_client');
 }
 function changeClient(id,oid,w){
 	$('#block').css({'display':'inline-block'});
 	if(w=='booking'){
-		$('#sp').load('core/change_bookingClient.php?id='+id+'&bid='+oid)
+		$('#sp').load('core/change_bookingClient.php?id='+id+'&bid='+oid);
 	}else{
-		$('#sp').load('core/change_orderClient.php?id='+id+'&oid='+oid)
+		$('#sp').load('core/change_orderClient.php?id='+id+'&oid='+oid);
 	}
 }
 function addOrderItem(oid,iid){
 	$('#busy').css({'display':'inline-block'});
-	$('#sp').load('core/add_data.php?act=add_orderitem&oid='+oid+'&iid='+iid)
+	$('#sp').load('core/add_data.php?act=add_orderitem&oid='+oid+'&iid='+iid);
 }
 function getClient(email){
 	$('#busy').css({'display':'inline-block'});
-	$('#sp').load('core/get_client.php?email='+email)
+	$('#sp').load('core/get_client.php?email='+email);
 }
 function associated(id,el,a){
 	var assoc=a.split('|');
 	if(assoc[1]==''){
 		$(el).slideUp(500,function(){
-			$(this).html('<input type="hidden" name="assoc[]" value="0">')
+			$(this).html('<input type="hidden" name="assoc[]" value="0">');
 		})
 	}else{
 		$(el).slideUp(500,function(){
 			$(this).load('core/associated.php?id='+id+'&a='+assoc[1],function(){
-				$(this).slideDown(200)
-			})
-		})
+				$(this).slideDown(200);
+			});
+		});
 	}
 	if(id!=0){
-		update(id,'bookings','service',assoc[0])
+		update(id,'bookings','service',assoc[0]);
 	}
 }
 $(".textinput").on({
@@ -56,7 +60,7 @@ $(".textinput").on({
 		var c=$(this).data("dbc");
 		var da=$(this).val();
 		if(event.keyCode==46||event.keyCode==8){
-			$(this).trigger('keypress')
+			$(this).trigger('keypress');
 		}
 	},
 	keyup:function(event){
@@ -65,9 +69,9 @@ $(".textinput").on({
 			var t=$(this).data("dbt");
 			var c=$(this).data("dbc");
 			var da=$(this).val();
-			$(this).trigger('keypress')
+			$(this).trigger('keypress');
 //			update(id,t,c,da);
-			$(this).next("input").focus()
+			$(this).next("input").focus();
 		}
 	},
 	keypress:function(event){
@@ -93,7 +97,7 @@ $(".textinput").on({
 		}
 		if(event.which==13){
 			update(id,t,c,da);
-			event.preventDefault()
+			event.preventDefault();
 		}
 	},
 	change:function(event){
@@ -101,7 +105,7 @@ $(".textinput").on({
 		var t=$(this).data("dbt");
 		var c=$(this).data("dbc");
 		var da=$(this).val();
-		update(id,t,c,da)
+		update(id,t,c,da);
 //		$(this).trigger('keypress')
 	}
 })
@@ -149,13 +153,13 @@ $(document).on(
 			$('#actions').toggleClass('hidden');
 		}
 		if(id=='checkboxtoggle'){
-			if(this.checked) { // check select status
-				$('.checkboxtoggle').each(function() { //loop through each checkbox
-					this.checked = true;  //select all checkboxes with class "checkbox1"
+			if(this.checked){
+				$('.checkboxtoggle').each(function(){
+					this.checked=true;
 				});
 			}else{
-				$('.checkboxtoggle').each(function() { //loop through each checkbox
-					this.checked = false; //deselect all checkboxes with class "checkbox1"
+				$('.checkboxtoggle').each(function(){
+					this.checked=false;
 				});
 			}
 		}else{
@@ -164,17 +168,6 @@ $(document).on(
 			var b=$(this).data("dbb");
 			var a=$(this).data("dba");
 			$('#sp').load('core/toggle.php?id='+id+'&t='+t+'&c='+c+'&b='+b);
-			if(t=='menu'&&c=='active'){
-				var trow=$('#l_'+id).closest('tr');
-				$('#l_'+id).closest('tr').remove();
-				if(a==1){
-					$('#inactive').append(trow);
-					$('#active'+id).attr('data-dba','0');
-				}else{
-					$('#sortable').append(trow);
-					$('#active'+id).attr('data-dba','1');
-				}
-			}
 		}
 	}
 );
@@ -222,11 +215,11 @@ function update(id,t,c,da){
 		}
 		if(t!='comments'){
 			if(t=='menu'){
-				$('#'+c+'save').remove()
+				$('#'+c+'save').remove();
 			}else{
-				$('#'+c+'save').remove()
+				$('#'+c+'save').remove();
 			}
-			$('#'+c).remove()
+			$('#'+c).remove();
 		}
 		if(t=='content'&&c=='contentType'){
 			$('[id^=d]').removeClass('hidden');
@@ -292,7 +285,7 @@ function imageUpdate(id,t,c,da){
 	})
 }
 function updateButtons(id,t,c,da){
-	$('#sp').load('core/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da))
+	$('#sp').load('core/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da));
 }
 function removeBackup(id2,id){
 	$('#sp').load('core/removebackup.php?id2='+id2+'&id='+id);
@@ -300,7 +293,7 @@ function removeBackup(id2,id){
 function showDetails(id,c){
 	if($('#show'+id).hasClass('hidden')){
 		$('#show'+id).load('core/show_details.php?id='+id,function(){
-			$(this).addClass('fadeInDown')
+			$(this).addClass('fadeInDown');
 		})
 	}else{
 		$('#show'+id).removeClass('fadeInDown');
@@ -369,7 +362,7 @@ function removeStopWords(id,txt){
 	var stop_words=new Array('a','about','above','across','after','again','against','all','almost','alone','along','already','also','although','always','among','an','and','another','any','anybody','anyone','anything','anywhere','are','area','areas','around','as','ask','asked','asking','asks','at','away','b','back','backed','backing','backs','be','became','because','become','becomes','been','before','began','behind','being','beings','best','better','between','big','both','but','by','c','came','can','cannot','case','cases','certain','certainly','clear','clearly','come','could','d','did','differ','different','differently','do','does','done','down','down','downed','downing','downs','during','e','each','early','either','end','ended','ending','ends','enough','even','evenly','ever','every','everybody','everyone','everything','everywhere','f','face','faces','fact','facts','far','felt','few','find','finds','first','for','four','from','full','fully','further','furthered','furthering','furthers','g','gave','general','generally','get','gets','give','given','gives','go','going','good','goods','got','great','greater','greatest','group','grouped','grouping','groups','h','had','has','have','having','he','her','here','herself','high','high','high','higher','highest','him','himself','his','how','however','i','if','important','in','interest','interested','interesting','interests','into','is','it','its','itself','j','just','k','keep','keeps','kind','knew','know','known','knows','l','large','largely','last','later','latest','least','less','let','lets','like','likely','long','longer','longest','m','made','make','making','man','many','may','me','member','members','men','might','more','most','mostly','mr','mrs','much','must','my','myself','n','necessary','need','needed','needing','needs','never','new','new','newer','newest','next','no','nobody','non','noone','not','nothing','now','nowhere','number','numbers','o','of','off','often','old','older','oldest','on','once','one','only','open','opened','opening','opens','or','order','ordered','ordering','orders','other','others','our','out','over','p','part','parted','parting','parts','per','perhaps','place','places','point','pointed','pointing','points','possible','present','presented','presenting','presents','problem','problems','put','puts','q','quite','r','rather','really','right','right','room','rooms','s','said','same','saw','say','says','second','seconds','see','seem','seemed','seeming','seems','sees','several','shall','she','should','show','showed','showing','shows','side','sides','since','small','smaller','smallest','so','some','somebody','someone','something','somewhere','state','states','still','still','such','sure','t','take','taken','than','that','the','their','them','then','there','therefore','these','they','thing','things','think','thinks','this','those','though','thought','thoughts','three','through','thus','to','today','together','too','took','toward','turn','turned','turning','turns','two','u','under','until','up','upon','us','use','used','uses','v','very','w','want','wanted','wanting','wants','was','way','ways','we','well','wells','went','were','what','when','where','whether','which','while','who','whole','whose','why','will','with','within','without','work','worked','working','works','would','x','y','year','years','yet','you','young','younger','youngest','your','yours','z');
 	words=cleansed_string.match(/[^\s]+|\s+[^\s+]$/g);
 	for(x=0;x<words.length;x++){
-		for(y=0;y<stop_words.length; y++){
+		for(y=0;y<stop_words.length;y++){
 			word=words[x].replace(/\s+|[^a-z]+/ig,"");
 			stop_word=stop_words[y];
 			if(word.toLowerCase()==stop_word){

@@ -92,17 +92,17 @@ foreach($tables as $table){
 }
 if($compression)gzclose($zp);else fclose($handle);
 if(file_exists('../media/backup/'.$file)){
-    chmod('../media/backup/'.$file,0777);
-    $fileid=str_replace('.','',$file);
-    $fileid=str_replace('/','',$fileid);
+  chmod('../media/backup/'.$file,0777);
+  $fileid=str_replace('.','',$file);
+  $fileid=str_replace('/','',$fileid);
 	$filename=basename($file);
-    $ti=time();
-    $q=$db->prepare("UPDATE config SET backup_ti=:backup_ti WHERE id='1'");
-    $q->execute(array(':backup_ti'=>$ti));?>
-    window.top.window.$('#backups').append('<div id="l_<?php echo$fileid;?>" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><a class="btn btn-default btn-block" href="media/backup/<?php echo$file;?>">Click to Download <?php echo$file;?></a><div class="input-group-btn"><button class="btn btn-default trash" onclick="removeBackup(\'<?php echo$fileid;?>\',\'<?php echo$filename;?>\')"><?php svg('trash');?></button></div></div></div>');
-    window.top.window.$('#alert_backup').addClass('hidden');
+  $ti=time();
+  $q=$db->prepare("UPDATE config SET backup_ti=:backup_ti WHERE id='1'");
+  $q->execute(array(':backup_ti'=>$ti));?>
+  window.top.window.$('#backups').append('<div id="l_<?php echo$fileid;?>" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><a class="btn btn-default btn-block" href="media/backup/<?php echo$file;?>">Click to Download <?php echo$file;?></a><div class="input-group-btn"><button class="btn btn-default trash" onclick="removeBackup(\'<?php echo$fileid;?>\',\'<?php echo$filename;?>\')"><?php svg('trash');?></button></div></div></div>');
+  window.top.window.$('#alert_backup').addClass('hidden');
 <?php }else{?>
-    window.top.window.$('#backup_info').html('<div class="alert alert-danger">There was an issue performing the backup!</div>');
+  window.top.window.$('#backup_info').html('<div class="alert alert-danger">There was an issue performing the backup!</div>');
 <?php }?>
-    window.top.window.$('#block').css("display","none");
+  window.top.window.$('#block').css("display","none");
 /*]]>*/</script>

@@ -38,9 +38,8 @@ if(file_exists(THEME.$amp.DS.'side_menu.html')){
 					$sideTemp=str_replace('<choices>','',$sideTemp);
 			}else
 				$sideTemp=str_replace('<choices>','',$sideTemp);
-		}else{
+		}else
 			$sideTemp=str_replace('<print content="quantity">','',$sideTemp);
-		}
 		if($r['contentType']=='service'||$r['contentType']=='events'){
 			if($r['bookable']==1){
 				if(stristr($sideTemp,'<service>')){
@@ -89,14 +88,21 @@ if(file_exists(THEME.$amp.DS.'side_menu.html')){
 			else$show=' LIMIT '.$matches[1];
 		}else$show='';
 		if(isset($matches[2])){
-			if($matches[2]=='current')$contentType=strtolower($view.'%');
+			if($matches[2]=='current')$contentType=strtolower($view);
 			if($matches[2]=='all'||$matches[2]==''){$contentType='';$heading='';}
 		}else$contentType='';
+	}
+	$r=$db->query("SELECT * FROM menu WHERE id=17")->fetch(PDO::FETCH_ASSOC);
+	if($r['active']{0}==1){
+		$sideTemp=str_replace('<newsletters>','',$sideTemp);
+		$sideTemp=str_replace('</newsletters>','',$sideTemp);
+	}else{
+		$sideTemp=preg_replace('/<newsletters>([\w\W]*?)<\/newsletters>/','',$sideTemp,1);
 	}
 	preg_match('/<items>([\w\W]*?)<\/items>/',$outside,$matches);
 	$insides=$matches[1];
 	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND internal!='1' AND status='published' ORDER BY featured DESC, ti DESC $show");
-	$s->execute(array(':contentType'=>$contentType.'%'));
+	$s->execute(array(':contentType'=>$contentType));
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		if($r['contentType']=='gallery'){

@@ -76,7 +76,7 @@ if($args[0]=="confirm"){
 	}
 }else{
 	$total=0;
-	if(stristr('<items',$html)){
+	if(stristr($html,'<items')){
 		$s=$db->prepare("SELECT * FROM cart WHERE si=:si ORDER BY ti DESC");
 		$s->execute(array(':si'=>SESSIONID));
 		preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);

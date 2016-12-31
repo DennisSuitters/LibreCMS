@@ -80,17 +80,17 @@ function url_encode($str){
 	$str=str_replace(chr(151),"%2D",$str);
 	$str=str_replace(chr(45),"%2D",$str);
 	$str=trim(strtolower($str));
-    $ent=array('%21','%2A',"%27","%28","%29","%3B","%3A","%40","%26","%3D","%2B","%24","%2C","%2F","%3F","%23","%5B","%5D");
-    $rep=array('!','*',"'","(",")",";",":","@","&","=","+","$",",","/","?","#","[","]");
+  $ent=array('%21','%2A',"%27","%28","%29","%3B","%3A","%40","%26","%3D","%2B","%24","%2C","%2F","%3F","%23","%5B","%5D");
+  $rep=array('!','*',"'","(",")",";",":","@","&","=","+","$",",","/","?","#","[","]");
 	$str=str_replace($rep,$ent,$str);
 	$str=str_replace(' ','-',$str);
 	return$str;
 }
 function escaper($val){
-    $esc=array("\\","/","\"","\n","\r","\t","\x08","\x0c");
-    $rep=array("\\\\","\\/","\\\"","\\n","\\r","\\t","\\f","\\b");
-    $res=str_replace($esc,$rep,$val);
-    return$res;
+  $esc=array("\\","/","\"","\n","\r","\t","\x08","\x0c");
+  $rep=array("\\\\","\\/","\\\"","\\n","\\r","\\t","\\f","\\b");
+  $res=str_replace($esc,$rep,$val);
+  return$res;
 }
 class internal{
 	function getconfig($db){
@@ -107,6 +107,9 @@ class internal{
 	}
 	function rss($args=false){
 		require'core'.DS.'rss.php';
+	}
+	function unsubscribe($args=false){
+		require'core'.DS.'unsubscribe.php';
 	}
 }
 class admin{
@@ -157,6 +160,10 @@ class admin{
 	}
 	function messages($args=false){
 		$view='messages';
+		require'admin.php';
+	}
+	function newsletters($args=false){
+		$view='newsletters';
 		require'admin.php';
 	}
 	function orders($args=false){
@@ -302,6 +309,10 @@ class front{
 		$view='tos';
 		require'process.php';
 	}
+	function newsletters($args=false){
+		$view='newsletters';
+		require'process.php';
+	}
 	function content($args=false){
 		$view='';
 		require'process.php';
@@ -319,6 +330,7 @@ $rts=array(
 	$settings['system']['admin'].'/logout'=>array('admin','logout'),
 	$settings['system']['admin'].'/media'=>array('admin','media'),
 	$settings['system']['admin'].'/messages'=>array('admin','messages'),
+	$settings['system']['admin'].'/newsletters'=>array('admin','newsletters'),
 	$settings['system']['admin'].'/orders'=>array('admin','orders'),
 	$settings['system']['admin'].'/pages'=>array('admin','pages'),
 	$settings['system']['admin'].'/preferences'=>array('admin','preferences'),
@@ -337,7 +349,7 @@ $rts=array(
 	'login'=>array('front','login'),
 	'settings'=>array('front','settings')
 );
-$s=$db->prepare("SELECT * FROM menu");
+$s=$db->prepare("SELECT * FROM menu WHERE active=1");
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
 	if(method_exists('front',$r['file']))$rts[$r['contentType']]=array('front',$r['contentType']);else$rts[$r['contentType']]=array('front','content');
