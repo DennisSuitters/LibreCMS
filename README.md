@@ -9,7 +9,7 @@ a **Free** Open Source Content Management System, that is built utilising [PHP](
 - Why are some files Minified (or Uglified as some call it)?
   - Files that are minified, are considered to be done with, or complete. Others, are still in the process of being fixed, edited, added to, or modified, but will eventually also be minified. The reason we do this, isn't to make it harder for contributors, but as we're the main users of LibreCMS, minifying the source helps to minimise the footprint. And despite what others think, and claim to have tested, which we have tested. Minifying the source can help improve the speed, and also the download time for outputted data.
 - Why is English the only Language available?
-  - LibreCMS was, and is targetted towards English Speaking Australian Business's. We may in the future decide, or if someone wants to add Language support, then we may do that.
+  - LibreCMS was, and is targetted towards English Speaking Australian Business's. We may in the future decide, or if someone wants to add Language support, then we may do that, or merge their changes.
 
 ### Features
 - Installer when first Opened.

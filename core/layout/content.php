@@ -28,7 +28,11 @@ if($view=='add'){
   if($view!='bookings')$show='item';
   $rank=0;
   $args[0]='edit';
-  $args[1]=$id;
+  $args[1]=$id;?>
+<script>/*<![CDATA[*/
+  history.replaceState('','','<?php echo URL.$settings['system']['admin'].'/content/edit/'.$args[1];?>');
+/*]]>*/</script>
+<?php
 }
 if($args[0]=='edit'){
   $s=$db->prepare("SELECT * FROM content WHERE id=:id");

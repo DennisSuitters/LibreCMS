@@ -3,11 +3,13 @@ if($args[0]=='add'){
   $q=$db->prepare("INSERT INTO content (contentType,status,ti) VALUES ('newsletters','unpublished',:ti)");
   $q->execute(array(':ti'=>$ti));
   $args[1]=$db->lastInsertId();
-  $args[0]='edit';
-}
-if($args[0]=='settings'){
-  include'core'.DS.'layout'.DS.'set_newsletters.php';
-}elseif($args[0]=='edit'){
+  $args[0]='edit';?>
+<script>/*<![CDATA[*/
+  history.replaceState('','','<?php echo URL.$settings['system']['admin'].'/newsletters/edit/'.$args[1];?>');
+/*]]>*/</script>
+<?php }
+if($args[0]=='settings')include'core'.DS.'layout'.DS.'set_newsletters.php';
+elseif($args[0]=='edit'){
   $q=$db->prepare("SELECT * FROM content WHERE id=:id");
   $q->execute(array(':id'=>$args[1]));
   $r=$q->fetch(PDO::FETCH_ASSOC);?>
@@ -159,7 +161,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                   <td><?php echo$r['email'];?></td>
                   <td><?php echo date($config['dateFormat'],$r['ti']);?></td>
                   <td class="text-right">
-<?php if($r['rank']!=1000){?>
+<?php if($user['rank']>899){?>
                     <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','subscribers')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
 <?php }?>
                   </td>

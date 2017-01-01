@@ -46,8 +46,11 @@ if($args[0]=='addquote'||$args[0]=='addinvoice'){
   }
   $id=$db->lastInsertId();
   $e=$db->errorInfo();
-  $args[0]='edit';
-}
+  $args[0]='edit';?>
+<script>/*<![CDATA[*/
+  history.replaceState('','','<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$id;?>');
+/*]]>*/</script>
+<?php }
 if($args[0]=='to_invoice'){
   $q=$db->prepare("SELECT qid FROM orders WHERE id=:id");
   $q->execute(array(':id'=>$id));

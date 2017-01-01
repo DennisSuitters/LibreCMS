@@ -58,20 +58,24 @@ function minify($txt){
 	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
 }
 function _ago($time){
-	$fromTime=$time;
-	$timeDiff=floor(abs(time()-$fromTime)/60);
-	if($timeDiff<2)
-		$timeDiff='Just Now';
-	elseif($timeDiff>2&&$timeDiff<60)
-		$timeDiff=floor(abs($timeDiff)).' Minutes Ago';
-	elseif($timeDiff>60&&$timeDiff<120)
-		$timeDiff=floor(abs($timeDiff/60)).' Hour Ago';
-	elseif($timeDiff<1440)
-		$timeDiff=floor(abs($timeDiff/60)).' Hours Ago';
-	elseif($timeDiff>1440&&$timeDiff<2880)
-		$timeDiff=floor(abs($timeDiff/1440)).' Day Ago';
-	elseif($timeDiff>2880)
-		$timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
+	if($time==0)
+		$timeDiff='Never';
+	else{
+		$fromTime=$time;
+		$timeDiff=floor(abs(time()-$fromTime)/60);
+		if($timeDiff<2)
+			$timeDiff='Just Now';
+		elseif($timeDiff>2&&$timeDiff<60)
+			$timeDiff=floor(abs($timeDiff)).' Minutes Ago';
+		elseif($timeDiff>60&&$timeDiff<120)
+			$timeDiff=floor(abs($timeDiff/60)).' Hour Ago';
+		elseif($timeDiff<1440)
+			$timeDiff=floor(abs($timeDiff/60)).' Hours Ago';
+		elseif($timeDiff>1440&&$timeDiff<2880)
+			$timeDiff=floor(abs($timeDiff/1440)).' Day Ago';
+		elseif($timeDiff>2880)
+			$timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
+	}
 	return$timeDiff;
 }
 function url_encode($str){

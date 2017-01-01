@@ -24,7 +24,22 @@ if($config['email']!=''){
   $mail->SetFrom($config['email'],$config['business']);
   $mail->Subject=$news['title'];
   $mail->AltBody="To view the message, please use an HTML compatible email viewer!";
-  $to_list = explode(',',$to);
+  if($config['newslettersEmbedImages']{0}==1){
+    preg_match_all('/<img.*?>/',$body,$matches);
+    if(isset($matches[0])){
+      $i=1001;
+      foreach($matches[0] as $img){
+        $imgid='img'.($i++);
+        preg_match('/src="(.*?)"/',$body,$m);
+        if(!isset($m[1]))continue;
+        $arr=parse_url($m[1]);
+        if(!isset($arr['host'])||!isset($arr['path']))continue;
+        $imgname=basename($m[1]);
+        $mail->AddEmbeddedImage('../media/'.$imgname,$imgid,$imgname);
+        $body=str_replace($img,'<img alt="" src="cid:'.$imgid.'" style="border:none;" />',$body);
+      }
+    }
+  }
   if($config['newslettersSendMax']!=''||$config['newslettersSendMax']==0)
     $betweenDelay=$config['newslettersSendMax'];
   else
@@ -44,7 +59,7 @@ if($config['email']!=''){
     }
     $mail->AddAddress($r['email']);
     $optOut=$config['newslettersOptOutLayout'];
-    $optOut=str_replace('{optOutLink}',URL.'unsubscribe/'.$r['hash'],$optOut);
+    $optOut=str_replace('{optOutLink}',URL.'newsletters/unsubscribe/'.$r['hash'],$optOut);
     $mail->Body=$body.$optOut;
     if($mail->Send()){
       $mail->clearAllRecipients();

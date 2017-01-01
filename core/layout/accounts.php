@@ -1,15 +1,17 @@
 <?php
 if($args[0]=='add'){
   $type=filter_input(INPUT_GET,'type',FILTER_SANITIZE_STRING);
-  $q=$db->prepare("INSERT INTO login (options,rank,active,ti) VALUES ('00000000','0','1',:ti)");
-  $q->execute(array(':ti'=>$ti));
+  $q=$db->prepare("INSERT INTO login (options,active,ti) VALUES ('00000000','1',:ti)");
+  $q->execute(array(':ti'=>time()));
   $args[1]=$db->lastInsertId();
-  $show="User ".$args[1];
   $q=$db->prepare("UPDATE login SET username=:username WHERE id=:id");
-  $q->execute(array(':username'=>$show,':id'=>$args[1]));
-  $args[0]='edit';
-}elseif($args[0]=='settings')include'core'.DS.'layout'.DS.'set_accounts.php';
-elseif($args[0]=='edit'){
+  $q->execute(array(':username'=>'User '.$args[1],':id'=>$args[1]));
+  $args[0]='edit';?>
+<script>/*<![CDATA[*/
+  history.replaceState('','','<?php echo URL.$settings['system']['admin'].'/accounts/edit/'.$args[1];?>');
+/*]]>*/</script>
+<?php }elseif($args[0]=='settings')include'core'.DS.'layout'.DS.'set_accounts.php';
+if($args[0]=='edit'){
   $q=$db->prepare("SELECT * FROM login WHERE id=:id");
   $q->execute(array(':id'=>$args[1]));
   $r=$q->fetch(PDO::FETCH_ASSOC);?>

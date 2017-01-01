@@ -1,9 +1,17 @@
 <?php
 $rank=0;
+$notification='';
 $show='categories';
 $status='published';
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $itemCount=$config['showItems'];
+if($view=='newsletters'){
+	if($args[0]=='unsubscribe'&&isset($args[1])){
+		$s=$db->prepare("DELETE FROM subscribers WHERE hash=:hash");
+		$s->execute(array(':hash'=>$args[1]));
+		$notification=$theme['settings']['notification_unsubscribe'];
+	}
+}
 if($view=='search'){
 	if(isset($args[0])&&$args[0]!='')$search='%'.html_entity_decode(str_replace('-','%',$args[0])).'%';elseif(isset($_POST['search'])&&$_POST['search']!='')$search='%'.html_entity_decode(str_replace('-','%',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING))).'%';else$search='%';
 	$s=$db->prepare("SELECT * FROM content WHERE LOWER(code) LIKE LOWER(:code) OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(seoKeywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(seoCaption) LIKE LOWER(:caption) OR LOWER(seoDescription) LIKE LOWER(:description) OR LOWER(notes) LIKE LOWER(:notes) AND status=:status ORDER BY ti DESC");
@@ -98,6 +106,7 @@ if($show=='categories'){
 	}
 	$html=str_replace('<print page="notes">',$page['notes'],$html);
 	if($config['business'])$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'),$html);else$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
+	$html=str_replace('<notification>',$notification,$html);
 	if(stristr($html,'<items>')){
 		preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 		$item=$matches[1];

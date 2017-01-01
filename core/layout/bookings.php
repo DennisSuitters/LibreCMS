@@ -5,10 +5,13 @@ if($view=='add'){
   $q->execute(array(':uid'=>$user['id'],':ti'=>$ti,':tis'=>$ti));
   $id=$db->lastInsertId();
   $view='bookings';
-  $args[0]='edit';
-}elseif(isset($args[1]))$id=$args[1];
+  $args[0]='edit';?>
+<script>/*<![CDATA[*/
+  history.replaceState('','','<?php echo URL.$settings['system']['admin'].'/bookings/edit/'.$id;?>');
+/*]]>*/</script>
+<?php }elseif(isset($args[1]))$id=$args[1];
 if($args[0]=='settings')include'core'.DS.'layout'.DS.'set_bookings.php';
-elseif($args[0]=='edit'){
+if($args[0]=='edit'){
   $s=$db->prepare("SELECT * FROM content WHERE id=:id");
   $s->execute(array(':id'=>$id));
   $r=$s->fetch(PDO::FETCH_ASSOC);
