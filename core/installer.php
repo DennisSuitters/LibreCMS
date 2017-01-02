@@ -31,12 +31,12 @@ if($_POST['emailtrap']==''){
 		$txt.='driver = '.$dbtype.PHP_EOL;
 		$txt.='host = '.$dbhost.PHP_EOL;
 		if($dbport=='')$txt.=';port = 3306'.PHP_EOL;
-		else $txt.='port = '.$dbport.PHP_EOL;
+		else$txt.='port = '.$dbport.PHP_EOL;
 		$txt.='schema = '.$dbschema.PHP_EOL;
 		$txt.='username = '.$dbusername.PHP_EOL;
 		$txt.='password = '.$dbpassword.PHP_EOL;
 		$txt.='[system]'.PHP_EOL;
-		$txt.='url = '.$sysurl.PHP_EOL;
+		$txt.='url = /'.ltrim($sysurl).PHP_EOL;
 		if($sysadmin=='')$txt.='admin = admin'.PHP_EOL;
 		else$txt.='admin = '.$sysadmin.PHP_EOL;
 		if(file_exists('config.ini'))unlink('config.ini');
@@ -48,7 +48,7 @@ if($_POST['emailtrap']==''){
 		$aUsername=filter_input(INPUT_POST,'aUsername',FILTER_SANITIZE_STRING);
 		$aPassword=filter_input(INPUT_POST,'aPassword',FILTER_SANITIZE_STRING);
 		$hash=password_hash($aPassword,PASSWORD_DEFAULT);
-		$q=$db->prepare("UPDATE login SET name=:aName,email=:aEmail,hash=:hashusername=:aUsername,password=:aPassword WHERE id='1'");
+		$q=$db->prepare("UPDATE login SET name=:aName,email=:aEmail,hash=:hash,username=:aUsername,password=:aPassword WHERE id='1'");
 		$q->execute(array(':aName'=>$aName,':aEmail'=>$aEmail,':hash'=>md5($aEmail),':aUsername'=>$aUsername,':aPassword'=>$hash));
 		$q=$db->prepare("UPDATE config SET maintenance='1',seoTitle=:seoTitle,seoRSSTitle=:seoRSSTitle,theme=:systheme WHERE id='1'");
 		$q->execute(array(':seoTitle'=>$sysname,':seoRSSTitle'=>$sysname,':systheme'=>$systheme));
