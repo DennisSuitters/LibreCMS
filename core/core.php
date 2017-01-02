@@ -2,10 +2,16 @@
 ini_set('session.use_cookies',1);
 ini_set('session.use_only_cookies',1);
 define('DS',DIRECTORY_SEPARATOR);
+define('MINIFY',0);
 require_once'db.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
-$config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+try{
+  $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+}catch(Exception $e){
+	require'core/layout/install.php';
+	die();
+}
 if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme']))$config['theme']=$_GET['theme'];
 define('THEME','layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
