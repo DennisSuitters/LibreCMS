@@ -81,6 +81,7 @@ if($_SESSION['rank']>399){
       <aside class="nav-side-menu">
         <ul class="header">
           <li><img class="logo" src="core/images/librecms-white-120.png"></li>
+          <li><a class="gpl" target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.html"><img src="core/images/gpl-v3-white.png"></a></li>
         </ul>
         <div class="profile clearfix">
           <div class="profile-usertitle">

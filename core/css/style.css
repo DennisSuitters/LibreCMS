@@ -278,6 +278,11 @@ img.table-thumb{
     height:33px;
     background-color:#292e31
 }
+.nav-side-menu .header .gpl{
+  position:absolute;
+  right:2px;
+  bottom:2px
+}
 .nav-side-menu .footer li{
     display:inline;
     padding:0

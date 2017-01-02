@@ -2,44 +2,69 @@
 <block include="header.html">
 <block include="featured.html">
 <block inbed="content">
-<main id="content" class="col-xs-12" role="main">
-	<div class="clearfix"><print page="notes"></div>
-	<settings items="4" contenttype="all">
-		<items>
-			<article class="col-sm-3" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
-        <div class="content-item">
-          <div class="content-item-image">
-            <a href="<print content=linktitle>" role="link">
-							<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>" role="img">
-            </a>
-          </div>
-        <div class="content-item-info clearfix">
-					<controls>
-						<view>
-							<div class="content-item-title">
-								<a href="<print content=linktitle>" itemprop="name" role="link"><print content="title"></a>
-							</div>
-						</view>
-						<service>
-							<a class="btn btn-success btn-sm" href="bookings/<print content=bookservice>" role="link">Book Now</a>
-						</service>
-						<inventory>
-							<button class="addCart btn btn-success btn-sm" data-cartid="<print content=id>" data-cartchoice="0" role="button">Buy Now</button>
-						</inventory>
-					</controls>
-					<cost>
-						<span class="content-item-price pull-right" itemscope itemtype="http://schema.org/Offer">
-							<print content="cost">
-						</span>
-					</cost>
-        </div>
-      </div>
-    </article>
-	</items>
-	<more>
-		<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
-	</more>
-</main>
+	<main id="content" class="col-xs-12 col-sm-9" role="main">
+		<div class="clearfix"><print page="notes"></div>
+			<settings items="3" contenttype="all">
+			<items>
+				<article class="col-sm-3" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+        	<div class="content-item">
+          	<div class="content-item-image">
+            	<a href="<print content=linktitle>" role="link">
+								<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>" role="img">
+            	</a>
+          	</div>
+        	<div class="content-item-info clearfix">
+						<controls>
+							<view>
+								<div class="content-item-title">
+									<a href="<print content=linktitle>" itemprop="name" role="link"><print content="title"></a>
+								</div>
+							</view>
+							<service>
+								<a class="btn btn-success btn-sm" href="bookings/<print content=bookservice>" role="link">Book Now</a>
+							</service>
+							<inventory>
+								<button class="addCart btn btn-success btn-sm" data-cartid="<print content=id>" data-cartchoice="0" role="button">Buy Now</button>
+							</inventory>
+						</controls>
+						<cost>
+							<span class="content-item-price pull-right" itemscope itemtype="http://schema.org/Offer">
+								<print content="cost">
+							</span>
+						</cost>
+	        </div>
+	      </div>
+	    </article>
+		</items>
+		<more>
+			<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
+		</more>
+	</main>
+	<aside class="side_menu col-xs-12 col-sm-3">
+		<div id="newsletters" class="list-group">
+			<form id="newslettersform" target="review" class="list-group-item" method="post" action="core/add_subscriber.php" role="form">
+				<input type="hidden" name="emailtrap" value="">
+				<h4 role="heading">Subscribe to our Newsletters</h4>
+				<div class="form-group form-group-sm">
+					<label for="email" class="control-label col-xs-3"><small>Email</small></label>
+					<div class="input-group col-xs-9">
+						<input type="text" id="email" class="form-control input-sm" name="email" value="" required aria-required="true" role="textbox">
+					</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<button type="submit" class="btn btn-success btn-block" role="button">Subscribe</button>
+				</div>
+			</form>
+		</div>
+		<script>
+			$("#newslettersform").submit(function(){
+				$.post($(this).attr("action"),$(this).serialize(),function(data){
+					$("#newsletters").html(data);
+				});
+				return false;
+			});
+		</script>
+	</aside>
 </block>
 <block inbed="testimonials">
 	<settings items="5">

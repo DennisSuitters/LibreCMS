@@ -53,6 +53,7 @@
             </div>
             <div id="rstfeedback" class="form-group"></div>
           </form>
+          <span class="pull-right"><a target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.html"><img src="core/images/gpl-v3-red.png"></a></span>
         </div>
       </div>
     </div>

@@ -60,6 +60,11 @@ if($config['backup_ti']<$tid){
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/newsletters';?>"><?php svg('email-read');?><br>Newsletters</a>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <div class="panel panel-default text-center">
           <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><?php svg('users');?><br>Accounts</a>
         </div>
       </div>
@@ -71,6 +76,11 @@ if($config['backup_ti']<$tid){
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
           <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><?php svg('activity');?><br>Activity</a>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <div class="panel panel-default text-center">
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/search';?>"><?php svg('search');?><br>Search</a>
         </div>
       </div>
     </div>
