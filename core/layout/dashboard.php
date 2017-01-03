@@ -4,7 +4,7 @@ if($args[0]=='settings'){
 }else{?>
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
-    <h4 class="col-xs-8">Dashboard</h4>
+    <h4 id="updateheading" class="col-xs-8">Dashboard</h4>
     <div class="pull-right">
       <div class="btn-group">
         <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/dashboard/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
@@ -14,9 +14,28 @@ if($args[0]=='settings'){
       </div>
     </div>
   </div>
-  <div class="panel-body">
+  <div id="update" class="panel-body">
     <noscript><div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div></noscript>
-<?php if($config['maintenance']{0}==1){?>
+<?php
+  $handle=@fopen('https://www.studiojunkyard.com/update/version.ini','r');
+  if($handle){
+    $getVersion=file_get_contents('https://www.studiojunkyard.com/update/version.ini');
+    $remoteVersion=parse_ini_string($getVersion,TRUE);
+    if($remoteVersion!=''){
+      if($remoteVersion['system']['version']>$settings['system']['version']){?>
+    <div class="alert alert-info">
+      A System Update is available.<br>
+      Current System last update was on <?php echo date($config['dateFormat'],$settings['system']['version']);?><br>
+      Latest Update was available on <?php echo date($config['dateFormat']);?><br>
+      <form target="sp" method="POST" action="core/upgrade.php">
+        <input type="hidden" name="version" value="<?php echo$remoteVersion['system']['version'];?>">
+        <button type="submit" class="btn btn-success">Update Now....</button>
+        </form>
+    </div>
+<?php   }
+    }
+  }
+  if($config['maintenance']{0}==1){?>
     <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-interface';?>">Maintenance Mode</a></div>
 <?php }
 $tid=$ti-2592000;
