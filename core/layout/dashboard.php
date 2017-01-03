@@ -27,7 +27,7 @@ if($args[0]=='settings'){
       A System Update is available.<br>
       Current System last update was on <?php echo date($config['dateFormat'],$settings['system']['version']);?><br>
       Latest Update was available on <?php echo date($config['dateFormat']);?><br>
-      <form target="sp" method="POST" action="core/upgrade.php">
+      <form target="sp" method="POST" action="core/upgrade.php" onsubmit="$('#block').css({'display':'block'});">
         <input type="hidden" name="version" value="<?php echo$remoteVersion['system']['version'];?>">
         <button type="submit" class="btn btn-success">Update Now....</button>
         </form>

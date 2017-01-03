@@ -84,4 +84,5 @@ if($found==true){
 <?php }else{?>
   window.top.window.$('#update').append('<div class="alert alert-danger">Could not find latest Update.</div>');
 <?php }?>
+  window.top.window.$('#block').css({'display':'none'});
 /*]]>*/</script>
