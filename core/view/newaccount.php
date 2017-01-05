@@ -34,7 +34,7 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
     	$mail->AddAddress($eml);
     	$mail->IsHTML(true);
     	$mail->Subject='Account Activation from '.$config['business'];
-    	$msg=$config['AccountActivationLayout'];
+    	$msg=$config['accountActivationLayout'];
     	$msg=str_replace('{username}',$un,$msg);
       $msg=str_replace('{activation_link}','<a href="'.URL.'?activate='.$activate.'">'.URL.'?activate='.$activate.'</a>',$msg);
     	$msg=str_replace('{password}',$password,$msg);

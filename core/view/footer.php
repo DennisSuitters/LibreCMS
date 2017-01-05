@@ -51,6 +51,8 @@ if(stristr($html,'<buildMenu')){
 			$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);
 		else
 			$buildMenu=str_replace('<menuCart>','',$buildMenu);
+		if($r['contentType']=='cart')$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);else$buildMenu=str_replace('<menuCart>','',$buildMenu);
+
 		$menu.=$buildMenu;
 	}
 	$html=str_replace('<buildMenu>',$menu.'<buildMenu>',$html);

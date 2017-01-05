@@ -10,9 +10,9 @@ $cache_time=86400*7;
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
   $cache_file='../../media/cache/feed'.$r['id'].'.rss';
   $timedif=@(time()-filemtime($cache_file));
-  if(file_exists($cache_file)&&$timedif<$cache_time){
+  if(file_exists($cache_file)&&$timedif<$cache_time)
     $string=file_get_contents($cache_file);
-  }else{
+  else{
     $string=file_get_contents($r['url']);
     if($f=@fopen($cache_file,'w')){
       fwrite($f,$string,strlen($string));
@@ -33,4 +33,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     <small class="hidden-xs"><?php echo strip_tags($rss->channel->item[$i]->description);?></small>
   </div>
   <hr class="visible-xs">
-</div><?php }}}
+</div>
+<?php }
+  }
+}

@@ -16,26 +16,13 @@ if($args[0]=='settings'){
   </div>
   <div id="update" class="panel-body">
     <noscript><div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div></noscript>
-<?php
-  $handle=@fopen('https://www.studiojunkyard.com/update/version.ini','r');
-  if($handle){
-    $getVersion=file_get_contents('https://www.studiojunkyard.com/update/version.ini');
-    $remoteVersion=parse_ini_string($getVersion,TRUE);
-    if($remoteVersion!=''){
-      if($remoteVersion['system']['version']>$settings['system']['version']){?>
-    <div class="alert alert-info">
-      A System Update is available.<br>
-      Current System last update was on <?php echo date($config['dateFormat'],$settings['system']['version']);?><br>
-      Latest Update was available on <?php echo date($config['dateFormat']);?><br>
-      <form target="sp" method="POST" action="core/upgrade.php" onsubmit="$('#block').css({'display':'block'});">
-        <input type="hidden" name="version" value="<?php echo$remoteVersion['system']['version'];?>">
-        <button type="submit" class="btn btn-success">Update Now....</button>
-        </form>
+    <div id="updatecheck">
+    <?php svg('spinner-9','animated spin');?> Checking for Updates!
     </div>
-<?php   }
-    }
-  }
-  if($config['maintenance']{0}==1){?>
+    <script>/*<![CDATA[*/
+      $('#updatecheck').load('core/layout/updatecheck.php');
+      /*]]>*/</script>
+<?php if($config['maintenance']{0}==1){?>
     <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-interface';?>">Maintenance Mode</a></div>
 <?php }
 $tid=$ti-2592000;

@@ -13,9 +13,37 @@ if($view=='newsletters'){
 	}
 }
 if($view=='search'){
-	if(isset($args[0])&&$args[0]!='')$search='%'.html_entity_decode(str_replace('-','%',$args[0])).'%';elseif(isset($_POST['search'])&&$_POST['search']!='')$search='%'.html_entity_decode(str_replace('-','%',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING))).'%';else$search='%';
-	$s=$db->prepare("SELECT * FROM content WHERE LOWER(code) LIKE LOWER(:code) OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(seoKeywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(seoCaption) LIKE LOWER(:caption) OR LOWER(seoDescription) LIKE LOWER(:description) OR LOWER(notes) LIKE LOWER(:notes) AND status=:status ORDER BY ti DESC");
-	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':description'=>$search,':notes'=>$search,':status'=>$status));
+	if(isset($args[0])&&$args[0]!='')
+		$search='%'.html_entity_decode(str_replace('-','%',$args[0])).'%';
+	elseif(isset($_POST['search'])&&$_POST['search']!='')
+		$search='%'.html_entity_decode(str_replace('-','%',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING))).'%';
+	else
+		$search='%';
+	$s=$db->prepare("SELECT * FROM content WHERE
+		LOWER(code) LIKE LOWER(:code) OR
+		LOWER(brand) LIKE LOWER(:brand) OR
+		LOWER(title) LIKE LOWER(:title) OR
+		LOWER(category_1) LIKE LOWER(:category_1) OR
+		LOWER(category_2) LIKE LOWER(:category_2) OR
+		LOWER(seoKeywords) LIKE LOWER(:keywords) OR
+		LOWER(tags) LIKE LOWER(:tags) OR
+		LOWER(seoCaption) LIKE LOWER(:caption) OR
+		LOWER(seoDescription) LIKE LOWER(:description) OR
+		LOWER(notes) LIKE LOWER(:notes)
+		AND status=:status ORDER BY ti DESC");
+	$s->execute(array(
+		':code'=>$search,
+		':brand'=>$search,
+		':category_1'=>$search,
+		':category_2'=>$search,
+		':title'=>$search,
+		':keywords'=>$search,
+		':tags'=>$search,
+		':caption'=>$search,
+		':description'=>$search,
+		':notes'=>$search,
+		':status'=>$status
+	));
 }elseif($view=='index'){
 	if(stristr($html,'<settings')){
 		preg_match('/<settings items="([\w\W]*?)" contenttype="([\w\W]*?)">/',$html,$matches);
@@ -113,6 +141,9 @@ if($show=='categories'){
 		$output='';
 		$si=1;
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
+			if($view=='search'){
+				if($r['contentType']=='testimonials'||$r['contentType']=='proofs')continue;
+			}
 			$sr=$db->prepare("SELECT active FROM menu WHERE contentType=:contentType");
 			$sr->execute(array(':contentType'=>$r['contentType']));
 			$pr=$sr->fetch(PDO::FETCH_ASSOC);
@@ -182,7 +213,9 @@ if($show=='categories'){
 	$html=str_replace('<items>','',$html);
 	$html=str_replace('</items>','',$html);
 	if(stristr($html,'<more>')){
-		if($s->rowCount()<=$config['showItems'])$html=preg_replace('~<more>.*?<\/more>~is','',$html,1);else{
+		if($s->rowCount()<=$config['showItems'])
+			$html=preg_replace('~<more>.*?<\/more>~is','',$html,1);
+		else{
 			$html=str_replace('<more>','',$html);
 			$html=str_replace('</more>','',$html);
 			$html=str_replace('<print view>',$view,$html);

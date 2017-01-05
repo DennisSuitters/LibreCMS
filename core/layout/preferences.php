@@ -434,26 +434,7 @@ if($config['backup_ti']<$tid){
       </div>
 <?php if($user['rank']>899){?>
       <div id="preference-info" name="preference-info" class="tab-pane fade in">
-        <h4 id="updateheading" >Information</h4>
-        <div id="update">
-<?php $handle=@fopen('https://www.studiojunkyard.com/update/version.ini','r');
-  if($handle){
-    $getVersion=file_get_contents('https://www.studiojunkyard.com/update/version.ini');
-    $remoteVersion=parse_ini_string($getVersion,TRUE);
-    if($remoteVersion!=''){
-      if($remoteVersion['system']['version']>$settings['system']['version']){?>
-          <div class="alert alert-info">
-            A System Update is available.<br>
-            Current System last update was on <?php echo date($config['dateFormat'],$settings['system']['version']);?><br>
-            Latest Update was available on <?php echo date($config['dateFormat']);?><br>
-            <form target="sp" method="POST" action="core/upgrade.php">
-              <input type="hidden" name="version" value="<?php echo$remoteVersion['system']['version'];?>">
-              <button type="submit" class="btn btn-success">Update Now....</button>
-            </form>
-          </div>
-<?php   }
-      }
-    }?>
+        <h4>Information</h4>
           <div class="form-group">
 <?php ob_start();
 phpinfo();
