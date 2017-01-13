@@ -11,7 +11,7 @@ if($args[0]=='add'){
   history.replaceState('','','<?php echo URL.$settings['system']['admin'].'/accounts/edit/'.$args[1];?>');
 /*]]>*/</script>
 <?php }elseif($args[0]=='settings')include'core'.DS.'layout'.DS.'set_accounts.php';
-if($args[0]=='edit'){
+elseif($args[0]=='edit'){
   $q=$db->prepare("SELECT * FROM login WHERE id=:id");
   $q->execute(array(':id'=>$args[1]));
   $r=$q->fetch(PDO::FETCH_ASSOC);?>
@@ -158,8 +158,8 @@ if($args[0]=='edit'){
                 <button class="btn btn-default" type="submit"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Upload Selected Image."';?>><?php svg('upload');?></button>
               </form>
             </div>
-            <div class="input-group-addon img">
-              <img id="avatar" src="<?php if($r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$r['avatar']))echo'media/avatar/'.$r['avatar'];else echo'core/images/noavatar.jpg';?>">
+            <div class="input-group-addon avatar">
+              <img id="avatar" src="<?php if($r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$r['avatar']))echo'media/avatar/'.$r['avatar'];?>">
             </div>
             <div class="input-group-btn">
               <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','login','avatar','');"><?php svg('trash');?></button>

@@ -4,16 +4,16 @@
 <block inbed="content">
 	<main id="content" class="col-xs-12 col-sm-9" role="main">
 		<div class="clearfix"><print page="notes"></div>
-			<settings items="3" contenttype="all">
-			<items>
-				<article class="col-sm-3" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
-        	<div class="content-item">
-          	<div class="content-item-image">
-            	<a href="<print content=linktitle>" role="link">
-								<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>" role="img">
-            	</a>
-          	</div>
-        	<div class="content-item-info clearfix">
+		<settings items="3" contenttype="all">
+		<items>
+			<article class="col-sm-3" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+      	<div class="content-item">
+          <a href="<print content=linktitle>" role="link">
+						<span class="content-item-image">
+							<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>" role="img">
+          	</span>
+        	</a>
+      		<div class="content-item-info clearfix">
 						<controls>
 							<view>
 								<div class="content-item-title">
@@ -32,9 +32,9 @@
 								<print content="cost">
 							</span>
 						</cost>
-	        </div>
-	      </div>
-	    </article>
+	      	</div>
+	    	</div>
+	  	</article>
 		</items>
 		<more>
 			<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>

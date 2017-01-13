@@ -81,7 +81,6 @@ if($_SESSION['rank']>399){
       <aside class="nav-side-menu">
         <ul class="header">
           <li><img class="logo" src="core/images/librecms-white-120.png"></li>
-          <li><a class="gpl" target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.html"><img src="core/images/gpl-v3-white.png"></a></li>
         </ul>
         <div class="profile clearfix">
           <div class="profile-usertitle">
@@ -90,7 +89,16 @@ if($_SESSION['rank']>399){
           </div>
           <div class="profile-sidebar">
             <div class="profile-userpic">
-              <img id="menu_avatar" class="img-thumbnail" src="<?php if($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))	echo'media/avatar/'.$user['avatar'];elseif($user['gravatar']!=''){if(stristr($user['gravatar'],'@'))echo'http://gravatar.com/avatar/'.md5($user['gravatar']);elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))echo$user['gravatar'];else echo$noavatar;}else echo$noavatar;?>">
+              <img id="menu_avatar" class="img-thumbnail" src="
+<?php if($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))
+    echo'media/avatar/'.$user['avatar'];
+  elseif($user['gravatar']!=''){
+    if(stristr($user['gravatar'],'@'))
+      echo'http://gravatar.com/avatar/'.md5($user['gravatar']);
+    elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))
+      echo$user['gravatar'];
+    else echo'';
+  }else echo'';?>">
             </div>
             <ul class="footer pull-right">
               <li><a class="btn btn-libre btn-xs" href="<?php echo URL;?>" title="Front"><?php svg('desktop');?></i></a></li>
@@ -105,6 +113,7 @@ if($_SESSION['rank']>399){
             <li<?php if($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/content';?>"><?php svg('content');?> Content</a></li>
             <li<?php if($view=='bookings')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><?php svg('calendar');?> Bookings</a></li>
             <li<?php if($view=='orders')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><?php svg('order');?> Orders</a></li>
+            <li<?php if($view=='rewards')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/rewards';?>"><?php svg('credit-card');?> Rewards</a></li>
             <li<?php if($view=='media')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/media';?>"><?php svg('picture');?> Media</a></li>
             <li<?php if($view=='messages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('envelope');?> Messages</a></li>
             <li<?php if($view=='newsletters')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/newsletters';?>"><?php svg('email-read');?> Newsletters</a></li>
@@ -313,16 +322,24 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
           $('#block').css({display:'block'});
           update($('#pti').data("dbid"),'content','pti',ev.date)
         });
+<?php if($view!='rewards'){?>
         $("#tis").datetimepicker({
           format:'M d, yyyy h:ii P'
         }).on('changeDate',function(ev){
           update($('#tis').data("dbid"),'content','tis',ev.date)
         });
+<?php }else{?>
+        $("#tis").datetimepicker();
+<?php }?>
+<?php if($view!='rewards'){?>
         $("#tie").datetimepicker({
           format:'M d, yyyy h:ii P'
         }).on('changeDate',function(ev){
           update($('#tie').data("dbid"),'content','tie',ev.date)
         });
+<?php }else{?>
+        $("#tie").datetimepicker();
+<?php }?>
         $(document).ready(function(){
 <?php if($config['options']{4}==1){?>
           $('[data-toggle="tooltip"]').tooltip({
@@ -369,14 +386,8 @@ if($config['idleTime']!=0){?>
     <iframe id="sp" name="sp" class="hidden"></iframe>
     <div class="notifications center"></div>
     <div id="block">
-      <div class="spinner">
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
+      <div class="pace">
+        <div class="pace-activity"></div>
       </div>
     </div>
   </body>

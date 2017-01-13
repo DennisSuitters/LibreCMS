@@ -27,6 +27,34 @@ if($act!=''){
   $error=0;
   $ti=time();
   switch($act){
+		case'add_reward':
+			$code=filter_input(INPUT_POST,'code',FILTER_SANITIZE_STRING);
+			$title=filter_input(INPUT_POST,'title',FILTER_SANITIZE_STRING);
+			$method=filter_input(INPUT_POST,'method',FILTER_SANITIZE_NUMBER_INT);
+			$value=filter_input(INPUT_POST,'value',FILTER_SANITIZE_NUMBER_INT);
+			$quantity=filter_input(INPUT_POST,'quantity',FILTER_SANITIZE_NUMBER_INT);
+			$tis=filter_input(INPUT_POST,'tis',FILTER_SANITIZE_STRING);
+			$tie=filter_input(INPUT_POST,'tie',FILTER_SANITIZE_STRING);
+			if($tis!='')$tis=strtotime($tis);else$tis=0;
+			if($tie!='')$tie=strtotime($tie);else$tie=0;
+			$q=$db->prepare("INSERT INTO rewards (code,title,method,value,quantity,tis,tie,ti) VALUES (:code,:title,:method,:value,:quantity,:tis,:tie,:ti)");
+			$q->execute(array(
+				':code'=>$code,
+				':title'=>$title,
+				':method'=>$method,
+				':value'=>$value,
+				':quantity'=>$quantity,
+				':tis'=>$tis,
+				':tie'=>$tie,
+				':ti'=>$ti));
+			$id=$db->lastInsertId();
+			$e=$db->errorInfo();
+			if(is_null($e[2])){?>
+	window.top.window.$('#rewards').append('<tr id="l_<?php echo$id;?>"><td class="col-xs-1 text-center"><?php echo$code;?></td><td class="col-xs-5 text-center"><?php echo$title;?></td><td class="text-center"><?php if($method==0)echo'% Off';else echo'$ Off';?></td><td class="col-xs-1 text-center"><?php echo$value;?>&nbsp;</td><td class="col-xs-1 text-center"><?php echo$quantity;?>&nbsp;</td><td class="col-xs-1 text-center"><small><?php if($tis!=0){echo date($config['dateFormat'],$tis);}?></small></td><td class="col-xs-1 text-center"><small><?php if($tie!=0){echo date($config['dateFormat'],$tie);}?></small></td><td><form target="sp" action="core/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="rewards"><button class="btn btn-default trash"><?php svg('trash');?></button></form></td></tr>');
+<?php	}else{?>
+  window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue adding the Reward'}}).show();
+<?php }
+			break;
     case'add_dashrss':
       $url=filter_input(INPUT_POST,'url',FILTER_SANITIZE_URL);
       if(filter_var($url,FILTER_VALIDATE_URL)){
@@ -205,7 +233,7 @@ if($act!=''){
         $q=$db->prepare("SELECT title,cost FROM content WHERE id=:id");
         $q->execute(array(':id'=>$iid));
         $r=$q->fetch(PDO::FETCH_ASSOC);
-				if($r['cost']==''||!is_num($r['cost']))$r['cost']=0;
+				if($r['cost']==''||!is_numeric($r['cost']))$r['cost']=0;
       }else$r=array('title'=>'','cost'=>0);
       $q=$db->prepare("INSERT INTO orderitems (oid,iid,title,quantity,cost,ti) VALUES (:oid,:iid,:title,'1',:cost,:ti)");
       $q->execute(array(':oid'=>$oid,':iid'=>$iid,':title'=>$r['title'],':cost'=>$r['cost'],':ti'=>time()));

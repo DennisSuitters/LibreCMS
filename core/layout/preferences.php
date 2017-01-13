@@ -22,10 +22,9 @@
     <div class="tab-content">
       <div id="preference-theme" name="preference-theme" class="tab-pane fade in active">
         <div class="row theme-chooser">
-<?php foreach(new DirectoryIterator('layout') as$folder){
-  if($folder->isDOT())continue;
-  if($folder->isDir()){
-    $theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);?>
+<?php $folders=preg_grep('/^([^.])/',scandir("layout"));
+foreach($folders as$folder){
+  $theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);?>
           <div class="col-xs-12 col-md-3">
             <div class="theme-chooser-item panel<?php if($config['theme']==$folder)echo' panel-success';?>" data-theme="<?php echo$folder;?>">
               <div class="panel-image">
@@ -35,26 +34,25 @@
                 <h4 class="panel-title text-white text-shadow-depth-1-half"><?php if(isset($theme['title'])&&$theme['title']!='')echo$theme['title'];else echo'No Title Assigned';?></h4>
                 <p>
 <?php if(isset($theme['version'])&&$theme['version']!='')echo'<small class="version">Version: '.$theme['version'].'</small><br>';
-if(isset($theme['creator'])&&$theme['creator']!=''){
-  echo'<small class="creator">Creator';
+  if(isset($theme['creator'])&&$theme['creator']!=''){
+    echo'<small class="creator">Creator';
   if(isset($theme['creator_url'])&&$theme['creator_url']!='')
     echo': <a target="_blank" href="'.$theme['creator_url'].'">'.$theme['creator'].'</a>';
   else
     echo$theme['creator'];echo'</small><br>';
-}
-if(isset($theme['framework_name'])&&$theme['framework_name']!=''){
-  echo'<small class="creator">Framework';
+  }
+  if(isset($theme['framework_name'])&&$theme['framework_name']!=''){
+    echo'<small class="creator">Framework';
   if(isset($theme['framework_url'])&&$theme['framework_url']!='')
     echo': <a target="_blank" href="'.$theme['framework_url'].'">'.$theme['framework_name'].'</a>';
   else
    echo$theme['framework_name'];echo'</small><br>';
-}?>
+  }?>
                 </p>
               </div>
             </div>
           </div>
-<?php }
-}?>
+<?php }?>
         </div>
       </div>
       <script>/*<![CDATA[*/
@@ -269,6 +267,24 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
               <input type="checkbox" id="options4" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="4"<?php if($config['options']{4}==1)echo' checked';?>>
               <label for="options4"/>
             </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="uti_freq" class="control-label col-xs-5 col-sm-3 col-lg-2">Update Frequency</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <select id="uti_freq" class="form-control" onchange="update('1','config','uti_freq',$(this).val());"<?php if($user['options']{1}==0)echo' readonly';if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+              <option value="0"<?php if($config['uti_freq']==0)echo' selected';?>>Never</option>
+              <option value="3600"<?php if($config['uti_freq']==3600)echo' selected';?>>Hourly</option>
+              <option value="84600"<?php if($config['uti_freq']==84600)echo' selected';?>>Daily</option>
+              <option value="604800"<?php if($config['uti_freq']==604800)echo' selected';?>>Weekly</option>
+              <option value="2629743"<?php if($config['uti_freq']==2629743)echo' selected';?>>Monthly</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="update_url" class="control-label col-xs-5 col-sm-3 col-lg-2">Update URL</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <input type="text" id="update_url" class="form-control textinput" value="<?php echo$config['update_url'];?>" data-dbid="1" data-dbt="config" data-dbc="update_url" placeholder="Enter an Update URL..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="URL to Fetch System Updates From..."';?>>
           </div>
         </div>
         <div class="form-group clearfix">

@@ -146,6 +146,34 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 }
 		$html.='</tbody>';
 		$html.='<tfoot>';
+$sr=$db->prepare("SELECT * FROM rewards WHERE id=:rid");
+$sr->execute(array(':rid'=>$r['rid']));
+if($sr->rowCount()>0){
+	$reward=$sr->fetch(PDO::FETCH_ASSOC);
+			$html.='<tr style="background-color:#f0f0f0">';
+				$html.='<td colspan="3" class="text-right"><small>Rewards</small></td>';
+				$html.='<td class="col-75 text-right"><small>';
+				if($reward['method']==1){
+			    $html.='$';
+			    $ot=$o-$reward['value'];
+			  }
+			  $html.=$reward['value'];
+			  if($reward['method']==0){
+			    $html.='%';
+			    $ot=($ot*((100-$reward['value'])/100));
+			  }
+			  $html.=' Off</small></td>';
+				$html.='<td class="col-75 text-right"><strong>'.$ot.'</strong></td>';
+			$html.='</tr>';
+}
+if($r['postage']!=0){
+			$html.='<tr style="background-color:#f0f0f0">';
+				$html.='<td colspan="3">&nbsp;</td>';
+				$html.='<td class="col-75 text-right">Postage</td>';
+				$html.='<td class="col-75 text-right"><strong>'.$r['postage'].'</strong></td>';
+			$html.='</tr>';
+			$ot=$ot+$r['postage'];
+}
 			$html.='<tr style="background-color:#f0f0f0">';
 				$html.='<td colspan="3">&nbsp;</td>';
 				$html.='<td class="col-75 text-right"><strong>Total</strong></td>';

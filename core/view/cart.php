@@ -4,6 +4,7 @@ $notification='';
 if($args[0]=="confirm"){
 	if($_POST['emailtrap']==''){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
+		$rewards=filter_input(INPUT_POST,'rewards',FILTER_SANITIZE_STRING);
 		if(isset($_SESSION['uid']))$uid=$_SESSION['uid'];else$uid=0;
 		if(filter_var($email,FILTER_VALIDATE_EMAIL)){
 			$s=$db->prepare("SELECT id,status FROM login WHERE email=:email");
@@ -13,13 +14,13 @@ if($args[0]=="confirm"){
 				if($ru['status']=='delete'||$ru['status']=='disabled')$notification.=$theme['settings']['account_suspend'];
 				else$uid=$ru['id'];
 			}else{
-				$business=filter_input(INPUT_POST,'business',FILTER_SANITIZE_EMAIL);
-				$address=filter_input(INPUT_POST,'address',FILTER_SANITIZE_EMAIL);
-				$suburb=filter_input(INPUT_POST,'suburb',FILTER_SANITIZE_EMAIL);
-				$city=filter_input(INPUT_POST,'city',FILTER_SANITIZE_EMAIL);
-				$state=filter_input(INPUT_POST,'state',FILTER_SANITIZE_EMAIL);
-				$postcode=filter_input(INPUT_POST,'postcode',FILTER_SANITIZE_EMAIL);
-				$phone=filter_input(INPUT_POST,'phone',FILTER_SANITIZE_EMAIL);
+				$business=filter_input(INPUT_POST,'business',FILTER_SANITIZE_STRING);
+				$address=filter_input(INPUT_POST,'address',FILTER_SANITIZE_STRING);
+				$suburb=filter_input(INPUT_POST,'suburb',FILTER_SANITIZE_STRING);
+				$city=filter_input(INPUT_POST,'city',FILTER_SANITIZE_STRING);
+				$state=filter_input(INPUT_POST,'state',FILTER_SANITIZE_STRING);
+				$postcode=filter_input(INPUT_POST,'postcode',FILTER_SANITIZE_STRING);
+				$phone=filter_input(INPUT_POST,'phone',FILTER_SANITIZE_STRING);
 				$username=explode('@',$email);
 				$q=$db->prepare("INSERT INTO login (username,password,email,business,address,suburb,city,state,postcode,phone,status,active,rank,ti) VALUES (:username,'',:email,:business,:address,:suburb,:city,:state,:postcode,:phone,'','1','0',:ti)");
 				$q->execute(array(':username'=>$username[0],':email'=>$email,':business'=>$business,':address'=>$address,':suburb'=>$suburb,':city'=>$city,':state'=>$state,':postcode'=>$postcode,':phone'=>$phone,':ti'=>$ti));
@@ -32,10 +33,14 @@ if($args[0]=="confirm"){
 				$uid=$r['id'];
 			}
 			$r=$db->query("SELECT MAX(id) as id FROM orders")->fetch(PDO::FETCH_ASSOC);
+			$sr=$db->prepare("SELECT id FROM rewards WHERE code=:code");
+			$sr->execute(array(':code'=>$rewards));
+			if($sr->rowCount()>0)$reward=$sr->fetch(PDO::FETCH_ASSOC);
+			else$reward['id']=0;
 			$dti=$ti+$config['orderPayti'];
 			$qid='Q'.date("ymd",$ti).sprintf("%06d",$r['id']+1,6);
-			$q=$db->prepare("INSERT INTO orders (cid,uid,qid,qid_ti,due_ti,status,ti) VALUES (:cid,:uid,:qid,:qid_ti,:due_ti,'pending',:ti)");
-			$q->execute(array(':cid'=>$ru['id'],':uid'=>$uid,':qid'=>$qid,':qid_ti'=>$ti,':due_ti'=>$dti,':ti'=>$ti));
+			$q=$db->prepare("INSERT INTO orders (cid,uid,qid,qid_ti,due_ti,rid,status,ti) VALUES (:cid,:uid,:qid,:qid_ti,:due_ti,:rid,'pending',:ti)");
+			$q->execute(array(':cid'=>$ru['id'],':uid'=>$uid,':qid'=>$qid,':qid_ti'=>$ti,':due_ti'=>$dti,':rid'=>$reward['id'],':ti'=>$ti));
 			$oid=$db->lastInsertId();
 			$s=$db->prepare("SELECT * FROM cart WHERE si=:si");
 			$s->execute(array(':si'=>SESSIONID));
@@ -47,7 +52,15 @@ if($args[0]=="confirm"){
 				$qry=$db->prepare("UPDATE content SET quantity=:quantity WHERE id=:id");
 				$qry->execute(array(':quantity'=>$quantity,':id'=>$r['iid']));
 				$sq=$db->prepare("INSERT INTO orderitems (oid,iid,cid,title,quantity,cost,ti) VALUES (:oid,:iid,:cid,:title,:quantity,:cost,:ti)");
-				$sq->execute(array(':oid'=>$oid,':iid'=>$r['iid'],':cid'=>$r['cid'],':title'=>$i['title'],':quantity'=>$r['quantity'],':cost'=>$r['cost'],':ti'=>$ti));
+				$sq->execute(array(
+					':oid'=>$oid,
+					':iid'=>$r['iid'],
+					':cid'=>$r['cid'],
+					':title'=>$i['title'],
+					':quantity'=>$r['quantity'],
+					':cost'=>$r['cost'],
+					':ti'=>$ti
+				));
 			}
 			$q=$db->prepare("DELETE FROM cart WHERE si=:si");
 			$q->execute(array(':si'=>SESSIONID));

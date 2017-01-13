@@ -1,26 +1,30 @@
 <?php
+require'../db.php';
+$config=$db->query("SELECT update_url FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 $settings=parse_ini_file('../config.ini',TRUE);
-$handle=@fopen('https://www.studiojunkyard.com/update/version.ini','r');
-if($handle){
-  $getVersion=file_get_contents('https://www.studiojunkyard.com/update/version.ini');
-  $remoteVersion=parse_ini_string($getVersion,TRUE);
-  if($remoteVersion!=''){
-    if($remoteVersion['system']['version']>$settings['system']['version']){?>
-<div class="alert alert-info">
-  <p>A System Update is available.</p>
-  <p>Current System last update was on <?php echo date('M jS, Y g:i A',$settings['system']['version']);?></p>
-  <p>Latest Update was available on <?php echo date('M jS, Y g:i A',$remoteVersion['system']['version']);?></p>
-  <p>
-    What this update does:<br>
-    <?php echo$remoteVersion['system']['description'];?>
-  </p>
+$gV=@file_get_contents($config['update_url'].'versions') or die();
+$update=0;
+$uL='';
+if($gV!=''){
+  $vL=explode("\n",$gV);
+  foreach($vL as $aV){
+    if($vL=='')continue;
+    $uV=(int)$aV;
+    if($uV>$settings['system']['version']){
+      $update=1;
+      $uL.='Update available: '.date('M jS, Y g:i A',$uV).'.<br>';
+    }
+  }
+}
+if($update==1){?>
+<div class="alert alert-warning">
+  <p>Current update was on <?php echo date('M jS, Y g:i A',$settings['system']['version']);?></p>
+  <p><?php echo$uL;?></p>
   <p>
     <form target="sp" method="POST" action="core/upgrade.php" onsubmit="$('#block').css({'display':'block'});">
       <input type="hidden" name="version" value="<?php echo$remoteVersion['system']['version'];?>">
-      <button type="submit" class="btn btn-success">Update Now....</button>
+      <button type="submit" class="btn btn-success">Do Updates....</button>
     </form>
   </p>
 </div>
 <?php }
-  }
-}

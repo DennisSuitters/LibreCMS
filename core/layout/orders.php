@@ -284,18 +284,24 @@ while($rs=$q->fetch(PDO::FETCH_ASSOC)){
         </div>
       </div>
 <?php if($r['status']!='archived'){?>
-      <div class="form-group">
-        <div class="input-group col-xs-12">
-          <select id="addItem" class="form-control">
-            <option value="0">Add Empty Entry...</option>
+      <form target="sp" method="POST" action="core/updateorder.php" onsubmit="blocker();">
+        <input type="hidden" name="act" value="additem">
+        <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+        <input type="hidden" name="t" value="orderitems">
+        <input type="hidden" name="c" value="">
+        <div class="form-group">
+          <div class="input-group col-xs-12">
+            <select class="form-control" name="da">
+              <option value="0">Add Empty Entry...</option>
 <?php $s=$db->query("SELECT id,contentType,code,cost,title FROM content WHERE contentType='inventory' OR contentType='service' OR contentType='events' ORDER BY code ASC");
 while($i=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$i['id'].'">'.ucfirst(rtrim($i['contentType'],'s')).$i['code'].':$'.$i['cost'].':'.$i['title'].'</option>';?>
-          </select>
-          <div class="input-group-btn">
-            <button class="btn btn-default add" onclick="addOrderItem('<?php echo$r['id'];?>',$('#addItem').val());"><?php svg('plus');?></button>
+            </select>
+            <div class="input-group-btn">
+              <button class="btn btn-default add"><?php svg('plus');?></button>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
 <?php }?>
       <div class="table-responsive">
         <table class="table table-striped table-responsive">
@@ -324,38 +330,49 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
             <tr>
               <td class="text-left">
                 <?php echo$i['code'];?>
-                <div class="visible-xs"><?php echo$i['title'];?></div>
-                <div class="visible-xs">Option: <?php echo$c['title'];?></div>
               </td>
-              <td class="text-left hidden-xs"><?php echo$i['title'];?></td>
-              <td class="text-left hidden-xs"><?php echo$c['title'];?></td>
-              <td class="col-md-1 text-center">
+              <td class="text-left">
+<?php if($oi['iid']!=0)
+        echo$i['title'];
+      else{?>
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                  <input type="hidden" name="act" value="title">
+                  <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
+                  <input type="hidden" name="t" value="orderitems">
+                  <input type="hidden" name="c" value="title">
+                  <input type="text" class="form-control" name="da" value="<?php echo$oi['title'];?>">
+                </form>
+<?php }?>
+              </td>
+              <td class="text-left"><?php echo$c['title'];?></td>
+              <td class="col-sm-1 text-center">
 <?php if($oi['iid']!=0){?>
-                <form target="sp" action="core/update.php">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                  <input type="hidden" name="act" value="quantity">
                   <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
                   <input type="hidden" name="t" value="orderitems">
                   <input type="hidden" name="c" value="quantity">
-                  <input class="form-control text-center" name="da" value="<?php echo$oi['quantity'];?>"<?php if($r['status']=='archived')echo' readonly';?>>
+                  <input type="text" class="form-control text-center" name="da" value="<?php echo$oi['quantity'];?>"<?php if($r['status']=='archived')echo' readonly';?>>
                 </form>
 <?php }else{
   if($oi['iid']!=0)echo$oi['quantity'];
 }?>
               </td>
-              <td class="col-md-1 text-right">
+              <td class="col-sm-1 text-right">
 <?php if($oi['iid']!=0){?>
-                <form target="sp" action="core/update.php">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                  <input type="hidden" name="act" value="cost">
                   <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
                   <input type="hidden" name="t" value="orderitems">
                   <input type="hidden" name="c" value="cost">
-                  <div class="input-group">
-                    <input class="form-control text-center" name="da" value="<?php echo$oi['cost'];?>"<?php if($r['status']=='archived')echo' readonly';?>>
-                  </div>
+                  <input class="form-control text-center" name="da" value="<?php echo$oi['cost'];?>"<?php if($r['status']=='archived')echo' readonly';?>>
                 </form>
 <?php }elseif($oi['iid']!=0)echo$oi['cost'];?>
               </td>
-              <td class="text-right"><?php if($oi['iid']!=0)echo$oi['cost']*$oi['quantity'];?></td>
+              <td class="col-sm-1 text-right"><?php if($oi['iid']!=0)echo$oi['cost']*$oi['quantity'];?></td>
               <td class="text-right">
-                <form target="sp" action="core/update.php">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                  <input type="hidden" name="act" value="trash">
                   <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
                   <input type="hidden" name="t" value="orderitems">
                   <input type="hidden" name="c" value="quantity">
@@ -365,11 +382,54 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
               </td>
             </tr>
 <?php if($oi['iid']!=0)$total=$total+($oi['cost']*$oi['quantity']);
-}?>
+}
+$sr=$db->prepare("SELECT * FROM rewards WHERE id=:rid");
+$sr->execute(array(':rid'=>$r['rid']));
+$reward=$sr->fetch(PDO::FETCH_ASSOC);?>
             <tr>
-              <td colspan="3">&nbsp;</td>
-              <td class="text-right"><strong>Total</strong></td>
+              <td colspan="3" class="text-right"><strong>Rewards Code</strong></td>
+              <td class="text-center">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                  <input type="hidden" name="act" value="reward">
+                  <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                  <input type="hidden" name="t" value="orders">
+                  <input type="hidden" name="c" value="rid">
+                  <input type="text" class="form-control" name="da" value="<?php if($sr->rowCount()==1)echo$reward['code'];?>">
+                </form>
+              </td>
+              <td class="text-center">
+<?php if($sr->rowCount()==1){
+  if($reward['method']==1){
+    echo'$';
+    $total=$total-$reward['value'];
+  }
+  echo$reward['value'];
+  if($reward['method']==0){
+    echo'%';
+    $total=($total*((100-$reward['value'])/100));
+  }
+  echo' Off';
+}?>
+              </td>
               <td class="text-right"><strong><?php echo$total;?></strong></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan="5" class="text-right"><strong>Postage</strong></td>
+              <td class="postage">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                  <input type="hidden" name="act" value="postage">
+                  <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                  <input type="hidden" name="t" value="orders">
+                  <input type="hidden" name="c" value="postage">
+                  <input type="text" class="form-control text-right" name="da" value="<?php echo$r['postage'];$total=$total+$r['postage'];?>">
+                </form>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan="5" class="text-right"><strong>Total</strong></td>
+              <td class="total text-right"><strong><?php echo$total;?></strong></td>
               <td></td>
             </tr>
           </tbody>
@@ -377,7 +437,7 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
       </div>
       <div class="col-xs-12 col-sm-6">
 <?php if($r['status']!='archived'&&$user['rank']>699){?>
-        <form target="sp" action="core/update.php">
+        <form target="sp" method="POST" action="core/update.php">
           <input type="hidden" name="id" value="<?php echo$r['id'];?>">
           <input type="hidden" name="t" value="orders">
           <input type="hidden" name="c" value="notes">

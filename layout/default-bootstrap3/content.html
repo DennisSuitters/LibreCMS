@@ -44,43 +44,44 @@
 					</aside>
 				</author>
 				<hr role="separator">
-				<h4 role="heading">Customer Reviews</h4>
-				<review>
-					<div class="hreview-aggregate media" itemprop="review" itemscope itemtype="http://schema.org/Review">
-						<json-ld-review>
-						<div class="media-body well" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
-							<p>
-								<data class="p-rating" value="<print review=rating>">
-									<meta itemprop="worstRating" content="1">
-									<meta itemprop="ratingValue" content="<print review=rating>">
-									<meta itemprop="bestRating" content="5">
-									<span class="rat">
-										<span class="<print review=set5>">☆</span>
-										<span class="<print review=set4>">☆</span>
-										<span class="<print review=set3>">☆</span>
-										<span class="<print review=set2>">☆</span>
-										<span class="<print review=set1>">☆</span>
-									</span>
-								</data>
-								Published <time class="dt-published" datetime="<print review=datetime>"><print review="date"></time> by <span class="p-author h-card"><print review="name"></span>
-							</p>
-							<div class="e-content summary" itemprop="description"><print review="review"></div>
+				<div class="reviews">
+					<review>
+						<div class="hreview-aggregate media" itemprop="review" itemscope itemtype="http://schema.org/Review">
+							<json-ld-review>
+							<div class="media-body well" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+								<p>
+									<data class="p-rating" value="<print review=rating>">
+										<meta itemprop="worstRating" content="1">
+										<meta itemprop="ratingValue" content="<print review=rating>">
+										<meta itemprop="bestRating" content="5">
+										<span class="rat">
+											<span class="<print review=set5>">☆</span>
+											<span class="<print review=set4>">☆</span>
+											<span class="<print review=set3>">☆</span>
+											<span class="<print review=set2>">☆</span>
+											<span class="<print review=set1>">☆</span>
+										</span>
+									</data>
+									Published <time class="dt-published" datetime="<print review=datetime>"><print review="date"></time> by <span class="p-author h-card"><print review="name"></span>
+								</p>
+								<div class="e-content summary" itemprop="description"><print review="review"></div>
+							</div>
 						</div>
-					</div>
-				</review>
+					</review>
+				</div>
 			</article>
 		</item>
 		<print page="notes">
 		<settings itemCount="10">
 		<items>
 			<article class="col-sm-4 col-md-4" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
-                <div class="content-item">
-                    <div class="content-item-image">
-                        <a href="<print content=linktitle>" role="link">
+        <div class="content-item">
+          <a href="<print content=linktitle>" role="link">
+						<span class="content-item-image">
 							<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>">
-                        </a>
-                    </div>
-                    <div class="content-item-info clearfix">
+            </span>
+          </a>
+          <div class="content-item-info clearfix">
 						<controls>
 							<view>
 								<div class="content-item-title">

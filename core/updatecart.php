@@ -60,8 +60,7 @@ if($act=='quantity'){
       $cartitem=str_replace('<print itemscalculate>',$ci['cost']*$ci['quantity'],$cartitem);
       $total=$total+($ci['cost']*$ci['quantity']);
       $cartitems.=$cartitem;
-    }
-    $total=$total+$ci['postagecost'];?>
+    }?>
   window.top.document.getElementById("total").innerHTML='<?php echo$total;?>';
   window.top.document.getElementById("orderitems").innerHTML='<?php echo preg_replace('/^\s+|\n|\r|\s+$/m', '', $cartitems);?>';
 <?php }

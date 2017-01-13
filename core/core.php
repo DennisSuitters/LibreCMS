@@ -180,6 +180,10 @@ class admin{
 		$view='orders';
 		require'admin.php';
 	}
+  function rewards($args=false){
+    $view='rewards';
+    require'admin.php';
+  }
 	function pages($args=false){
 		$view='pages';
 		require'admin.php';
@@ -342,6 +346,7 @@ $rts=array(
 	$settings['system']['admin'].'/messages'=>array('admin','messages'),
 	$settings['system']['admin'].'/newsletters'=>array('admin','newsletters'),
 	$settings['system']['admin'].'/orders'=>array('admin','orders'),
+  $settings['system']['admin'].'/rewards'=>array('admin','rewards'),
 	$settings['system']['admin'].'/pages'=>array('admin','pages'),
 	$settings['system']['admin'].'/preferences'=>array('admin','preferences'),
 	$settings['system']['admin'].'/search'=>array('admin','search'),

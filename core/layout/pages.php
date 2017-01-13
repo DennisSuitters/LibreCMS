@@ -167,7 +167,7 @@ elseif($r['coverURL']!='')
 elseif($r['coverURL']!='')
   echo'<a href="'.$r['coverURL'].'" data-featherlight="image"><img id="coverimage" src="'.$r['coverURL'].'"></a>';
 else
-  echo'<img id="coverimage" src="core/images/nocover.jpg">';?>
+  echo'<img id="coverimage" src="">';?>
               </div>
               <div class="input-group-btn">
                 <button class="btn btn-default trash" onclick="coverUpdate('<?php echo$r['id'];?>','menu','cover','');"><?php svg('trash');?></button>

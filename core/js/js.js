@@ -1,27 +1,30 @@
 var btn=$.fn.button.noConflict();
 $.fn.btn=btn;
+function blocker(){
+	$('#block').css({'display':'block'});
+}
 $("#menu-toggle").click(function(e){
 	e.preventDefault();
 	$("#sidemenu,#content").toggleClass("toggled");
 });
 function getExif(id,t,c){
-	$('#busy').css({'display':'inline-block'});
+	$('#busy').css({'display':'block'});
 	$('#sp').load('core/getexif.php?id='+id+'&t='+t+'&c='+c);
 }
 function purge(id,t){
-	$('#busy').css({'display':'inline-block'});
+	$('#busy').css({'display':'block'});
 	$('#sp').load('core/purge.php?id='+id+'&t='+t);
 }
 function restore(id){
-	$('#busy').css({'display':'inline-block'});
+	$('#busy').css({'display':'block'});
 	$('#sp').load('core/restore.php?id='+id);
 }
 function makeClient(id){
-	$('#busy').css({'display':'inline-block'});
+	$('#busy').css({'display':'block'});
 	$('#sp').load('core/add_data.php?id='+id+'&act=make_client');
 }
 function changeClient(id,oid,w){
-	$('#block').css({'display':'inline-block'});
+	$('#block').css({'display':'block'});
 	if(w=='booking'){
 		$('#sp').load('core/change_bookingClient.php?id='+id+'&bid='+oid);
 	}else{
@@ -29,11 +32,11 @@ function changeClient(id,oid,w){
 	}
 }
 function addOrderItem(oid,iid){
-	$('#busy').css({'display':'inline-block'});
+	$('#busy').css({'display':'block'});
 	$('#sp').load('core/add_data.php?act=add_orderitem&oid='+oid+'&iid='+iid);
 }
 function getClient(email){
-	$('#busy').css({'display':'inline-block'});
+	$('#busy').css({'display':'block'});
 	$('#sp').load('core/get_client.php?email='+email);
 }
 function associated(id,el,a){
@@ -187,7 +190,7 @@ function pinToggle(id,t,c,b){
 	return false;
 }
 function update(id,t,c,da){
-	var busy='<i id="'+c+'" class="busy libre"><svg xmlns="http://www.w3.org/2000/svg" id="libre-cog" viewBox="0 0 14 14"><path d="M 9,7 Q 9,6.171875 8.41406,5.585938 7.82813,5 7,5 6.17187,5 5.58594,5.585938 5,6.171875 5,7 5,7.828125 5.58594,8.414062 6.17187,9 7,9 7.82813,9 8.41406,8.414062 9,7.828125 9,7 z M 13,6.148437 V 7.882813 Q 13,7.976563 12.9375,8.0625 12.875,8.14844 12.78125,8.164062 l -1.44531,0.218751 q -0.14844,0.421875 -0.30469,0.710937 0.27344,0.390625 0.83594,1.078125 0.0781,0.09375 0.0781,0.195313 0,0.101562 -0.0703,0.179687 -0.21094,0.289063 -0.77344,0.84375 -0.5625,0.554687 -0.73437,0.554687 -0.0937,0 -0.20313,-0.07031 l -1.07812,-0.84375 q -0.34375,0.179688 -0.71094,0.296875 -0.125,1.0625 -0.22656,1.453125 Q 8.09375,13 7.86719,13 H 6.13281 q -0.10937,0 -0.1914,-0.06641 -0.082,-0.06641 -0.0898,-0.167969 l -0.21875,-1.4375 q -0.38281,-0.125 -0.70312,-0.289063 l -1.10157,0.835938 q -0.0781,0.07031 -0.19531,0.07031 -0.10937,0 -0.19531,-0.08594 -0.98437,-0.890625 -1.28906,-1.3125 -0.0547,-0.07813 -0.0547,-0.179687 0,-0.09375 0.0625,-0.179688 Q 2.27348,10.023429 2.55473,9.667959 2.83598,9.312491 2.9766,9.117178 2.76566,8.726554 2.65629,8.343741 L 1.226603,8.132803 Q 1.125,8.117188 1.0625,8.035156 1,7.953125 1,7.851563 V 6.117187 Q 1,6.023437 1.0625,5.9375 1.125,5.85156 1.210937,5.835938 L 2.66406,5.617187 Q 2.77344,5.257813 2.96875,4.898437 2.65625,4.453125 2.13281,3.820313 2.05471,3.726563 2.05471,3.632812 q 0,-0.07812 0.0703,-0.179687 0.20312,-0.28125 0.76953,-0.839844 0.56641,-0.558593 0.73828,-0.558593 0.10157,0 0.20313,0.07812 L 4.91407,2.968746 Q 5.25782,2.789058 5.62501,2.671871 5.75001,1.609371 5.85157,1.218746 5.90625,1 6.13281,1 h 1.73438 q 0.10937,0 0.1914,0.06641 0.082,0.06641 0.0898,0.167969 l 0.21875,1.4375 q 0.38281,0.125 0.70312,0.289063 l 1.10938,-0.835938 q 0.0703,-0.07031 0.1875,-0.07031 0.10156,0 0.19531,0.07812 1.00781,0.929688 1.28906,1.328125 0.0547,0.0625 0.0547,0.171875 0,0.09375 -0.0625,0.179688 -0.11719,0.164062 -0.39844,0.519531 -0.28125,0.355469 -0.42187,0.550782 0.20312,0.390624 0.32031,0.765624 L 12.7734,5.86719 q 0.10156,0.01562 0.16406,0.09766 0.0625,0.08203 0.0625,0.183593 z"/></svg></i>';
+	var busy='<i id="'+c+'" class="busy libre animated spin"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewbox="0 0 14 14" id="libre-spinner-13"><g id="g3341" transform="matrix(0.05331877,0,0,0.0470101,-0.19803392,13.487394)" style="stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none"><ellipse style="fill:none;stroke:#000000;stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none" ry="144" rx="40" cy="-138" cx="135" id="e"/><use height="100%" width="100%" y="0" x="0" id="use5" transform="matrix(0.5,0.8660254,-0.8660254,0.5,-52.011501,-185.91343)" xlink:href="#e" style="stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none"/><use height="100%" width="100%" y="0" x="0" id="use7" transform="matrix(0.5,-0.8660254,0.8660254,0.5,187.0115,47.91343)" xlink:href="#e" style="stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none"/></g></svg></i>';
 	if(t=='comments'){
 		if(c=='status'){
 			$('#approve_'+id).remove();
@@ -235,7 +238,7 @@ function update(id,t,c,da){
 			if(da=='proofs')els='#d3,#d7,#d8,#d9,#d10,#d11,#d12,#d19,#d20,#d21,#d22,#d24,#d26t,#d46,#d47,#d53,#d54,#d060,#d60';
 			$(els).addClass('hidden');
 		}
-		$('#block').css({display:'none'});
+		$('#block').css({'display':'none'});
 	})
 }
 function coverUpdate(id,t,c,da){
@@ -319,7 +322,7 @@ function reload(c){
 	location.reload(true);
 }
 function loadMore(l,is,ie,action,lang){
-	$('#block').css({display:'block'});
+	$('#block').css({'display':'block'});
 	$('#more_'+is).html('');
 	$.ajax({
 		type:"GET",
@@ -332,7 +335,7 @@ function loadMore(l,is,ie,action,lang){
 		}
 	}).done(function(msg){
 		$('#l_activity').append(msg);
-		$('#block').css({display:'none'});
+		$('#block').css({'display':'none'});
 	})
 }
 $(".starred").on({

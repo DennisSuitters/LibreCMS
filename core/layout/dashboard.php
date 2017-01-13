@@ -16,13 +16,21 @@ if($args[0]=='settings'){
   </div>
   <div id="update" class="panel-body">
     <noscript><div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div></noscript>
+<?php
+if($config['uti_freq']!=0){
+  $uti=time()-$config['uti_freq'];
+  if($config['uti']<$uti){
+    $su=$db->prepare("UPDATE config SET uti=:uti WHERE id='1'");
+    $su->execute(array(':uti'=>time()));?>
     <div id="updatecheck">
-    <?php svg('spinner-9','animated spin');?> Checking for Updates!
+      <div class="alert alert-warning"><?php svg('spinner-13','animated spin');?> Checking for new updates!</div>
     </div>
     <script>/*<![CDATA[*/
       $('#updatecheck').load('core/layout/updatecheck.php');
       /*]]>*/</script>
-<?php if($config['maintenance']{0}==1){?>
+<?php }
+}
+if($config['maintenance']{0}==1){?>
     <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-interface';?>">Maintenance Mode</a></div>
 <?php }
 $tid=$ti-2592000;
@@ -52,6 +60,11 @@ if($config['backup_ti']<$tid){
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
           <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><?php svg('order');?><br>Orders</a>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <div class="panel panel-default text-center">
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/rewards';?>"><?php svg('credit-card');?><br>Rewards</a>
         </div>
       </div>
       <div class="col-xs-4">
@@ -225,7 +238,7 @@ if($config['backup_ti']<$tid){
       <div class="panel panel-body">
         <h4 class="page-header">RSS Feeds</h4>
         <div id="rssfeeds">
-          <?php svg('spinner-9','animated spin');?>
+          <?php svg('spinner-13','animated spin');?>
         </div>
       </div>
       <script>/*<![CDATA[*/
@@ -247,7 +260,7 @@ if($config['options']{11}==1){?>
             </thead>
             <tbody id="commits">
               <tr>
-                <td colspan="4"><?php svg('spinner-9','animated spin');?></td>
+                <td colspan="4"><?php svg('spinner-13','animated spin');?></td>
               </tr>
             </tbody>
           </table>

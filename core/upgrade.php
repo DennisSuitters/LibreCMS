@@ -2,33 +2,41 @@
   window.top.window.$('#updateheading').html('System Updates...');
   window.top.window.$('#update').html('');
 <?php
+/* http://maxmorgandesign.com/simple_php_auto_update_system/ */
 ini_set('max_execution_time',60);
-$aV=$_POST['version'];
+require'db.php';
+$config=$db->query("SELECT update_url FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+$settings=parse_ini_file('config.ini',TRUE);
+$gV=file_get_contents($config['update_url'].'versions');
+$update=0;
+$uL='';
 $found=true;
-if(!is_file('../media/updates/'.$aV.'.zip' )){?>
+$vL=explode("\n",$gV);
+foreach($vL as $aV){
+  if($aV=='')continue;
+  if(!is_file('../media/updates/'.$aV.'.zip' )){?>
   window.top.window.$('#update').append('<div class="alert alert-info">Downloading New Update...</div>');
 <?php
-  if(false===file_get_contents("https://www.studiojunkyard.com/update/".$aV.".zip",0,null,0,1)){
+   if(false===file_get_contents("https://www.studiojunkyard.com/update/".$aV.".zip",0,null,0,1)){
     $found=false;?>
   window.top.window.$('#update').append('<div class="alert alert-danger">File doesn\'t exist on remote server...</div>');
 <?php }else{
-    $newUpdate=file_get_contents('https://www.studiojunkyard.com/update/'.$aV.'.zip');
-    if(!is_dir('../media/updates/'))mkdir('../media/updates/');
-    $dlHandler=fopen('../media/updates/'.$aV.'.zip','w');
-    if(!fwrite($dlHandler,$newUpdate)){
-      $found=false;?>
+      $newUpdate=file_get_contents('https://www.studiojunkyard.com/update/'.$aV.'.zip');
+      if(!is_dir('../media/updates/'))mkdir('../media/updates/');
+      $dlHandler=fopen('../media/updates/'.$aV.'.zip','w');
+      if(!fwrite($dlHandler,$newUpdate)){
+        $found=false;?>
   window.top.window.$('#update').append('<div class="alert alert-danger">Could note save new update. Aborted!!!</div>');
 <?php
-      exit();
-    }
-    fclose($dlHandler);?>
+        exit();
+      }
+      fclose($dlHandler);?>
   window.top.window.$('#update').append('<div class="alert alert-success">Update Downloaded And Saved...</div>');
 <?php
-  }
-}else{?>
+    }
+  }else{?>
   window.top.window.$('#update').append('<div class="alert alert-info">Update already downloaded....</div>');
-<?php
-}
+<?php }
 if($found==true){
   $zipHandle=zip_open('../media/updates/'.$aV.'.zip');
   $html='<ul>';
@@ -43,7 +51,6 @@ if($found==true){
     if(!is_dir('../'.$thisFileName)){
       $html.='<li>'.$thisFileName.'...........';
       $contents=zip_entry_read($aF,zip_entry_filesize($aF));
-      $contents=str_replace("rn","n",$contents);
       $updateThis='';
       if($thisFileName=='doupgrade.php'){
         $upgradeExec=fopen('doupgrade.php','w');
@@ -63,7 +70,6 @@ if($found==true){
   }?>
   window.top.window.$('#update').append('<?php echo$html;?>');
 <?php $updated=TRUE;
-  $settings=parse_ini_file('config.ini',TRUE);
   $txt='[database]'.PHP_EOL;
   $txt.='driver = '.$settings['database']['driver'].PHP_EOL;
   $txt.='host = '.$settings['database']['host'].PHP_EOL;
@@ -83,6 +89,7 @@ if($found==true){
   window.top.window.$('#update').append('<div class="alert alert-success">Configuration Updated!</div>');
 <?php }else{?>
   window.top.window.$('#update').append('<div class="alert alert-danger">Could not find latest Update.</div>');
-<?php }?>
+<?php }
+}?>
   window.top.window.$('#block').css({'display':'none'});
 /*]]>*/</script>

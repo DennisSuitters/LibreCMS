@@ -471,7 +471,7 @@ if($r['file']!=''&&file_exists('media'.DS.$rfile))
 elseif($r['fileURL']!='')
   echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="'.$r['fileURL'].'"></a>';
 else
-  echo'<img id="fileimage" src="core/images/noimage.jpg">';?>
+  echo'<img id="fileimage" src="">';?>
               </div>
               <div class="input-group-btn">
                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('trash');?></button>
@@ -495,7 +495,7 @@ else
               </div>
               <div class="input-group-addon img">
 <?php $rthumb=basename($r['thumb']);
-if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="'.$r['thumb'].'"></a>';else echo'<img id="thumbimage" src="core/images/noimage.jpg">';?>
+if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="'.$r['thumb'].'"></a>';else echo'<img id="thumbimage" src="">';?>
               </div>
               <div class="input-group-btn">
                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('trash');?></button>
