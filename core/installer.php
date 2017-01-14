@@ -36,7 +36,7 @@ if($_POST['emailtrap']==''){
 		$txt.='username = '.$dbusername.PHP_EOL;
 		$txt.='password = '.$dbpassword.PHP_EOL;
 		$txt.='[system]'.PHP_EOL;
-		$txt.='version = '.time();
+		$txt.='version = '.time().PHP_EOL;
 		$txt.='url = /'.ltrim($sysurl).PHP_EOL;
 		if($sysadmin=='')$txt.='admin = admin'.PHP_EOL;
 		else$txt.='admin = '.$sysadmin.PHP_EOL;
