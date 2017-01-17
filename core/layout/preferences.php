@@ -7,7 +7,7 @@
       </div>
     </div>
   </div>
-  <div class="panel-body">
+  <div id="update" class="panel-body">
     <ul class="nav nav-tabs">
       <li class="active"><a href="#preference-theme" data-toggle="tab">Theme</a></li>
       <li><a href="#preference-contact" data-toggle="tab">Contact</a></li>
@@ -275,6 +275,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
             <input type="range" id="notification_volume" class="form-control" min="0" max="100" step="1" value="<?php echo$config['notification_volume'];?>" oninput="notification_volume_output.value=value;" onchange="update('1','config','notification_volume',$(this).val());">
             <output id="notification_volume_output" class="input-group-output"><?php echo$config['notification_volume'];?></output>
           </div>
+          <small class="help-block text-right">'0' Disables Idle Audio Notification.</small>
         </div>
         <div class="form-group">
           <label for="uti_freq" class="control-label col-xs-5 col-sm-3 col-lg-2">Update Frequency</label>
@@ -286,8 +287,15 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
               <option value="604800"<?php if($config['uti_freq']==604800)echo' selected';?>>Weekly</option>
               <option value="2629743"<?php if($config['uti_freq']==2629743)echo' selected';?>>Monthly</option>
             </select>
+            <div class="input-group-btn">
+              <button class="btn btn-default" onclick="$('#updatecheck').removeClass('hidden').load('core/layout/updatecheck.php');">Check Now</button>
+            </div>
           </div>
         </div>
+        <div id="updatecheck" class="col-xs-7 col-sm-9 col-lg-10 pull-right hidden">
+          <div class="alert alert-warning"><?php svg('spinner-13','animated spin');?> Checking for new updates!</div>
+        </div>
+        <div class="clearfix"></div>
         <div class="form-group">
           <label for="update_url" class="control-label col-xs-5 col-sm-3 col-lg-2">Update URL</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">

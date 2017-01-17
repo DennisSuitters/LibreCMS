@@ -10,8 +10,9 @@ if($args[0]=='add'){
 <script>/*<![CDATA[*/
   history.replaceState('','','<?php echo URL.$settings['system']['admin'].'/accounts/edit/'.$args[1];?>');
 /*]]>*/</script>
-<?php }elseif($args[0]=='settings')include'core'.DS.'layout'.DS.'set_accounts.php';
-elseif($args[0]=='edit'){
+<?php }
+if($args[0]=='settings')include'core'.DS.'layout'.DS.'set_accounts.php';
+if($args[0]=='edit'){
   $q=$db->prepare("SELECT * FROM login WHERE id=:id");
   $q->execute(array(':id'=>$args[1]));
   $r=$q->fetch(PDO::FETCH_ASSOC);?>

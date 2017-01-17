@@ -19,15 +19,13 @@ if($args[0]=='settings'){
 <?php
 if($config['uti_freq']!=0){
   $uti=time()-$config['uti_freq'];
-  if($config['uti']<$uti){
-    $su=$db->prepare("UPDATE config SET uti=:uti WHERE id='1'");
-    $su->execute(array(':uti'=>time()));?>
+  if($config['uti']<$uti){?>
     <div id="updatecheck">
       <div class="alert alert-warning"><?php svg('spinner-13','animated spin');?> Checking for new updates!</div>
     </div>
     <script>/*<![CDATA[*/
       $('#updatecheck').load('core/layout/updatecheck.php');
-      /*]]>*/</script>
+    /*]]>*/</script>
 <?php }
 }
 if($config['maintenance']{0}==1){?>

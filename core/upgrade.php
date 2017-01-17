@@ -90,6 +90,8 @@ if($found==true){
 <?php }else{?>
   window.top.window.$('#update').append('<div class="alert alert-danger">Could not find latest Update.</div>');
 <?php }
-}?>
+}
+$su=$db->prepare("UPDATE config SET uti=:uti WHERE id='1'");
+$su->execute(array(':uti'=>time()));?>
   window.top.window.$('#block').css({'display':'none'});
 /*]]>*/</script>
