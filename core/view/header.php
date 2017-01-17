@@ -25,28 +25,30 @@ $html=str_replace('<print config="seoTitle">',$config['seoTitle'],$html);
 if(stristr($html,'<print meta=url>'))
 	$html=str_replace('<print meta=url>',URL,$html);
 $s=$db->query("SELECT * FROM menu WHERE menu='head' AND active='1' ORDER BY ord ASC");
-preg_match('/<buildMenu>([\w\W]*?)<\/buildMenu>/',$html,$matches);
-$htmlMenu=$matches[1];
-$menu='';
-while($r=$s->fetch(PDO::FETCH_ASSOC)){
-	$buildMenu=$htmlMenu;
-	if($view==$r['contentType']||$view==$r['contentType'].'s')
-		$buildMenu=str_replace('<print active=menu>',' active',$buildMenu);
-	else
-		$buildMenu=str_replace('<print active=menu>','',$buildMenu);
-	if($r['contentType']!='index'){
-		$buildMenu=str_replace('<print menu=url>',URL.$r['contentType'],$buildMenu);
-		$buildMenu=str_replace('<print rel=contentType>',strtolower($r['contentType']),$buildMenu);
-	}else{
-		$buildMenu=str_replace('<print menu=url>',URL,$buildMenu);
-		$buildMenu=str_replace('<print rel=contentType>','home',$buildMenu);
+if(stristr($html,'<buildMenu')){
+	preg_match('/<buildMenu>([\w\W]*?)<\/buildMenu>/',$html,$matches);
+	$htmlMenu=$matches[1];
+	$menu='';
+	while($r=$s->fetch(PDO::FETCH_ASSOC)){
+		$buildMenu=$htmlMenu;
+		if($view==$r['contentType']||$view==$r['contentType'].'s')
+			$buildMenu=str_replace('<print active=menu>',' active',$buildMenu);
+		else
+			$buildMenu=str_replace('<print active=menu>','',$buildMenu);
+		if($r['contentType']!='index'){
+			$buildMenu=str_replace('<print menu=url>',URL.$r['contentType'],$buildMenu);
+			$buildMenu=str_replace('<print rel=contentType>',strtolower($r['contentType']),$buildMenu);
+		}else{
+			$buildMenu=str_replace('<print menu=url>',URL,$buildMenu);
+			$buildMenu=str_replace('<print rel=contentType>','home',$buildMenu);
+		}
+		$buildMenu=str_replace('<print menu="title">',$r['title'],$buildMenu);
+		if($r['contentType']=='cart')$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);else$buildMenu=str_replace('<menuCart>','',$buildMenu);
+		$menu.=$buildMenu;
 	}
-	$buildMenu=str_replace('<print menu="title">',$r['title'],$buildMenu);
-	if($r['contentType']=='cart')$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);else$buildMenu=str_replace('<menuCart>','',$buildMenu);
-	$menu.=$buildMenu;
+	$html=str_replace('<buildMenu>',$menu.'<buildMenu>',$html);
+	$html=preg_replace('~<buildMenu>.*?<\/buildMenu>~is','',$html,1);
 }
-$html=str_replace('<buildMenu>',$menu.'<buildMenu>',$html);
-$html=preg_replace('~<buildMenu>.*?<\/buildMenu>~is','',$html,1);
 if(stristr($html,'<buildSocial')){
 	preg_match('/<buildSocial>([\w\W]*?)<\/buildSocial>/',$html,$matches);
 	$htmlSocial=$matches[1];

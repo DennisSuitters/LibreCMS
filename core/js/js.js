@@ -5,7 +5,7 @@ function blocker(){
 }
 $("#menu-toggle").click(function(e){
 	e.preventDefault();
-	$("#sidemenu,#content").toggleClass("toggled");
+	$("#sidemenu,#content,#menu-toggle").toggleClass("toggled");
 });
 function getExif(id,t,c){
 	$('#busy').css({'display':'block'});
@@ -277,7 +277,8 @@ function imageUpdate(id,t,c,da){
 		}
 	}).done(function(msg){
 		if(t=='login'&&c=='avatar'){
-			$('#'+c).val('');
+			$('#avatar').attr('src','');
+			$('#menu_avatar').attr('src','');
 		}else{
 			if(da==''){
 				$('#'+c).html('');

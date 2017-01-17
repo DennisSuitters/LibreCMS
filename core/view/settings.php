@@ -37,8 +37,9 @@ if(isset($user)&&$user['rank']>0){
 		$city=filter_input(INPUT_POST,'city',FILTER_SANITIZE_STRING);
 		$state=filter_input(INPUT_POST,'state',FILTER_SANITIZE_STRING);
 		$postcode=filter_input(INPUT_POST,'postcode',FILTER_SANITIZE_STRING);
-		$s=$db->prepare("UPDATE login SET email=:email,name=:name,url=:url,business=:business,phone=:phone,mobile=:mobile,address=:address,suburb=:suburb,city=:city,state=:state,postcode=:postcode WHERE id=:id");
-		$s->execute(array(':email'=>$email,':name'=>$name,':url'=>$url,':business'=>$business,':phone'=>$phone,':mobile'=>$mobile,':address'=>$address,':suburb'=>$suburb,':city'=>$city,':state'=>$state,':postcode'=>$postcode,':id'=>$user['id']));
+		$country=filter_input(INPUT_POST,'country',FILTER_SANITIZE_STRING);
+		$s=$db->prepare("UPDATE login SET email=:email,name=:name,url=:url,business=:business,phone=:phone,mobile=:mobile,address=:address,suburb=:suburb,city=:city,state=:state,postcode=:postcode,country=:country WHERE id=:id");
+		$s->execute(array(':email'=>$email,':name'=>$name,':url'=>$url,':business'=>$business,':phone'=>$phone,':mobile'=>$mobile,':address'=>$address,':suburb'=>$suburb,':city'=>$city,':state'=>$state,':postcode'=>$postcode,':country'=>$country,':id'=>$user['id']));
 		$e=$db->errorInfo();
 		if(is_null($e[2])){
 			$s=$db->prepare("SELECT * FROM login WHERE id=:id");
@@ -94,6 +95,7 @@ if(isset($user)&&$user['rank']>0){
 		if($user['postcode']==0)$user['postcode']='';
 		$html=str_replace('<print user=postcode>',$user['postcode'],$html);
 	}
+	if(stristr($html,'<print user=country>'))$html=str_replace('<print user=country>',$user['country'],$html);
 }else{
 	$html='';
 	if(file_exists(THEME.DS.$amp.DS.'noaccess.html'))

@@ -34,10 +34,11 @@ function rank($txt){
 	if($txt==900)return'administrator';
 	if($txt==1000)return'developer';
 }
-function svg($svg,$size=null,$color=null){
+function svg($svg,$class=null,$size=null,$color=null){
 	echo'<i class="libre';
 	if($size!=null)echo' libre-'.$size;
 	if($color!=null)echo' libre-'.$color;
+  if($class!=null)echo' '.$class;
 	echo'">';
 	include'svg'.DS.'libre-'.$svg.'.svg';
 	echo'</i>';

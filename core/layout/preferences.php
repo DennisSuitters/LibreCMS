@@ -269,6 +269,13 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
             </div>
           </div>
         </div>
+        <div class="form-group clearfix">
+          <label for="notification_volume" class="control-label col-xs-5 col-sm-3 col-lg-2">Notification Volume</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <input type="range" id="notification_volume" class="form-control" min="0" max="100" step="1" value="<?php echo$config['notification_volume'];?>" oninput="notification_volume_output.value=value;" onchange="update('1','config','notification_volume',$(this).val());">
+            <output id="notification_volume_output" class="input-group-output"><?php echo$config['notification_volume'];?></output>
+          </div>
+        </div>
         <div class="form-group">
           <label for="uti_freq" class="control-label col-xs-5 col-sm-3 col-lg-2">Update Frequency</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">

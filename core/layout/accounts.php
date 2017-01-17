@@ -131,6 +131,12 @@ elseif($args[0]=='edit'){
           </div>
         </div>
         <div class="form-group">
+          <label for="country" class="control-label col-xs-5 col-sm-3 col-lg-2">Country</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <input type="text" id="country" class="form-control textinput" name="country" value="<?php echo$r['country'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="country" placeholder="Enter a Country...">
+          </div>
+        </div>
+        <div class="form-group">
           <label for="notes" class="control-label col-xs-5 col-sm-3 col-lg-2">About</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
             <form method="post" target="sp" action="core/update.php">
@@ -148,7 +154,7 @@ elseif($args[0]=='edit'){
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
             <input type="text" class="form-control" value="<?php echo$r['avatar'];?>" readonly>
             <div class="input-group-btn">
-              <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
+              <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php" onsubmit="$('#block').css({'display':'block'});">
                 <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                 <input type="hidden" name="act" value="add_avatar">
                 <div class="btn btn-default btn-file"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Browse Computer for Image."';?>>

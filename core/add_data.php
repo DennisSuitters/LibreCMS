@@ -217,9 +217,11 @@ if($act!=''){
             rename($tp,'..'.DS.'media'.DS.'avatar'.DS.'avatar'.$fn);
 						if($act=='add_tstavatar'){?>
 	window.top.window.$('#tstavatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
+	window.top.window.$('#block').css({'display':'none'});
 <?php 			}else{?>
   window.top.window.$('#avatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
   window.top.window.$('#menu_avatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
+	window.top.window.$('#block').css({'display':'none'});
 <?php 			}
 					}
         }

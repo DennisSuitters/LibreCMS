@@ -33,10 +33,17 @@ if($args[0]=="confirm"){
 				$uid=$r['id'];
 			}
 			$r=$db->query("SELECT MAX(id) as id FROM orders")->fetch(PDO::FETCH_ASSOC);
-			$sr=$db->prepare("SELECT id FROM rewards WHERE code=:code");
+			$sr=$db->prepare("SELECT id,quantity,tis,tie FROM rewards WHERE code=:code");
 			$sr->execute(array(':code'=>$rewards));
-			if($sr->rowCount()>0)$reward=$sr->fetch(PDO::FETCH_ASSOC);
-			else$reward['id']=0;
+			if($sr->rowCount()>0){
+				$reward=$sr->fetch(PDO::FETCH_ASSOC);
+				if(!$reward['tis']>$ti&&!$reward['tie']<$ti)$rewards['id']=0;
+				if($reward['quantity']<1)$reward['id']=0;
+				else{
+					$sr=$db->prepare("UPDATE rewards SET quantity=:quantity WHERE code=:code");
+					$sr->execute(array(':quantity'=>$rewards['quantity']-1,':code'=>$rewards));
+				}
+			}else$reward['id']=0;
 			$dti=$ti+$config['orderPayti'];
 			$qid='Q'.date("ymd",$ti).sprintf("%06d",$r['id']+1,6);
 			$q=$db->prepare("INSERT INTO orders (cid,uid,qid,qid_ti,due_ti,rid,status,ti) VALUES (:cid,:uid,:qid,:qid_ti,:due_ti,:rid,'pending',:ti)");
