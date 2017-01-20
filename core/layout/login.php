@@ -20,7 +20,7 @@
     <div class="container">
       <div class="panel panel-default login center-block">
         <div class="panel-body">
-          <form role="form" method="post" action="<?php if(strpos(URL,'logout')!=='false')echo rtrim(URL,'logout').$settings['system']['admin'];?>" accept-charset="UTF-8">
+          <form role="form" method="post" action="<?php if (!empty($_SERVER['HTTP_REFERER']))echo$_SERVER['HTTP_REFERER'];else echo'admin/';?>" accept-charset="UTF-8">
             <input type="hidden" name="act" value="login">
             <div class="panel-heading clearfix">
               <span class="loginimg col-xs-8 pull-right">

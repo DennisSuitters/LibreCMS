@@ -66,7 +66,8 @@ if(stristr($head,'<print meta=metaRobots>')){
   $head=str_replace('<print meta=metaRobots>',$metaRobots,$head);
 }
 if(stristr($head,'<print meta=seoTitle>')){
-  if($view=='index')$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
+  if($view=='index')
+    $seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
 	else{
     if(!isset($seoTitle)||$seoTitle=='')$seoTitle=empty($page['seoTitle'])?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'].' - '.$config['seoTitle'];
   }
@@ -90,7 +91,8 @@ if(stristr($head,'<print meta=dateAtom>')){
 }
 if(stristr($head,'<print meta=canonical>')){
   if(!isset($canonical)||$canonical==''){
-    if($view=='index')$canonical=URL;else$canonical=URL.$view.'/';}
+    if($view=='index')$canonical=URL;else$canonical=URL.$view.'/';
+  }
   $head=str_replace('<print meta=canonical>',$canonical,$head);
 }
 if(stristr($head,'<print meta=url>'))$head=str_replace('<print meta=url>',URL,$head);
@@ -113,18 +115,17 @@ if(stristr($head,'<!-- Google Analytics -->'))$head=str_replace('<!-- Google Ana
 if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme'])){
   $doc=new DOMDocument;
   @$doc->loadHTML($content);
-  foreach($doc->getElementsByTagName('a')as$link){
-    $link->setAttribute('href',$link->getAttribute('href').'?theme='.$_GET['theme']);
-  }
+  foreach($doc->getElementsByTagName('a')as$link)$link->setAttribute('href',$link->getAttribute('href').'?theme='.$_GET['theme']);
   $content=preg_replace('/^<!DOCTYPE.+?>/','',str_replace(array('<html>','</html>','<body>','</body>'),array('','','',''),$doc->saveHTML())).'</body></html>';
 }
 if(isset($_GET['amp'])&&$_GET['amp']=='amped'){
   $doc=new DOMDocument;
   @$doc->loadHTML($content);
-  foreach($doc->getElementsByTagName('a')as$link){
-    $link->setAttribute('href',rtrim($link->getAttribute('href'),'/').'?amp=amped');
-  }
+  foreach($doc->getElementsByTagName('a')as$link)$link->setAttribute('href',rtrim($link->getAttribute('href'),'/').'?amp=amped');
   $content=preg_replace('/^<!DOCTYPE.+?>/','',str_replace(array('<html>','</html>','<body>','</body>'),array('','','',''),$doc->saveHTML())).'</body></html>';
 	$content=preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3',$content);
+}
+if(isset($_SESSION['rank'])&&$_SESSION['rank']>899){
+  $content.='<div style="text-align:right;padding:10px;">Process Time: '.elapsed_time().'</div>';
 }
 if(MINIFY==1)print minify($head.$content);else print$head.$content;

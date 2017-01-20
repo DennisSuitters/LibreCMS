@@ -12,7 +12,10 @@ if($gV!=''){
     $uV=(int)$aV;
     if($uV>$settings['system']['version']){
       $update=1;
-      $uL.='Update available: '.date('M jS, Y g:i A',$uV).'.<br>';
+      $uL.='<p>';
+        $uL.='Update available: '.date('M jS, Y g:i A',$uV).'.<br>';
+        $uL.=@file_get_contents($config['update_url'].$uV.'.nfo');
+      $uL.='</p>';
     }
   }
 }

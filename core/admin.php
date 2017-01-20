@@ -1,5 +1,6 @@
 <?php
 require'core/db.php';
+if(isset($_GET['previous']))header("location:".$_GET['previous']);
 $config=$this->getconfig($db);
 $ti=time();
 $favicon=$this->favicon();
@@ -75,17 +76,14 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
     <script src="core/js/matchtags.js"></script>
     <script src="core/js/hardwrap.js"></script>
     <script src="core/js/summernote.js"></script>
-    <script src="core/js/plugin/summernote-save-button/summernote-save-button.js"></script>
-    <script src="core/js/plugin/summernote-image-attributes/summernote-image-attributes.js"></script>
-    <script src="core/js/plugin/summernote-video-attributes/summernote-video-attributes.js"></script>
-    <script src="core/js/plugin/summernote-cleaner/summernote-cleaner.js"></script>
-    <script src="core/js/plugin/summernote-seo/summernote-seo.js"></script>
+    <script src="core/js/plugin/summernote/plugins.php"></script>
     <script src="core/js/plugin/elfinder/elfinder.js"></script>
     <script src="core/elfinder/js/elfinder.min.js"></script>
-    <script src="core/js/jquery.notifications.min.js"></script>
+    <script src="core/js/bootstrap-notify.min.js"></script>
     <script src="core/js/featherlight.min.js"></script>
     <script src="core/js/bootstrap-datetimepicker.min.js"></script>
     <script src="core/js/ion.sound.min.js"></script>
+    <script src="core/js/bootstrap-contextmenu.js"></script>
   </head>
   <body>
     <div id="sidemenu">
@@ -106,7 +104,7 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
             <li<?php if($view=='rewards')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/rewards';?>"><?php svg('credit-card');?> Rewards</a></li>
             <li<?php if($view=='media')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/media';?>"><?php svg('picture');?> Media</a></li>
             <li<?php if($view=='messages')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('envelope');?> Messages</a></li>
-            <li<?php if($view=='newsletters')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/newsletters';?>"><?php svg('email-read');?> Newsletters</a></li>
+            <li<?php if($view=='newsletters')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/newsletters';?>"><?php svg('newsletter');?> Newsletters</a></li>
             <li<?php if($view=='accounts')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><?php svg('users');?> Accounts</a></li>
             <li<?php if($view=='preferences')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><?php svg('settings');?> Preferences</a></li>
             <li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><?php svg('activity');?> Activity</a></li>
@@ -148,6 +146,7 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
               <li><a href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$user['id'];?>">Settings <?php svg('cogs');?></a></li>
               <li><a target="_blank" href="core/vcard.php?u=<?php echo$user['username'];?>">vCard <?php svg('social-vcard');?></a></li>
               <li><a target="_blank" href="https://github.com/StudioJunkyard/LibreCMS/wiki">Help <?php svg('help');?></a></li>
+              <li><a target="_blank" href="<?php echo URL;?>">View Site <?php svg('device-desktop');?></a></li>
               <li><a href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out">Log Out <?php svg('sign-out');?></a></li>
             </ul>
           </li>
@@ -166,7 +165,7 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
     <script src="core/js/js.js"></script>
     <script>/*<![CDATA[*/
       var unsaved=false;
-      $(window).bind('beforeunload',function(event){
+      $(window).bind('beforeunload',function(e){
         if(unsaved){
           return'You have unsaved changes in the Editor. Do you want to leave this page and discard your changes or stay on this page?';
         }
@@ -309,7 +308,7 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
           popover:{
             image:
               [
-                ['custom',['imageAttributes','imageShape']],
+                ['custom',['imageAttributes','imageShapes','captionIt']],
                 ['imagesize',['imageSize100','imageSize50','imageSize25']],
                 ['float',['floatLeft','floatRight','floatNone']],
                 ['remove',['removeMedia']],
@@ -343,7 +342,12 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
               ['insert',['videoAttributes','media','link','hr']],
               ['view',['fullscreen','codeview']],
               ['help',['help']]
-            ]
+            ],
+            callbacks:{
+              onInit:function(){
+                $('body > .note-popover').appendTo(".note-editing-area");
+              }
+            }
         });
         $("#pti").datetimepicker({
           format:'M d, yyyy h:ii P'
@@ -469,6 +473,9 @@ if($config['idleTime']!=0){?>
         <div class="pace-activity"></div>
       </div>
     </div>
+<?php if(isset($_SESSION['rank'])&&$_SESSION['rank']>899){
+  echo'<div class="help-block text-right" style="padding-right:20px;">Process Time: '.elapsed_time().'</div>';
+}?>
   </body>
 </html>
 <?php }else

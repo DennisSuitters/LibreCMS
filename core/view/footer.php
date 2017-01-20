@@ -12,6 +12,13 @@ $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $html=str_replace('<print theme="title">',$theme['title'],$html);
 $html=str_replace('<print theme="creator">',$theme['creator'],$html);
 $html=str_replace('<print theme=creator_url>',$theme['creator_url'],$html);
+if(isset($_SESSION['rank'])&&$_SESSION['rank']>899)
+	$html=str_replace('<administration>','<a target="_blank" href="'.$settings['system']['admin'].'">Administration</a>',$html);
+else
+	$html=str_replace('<administration>','',$html);
+$html=str_replace('<print year>',date('Y'),$html);
+$html=str_replace('<print config="business">',$config['business'],$html);
+$html=str_replace('<print config="abn">','ABN: '.$config['abn'],$html);
 $html=str_replace('<login>',$link,$html);
 if(stristr($html,'<address')){
 	if($config['business']!='')$business=$config['business'];else$business='';

@@ -85,6 +85,27 @@ function _ago($time){
 	}
 	return$timeDiff;
 }
+function elapsed_time($b=0,$e=0){
+  if($b==0)$b=$_SERVER["REQUEST_TIME_FLOAT"];
+  $b=explode(' ',$b);
+  if($e==0)$e=microtime();
+  $e=explode(' ',$e);
+  @$td=($e[0]+$e[1])-($b[0]+$b[1]);
+  $b='';
+  $tt=array(
+    'd'=>(int)($td/86400),
+    'h'=>$td/3600%24,
+    'm'=>$td/60%60,
+    's'=>$td%60
+  );
+  if((int)$td>30){
+    $b='';
+    foreach($tt as$u=>$ti){
+      if($ti>0)$b.="$ti$u ";
+    }
+  }else$b=number_format($td,3).'s';
+  return trim($b);
+}
 function url_encode($str){
 	$str=str_replace(chr(149),"%2D",$str);
 	$str=str_replace(chr(150),"%2D",$str);
