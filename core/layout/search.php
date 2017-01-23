@@ -63,7 +63,7 @@ $ord=isset($_POST['ord'])?filter_input(INPUT_POST,'ord',FILTER_SANITIZE_STRING):
     echo'<img src="'.$r['fileURL'].'" class="img-thumbnail">';
   else echo'';
 }
-echo strip_tags(substr($r['notes'],0,800),'<a>');?>
+echo strip_tags(substr(rawurldecode($r['notes']),0,800),'<a>');?>
       </small>
     </div>
     <hr>

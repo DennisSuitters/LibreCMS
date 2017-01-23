@@ -17,15 +17,7 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
       $hash=password_hash($password,PASSWORD_DEFAULT);
       $activate=md5(time());
       $us=$db->prepare("INSERT INTO login (username,password,email,hash,activate,active,ti) VALUES (:username,:password,:email,:hash,:activate,:active,:ti)");
-      $us->execute(array(
-        ':username'=>$un,
-        ':password'=>$hash,
-        ':email'=>$eml,
-        ':hash'=>md5($eml),
-        ':activate'=>$activate,
-        ':active'=>0,
-        ':ti'=>time()
-      ));
+      $us->execute(array(':username'=>$un,':password'=>$hash,':email'=>$eml,':hash'=>md5($eml),':activate'=>$activate,':active'=>0,':ti'=>time()));
       require'../class.phpmailer.php';
       $mail=new PHPMailer();
     	$mail->IsSMTP();

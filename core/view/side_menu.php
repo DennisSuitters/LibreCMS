@@ -127,7 +127,7 @@ if(file_exists(THEME.$amp.DS.'side_menu.html')){
 		}
 		$items=str_replace('<print time>',$time,$items);
 		if($r['seoCaption']!='')$items=str_replace('<print content="caption">',$r['seoCaption'],$items);
-		else$items=str_replace('<print content="caption">',substr(strip_tags($r['notes']),0,100).'...',$items);
+		else$items=str_replace('<print content="caption">',substr(strip_tags(rawurldecode($r['notes'])),0,100).'...',$items);
 		$output.=$items;
 	}
 	$outside=preg_replace('~<items>.*?<\/items>~is',$output,$outside,1);

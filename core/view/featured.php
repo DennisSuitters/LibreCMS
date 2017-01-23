@@ -134,15 +134,15 @@ if($ii>0){
 		else{
 			$r['notes']=strip_tags($r['notes']);
 			$pos=strpos($r['notes'],' ',300);
-			$r['notes']=substr($r['notes'],0,$pos).'...';
+			$r['notes']=substr(rawurldecode($r['notes']),0,$pos).'...';
 			if($r['seoCaption']!='')
 				$item=str_replace('<print content="caption">',$r['seoCaption'],$item);
 			elseif($r['notes']!='')
-				$item=str_replace('<print content="caption">',strip_tags($r['notes']),$item);
+				$item=str_replace('<print content="caption">',strip_tags(rawurldecode($r['notes'])),$item);
 			else
 				$item=str_replace('<print content="caption">','',$item);
 			if($r['notes']!='')
-				$item=str_replace('<print content="notes">',strip_tags($r['notes']),$item);
+				$item=str_replace('<print content="notes">',strip_tags(rawurldecode($r['notes'])),$item);
 			else
 				$item=str_replace('<print content="notes">','',$item);
 			$item=str_replace('<caption>','',$item);

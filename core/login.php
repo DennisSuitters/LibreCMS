@@ -35,6 +35,6 @@ if($act=='logout'){
   $_SESSION['rank']=0;
 }
 if(isset($_SESSION['loggedin'])&&$_SESSION['loggedin']==true){
-  $q=$db->prepare("UPDATE login SET lti=:lti WHERE id=:id");
-  $q->execute(array(':lti'=>time(),':id'=>$_SESSION['uid']));
+  $q=$db->prepare("UPDATE login SET lti=:lti,userAgent=:userAgent,userIP=:userIP WHERE id=:id");
+  $q->execute(array(':lti'=>time(),':id'=>$_SESSION['uid'],':userAgent'=>$_SERVER['HTTP_USER_AGENT'],':userIP'=>$_SERVER['REMOTE_ADDR']));
 }

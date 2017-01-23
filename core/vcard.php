@@ -26,7 +26,6 @@ if($s->rowCount()==1){
   $n=explode(' ',$user['name']);
   $namefirst=$n[0];
   $namelast=end($n);
-
   $card=new vCard();
   $card->set(array(
     'display_name'          => $user['name'],

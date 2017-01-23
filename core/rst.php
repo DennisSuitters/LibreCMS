@@ -20,7 +20,7 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
   	$mail->AddAddress($c['email']);
   	$mail->IsHTML(true);
   	$mail->Subject='Password Reset from '.$config['business'];
-  	$msg=$config['PasswordResetLayout'];
+  	$msg=rawurldecode($config['PasswordResetLayout']);
   	$msg=str_replace('{name}',$c['name'],$msg);
   	$name=explode(' ',$c['name']);
   	$msg=str_replace('{password}',$password,$msg);

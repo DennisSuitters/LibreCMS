@@ -59,15 +59,7 @@ if($args[0]=="confirm"){
 				$qry=$db->prepare("UPDATE content SET quantity=:quantity WHERE id=:id");
 				$qry->execute(array(':quantity'=>$quantity,':id'=>$r['iid']));
 				$sq=$db->prepare("INSERT INTO orderitems (oid,iid,cid,title,quantity,cost,ti) VALUES (:oid,:iid,:cid,:title,:quantity,:cost,:ti)");
-				$sq->execute(array(
-					':oid'=>$oid,
-					':iid'=>$r['iid'],
-					':cid'=>$r['cid'],
-					':title'=>$i['title'],
-					':quantity'=>$r['quantity'],
-					':cost'=>$r['cost'],
-					':ti'=>$ti
-				));
+				$sq->execute(array(':oid'=>$oid,':iid'=>$r['iid'],':cid'=>$r['cid'],':title'=>$i['title'],':quantity'=>$r['quantity'],':cost'=>$r['cost'],':ti'=>$ti));
 			}
 			$q=$db->prepare("DELETE FROM cart WHERE si=:si");
 			$q->execute(array(':si'=>SESSIONID));

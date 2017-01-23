@@ -2,7 +2,7 @@
 /**
  * LibreCMS is an Open Source Content Management System
  *
- * for PHP version 5.5.9+
+ * for PHP version 5.6+
  *
  * LICENSE: By downloading and using LibreCMS you hereby agree not to hold
  * Studio Junkyard liable for any damages that your usage of LibreCMS may
@@ -16,7 +16,6 @@
  * @category   Content Management System
  * @package    LibreCMS
  * @author     Original Author <dennis@studiojunkyard.com>
- * @copyleft   2012-2017 Studio Junkyard
  * @license    https://www.gnu.org/licenses/gpl-3.0.html  GPLv3
  * @link       https://github.com/StudioJunkyard/LibreCMS
  */

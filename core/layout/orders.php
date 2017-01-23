@@ -441,7 +441,7 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
           <input type="hidden" name="id" value="<?php echo$r['id'];?>">
           <input type="hidden" name="t" value="orders">
           <input type="hidden" name="c" value="notes">
-          <textarea class="summernote" name="da"><?php echo$r['notes'];?></textarea>
+          <textarea class="summernote" name="da"><?php echo rawurldecode($r['notes']);?></textarea>
         </form>
 <?php }else{?>
         <div class="well"><?php echo$r['notes'];?></div>

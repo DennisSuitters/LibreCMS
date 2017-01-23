@@ -52,8 +52,8 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     $action.='<strong>Title:</strong> '.$c['title'].'<br>';
     if($r['action']=='update')$action.='<strong>Table:</strong> '.$r['refTable'].'<br>';
     $action.='<strong>Column:</strong> '.$r['refColumn'].'<br>';
-    $action.='<strong>Data:</strong>'.strip_tags(substr($r['oldda'],0,300)).'<br>';
-    $action.='<strong>Changed To:</strong>'.strip_tags(substr($r['newda'],0,300)).'<br>';
+    $action.='<strong>Data:</strong>'.strip_tags(rawurldecode(substr($r['oldda'],0,300))).'<br>';
+    $action.='<strong>Changed To:</strong>'.strip_tags(rawurldecode(substr($r['newda'],0,300))).'<br>';
   }
   $action.='<strong>by</strong> '.$u['username'].':'.$u['name'];?>
 <tr id="l_<?php echo$r['id'];?>">
@@ -64,10 +64,16 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
   </td>
   <td class="break-word hidden-xs"><?php echo$action;?></td>
   <td id="controls_<?php echo$r['id'];?>" class="text-right">
+    <button class="btn btn-default" onclick="activitySpy('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="View Details"';?>><?php svg('fingerprint');?></button>
 <?php if($r['action']=='update'){?>
-    <button class="btn btn-default" onclick="restore('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
+    <button class="btn btn-default" onclick="restore('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('undo');?></button>
 <?php }?>
     <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','logs')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('trash');?></button>
+  </td>
+</tr>
+<tr id="details<?php echo$r['id'];?>" class="hidden">
+  <td colspan="3">
+    <i class="libre animated spin"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewbox="0 0 14 14" id="libre-spinner-13"><g id="g3341" transform="matrix(0.05331877,0,0,0.0470101,-0.19803392,13.487394)" style="stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none"><ellipse style="fill:none;stroke:#000000;stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none" ry="144" rx="40" cy="-138" cx="135" id="e"/><use height="100%" width="100%" y="0" x="0" id="use5" transform="matrix(0.5,0.8660254,-0.8660254,0.5,-52.011501,-185.91343)" xlink:href="#e" style="stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none"/><use height="100%" width="100%" y="0" x="0" id="use7" transform="matrix(0.5,-0.8660254,0.8660254,0.5,187.0115,47.91343)" xlink:href="#e" style="stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none"/></g></svg></i>
   </td>
 </tr>
 <?php }

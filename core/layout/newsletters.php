@@ -33,6 +33,11 @@ elseif($args[0]=='edit'){
     <div class="form-group">
       <label for="title" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+        <div class="input-group-btn hidden-xs">
+          <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="title"><?php svg('fingerprint');?></button>
+        </div>
+<?php }?>
         <input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title" placeholder="Enter a Subject...">
       </div>
     </div>
@@ -45,11 +50,17 @@ elseif($args[0]=='edit'){
     <div class="form-group">
       <label for="notes" class="control-label col-xs-5 col-sm-3 col-lg-2">Notes</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+        <div class="input-group-btn hidden-xs">
+          <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="da"><?php svg('fingerprint');?></button>
+        </div>
+        <div id="da" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="notes"></div>
+<?php }?>
         <form method="post" target="sp" action="core/update.php">
           <input type="hidden" name="id" value="<?php echo$r['id'];?>">
           <input type="hidden" name="t" value="content">
           <input type="hidden" name="c" value="notes">
-          <textarea id="notes" class="form-control summernote" name="da"><?php echo$r['notes'];?></textarea>
+          <textarea id="notes" class="form-control summernote" name="da"><?php echo rawurldecode($r['notes']);?></textarea>
         </form>
       </div>
     </div>

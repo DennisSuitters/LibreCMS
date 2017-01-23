@@ -14,6 +14,11 @@
     <div class="form-group">
       <label for="showItems" class="control-label col-xs-5 col-sm-3 col-lg-2">Item Count</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+        <div class="input-group-btn hidden-xs">
+          <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="showItems"><?php svg('fingerprint');?></button>
+        </div>
+<?php }?>
         <input type="text" id="showItems" class="form-control textinput" value="<?php echo$config['showItems'];?>" data-dbid="1" data-dbt="config" data-dbc="showItems" placeholder="Enter Number of Items to Display..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Number of Items to Display."';?>>
       </div>
     </div>

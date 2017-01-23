@@ -38,15 +38,7 @@ if($act!=''){
 			if($tis!='')$tis=strtotime($tis);else$tis=0;
 			if($tie!='')$tie=strtotime($tie);else$tie=0;
 			$q=$db->prepare("INSERT INTO rewards (code,title,method,value,quantity,tis,tie,ti) VALUES (:code,:title,:method,:value,:quantity,:tis,:tie,:ti)");
-			$q->execute(array(
-				':code'=>$code,
-				':title'=>$title,
-				':method'=>$method,
-				':value'=>$value,
-				':quantity'=>$quantity,
-				':tis'=>$tis,
-				':tie'=>$tie,
-				':ti'=>$ti));
+			$q->execute(array(':code'=>$code,':title'=>$title,':method'=>$method,':value'=>$value,':quantity'=>$quantity,':tis'=>$tis,':tie'=>$tie,':ti'=>$ti));
 			$id=$db->lastInsertId();
 			$e=$db->errorInfo();
 			if(is_null($e[2])){?>

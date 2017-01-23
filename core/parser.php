@@ -199,10 +199,10 @@ foreach($tags as$tag){
 			if($length!=0)$caption=strtok(wordwrap($r['seoCaption'],$length,"...\n"),"\n");else$caption=$r['seoCaption'];
 			$parsing.=$caption;
 		case'notes':
-			if($attribute=='author')$notes=$author['notes'];
-			if($attribute=='comments')$notes=$rc['notes'];
-			if($attribute=='page')$notes=$page['notes'];
-			if($attribute=='content')$notes=$r['notes'];
+			if($attribute=='author')$notes=rawurldecode($author['notes']);
+			if($attribute=='comments')$notes=rawurldecode($rc['notes']);
+			if($attribute=='page')$notes=rawurldecode($page['notes']);
+			if($attribute=='content')$notes=rawurldecode($r['notes']);
 			if($strip==true)$notes=strip_tags($notes);
 			if($length!=0)$notes=strtok(wordwrap($notes,$length,"...\n"),"\n");
 			$parsing.=$notes;

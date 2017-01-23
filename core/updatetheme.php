@@ -5,5 +5,5 @@ $fp=fopen('../'.$file,'w');
 fwrite($fp,$code);
 fclose($fp);?>
 <script>/*<![CDATA[*/
-    window.top.window.$('#block').css("display","none");
+  window.top.window.$('#block').css({'display':'none'});
 /*]]>*/</script>

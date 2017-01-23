@@ -32,6 +32,9 @@ $e=$db->errorInfo();
 if($tbl=='subscribers')$el='s_';
 if(is_null($e[2])){?>
   window.top.window.$('#<?php echo$el.$id;?>').slideUp(500,function(){$(this).remove()});
+<?php }
+if($tbl=='logs'){?>
+  window.top.window.$('#details<?php echo$id;?>').slideUp(500,function(){$(this).remove()});
 <?php }?>
-  window.top.window.$('#busy').css("display","none");
+  window.top.window.$('#busy').css({'display':'none'});
 /*]]>*/</script>

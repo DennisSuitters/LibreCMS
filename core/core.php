@@ -9,8 +9,17 @@ define('SESSIONID',session_id());
 try{
   $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 }catch(Exception $e){
-	require'core/layout/install.php';
+	require'core'.DS.'layout'.DS.'install.php';
 	die();
+}
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','media'.DS.'cache'.DS.'error.log');
 }
 if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme']))$config['theme']=$_GET['theme'];
 define('THEME','layout'.DS.$config['theme']);
@@ -354,7 +363,6 @@ class front{
 		require'process.php';
 	}
 }
-/* Router */
 $route=new router();
 $rts=array(
 	$settings['system']['admin'].'/add'=>array('admin','add'),

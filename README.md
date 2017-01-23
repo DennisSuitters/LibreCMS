@@ -6,8 +6,6 @@ a **Free** Open Source [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) Conten
 ### FAQ
 - Why no Version Numbers?
   - Some people have asked why we don't use a Versioning System of some sorts. Well, as this is an ever changing and growing project, rather than having version numbers, we're going to be doing releases instead. The other reason, is due to my laziness. I originally was updating version numbers to files, but laziness gets the better of me, so I just stopped doing that completely.
-- Why are some files Minified (or Uglified as some call it)?
-  - Files that are minified, are considered to be done with, or complete. Others, are still in the process of being fixed, edited, added to, or modified, but will eventually also be minified. The reason we do this, isn't to make it harder for contributors, but as we're the main users of LibreCMS, minifying the source helps to minimise the footprint. And despite what others think, and claim to have tested, which we have tested. Minifying the source can help improve the speed, and also the download time for outputted data.
 - Why is English the only Language available?
   - LibreCMS was, and is targetted towards English Speaking Australian Business's. We may in the future decide, or if someone wants to add Language support, then we may do that, or merge their changes.
 
@@ -24,11 +22,13 @@ a **Free** Open Source [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) Conten
 - Front End Theme Engine using HTML Style Markup, the use of any CSS or Javascript Framework.
 - Front End integration uses Vanilla Javascript for back end processing for Form Submission and Event Notification.
 - Administration uses jQuery, Modified Bootstrap, LibreICONS, and other jQuery Addons.
+- Activity Fingerprint Analysis Logs of Previous Content Changes with Undo, and who made the changes. Examine Content Inputs with Draggable Popover with Undoing.
+- WYSIWYG Editor Content is encoded to get around some server filters blocking data such as iFrames.
 
 You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](https://github.com/StudioJunkyard/LibreCMS-themes)
 
 ### Dependencies
-- PHP > 5.5.9 - Must have PDO, and Password Compat support. If you have tried LibreCMS with a higher version, please report your experiences.
+- PHP > 5.6 - Must have PDO, and Password Compat support. If you have tried LibreCMS with a higher version, please report your experiences.
 - mod_rewrite
 - PHP5-gd2 (GD-Image) & Imagemagick- LibreCMS will work without them, but things like Thumbnails, and image resizing won't work.
 - mail services - Are need for mail notification sending, and for the Newsletters.
@@ -39,6 +39,8 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
   - [summernote-cleaner](https://github.com/StudioJunkyard/summernote-cleaner)
   - [summernote-save-button](https://github.com/StudioJunkyard/summernote-save-button)
   - [summernote-image-attributes](https://github.com/StudioJunkyard/summernote-image-attributes)
+  - [summernote-image-captionIt](https://github.com/StudioJunkyard/summernote-image-captionit)
+  - [summernote-image-shapes](https://github.com/StudioJunkyard/summernote-image-shapes)
   - [summernote-video-attributes](https://github.com/StudioJunkyard/summernote-video-attributes)
   - [summernote-ext-elfinder](https://github.com/semplon/summernote-ext-elfinder)
   - [summernote-libreICONS-svg](https://github.com/StudioJunkyard/LibreICONS/tree/master/themes/summernote)

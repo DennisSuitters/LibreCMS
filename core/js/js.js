@@ -7,6 +7,14 @@ $("#menu-toggle").click(function(e){
 	e.preventDefault();
 	$("#sidemenu,#content,#menu-toggle").toggleClass("toggled");
 });
+function activitySpy(id){
+	$('#details'+id).toggleClass('hidden')
+	if($('#details'+id).hasClass('hidden')){
+		$('#details'+id).html('<td colspan="3"><i class="libre animated spin"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewbox="0 0 14 14" id="libre-spinner-13"><g id="g3341" transform="matrix(0.05331877,0,0,0.0470101,-0.19803392,13.487394)" style="stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none"><ellipse style="fill:none;stroke:#000000;stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none" ry="144" rx="40" cy="-138" cx="135" id="e"/><use height="100%" width="100%" y="0" x="0" id="use5" transform="matrix(0.5,0.8660254,-0.8660254,0.5,-52.011501,-185.91343)" xlink:href="#e" style="stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none"/><use height="100%" width="100%" y="0" x="0" id="use7" transform="matrix(0.5,-0.8660254,0.8660254,0.5,187.0115,47.91343)" xlink:href="#e" style="stroke-width:9.81667709;stroke-miterlimit:4;stroke-dasharray:none"/></g></svg></i></td>');
+	}else{
+		$('#details'+id).load('core/layout/activityspy.php?id='+id);
+	}
+}
 function getExif(id,t,c){
 	$('#busy').css({'display':'block'});
 	$('#sp').load('core/getexif.php?id='+id+'&t='+t+'&c='+c);
@@ -57,6 +65,9 @@ function associated(id,el,a){
 	}
 }
 $(".textinput").on({
+	blur:function(event){
+		event.preventDefault();
+	},
 	keydown:function(event){
 		var id=$(this).data("dbid");
 		var t=$(this).data("dbt");
@@ -103,14 +114,14 @@ $(".textinput").on({
 			event.preventDefault();
 		}
 	},
-	change:function(event){
+/*	change:function(event){
 		var id=$(this).data("dbid");
 		var t=$(this).data("dbt");
 		var c=$(this).data("dbc");
 		var da=$(this).val();
 		update(id,t,c,da);
 //		$(this).trigger('keypress')
-	}
+	}*/
 })
 $('#seoTitle').keyup(function(){
 	var length=$(this).val().length;

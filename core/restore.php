@@ -11,5 +11,5 @@ $tbl=$r['refTable'];
 $col=$r['refColumn'];
 $sl=$db->prepare("UPDATE $tbl SET $col=:da WHERE id=:id");
 $sl->execute(array(':da'=>$r['oldda'],':id'=>$r['rid']));?>
-  window.top.window.$('#busy').css("display","none");
+  window.top.window.$('#busy').css({'display':'none'});
 /*]]>*/</script>

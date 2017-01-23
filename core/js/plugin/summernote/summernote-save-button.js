@@ -23,6 +23,7 @@
   $.extend($.summernote.plugins,{
     'save':function(context){
       var ui=$.summernote.ui;
+      var $note=context.layoutInfo.note;
       var $editor=context.layoutInfo.editor;
       var options=context.options;
       var lang=options.langInfo;
@@ -32,9 +33,12 @@
           tooltip:lang.save.tooltip,
           click:function(){
             $("#block").css({display:"block"});
-            unsaved=false;
-            $editor.find('.note-save .btn').removeClass('btn-danger');
+            var text=escape($note.summernote('code'));
+            $note.summernote('code',text);
             this.form.submit();
+            $note.summernote('code',unescape(text));
+            $editor.find('.note-save .btn').removeClass('btn-danger');
+            unsaved=false;
           }
         });
         return button.render();
@@ -49,8 +53,11 @@
             e.preventDefault();
             $('#block').css({display:"block"});
             unsaved=false;
-            $editor.find('.note-save .btn').removeClass('btn-danger');
+            var text=escape($note.summernote('code'));
+            $note.summernote('code',text);
             this.form.submit();
+            $note.summernote('code',unescape(text));
+            $editor.find('.note-save .btn').removeClass('btn-danger');
           }
         }
       };

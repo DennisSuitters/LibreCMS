@@ -66,66 +66,121 @@ foreach($folders as$folder){
         <div class="form-group">
           <label for="business" class="control-label col-xs-5 col-sm-3 col-lg-2">Business</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="business"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="business" class="form-control textinput" value="<?php echo$config['business'];?>" data-dbid="1" data-dbt="config" data-dbc="business" placeholder="Enter a Business...">
           </div>
         </div>
         <div class="form-group">
           <label for="abn" class="control-label col-xs-5 col-sm-3 col-lg-2">ABN</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="abn"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="abn" class="form-control textinput" value="<?php echo$config['abn'];?>" data-dbid="1" data-dbt="config" data-dbc="abn" placeholder="Enter an ABN...">
           </div>
         </div>
         <div class="form-group">
           <label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="email"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="email" class="form-control textinput" value="<?php echo$config['email'];?>" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="Enter an Email...">
           </div>
         </div>
         <div class="form-group">
           <label for="phone" class="control-label col-xs-5 col-sm-3 col-lg-2">Phone</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="phone"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="phone" class="form-control textinput" value="<?php echo$config['phone'];?>" data-dbid="1" data-dbt="config" data-dbc="phone" placeholder="Enter a Phone Number...">
           </div>
         </div>
         <div class="form-group">
           <label for="mobile" class="control-label col-xs-5 col-sm-3 col-lg-2">Mobile</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="mobile"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="mobile" class="form-control textinput" value="<?php echo$config['mobile'];?>" data-dbid="1" data-dbt="config" data-dbc="mobile" placeholder="Enter a Mobile Number...">
           </div>
         </div>
         <div class="form-group">
           <label for="address" class="control-label col-xs-5 col-sm-3 col-lg-2">Address</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="address"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="address" class="form-control textinput" value="<?php echo$config['address'];?>" data-dbid="1" data-dbt="config" data-dbc="address" placeholder="Enter an Address...">
           </div>
         </div>
         <div class="form-group">
           <label for="suburb" class="control-label col-xs-5 col-sm-3 col-lg-2">Suburb</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="suburb"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="suburb" class="form-control textinput" value="<?php echo$config['suburb'];?>" data-dbid="1" data-dbt="config" data-dbc="suburb" placeholder="Enter a Suburb...">
           </div>
         </div>
         <div class="form-group">
           <label for="city" class="control-label col-xs-5 col-sm-3 col-lg-2">City</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="city"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="city" class="form-control textinput" value="<?php echo$config['city'];?>" data-dbid="1" data-dbt="config" data-dbc="city" placeholder="Enter a City...">
           </div>
         </div>
         <div class="form-group">
           <label for="state" class="control-label col-xs-5 col-sm-3 col-lg-2">State</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="state"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="state" class="form-control textinput" value="<?php echo$config['state'];?>" data-dbid="1" data-dbt="config" data-dbc="state" placeholder="Enter a State...">
           </div>
         </div>
         <div class="form-group">
           <label for="postcode" class="control-label col-xs-5 col-sm-3 col-lg-2">Postcode</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="postcode"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="postcode" class="form-control textinput" value="<?php if($config['postcode']!=0)echo$config['postcode'];?>" data-dbid="1" data-dbt="config" data-dbc="postcode" placeholder="Enter a Postcode...">
           </div>
         </div>
         <div class="form-group">
           <label for="country" class="control-label col-xs-5 col-sm-3 col-lg-2">Country</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="country"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="country" class="form-control textinput" value="<?php echo$config['country'];?>" data-dbid="1" data-dbt="config" data-dbc="country" placeholder="Enter a Country...">
           </div>
         </div>
@@ -251,6 +306,25 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
         </div>
       </div>
       <div id="preference-interface" name="preference-interface" class="tab-pane fade in">
+<?php if($user['rank']==1000){?>
+        <div class="form-group">
+          <label for="development0" class="control-label check col-xs-5 col-sm-3 col-lg-2"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Development Mode Showing Errors."';?>>Development Mode</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <div class="checkbox checkbox-success">
+              <input type="checkbox" id="development0" data-dbid="1" data-dbt="config" data-dbc="development" data-dbb="0"<?php if($config['development']{0}==1)echo' checked';?>>
+              <label for="development0"/>
+            </div>
+          </div>
+        </div>
+<?php if(file_exists('media'.DS.'cache'.DS.'error.log')){?>
+        <div class="form-group">
+          <label for="error_log" class="control-label col-xs-5 col-sm-3 col-lg-2">Error Log</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <a target="_blank" href="media/cache/error.log">View in New Window</a>
+          </div>
+        </div>
+<?php }
+}?>
         <div class="form-group">
           <label for="maintenance0" class="control-label check col-xs-5 col-sm-3 col-lg-2"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Toggle Site Maintenance Mode."';?>>Maintenance Mode</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
@@ -299,6 +373,11 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
         <div class="form-group">
           <label for="update_url" class="control-label col-xs-5 col-sm-3 col-lg-2">Update URL</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="update_url"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="update_url" class="form-control textinput" value="<?php echo$config['update_url'];?>" data-dbid="1" data-dbt="config" data-dbc="update_url" placeholder="Enter an Update URL..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="URL to Fetch System Updates From..."';?>>
           </div>
         </div>
@@ -313,6 +392,11 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
         <div class="form-group">
           <label for="dateFormat" class="control-label col-xs-5 col-sm-3 col-lg-2">Date/Time Format</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="dateFormat"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date/Time Format..."<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Format Layout of all Dates/Times displayed."';?>>
           </div>
           <small class="help-block text-right">For information on Date Format Characters click <a target="_blank" href="http://php.net/manual/en/function.date.php#refsect1-function.date-parameters">here</a>.</small>
@@ -337,6 +421,11 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
         <div class="form-group clearfix">
           <label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Title</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seoTitle"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
 <?php $cntc=70-strlen($config['seoTitle']);
 if($cntc<0){
   $cnt=abs($cntc);
@@ -355,6 +444,11 @@ if($cntc<0){
         <div class="form-group clearfix">
           <label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Caption</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seoCaption"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
 <?php $cntc=160-strlen($config['seoCaption']);
 if($cntc<0){
   $cnt=abs($cntc);
@@ -370,6 +464,11 @@ if($cntc<0){
         <div class="form-group clearfix">
           <label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Description</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seoDescription"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
 <?php $cntc=160-strlen($config['seoDescription']);
 if($cntc<0){
   $cnt=abs($cntc);
@@ -385,6 +484,11 @@ if($cntc<0){
         <div class="form-group">
           <label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Keywords</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seoKeywords"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$config['seoKeywords'];?>" data-dbid="1" data-dbt="config" data-dbc="seoKeywords" placeholder="Enter Keywords...">
           </div>
         </div>
@@ -392,12 +496,23 @@ if($cntc<0){
         <div class="form-group">
           <label for="ga_verification" class="control-label col-xs-5 col-sm-3 col-lg-2">Site Verification</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="ga_verification"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="ga_verification" class="form-control textinput" value="<?php echo$config['ga_verification'];?>" data-dbid="1" data-dbt="config" data-dbc="ga_verification" placeholder="Enter Google Site Verification Code...">
           </div>
         </div>
         <div class="form-group">
           <label for="ga_tracking" class="control-label col-xs-5 col-sm-3 col-lg-2">Tracking Code</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="ga_tracking"><?php svg('fingerprint');?></button>
+            </div>
+            <div id="da" class="hidden-xs" data-dbid="1" data-dbt="config" data-dbc="ga_tracking"></div>
+<?php }?>
             <form target="sp" method="post" action="core/update.php" onsubmit="$('#block').css({'display':'block'});$('#ga_tracking_save').removeClass('btn-danger');">
               <input type="hidden" name="id" value="1">
               <input type="hidden" name="t" value="config">

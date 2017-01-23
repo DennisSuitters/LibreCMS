@@ -223,6 +223,11 @@ if($show=='item'){
         <div id="d1" class="form-group clearfix">
           <label for="title" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="title"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="title" class="form-control textinput" value="<?php echo$r['title'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="title" data-bs="btn-danger" placeholder="Content MUST contain a title or it won't be accessible...">
           </div>
           <small class="help-block text-right">Content MUST contain a Title, or it won't be accessible.</small>
@@ -236,6 +241,11 @@ if($show=='item'){
         <div id="d3" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>">
           <label for="pti" class="control-label col-xs-5 col-sm-3 col-lg-2">Published On</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="pti"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="pti" class="form-control" data-dbid="<?php echo$r['id'];?>" value="<?php if($r['pti']>0)echo date($config['dateFormat'],$r['pti']);?>">
           </div>
         </div>
@@ -248,7 +258,12 @@ if($show=='item'){
         <div id="d5" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
           <label for="cid" class="control-label col-xs-5 col-sm-3 col-lg-2">Client</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-            <select id="cid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','cid',$(this).val());$('#tstavinfo').toggleClass('hidden');"<?php if($user['options']{1}==0)echo' disabled';?>>
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="cid"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
+            <select id="cid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','cid',$(this).val());$('#tstavinfo').toggleClass('hidden');"<?php if($user['options']{1}==0)echo' disabled';?> data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="cid">
               <option value="0">Select Client</option>
 <?php $cs=$db->query("SELECT * FROM login ORDER BY name ASC, username ASC");
 while($cr=$cs->fetch(PDO::FETCH_ASSOC)){?>
@@ -260,7 +275,12 @@ while($cr=$cs->fetch(PDO::FETCH_ASSOC)){?>
         <div id="d6" class="form-group<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service')echo' hidden';?>">
           <label for="author" class="control-label col-xs-5 col-sm-3 col-lg-2">Author</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-            <select id="uid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','uid',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';?>>
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="uid"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
+            <select id="uid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','uid',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';?> data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="uid">
 <?php $su=$db->query("SELECT id,username,name FROM login WHERE username!='' AND status!='delete' ORDER BY username ASC, name ASC");
 while($ru=$su->fetch(PDO::FETCH_ASSOC)){?>
               <option value="<?php echo$ru['id'];?>"<?php if($ru['id']==$r['uid'])echo' selected';echo'>'.$ru['username'].':'.$ru['name'];?></option>
@@ -271,18 +291,33 @@ while($ru=$su->fetch(PDO::FETCH_ASSOC)){?>
         <div id="d7" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
           <label for="code" class="control-label col-xs-5 col-sm-3 col-lg-2">Code</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="code"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="code" class="form-control textinput" value="<?php echo$r['code'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="code" placeholder="Enter a Code..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
         <div id="d8" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
           <label for="barcode" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Barcode</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="barcode"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="barcode" class="form-control textinput" value="<?php echo$r['barcode'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="barcode" placeholder="Enter a Barcode..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
         <div id="d9" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?> clearfix">
           <label for="fccid" class="control-label col-xs-5 col-sm-3 col-lg-2">FCCID</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="fccid"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="fccid" class="form-control textinput" value="<?php echo$r['fccid'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fccid" placeholder="Enter an FCC ID..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
           <small class="help-block text-right"><a target="_blank" href="https://fccid.io/">fccid.io</a> for more information or to look up an FCC ID.</small>
@@ -290,6 +325,11 @@ while($ru=$su->fetch(PDO::FETCH_ASSOC)){?>
         <div id="d10" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
           <label for="brand" class="control-label col-xs-5 col-sm-3 col-lg-2">Brand</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="brand"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="brand" list="brand_options" class="form-control textinput" value="<?php echo$r['brand'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="brand" placeholder="Enter a Brand..."<?php if($user['options']{1}==0)echo' readonly';?>>
             <datalist id="brand_options">
 <?php $s=$db->query("SELECT DISTINCT brand FROM content WHERE brand!='' ORDER BY brand ASC");
@@ -300,18 +340,33 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['brand'].'"/>';?
         <div id="d11" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
           <label for="tis" class="control-label col-xs-5 col-sm-3 col-lg-2">Event Start</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="tis"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="tis" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tis']==0){echo'Select a Date/Time..."';}else{echo date($config['dateFormat'],$r['tis']).'"';}}?> value="<?php if($r['tis']!=0)echo date('Y-m-d h:m',$r['tis']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tis" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
         <div id="d12" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
           <label for="tie" class="control-label col-xs-5 col-sm-3 col-lg-2">Event End</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="tie"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="tie" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tie']==0)echo'Select a Date/Time..."';else echo date($config['dateFormat'],$r['tie']).'"';}?> value="<?php if($r['tie']!=0)echo date('Y-m-d h:m',$r['tie']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
         <div id="d13" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?> clearfix">
           <label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="email"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="email" class="form-control textinput" value="<?php echo$r['email'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="email" placeholder="Enter an Email..."<?php if($user['options']{1}==0)echo' readonly';?>>
 <?php if($r['ip']!=''){?>
             <div class="help-block"><?php echo$r['ip'];?></div>
@@ -321,6 +376,11 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['brand'].'"/>';?
         <div id="d14" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
           <label for="name" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="name"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="name" list="name_options" class="form-control textinput" value="<?php echo$r['name'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="name" placeholder="Enter a Name..."<?php if($user['options']{1}==0)echo' readonly';?>>
             <datalist id="name_options">
 <?php $s=$db->query("SELECT DISTINCT name FROM content UNION SELECT DISTINCT name FROM login ORDER BY name ASC");
@@ -331,18 +391,33 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['name'].'"/>';?>
         <div id="d15" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
           <label for="url" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="url"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="url" class="form-control textinput" value="<?php echo$r['url'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="url" placeholder="Enter a URL..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
         <div id="d16" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
           <label for="business" class="control-label col-xs-5 col-sm-3 col-lg-2">Business</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="business"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="business" class="form-control textinput" value="<?php echo$r['business'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="business" placeholder="Enter a Business..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
         <div id="d17" class="form-group<?php if($r['contentType']=='testimonials')echo' hidden';?>">
           <label for="category_1" class="control-label col-xs-5 col-sm-3 col-lg-2">Category Primary</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="category_1"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input id="category_1" list="category_1_options" type="text" class="form-control textinput" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_1" placeholder="Enter a Category/Select from List..."<?php if($user['options']{1}==0)echo' readonly';?>>
             <datalist id="category_1_options">
 <?php $s=$db->query("SELECT DISTINCT category_1 FROM content WHERE category_1!='' ORDER BY category_1 ASC");
@@ -353,6 +428,11 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"
         <div id="d18" class="form-group<?php if($r['contentType']=='testimonials')echo' hidden';?>">
           <label for="category_2" class="control-label col-xs-5 col-sm-3 col-lg-2">Category Secondary</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="category_2"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input id="category_2" list="category_2_options" type="text" class="form-control textinput" value="<?php echo$r['category_2'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_2" placeholder="Enter a Category/Select from List..."<?php if($user['options']{1}==0)echo' readonly';?>>
             <datalist id="category_2_options">
 <?php $s=$db->query("SELECT DISTINCT category_2 FROM content WHERE category_2!='' ORDER BY category_2 ASC");while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_2'].'"/>';?>
@@ -362,6 +442,11 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"
         <div id="d19" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
           <label for="cost" class="control-label col-xs-5 col-sm-3 col-lg-2">Cost</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="cost"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <div class="input-group-addon">$</div>
             <input type="text" id="cost" class="form-control textinput" value="<?php echo$r['cost'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="cost" placeholder="Enter a Cost..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
@@ -378,15 +463,26 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"
         <div id="d21" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
           <label for="quantity" class="control-label col-xs-5 col-sm-3 col-lg-2">Quantity</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="quantity"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="quantity" class="form-control textinput" value="<?php echo$r['quantity'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="quantity" placeholder="Enter a Quantity..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
         <div id="d23" class="form-group">
-            <form id="summernote" method="post" target="sp" action="core/update.php">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="da"><?php svg('fingerprint');?></button>
+            </div>
+            <div id="da" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="notes"></div>
+<?php }?>
+            <form id="summernote" enctype="multipart/form-data" method="post" target="sp" action="core/update.php">
               <input type="hidden" name="id" value="<?php echo$r['id'];?>">
               <input type="hidden" name="t" value="content">
               <input type="hidden" name="c" value="notes">
-              <textarea id="notes" class="form-control summernote" name="da"><?php echo$r['notes'];?></textarea>
+              <textarea id="notes" class="form-control summernote" name="da"><?php echo rawurldecode($r['notes']);?></textarea>
             </form>
         </div>
         <fieldset id="d24" class="control-fieldset<?php if($r['contentType']=='portfolio'||$r['contentType']=='events'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
@@ -394,6 +490,11 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"
           <div id="d25" class="form-group">
             <label for="attributionContentName" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label>
             <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+              <div class="input-group-btn hidden-xs">
+                <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="attributionContentName"><?php svg('fingerprint');?></button>
+              </div>
+<?php }?>
               <input type="text" id="attributionContentName" list="attributionContentName_option" class="form-control textinput" value="<?php echo$r['attributionContentName'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionContentName" placeholder="Enter a Name...">
               <datalist id="attributionContentName_option">
 <?php $s=$db->query("SELECT DISTINCT attributionContentName AS name FROM content UNION SELECT DISTINCT name FROM content UNION SELECT DISTINCT name FROM login ORDER BY name ASC");
@@ -404,6 +505,11 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['name'].'"/>';?>
           <div id="d25" class="form-group">
             <label for="attributionContentURL" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
             <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+              <div class="input-group-btn hidden-xs">
+                <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="attributionContentURL"><?php svg('fingerprint');?></button>
+              </div>
+<?php }?>
               <input type="text" id="attributionContentURL" list="attributionContentURL_option" class="form-control textinput" value="<?php echo$r['attributionContentURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionContentURL" placeholder="Enter a URL...">
               <datalist id="attributionContentURL_option">
 <?php $s=$db->query("SELECT DISTINCT attributionContentUrl as url FROM content ORDER BY attributionContentURL ASC");
@@ -420,7 +526,12 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['url'].'"/>';?>
             <div id="tstavinfo" class="alert alert-info<?php if($r['cid']==0)echo' hidden';?>">Currently using the Avatar associated with the chosen Client Account.</div>
             <label for="avatar" class="control-label col-xs-5 col-sm-3 col-lg-2">Avatar</label>
             <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-              <input type="text" class="form-control" value="<?php echo$r['file'];?>" readonly>
+<?php if($user['rank']>899){?>
+              <div class="input-group-btn hidden-xs">
+                <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="av"><?php svg('fingerprint');?></button>
+              </div>
+<?php }?>
+              <input type="text" id="av" class="form-control" value="<?php echo$r['file'];?>" readonly data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="avatar">
               <div class="input-group-btn">
                 <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
                   <input type="hidden" name="id" value="<?php echo$r['id'];?>">
@@ -445,6 +556,11 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['url'].'"/>';?>
           <div id="d27" class="form-group">
             <label for="file" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
             <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+              <div class="input-group-btn hidden-xs">
+                <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="fileURL"><?php svg('fingerprint');?></button>
+              </div>
+<?php }?>
               <input type="text" id="fileURL" class="form-control textinput" value="<?php echo$r['fileURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fileURL" placeholder="Enter a URL...">
               <div class="input-group-btn">
                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','fileURL');"><?php svg('trash');?></button>
@@ -453,6 +569,11 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['url'].'"/>';?>
           </div>
           <div id="d28" class="form-group clearfix">
             <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
+<?php if($user['rank']>899){?>
+              <div class="input-group-btn hidden-xs">
+                <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="file"><?php svg('fingerprint');?></button>
+              </div>
+<?php }?>
               <input id="file" type="text" class="form-control" value="<?php echo$r['file'];?>" readonly>
               <div class="input-group-btn">
                 <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','file');"><?php svg('browse-media');?></button>
@@ -482,6 +603,11 @@ else
           <div id="d29" class="form-group clearfix">
             <label for="thumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Thumbnail</label>
             <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
+<?php if($user['rank']>899){?>
+              <div class="input-group-btn hidden-xs">
+                <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="thumb"><?php svg('fingerprint');?></button>
+              </div>
+<?php }?>
               <input id="thumb" type="text" class="form-control" value="<?php echo$r['thumb'];?>" readonly>
               <div class="input-group-btn">
                 <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','content','thumb');"><?php svg('browse-media');?></button>
@@ -513,6 +639,11 @@ if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].
             <div id="d31" class="form-group">
               <label for="exifFilename" class="control-label col-xs-5 col-sm-3 col-lg-2">Original Filename</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="exifFilename"><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <div class="input-group-btn">
                   <button class="btn btn-default" onclick="getExif('<?php echo$r['id'];?>','content','exifFilename');"><?php svg('magic');?></button>
                 </div>
@@ -522,6 +653,11 @@ if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].
             <div id="d32" class="form-group">
               <label for="exifCamera" class="control-label col-xs-5 col-sm-3 col-lg-2">Camera</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="exifCamera"><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <div class="input-group-btn">
                   <button class="btn btn-default" onclick="getExif('<?php echo$r['id'];?>','content','exifCamera');"><?php svg('magic');?></button>
                 </div>
@@ -531,6 +667,11 @@ if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].
             <div id="d33" class="form-group">
               <label for="exifLens" class="control-label col-xs-5 col-sm-3 col-lg-2">Lens</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="exifLens"><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <div class="input-group-btn">
                   <button class="btn btn-default" onclick="getExif('<?php echo$r['id'];?>','content','exifLens');"><?php svg('magic');?></button>
                 </div>
@@ -540,6 +681,11 @@ if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].
             <div id="d34" class="form-group">
               <label for="exifAperture" class="control-label col-xs-5 col-sm-3 col-lg-2">Aperture</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="exifAperture"><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <div class="input-group-btn">
                   <button class="btn btn-default" onclick="getExif('<?php echo$r['id'];?>','content','exifAperture');"><?php svg('magic');?></button>
                 </div>
@@ -549,6 +695,11 @@ if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].
             <div id="d35" class="form-group">
               <label for="exifFocalLength" class="control-label col-xs-5 col-sm-3 col-lg-2">Focal Length</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="exifFocalLength"><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <div class="input-group-btn">
                   <button class="btn btn-default" onclick="getExif('<?php echo$r['id'];?>','content','exifFocalLength');"><?php svg('magic');?></button>
                 </div>
@@ -558,6 +709,11 @@ if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].
             <div id="d36" class="form-group">
               <label for="exifShutterSpeed" class="control-label col-xs-5 col-sm-3 col-lg-2">Shutter Speed</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="exifShutterSpeed"><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <div class="input-group-btn">
                   <button class="btn btn-default" onclick="getExif('<?php echo$r['id'];?>','content','exifShutterSpeed');"><?php svg('magic');?></button>
                 </div>
@@ -567,6 +723,11 @@ if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].
             <div id="d37" class="form-group">
               <label for="exifISO" class="control-label col-xs-5 col-sm-3 col-lg-2">ISO</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="exifISO"><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <div class="input-group-btn">
                   <button class="btn btn-default" onclick="getExif('<?php echo$r['id'];?>','content','exifISO');"><?php svg('magic');?></button>
                 </div>
@@ -576,10 +737,15 @@ if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].
             <div id="d38" class="form-group">
               <label for="exifti" class="control-label col-xs-5 col-sm-3 col-lg-2">Taken</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid=""><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <div class="input-group-btn">
                   <button class="btn btn-default" onclick="getExif('<?php echo$r['id'];?>','content','exifti');"><?php svg('magic');?></button>
                 </div>
-                <input type="text" id="exifti" class="form-control textinput" value="<?php if($r['exifti']!=0){echo date($config['dateFormat'],$r['exifti']);}?>" placeholder="Select the Date/Time Image was Taken...">
+                <input type="text" id="exifti" class="form-control textinput" value="<?php if($r['exifti']!=0){echo date($config['dateFormat'],$r['exifti']);}?>" placeholder="Select the Date/Time Image was Taken..." data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifti">
               </div>
             </div>
           </fieldset>
@@ -588,6 +754,11 @@ if($r['thumb']!=''&&file_exists('media'.DS.$rthumb))echo'<a href="'.$r['thumb'].
             <div id="d40" class="form-group">
               <label for="attributionImageTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">Title</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="attributionImageTitle"><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <input type="text" id="attributionImageTitle" list="attributionImageTitle_option" class="form-control textinput" value="<?php echo$r['attributionImageTitle'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageTitle" placeholder="Enter a Title...">
                 <datalist id="attributionImageTitle_option">
 <?php $s=$db->query("SELECT DISTINCT attributionImageTitle FROM content ORDER BY attributionImageTitle ASC");
@@ -598,6 +769,11 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['attributionImag
             <div id="d41" class="form-group">
               <label for="attributionImageName" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="attributionImageName"><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <input type="text" id="attributionImageName" list="attributionImageName_option" class="form-control textinput" value="<?php echo$r['attributionImageName'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageName" placeholder="Enter a Name...">
                 <datalist id="attributionImageName_option">
 <?php $s=$db->query("SELECT DISTINCT attributionImageName AS name FROM content UNION SELECT DISTINCT name AS name FROM content UNION SELECT DISTINCT name AS name FROM login ORDER BY name ASC");
@@ -608,6 +784,11 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['name'].'"/>';?>
             <div id="d42" class="form-group">
               <label for="attributionImageURL" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+                <div class="input-group-btn hidden-xs">
+                  <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="attributionImageURL"><?php svg('fingerprint');?></button>
+                </div>
+<?php }?>
                 <input type="text" id="attributionImageURL" list="attributionImageURL_option" class="form-control textinput" value="<?php echo$r['attributionImageURL'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="attributionImageURL" placeholder="Enter a URL...">
                 <datalist id="attributionImageURL_option">
 <?php $s=$db->query("SELECT DISTINCT attributionImageURL AS url FROM content ORDER BY attributionImageURL ASC");
@@ -744,6 +925,11 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
         <div id="d45" class="form-group">
           <label for="views" class="control-label col-xs-5 col-sm-3 col-lg-2">Views</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="views"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="views" class="form-control textinput" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="views"<?php if($user['options']{1}==0)echo' readonly';?>>
             <div class="input-group-btn">
               <button class="btn btn-default trash" onclick="$('#views').val('0');update('<?php echo$r['id'];?>','content','views','0');"><?php svg('eraser');?></button>
@@ -753,6 +939,11 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
         <div class="form-group clearfix">
           <label for="metaRobots" class="control-label col-xs-5 col-sm-3 col-lg-2">Meta Robots</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="metaRobots"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="metaRobots" class="form-control textinput" value="<?php echo$r['metaRobots'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="metaRobots" placeholder="Enter a Robots Option as Below...">
           </div>
           <small class="help-block text-right">Options for Meta Robots:
@@ -762,7 +953,12 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
         <div id="d46" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>">
           <label for="schemaType" class="control-label col-xs-5 col-sm-3 col-lg-2">Schema Type</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-            <select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Schema for Microdata Content."';?>>
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="schemaType"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
+            <select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Schema for Microdata Content."';?> data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="schemaType">
               <option value="blogPosting"<?php if($r['schemaType']=='blogPosting')echo' selected';?>>blogPosting for Articles</option>
               <option value="Product"<?php if($r['schemaType']=='Product')echo' selected';?>>Product for Inventory</option>
               <option value="Service"<?php if($r['schemaType']=='Service')echo' selected';?>>Service for Services</option>
@@ -777,6 +973,11 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
         <div class="form-group clearfix">
           <label for="seoTitle" class="control-label col-xs-5 col-sm-3 col-lg-2">SEO Title</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seoTitle"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
 <?php $cntc=70-strlen($r['seoTitle']);
 if($cntc<0){
   $cnt=abs($cntc);
@@ -795,6 +996,11 @@ if($cntc<0){
         <div id="d49" class="form-group clearfix">
           <label for="seoCaption" class="control-label col-xs-5 col-sm-3 col-lg-2">Caption</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seoCaption"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
 <?php $cntc=160-strlen($r['seoCaption']);
 if($cntc<0){
   $cnt=abs($cntc);
@@ -810,6 +1016,11 @@ if($cntc<0){
         <div id="d49a" class="form-group clearfix">
           <label for="seoDescription" class="control-label col-xs-5 col-sm-3 col-lg-2">Description</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seoDescription"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
 <?php $cntc=160-strlen($r['seoDescription']);
 if($cntc<0){
   $cnt=abs($cntc);
@@ -825,12 +1036,22 @@ if($cntc<0){
         <div id="d47" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>">
           <label for="seoKeywords" class="control-label col-xs-5 col-sm-3 col-lg-2">Keywords</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seoKeywords"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$r['seoKeywords'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="seoKeywords" placeholder="Enter Keywords..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
         <div id="d48" class="form-group">
           <label for="tags" class="control-label col-xs-5 col-sm-3 col-lg-2">Tags</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="tags"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
             <input type="text" id="tags" class="form-control textinput" value="<?php echo$r['tags'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tags" placeholder="Enter Tags..."<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
@@ -839,7 +1060,12 @@ if($cntc<0){
         <div id="d51" class="form-group">
           <label for="published" class="control-label col-xs-5 col-sm-3 col-lg-2">Status</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-            <select id="status" class="form-control" onchange="update('<?php echo$r['id'];?>','content','status',$(this).val());"<?php if($user['options']{1}==0)echo' readonly';if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?>>
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="status"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
+            <select id="status" class="form-control" onchange="update('<?php echo$r['id'];?>','content','status',$(this).val());"<?php if($user['options']{1}==0)echo' readonly';if($config['options']{4}==1)echo' data-toggle="tooltip" title=""';?> data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="status">
               <option value="unpublished"<?php if($r['status']=='unpublished')echo' selected';?>>Unpublished</option>
               <option value="published"<?php if($r['status']=='published')echo' selected';?>>Published</option>
               <option value="delete"<?php if($r['status']=='delete')echo' selected';?>>Delete</option>
@@ -849,7 +1075,12 @@ if($cntc<0){
         <div id="d52" class="form-group">
           <label for="contentType" class="control-label col-xs-5 col-sm-3 col-lg-2">Content Type</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-            <select id="contentType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','contentType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Change the Type of Content this Item belongs to."';?>>
+<?php if($user['rank']>899){?>
+            <div class="input-group-btn hidden-xs">
+              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="contentType"><?php svg('fingerprint');?></button>
+            </div>
+<?php }?>
+            <select id="contentType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','contentType',$(this).val());"<?php if($user['options']{1}==0)echo' disabled';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Change the Type of Content this Item belongs to."';?> data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="contentType">
               <option value="article"<?php if($r['contentType']=='article')echo' selected';?>>Article</option>
               <option value="portfolio"<?php if($r['contentType']=='portfolio')echo' selected';?>>Portfolio</option>
               <option value="events"<?php if($r['contentType']=='events')echo' selected';?>>Event</option>

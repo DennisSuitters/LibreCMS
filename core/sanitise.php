@@ -99,7 +99,7 @@ function kses_version(){
   return'0.2.2min';
 }
 function kses_split($string,$allowed_html,$allowed_protocols){
-  return preg_replace('%(<[^>]*(>|$)|>)%e',"kses_split2('\\1', \$allowed_html, ".'$allowed_protocols)',$string);
+  return preg_replace('%(<[^>]*(>|$)|>)%',"kses_split2('\\1', \$allowed_html, ".'$allowed_protocols)',$string);
 }
 function kses_split2($string,$allowed_html,$allowed_protocols){
   $string=kses_stripslashes($string);
@@ -283,7 +283,7 @@ function kses_html_error($string){
   return preg_replace('/^("[^"]*("|$)|\'[^\']*(\'|$)|\S)*\s*/','',$string);
 }
 function kses_bad_protocol_once($string,$allowed_protocols){
-  return preg_replace('/^((&[^;]*;|[\sA-Za-z0-9])*)(:|&#58;|&#[Xx]3[Aa];)\s*/e','kses_bad_protocol_once2("\\1",$allowed_protocols)',$string);
+  return preg_replace('/^((&[^;]*;|[\sA-Za-z0-9])*)(:|&#58;|&#[Xx]3[Aa];)\s*/','kses_bad_protocol_once2("\\1",$allowed_protocols)',$string);
 }
 function kses_bad_protocol_once2($string,$allowed_protocols){
   $string2=kses_decode_entities($string);
@@ -303,7 +303,7 @@ function kses_bad_protocol_once2($string,$allowed_protocols){
 function kses_normalize_entities($string){
   $string=str_replace('&','&amp;',$string);
   $string=preg_replace('/&amp;([A-Za-z][A-Za-z0-9]{0,19});/','&\\1;',$string);
-  $string=preg_replace('/&amp;#0*([0-9]{1,5});/e','kses_normalize_entities2("\\1")',$string);
+  $string=preg_replace('/&amp;#0*([0-9]{1,5});/','kses_normalize_entities2("\\1")',$string);
   $string=preg_replace('/&amp;#([Xx])0*(([0-9A-Fa-f]{2}){1,2});/','&#\\1\\2;',$string);
   return$string;
 }
@@ -311,7 +311,7 @@ function kses_normalize_entities2($i){
   return(($i>65535)?"&amp;#$i;":"&#$i;");
 }
 function kses_decode_entities($string){
-  $string=preg_replace('/&#([0-9]+);/e','chr("\\1")',$string);
+  $string=preg_replace('/&#([0-9]+);/','chr("\\1")',$string);
   $string=preg_replace('/&#[Xx]([0-9A-Fa-f]+);/e','chr(hexdec("\\1"))',$string);
   return$string;
 }

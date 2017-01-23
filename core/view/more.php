@@ -11,11 +11,8 @@ $contentType=isset($_POST['c'])?$_POST['c']:$_GET['c'];
 $view=isset($_POST['v'])?$_POST['v']:$_GET['v'];
 $show='categories';
 $i=isset($_POST['i'])?$_POST['i']:$_GET['i'];
-if(file_exists('../../layout/'.$config['theme'].'/'.$view.'.html')){
-    $html=file_get_contents('../../layout/'.$config['theme'].'/'.$view.'.html');
-}else{
-    $html=file_get_contents('../../layout/'.$config['theme'].'/content.html');
-}
+if(file_exists('../../layout/'.$config['theme'].'/'.$view.'.html'))$html=file_get_contents('../../layout/'.$config['theme'].'/'.$view.'.html');
+else$html=file_get_contents('../../layout/'.$config['theme'].'/content.html');
 $itemCount=$config['showItems'];
 $s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC LIMIT $i,$itemCount");
 $s->execute(array(':contentType'=>$contentType,':status'=>'published',':ti'=>time()));

@@ -191,12 +191,11 @@
             var webmMatch=url.match(/^.+.(webm)$/);
             var $video;
             var urlVars='';
-// These Element Builder's are modified from the Summernote Source.
             if(ytMatch&&ytMatch[1].length===11){
-              if(!$videoSuggested.is(':checked'))urlVars+='rel=1';
-              if(!$videoControls.is(':checked'))urlVars+='&controls=1';
+              if(!$videoSuggested.is(':checked'))urlVars+='rel=0';
+              if(!$videoControls.is(':checked'))urlVars+='&controls=0';
               if($videoAutoplay.is(':checked'))urlVars+='&autoplay=1';
-              if($videoLoop.is(':checked'))urlVars+='&loop=1';
+              if(!$videoLoop.is(':checked'))urlVars+='&loop=0';
               var youtubeId=ytMatch[1];
               $video=$('<iframe>')
                 .attr('frameborder',0)

@@ -98,7 +98,6 @@ if(isset($user)&&$user['rank']>0){
 	if(stristr($html,'<print user=country>'))$html=str_replace('<print user=country>',$user['country'],$html);
 }else{
 	$html='';
-	if(file_exists(THEME.DS.$amp.DS.'noaccess.html'))
-		$html=file_get_contents(THEME.DS.$amp.DS.'noaccess.html');
+	if(file_exists(THEME.DS.$amp.DS.'noaccess.html'))$html=file_get_contents(THEME.DS.$amp.DS.'noaccess.html');
 }
 $content.=$html;

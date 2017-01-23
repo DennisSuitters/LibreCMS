@@ -1,6 +1,6 @@
 <?php
 require'db.php';
-$nous=$db->prepare("SELECT COUNT(id) AS cnt FROM login WHERE lti>:lti");
+$nous=$db->prepare("SELECT COUNT(id) AS cnt FROM login WHERE lti>:lti AND rank!=1000");
 $nous->execute(array(':lti'=>time()-300));
 $nou=$nous->fetch(PDO::FETCH_ASSOC);
 $nc=$db->query("SELECT COUNT(status) AS cnt FROM comments WHERE contentType!='review' AND status='unapproved'")->fetch(PDO::FETCH_ASSOC);
@@ -11,4 +11,4 @@ $nb=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE contentType='book
 $nu=$db->query("SELECT COUNT(id) AS cnt FROM login WHERE activate!='' AND active=0")->fetch(PDO::FETCH_ASSOC);
 $nt=$db->query("SELECT COUNT(id) AS cnt FROM content WHERE contentType='testimonial' AND status!='confirmed' AND active!=1")->fetch(PDO::FETCH_ASSOC);
 $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['cnt'];
-echo$navStat.','.$nou['cnt'].','.$nc['cnt'].','.$nr['cnt'].','.$nm['cnt'].','.$po['cnt'].','.$nb['cnt'].','.$nu['cnt'].','.$nt['cnt'];
+print$navStat.','.$nou['cnt'].','.$nc['cnt'].','.$nr['cnt'].','.$nm['cnt'].','.$po['cnt'].','.$nb['cnt'].','.$nu['cnt'].','.$nt['cnt'];

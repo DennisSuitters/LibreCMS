@@ -17,7 +17,7 @@ $u->execute(array(':status'=>'published',':tis'=>time(),':id'=>$id));
 require"class.phpmailer.php";
 if($config['email']!=''){
   $mail=new PHPMailer();
-  $body=$news['notes'];
+  $body=rawurldecode($news['notes']);
   $body=eregi_replace("[\]",'',$body);
   $mail->IsSMTP();
   $mail->isHTML(true);
@@ -36,7 +36,7 @@ if($config['email']!=''){
         if(!isset($arr['host'])||!isset($arr['path']))continue;
         $imgname=basename($m[1]);
         $mail->AddEmbeddedImage('../media/'.$imgname,$imgid,$imgname);
-        $body=str_replace($img,'<img alt="" src="cid:'.$imgid.'" style="border:none;" />',$body);
+        $body=str_replace($img,'<img alt="" src="cid:'.$imgid.'" style="border:none"/>',$body);
       }
     }
   }

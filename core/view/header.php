@@ -21,7 +21,6 @@ if($_SESSION['rank']>0){
 	$html=str_replace('</accountmenu>','',$html);
 }else$html=preg_replace('~<accountmenu>.*?<\/accountmenu>~is','',$html,1);
 $html=str_replace('<print config="seoTitle">',$config['seoTitle'],$html);
-
 if(stristr($html,'<print meta=url>'))
 	$html=str_replace('<print meta=url>',URL,$html);
 $s=$db->query("SELECT * FROM menu WHERE menu='head' AND active='1' ORDER BY ord ASC");

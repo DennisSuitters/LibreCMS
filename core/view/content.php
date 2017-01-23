@@ -132,7 +132,7 @@ if($show=='categories'){
 		}else$coverHTML='';
 		$html=str_replace('<print page="cover">',$coverHTML,$html);
 	}
-	$html=str_replace('<print page="notes">',$page['notes'],$html);
+	$html=str_replace('<print page="notes">',rawurldecode($page['notes']),$html);
 	if($config['business'])$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'),$html);else$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
 	$html=str_replace('<notification>',$notification,$html);
 	if(stristr($html,'<items>')){

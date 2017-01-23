@@ -16,5 +16,5 @@ if(isset($_FILES['fu'])){
 <?php }
   }
 }?>
-  window.top.window.$('#block').css("display","none");
+  window.top.window.$('#block').css({'display':'none'});
 /*]]>*/</script>

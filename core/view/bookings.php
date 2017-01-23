@@ -25,59 +25,8 @@ if($act=='add_booking'){
 				$r=$s->fetch(PDO::FETCH_ASSOC);
 				$tie=$r['tie'];
 			}else$tie=0;
-			$q=$db->prepare("INSERT INTO content (
-				rid,
-				contentType,
-				name,
-				email,
-				business,
-				address,
-				suburb,
-				city,
-				state,
-				postcode,
-				phone,
-				notes,
-				status,
-				tis,
-				tie,
-				ti
-			) VALUES (
-				:rid,
-				:contentType,
-				:name,
-				:email,
-				:business,
-				:address,
-				:suburb,
-				:city,
-				:state,
-				:postcode,
-				:phone,
-				:notes,
-				:status,
-				:tis,
-				:tie,
-				:ti
-			)");
-			$q->execute(array(
-				':rid'=>$rid,
-				':contentType'=>'booking',
-				':name'=>$name,
-				':email'=>$email,
-				':business'=>$business,
-				':address'=>$address,
-				':suburb'=>$suburb,
-				':city'=>$city,
-				':state'=>$state,
-				':postcode'=>$postcode,
-				':phone'=>$phone,
-				':notes'=>$notes,
-				':status'=>'unconfirmed',
-				':tis'=>$tis,
-				':tie'=>$tie,
-				':ti'=>$ti
-			));
+			$q=$db->prepare("INSERT INTO content (rid,contentType,name,email,business,address,suburb,city,state,postcode,phone,notes,status,tis,tie,ti) VALUES (:rid,:contentType,:name,:email,:business,:address,:suburb,:city,:state,:postcode,:phone,:notes,:status,:tis,:tie,:ti)");
+			$q->execute(array(':rid'=>$rid,':contentType'=>'booking',':name'=>$name,':email'=>$email,':business'=>$business,':address'=>$address,':suburb'=>$suburb,':city'=>$city,':state'=>$state,':postcode'=>$postcode,':phone'=>$phone,':notes'=>$notes,':status'=>'unconfirmed',':tis'=>$tis,':tie'=>$tie,':ti'=>$ti));
 			$e=$db->errorInfo();
 			if(is_null($e[2])){
 				if($config['email']!=''){

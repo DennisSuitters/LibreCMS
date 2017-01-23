@@ -19,6 +19,7 @@ if($tbl=='content'||$tbl=='menu'||$tbl=='config'&&$col=='notes'||$col=='Password
   $da=kses($da,array());
 }
 if(strlen($da)<12&&$da=='<p><br></p>')$da=str_replace('<p><br></p>','',$da);
+if(strlen($da)<24&&$da=='%3Cp%3E%3Cbr%3E%3C/p%3E')$da=str_replace('%3Cp%3E%3Cbr%3E%3C/p%3E','',$da);
 $si=session_id();
 $ti=time();
 $s=$db->prepare("SELECT * FROM ".$tbl." WHERE id=:id");
@@ -42,6 +43,8 @@ if(isset($_SESSION['uid'])){
   $u=$q->fetch(PDO::FETCH_ASSOC);
   if($u['name']!='')$login_user=$u['name'];else$login_user=$u['username'];
   $log['uid']=$uid;
+	$log['username']=$u['username'];
+	$log['name']=$u['name'];
 }else{
   $uid=0;
   $u['rank']=0;
@@ -169,7 +172,7 @@ if(is_null($e[2])){
 	window.top.window.$('#l_<?php echo$id;?>').removeClass('danger');
 <?php }
 	}?>
-	window.top.window.$('#block').css("display","none");
+	window.top.window.$('#block').css({'display':'none'});
 /*]]>*/</script>
-<?php $s=$db->prepare("INSERT INTO logs (uid,rid,view,contentType,refTable,refColumn,oldda,newda,action,ti) VALUES (:uid,:rid,:view,:contentType,:refTable,:refColumn,:oldda,:newda,:action,:ti)");
-$s->execute(array(':uid'=>$log['uid'],':rid'=>$log['rid'],':view'=>$log['view'],':contentType'=>$log['contentType'],':refTable'=>$log['refTable'],':refColumn'=>$log['refColumn'],':oldda'=>$log['oldda'],':newda'=>$log['newda'],':action'=>$log['action'],':ti'=>$log['ti']));
+<?php $s=$db->prepare("INSERT INTO logs (uid,rid,username,name,view,contentType,refTable,refColumn,oldda,newda,action,ti) VALUES (:uid,:rid,:username,:name,:view,:contentType,:refTable,:refColumn,:oldda,:newda,:action,:ti)");
+$s->execute(array(':uid'=>$log['uid'],':rid'=>$log['rid'],':username'=>$log['username'],':name'=>$log['name'],':view'=>$log['view'],':contentType'=>$log['contentType'],':refTable'=>$log['refTable'],':refColumn'=>$log['refColumn'],':oldda'=>$log['oldda'],':newda'=>$log['newda'],':action'=>$log['action'],':ti'=>$log['ti']));

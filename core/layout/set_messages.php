@@ -52,6 +52,11 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
     <div class="form-group clearfix">
       <label for="contactAutoReplySubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+        <div class="input-group-btn hidden-xs">
+          <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="contactAutoReplySubject"><?php svg('fingerprint');?></button>
+        </div>
+<?php }?>
         <input type="text" id="contactAutoReplySubject" class="form-control textinput" value="<?php echo$config['contactAutoReplySubject'];?>" data-dbid="1" data-dbt="config" data-dbc="contactAutoReplySubject">
       </div>
       <small class="help-block text-right">Tokens: {business} {date}</small>
@@ -59,11 +64,17 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
     <div class="form-group clearfix">
       <label for="contactAutoReplyLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+        <div class="input-group-btn hidden-xs">
+          <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="carl"><?php svg('fingerprint');?></button>
+        </div>
+        <div id="carl" data-dbid="1" data-dbt="config" data-dbc="contactAutoReplyLayout"></div>
+<?php }?>
         <form method="post" target="sp" action="core/update.php">
           <input type="hidden" name="id" value="1">
           <input type="hidden" name="t" value="config">
           <input type="hidden" name="c" value="contactAutoReplyLayout">
-          <textarea id="contactAutoReplyLayout" class="form-control summernote" name="da"><?php echo$config['contactAutoReplyLayout'];?></textarea>
+          <textarea id="contactAutoReplyLayout" class="form-control summernote" name="da"><?php echo rawurldecode($config['contactAutoReplyLayout']);?></textarea>
         </form>
       </div>
       <small class="help-block text-right">Tokens: {business} {date} {name} {subject}</small>

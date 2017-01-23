@@ -40,7 +40,7 @@ echo date('M jS, Y g:i A',$time);?>
 }
 function get_json($url){
   $base="https://api.github.com/";
-  $agent='Mozilla/5.0 (compatible; StudioJunkard/LibreCMS)';
+  $agent='Mozilla/5.0 (compatible;StudioJunkard/LibreCMS)';
   $curl=curl_init();curl_setopt($curl,CURLOPT_USERAGENT,$agent);
   curl_setopt($curl,CURLOPT_URL,$base.$url);
   curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);

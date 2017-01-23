@@ -1,8 +1,3 @@
-<!--
- * Powered by LibreCMS (https://github.com/StudioJunkyard/LibreCMS)
- * Copyleft 2016 Studio Junkyard (http://studiojunkyard.com/)
- * Licensed under GPLv3 <http://www.gnu.org/licenses/>
--->
 <!DOCTYPE HTML>
 <html lang="en-AU">
 	<head>

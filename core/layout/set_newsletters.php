@@ -1,17 +1,3 @@
-<?php /*
-  config
-    newslettersEmbedImages    int(1)
-    newslettersSendMax        int(4)
-    newslettersSendDelay      int(4)
-    newslettersOptOutLayout   text
-  login
-    newsletter                int(1)
-    hash                      varchar(32)
-  newsletters
-    id                        bigint(20)
-    email                     varchar(255)
-    hash                      varchar(32)
-*/ ?>
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 class="col-xs-8">Newsletters Settings</h4>
@@ -38,6 +24,11 @@
     <div class="form-group">
       <label for="newslettersSendMax" class="control-label col-xs-5 col-sm-3 col-lg-2">Send Max</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+        <div class="input-group-btn hidden-xs">
+          <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="newslettersSendMax"><?php svg('fingerprint');?></button>
+        </div>
+<?php }?>
         <input type="text" id="newslettersSendMax" class="form-control textinput" value="<?php echo$config['newslettersSendMax'];?>" data-dbid="1" data-dbt="config" data-dbc="newslettersSendMax">
       </div>
       <small class="help-block text-right">Maximum Emails to Send in one Instance. '0' uses the Default of '50'.</small>
@@ -45,6 +36,11 @@
     <div class="form-group">
       <label for="newslettersSendDelay" class="control-label col-xs-5 col-sm-3 col-lg-2">Send Delay</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+        <div class="input-group-btn hidden-xs">
+          <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="newslettersSendDelay"><?php svg('fingerprint');?></button>
+        </div>
+<?php }?>
         <input type="text" id="newslettersSendDelay" class="form-control textinput" value="<?php echo$config['newslettersSendDelay'];?>" data-dbid="1" data-dbt="config" data-dbc="newslettersSendDelay">
       </div>
       <small class="help-block text-right">Seconds to Delay between Sends. '0' uses the Default of '1' second.</small>
@@ -53,11 +49,17 @@
     <div class="form-group clearfix">
       <div class="col-xs-5 col-sm-3 col-lg-2"></div>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+        <div class="input-group-btn hidden-xs">
+          <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="nool"><?php svg('fingerprint');?></button>
+        </div>
+        <div id="nool" data-dbid="1" data-dbt="config" data-dbc="newslettersOptOutLayout"></div>
+<?php }?>
         <form method="post" target="sp" action="core/update.php">
           <input type="hidden" name="id" value="1">
           <input type="hidden" name="t" value="config">
           <input type="hidden" name="c" value="newslettersOptOutLayout">
-          <textarea class="form-control summernote" name="da"><?php echo$config['newslettersOptOutLayout'];?></textarea>
+          <textarea class="form-control summernote" name="da"><?php echo rawurldecode($config['newslettersOptOutLayout']);?></textarea>
         </form>
       </div>
       <small class="help-block text-right">You can use the following tokens: {optOutLink}</small>

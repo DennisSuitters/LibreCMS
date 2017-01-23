@@ -5,7 +5,7 @@ $bit=filter_input(INPUT_GET,'b',FILTER_SANITIZE_NUMBER_INT);
 $tbl=filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
 $col=filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
 $ti=time();
-if($tbl!='NaN'&&$col!='NaN'){
+if(($tbl!='NaN'&&$col!='NaN')||($tbl!=''&&$col!='')){
   $q=$db->prepare("SELECT $col as c FROM $tbl WHERE id=:id");
   $q->execute(array(':id'=>$id));
   $r=$q->fetch(PDO::FETCH_ASSOC);

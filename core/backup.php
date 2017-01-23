@@ -104,5 +104,5 @@ if(file_exists('../media/backup/'.$file)){
 <?php }else{?>
   window.top.window.$('#backup_info').html('<div class="alert alert-danger">There was an issue performing the backup!</div>');
 <?php }?>
-  window.top.window.$('#block').css("display","none");
+  window.top.window.$('#block').css({'display':'none'});
 /*]]>*/</script>

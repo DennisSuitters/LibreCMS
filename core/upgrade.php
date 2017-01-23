@@ -2,7 +2,6 @@
   window.top.window.$('#updateheading').html('System Updates...');
   window.top.window.$('#update').html('');
 <?php
-/* http://maxmorgandesign.com/simple_php_auto_update_system/ */
 ini_set('max_execution_time',60);
 require'db.php';
 $config=$db->query("SELECT update_url FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
@@ -14,6 +13,7 @@ $found=true;
 $vL=explode("\n",$gV);
 foreach($vL as $aV){
   if($aV=='')continue;
+  if($aV<$settings['system']['version'])continue;
   if(!is_file('../media/updates/'.$aV.'.zip' )){?>
   window.top.window.$('#update').append('<div class="alert alert-info">Downloading New Update...</div>');
 <?php
@@ -21,16 +21,16 @@ foreach($vL as $aV){
     $found=false;?>
   window.top.window.$('#update').append('<div class="alert alert-danger">File doesn\'t exist on remote server...</div>');
 <?php }else{
-      $newUpdate=file_get_contents('https://www.studiojunkyard.com/update/'.$aV.'.zip');
-      if(!is_dir('../media/updates/'))mkdir('../media/updates/');
-      $dlHandler=fopen('../media/updates/'.$aV.'.zip','w');
-      if(!fwrite($dlHandler,$newUpdate)){
-        $found=false;?>
+    $newUpdate=file_get_contents('https://www.studiojunkyard.com/update/'.$aV.'.zip');
+    if(!is_dir('../media/updates/'))mkdir('../media/updates/');
+    $dlHandler=fopen('../media/updates/'.$aV.'.zip','w');
+    if(!fwrite($dlHandler,$newUpdate)){
+      $found=false;?>
   window.top.window.$('#update').append('<div class="alert alert-danger">Could note save new update. Aborted!!!</div>');
 <?php
-        exit();
-      }
-      fclose($dlHandler);?>
+      exit();
+    }
+    fclose($dlHandler);?>
   window.top.window.$('#update').append('<div class="alert alert-success">Update Downloaded And Saved...</div>');
 <?php
     }
@@ -52,7 +52,7 @@ if($found==true){
       $html.='<li>'.$thisFileName.'...........';
       $contents=zip_entry_read($aF,zip_entry_filesize($aF));
       $updateThis='';
-      if($thisFileName=='doupgrade.php'){
+      if($thisFileName=='core/doupgrade.php'){
         $upgradeExec=fopen('doupgrade.php','w');
         fwrite($upgradeExec,$contents);
         fclose($upgradeExec);

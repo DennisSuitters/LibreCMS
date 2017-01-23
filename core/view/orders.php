@@ -38,7 +38,7 @@ else{
       $su=$db->prepare("SELECT * FROM login WHERE id=:uid");
       $su->execute(array(':uid'=>$_SESSION['uid']));
       $ru=$su->fetch(PDO::FETCH_ASSOC);
-      $order=str_replace('<print order="notes">',$r['notes'],$order);
+      $order=str_replace('<print order="notes">',rawurldecode($r['notes']),$order);
       $order=str_replace('<print config="business">',$config['business'],$order);
       $order=str_replace('<print config="abn">',$config['abn'],$order);
       $order=str_replace('<print config="address">',$config['address'],$order);

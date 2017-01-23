@@ -188,7 +188,7 @@ if($r['postage']!=0){
 			$html.='<tr>';
 				$html.='<td>';
 					$html.='<h4>Notes</h4>';
-					$html.='<p style="font-size:8px">'.$r['notes'].'</p>';
+					$html.='<p style="font-size:8px">'.rawurldecode($r['notes']).'</p>';
 				$html.='</td>';
 				$html.='<td>';
 					$html.='<h4>Banking Details</h4>';
@@ -207,7 +207,7 @@ $pdf->writeHTML($html,true,false,true,false,'');
 $pdf->Output(__DIR__.'/../media/orders/'.$oid.'.pdf','F');
 chmod('../media/orders/'.$oid.'.pdf',0777);?>
 <script>/*<![CDATA[*/
-	window.top.window.$('#busy').css("display","none");
+	window.top.window.$('#busy').css({'display':'none'});
 <?php if($c['email']==''||$act=='print'){?>
 	window.top.window.open('media/orders/<?php echo$oid;?>.pdf');
 <?php }else{
@@ -226,7 +226,7 @@ chmod('../media/orders/'.$oid.'.pdf',0777);?>
 	$msg=str_replace('{last}',$name[1],$msg);
 	$msg=str_replace('{date}',date($config['dateFormat'],$r['ti']),$msg);
 	$msg=str_replace('{order_number}',$oid,$msg);
-	$msg=str_replace('{notes}',$r['notes'],$msg);
+	$msg=str_replace('{notes}',rawurldecode($r['notes']),$msg);
 	$mail->Body=$msg;
 	$mail->AltBody=$msg;
 	$mail->AddAttachment('../media/orders/'.$oid.'.pdf');
