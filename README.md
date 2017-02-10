@@ -24,6 +24,18 @@ a **Free** Open Source [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) Conten
 - Administration uses jQuery, Modified Bootstrap, LibreICONS, and other jQuery Addons.
 - Activity Fingerprint Analysis Logs of Previous Content Changes with Undo, and who made the changes. Examine Content Inputs with Draggable Popover with Undoing.
 - WYSIWYG Editor Content is encoded to get around some server filters blocking data such as iFrames.
+- Page and Visitor Tracking.
+- SEO Stats within Content, Google (currently broken), Alexa, and Moz.
+- Multiple Custom Summernote (WYSIWYG Editor) Addons, created by Studio Junkyard:
+  - summernote-accessibility (In Progress)
+  - [summernote-cleaner](https://github.com/StudioJunkyard/summernote-cleaner)
+  - [summernote-findnreplace](https://github.com/StudioJunkyard/summernote-text-findnreplace)
+  - [summernote-image-attributes](https://github.com/StudioJunkyard/summernote-image-attributes)
+  - [summernote-image-captionit](https://github.com/StudioJunkyard/summernote-image-captionit)
+  - [summernote-image-shapes](https://github.com/StudioJunkyard/summernote-image-shapes)
+  - [summernote-save-button](https://github.com/StudioJunkyard/summernote-save-button)
+  - [summernote-seo](https://github.com/StudioJunkyard/summernote-seo)
+  - [summernote-video-attributes](https://github.com/StudioJunkyard/summernote-video-attributes)
 
 You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](https://github.com/StudioJunkyard/LibreCMS-themes)
 
@@ -36,11 +48,14 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 #### Integrated Projects:
 - [LibreICONS](https://github.com/StudioJunkyard/LibreICONS)
 - [Summernote](https://github.com/summernote/summernote)
+  - summernote-accessibility (In Progress)
   - [summernote-cleaner](https://github.com/StudioJunkyard/summernote-cleaner)
-  - [summernote-save-button](https://github.com/StudioJunkyard/summernote-save-button)
+  - [summernote-findnreplace](https://github.com/StudioJunkyard/summernote-text-findnreplace)
   - [summernote-image-attributes](https://github.com/StudioJunkyard/summernote-image-attributes)
-  - [summernote-image-captionIt](https://github.com/StudioJunkyard/summernote-image-captionit)
+  - [summernote-image-captionit](https://github.com/StudioJunkyard/summernote-image-captionit)
   - [summernote-image-shapes](https://github.com/StudioJunkyard/summernote-image-shapes)
+  - [summernote-save-button](https://github.com/StudioJunkyard/summernote-save-button)
+  - [summernote-seo](https://github.com/StudioJunkyard/summernote-seo)
   - [summernote-video-attributes](https://github.com/StudioJunkyard/summernote-video-attributes)
   - [summernote-ext-elfinder](https://github.com/semplon/summernote-ext-elfinder)
   - [summernote-libreICONS-svg](https://github.com/StudioJunkyard/LibreICONS/tree/master/themes/summernote)
@@ -86,5 +101,6 @@ By downloading LibreCMS you hereby agree not to hold Studio Junkyard liable for 
 - [Live Lightly Centre](https://www.livelightlycentre.com.au/)
 - [Powerline Automotive Services](https://www.powerlineauto.com.au/)
 - [Raycraft Computer Services](https://www.raycraft.com.au/)
+- [Raycraft Entertainment](https://www.entertainme.net.au/)
 - [Sparx Early Learning Centre](https://www.sparxelc.com.au/)
 - [StudioJunkyard](https://www.studiojunkyard.com/)
