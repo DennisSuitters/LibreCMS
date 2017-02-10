@@ -32,7 +32,7 @@
           contents:options.save.icon,
           tooltip:lang.save.tooltip,
           click:function(){
-            $("#block").css({display:"block"});
+            Pace.restart();
             var text=escape($note.summernote('code'));
             $note.summernote('code',text);
             this.form.submit();
@@ -51,7 +51,7 @@
         'summernote.keydown':function(we,e){
           if(e.keyCode==83&&(navigator.platform.match("Mac")?e.metaKey:e.ctrlKey)){
             e.preventDefault();
-            $('#block').css({display:"block"});
+            Pace.restart();
             unsaved=false;
             var text=escape($note.summernote('code'));
             $note.summernote('code',text);

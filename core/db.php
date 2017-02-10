@@ -1,14 +1,15 @@
 <?php
-if(file_exists('../../core/config.ini'))
-  $settings=parse_ini_file('../../core/config.ini',TRUE);
-elseif(file_exists('../core/config.ini'))
-  $settings=parse_ini_file('../core/config.ini',TRUE);
-elseif(file_exists('core/config.ini'))
-  $settings=parse_ini_file('core/config.ini',TRUE);
+if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
+if(file_exists('..'.DS.'..'.DS.'core'.DS.'config.ini'))
+  $settings=parse_ini_file('..'.DS.'..'.DS.'core'.DS.'config.ini',TRUE);
+elseif(file_exists('..'.DS.'core'.DS.'config.ini'))
+  $settings=parse_ini_file('..'.DS.'core'.DS.'config.ini',TRUE);
+elseif(file_exists('core'.DS.'config.ini'))
+  $settings=parse_ini_file('core'.DS.'config.ini',TRUE);
 elseif(file_exists('config.ini'))
   $settings=parse_ini_file('config.ini',TRUE);
 else{
-    require'core/layout/install.php';
+    require'core'.DS.'layout'.DS.'install.php';
     die();
 }
 try{
@@ -19,6 +20,6 @@ try{
   $db=new PDO($dns,$settings['database']['username'],$settings['database']['password']);
   $db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 }catch(PDOException $e){
-  require'core/layout/install.php';
+  require'core'.DS.'layout'.DS.'install.php';
   die();
 }

@@ -13,37 +13,9 @@ if($view=='newsletters'){
 	}
 }
 if($view=='search'){
-	if(isset($args[0])&&$args[0]!='')
-		$search='%'.html_entity_decode(str_replace('-','%',$args[0])).'%';
-	elseif(isset($_POST['search'])&&$_POST['search']!='')
-		$search='%'.html_entity_decode(str_replace('-','%',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING))).'%';
-	else
-		$search='%';
-	$s=$db->prepare("SELECT * FROM content WHERE
-		LOWER(code) LIKE LOWER(:code) OR
-		LOWER(brand) LIKE LOWER(:brand) OR
-		LOWER(title) LIKE LOWER(:title) OR
-		LOWER(category_1) LIKE LOWER(:category_1) OR
-		LOWER(category_2) LIKE LOWER(:category_2) OR
-		LOWER(seoKeywords) LIKE LOWER(:keywords) OR
-		LOWER(tags) LIKE LOWER(:tags) OR
-		LOWER(seoCaption) LIKE LOWER(:caption) OR
-		LOWER(seoDescription) LIKE LOWER(:description) OR
-		LOWER(notes) LIKE LOWER(:notes)
-		AND status=:status ORDER BY ti DESC");
-	$s->execute(array(
-		':code'=>$search,
-		':brand'=>$search,
-		':category_1'=>$search,
-		':category_2'=>$search,
-		':title'=>$search,
-		':keywords'=>$search,
-		':tags'=>$search,
-		':caption'=>$search,
-		':description'=>$search,
-		':notes'=>$search,
-		':status'=>$status
-	));
+	if(isset($args[0])&&$args[0]!='')$search='%'.html_entity_decode(str_replace('-','%',$args[0])).'%';elseif(isset($_POST['search'])&&$_POST['search']!='')$search='%'.html_entity_decode(str_replace('-','%',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING))).'%';else$search='%';
+	$s=$db->prepare("SELECT * FROM content WHERE LOWER(code) LIKE LOWER(:code) OR LOWER(brand) LIKE LOWER(:brand) OR LOWER(title) LIKE LOWER(:title) OR LOWER(category_1) LIKE LOWER(:category_1) OR LOWER(category_2) LIKE LOWER(:category_2) OR LOWER(seoKeywords) LIKE LOWER(:keywords) OR LOWER(tags) LIKE LOWER(:tags) OR LOWER(seoCaption) LIKE LOWER(:caption) OR LOWER(seoDescription) LIKE LOWER(:description) OR LOWER(notes) LIKE LOWER(:notes) AND status=:status ORDER BY ti DESC");
+	$s->execute(array(':code'=>$search,':brand'=>$search,':category_1'=>$search,':category_2'=>$search,':title'=>$search,':keywords'=>$search,':tags'=>$search,':caption'=>$search,':description'=>$search,':notes'=>$search,':status'=>$status));
 }elseif($view=='index'){
 	if(stristr($html,'<settings')){
 		preg_match('/<settings items="([\w\W]*?)" contenttype="([\w\W]*?)">/',$html,$matches);
@@ -213,8 +185,7 @@ if($show=='categories'){
 	$html=str_replace('<items>','',$html);
 	$html=str_replace('</items>','',$html);
 	if(stristr($html,'<more>')){
-		if($s->rowCount()<=$config['showItems'])
-			$html=preg_replace('~<more>.*?<\/more>~is','',$html,1);
+		if($s->rowCount()<=$config['showItems'])$html=preg_replace('~<more>.*?<\/more>~is','',$html,1);
 		else{
 			$html=str_replace('<more>','',$html);
 			$html=str_replace('</more>','',$html);
@@ -301,23 +272,7 @@ if($show=='item'){
 			}else$item=str_replace('<choices>','',$item);
 		}else$item=str_replace('<choices>','',$item);
 		if(stristr($item,'<json-ld>')){
-			$jsonld='<script type="application/ld+json">{';
-				$jsonld.='"@context": "http://schema.org/","@type": "'.$r['schemaType'].'",';
-				$jsonld.='"headline":"'.$r['title'].'",';
-				$jsonld.='"alternativeHeadline":"'.$r['title'].'",';
-				$jsonld.='"image":"';if($r['thumb']!='')$jsonld.=$r['thumb'];elseif($r['file']!='')$jsonld.=$r['file'];$jsonld.='",';
-				$jsonld.='"author":"'.$r['name'].'",';
-				$jsonld.='"genre":"'.$r['category_1'];if($r['category_2']!='')$jsonld.=" > ".$r['category_2'];$jsonld.='",';
-				$jsonld.='"keywords":"'.$r['seoKeywords'].'",';
-				$jsonld.='"wordcount":"'.strlen(strip_tags($r['notes'])).'",';
-				$jsonld.='"publisher":"'.$r['business'].'",';
-				$jsonld.='"url":"'.URL.$view.'/'.'",';
-				$jsonld.='"datePublished":"'.date('Y-m-d',$r['pti']).'",';
-				$jsonld.='"dateCreated":"'.date('Y-m-d',$r['ti']).'",';
-				$jsonld.='"dateModified":"'.date('Y-m-d',$r['eti']).'",';
-				$jsonld.='"description":"'.strip_tags(escaper($r['seoDescription'])).'",';
-				$jsonld.='"articleBody":"'.strip_tags(escaper($r['notes'])).'"';
-			$jsonld.='}</script>';
+			$jsonld='<script type="application/ld+json">{"@context": "http://schema.org/","@type": "'.$r['schemaType'].'","headline":"'.$r['title'].'","alternativeHeadline":"'.$r['title'].'","image":"';if($r['thumb']!='')$jsonld.=$r['thumb'];elseif($r['file']!='')$jsonld.=$r['file'];$jsonld.='","author":"'.$r['name'].'","genre":"'.$r['category_1'];if($r['category_2']!='')$jsonld.=" > ".$r['category_2'];$jsonld.='","keywords":"'.$r['seoKeywords'].'","wordcount":"'.strlen(strip_tags($r['notes'])).'","publisher":"'.$r['business'].'","url":"'.URL.$view.'/'.'","datePublished":"'.date('Y-m-d',$r['pti']).'","dateCreated":"'.date('Y-m-d',$r['ti']).'","dateModified":"'.date('Y-m-d',$r['eti']).'","description":"'.strip_tags(rawurldecode($r['seoDescription'])).'","articleBody":"'.strip_tags(escaper($r['notes'])).'"}</script>';
 			$item=str_replace('<json-ld>',$jsonld,$item);
 		}
 		if(stristr($item,'<review>')){
@@ -329,20 +284,7 @@ if($show=='item'){
 			while($rr=$sr->fetch(PDO::FETCH_ASSOC)){
 				$reviewitem=$review;
 				if(stristr($reviewitem,'<json-ld-review>')){
-					$jsonldreview='<script type="application/ld+json">{';
-						$jsonldreview.='"@context":"http://schema.org",';
-						$jsonldreview.='"@type":"Review",';
-						$jsonldreview.='"author":"'.$rr['name'].'",';
-						$jsonldreview.='"datePublished":"'.date('Y-m-d',$rr['ti']).'",';
-						$jsonldreview.='"description":"'.strip_tags(escaper($r['notes'])).'",';
-						$jsonldreview.='"name":"'.$rr['name'].'",';
-						$jsonldreview.='"reviewRating":{';
-							$jsonldreview.='"@type":"Rating",';
-							$jsonldreview.='"bestRating":"5",';
-							$jsonldreview.='"ratingValue":"'.$rr['cid'].'",';
-							$jsonldreview.='"worstRating":"1"';
-						$jsonldreview.='}';
-					$jsonldreview.='}</script>';
+					$jsonldreview='<script type="application/ld+json">{"@context":"http://schema.org","@type":"Review","author":"'.$rr['name'].'","datePublished":"'.date('Y-m-d',$rr['ti']).'","description":"'.strip_tags(rawurldecode($r['notes'])).'","name":"'.$rr['name'].'","reviewRating":{"@type":"Rating","bestRating":"5","ratingValue":"'.$rr['cid'].'","worstRating":"1"}}</script>';
 					$reviewitem=str_replace('<json-ld-review>',$jsonldreview,$reviewitem);
 				}
 				$reviewitem=str_replace('<print review=rating>',$rr['cid'],$reviewitem);
@@ -398,7 +340,6 @@ if($show=='item'){
 		$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);
 		$html=preg_replace('~<more>.*?<\/more>~is','',$html,1);
 		$html=str_replace('<print page="notes">','',$html);
-	/* Comments */
 		if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
 			if(file_exists(THEME.$amp.DS.'comments.html')){
 				$comments='';
@@ -413,7 +354,7 @@ if($show=='item'){
 				preg_match('/<items>([\w\W]*?)<\/items>/',$commentsHTML,$matches);
 				while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
 					$comment=$matches[1];
-					$rc['notes']=strip_tags($rc['notes']);
+					$rc['notes']=strip_tags(rawurldecode($rc['notes']));
 					require'core'.DS.'parser.php';
 					$comments.=$comment;
 				}

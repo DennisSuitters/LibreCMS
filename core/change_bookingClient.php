@@ -20,5 +20,5 @@ $q->execute(array(':cid'=>$id,':business'=>$c['business'],':name'=>$c['name'],':
   window.top.window.$('#email').val('<?php echo$c['email'];?>').data("dbid",<?php echo$c['id'];?>);
   window.top.window.$('#phone').val('<?php echo$c['phone'];?>').data("dbid",<?php echo$c['id'];?>);
   window.top.window.$('#mobile').val('<?php echo$c['mobile'];?>').data("dbid",<?php echo$c['id'];?>);
-  window.top.window.$('#block').css({'display':'none'});
+  window.top.window.Pace.stop();
 /*]]>*/</script>

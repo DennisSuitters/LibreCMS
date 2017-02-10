@@ -2,6 +2,15 @@
 header('Content-Type:application/rss+xml;charset=ISO-8859-1');
 require'db.php';
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
+}
 if($args[0]==''||$args[0]=='index')$args[0]='%_%';
 $ti=time();?>
 <?xml version="1.0"?>
@@ -27,12 +36,12 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
       $img=$r['thumb'];
       $filetype=image_type_to_mime_type(exif_imagetype($r['thumb']));
       $file=basename($r['thumb']);
-      $length=filesize('media/'.$file);
+      $length=filesize('media'.DS.$file);
     }elseif($r['file']){
       $img=$r['file'];
       $filetype=image_type_to_mime_type(exif_imagetype($r['file']));
       $file=basename($r['file']);
-      $length=filesize('media/'.$file);
+      $length=filesize('media'.DS.$file);
     }else{
       $match=preg_match('/(src=["\'](.*?)["\'])/',rawurldecode($r['notes']),$match);
       $split=preg_split('/["\']/',$match[0]);

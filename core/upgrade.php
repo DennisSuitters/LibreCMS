@@ -5,6 +5,15 @@
 ini_set('max_execution_time',60);
 require'db.php';
 $config=$db->query("SELECT update_url FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
+}
 $settings=parse_ini_file('config.ini',TRUE);
 $gV=file_get_contents($config['update_url'].'versions');
 $update=0;
@@ -14,7 +23,7 @@ $vL=explode("\n",$gV);
 foreach($vL as $aV){
   if($aV=='')continue;
   if($aV<$settings['system']['version'])continue;
-  if(!is_file('../media/updates/'.$aV.'.zip' )){?>
+  if(!is_file('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip' )){?>
   window.top.window.$('#update').append('<div class="alert alert-info">Downloading New Update...</div>');
 <?php
    if(false===file_get_contents("https://www.studiojunkyard.com/update/".$aV.".zip",0,null,0,1)){
@@ -22,8 +31,8 @@ foreach($vL as $aV){
   window.top.window.$('#update').append('<div class="alert alert-danger">File doesn\'t exist on remote server...</div>');
 <?php }else{
     $newUpdate=file_get_contents('https://www.studiojunkyard.com/update/'.$aV.'.zip');
-    if(!is_dir('../media/updates/'))mkdir('../media/updates/');
-    $dlHandler=fopen('../media/updates/'.$aV.'.zip','w');
+    if(!is_dir('..'.DS.'media'.DS.'updates'.DS))mkdir('..'.DS.'media'.DS.'updates'.DS);
+    $dlHandler=fopen('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip','w');
     if(!fwrite($dlHandler,$newUpdate)){
       $found=false;?>
   window.top.window.$('#update').append('<div class="alert alert-danger">Could note save new update. Aborted!!!</div>');
@@ -38,21 +47,21 @@ foreach($vL as $aV){
   window.top.window.$('#update').append('<div class="alert alert-info">Update already downloaded....</div>');
 <?php }
 if($found==true){
-  $zipHandle=zip_open('../media/updates/'.$aV.'.zip');
+  $zipHandle=zip_open('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip');
   $html='<ul>';
   while($aF=zip_read($zipHandle)){
     $thisFileName=zip_entry_name($aF);
     $thisFileDir=dirname($thisFileName);
     if(substr($thisFileName,-1,1)=='/')continue;
-    if(!is_dir('../'.$thisFileDir)){
-      mkdir('../'.$thisFileDir );
+    if(!is_dir('..'.DS.$thisFileDir)){
+      mkdir('..'.DS.$thisFileDir );
       $html.='<li>Created Directory '.$thisFileDir.'</li>';
     }
-    if(!is_dir('../'.$thisFileName)){
+    if(!is_dir('..'.DS.$thisFileName)){
       $html.='<li>'.$thisFileName.'...........';
       $contents=zip_entry_read($aF,zip_entry_filesize($aF));
       $updateThis='';
-      if($thisFileName=='core/doupgrade.php'){
+      if($thisFileName=='core'.DS.'doupgrade.php'){
         $upgradeExec=fopen('doupgrade.php','w');
         fwrite($upgradeExec,$contents);
         fclose($upgradeExec);
@@ -60,7 +69,7 @@ if($found==true){
         unlink('doupgrade.php');
         $html.=' <strong class="text-success">EXECUTED</strong></li>';
       }else{
-        $updateThis=fopen('../'.$thisFileName,'w');
+        $updateThis=fopen('..'.DS.$thisFileName,'w');
         fwrite($updateThis,$contents);
         fclose($updateThis);
         unset($contents);
@@ -93,5 +102,5 @@ if($found==true){
 }
 $su=$db->prepare("UPDATE config SET uti=:uti WHERE id='1'");
 $su->execute(array(':uti'=>time()));?>
-  window.top.window.$('#block').css({'display':'none'});
+  window.top.window.Pace.stop();
 /*]]>*/</script>

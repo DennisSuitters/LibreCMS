@@ -1,10 +1,19 @@
 <script>/*<![CDATA[*/
-<?php session_start();
+<?php
+if(session_status()==PHP_SESSION_NONE)session_start();
 include'db.php';
+$config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
+}
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
-define('DS',DIRECTORY_SEPARATOR);
-$config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 define('THEME','..'.DS.'layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');

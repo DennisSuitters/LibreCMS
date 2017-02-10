@@ -242,6 +242,44 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['url'].'"/>';?>
       </div>
       <div role="tabpanel" class="tab-pane" id="page-seo">
         <div class="form-group">
+          <label for="analytics" class="control-label col-xs-5 col-sm-3 col-lg-2">Analytics <div class="pacesmall"><div class="pacesmall-activity"></div></div></label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <div class="input-group-btn">
+              <button class="btn btn-default analytics hidden-xs" data-toggle="analytics" data-id="<?php echo$r['id'];?>" data-t="menu" data-u="<?php echo URL.$r['contentType'];?>" data-analytics="social"><?php svg('seo-social');?> Social</button>
+              <button class="btn btn-default analytics hidden-xs" data-toggle="analytics" data-id="<?php echo$r['id'];?>" data-t="menu" data-u="<?php echo URL.$r['contentType'];?>" data-analytics="google"><?php svg('seo-google');?> Google</button>
+              <button class="btn btn-default analytics hidden-xs" data-toggle="analytics" data-id="<?php echo$r['id'];?>" data-t="menu" data-u="<?php echo URL.$r['contentType'];?>" data-analytics="alexa"><?php svg('seo-alexa');?> Alexa</button>
+              <button class="btn btn-default analytics hidden-xs" data-toggle="analytics" data-id="<?php echo$r['id'];?>" data-t="menu" data-u="<?php echo URL.$r['contentType'];?>" data-analytics="moz"><?php svg('seo-moz');?> Moz</button>
+            </div>
+          </div>
+        </div>
+        <script>
+          $('.analytics').popover({
+            html:true,
+            trigger:'click',
+            title:'Analytics <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
+            container:'body',
+            placement:'auto',
+            template:'<div class="popover analytics role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+            content:function(){
+              var id=$(this).data("id"),
+                  t=$(this).data("t"),
+                  u=$(this).data("u"),
+                  a=$(this).data("analytics");
+              return $.ajax({
+                url:'core/layout/seostats-pages.php',
+                dataType:'html',
+                async:false,
+                data:{
+                  id:id,
+                  t:t,
+                  u:u,
+                  a:a
+                }
+              }).responseText;
+            }
+          });
+        </script>
+        <div class="form-group">
           <label for="views" class="control-label col-xs-5 col-sm-3 col-lg-2">Views</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
 <?php if($user['rank']>899){?>
@@ -352,6 +390,19 @@ if($cntc<0){
             <label for="active"/>
           </div>
         </div>
+      </div>
+      <div class="form-group">
+        <label for="url" class="control-label col-xs-5 col-sm-3 col-lg-2">URL Type</label>
+        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+          <div class="input-group-btn">
+            <button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="url"><?php svg('fingerprint');?></button>
+          </div>
+<?php }?>
+          <input type="text" id="url" class="form-control textinput" value="<?php echo$r['url'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="url" placeholder="">
+        </div>
+        <small class="help-block text-right">Leave Blank for in site menu URL's.<br>Enter a URL to link to another service.<br>
+        Or use <code class="click" onclick="$('#url').val('#<?php echo$r['contentType'];?>');update('<?php echo$r['id'];?>','menu','url',$('#url').val());pace.start();">#<?php echo$r['contentType'];?></code> to have menu item link to Anchor with same name on same page.</small>
       </div>
 <?php }?>
       <div class="form-group">

@@ -1,5 +1,5 @@
 <?php
-session_start();
+if(session_status()==PHP_SESSION_NONE)session_start();
 include'db.php';
 $si=session_id();
 $iid=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);

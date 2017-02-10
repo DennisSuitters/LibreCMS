@@ -11,8 +11,7 @@ if($args[0]=="confirm"){
 			$s->execute(array(':email'=>$email));
 			if($s->rowCount()>0){
 				$ru=$s->fetch(PDO::FETCH_ASSOC);
-				if($ru['status']=='delete'||$ru['status']=='disabled')$notification.=$theme['settings']['account_suspend'];
-				else$uid=$ru['id'];
+				if($ru['status']=='delete'||$ru['status']=='disabled')$notification.=$theme['settings']['account_suspend'];else$uid=$ru['id'];
 			}else{
 				$business=filter_input(INPUT_POST,'business',FILTER_SANITIZE_STRING);
 				$address=filter_input(INPUT_POST,'address',FILTER_SANITIZE_STRING);
@@ -79,13 +78,9 @@ if($args[0]=="confirm"){
 				if($mail->Send()){}
 			}
 			$notification.=$theme['settings']['cart_success'];
-		}else{
-			$notification.=$theme['settings']['cart_suspend'];
-		}
+		}else$notification.=$theme['settings']['cart_suspend'];
 		$html=preg_replace('~<emptycart>.*?<\/emptycart>~is',$notification,$html,1);
-	}else{
-		$html=preg_replace('~<emptycart>.*?<\/emptycart>~is','',$html,1);
-	}
+	}else$html=preg_replace('~<emptycart>.*?<\/emptycart>~is','',$html,1);
 }else{
 	$total=0;
 	if(stristr($html,'<items')){

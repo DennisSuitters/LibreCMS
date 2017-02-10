@@ -1,9 +1,10 @@
 <?php
+define('DS',DIRECTORY_SEPARATOR);
 $file=$_POST['file'];
 $code=$_POST['code'];
-$fp=fopen('../'.$file,'w');
+$fp=fopen('..'.DS.$file,'w');
 fwrite($fp,$code);
 fclose($fp);?>
 <script>/*<![CDATA[*/
-  window.top.window.$('#block').css({'display':'none'});
+  window.top.window.Pace.stop();
 /*]]>*/</script>

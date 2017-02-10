@@ -1,13 +1,22 @@
 <script>/*<![CDATA[*/
 <?php require'db.php';
-define('DS',DIRECTORY_SEPARATOR);
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
+}
+
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('THEME','..'.DS.'layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('ADMINURL',URL.$settings['system']['admin'].'/');
 define('UNICODE','UTF-8');
-$theme=parse_ini_file(THEME.'/theme.ini',true);
+$theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $s=$db->prepare("SELECT title,notes FROM content WHERE id=:id");
 $s->execute(array(':id'=>$id));
@@ -35,7 +44,7 @@ if($config['email']!=''){
         $arr=parse_url($m[1]);
         if(!isset($arr['host'])||!isset($arr['path']))continue;
         $imgname=basename($m[1]);
-        $mail->AddEmbeddedImage('../media/'.$imgname,$imgid,$imgname);
+        $mail->AddEmbeddedImage('..'.DS.'media'.DS.$imgname,$imgid,$imgname);
         $body=str_replace($img,'<img alt="" src="cid:'.$imgid.'" style="border:none"/>',$body);
       }
     }
@@ -75,6 +84,6 @@ if($config['email']!=''){
 <?php }
 }else{?>
   window.top.window.$('#notification').html('<div class="alert alert-danger">The Sites <a class="alert-link" href="<?php echo ADMINURL;?>preferences#preference-contact">Email</a> hasn\'t been set.</div>');
-  window.top.window.$('#block').css({'display':'none'});
+  window.top.window.Pace.stop();
 <?php }?>
 /*]]>*/</script>

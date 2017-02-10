@@ -1,0 +1,37 @@
+<block include="meta_head.html">
+<block include="header.html">
+<block inbed="content">
+	<main id="content" class="clearfix" role="main">
+		<div class="row">
+			<div class="col-xs-12">
+				<print page="notes"></div>
+			</div>
+		</div>
+		<div class="divider colored"></div>
+		<div class="row">
+			<div class="col-xs-12">
+				<amp-carousel class="blog-carousel" layout="fixed-height" height="200">
+					<settings items="4" contenttype="all">
+					<items>
+						<a href="<print content=linktitle>" class="blog-carousel-item" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+							<amp-img src="<print content=thumb>" width="250" height="200"></amp-img>
+							<div class="blog-carousel-item-caption">
+								<h4 class="margin-0"><print content="title"></h4>
+								<controls>
+									<view>
+									</view>
+									<service>
+									</service>
+									<inventory>
+									</inventory>
+								</controls>
+							</div>
+						</a>
+					</items>
+				</amp-carousel>
+			</div>
+		</div>
+	</main>
+</block>
+<block include="footer.html">
+<block include="meta_footer.html">

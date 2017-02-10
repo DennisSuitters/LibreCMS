@@ -1,6 +1,6 @@
 <?php
 if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
-  require'../db.php';
+  require'..'.DS.'db.php';
   if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
   define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url']);
   $eml=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
@@ -18,7 +18,7 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
       $activate=md5(time());
       $us=$db->prepare("INSERT INTO login (username,password,email,hash,activate,active,ti) VALUES (:username,:password,:email,:hash,:activate,:active,:ti)");
       $us->execute(array(':username'=>$un,':password'=>$hash,':email'=>$eml,':hash'=>md5($eml),':activate'=>$activate,':active'=>0,':ti'=>time()));
-      require'../class.phpmailer.php';
+      require'..'.DS.'class.phpmailer.php';
       $mail=new PHPMailer();
     	$mail->IsSMTP();
     	$toname=$un;
@@ -32,11 +32,7 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
     	$msg=str_replace('{password}',$password,$msg);
     	$mail->Body=$msg;
     	$mail->AltBody=$msg;
-    	if($mail->Send()){
-        echo'<div class="alert alert-success text-center">Check your Email!</div>';
-      }else{
-        echo'<div class="alert alert-danger text-center">Problem Sending Email!</div>';
-      }
+    	if($mail->Send())echo'<div class="alert alert-success text-center">Check your Email!</div>';else echo'<div class="alert alert-danger text-center">Problem Sending Email!</div>';
     }
   }else echo'<div class="alert alert-danger text-center">Must have a username</div>';
 }else{

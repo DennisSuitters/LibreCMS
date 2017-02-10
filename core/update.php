@@ -1,14 +1,23 @@
 <script>/*<![CDATA[*/
-<?php session_start();
+<?php
+if(session_status()==PHP_SESSION_NONE)session_start();
 require'db.php';
+$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
+}
 require'sanitise.php';
-define('DS',DIRECTORY_SEPARATOR);
 function svg($svg){
-	$s=file_get_contents('svg/libre-'.$svg.'.svg');
+	$s=file_get_contents('svg'.DS.'libre-'.$svg.'.svg');
 	return '<i class="libre">'.$s.'</i>';
 }
 $e='';
-$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $tbl=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
 $col=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
@@ -34,7 +43,7 @@ if($tbl=='content'&&$col=='status'&&$da=='published'){
   $q->execute(array(':pti'=>$ti,':id'=>$id));
 }
 if($tbl=='config'||$tbl=='login'||$tbl=='orders'||$tbl=='orderitems'||$tbl=='messages')$r['contentType']='';
-$log=['uid'=>0,'rid'=>$id,'view'=>$r['contentType'],'contentType'=>$r['contentType'],'refTable'=>$tbl,'refColumn'=>$col,'oldda'=>$oldda,'newda'=>$da,'action'=>'update','ti'=>$ti];
+$log=['uid'=>0,'rid'=>$id,'username'=>'','name'=>'','view'=>$r['contentType'],'contentType'=>$r['contentType'],'refTable'=>$tbl,'refColumn'=>$col,'oldda'=>$oldda,'newda'=>$da,'action'=>'update','ti'=>$ti];
 if($r['contentType']=='booking')$log['view']=$r['contentType'].'s';
 if(isset($_SESSION['uid'])){
   $uid=(int)$_SESSION['uid'];
@@ -172,7 +181,7 @@ if(is_null($e[2])){
 	window.top.window.$('#l_<?php echo$id;?>').removeClass('danger');
 <?php }
 	}?>
-	window.top.window.$('#block').css({'display':'none'});
+	window.top.window.Pace.stop();
 /*]]>*/</script>
 <?php $s=$db->prepare("INSERT INTO logs (uid,rid,username,name,view,contentType,refTable,refColumn,oldda,newda,action,ti) VALUES (:uid,:rid,:username,:name,:view,:contentType,:refTable,:refColumn,:oldda,:newda,:action,:ti)");
 $s->execute(array(':uid'=>$log['uid'],':rid'=>$log['rid'],':username'=>$log['username'],':name'=>$log['name'],':view'=>$log['view'],':contentType'=>$log['contentType'],':refTable'=>$log['refTable'],':refColumn'=>$log['refColumn'],':oldda'=>$log['oldda'],':newda'=>$log['newda'],':action'=>$log['action'],':ti'=>$log['ti']));

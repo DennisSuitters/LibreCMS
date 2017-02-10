@@ -17,7 +17,7 @@ if($args[0]=='settings'){
   <div id="update" class="panel-body">
     <noscript><div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div></noscript>
 <?php
-if($config['uti_freq']!=0){
+if($config['uti_freq']!=0&&$config['development']==0){
   $uti=time()-$config['uti_freq'];
   if($config['uti']<$uti){?>
     <div id="updatecheck">
@@ -34,11 +34,17 @@ if($config['maintenance']{0}==1){?>
 $tid=$ti-2592000;
 if($config['backup_ti']<$tid){
   if($config['backup_ti']==0){?>
-    <div class="alert alert-info">A <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-backrestore';?>">Backup</a> has yet to be performed.</div>
+    <div class="alert alert-info" role="alert">A <a class="alert-link" href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-backrestore';?>">Backup</a> has yet to be performed.</div>
 <?php }else{?>
-    <div class="alert alert-danger">It has been more than 30 days since a <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-backrestore';?>">Backup</a> has been performed.</div>
+    <div class="alert alert-danger" role="alert">It has been more than 30 days since a <a class="alert-link" href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-backrestore';?>">Backup</a> has been performed.</div>
 <?php }
-}?>
+}
+if($config['business']==''){?>
+    <div class="alert alert-danger" role="alert">The Site's <a class="alert-link"   href="http://localhost/LibreCMS/admin/preferences#preference-contact">Business Name</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>
+<?php }
+if($config['email']==''){?>
+    <div class="alert alert-danger" role="alert">The Site's <a class="alert-link"   href="http://localhost/LibreCMS/admin/preferences#preference-contact">Email</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>
+<?php }?>
     <div class="row visible-xs">
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
@@ -103,19 +109,115 @@ if($config['backup_ti']<$tid){
     </div>
     <div class="row">
       <div class="panel panel-body">
+        <h3 class="page-header">LibreCMS Tracking Results</h3>
+        <h4 class="panel-title">Browser Views</h4>
+        <div class="row">
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="text-black" style="font-size:1.5em">
+                  <?php svg('browser-chrome');?>
+                  <span id="browser-chrome" class="pull-right">0</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="text-black" style="font-size:1.5em">
+                  <?php svg('browser-edge');?>
+                  <span id="browser-edge" class="pull-right">0</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="text-black" style="font-size:1.5em">
+                  <?php svg('browser-explorer');?>
+                  <span id="browser-explorer" class="pull-right">0</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="text-black" style="font-size:1.5em">
+                  <?php svg('browser-firefox');?>
+                  <span id="browser-firefox" class="pull-right">0</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="text-black" style="font-size:1.5em">
+                  <?php svg('browser-opera');?>
+                  <span id="browser-opera" class="pull-right">0</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="text-black" style="font-size:1.5em">
+                  <?php svg('browser-safari');?>
+                  <span id="browser-safari" class="pull-right">0</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <script>/*<![CDATA[*/
+<?php
+$bc=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Chrome'")->fetch(PDO::FETCH_ASSOC);
+$bie=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Explorer'")->fetch(PDO::FETCH_ASSOC);
+$be=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Edge'")->fetch(PDO::FETCH_ASSOC);
+$bf=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Firefox'")->fetch(PDO::FETCH_ASSOC);
+$bo=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Opera'")->fetch(PDO::FETCH_ASSOC);
+$bs=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Safari'")->fetch(PDO::FETCH_ASSOC);?>
+            $('#browser-chrome').countTo({from:0,to:<?php echo$bc['cnt'];?>});
+            $('#browser-explorer').countTo({from:0,to:<?php echo$bie['cnt'];?>});
+            $('#browser-edge').countTo({from:0,to:<?php echo$be['cnt'];?>});
+            $('#browser-firefox').countTo({from:0,to:<?php echo$bf['cnt'];?>});
+            $('#browser-opera').countTo({from:0,to:<?php echo$bo['cnt'];?>});
+            $('#browser-safari').countTo({from:0,to:<?php echo$bs['cnt'];?>});
+          /*]]>*/</script>
+        </div>
+        <h4 class="panel-header">Highest Viewed Pages</h4>
+        <div id="seostats-pageviews">
+<?php $s=$db->query("SELECT pid,urlDest,count(*) count FROM tracker GROUP BY urlDest ORDER BY count DESC,ti DESC LIMIT 10");?>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th class="col-xs-1 hidden-xs"></th>
+                <th>Page</th>
+                <th class="col-xs-2 text-center">Tracked Views</th>
+              </tr>
+            </thead>
+            <tbody>
+<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){
+  $sc=$db->prepare("SELECT COUNT(urlDest) AS cnt FROM tracker WHERE urlDest=:urlDest");
+  $sc->execute(array(':urlDest'=>$r['urlDest']));
+  $c=$sc->fetch(PDO::FETCH_ASSOC);?>
+              <tr>
+                <td class="hidden-xs"><button class="btn btn-default btn-xs"><?php svg('fingerprint');?></button></td>
+                <td><small><?php echo$r['urlDest'];?></small></td>
+                <td class="text-center"><?php echo$c['cnt'];?></td>
+              </tr>
+<?php }?>
+            </tbody>
+          </table>
+        </div>
         <h4 class="page-header">Handy Links to help with SEO</h4>
         <div class="media">
           <div class="media-body">
-            <h4 class="media-heading"><a target="_blank" href="https://static.googleusercontent.com/media/www.google.com/en/us/webmasters/docs/search-engine-optimization-starter-guide.pdf">Google's Search Engine Optimisation Starter Guide.</a></h4>
+            <h4 class="media-heading"><a target="_blank" href="https://static.googleusercontent.com/media/www.google.com/en/us/webmasters/docs/search-engine-optimization-starter-guide.pdf">Google\'s Search Engine Optimisation Starter Guide.</a></h4>
             <small><small class="text-muted">From: <a target="_blank" href="https://www.google.com/">Google</a></small></small>
-          </div>
-          <hr>
-        </div>
-        <div class="media">
-          <div class="media-body">
-            <h4 class="media-heading"><a target="_blank" href="http://www.therecipeforseosuccess.com.au/devel/26">Boost rankings, improve traffic and increase coversions with The Recipe for SEO Success eCourse.</a></h4>
-            <small><small class="text-muted">From: <a target="_blank" href="http://www.therecipeforseosuccess.com.au/devel/26">The Recipe For SEO Success</a></small></small><br>
-            <a href="http://www.therecipeforseosuccess.com.au/devel/34"><img class="img-responsive" src="http://www.therecipeforseosuccess.com.au/wp-content/uploads/2016/01/Recipe2016_728x90_NoDate_v1.jpg" width="728" height="90"></a>
           </div>
           <hr>
         </div>

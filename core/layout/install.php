@@ -6,6 +6,8 @@
 		<link rel="icon" href="core/images/favicon.png">
 		<link rel="apple-touch-icon" href="core/images/favicon.png">
 		<meta name="viewport" content="width=400,initial-scale=1.0">
+		<script src="core/js/jquery-2.1.3.min.js"></script>
+		<script src="core/js/pace.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/libreicons.css">
 		<link rel="stylesheet" type="text/css" href="core/css/style.css">
@@ -54,7 +56,7 @@ if($error==1){
 	echo'<div class="alert alert-danger">Please fix the above Issue\'s outlined within the Red Sections, then Refresh the page to Check Again.</div>';
 }?>
 <?php if($error==0){?>
-					<form target="sp" method="post" action="core/installer.php" onsubmit="$('#block').css({'display':'block'});">
+					<form target="sp" method="post" action="core/installer.php" onsubmit="Pace.restart();">
 						<input type="hidden" name="emailtrap" value="">
 						<div class="well">
 							<h4 class="page-header">Database Settings</h3>
@@ -170,8 +172,6 @@ if($error==1){
 				</div>
 			</div>
 		</div>
-		<script src="core/js/jquery-2.1.3.min.js"></script>
 		<iframe id="sp" name="sp" class="hidden"></iframe>
-		<div id="block"><i class="libre libre-spinner-1 libre-5x libre-spin"></i></div>
 	</body>
 </html>

@@ -31,7 +31,7 @@ foreach(glob("layout/".$config['theme']."/*.{html}",GLOB_BRACE)as$file){
 }?>
           </select>
           <div class="input-group-btn">
-            <button id="filesEditLoad" class="btn btn-default" onclick="$('#block').css({'display':'block'});">Load</button>
+            <button id="filesEditLoad" class="btn btn-default" onclick="Pace.restart();">Load</button>
           </div>
         </div>
       </div>
@@ -62,7 +62,7 @@ foreach(glob("layout/".$config['theme']."/*.{html}",GLOB_BRACE)as$file){
           url:url+'?<?php echo time();?>',
           dataType:"text",
           success:function(data){
-            $('#block').css("display","none");
+            Pace.restart();
             editor.setValue(data).refresh();
           }
         });

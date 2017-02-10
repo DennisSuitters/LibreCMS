@@ -2,6 +2,15 @@
 require'db.php';
 require'tcpdf/tcpdf.php';
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
+}
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $w=filter_input(INPUT_GET,'w',FILTER_SANITIZE_STRING);
 $act=filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
@@ -44,18 +53,18 @@ $html='<style>';
 $html.='</style>';
 $html.='<body>';
 $pdflogo='';
-if(file_exists('../media/orderheading.png'))
-	$pdflogo='../media/orderheading.png';
-elseif(file_exists('../media/orderheading.jpg'))
-	$pdflogo='../media/orderheading.jpg';
-elseif(file_exists('../media/orderheading.gif'))
-	$pdflogo='../media/orderheading.gif';
-elseif(file_exists('../layout/'.$config['theme'].'/images/orderheading.png'))
-	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.png';
-elseif(file_exists('../layout/'.$config['theme'].'images/orderheading.jpg'))
-	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.jpg';
-elseif(file_exists('../layout/'.$config['theme'].'images/orderheading.gif'))
-	$pdflogo='../layout/'.$config['theme'].'/images/orderheading.gif';
+if(file_exists('..'.DS.'media'.DS.'orderheading.png'))
+	$pdflogo='..'.DS.'media'.DS.'orderheading.png';
+elseif(file_exists('..'.DS.'media'.DS.'orderheading.jpg'))
+	$pdflogo='..'.DS.'media'.DS.'orderheading.jpg';
+elseif(file_exists('..'.DS.'media'.DS.'orderheading.gif'))
+	$pdflogo='..'.DS.'media'.DS.'orderheading.gif';
+elseif(file_exists('..'.Ds.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png'))
+	$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png';
+elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg'))
+	$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg';
+elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif'))
+	$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif';
 else
 	$pdflogo='';
 if($pdflogo!=''){
@@ -132,10 +141,7 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 			$html.='>';
 				$html.='<td class="col-75"><small>'.$i['code'].'</small></td>';
 				$html.='<td class="col-150"><small>';
-	if($ro['title']=='')
-					$html.=$i['title'];
-	else
-					$html.=$ro['title'];
+	if($ro['title']=='')$html.=$i['title'];else$html.=$ro['title'];
 				$html.='</small></td>';
 				$html.='<td class="col-150"><small>'.$c['title'].'</small></td>';
 				$html.='<td class="col-50 text-center"><small>'.$ro['quantity'].'</small></td>';
@@ -204,12 +210,12 @@ if($r['postage']!=0){
 	$html.='</table>';
 $html.='</body>';
 $pdf->writeHTML($html,true,false,true,false,'');
-$pdf->Output(__DIR__.'/../media/orders/'.$oid.'.pdf','F');
-chmod('../media/orders/'.$oid.'.pdf',0777);?>
+$pdf->Output(__DIR__.DS'..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf','F');
+chmod('..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf',0777);?>
 <script>/*<![CDATA[*/
-	window.top.window.$('#busy').css({'display':'none'});
+	window.top.window.Pace.stop();
 <?php if($c['email']==''||$act=='print'){?>
-	window.top.window.open('media/orders/<?php echo$oid;?>.pdf');
+	window.top.window.open('media'.DS.'orders'.DS.'<?php echo$oid;?>.pdf');
 <?php }else{
 	require"class.phpmailer.php";
 	$mail=new PHPMailer();
@@ -229,7 +235,7 @@ chmod('../media/orders/'.$oid.'.pdf',0777);?>
 	$msg=str_replace('{notes}',rawurldecode($r['notes']),$msg);
 	$mail->Body=$msg;
 	$mail->AltBody=$msg;
-	$mail->AddAttachment('../media/orders/'.$oid.'.pdf');
+	$mail->AddAttachment('..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf');
 	if($mail->Send()){?>
 	window.top.window.$('.notifications').notify({type:'success',icon:'',message:{text:'The Order was Sent Successfully'}}).show();
 <?php }else{?>

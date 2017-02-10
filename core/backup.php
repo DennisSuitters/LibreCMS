@@ -1,13 +1,13 @@
 <script>/*<![CDATA[*/
 <?php
-session_start();
+if(session_status()==PHP_SESSION_NONE)session_start();
 require'db.php';
 function svg($svg,$size=null,$color=null){
 	echo'<i class="libre';
 	if($size!=null)echo' libre-'.$size;
 	if($color!=null)echo' libre-'.$color;
 	echo'">';
-	include'svg/libre-'.$svg.'.svg';
+	include'svg'.DS.'libre-'.$svg.'.svg';
 	echo'</i>';
 }
 $tables=array();
@@ -16,10 +16,10 @@ $compression=true;
 $nowtimename=time();
 if($compression){
 	$file=date('y-d-m',time()).'-'.$nowtimename.'.sql.gz';
-	$zp=gzopen('../media/backup/'.$file,"w9");
+	$zp=gzopen('..'.DS.'media'.DS.'backup'.DS.$file,"w9");
 }else{
 	$file=date('y-d-m',time()).'-'.$nowtimename.'.sql';
-	$handle=fopen('../media/backup/'.$file,'a+');
+	$handle=fopen('..'.DS.'media'.DS.'backup'.DS.$file,'a+');
 }
 $numtypes=array('tinyint','smallint','mediumint','int','bigint','float','double','decimal','real');
 if(empty($tables)){
@@ -48,16 +48,10 @@ foreach($tables as $table){
 		$count=0;
 		$type=array();
 		while($rows=$pstm3->fetch(PDO::FETCH_NUM)){
-			if(stripos($rows[1],'(')){
-				$type[$table][]=stristr($rows[1],'(',true);
-			}else{
-				$type[$table][]=$rows[1];
-			}
+			if(stripos($rows[1],'('))$type[$table][]=stristr($rows[1],'(',true);else$type[$table][]=$rows[1];
 			$return.=$rows[0];
 			$count++;
-			if($count<($pstm3->rowCount())){
-				$return.=", ";
-			}
+			if($count<($pstm3->rowCount()))$return.=", ";
 		}
 		$return.= ")".' VALUES';
 		if($compression)gzwrite($zp,$return);else fwrite($handle,$return);
@@ -70,19 +64,11 @@ foreach($tables as $table){
 			$row[$j]=addslashes($row[$j]);
 			if(isset($row[$j])){
 				if(in_array($type[$table][$j],$numtypes))$return.=$row[$j];else$return.='"'.$row[$j].'"' ;
-			}else{
-				$return.='""';
-			}
-			if($j<($num_fields-1)){
-				$return.= ',';
-			}
+			}else$return.='""';
+			if($j<($num_fields-1))$return.= ',';
 		}
 		$count++;
-		if($count<($result->rowCount())){
-			$return.="),";
-		}else{
-			$return.=");";
-		}
+		if($count<($result->rowCount()))$return.="),";else$return.=");";
 		if($compression)gzwrite($zp,$return);else fwrite($handle,$return);
 		$return="";
 	}
@@ -91,10 +77,10 @@ foreach($tables as $table){
 	$return="";
 }
 if($compression)gzclose($zp);else fclose($handle);
-if(file_exists('../media/backup/'.$file)){
-  chmod('../media/backup/'.$file,0777);
+if(file_exists('..'.DS.'media'.DS.'backup'.DS.$file)){
+  chmod('..'.DS.'media'.DS.'backup'.DS.$file,0777);
   $fileid=str_replace('.','',$file);
-  $fileid=str_replace('/','',$fileid);
+  $fileid=str_replace(DS,'',$fileid);
 	$filename=basename($file);
   $ti=time();
   $q=$db->prepare("UPDATE config SET backup_ti=:backup_ti WHERE id='1'");
@@ -104,5 +90,5 @@ if(file_exists('../media/backup/'.$file)){
 <?php }else{?>
   window.top.window.$('#backup_info').html('<div class="alert alert-danger">There was an issue performing the backup!</div>');
 <?php }?>
-  window.top.window.$('#block').css({'display':'none'});
+  window.top.window.Pace.stop();
 /*]]>*/</script>

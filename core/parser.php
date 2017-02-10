@@ -15,6 +15,7 @@ if($show=='item'){
 	}else$parse='';
 }
 if(stristr($parse,'<print content=id>'))$parse=str_replace('<print content=id>',$r['id'],$parse);
+if(stristr($parse,'<print content="id">'))$parse=str_replace('<print content="id">',$r['id'],$parse);
 if(stristr($parse,'<print content=schemaType>'))$parse=str_replace('<print content=schemaType>',htmlentities($r['schemaType'],ENT_QUOTES,'UTF-8'),$parse);
 if(preg_match('/<author>([\w\W]*?)<\/author>/',$parse)&&$view=='article'&&$r['uid']!=0){
 	$parse=str_replace('<author>','',$parse);
@@ -38,8 +39,7 @@ foreach($tags as$tag){
 	if($tag->hasAttribute('leadingtext'))$leadingtext=$tag->getAttribute('leadingtext');else$leadingtext='';
 	if($tag->hasAttribute('userrank'))$userrank=$tag->getAttribute('userrank');else$userrank=-1;
 	if($tag->hasAttribute('length'))$length=$tag->getAttribute('length');else$length=0;
-	if($tag->hasAttribute('class'))$class=$tag->getAttribute('class');
-	else$class='';
+	if($tag->hasAttribute('class'))$class=$tag->getAttribute('class');else$class='';
 	if($tag->hasAttribute('alt'))$alt=$tag->getAttribute('alt');else$alt='';
 	if($tag->hasAttribute('type'))$type=$tag->getAttribute('type');else$type='text';
 	if($tag->hasAttribute('strip')&&$tag->getAttribute('type')=='true')$strip=true;else$strip=false;
@@ -131,12 +131,12 @@ foreach($tags as$tag){
 		case'thumb':
 			$filechk=basename($r['file']);
 			$thumbchk=basename($r['thumb']);
-			if($r['thumb']!=''&&(file_exists('media'.DS.$thumbchk)||file_exists('../../media'.DS.$thumbchk))){
+			if($r['thumb']!=''&&(file_exists('media'.DS.$thumbchk)||file_exists('..'.DS.'..'.DS.'media'.DS.$thumbchk))){
 				if($amp=='/amp'){
 					list($width,$height)=getimagesize($r['thumb']);
 					$parsing.='<amp-img src="'.$r['thumb'].'" alt="'.$r['title'].'" layout="responsive" width="'.$width.'" height="'.$height.'"></amp-img>';
 				}else$parsing.='<img src="'.$r['thumb'].'" alt="'.$r['title'].'">';
-			}elseif($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('../../media'.DS.$filechk))){
+			}elseif($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('..'.DS.'..'.DS.'media'.DS.$filechk))){
 				if($amp=='/amp'){
 					list($width,$height)=getimagesize($r['file']);
 					$parsing.='<amp-img src="'.$r['file'].'" alt="'.$r['title'].'" layout="responsive" width="'.$width.'" height="'.$height.'"></amp-img>';
@@ -145,7 +145,7 @@ foreach($tags as$tag){
 			break;
 		case'image':
 			$filechk=basename($r['file']);
-			if($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('../../media'.DS.$filechk))){
+			if($r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('..'.DS.'..'.DS.'media'.DS.$filechk))){
 				if($amp=='/amp'){
 					list($width,$height)=getimagesize($r['file']);
 					$parsing.='<amp-img class="'.$class.'" src="'.$r['file'].'" alt="'.$r['title'].'" layout="responsive" width="'.$width.'" height="'.$height.'"></amp-img>';
@@ -161,12 +161,12 @@ foreach($tags as$tag){
 			if($attribute=='author'){
 				$author['avatar']=basename($author['avatar']);
 				if($author['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$author['avatar']))$parsing.='media'.DS.'avatar'.DS.$author['avatar'].'"';
-				elseif($author['gravatar']!=''){
+				elseif(isset($author['gravatar'])&&$author['gravatar']!=''){
 					if(stristr($author['avatar'],'@'))$parsing.='http://gravatar.com/avatar/'.md5($author['gravatar']).'"';elseif(stristr($author['gravatar'],'gravatar.com/avatar'))$parsing.=$author['gravatar'].'"';else$parsing.=NOAVATAR.'"';
 				}else$parsing.=NOAVATAR.'"';
 				if($alt=='name'){
 					$parsing.=' alt="';
-					if($author['name'])$parsing.=$author['name'];else$parsing.=$author['username'];
+					if(isset($author['name'])&&$author['name'])$parsing.=$author['name'];elseif(isset($author['username']))$parsing.=$author['username'];
 					$parsing.='"';
 				}
 			}
@@ -208,10 +208,10 @@ foreach($tags as$tag){
 			$parsing.=$notes;
 			break;
 		case'notesCount':
-			if($attribute=='author')$notesCount=strlen($author['notes']);
-			if($attribute=='comments')$notesCount=strlen($rc['notes']);
-			if($attribute=='page')$notesCount=strlen($page['notes']);
-			if($attribute=='content')$notesCount=strlen($r['notes']);
+			if($attribute=='author')$notesCount=strlen(strip_tags(rawurldecode($author['notes'])));
+			if($attribute=='comments')$notesCount=strlen(strip_tags(rawurldecode($rc['notes'])));
+			if($attribute=='page')$notesCount=strlen(strip_tags(rawurldecode($page['notes'])));
+			if($attribute=='content')$notesCount=strlen(strip_tags(rawurldecode($r['notes'])));
 			$parsing.=$notesCount;
 		case'email':
 			if($attribute=='author'){

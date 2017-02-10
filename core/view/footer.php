@@ -12,13 +12,11 @@ $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $html=str_replace('<print theme="title">',$theme['title'],$html);
 $html=str_replace('<print theme="creator">',$theme['creator'],$html);
 $html=str_replace('<print theme=creator_url>',$theme['creator_url'],$html);
-if(isset($_SESSION['rank'])&&$_SESSION['rank']>899)
-	$html=str_replace('<administration>','<a target="_blank" href="'.$settings['system']['admin'].'">Administration</a>',$html);
-else
-	$html=str_replace('<administration>','',$html);
+if(isset($_SESSION['rank'])&&$_SESSION['rank']>899)$html=str_replace('<administration>','<a target="_blank" href="'.$settings['system']['admin'].'">Administration</a>',$html);else$html=str_replace('<administration>','',$html);
 $html=str_replace('<print year>',date('Y'),$html);
 $html=str_replace('<print config="business">',$config['business'],$html);
-$html=str_replace('<print config="abn">','ABN: '.$config['abn'],$html);
+if($config['abn']!='')$config['abn']='ABN '.$config['abn'];
+$html=str_replace('<print config="abn">',$config['abn'],$html);
 $html=str_replace('<login>',$link,$html);
 if(stristr($html,'<address')){
 	if($config['business']!='')$business=$config['business'];else$business='';
@@ -38,6 +36,22 @@ if(stristr($html,'<address')){
 	if($config['mobile']!='')$mobile='<span class="mobile"><a href="tel:'.$config['mobile'].'">'.$config['mobile'].'</a></span>';else$mobile='';
 	$html=str_replace('<print config="mobile">',$mobile,$html);
 }
+if(stristr($html,'<subjectText>')){
+	$s=$db->prepare("SELECT * FROM choices WHERE contentType='subject' ORDER BY title ASC");
+	$s->execute();
+	if($s->rowCount()>0){
+		$html=preg_replace('~<subjectText>.*?<\/subjectText>~is','',$html,1);
+		$html=str_replace('<subjectSelect>','',$html);
+		$html=str_replace('</subjectSelect>','',$html);
+		$options='';
+		while($r=$s->fetch(PDO::FETCH_ASSOC))$options.='<option value="'.$r['id'].'" role="option">'.$r['title'].'</option>';
+		$html=str_replace('<subjectOptions>',$options,$html);
+	}else{
+		$html=preg_replace('~<subjectSelect>.*?<\/subjectSelect>~is','',$html,1);
+		$html=str_replace('<subjectText>','',$html);
+		$html=str_replace('</subjectText>','',$html);
+	}
+}
 if(stristr($html,'<buildMenu')){
 	$s=$db->query("SELECT * FROM menu WHERE menu='footer' AND active='1' ORDER BY ord ASC");
 	preg_match('/<buildMenu>([\w\W]*?)<\/buildMenu>/',$html,$matches);
@@ -45,19 +59,18 @@ if(stristr($html,'<buildMenu')){
 	$menu='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$buildMenu=$htmlMenu;
-		if($view==$r['contentType']||$view==$r['contentType'].'s')
-			$buildMenu=str_replace('<print active=menu>',' active',$buildMenu);
-		else
-			$buildMenu=str_replace('<print active=menu>','',$buildMenu);
-		if($r['contentType']!='index')
-			$buildMenu=str_replace('<print menu=url>',URL.$r['contentType'],$buildMenu);
-		else
-			$buildMenu=str_replace('<print menu=url>','',$buildMenu);
+		if($view==$r['contentType']||$view==$r['contentType'].'s')$buildMenu=str_replace('<print active=menu>',' active',$buildMenu);else$buildMenu=str_replace('<print active=menu>','',$buildMenu);
+		if($r['contentType']!='index'){
+			if(isset($r['url'][0])&&$r['url'][0]=='#')$buildMenu=str_replace('<print menu=url>',URL.$r['url'],$buildMenu);
+			elseif(filter_var($r['url'],FILTER_VALIDATE_URL))$buildMenu=str_replace('<print menu=url>',$r['url'],$buildMenu);
+			else$buildMenu=str_replace('<print menu=url>',URL.$r['contentType'],$buildMenu);
+			$buildMenu=str_replace('<print rel=contentType>',strtolower($r['contentType']),$buildMenu);
+		}else{
+			$buildMenu=str_replace('<print menu=url>',URL,$buildMenu);
+			$buildMenu=str_replace('<print rel=contentType>','home',$buildMenu);
+		}
 		$buildMenu=str_replace('<print menu="title">',$r['title'],$buildMenu);
-		if($r['contentType']=='cart')
-			$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);
-		else
-			$buildMenu=str_replace('<menuCart>','',$buildMenu);
+		if($r['contentType']=='cart')$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);else$buildMenu=str_replace('<menuCart>','',$buildMenu);
 		if($r['contentType']=='cart')$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);else$buildMenu=str_replace('<menuCart>','',$buildMenu);
 		$menu.=$buildMenu;
 	}
@@ -76,18 +89,13 @@ if(stristr($html,'<buildSocial')){
 			$buildSocial=str_replace('<print socialicon>',frontsvg('social-'.$r['icon']),$buildSocial);
 			$socialItems.=$buildSocial;
 		}
-	}else $socialItems='';
+	}else$socialItems='';
 	$html=preg_replace('~<buildSocial>.*?<\/buildSocial>~is',$socialItems,$html,1);
 	if($config['options']{9}==1){
 		$html=str_replace('<rss>','',$html);
 		$html=str_replace('</rss>','',$html);
-		if($page['contentType']=='article'||$page['contentType']=='portfolio'||$page['contentType']=='event'||$page['contentType']=='news'||$page['contentType']=='inventory'||$page['contentType']=='service')
-			$html=str_replace('<print rsslink>','rss/'.$page['contentType'],$html);
-		else
-			$html=str_replace('<print rsslink>','rss',$html);
+		if($page['contentType']=='article'||$page['contentType']=='portfolio'||$page['contentType']=='event'||$page['contentType']=='news'||$page['contentType']=='inventory'||$page['contentType']=='service')$html=str_replace('<print rsslink>','rss/'.$page['contentType'],$html);else$html=str_replace('<print rsslink>','rss',$html);
 		$html=str_replace('<print rssicon>',frontsvg('social-rss'),$html);
-	}else{
-		$html=preg_replace('~<rss>.*?<\/rss>~is','',$html,1);
-	}
+	}else$html=preg_replace('~<rss>.*?<\/rss>~is','',$html,1);
 }
 $content.=$html;

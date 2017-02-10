@@ -253,7 +253,7 @@
         };
       this.showLinkDialog=function(vidInfo){
         return $.Deferred(function(deferred){
-          var $videoHref=self.$dialog.find('.note-video-attributes-href');
+          var $videoHref=self.$dialog.find('.note-video-attributes-href'),
               $editBtn=self.$dialog.find('.note-video-attributes-btn');
           ui.onDialogShown(self.$dialog,function(){
             context.triggerEvent('dialog.shown');

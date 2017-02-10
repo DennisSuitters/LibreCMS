@@ -1,7 +1,7 @@
 <?php
 if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
   $eml=filter_input(INPUT_POST,'rsteml',FILTER_SANITIZE_STRING);
-  require'../db.php';
+  require'..'.DS.'db.php';
   $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
   $s=$db->prepare("SELECT id,name,email FROM login WHERE email=:email LIMIT 1");
   $s->execute(array(':email'=>$eml));
@@ -12,7 +12,7 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
     $hash=password_hash($password,PASSWORD_DEFAULT);
     $us=$db->prepare("UPDATE login SET password=:password WHERE id=:id");
     $us->execute(array(':password'=>$hash,':id'=>$c['id']));
-    require'../class.phpmailer.php';
+    require'..'.DS.'class.phpmailer.php';
   	$mail=new PHPMailer();
   	$mail->IsSMTP();
   	$toname=$c['name'];
@@ -25,15 +25,9 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
   	$msg=str_replace('{password}',$password,$msg);
   	$mail->Body=$msg;
   	$mail->AltBody=$msg;
-  	if($mail->Send()){
-      echo'<div class="alert alert-success text-center">Check your Email!</div>';
-    }else{
-      echo$eml;
-      echo'<div class="alert alert-danger text-center">Problem Sending Email!</div>';
-      }
-  }else{
-    echo'<div class="alert alert-danger text-center">No Account Found!</div>';
-  }
+  	if($mail->Send())echo'<div class="alert alert-success text-center">Check your Email!</div>';
+    else echo'<div class="alert alert-danger text-center">Problem Sending Email!</div>';
+  }else echo'<div class="alert alert-danger text-center">No Account Found!</div>';
 }else{
   $r=rand(0,10);
   switch($r){

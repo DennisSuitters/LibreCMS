@@ -1,13 +1,21 @@
 <script>/*<![CDATA[*/
 <?php
-session_start();
+if(session_status()==PHP_SESSION_NONE)session_start();
 require'db.php';
+$config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
+}
 require'zebra_image.php';
 require'sanitise.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('SESSIONID',session_id());
-define('DS',DIRECTORY_SEPARATOR);
-$config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 define('THEME','..'.DS.'layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
@@ -16,7 +24,7 @@ function svg($svg,$size=null,$color=null){
 	if($size!=null)echo' libre-'.$size;
 	if($color!=null)echo' libre-'.$color;
 	echo'">';
-	include'svg/libre-'.$svg.'.svg';
+	include'svg'.DS.'libre-'.$svg.'.svg';
 	echo'</i>';
 }
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
@@ -209,16 +217,16 @@ if($act!=''){
             rename($tp,'..'.DS.'media'.DS.'avatar'.DS.'avatar'.$fn);
 						if($act=='add_tstavatar'){?>
 	window.top.window.$('#tstavatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
-	window.top.window.$('#block').css({'display':'none'});
+	window.top.window.Pace.stop();
 <?php 			}else{?>
   window.top.window.$('#avatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
   window.top.window.$('#menu_avatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
-	window.top.window.$('#block').css({'display':'none'});
+	window.top.window.Pace.stop();
 <?php 			}
 					}
         }
       }?>
-  window.top.window.$('#block').css("display","none");
+  window.top.window.Pace.stop();
 <?php break;
     case'add_orderitem':
       $oid=filter_input(INPUT_GET,'oid',FILTER_SANITIZE_NUMBER_INT);

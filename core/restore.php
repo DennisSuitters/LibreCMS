@@ -1,6 +1,6 @@
 <script>/*<![CDATA[*/
 <?php
-session_start();
+if(session_status()==PHP_SESSION_NONE)session_start();
 include'db.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $uid=$_SESSION['uid'];
@@ -10,6 +10,15 @@ $r=$s->fetch(PDO::FETCH_ASSOC);
 $tbl=$r['refTable'];
 $col=$r['refColumn'];
 $sl=$db->prepare("UPDATE $tbl SET $col=:da WHERE id=:id");
-$sl->execute(array(':da'=>$r['oldda'],':id'=>$r['rid']));?>
-  window.top.window.$('#busy').css({'display':'none'});
+$sl->execute(array(':da'=>$r['oldda'],':id'=>$r['rid']));
+if($col=='notes'){?>
+  if(window.top.window.$('.summernote')){
+    window.top.window.$('.summernote').summernote('code','<?php echo rawurldecode($r['oldda']);?>');
+  }
+<?php }else{?>
+  if(window.top.window.$('#<?php echo$col;?>')){
+    window.top.window.$('#<?php echo$col;?>').val('<?php echo$r['oldda'];?>');
+  }
+<?php }?>
+  window.top.window.Pace.stop();
 /*]]>*/</script>

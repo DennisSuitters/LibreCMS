@@ -57,9 +57,7 @@ if($act=='add_booking'){
 					$msg.='Notes: '.$notes;
 					$mail->Body=$msg;
 					$mail->AltBody=$msg;
-					if($mail->Send()){
-						$notification=$theme['settings']['booking_success'];
-					}
+					if($mail->Send())$notification=$theme['settings']['booking_success'];
 					$mail2=new PHPMailer();
 					$mail2->IsSMTP();
 					$mail2->SetFrom($config['email'],$config['business']);
@@ -89,25 +87,14 @@ if($act=='add_booking'){
 						if(stristr($msg2,'{last}'))$msg2=str_replace('{last}',$namelast,$msg2);
 						if(stristr($msg2,'{date}'))$msg2=str_replace('{date}',date($config['dateFormat'],$ti),$msg2);
 						if(stristr($msg2,'{booking_date}')){
-							if($tis!=0){
-								$msg2=str_replace('{booking_date}',date($config['dateFormat'],$tis),$msg2);
-							}else{
-								$msg2=str_replace('{booking_date}','',$msg2);
-							}
+							if($tis!=0)$msg2=str_replace('{booking_date}',date($config['dateFormat'],$tis),$msg2);else$msg2=str_replace('{booking_date}','',$msg2);
 						}
 						if(stristr($msg2,'{service}')){
-							if($rid!=0){
-								$msg2=str_replace('{service}',ucfirst(rtrim($r['contentType'],'s')).' - '.$r['title'],$msg2);
-							}else{
-								$msg2=str_replace('{service}','',$msg2);
-							}
+							if($rid!=0)$msg2=str_replace('{service}',ucfirst(rtrim($r['contentType'],'s')).' - '.$r['title'],$msg2);else$msg2=str_replace('{service}','',$msg2);
 						}
 					}else{
 						$msg2='Thank you for ';
-						if($config['business']!='')
-							$msg2.=' Booking with '.$config['business'];
-						else
-							$msg2.=' your Booking.';
+						if($config['business']!='')$msg2.=' Booking with '.$config['business'];else$msg2.=' your Booking.';
 						$msg2.='<br />';
 						$msg2.='Someone will be in touch to confirm your Booking time.<br />';
 						if($config['business']!=''){
@@ -117,15 +104,9 @@ if($act=='add_booking'){
 					}
 					$mail2->Body=$msg2;
 					$mail2->AltBody=strip_tags($msg2);
-					if($mail2->Send()){
-						$notification=$theme['settings']['booking_success'];
-					}else{
-						$notification=$theme['settings']['booking_error'];
-					}
+					if($mail2->Send())$notification=$theme['settings']['booking_success'];else$notification=$theme['settings']['booking_error'];
 				}
-			}else{
-				$notification=$theme['settings']['booking_error'].'error 2';
-			}
+			}else$notification=$theme['settings']['booking_error'].'error 2';
 		}
 	}
 }else{

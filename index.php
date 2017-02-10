@@ -19,5 +19,9 @@
  * @license    https://www.gnu.org/licenses/gpl-3.0.html  GPLv3
  * @link       https://github.com/StudioJunkyard/LibreCMS
  */
+ini_set('session.use_trans_sid',0);
+ini_set('session.use_cookies',1);
+ini_set('session.use_only_cookies',1);
+session_name('develsess');
 session_start();
 require'core/core.php';

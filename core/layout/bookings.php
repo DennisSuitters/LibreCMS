@@ -236,6 +236,9 @@ elseif($args[0]=='edit'){
         <a class="btn btn-default add" href="<?php echo URL.$settings['system']['admin'].'/add/bookings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>><?php svg('add');?></a>
       </div>
       <div class="btn-group">
+          <button class="btn btn-default" onclick="toggleCalendar();"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Switch Between Calendar and Table Views"';?>><?php svg('table','libre-table');svg('calendar','libre-calendar hidden')?></button>
+      </div>
+      <div class="btn-group">
         <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/bookings/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
       </div>
       <div class="btn-group">
@@ -244,10 +247,10 @@ elseif($args[0]=='edit'){
     </div>
   </div>
   <div class="panel-body">
-    <div class="col-xs-12 hidden-xs">
+    <div id="calendar-view" class="col-xs-12<?php if(isset($_COOKIE['bookingview'])&&($_COOKIE['bookingview']=='table'||$_COOKIE['bookingview']==''))echo' hidden';?>">
       <div id="calendar"></div>
     </div>
-    <div class="table-responsive visible-xs">
+    <div id="table-view" class="table-responsive<?php if(isset($_COOKIE['bookingview'])&&$_COOKIE['bookingview']=='calendar')echo' hidden';?>">
       <table class="table table-condensed table-striped table-hover">
         <thead>
           <tr>
@@ -361,7 +364,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
         }
       },
       eventDrop:function(event){
-        $('#block').css({'display':'block'});
+        Pace.restart();
         update(event.id,"content","tis",event.start.format());
       }
     });

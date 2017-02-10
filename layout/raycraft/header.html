@@ -1,0 +1,52 @@
+<div class="col-lg-8 col-lg-offset-2">
+	<header class="navbar navbar-default clearfix" role="header">
+		<nav role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#libreCMS-collapse" role="button">
+						<span>Menu</span>
+					</button>
+					<span class="navbar-brand" role="banner"><a href="" role="link"><img src="layout/raycraft/images/logo.png" alt="Raycraft"></a></span>
+					<address class="vcard">
+						<div class="adr">
+							<div class="street-address"><print config="address"></div>
+							<span class="locality"><print config="suburb"></span>
+							<span class="postal-code"><print config="postcode"></span>
+							<span class="country-name"><print config="country"></span>
+						</div>
+						<div class="email"><print config="email"></div>
+						<div class="tel"><print config="phone"></div>
+						<div class="tel mob"><print config="mobile"></div>
+					</address>
+					<div class="social">
+						<buildSocial>
+							<a class="libre-social" href="<print sociallink>" rel="me"><print socialicon></a>
+						</buildSocial>
+						<rss>
+							<a class="libre-social" href="<print rsslink>" rel="rss"><print rssicon></a>
+						</rss>
+					</div>
+				</div>
+				<div class="collapse navbar-collapse" id="libreCMS-collapse">
+					<ul class="nav navbar-nav" role="list">
+						<buildMenu>
+							<li class="<print active=menu>" role="listitem"><a href="<print menu=url>" role="link"><small><print menu="title"></small></a><menuCart></li>
+						</buildMenu>
+						<li class="visible-xs search" role="listitem">
+							<form method="post" action="search" role="form">
+								<div class="form-group">
+									<div class="input-group">
+										<input type="text" class="form-control" name="search" placeholder="Enter a Search Term..." role="textbox">
+										<div class="input-group-btn">
+											<button type="submit" class="btn btn-default" role="button">Search</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<activation>

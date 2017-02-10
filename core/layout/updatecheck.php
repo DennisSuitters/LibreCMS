@@ -1,7 +1,7 @@
 <?php
 require'../db.php';
 $config=$db->query("SELECT update_url FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
-$settings=parse_ini_file('../config.ini',TRUE);
+$settings=parse_ini_file('..'.DS.'config.ini',TRUE);
 $gV=@file_get_contents($config['update_url'].'versions') or die();
 $update=0;
 $uL='';
@@ -24,7 +24,7 @@ if($update==1){?>
   <p>Current update was on <?php echo date('M jS, Y g:i A',$settings['system']['version']);?></p>
   <p><?php echo$uL;?></p>
   <p>
-    <form target="sp" method="POST" action="core/upgrade.php" onsubmit="$('#block').css({'display':'block'});">
+    <form target="sp" method="POST" action="core/upgrade.php" onsubmit="Pace.restart();">
       <input type="hidden" name="version" value="<?php echo$remoteVersion['system']['version'];?>">
       <button type="submit" class="btn btn-success">Do Updates....</button>
     </form>

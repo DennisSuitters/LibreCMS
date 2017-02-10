@@ -12,15 +12,15 @@
     <link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>">
     <meta name="viewport" content="width=400,initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="core/css/style.css">
     <link rel="stylesheet" type="text/css" href="core/css/libreicons-svg.css">
+    <link rel="stylesheet" type="text/css" href="core/css/style.css">
     <script src="core/js/jquery-2.1.3.min.js"></script>
   </head>
   <body>
     <div class="container">
-      <div class="panel panel-default login center-block">
+      <div id="panelLogin" class="panel panel-default login center-block animated fadeInDown">
         <div class="panel-body">
-          <form role="form" method="post" action="<?php if (!empty($_SERVER['HTTP_REFERER']))echo$_SERVER['HTTP_REFERER'];else echo'admin/';?>" accept-charset="UTF-8">
+          <form id="login" role="form" method="post" action="<?php if (!empty($_SERVER['HTTP_REFERER']))echo$_SERVER['HTTP_REFERER'];else echo'admin/';?>" accept-charset="UTF-8">
             <input type="hidden" name="act" value="login">
             <div class="panel-heading clearfix">
               <span class="loginimg col-xs-8 pull-right">
@@ -60,6 +60,15 @@
       </div>
     </div>
     <script>/*<![CDATA[*/
+      $('#login').submit(function(e){
+        var formId=this.id,
+            form=this;
+        $('#panelLogin').addClass('animated flipOutX');
+        e.preventDefault();
+        setTimeout(function(){
+          form.submit();
+        },420);
+      });
       $('#panel-rst').submit(function(){
         $('#rstbusy').html('<i class="libre libre-spinner-1"></i>');
         $.ajax({

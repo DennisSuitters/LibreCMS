@@ -1,13 +1,21 @@
 <script>/*<![CDATA[*/
-<?php session_start();
+<?php
+if(session_status()==PHP_SESSION_NONE)session_start();
 require'db.php';
-//require'sanitise.php';
-define('DS',DIRECTORY_SEPARATOR);
+$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
+}
 function svg($svg){
-	$s=file_get_contents('svg/libre-'.$svg.'.svg');
+	$s=file_get_contents('svg'.DS.'libre-'.$svg.'.svg');
 	return '<i class="libre">'.$s.'</i>';
 }
-$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $t=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
@@ -186,5 +194,5 @@ if($rs->rowCount()==1){
     $html.='<td></td>';
   $html.='</tr>';?>
   window.top.window.$('#updateorder').html('<?php echo$html;?>');
-  window.top.window.$('#block').css({'display':'none'});
+  window.top.window.Pace.stop();
 /*]]>*/</script>

@@ -8,7 +8,7 @@ $cnt=round($cnt,0,PHP_ROUND_HALF_UP);
 if($cnt==0)$cnt=1;
 $cache_time=86400*7;
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
-  $cache_file='../../media/cache/feed'.$r['id'].'.rss';
+  $cache_file='..'.DS.'..'.DS.'media'.DS.'cache'.DS.'feed'.$r['id'].'.rss';
   $timedif=@(time()-filemtime($cache_file));
   if(file_exists($cache_file)&&$timedif<$cache_time)
     $string=file_get_contents($cache_file);

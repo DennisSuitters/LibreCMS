@@ -19,7 +19,7 @@ $sp->execute(array(':contentType'=>$view));
 $page=$sp->fetch(PDO::FETCH_ASSOC);
 $pu=$db->prepare("UPDATE menu SET views=views+1 WHERE id=:id");
 $pu->execute(array(':id'=>$page['id']));
-if(isset($act)&&$act=='logout')require'core/login.php';
+if(isset($act)&&$act=='logout')require'core'.DS.'login.php';
 require'core'.DS.'cart_quantity.php';
 if($_SESSION['rank']>699)$status="%";else$status="published";
 $content='';
@@ -125,7 +125,36 @@ if(isset($_GET['amp'])&&$_GET['amp']=='amped'){
   $content=preg_replace('/^<!DOCTYPE.+?>/','',str_replace(array('<html>','</html>','<body>','</body>'),array('','','',''),$doc->saveHTML())).'</body></html>';
 	$content=preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3',$content);
 }
-if(isset($_SESSION['rank'])&&$_SESSION['rank']>899){
+if(isset($_SESSION['rank'])&&$_SESSION['rank']>899&&$config['development']==1){
   $content.='<div style="text-align:right;padding:10px;">Process Time: '.elapsed_time().'</div>';
 }
 if(MINIFY==1)print minify($head.$content);else print$head.$content;
+$current_page=PROTOCOL.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+if(!isset($_SESSION['current_page'])||(isset($_SESSION['current_page'])&&$_SESSION['current_page']!=$current_page)){
+  $s=$db->prepare("INSERT INTO tracker (pid,urlDest,urlFrom,userAgent,ip,browser,os,sid,ti) VALUES (:pid,:urlDest,:urlFrom,:userAgent,:ip,:browser,:os,:sid,:ti)");
+  $hr=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
+  $s->execute(array(':pid'=>$page['id'],':urlDest'=>$current_page,':urlFrom'=>$hr,':userAgent'=>$_SERVER['HTTP_USER_AGENT'],':ip'=>$_SERVER["REMOTE_ADDR"],':browser'=>getBrowser(),':os'=>getOS(),':sid'=>session_id(),':ti'=>time()));
+  $_SESSION['current_page']=$current_page;
+}
+function getOS(){
+  $user_agent=$_SERVER['HTTP_USER_AGENT'];
+  $os_platform="Unknown OS Platform";
+  $os_array=array('/windows nt 10|windows nt 6.3|windows nt 6.2|windows nt 6.1|windows nt 6.0|windows nt 5.2|windows nt 5.1|windows xp|windows nt 5.0|windows me|win98|win95|win16/i'=>'Windows','/macintosh|mac os x|mac_powerpc/i'=>'Mac','/linux/i'=>'Linux','/ubuntu/i'=>'Ubuntu','/iphone/i'=>'iPhone','/ipod/i'=>'iPod','/ipad/i'=>'iPad','/android/i'=>'Android','/blackberry/i'=>'BlackBerry','/webos/i'=>'Mobile');
+  foreach($os_array as$regex=>$value){
+    if(preg_match($regex,$user_agent)){
+      $os_platform=$value;
+    }
+  }
+  return$os_platform;
+}
+function getBrowser(){
+  $user_agent=$_SERVER['HTTP_USER_AGENT'];
+  $browser="Unknown Browser";
+  $browser_array=array('/msie/i'=>'Explorer','/firefox/i'=>'Firefox','/safari/i'=>'Safari','/chrome/i'=>'Chrome','/edge/i'=>'Edge','/opera/i'=>'Opera','/netscape/i'=>'Netscape','/maxthon/i'=>'Maxthon','/konqueror/i'=>'Konqueror','/mobile/i'=>'Mobile');
+  foreach($browser_array as$regex=>$value){
+    if(preg_match($regex,$user_agent)){
+      $browser=$value;
+    }
+  }
+  return$browser;
+}

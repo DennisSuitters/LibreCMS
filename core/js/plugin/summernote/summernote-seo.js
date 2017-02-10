@@ -73,7 +73,7 @@
                   var text=$(options.seo.el).summernote('createRange');
                   text.toString();
                   if(text==''){
-                    $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.errorClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.capNotError+'</div>');
+                    $('.note-editing-area').append('<div class="summernote-seoAlert '+options.seo.errorClass+'" style="position:absolute;top:0;left:0;right:0;">'+lang.seo.capNotError+'</div>');
                     setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
                   }else{
                     if(options.seo.capElType=='input'){
@@ -93,7 +93,7 @@
                         $(options.seo.capEl).html(preText+text);
                       }
                     }
-                    $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.capNot+'</div>');
+                    $('.note-editing-area').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;top:0;left:0;right:0">'+lang.seo.capNot+'</div>');
                     setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
                   }
                   break;
@@ -101,7 +101,7 @@
                   var text=$(options.seo.el).summernote('createRange');
                   text.toString();
                   if(text==''){
-                    $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.errorClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.desNotError+'</div>');
+                    $('.note-editing-area').append('<div class="summernote-seoAlert '+options.seo.errorClass+'" style="position:absolute;top:0;left:0;right:0">'+lang.seo.desNotError+'</div>');
                     setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
                   }else{
                     if(options.seo.desElType=='input'){
@@ -121,7 +121,7 @@
                         $(options.seo.desEl).html(preText+text);
                       }
                     }
-                    $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.desNot+'</div>');
+                    $('.note-editing-area').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;top:0;left:0;right:0">'+lang.seo.desNot+'</div>');
                     setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
                   }
                   break;
@@ -144,7 +144,7 @@
                       $(options.seo.keyEl).html(preText+','+text);
                     }
                   }
-                  $('.note-resizebar').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;bottom:0;left:2px;">'+lang.seo.keyNot+'</div>');
+                  $('.note-editing-area').append('<div class="summernote-seoAlert '+options.seo.successClass+'" style="position:absolute;top:0;left:0;right:0">'+lang.seo.keyNot+'</div>');
                   setTimeout(function(){$('.summernote-seoAlert').remove();},options.seo.notTime);
                   break;
                 }

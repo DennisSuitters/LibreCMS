@@ -1,7 +1,4 @@
 <?php
-ini_set('session.use_cookies',1);
-ini_set('session.use_only_cookies',1);
-define('DS',DIRECTORY_SEPARATOR);
 define('MINIFY',0);
 require_once'db.php';
 if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
@@ -101,12 +98,7 @@ function elapsed_time($b=0,$e=0){
   $e=explode(' ',$e);
   @$td=($e[0]+$e[1])-($b[0]+$b[1]);
   $b='';
-  $tt=array(
-    'd'=>(int)($td/86400),
-    'h'=>$td/3600%24,
-    'm'=>$td/60%60,
-    's'=>$td%60
-  );
+  $tt=array('d'=>(int)($td/86400),'h'=>$td/3600%24,'m'=>$td/60%60,'s'=>$td%60);
   if((int)$td>30){
     $b='';
     foreach($tt as$u=>$ti){
@@ -227,11 +219,14 @@ class admin{
 		$view='search';
 		require'admin.php';
 	}
+  function tracker($args=false){
+    $view='tracker';
+    require'admin.php';
+  }
 }
 class front{
 	function getconfig($db){
-		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-		return$config;
+		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);return$config;
 	}
 	function about($args=false){
 		$view='aboutus';
@@ -365,7 +360,7 @@ class front{
 }
 $route=new router();
 $rts=array(
-	$settings['system']['admin'].'/add'=>array('admin','add'),
+  $settings['system']['admin'].'/add'=>array('admin','add'),
 	$settings['system']['admin'].'/accounts'=>array('admin','accounts'),
 	$settings['system']['admin'].'/activity'=>array('admin','activity'),
 	$settings['system']['admin'].'/bookings'=>array('admin','bookings'),
@@ -380,6 +375,7 @@ $rts=array(
 	$settings['system']['admin'].'/pages'=>array('admin','pages'),
 	$settings['system']['admin'].'/preferences'=>array('admin','preferences'),
 	$settings['system']['admin'].'/search'=>array('admin','search'),
+  $settings['system']['admin'].'/tracker'=>array('admin','tracker'),
 	$settings['system']['admin']=>array('admin','dashboard'),
 	'humans.txt'=>array('internal','humans'),
 	'sitemap.xml'=>array('internal','sitemap'),
@@ -438,7 +434,7 @@ class router{
 	private function callRoute(){
 		$call=$this->route_call;
 		if(is_array($call)){
-			$call_obj=new$call[0]();
+			$call_obj=new $call[0]();
 			$call_obj->$call[1]($this->route_call_args);
 		}else
 			$call($this->route_call_args);

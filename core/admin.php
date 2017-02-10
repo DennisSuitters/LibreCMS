@@ -10,7 +10,7 @@ $noavatar=$this->noavatar();
 $theme=parse_ini_file(THEME.DS.'theme.ini',TRUE);
 $sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
 $sp->execute(array(':contentType'=>$view));
-require'core/login.php';
+require'core'.DS.'login.php';
 if($_SESSION['rank']>399){
   if(isset($_SESSION['rank'])){
     if($_SESSION['rank']==100)$rankText='Subscriber';
@@ -33,7 +33,7 @@ $nm=$db->query("SELECT COUNT(status) AS cnt FROM messages WHERE status='unread'"
 $po=$db->query("SELECT COUNT(status) AS cnt FROM orders WHERE status='pending'")->fetch(PDO::FETCH_ASSOC);
 $nb=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE contentType='booking' AND status!='confirmed'")->fetch(PDO::FETCH_ASSOC);
 $nu=$db->query("SELECT COUNT(id) AS cnt FROM login WHERE activate!='' AND active=0")->fetch(PDO::FETCH_ASSOC);
-$nt=$db->query("SELECT COUNT(id) AS cnt FROM content WHERE contentType='testimonial' AND status!='confirmed' AND active!=1")->fetch(PDO::FETCH_ASSOC);
+$nt=$db->query("SELECT COUNT(id) AS cnt FROM content WHERE contentType='testimonials' AND status!='confirmed' AND active!=1")->fetch(PDO::FETCH_ASSOC);
 $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['cnt'];?>
 <!DOCTYPE HTML>
 <html lang="en-AU" id="libreCMS">
@@ -61,7 +61,6 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
     <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
     <link rel="stylesheet" type="text/css" href="core/css/codemirror.css">
-    <link rel="stylesheet" type="text/css" href="core/elfinder/css/theme-bootstrap-libreicons-svg.css">
     <link rel="stylesheet" type="text/css" href="core/css/style.css">
     <script src="core/js/jquery-2.1.3.min.js"></script>
     <script src="core/js/pace.min.js"></script>
@@ -77,13 +76,17 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
     <script src="core/js/hardwrap.js"></script>
     <script src="core/js/summernote.js"></script>
     <script src="core/js/plugin/summernote/plugins.php"></script>
+    <script src="core/js/summernote-accessibility.js"></script>
+    <script src="core/js/summernote-text-findnreplace.js"></script>
+
     <script src="core/js/plugin/elfinder/elfinder.js"></script>
     <script src="core/elfinder/js/elfinder.min.js"></script>
     <script src="core/js/bootstrap-notify.min.js"></script>
     <script src="core/js/featherlight.min.js"></script>
     <script src="core/js/bootstrap-datetimepicker.min.js"></script>
     <script src="core/js/ion.sound.min.js"></script>
-    <script src="core/js/bootstrap-contextmenu.js"></script>
+    <script src="core/js/jquery.countTo.js"></script>
+    <script src="core/js/js.cookie.js"></script>
   </head>
   <body>
     <div id="sidemenu">
@@ -107,6 +110,9 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
             <li<?php if($view=='accounts')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><?php svg('users');?> Accounts</a></li>
             <li<?php if($view=='preferences')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><?php svg('settings');?> Preferences</a></li>
             <li<?php if($view=='activity')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><?php svg('activity');?> Activity</a></li>
+<?php if($user['rank']>899){?>
+            <li<?php if($view=='tracker')echo' class="active"';?>><a href="<?php echo URL.$settings['system']['admin'].'/tracker';?>"><?php svg('binoculars');?> Tracker</a></li>
+<?php }?>
             <li class="search<?php if($view=='search')echo' active';?>"><form class="" method="post" action="admin/search"><a href="<?php echo URL.$settings['system']['admin'].'/search';?>"><?php svg('search');?></a><input class="form-control" type="search" name="search" value="" placeholder="Search" onblur="$(this).val('');$('#menu_search_icon').toggleClass('hidden');" onfocus="$('#menu_search_icon').toggleClass('hidden');"></form></li>
           </ul>
         </div>
@@ -131,8 +137,8 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <div class="userpic"><img id="menu_avatar" src="<?php if($user['avatar']!=''&&file_exists('media/avatar/'.$user['avatar']))
-                  echo'media/avatar/'.$user['avatar'];
+              <div class="userpic"><img id="menu_avatar" src="<?php if($user['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$user['avatar']))
+                  echo'media'.DS.'avatar'.DS.$user['avatar'];
                 elseif($user['gravatar']!=''){
                   if(stristr($user['gravatar'],'@'))
                     echo'http://gravatar.com/avatar/'.md5($user['gravatar']);
@@ -155,11 +161,11 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
     <main id="content">
 <?php if($view=='add'){
   if($args[0]=='bookings')
-    require'core/layout/bookings.php';
+    require'core'.DS.'layout'.DS.'bookings.php';
   else
-    require'core/layout/content.php';
+    require'core'.DS.'layout'.DS.'content.php';
 }else
-  require'core/layout/'.$view.'.php';?>
+  require'core'.DS.'layout'.DS.$view.'.php';?>
     </main>
     <script src="core/js/js.js"></script>
     <script>/*<![CDATA[*/
@@ -224,7 +230,8 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
           },
           getFileCallback:function(files,fm){
             if(id>0){
-              $('#block').css({display:'block'});
+              Pace.start();
+//              $('#block').css({display:'block'});
               $('#'+c).val(files.url);
               $('#'+c+'image').attr('src',files.url);
               update(id,t,c,files.url);
@@ -329,7 +336,7 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
           toolbar:
             [
               ['save',['save']],
-              ['cleaner',['cleaner','seo']],
+              ['librecms',['accessibility','findnreplace','cleaner','seo']],
               ['style',['style']],
               ['font',['bold','italic','underline','clear']],
               ['fontname',['fontname']],
@@ -418,7 +425,7 @@ if($config['idleTime']!=0){?>
 <?php if($config['notification_volume']!=0){?>
       ion.sound({
         sounds:[
-<?php if(file_exists('core/sounds/notification.mp3')||file_exists('core/sounds/notification.ogg')){?>
+<?php if(file_exists('core/sounds/notification.mp3')){?>
           {
             name:"notification"
           },
@@ -440,7 +447,7 @@ if($config['idleTime']!=0){?>
               stats[0]='';
             $('#nav-nou').html(stats[1]);
             if(navStat<stats[0]){
-  <?php if(file_exists('core/sounds/notification.mp3')||file_exists('core/sounds/notification.ogg')&&$config['notification_volume']!=0){?>
+  <?php if(file_exists('core'.DS.'sounds'.DS.'notification.mp3')&&$config['notification_volume']!=0){?>
               ion.sound.play("notification");
   <?php }?>
             }
@@ -471,8 +478,8 @@ if($config['idleTime']!=0){?>
           trigger:'click',
           title:'Fingerprint Analysis <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
           container:'body',
-          placement:'right',
-          template:'<div class="popover fingerprint role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+          placement:'auto',
+          template:'<div class="popover fingerprint" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
           content:function(){
             var el=$(this).data("dbgid");
             var id=$('#'+el).data("dbid"),
@@ -490,7 +497,7 @@ if($config['idleTime']!=0){?>
             }).responseText;
           }
         });
-        $('[data-toggle="popover"]').each(function(){
+        $('[data-toggle="popover"],[data-toggle="analytics"]').each(function(){
           var button = $(this);
           button.popover().on('shown.bs.popover',function(){
             $('.popover').draggable({
@@ -514,20 +521,18 @@ if($config['idleTime']!=0){?>
         $('[data-toggle="tab"]').on('shown.bs.tab',function(){
           $('*').popover('hide');
         });
+        $('body').on('hidden.bs.popover',function(e){
+            $(e.target).data("bs.popover").inState.click=false;
+        });
 <?php }?>
       });
     /*]]>*/</script>
     <iframe id="sp" name="sp" class="hidden"></iframe>
     <div class="notifications center"></div>
-    <div id="block">
-      <div class="pace">
-        <div class="pace-activity"></div>
-      </div>
-    </div>
 <?php if(isset($_SESSION['rank'])&&$_SESSION['rank']>899){
   echo'<div class="help-block text-right" style="padding-right:20px;">Process Time: '.elapsed_time().'</div>';
 }?>
   </body>
 </html>
 <?php }else
-require'core/layout/login.php';
+require'core'.DS.'layout'.DS.'login.php';

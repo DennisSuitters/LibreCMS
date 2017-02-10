@@ -21,7 +21,7 @@ elseif($args[0]=='edit'){
         <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/newsletters';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
       </div>
       <div class="btn-group">
-        <button class="btn btn-default" onclick="$('#block').css({'display':'block'});$('#sp').load('core/newsletter.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Send Newsletters"';?>><?php svg('email-send');?></button>
+        <button class="btn btn-default" onclick="Pace.restart();$('#sp').load('core/newsletter.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Send Newsletters"';?>><?php svg('email-send');?></button>
       </div>
       <div class="btn-group">
         <a target="_blank" class="btn btn-default info" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#newsletters-edit"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
@@ -115,7 +115,7 @@ elseif($args[0]=='edit'){
 <?php if($r['status']=='unpublished')echo'Unpublished';else echo date($config['dateFormat'],$r['tis']);?>
                 </td>
                 <td id="controls_<?php echo$r['id'];?>" class="text-right">
-                  <button class="btn btn-default" onclick="$('#block').css({'display':'block'});$('#sp').load('core/newsletter.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Send Newsletters"';?>><?php svg('email-send');?></button>
+                  <button class="btn btn-default" onclick="Pace.restart();$('#sp').load('core/newsletter.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Send Newsletters"';?>><?php svg('email-send');?></button>
                   <a class="btn btn-default" href="<?php echo$settings['system']['admin'].'/newsletters/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
 <?php if($r['rank']!=1000){?>
                   <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>

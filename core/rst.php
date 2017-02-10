@@ -1,8 +1,17 @@
 <?php
+require'db.php';
+$config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
+}
 if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
   $eml=filter_input(INPUT_POST,'rst',FILTER_SANITIZE_STRING);
-  require'db.php';
-  $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
   $s=$db->prepare("SELECT id,name,email FROM login WHERE email=:email LIMIT 1");
   $s->execute(array(':email'=>$eml));
   $c=$s->fetch(PDO::FETCH_ASSOC);

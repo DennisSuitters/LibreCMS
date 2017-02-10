@@ -3,7 +3,7 @@ if(stristr($html,'<settings')){
 	preg_match('/<settings items="(.*?)">/',$html,$matches);
 	$count=$matches[1];
 }else$count=4;
-if(stristr($html,'<print page="notes">'))$html=str_replace('<print page="notes">',$page['notes'],$html);
+if(stristr($html,'<print page="notes">'))$html=str_replace('<print page="notes">',rawurldecode($page['notes']),$html);
 $html=preg_replace('~<settings.*?>~is','',$html,1);
 preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 $item=$matches[1];
@@ -23,20 +23,10 @@ if($s->rowCount()>0){
 				$su=$db->prepare("SELECT avatar,gravatar FROM login WHERE id=:id");
 				$su->execute(array(':id'=>$r['cid']));
 				$ru=$su->fetch(PDO::FETCH_ASSOC);
-				if($ru['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$ru['avatar']))
-					$items=str_replace('<print content=avatar>','media/avatar/'.$ru['avatar'],$items);
-				elseif($r['file']&&file_exists('media'.DS.'avatar'.DS.basename($r['file'])))
-					$items=str_replace('<print content=avatar>','media/avatar/'.$r['file'],$items);
-				elseif(stristr($ru['gravatar'],'@'))
-					$items=str_replace('<print content=avatar>','http://gravatar.com/avatar/'.md5($ru['gravatar']),$items);
-				elseif(stristr($ru['gravatar'],'gravatar.com'))
-					$items=str_replace('<print content=avatar>',$ru['gravatar'],$items);
-				else$items=str_replace('<print content=avatar>',$noavatar,$items);
-			}elseif($r['file']&&file_exists('media'.DS.'avatar'.DS.basename($r['file'])))
-				$items=str_replace('<print content=avatar>','media/avatar/'.$r['file'],$items);
-			else$items=str_replace('<print content=avatar>',$noavatar,$items);
+				if($ru['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$ru['avatar']))$items=str_replace('<print content=avatar>','media'.DS.'avatar'.DS.$ru['avatar'],$items);elseif($r['file']&&file_exists('media'.DS.'avatar'.DS.basename($r['file'])))$items=str_replace('<print content=avatar>','media'.DS.'avatar'.DS.$r['file'],$items);elseif(stristr($ru['gravatar'],'@'))$items=str_replace('<print content=avatar>','http://gravatar.com/avatar/'.md5($ru['gravatar']),$items);elseif(stristr($ru['gravatar'],'gravatar.com'))$items=str_replace('<print content=avatar>',$ru['gravatar'],$items);else$items=str_replace('<print content=avatar>',$noavatar,$items);
+			}elseif($r['file']&&file_exists('media'.DS.'avatar'.DS.basename($r['file'])))$items=str_replace('<print content=avatar>','media'.DS.'avatar'.DS.$r['file'],$items);else$items=str_replace('<print content=avatar>',$noavatar,$items);
 		}
-		$items=str_replace('<print content="notes">',strip_tags($r['notes']),$items);
+		$items=str_replace('<print content="notes">',strip_tags(rawurldecode($r['notes'])),$items);
 		$items=str_replace('<print content="business">',$r['business'],$items);
 		$items=str_replace('<print content=name>',$r['name'],$items);
 		$items=str_replace('<print content="name">',$r['name'],$items);

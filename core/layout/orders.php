@@ -335,7 +335,7 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
 <?php if($oi['iid']!=0)
         echo$i['title'];
       else{?>
-                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
                   <input type="hidden" name="act" value="title">
                   <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
                   <input type="hidden" name="t" value="orderitems">
@@ -347,7 +347,7 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
               <td class="text-left"><?php echo$c['title'];?></td>
               <td class="col-sm-1 text-center">
 <?php if($oi['iid']!=0){?>
-                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
                   <input type="hidden" name="act" value="quantity">
                   <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
                   <input type="hidden" name="t" value="orderitems">
@@ -360,7 +360,7 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
               </td>
               <td class="col-sm-1 text-right">
 <?php if($oi['iid']!=0){?>
-                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
                   <input type="hidden" name="act" value="cost">
                   <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
                   <input type="hidden" name="t" value="orderitems">
@@ -371,7 +371,7 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
               </td>
               <td class="col-sm-1 text-right"><?php if($oi['iid']!=0)echo$oi['cost']*$oi['quantity'];?></td>
               <td class="text-right">
-                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
                   <input type="hidden" name="act" value="trash">
                   <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
                   <input type="hidden" name="t" value="orderitems">
@@ -389,7 +389,7 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
             <tr>
               <td colspan="3" class="text-right"><strong>Rewards Code</strong></td>
               <td class="text-center">
-                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
                   <input type="hidden" name="act" value="reward">
                   <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                   <input type="hidden" name="t" value="orders">
@@ -417,7 +417,7 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
             <tr>
               <td colspan="5" class="text-right"><strong>Postage</strong></td>
               <td class="postage">
-                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="$('#block').css({'display':'block'});">
+                <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
                   <input type="hidden" name="act" value="postage">
                   <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                   <input type="hidden" name="t" value="orders">

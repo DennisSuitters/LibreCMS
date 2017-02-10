@@ -119,7 +119,7 @@ else{
         </thead>
         <tbody id="listtype" class="list" data-t="menu" data-c="ord">
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-          <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='delete')echo' danger';elseif($r['status']=='unpublished')echo'warning';?>">
+          <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='delete')echo' danger';elseif($r['status']!='published')echo'warning';?>">
             <td>
               <div class="visible-xs"><small><?php echo ucfirst($r['contentType']);?></small></div>
               <a href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>">
@@ -171,14 +171,16 @@ if($show=='item'){
         <li><a href="<?php echo URL.$settings['system']['admin'];?>/content/">Content</a></li>
         <li><a href="<?php echo URL.$settings['system']['admin'];?>/content/type/<?php echo$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a></li>
         <li class="active relative">
-<?php $so=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND id NOT LIKE :id ORDER BY title ASC, ti DESC");
+<?php $so=$db->prepare("SELECT id,contentType,title FROM content WHERE contentType LIKE :contentType AND id NOT LIKE :id ORDER BY title ASC, ti DESC");
   $so->execute(array(':id'=>$r['id'],':contentType'=>$r['contentType'].'%'));?>
-          <a class="dropdown-toggle" data-toggle="dropdown"><?php echo$r['title'];?> <i class="caret"></i></a>
+          <a class="dropdown-toggle" data-toggle="dropdown"><?php echo$r['title'];if($so->rowCount()>0)echo' <i class="caret"></i>';?></a>
+<?php if($so->rowCount()>0){?>
           <ul class="dropdown-menu">
 <?php while($ro=$so->fetch(PDO::FETCH_ASSOC)){?>
             <li><a href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$ro['id'];?>"><?php echo$ro['title'];?></a></li>
 <?php }?>
           </ul>
+<?php }?>
         </li>
       </ol>
     </h4>
@@ -368,10 +370,10 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['brand'].'"/>';?
             </div>
 <?php }?>
             <input type="text" id="email" class="form-control textinput" value="<?php echo$r['email'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="email" placeholder="Enter an Email..."<?php if($user['options']{1}==0)echo' readonly';?>>
-<?php if($r['ip']!=''){?>
-            <div class="help-block"><?php echo$r['ip'];?></div>
-<?php }?>
           </div>
+<?php if($r['ip']!=''){?>
+          <div class="help-block text-right"><?php echo$r['ip'];?></div>
+<?php }?>
         </div>
         <div id="d14" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?>">
           <label for="name" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label>
@@ -478,6 +480,7 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"
             </div>
             <div id="da" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="notes"></div>
 <?php }?>
+            <div id="accessibility"></div>
             <form id="summernote" enctype="multipart/form-data" method="post" target="sp" action="core/update.php">
               <input type="hidden" name="id" value="<?php echo$r['id'];?>">
               <input type="hidden" name="t" value="content">
@@ -922,6 +925,44 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
 <?php }?>
       </div>
       <div id="d44" role="tabpanel" class="tab-pane">
+        <div class="form-group">
+          <label for="analytics" class="control-label col-xs-5 col-sm-3 col-lg-2">Analytics</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <div class="input-group-btn">
+              <button class="btn btn-default analytics hidden-xs" data-toggle="analytics" data-id="<?php echo$r['id'];?>" data-t="content" data-u="<?php echo URL.$r['contentType'].'/'.strtolower(str_replace(' ','-',$r['title']));?>" data-analytics="social"><?php svg('seo-social');?> Social</button>
+              <button class="btn btn-default analytics hidden-xs" data-toggle="analytics" data-id="<?php echo$r['id'];?>" data-t="content" data-u="<?php echo URL.$r['contentType'].'/'.strtolower(str_replace(' ','-',$r['title']));?>" data-analytics="google"><?php svg('seo-google');?> Google</button>
+              <button class="btn btn-default analytics hidden-xs" data-toggle="analytics" data-id="<?php echo$r['id'];?>" data-t="content" data-u="<?php echo URL.$r['contentType'].'/'.strtolower(str_replace(' ','-',$r['title']));?>" data-analytics="alexa"><?php svg('seo-alexa');?> Alexa</button>
+              <button class="btn btn-default analytics hidden-xs" data-toggle="analytics" data-id="<?php echo$r['id'];?>" data-t="content" data-u="<?php echo URL.$r['contentType'].'/'.strtolower(str_replace(' ','-',$r['title']));?>" data-analytics="moz"><?php svg('seo-moz');?> Moz</button>
+            </div>
+          </div>
+        </div>
+        <script>
+          $('.analytics').popover({
+            html:true,
+            trigger:'click',
+            title:'Analytics <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
+            container:'body',
+            placement:'auto',
+            template:'<div class="popover analytics role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+            content:function(){
+              var id=$(this).data("id"),
+                  t=$(this).data("t"),
+                  u=$(this).data("u"),
+                  a=$(this).data("analytics");
+              return $.ajax({
+                url:'core/layout/seostats-content.php',
+                dataType:'html',
+                async:false,
+                data:{
+                  id:id,
+                  t:t,
+                  u:u,
+                  a:a
+                }
+              }).responseText;
+            }
+          });
+        </script>
         <div id="d45" class="form-group">
           <label for="views" class="control-label col-xs-5 col-sm-3 col-lg-2">Views</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">

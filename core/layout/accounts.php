@@ -226,7 +226,7 @@ elseif($args[0]=='edit'){
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
             <input type="text" class="form-control" value="<?php echo$r['avatar'];?>" readonly>
             <div class="input-group-btn">
-              <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php" onsubmit="$('#block').css({'display':'block'});">
+              <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php" onsubmit="Pace.restart();">
                 <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                 <input type="hidden" name="act" value="add_avatar">
                 <div class="btn btn-default btn-file"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Browse Computer for Image."';?>>
@@ -370,7 +370,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
       <div role="tabpanel" class="tab-pane" id="account-settings">
         <div class="form-group">
           <label for="password" class="control-label col-xs-4 col-sm-3 col-lg-2">Password</label>
-          <form target="sp" method="post" action="core/update.php" onsubmit="$('#block').css({'display':'block'});">
+          <form target="sp" method="post" action="core/update.php" onsubmit="Pace.restart();">
             <div class="input-group col-xs-8 col-sm-9 col-lg-10">
               <input type="hidden" name="id" value="<?php echo$r['id'];?>">
               <input type="hidden" name="t" value="login">
@@ -381,6 +381,15 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
               </div>
             </div>
           </form>
+        </div>
+        <div class="form-group">
+          <label for="active" class="control-label check col-xs-5 col-sm-3 col-lg-2">Active</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <div class="checkbox checkbox-success">
+              <input type="checkbox" id="active" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="active" data-dbb="0"<?php if($r['active']{0}==1)echo' checked';?>>
+              <label for="active"/>
+            </div>
+          </div>
         </div>
 <?php if($user['rank']>899){?>
         <div class="form-group">
@@ -484,7 +493,31 @@ if($user['rank']>899){?>
           </div>
         </div>
 <?php }?>
+<div class="form-group">
+  <label for="adminTheme" class="control-label col-xs-4 col-sm-3 col-lg-2">Admin Theme</label>
+  <div class="input-group col-xs-8 col-sm-9 col-lg-10">
+<?php if($user['rank']>899){?>
+    <div class="input-group-btn hidden-xs">
+      <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="adminTheme"><?php svg('fingerprint');?></button>
+    </div>
+<?php }?>
+    <select id="adminTheme" class="form-control" onchange="update('<?php echo$r['id'];?>','login','adminTheme',$(this).val());adminTheme($(this).val());" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="adminTheme">
+<?php $folders=preg_grep('/^([^.])/',scandir("core/css/theme"));
+foreach($folders as$folder){
+echo'<option value="'.$folder.'"';if($folder==$r['adminTheme'])echo' selected';echo'>'.ucfirst($folder).'</option>';
+}?>
+    </select>
+  </div>
+  <script>
+    function adminTheme(theme){
+      var expires=new Date();
+      expires.setTime(expires.getTime()+(30*24*60*60*1000));
+      document.cookie='admintheme'+'='+theme+';expires='+expires.toUTCString();
+    }
+  </script>
+</div>
       </div>
+
     </div>
   </div>
 </div>

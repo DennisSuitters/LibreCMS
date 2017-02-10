@@ -63,7 +63,7 @@ foreach($folders as$folder){
         });
       /*]]>*/</script>
       <div id="preference-contact" name="preference-contact" class="tab-pane fade in">
-        <div class="form-group">
+        <div id="businessHasError" class="form-group<?php if($config['business']=='')echo' has-error';?>">
           <label for="business" class="control-label col-xs-5 col-sm-3 col-lg-2">Business</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
 <?php if($user['rank']>899){?>
@@ -73,6 +73,7 @@ foreach($folders as$folder){
 <?php }?>
             <input type="text" id="business" class="form-control textinput" value="<?php echo$config['business'];?>" data-dbid="1" data-dbt="config" data-dbc="business" placeholder="Enter a Business...">
           </div>
+          <div id="businessErrorBlock" class="help-block text-right<?php if($config['business']!='')echo' hidden';?>">Enter a Business Name, otherwise some functions such as Messages, and Bookings will NOT function correctly.</div>
         </div>
         <div class="form-group">
           <label for="abn" class="control-label col-xs-5 col-sm-3 col-lg-2">ABN</label>
@@ -85,7 +86,7 @@ foreach($folders as$folder){
             <input type="text" id="abn" class="form-control textinput" value="<?php echo$config['abn'];?>" data-dbid="1" data-dbt="config" data-dbc="abn" placeholder="Enter an ABN...">
           </div>
         </div>
-        <div class="form-group">
+        <div id="emailHasError" class="form-group<?php if($config['email']=='')echo' has-error';?>">
           <label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
 <?php if($user['rank']>899){?>
@@ -95,6 +96,7 @@ foreach($folders as$folder){
 <?php }?>
             <input type="text" id="email" class="form-control textinput" value="<?php echo$config['email'];?>" data-dbid="1" data-dbt="config" data-dbc="email" placeholder="Enter an Email...">
           </div>
+          <div id="emailErrorBlock" class="help-block text-right<?php if($config['email']!='')echo' hidden';?>">Enter an Email, otherwise some functions such as Messages, and Bookings will NOT function correctly.</div>
         </div>
         <div class="form-group">
           <label for="phone" class="control-label col-xs-5 col-sm-3 col-lg-2">Phone</label>
@@ -317,11 +319,22 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
           </div>
         </div>
 <?php if(file_exists('media'.DS.'cache'.DS.'error.log')){?>
-        <div class="form-group">
-          <label for="error_log" class="control-label col-xs-5 col-sm-3 col-lg-2">Error Log</label>
-          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-            <a target="_blank" href="media/cache/error.log">View in New Window</a>
-          </div>
+        <div id="l_0">
+            <div class="form-group">
+              <label for="error_log" class="control-label col-xs-5 col-sm-3 col-lg-2">Error Log</label>
+              <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" onclick="$('#logview').toggleClass('hidden');$('#logfile').load('media/cache/error.log?<?php echo time();?>');">View Logs</button>
+                    <button class="btn btn-default trash" onclick="purge('0','errorlog')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="This will Remove the Error Logs, there is no getting it back."';?>><?php svg('purge');?></button>
+                </div>
+              </div>
+            </div>
+            <div id="logview" class="form-group hidden">
+                <div class="col-xs-5 col-sm-3 col-lg-2"></div>
+                <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+                    <div class="well col-xs-12"><small id="logfile" style="white-space:pre"></small></div>
+                </div>
+            </div>
         </div>
 <?php }
 }?>
@@ -513,7 +526,7 @@ if($cntc<0){
             </div>
             <div id="da" class="hidden-xs" data-dbid="1" data-dbt="config" data-dbc="ga_tracking"></div>
 <?php }?>
-            <form target="sp" method="post" action="core/update.php" onsubmit="$('#block').css({'display':'block'});$('#ga_tracking_save').removeClass('btn-danger');">
+            <form target="sp" method="post" action="core/update.php" onsubmit="Pace.restart();$('#ga_tracking_save').removeClass('btn-danger');">
               <input type="hidden" name="id" value="1">
               <input type="hidden" name="t" value="config">
               <input type="hidden" name="c" value="ga_tracking">
@@ -544,7 +557,7 @@ if($config['backup_ti']<$tid){
             <form target="sp" method="post" action="core/backup.php">
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                 <div class="input-group-btn">
-                  <button type="submit" class="btn btn-default btn-block" onclick="$('#block').css({'display':'block'});">Perform Backup</button>
+                  <button type="submit" class="btn btn-default btn-block" onclick="Pace.restart();">Perform Backup</button>
                 </div>
               </div>
             </form>
@@ -571,7 +584,7 @@ if($config['backup_ti']<$tid){
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
                 <div class="btn btn-default btn-block btn-file">Select .sql file to restore<input type="file" id="fu" class="form-control" name="fu" accept="application/sql"></div>
                 <div class="input-group-btn">
-                  <button type="submit" class="btn btn-default" onclick="$('#block').css({'display':'block'});">Restore</button>
+                  <button type="submit" class="btn btn-default" onclick="Pace.restart();">Restore</button>
                 </div>
               </div>
             </form>

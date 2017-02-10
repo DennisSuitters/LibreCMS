@@ -36,16 +36,7 @@ if($cT=='all'||$cT=='mixed'||$cT=='folder'){
 			$fileinfo=pathinfo($file);
 			$filename=basename($file,'.'.$fileinfo['extension']);
 			if(file_exists('media'.DS.'carousel'.DS.$filename.'.html'))$filehtml=file_get_contents('media'.DS.'carousel'.DS.$filename.'.html');else$filehtml='';
-			$featuredfiles[]=[
-				'contentType'=>'carousel',
-				'thumb'=>'',
-				'file'=>$file,
-				'title'=>basename(rtrim($file),3),
-				'link'=>'nolink',
-				'seoCaption'=>$filehtml,
-				'notes'=>'',
-				'ti'=>$filetime
-			];
+			$featuredfiles[]=['contentType'=>'carousel','thumb'=>'','file'=>$file,'title'=>basename(rtrim($file),3),'link'=>'nolink','seoCaption'=>$filehtml,'notes'=>'','ti'=>$filetime];
 		}
 	}
 }
@@ -56,25 +47,14 @@ if($cT!='folder'){
 		if($r['featured']!=1||$r['internal']==1)continue;
 		$filechk=basename($r['file']);
 		if(file_exists('media'.DS.$filechk)){
-			$featuredfiles[]=[
-				'contentType'=>$r['contentType'],
-				'thumb'=>$r['thumb'],
-				'file'=>$r['file'],
-				'title'=>$r['title'],
-				'link'=>$r['contentType'].'/'.url_encode($r['title']),
-				'seoCaption'=>$r['seoCaption'],
-				'notes'=>$r['notes'],
-				'ti'=>$r['ti']
-			];
+			$featuredfiles[]=['contentType'=>$r['contentType'],'thumb'=>$r['thumb'],'file'=>$r['file'],'title'=>$r['title'],'link'=>$r['contentType'].'/'.url_encode($r['title']),'seoCaption'=>$r['seoCaption'],'notes'=>$r['notes'],'ti'=>$r['ti']];
 		}
 	}
 }
 $indicators='';
 $indicator='';
 $featuredIndicators='';
-if($arrayOrder=='random')shuffle($featuredfiles);
-elseif($arrayOrder=='asc')asort($featuredfiles);
-else arsort($featuredfiles);
+if($arrayOrder=='random')shuffle($featuredfiles);elseif($arrayOrder=='asc')asort($featuredfiles);else arsort($featuredfiles);
 $featuredfiles=array_slice($featuredfiles,0,$itemCount);
 $ii=count($featuredfiles);
 $i=0;
@@ -102,12 +82,7 @@ if($ii>0){
 		}
 		$item=str_replace('<print content=title>',$r['title'],$item);
 		if(stristr($item,'<print content=thumb>')){
-			if($r['thumb']!='')
-				$item=str_replace('<print content=thumb>',$r['thumb'],$item);
-			elseif($r['file']!='')
-				$item=str_replace('<print content=thumb>',$r['file'],$item);
-			else
-				$item=str_replace('<print content=thumb>','',$item);
+			if($r['thumb']!='')$item=str_replace('<print content=thumb>',$r['thumb'],$item);elseif($r['file']!='')$item=str_replace('<print content=thumb>',$r['file'],$item);else$item=str_replace('<print content=thumb>','',$item);
 		}
 		if(stristr($item,'<print content=alt>')){
 			if($r['file']!=''){
@@ -115,36 +90,20 @@ if($ii>0){
 				$alt=$alt['filename'];
 				$alt=str_replace('-',' ',$alt);
 				$alt=ucfirst($alt);
-			}else
-				$alt=$r['title'];
+			}else$alt=$r['title'];
 			$item=str_replace('<print content=alt>',$alt,$item);
 		}
 		if(stristr($item,'<print content=image>')){
-			if($r['file']!='')
-				$item=str_replace('<print content=image>',$r['file'],$item);
-			else
-				$item=str_replace('<print content=image>','',$item);
+			if($r['file']!='')$item=str_replace('<print content=image>',$r['file'],$item);else$item=str_replace('<print content=image>','',$item);
 		}
-		if($r['link']=='nolink')
-			$item=str_replace('<print content="title">','<span class="hidden">'.$r['title'].'</span>',$item);
-		else
-			$item=str_replace('<print content="title">',$r['title'],$item);
-		if($r['contentType']=='carousel')
-			$item=preg_replace('~<caption>.*?<\/caption>~is',$r['seoCaption'],$item,1);
+		if($r['link']=='nolink')$item=str_replace('<print content="title">','<span class="hidden">'.$r['title'].'</span>',$item);else$item=str_replace('<print content="title">',$r['title'],$item);
+		if($r['contentType']=='carousel')$item=preg_replace('~<caption>.*?<\/caption>~is',$r['seoCaption'],$item,1);
 		else{
 			$r['notes']=strip_tags($r['notes']);
 			$pos=strpos($r['notes'],' ',300);
 			$r['notes']=substr(rawurldecode($r['notes']),0,$pos).'...';
-			if($r['seoCaption']!='')
-				$item=str_replace('<print content="caption">',$r['seoCaption'],$item);
-			elseif($r['notes']!='')
-				$item=str_replace('<print content="caption">',strip_tags(rawurldecode($r['notes'])),$item);
-			else
-				$item=str_replace('<print content="caption">','',$item);
-			if($r['notes']!='')
-				$item=str_replace('<print content="notes">',strip_tags(rawurldecode($r['notes'])),$item);
-			else
-				$item=str_replace('<print content="notes">','',$item);
+			if($r['seoCaption']!='')$item=str_replace('<print content="caption">',$r['seoCaption'],$item);elseif($r['notes']!='')$item=str_replace('<print content="caption">',strip_tags(rawurldecode($r['notes'])),$item);else$item=str_replace('<print content="caption">','',$item);
+			if($r['notes']!='')$item=str_replace('<print content="notes">',strip_tags(rawurldecode($r['notes'])),$item);else$item=str_replace('<print content="notes">','',$item);
 			$item=str_replace('<caption>','',$item);
 			$item=str_replace('</caption>','',$item);
 		}
