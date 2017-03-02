@@ -4,7 +4,7 @@
 <?php
 ini_set('max_execution_time',60);
 require'db.php';
-$config=$db->query("SELECT update_url FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+$config=$db->query("SELECT update_url,development FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 if($config['development']==1){
   error_reporting(E_ALL);
   ini_set('display_errors','On');

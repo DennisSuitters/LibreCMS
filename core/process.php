@@ -126,15 +126,17 @@ if(isset($_GET['amp'])&&$_GET['amp']=='amped'){
 	$content=preg_replace('/(<[^>]*) style=("[^"]+"|\'[^\']+\')([^>]*>)/i', '$1$3',$content);
 }
 if(isset($_SESSION['rank'])&&$_SESSION['rank']>899&&$config['development']==1){
-  $content.='<div style="text-align:right;padding:10px;">Process Time: '.elapsed_time().'</div>';
+  $content.='<div style="text-align:right;padding:10px;">Memory Used: '.size_format(memory_get_usage()).' | Process Time: '.elapsed_time().'</div>';
 }
 if(MINIFY==1)print minify($head.$content);else print$head.$content;
 $current_page=PROTOCOL.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-if(!isset($_SESSION['current_page'])||(isset($_SESSION['current_page'])&&$_SESSION['current_page']!=$current_page)){
-  $s=$db->prepare("INSERT INTO tracker (pid,urlDest,urlFrom,userAgent,ip,browser,os,sid,ti) VALUES (:pid,:urlDest,:urlFrom,:userAgent,:ip,:browser,:os,:sid,:ti)");
-  $hr=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
-  $s->execute(array(':pid'=>$page['id'],':urlDest'=>$current_page,':urlFrom'=>$hr,':userAgent'=>$_SERVER['HTTP_USER_AGENT'],':ip'=>$_SERVER["REMOTE_ADDR"],':browser'=>getBrowser(),':os'=>getOS(),':sid'=>session_id(),':ti'=>time()));
-  $_SESSION['current_page']=$current_page;
+if($config['maintenance']==0||$config['development']==0){
+    if(!isset($_SESSION['current_page'])||(isset($_SESSION['current_page'])&&$_SESSION['current_page']!=$current_page)){
+        $s=$db->prepare("INSERT INTO tracker (pid,urlDest,urlFrom,userAgent,ip,browser,os,sid,ti) VALUES (:pid,:urlDest,:urlFrom,:userAgent,:ip,:browser,:os,:sid,:ti)");
+        $hr=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
+        $s->execute(array(':pid'=>isset($page['id'])?$page['id']:0,':urlDest'=>$current_page,':urlFrom'=>$hr,':userAgent'=>$_SERVER['HTTP_USER_AGENT'],':ip'=>$_SERVER["REMOTE_ADDR"],':browser'=>getBrowser(),':os'=>getOS(),':sid'=>session_id(),':ti'=>time()));
+        $_SESSION['current_page']=$current_page;
+    }
 }
 function getOS(){
   $user_agent=$_SERVER['HTTP_USER_AGENT'];
@@ -150,7 +152,7 @@ function getOS(){
 function getBrowser(){
   $user_agent=$_SERVER['HTTP_USER_AGENT'];
   $browser="Unknown Browser";
-  $browser_array=array('/msie/i'=>'Explorer','/firefox/i'=>'Firefox','/safari/i'=>'Safari','/chrome/i'=>'Chrome','/edge/i'=>'Edge','/opera/i'=>'Opera','/netscape/i'=>'Netscape','/maxthon/i'=>'Maxthon','/konqueror/i'=>'Konqueror','/mobile/i'=>'Mobile');
+  $browser_array=array('/msie/i'=>'Explorer','/firefox/i'=>'Firefox','/safari/i'=>'Safari','/chrome/i'=>'Chrome','/edge/i'=>'Edge','/opera/i'=>'Opera','/netscape/i'=>'Netscape','/maxthon/i'=>'Maxthon','/konqueror/i'=>'Konqueror','/mobile/i'=>'Mobile','/bingbot/i'=>'Bing','/duckduckbot/i'=>'DuckDuckGo','/googlebot/i'=>'Google','/msnbot/i'=>'MSN','/slurp/i'=>'Inktomi','/yahoo/i'=>'Yahoo','/askjeeves/i'=>'AskJeeves','/fastcrawler/i'=>'FastCrawler','/infoseek/i'=>'InfoSeek','/lycos/i'=>'Lycos','/yandex/i'=>'Yandex','/geohasher/i'=>'GeoHasher','/gigablast/i'=>'Gigablast','/baidu/i'=>'Baiduspider','/spinn3r/i'=>'Spinn3r','/sogou/i'=>'Sogou','/Exabot/i'=>'Exabot','/facebook/i'=>'Facebook','/alexa/i'=>'Alexa');
   foreach($browser_array as$regex=>$value){
     if(preg_match($regex,$user_agent)){
       $browser=$value;

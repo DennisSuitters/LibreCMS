@@ -5,7 +5,7 @@
 */
 .libre,
 .libre-social{display:inline-block}
-.libre{font:normal normal normal 1em/1;font-size:1em;width:1em;height:1em;vertical-align:-5%;text-rendering:auto;fill:currentColor;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.libre{font:normal normal normal 1em/1;font-size:1em;width:1em;height:1em;vertical-align:-5%;text-rendering:auto;fill:currentColor;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background-repeat:no-repeat;background-position:center center}
 .libre-lg{font-size:1.33333333em;line-height:.75em;vertical-align:-15%}
 .libre-2x{font-size:2em}
 .libre-3x{font-size:3em}

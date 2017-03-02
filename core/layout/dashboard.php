@@ -16,19 +16,7 @@ if($args[0]=='settings'){
   </div>
   <div id="update" class="panel-body">
     <noscript><div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div></noscript>
-<?php
-if($config['uti_freq']!=0&&$config['development']==0){
-  $uti=time()-$config['uti_freq'];
-  if($config['uti']<$uti){?>
-    <div id="updatecheck">
-      <div class="alert alert-warning"><?php svg('spinner-13','animated spin');?> Checking for new updates!</div>
-    </div>
-    <script>/*<![CDATA[*/
-      $('#updatecheck').load('core/layout/updatecheck.php');
-    /*]]>*/</script>
-<?php }
-}
-if($config['maintenance']{0}==1){?>
+<?php if($config['maintenance']{0}==1){?>
     <div class="alert alert-warning">Note: Site is currently in <a href="<?php echo URL.$settings['system']['admin'].'/preferences#preference-interface';?>">Maintenance Mode</a></div>
 <?php }
 $tid=$ti-2592000;
@@ -109,85 +97,137 @@ if($config['email']==''){?>
     </div>
     <div class="row">
       <div class="panel panel-body">
-        <h3 class="page-header">LibreCMS Tracking Results</h3>
         <h4 class="panel-title">Browser Views</h4>
         <div class="row">
           <div class="col-xs-6 col-sm-2">
-            <div class="panel panel-default">
+            <div class="panel panel-default browser-stats chrome">
               <div class="panel-body">
-                <span class="text-black" style="font-size:1.5em">
-                  <?php svg('browser-chrome');?>
-                  <span id="browser-chrome" class="pull-right">0</span>
-                </span>
+                <span id="browser-chrome">0</span>
+                <small>Chrome</small>
               </div>
             </div>
           </div>
           <div class="col-xs-6 col-sm-2">
-            <div class="panel panel-default">
+            <div class="panel panel-default browser-stats edge">
               <div class="panel-body">
-                <span class="text-black" style="font-size:1.5em">
-                  <?php svg('browser-edge');?>
-                  <span id="browser-edge" class="pull-right">0</span>
-                </span>
+                <span id="browser-edge">0</span>
+                <small>Edge</small>
               </div>
             </div>
           </div>
           <div class="col-xs-6 col-sm-2">
-            <div class="panel panel-default">
+            <div class="panel panel-default browser-stats explorer">
               <div class="panel-body">
-                <span class="text-black" style="font-size:1.5em">
-                  <?php svg('browser-explorer');?>
-                  <span id="browser-explorer" class="pull-right">0</span>
-                </span>
+                <span id="browser-explorer">0</span>
+                <small>Explorer</small>
               </div>
             </div>
           </div>
           <div class="col-xs-6 col-sm-2">
-            <div class="panel panel-default">
+            <div class="panel panel-default browser-stats firefox">
               <div class="panel-body">
-                <span class="text-black" style="font-size:1.5em">
-                  <?php svg('browser-firefox');?>
-                  <span id="browser-firefox" class="pull-right">0</span>
-                </span>
+                <span id="browser-firefox">0</span>
+                <small>Firefox</small>
               </div>
             </div>
           </div>
           <div class="col-xs-6 col-sm-2">
-            <div class="panel panel-default">
+            <div class="panel panel-default browser-stats opera">
               <div class="panel-body">
-                <span class="text-black" style="font-size:1.5em">
-                  <?php svg('browser-opera');?>
-                  <span id="browser-opera" class="pull-right">0</span>
-                </span>
+                <span id="browser-opera">0</span>
+                <small>Opera</small>
               </div>
             </div>
           </div>
           <div class="col-xs-6 col-sm-2">
-            <div class="panel panel-default">
+            <div class="panel panel-default browser-stats safari">
               <div class="panel-body">
-                <span class="text-black" style="font-size:1.5em">
-                  <?php svg('browser-safari');?>
-                  <span id="browser-safari" class="pull-right">0</span>
-                </span>
+                <span id="browser-safari">0</span>
+                <small>Safari</small>
               </div>
             </div>
           </div>
-          <script>/*<![CDATA[*/
+        </div>
+        <h4 class="panel-title">Search Engine Visits</h4>
+        <div class="row">
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default browser-stats alexa">
+              <div class="panel-body">
+                <span id="search-alexa">0</span>
+                <small>Alexa</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default browser-stats bing">
+              <div class="panel-body">
+                <span id="search-bing">0</span>
+                <small>Bing</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default browser-stats duckduckgo">
+              <div class="panel-body">
+                <span id="search-duckduckgo">0</span>
+                <small>Duck Duck Go</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default browser-stats facebook">
+              <div class="panel-body">
+                <span id="search-facebook">0</span>
+                <small>Facebook</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default browser-stats google">
+              <div class="panel-body">
+                <span id="search-google">0</span>
+                <small>Google</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-2">
+            <div class="panel panel-default browser-stats yahoo">
+              <div class="panel-body">
+                <span id="search-yahoo">0</span>
+                <small>Yahoo</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>/*<![CDATA[*/
 <?php
 $bc=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Chrome'")->fetch(PDO::FETCH_ASSOC);
 $bie=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Explorer'")->fetch(PDO::FETCH_ASSOC);
 $be=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Edge'")->fetch(PDO::FETCH_ASSOC);
 $bf=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Firefox'")->fetch(PDO::FETCH_ASSOC);
 $bo=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Opera'")->fetch(PDO::FETCH_ASSOC);
-$bs=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Safari'")->fetch(PDO::FETCH_ASSOC);?>
-            $('#browser-chrome').countTo({from:0,to:<?php echo$bc['cnt'];?>});
-            $('#browser-explorer').countTo({from:0,to:<?php echo$bie['cnt'];?>});
-            $('#browser-edge').countTo({from:0,to:<?php echo$be['cnt'];?>});
-            $('#browser-firefox').countTo({from:0,to:<?php echo$bf['cnt'];?>});
-            $('#browser-opera').countTo({from:0,to:<?php echo$bo['cnt'];?>});
-            $('#browser-safari').countTo({from:0,to:<?php echo$bs['cnt'];?>});
-          /*]]>*/</script>
-        </div>
+$bs=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Safari'")->fetch(PDO::FETCH_ASSOC);
+$sa=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Alexa'")->fetch(PDO::FETCH_ASSOC);
+$sb=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Bing'")->fetch(PDO::FETCH_ASSOC);
+$sd=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='DuckDuckGo'")->fetch(PDO::FETCH_ASSOC);
+$sf=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Facebook'")->fetch(PDO::FETCH_ASSOC);
+$sg=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Google'")->fetch(PDO::FETCH_ASSOC);
+$sy=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Yahoo'")->fetch(PDO::FETCH_ASSOC);
+?>
+          $('#browser-chrome').countTo({from:0,to:<?php echo$bc['cnt'];?>});
+          $('#browser-explorer').countTo({from:0,to:<?php echo$bie['cnt'];?>});
+          $('#browser-edge').countTo({from:0,to:<?php echo$be['cnt'];?>});
+          $('#browser-firefox').countTo({from:0,to:<?php echo$bf['cnt'];?>});
+          $('#browser-opera').countTo({from:0,to:<?php echo$bo['cnt'];?>});
+          $('#browser-safari').countTo({from:0,to:<?php echo$bs['cnt'];?>});
+          $('#search-bing').countTo({from:0,to:<?php echo$sb['cnt'];?>});
+          $('#search-duckduckgo').countTo({from:0,to:<?php echo$sd['cnt'];?>});
+          $('#search-google').countTo({from:0,to:<?php echo$sg['cnt'];?>});
+          $('#search-yahoo').countTo({from:0,to:<?php echo$sy['cnt'];?>});
+          $('#search-facebook').countTo({from:0,to:<?php echo$sf['cnt'];?>});
+          $('#search-alexa').countTo({from:0,to:<?php echo$sa['cnt'];?>});
+
+        /*]]>*/</script>
         <h4 class="panel-header">Highest Viewed Pages</h4>
         <div id="seostats-pageviews">
 <?php $s=$db->query("SELECT pid,urlDest,count(*) count FROM tracker GROUP BY urlDest ORDER BY count DESC,ti DESC LIMIT 10");?>

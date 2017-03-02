@@ -13,12 +13,12 @@
         <thead>
           <tr>
             <th class="col-xs-1 text-center">Code</th>
-            <th class="col-xs-5 text-center">Title</th>
-            <th class="text-center">Method</th>
+            <th class="col-xs-4 text-center">Title</th>
+            <th class="col-xs-1 text-center">Method</th>
             <th class="col-xs-1 text-center">Value</th>
             <th class="col-xs-1 text-center">Quantity</th>
-            <th class="col-xs-1 text-center">Start Date</th>
-            <th class="col-xs-1 text-center">End Date</th>
+            <th class="col-xs-2 text-center">Start Date</th>
+            <th class="col-xs-2 text-center">End Date</th>
             <th class=""></th>
           </tr>
         </thead>
@@ -26,19 +26,19 @@
           <input type="hidden" name="act" value="add_reward">
           <thead>
             <tr>
-              <td><input type="text" class="form-control" name="code" value="" placeholder="Code..."></td>
-              <td><input type="text" class="form-control" name="title" value="" placeholder="Title..."></td>
+              <td><input type="text" class="form-control input-sm" name="code" value="" placeholder="Code..."></td>
+              <td><input type="text" class="form-control input-sm" name="title" value="" placeholder="Title..."></td>
               <td>
-                <select class="form-control" name="method">
+                <select class="form-control input-sm" name="method">
                   <option value="0">% Off</option>
                   <option value="1">$ Off</option>
                 </select>
               </td>
-              <td><input type="text" class="form-control" name="value" value="" placeholder="Value..."></td>
-              <td><input type="text" class="form-control" name="quantity" value="" placeholder="Quantity..."></td>
-              <td><input type="text" id="tis" class="form-control" name="tis" value=""></td>
-              <td><input type="text" id="tie" class="form-control" name="tie" value=""></td>
-              <td><button class="btn btn-default add" type="submit"><?php svg('plus');?></button></td>
+              <td><input type="text" class="form-control input-sm" name="value" value="" placeholder="Value..."></td>
+              <td><input type="text" class="form-control input-sm" name="quantity" value="" placeholder="Quantity..."></td>
+              <td><div class="input-group"><input type="text" id="tis" class="form-control input-sm" data-datetime="<?php echo date($config['dateFormat'],time());?>" name="tis" value=""></div></td>
+              <td><div class="input-group"><input type="text" id="tie" class="form-control input-sm" data-datetime="<?php echo date($config['dateFormat'],time());?>" name="tie" value=""></div></td>
+              <td><button class="btn btn-default btn-sm add" type="submit"><?php svg('plus');?></button></td>
             </tr>
           </thead>
         </form>
@@ -47,18 +47,18 @@
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
           <tr id="l_<?php echo$r['id'];?>">
-            <td class="col-xs-1 text-center"><?php echo$r['code'];?></td>
-            <td class="col-xs-5 text-center"><?php echo$r['title'];?></td>
-            <td class="text-center"><?php if($r['method']==0)echo'% Off';else echo'$ Off';?></td>
-            <td class="col-xs-1 text-center"><?php echo$r['value'];?></td>
-            <td class="col-xs-1 text-center"><?php echo$r['quantity'];?></td>
-            <td class="col-xs-1 text-center"><small><?php if($r['tis']!=0)echo date($config['dateFormat'],$r['tis']);?></small></td>
-            <td class="col-xs-1 text-center"><small><?php if($r['tie']!=0)echo date($config['dateFormat'],$r['tie']);?></small></td>
+            <td class="col-xs-1 text-center"><small><?php echo$r['code'];?></small></td>
+            <td class="col-xs-4 text-center"><small><?php echo$r['title'];?></small></td>
+            <td class="col-xs-1 text-center"><small><?php if($r['method']==0)echo'% Off';else echo'$ Off';?></small></td>
+            <td class="col-xs-1 text-center"><small><?php echo$r['value'];?></small></td>
+            <td class="col-xs-1 text-center"><small><?php echo$r['quantity'];?></small></td>
+            <td class="col-xs-2 text-center"><small><?php if($r['tis']!=0)echo date($config['dateFormat'],$r['tis']);?></small></td>
+            <td class="col-xs-2 text-center"><small><?php if($r['tie']!=0)echo date($config['dateFormat'],$r['tie']);?></small></td>
             <td class="">
               <form target="sp" action="core/purge.php">
                 <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                 <input type="hidden" name="t" value="rewards">
-                <button class="btn btn-default trash"><?php svg('trash');?></button>
+                <button class="btn btn-default btn-sm trash"><?php svg('trash');?></button>
               </form>
             </td>
           </tr>

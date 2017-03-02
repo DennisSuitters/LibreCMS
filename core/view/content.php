@@ -70,6 +70,7 @@ if($view=='search'){
 }
 if($show=='categories'){
 	$contentType=$view;
+	$html=preg_replace('~<item>.*?<\/item>~is','',$html,1);
 	if(stristr($html,'<settings')){
 		$matches=preg_match_all('/<settings items="(.*?)" contenttype="(.*?)">/',$html,$matches);
 		$count=$matches[1];
@@ -107,6 +108,30 @@ if($show=='categories'){
 	$html=str_replace('<print page="notes">',rawurldecode($page['notes']),$html);
 	if($config['business'])$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'),$html);else$html=str_replace('<print content=seoTitle>',htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
 	$html=str_replace('<notification>',$notification,$html);
+	if(stristr($html,'<mediaitems')){
+		$sm=$db->prepare("SELECT * FROM media WHERE pid=:pid AND rid=0 ORDER BY ord ASC");
+		$sm->execute(array(':pid'=>$page['id']));
+		if($sm->rowCount()>0){
+			preg_match('/<mediaitems>([\w\W]*?)<\/mediaitems>/',$html,$matches2);
+			$media=$matches2[1];
+			preg_match('/<mediaimages>([\w\W]*?)<\/mediaimages>/',$media,$matches3);
+			$mediaitem=$matches3[1];
+			$mediaoutput='';
+			while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
+				$mediaitems=$mediaitem;
+				list($width,$height)=getimagesize($rm['file']);
+				if(stristr($mediaitems,'<print media=image>'))$mediaitems=str_replace('<print media=image>',$rm['file'],$mediaitems);
+				if(stristr($mediaitems,'<print media=width>'))$mediaitems=str_replace('<print media=width>',$width,$mediaitems);
+				if(stristr($mediaitems,'<print media=height>'))$mediaitems=str_replace('<print media=height>',$height,$mediaitems);
+				if(stristr($mediaitems,'<print media=title>'))$mediaitems=str_replace('<print media=title>',$rm['title'],$mediaitems);
+				if(stristr($mediaitems,'<print media=caption>'))$mediaitems=str_replace('<print media=caption>',$rm['seoCaption'],$mediaitems);
+				$mediaoutput.=$mediaitems;
+			}
+			$html=str_replace('<mediaitems>','',$html);
+			$html=str_replace('</mediaitems>','',$html);
+			$html=preg_replace('~<mediaimages>.*?<\/mediaimages>~is',$mediaoutput,$html,1);
+		}else$html=preg_replace('~<mediaitems>.*?<\/mediaitems>~is','',$html,1);
+	}
 	if(stristr($html,'<items>')){
 		preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 		$item=$matches[1];
@@ -197,6 +222,7 @@ if($show=='categories'){
 }
 if($view=='testimonials')$show='';
 if($show=='item'){
+	$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);
 	$r=$s->fetch(PDO::FETCH_ASSOC);
 	$su=$db->prepare("UPDATE content SET views=:views WHERE id=:id");
 	$su->execute(array(':views'=>$r['views']+1,':id'=>$r['id']));
@@ -235,6 +261,30 @@ if($show=='item'){
 	if(stristr($html,'<item')){
 		preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);
 		$item=$matches[1];
+		if(stristr($item,'<mediaitems')){
+			$sm=$db->prepare("SELECT * FROM media WHERE pid=0 AND rid=:rid ORDER BY ord ASC");
+			$sm->execute(array(':rid'=>$r['id']));
+			if($sm->rowCount()>0){
+				preg_match('/<mediaitems>([\w\W]*?)<\/mediaitems>/',$item,$matches2);
+				$media=$matches2[1];
+				preg_match('/<mediaimages>([\w\W]*?)<\/mediaimages>/',$media,$matches3);
+				$mediaitem=$matches3[1];
+				$mediaoutput='';
+				while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
+					$mediaitems=$mediaitem;
+					list($width,$height)=getimagesize($rm['file']);
+					if(stristr($mediaitems,'<print media=image>'))$mediaitems=str_replace('<print media=image>',$rm['file'],$mediaitems);
+					if(stristr($mediaitems,'<print media=width>'))$mediaitems=str_replace('<print media=width>',$width,$mediaitems);
+					if(stristr($mediaitems,'<print media=height>'))$mediaitems=str_replace('<print media=height>',$height,$mediaitems);
+					if(stristr($mediaitems,'<print media=title>'))$mediaitems=str_replace('<print media=title>',$rm['title'],$mediaitems);
+					if(stristr($mediaitems,'<print media=caption>'))$mediaitems=str_replace('<print media=caption>',$rm['seoCaption'],$mediaitems);
+					$mediaoutput.=$mediaitems;
+				}
+				$item=str_replace('<mediaitems>','',$item);
+				$item=str_replace('</mediaitems>','',$item);
+				$item=preg_replace('~<mediaimages>.*?<\/mediaimages>~is',$mediaoutput,$item,1);
+			}else$item=preg_replace('~<mediaitems>.*?<\/mediaitems>~is','',$item,1);
+		}else$item=preg_replace('~<mediaitems>.*?<\/mediaitems>~is','',$item,1);
 		if($r['contentType']=='service'||$r['contentType']=='events'){
 			if($r['bookable']==1){
 				if(stristr($item,'<service>')){

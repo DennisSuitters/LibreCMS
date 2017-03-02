@@ -4,7 +4,7 @@ if(session_status()==PHP_SESSION_NONE)session_start();
 include'db.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $tbl=filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
-$uid=$_SESSION['uid'];
+$uid=isset($_SESSION['uid'])?$_SESSION['uid']:0;
 $el='l_';
 if($id!=0&&$tbl!='logs'){
   $s=$db->prepare("SELECT * FROM ".$tbl." WHERE id=:id");
@@ -18,7 +18,7 @@ if($id!=0&&$tbl!='logs'){
 if($id==0&&$tbl=='logs'){
   $q=$db->query("DELETE FROM logs");
   $q->execute();
-  $id='activity';
+  $id='timeline';
 }
 if($id==0&&$tbl=='tracker'){
   $q=$db->query("DELETE FROM tracker");
@@ -32,6 +32,7 @@ if($tbl=='orders'){
 if($id!=0&&$id!='activity'){
   $q=$db->prepare("DELETE FROM $tbl WHERE id=:id");
   $q->execute(array(':id'=>$id));
+  if($tbl=='media')$el='media_items_';
 }
 if($tbl=='errorlog'){
     unlink('..'.DS.'media'.DS.'cache'.DS.'error.log');
@@ -40,11 +41,17 @@ if($tbl=='errorlog'){
 }
 $e=$db->errorInfo();
 if($tbl=='subscribers')$el='s_';
-if(is_null($e[2])){?>
-  window.top.window.$('#<?php echo$el.$id;?>').slideUp(500,function(){$(this).remove()});
+if(is_null($e[2])){
+  if($tbl=='media'){?>
+    window.top.window.$('#<?php echo$el.$id;?>').addClass('animated zoomOut');
+    setTimeout(function(){window.top.window.$('#<?php echo$el.$id;?>').remove();},500);
+<?php }else{?>
+    window.top.window.$('#<?php echo$el.$id;?>').addClass('animated zoomOut');
+    setTimeout(function(){window.top.window.$('#<?php echo$el.$id;?>').remove();},500);
 <?php }
+}
 if($tbl=='logs'){?>
-  window.top.window.$('#details<?php echo$id;?>').slideUp(500,function(){$(this).remove()});
+  window.top.window.$('#<?php echo$id;?>').slideUp(500,function(){$(this).remove()});
 <?php }?>
   window.top.window.Pace.stop();
 /*]]>*/</script>

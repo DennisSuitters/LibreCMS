@@ -1,0 +1,47 @@
+<accountmenu>
+	<nav class="navbar navbar-inverse" role="navigation">
+		<div class="navbar-header">
+			<ul class="nav navbar-nav navbar-right" role="list">
+				<li role="listitem" <print active="proofs">><a href="proofs" role="link">Proofs</a></li>
+				<li role="listitem" <print active="orders">><a href="orders" role="link">Orders</a></li>
+				<li role="listitem" <print active="settings">><a href="settings" role="link">Settings</a></li>
+				<li role="listirm"><a href="?act=logout" role="link">Logout</a></li>
+			</ul>
+			<img id="avatar" class="pull-right img-circle" src="<print user=avatar>" alt="Avatar" role="img">
+		</div>
+	</nav>
+</accountmenu>
+<header role="header">
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#libreCMS-collapse" role="button">Menu</button>
+				<span class="navbar-figure animated fadeIn"><img src="layout/animeexcess/images/go.png" alt="Anime Excess Brand Figure"></span>
+				<span class="navbar-brand animated fadeIn"><a href="" role="link"><img src="layout/animeexcess/images/logo.png" alt="Anime Excess Logo" role="img"></a></span>
+				<div class="searchsocial">
+					<form class="navbar-search" method="post" action="search" role="form">
+						<input type="text" name="search" placeholder="Enter a Search Term..." role="textbox">
+						<button type="submit" role="button">Search</button>
+					</form>
+					<buildSocial>
+						<a class="libre-social" href="<print sociallink>" role="link"><print socialicon></a>
+					</buildSocial>
+					<rss>
+						<a class="libre-social" href="<print rsslink>" role="link"><print rssicon></a>
+					</rss>
+				</div>
+			</div>
+			<div class="collapse navbar-collapse" id="libreCMS-collapse">
+				<ul class="nav navbar-nav" role="list">
+					<buildMenu>
+						<li role="listitem" class="<print active=menu>"><a href="<print menu=url>" role="link"><print menu="title"></a></li>
+					</buildMenu>
+				</ul>
+				<ul class="nav navbar-nav nav-cart navbar-right" role="list">
+					<li role="listitem"><a href="cart" role="link"><i class="libre cart"><svg xmlns="http://www.w3.org/2000/svg" id="libre-shopping-cart" viewBox="0 0 14 14"><path d="m 5.61538,11.153845 q 0,0.38221 -0.27043,0.65265 -0.27043,0.27043 -0.65264,0.27043 -0.38221,0 -0.65265,-0.27043 -0.27043,-0.27044 -0.27043,-0.65265 0,-0.38221 0.27043,-0.65264 0.27044,-0.27043 0.65265,-0.27043 0.38221,0 0.65264,0.27043 0.27043,0.27043 0.27043,0.65264 z m 6.46154,0 q 0,0.38221 -0.27043,0.65265 -0.27043,0.27043 -0.65264,0.27043 -0.38222,0 -0.65265,-0.27043 -0.27043,-0.27044 -0.27043,-0.65265 0,-0.38221 0.27043,-0.65264 0.27043,-0.27043 0.65265,-0.27043 0.38221,0 0.65264,0.27043 0.27043,0.27043 0.27043,0.65264 z M 13,3.307695 v 3.69231 q 0,0.17307 -0.11538,0.30649 -0.11539,0.13341 -0.29568,0.15505 l -7.52884,0.8798 q 0.007,0.0505 0.0324,0.15505 0.0252,0.10457 0.0433,0.19111 0.018,0.0865 0.018,0.15865 0,0.11539 -0.17308,0.46154 h 6.63461 q 0.1875,0 0.32452,0.13702 0.13702,0.13702 0.13702,0.32452 0,0.1875 -0.13702,0.32452 -0.13702,0.13702 -0.32452,0.13702 H 4.23072 q -0.1875,0 -0.32452,-0.13702 -0.13702,-0.13702 -0.13702,-0.32452 0,-0.10096 0.0793,-0.28486 0.0793,-0.18389 0.21274,-0.42908 0.13341,-0.2452 0.14783,-0.27404 L 2.93261,2.846155 H 1.461458 q -0.1875,0 -0.324519,-0.13702 Q 1,2.572115 1,2.384615 1,2.197115 1.137019,2.060095 1.274038,1.923075 1.461538,1.923075 H 3.30769 q 0.11539,0 0.20553,0.0469 0.0901,0.0469 0.14423,0.11178 0.0541,0.0649 0.0937,0.17668 0.0397,0.11178 0.0541,0.19111 0.0144,0.0793 0.0397,0.21274 0.0252,0.13341 0.0324,0.18389 h 8.66106 q 0.1875,0 0.32452,0.13702 0.13702,0.13702 0.13702,0.32452 z"/></svg></i></a><span id="cart" class="badge"></span></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
+<activation>

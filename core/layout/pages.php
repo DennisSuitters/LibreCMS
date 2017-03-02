@@ -118,6 +118,7 @@ $so->execute(array(':id'=>$r['id']));?>
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active"><a href="#page-content" aria-controls="page-content" role="tab" data-toggle="tab">Content</a></li>
       <li role="presentation"><a href="#page-images" aria-controls="page-images" role="tab" data-toggle="tab">Images</a></li>
+      <li role="presentation"><a href="#page-media" aria-controls="page-media" role="tab" data-toggle="tab">Media</a></li>
       <li role="presentation"><a href="#page-seo" aria-controls="page-seo" role="tab" data-toggle="tab">SEO</a></li>
       <li role="presentation"><a href="#page-settings" aria-controls="page-settings" role="tab" data-toggle="tab">Settings</a></li>
     </ul>
@@ -239,6 +240,52 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['url'].'"/>';?>
             </div>
           </div>
         </fieldset>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="page-media">
+        <small class="help-block text-right">Media uploaded can be used for Image Gallery's, Featured Content, or depending on how they are used in the Theme's Template.</small>
+        <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
+          <input type="hidden" name="act" value="add_media">
+          <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+          <input type="hidden" name="t" value="pages">
+          <div class="form-group">
+            <div class="input-group">
+              <input id="file" type="text" class="form-control" name="fu" value="" placeholder="Enter a URL, or Select Images using the Browse Media Button...">
+              <div class="input-group-btn">
+                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','media','file');return false;"><?php svg('browse-media');?></button>
+              </div>
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default add" onclick=""><?php svg('plus');?></button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <ul id="media_items">
+<?php $sm=$db->prepare("SELECT * FROM media WHERE file!='' AND rid=0 AND pid=:id ORDER BY ord ASC");
+$sm->execute(array(':id'=>$r['id']));
+while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
+  list($width,$height)=getimagesize($rm['file']);?>
+          <li id="media_items_<?php echo$rm['id'];?>" class="col-xs-6 col-sm-3">
+            <div class="panel panel-default media">
+              <div class="controls btn-group">
+                <span class="handle btn btn-default btn-xs"><?php svg('drag');?></span>
+                <button class="btn btn-default btn-xs media-edit" data-dbid="<?php echo$rm['id'];?>"><?php svg('edit');?></button>
+                <button class="btn btn-default trash btn-xs" onclick="purge('<?php echo$rm['id'];?>','media')"><?php svg('trash');?></button>
+              </div>
+              <div class="panel-body">
+                <a href="<?php echo$rm['file'];?>"
+                  data-srcset="<?php echo$rm['file'];?> <?php echo$width;?>w"
+                  data-fancybox="gallery"
+                  data-width="<?php echo$width;?>"
+                  data-height="<?php echo$height;?>"
+                  data-caption="<?php echo$rm['title'];if($rm['seoCaption'])echo' - '.$rm['seoCaption'];?>"
+                >
+                  <img src="<?php echo$rm['file'];?>" alt="">
+                </a></div>
+              <div id="media-title<?php echo$rm['id'];?>" class="panel-footer"><?php echo$rm['title'];?></div>
+            </div>
+          </li>
+<?php }?>
+        </ul>
       </div>
       <div role="tabpanel" class="tab-pane" id="page-seo">
         <div class="form-group">

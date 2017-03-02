@@ -1,6 +1,7 @@
 <?php
 require'db.php';
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+$ti=time();
 if($config['development']==1){
   error_reporting(E_ALL);
   ini_set('display_errors','On');

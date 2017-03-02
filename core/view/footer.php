@@ -29,8 +29,15 @@ if(stristr($html,'<address')){
 	$html=str_replace('<print config="postcode">',$postcode,$html);
 	if($config['country']!='')$country=$config['country'];else$country='';
 	$html=str_replace('<print config="country">',$country,$html);
-	if($config['email']!='')$email='<a href="contactus/">'.$config['email'].'</a>';else$email='';
-	$html=str_replace('<print config="email">',$email,$html);
+	if($config['email']!=''){
+		if(stristr($html,'<print config="email">')){
+			$html=str_replace('<print config="email">','<a href="contactus/">'.$config['email'].'</a>',$html);
+		}
+		if(stristr($html,'<print config=email>')){
+			$html=str_replace('<print config=email>',$config['email'],$html);
+		}
+	}else
+		$html=str_replace('<print config="email">','',$html);
 	if($config['phone']!='')$phone='<a href="tel:'.$config['phone'].'">'.$config['phone'].'</a>';else$phone='';
 	$html=str_replace('<print config="phone">',$phone,$html);
 	if($config['mobile']!='')$mobile='<span class="mobile"><a href="tel:'.$config['mobile'].'">'.$config['mobile'].'</a></span>';else$mobile='';

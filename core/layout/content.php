@@ -123,7 +123,7 @@ else{
             <td>
               <div class="visible-xs"><small><?php echo ucfirst($r['contentType']);?></small></div>
               <a href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>">
-<?php if($r['thumb']!='')echo'<img class="table-thumb" src="'.$r['thumb'].'"> ';
+<?php if($r['thumb']!=''&&file_exists($r['thumb']))echo'<img class="table-thumb" src="'.$r['thumb'].'"> ';
                 echo$r['title'];?>
               </a>
             </td>
@@ -214,6 +214,7 @@ if($show=='item'){
     <ul class="nav nav-tabs" role="tablist">
       <li id="d000" role="presentation" class="active"><a href="#d0" aria-controls="d0" role="tab" data-toggle="tab">Content</a></li>
       <li id="d026" class="" role="presentation"><a href="#d26" aria-controls="d26" role="tab" data-toggle="tab">Images</a></li>
+      <li role="presentation"><a href="#content-media" aria-controls="content-media" role="tab" data-toggle="tab">Media</a></li>
       <li id="o0pts" class="<?php if($r['contentType']!='inventory')echo'hidden';?>" role="presentation"><a href="#opts" aria-controls="opts" role="tab" data-toggle="tab">Options</a></li>
       <li id="d043" class="<?php if($r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo'hidden';?>" role="presentation"><a href="#d43" aria-controls="d43" role="tab" data-toggle="tab">Comments</a></li>
       <li id="d060" class="<?php if($r['contentType']=='testimonials'||$r['contentType']=='event'||$r['contentType']=='article'||$r['contentType']=='gallery'||$r['contentType']=='news'||$r['contentType']=='portfolio'||$r['contentType']=='proof')echo'hidden';?>" role="presentation"><a href="#d60" aria-controls="d60" role="tab" data-toggle="tab">Reviews</a></li>
@@ -242,13 +243,8 @@ if($show=='item'){
         </div>
         <div id="d3" class="form-group<?php if($r['contentType']=='proofs')echo' hidden';?>">
           <label for="pti" class="control-label col-xs-5 col-sm-3 col-lg-2">Published On</label>
-          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php if($user['rank']>899){?>
-            <div class="input-group-btn hidden-xs">
-              <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="pti"><?php svg('fingerprint');?></button>
-            </div>
-<?php }?>
-            <input type="text" id="pti" class="form-control" data-dbid="<?php echo$r['id'];?>" value="<?php if($r['pti']>0)echo date($config['dateFormat'],$r['pti']);?>">
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10 clearfix">
+            <input type="text" id="pti" class="form-control" data-dbid="<?php echo$r['id'];?>" data-datetime="<?php if($r['pti']>0)echo date($config['dateFormat'],$r['pti']);?>">
           </div>
         </div>
         <div id="d4" class="form-group">
@@ -347,7 +343,7 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['brand'].'"/>';?
               <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="tis"><?php svg('fingerprint');?></button>
             </div>
 <?php }?>
-            <input type="text" id="tis" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tis']==0){echo'Select a Date/Time..."';}else{echo date($config['dateFormat'],$r['tis']).'"';}}?> value="<?php if($r['tis']!=0)echo date('Y-m-d h:m',$r['tis']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tis" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>>
+            <input type="text" id="tis" class="form-control" data-dbid="<?php echo$r['id'];?>" data-datetime="<?php echo date($config['dateFormat'],$r['tis']);?>"<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
         <div id="d12" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='testimonials'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery'||$r['contentType']=='proofs')echo' hidden';?>">
@@ -358,7 +354,7 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['brand'].'"/>';?
               <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="tie"><?php svg('fingerprint');?></button>
             </div>
 <?php }?>
-            <input type="text" id="tie" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tie']==0)echo'Select a Date/Time..."';else echo date($config['dateFormat'],$r['tie']).'"';}?> value="<?php if($r['tie']!=0)echo date('Y-m-d h:m',$r['tie']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>>
+            <input type="text" id="tie" class="form-control" data-dbid="<?php echo$r['id'];?>" data-datetime="<?php echo date($config['dateFormat'],$r['tie']);?>"<?php if($user['options']{1}==0)echo' readonly';?>>
           </div>
         </div>
         <div id="d13" class="form-group<?php if($r['contentType']=='article'||$r['contentType']=='portfolio'||$r['contentType']=='news'||$r['contentType']=='inventory'||$r['contentType']=='service'||$r['contentType']=='gallery')echo' hidden';?> clearfix">
@@ -801,6 +797,56 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['url'].'"/>';?>
             </div>
           </fieldset>
         </fieldset>
+      </div>
+
+
+
+
+      <div role="tabpanel" class="tab-pane" id="content-media">
+        <small class="help-block text-right">Media uploaded can be used for Image Gallery's, Featured Content, or depending on how they are used in the Theme's Template.</small>
+        <form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php">
+          <input type="hidden" name="act" value="add_media">
+          <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+          <input type="hidden" name="t" value="content">
+          <div class="form-group">
+            <div class="input-group">
+              <input id="mediafile" type="text" class="form-control" name="fu" value="" placeholder="Enter a URL, or Select Images using the Browse Media Button...">
+              <div class="input-group-btn">
+                <button class="btn btn-default" onclick="mediaDialog('<?php echo$r['id'];?>','media','mediafile');return false;"><?php svg('browse-media');?></button>
+              </div>
+              <div class="input-group-btn">
+                <button type="submit" class="btn btn-default add" onclick=""><?php svg('plus');?></button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <ul id="media_items">
+<?php $sm=$db->prepare("SELECT * FROM media WHERE file!='' AND pid=0 AND rid=:id ORDER BY ord ASC");
+$sm->execute(array(':id'=>$r['id']));
+while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
+  list($width,$height)=getimagesize($rm['file']);?>
+          <li id="media_items_<?php echo$rm['id'];?>" class="col-xs-6 col-sm-3">
+            <div class="panel panel-default media">
+              <div class="controls btn-group">
+                <span class="handle btn btn-default btn-xs"><?php svg('drag');?></span>
+                <button class="btn btn-default btn-xs media-edit" data-dbid="<?php echo$rm['id'];?>"><?php svg('edit');?></button>
+                <button class="btn btn-default trash btn-xs" onclick="purge('<?php echo$rm['id'];?>','media')"><?php svg('trash');?></button>
+              </div>
+              <div class="panel-body">
+                <a href="<?php echo$rm['file'];?>"
+                  data-srcset="<?php echo$rm['file'];?> <?php echo$width;?>w"
+                  data-fancybox="gallery"
+                  data-width="<?php echo$width;?>"
+                  data-height="<?php echo$height;?>"
+                  data-caption="<?php echo$rm['title'];if($rm['seoCaption'])echo' - '.$rm['seoCaption'];?>"
+                >
+                  <img src="<?php echo$rm['file'];?>" alt="">
+                </a></div>
+              <div id="media-title<?php echo$rm['id'];?>" class="panel-footer"><?php echo$rm['title'];?></div>
+            </div>
+          </li>
+<?php }?>
+        </ul>
       </div>
       <div id="opts" role="tabpanel" class="tab-pane<?php if($r['contentType']!='inventory')echo' hidden';?>">
         <fieldset class="control-fieldset">

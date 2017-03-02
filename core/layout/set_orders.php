@@ -107,6 +107,15 @@
       <small class="help-block text-right">You can use the following Tokens: {name} {first} {last} {date} {order_number} {notes}</small>
     </div>
     <h4 class="page-header">Email Layout</h4>
+    <div class="form-group">
+      <label for="orderEmailReadNotification" class="control-label col-xs-5 col-sm-3 col-lg-2">Read Reciept</label>
+      <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+        <div class="checkbox checkbox-success">
+          <input type="checkbox" id="orderEmailReadNotification" data-dbid="1" data-dbt="config" data-dbc="orderEmailReadNotification" data-dbb="0"<?php if($config['orderEmailReadNotification']{0}==1)echo' checked';?>>
+          <label for="orderEmailReadNotification"/>
+        </div>
+      </div>
+    </div>
     <div class="form-group clearfix">
       <label for="orderEmailSubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">

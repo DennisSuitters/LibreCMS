@@ -12,6 +12,16 @@
   </div>
   <div class="panel-body">
     <h4 class="page-header">Email Layout</h4>
+    <small class="help-block text-right">This is the Email that is sent when a Bookings Details are Changed or Confirmed.</small>
+    <div class="form-group">
+      <label for="bookingEmailReadNotification" class="control-label col-xs-5 col-sm-3 col-lg-2">Read Reciept</label>
+      <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+        <div class="checkbox checkbox-success">
+          <input type="checkbox" id="bookingEmailReadNotification" data-dbid="1" data-dbt="config" data-dbc="bookingEmailReadNotification" data-dbb="0"<?php if($config['bookingEmailReadNotification']{0}==1)echo' checked';?>>
+          <label for="bookingEmailReadNotification"/>
+        </div>
+      </div>
+    </div>
     <div class="form-group clearfix">
       <label for="bookingEmailSubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
@@ -43,6 +53,7 @@
       <small class="help-block text-right">Tokens: {business} {name} {first} {last} {date} {booking_date} {service}</small>
     </div>
     <h4 class="page-header">AutoReply Email Layout</h4>
+    <small class="help-block text-right">This is the Email that is sent to the person making the Booking when a Booking is created.</small>
     <div class="form-group clearfix">
       <label for="bookingAutoReplySubject" class="control-label col-xs-5 col-sm-3 col-lg-2">Subject</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">

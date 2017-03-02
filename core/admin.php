@@ -55,13 +55,15 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
     <link rel="stylesheet" type="text/css" href="core/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="core/css/summernote.css">
     <link rel="stylesheet" type="text/css" href="core/css/libreicons-svg.css">
-    <link rel="stylesheet" type="text/css" href="core/css/featherlight.min.css">
     <link rel="stylesheet" type="text/css" href="core/css/bootstrap-tokenfield.min.css">
     <link rel="stylesheet" type="text/css" href="core/css/tokenfield-typeahead.min.css">
     <link rel="stylesheet" type="text/css" href="core/css/jquery-ui.min.css">
     <link rel="stylesheet" type="text/css" href="core/elfinder/css/elfinder.min.css">
     <link rel="stylesheet" type="text/css" href="core/css/codemirror.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="core/css/style.css">
+    <link rel="stylesheet" type="text/css" href="core/css/jquery.fancybox.min.css">
+
     <script src="core/js/jquery-2.1.3.min.js"></script>
     <script src="core/js/pace.min.js"></script>
     <script src="core/js/jquery-ui.min.js"></script>
@@ -82,11 +84,13 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
     <script src="core/js/plugin/elfinder/elfinder.js"></script>
     <script src="core/elfinder/js/elfinder.min.js"></script>
     <script src="core/js/bootstrap-notify.min.js"></script>
-    <script src="core/js/featherlight.min.js"></script>
+    <script src="core/js/moment.min.js"></script>
     <script src="core/js/bootstrap-datetimepicker.min.js"></script>
     <script src="core/js/ion.sound.min.js"></script>
     <script src="core/js/jquery.countTo.js"></script>
     <script src="core/js/js.cookie.js"></script>
+    <script src="core/js/jquery.fancybox.min.js"></script>
+
   </head>
   <body>
     <div id="sidemenu">
@@ -201,6 +205,7 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
           width:840,
           height:450,
           destroyOnClose:true,
+          useBrowserHistory:false,
           uiOptions:{
             cwd:{
               getClass:function(file){
@@ -230,11 +235,12 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
           },
           getFileCallback:function(files,fm){
             if(id>0){
-              Pace.start();
-//              $('#block').css({display:'block'});
               $('#'+c).val(files.url);
-              $('#'+c+'image').attr('src',files.url);
-              update(id,t,c,files.url);
+              if(t!='media'){
+                Pace.start();
+                $('#'+c+'image').attr('src',files.url);
+                update(id,t,c,files.url);
+              }
             }else{
               if(files.url.match(/\.(jpeg|jpg|gif|png)$/)){
                 $('.summernote').summernote('editor.insertImage',files.url);
@@ -356,29 +362,23 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
             }
         });
         $("#pti").datetimepicker({
-          format:'M d, yyyy h:ii P'
-        }).on('changeDate',function(ev){
-          $('#block').css({display:'block'});
-          update($('#pti').data("dbid"),'content','pti',ev.date)
+          defaultDate:moment($('#pti').data('datetime'),"<?php echo tomoment($config['dateFormat']);?>"),
+          format:'<?php echo tomoment($config['dateFormat']);?>'
+        }).on('dp.hide',function(e){
+          update($('#pti').data('dbid'),'content','pti',moment(e.date).unix());
         });
-<?php if($view!='rewards'){?>
         $("#tis").datetimepicker({
-          format:'M d, yyyy h:ii P'
-        }).on('changeDate',function(ev){
-          update($('#tis').data("dbid"),'content','tis',ev.date)
+          defaultDate:moment($('#tis').data('datetime'),"<?php echo tomoment($config['dateFormat']);?>"),
+          format:'<?php echo tomoment($config['dateFormat']);?>'
+        }).on('dp.hide',function(e){
+<?php if($view!='rewards'){?>update($('#tis').data('dbid'),'content','tis',moment(e.date).unix());<?php }?>
         });
-<?php }else{?>
-        $("#tis").datetimepicker();
-<?php }?>
-<?php if($view!='rewards'){?>
         $("#tie").datetimepicker({
-          format:'M d, yyyy h:ii P'
-        }).on('changeDate',function(ev){
-          update($('#tie').data("dbid"),'content','tie',ev.date)
+          defaultDate:moment($('#tie').data('datetime'),"<?php echo tomoment($config['dateFormat']);?>"),
+          format:'<?php echo tomoment($config['dateFormat']);?>'
+        }).on('dp.hide',function(e){
+<?php if($view!='rewards'){?>update($('#tie').data('dbid'),'content','tie',moment(e.date).unix());<?php }?>
         });
-<?php }else{?>
-        $("#tie").datetimepicker();
-<?php }?>
         $(document).ready(function(){
 <?php if($config['options']{4}==1){?>
           $('[data-toggle="tooltip"]').tooltip({
@@ -472,6 +472,39 @@ if($config['idleTime']!=0){?>
         var badge=<?php echo$navStat;?>;
         if(badge==0)document.title='Administration - LibreCMS';
         else document.title='('+badge+') Administration - LibreCMS';
+        $('#media_items').sortable({
+          items:"li",
+          handle:".handle",
+          helper:'clone',
+          update:function(e,ui){
+            var order=$("#media_items").sortable("serialize");
+            $.ajax({
+              type:"POST",
+              dataType:"json",
+              url:"core/reordermedia.php",
+              data:order
+            });
+          }
+        }).disableSelection();
+        $('.media-edit').popover({
+          html:true,
+          trigger:'click',
+          title:'Edit Media <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
+          container:'body',
+          placement:'auto',
+          template:'<div class="popover media" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+          content:function(){
+            var id=$(this).data("dbid");
+            return $.ajax({
+              url:'core/layout/mediaedit.php',
+              dataType:'html',
+              async:false,
+              data:{
+                id:id
+              }
+            }).responseText;
+          }
+        });
 <?php if($user['rank']>899){?>
         $('.fingerprint').popover({
           html:true,
@@ -497,8 +530,8 @@ if($config['idleTime']!=0){?>
             }).responseText;
           }
         });
-        $('[data-toggle="popover"],[data-toggle="analytics"]').each(function(){
-          var button = $(this);
+        $('.media-edit,[data-toggle="popover"],[data-toggle="analytics"]').each(function(){
+          var button=$(this);
           button.popover().on('shown.bs.popover',function(){
             $('.popover').draggable({
               zIndex:2500,
@@ -518,7 +551,7 @@ if($config['idleTime']!=0){?>
                   });
           });
         });
-        $('[data-toggle="tab"]').on('shown.bs.tab',function(){
+        $('.media-edit,[data-toggle="tab"]').on('shown.bs.tab',function(){
           $('*').popover('hide');
         });
         $('body').on('hidden.bs.popover',function(e){
@@ -530,7 +563,7 @@ if($config['idleTime']!=0){?>
     <iframe id="sp" name="sp" class="hidden"></iframe>
     <div class="notifications center"></div>
 <?php if(isset($_SESSION['rank'])&&$_SESSION['rank']>899){
-  echo'<div class="help-block text-right" style="padding-right:20px;">Process Time: '.elapsed_time().'</div>';
+  echo'<div class="help-block text-right" style="padding-right:20px;"><span class="text-muted">Memory Used: '.size_format(memory_get_usage()).' | Process Time: '.elapsed_time().' | LibreCMS '.$settings['system']['version'].'</span></div>';
 }?>
   </body>
 </html>

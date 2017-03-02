@@ -1,6 +1,7 @@
 <?php
 if(isset($_SESSION['uid']))$uid=$_SESSION['uid'];else$uid=0;
 $error=0;
+$ti=time();
 $oid='';
 if(isset($args[1]))$id=$args[1];
 if($args[0]=='duplicate'){
@@ -97,6 +98,7 @@ if($args[0]=='settings'){
     </div>
   </div>
   <div class="panel-body">
+    <div id="notifications"></div>
     <div class="invoice">
       <div class="row header">
         <div class="col-sm-4 border-right hidden-xs">
@@ -240,13 +242,13 @@ while($rs=$q->fetch(PDO::FETCH_ASSOC)){
           <div class="form-group">
             <label class="control-label col-xs-4">Order #</label>
             <div class="input-group col-xs-8">
-              <input type="text" class="form-control" value="<?php echo$r['qid'].$r['iid'];?>" readonly>
+              <input type="text" class="form-control" value="<?php if($r['iid']=='')echo$r['qid'];else echo$r['iid'];?>" readonly>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-xs-4">Order Date</label>
             <div class="input-group col-xs-8">
-              <input type="text" class="form-control" value="<?php echo date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?>" readonly>
+              <input type="text" class="form-control" value="<?php if($r['iid_ti']!=0)echo date($config['dateFormat'],$r['iid_ti']);else echo date($config['dateFormat'],$r['qid_ti']);?>" readonly>
             </div>
           </div>
           <div class="form-group">
@@ -517,6 +519,7 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
     </div>
   </div>
   <div class="panel-body">
+    <div id="notifications"></div>
     <div class="table-responsive">
       <table id="stupidtable" class="table table-condensed table-hover">
         <thead>

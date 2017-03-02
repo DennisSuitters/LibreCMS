@@ -107,6 +107,15 @@ function elapsed_time($b=0,$e=0){
   }else$b=number_format($td,3).'s';
   return trim($b);
 }
+function size_format($s,$p=2){
+    $b=log($s,1024);
+    $s=array('','KB','MB','GB','TB');
+    return round(pow(1024,$b-floor($b)),$p).$s[floor($b)];
+}
+function tomoment($f){
+  $r=['d'=>'DD','D'=>'ddd','j'=>'D','l'=>'dddd','N'=>'E','S'=>'o','w'=>'e','z'=>'DDD','W'=>'W','F'=>'MMMM','m'=>'MM','M'=>'MMM','n'=>'M','t'=>'','L'=>'','o'=>'YYYY','Y'=>'YYYY','y'=>'YY','a'=>'a','A'=>'A','B'=>'','g'=>'h','G'=>'H','h'=>'hh','H'=>'HH','i'=>'mm','s'=>'ss','u'=>'SSS','e'=>'zz','I'=>'','O'=>'','P'=>'','T'=>'','Z'=>'','c'=>'','r'=>'','U'=>'X',];
+  return strtr($f,$r);
+}
 function url_encode($str){
 	$str=str_replace(chr(149),"%2D",$str);
 	$str=str_replace(chr(150),"%2D",$str);
@@ -260,6 +269,10 @@ class front{
 		$view='contactus';
 		require'process.php';
 	}
+  function distributors($args=false){
+    $view='distributors';
+    require'process.php';
+  }
 	function error($args=false){
 		$view='error';
 		require'process.php';
@@ -354,7 +367,7 @@ class front{
 		require'process.php';
 	}
 	function content($args=false){
-		$view='';
+		$view=$args[0];
 		require'process.php';
 	}
 }
@@ -393,7 +406,10 @@ $rts=array(
 $s=$db->prepare("SELECT * FROM menu WHERE active=1");
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
-	if(method_exists('front',$r['file']))$rts[$r['contentType']]=array('front',$r['contentType']);else$rts[$r['contentType']]=array('front','content');
+	if(method_exists('front',$r['contentType']))
+    $rts[$r['contentType']]=array('front',$r['contentType']);
+  else
+    $rts[$r['contentType']]=array('front','content');
 }
 $route->setRoutes($rts);
 $route->routeURL(preg_replace("|/$|","",filter_input(INPUT_GET,'url',FILTER_SANITIZE_URL)));
@@ -435,7 +451,7 @@ class router{
 		$call=$this->route_call;
 		if(is_array($call)){
 			$call_obj=new $call[0]();
-			$call_obj->$call[1]($this->route_call_args);
+			$call_obj->{$call[1]}($this->route_call_args);
 		}else
 			$call($this->route_call_args);
 	}

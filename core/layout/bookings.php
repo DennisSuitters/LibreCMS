@@ -26,11 +26,15 @@ elseif($args[0]=='edit'){
         <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/bookings"';if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back';?>"><?php svg('back');?></a>
       </div>
       <div class="btn-group">
+        <button class="btn btn-default" onclick="$('#sp').load('core/email_booking.php?id=<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Email Booking"';?>><?php svg('email-send');?></button>
+      </div>
+      <div class="btn-group">
         <a target="_blank" class="btn btn-default info" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#bookings-edit"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
       </div>
     </div>
   </div>
   <div class="panel-body">
+    <div id="notifications"></div>
     <div class="form-group">
       <label for="tis" class="control-label col-xs-5 col-sm-3 col-md-3 col-lg-2">Booked For</label>
       <div class="input-group col-xs-7 col-sm-9 col-md-9 col-lg-10">
@@ -39,7 +43,7 @@ elseif($args[0]=='edit'){
           <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="tis"><?php svg('fingerprint');?></button>
         </div>
 <?php }?>
-        <input type="text" id="tis" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tis']==0)echo'Select a Date/Time..."';else echo date($config['dateFormat'],$r['tis']).'"';}?> value="<?php if($r['tis']!=0)echo date($config['dateFormat'],$r['tis']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tis" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>>
+        <input type="text" id="tis" class="form-control" data-dbid="<?php echo$r['id'];?>" data-datetime="<?php echo date($config['dateFormat'],$r['tis']);?>"<?php if($user['options']{1}==0)echo' readonly';?>>
       </div>
     </div>
     <div class="form-group">
@@ -50,7 +54,7 @@ elseif($args[0]=='edit'){
           <button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="tie"><?php svg('fingerprint');?></button>
         </div>
 <?php }?>
-        <input type="text" id="tie" class="form-control"<?php if($config['options']{4}==1){echo' data-toggle="tooltip" title="';if($r['tie']==0)echo'Select a Date/Time..."';else echo date($config['dateFormat'],$r['tie']).'"';}?> value="<?php if($r['tie']>0)echo date($config['dateFormat'],$r['tie']);?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="tie" placeholder="Select a Date/Time..."<?php if($user['options']{1}==0)echo' readonly';?>>
+        <input type="text" id="tie" class="form-control" data-dbid="<?php echo$r['id'];?>" data-datetime="<?php if($r['tie']!=0)echo date($config['dateFormat'],$r['tie']);else echo date($config['dateFormat'],$r['tis']);?>"<?php if($user['options']{1}==0)echo' readonly';?>>
       </div>
     </div>
     <div class="form-group">
@@ -80,7 +84,7 @@ elseif($args[0]=='edit'){
 <?php $q=$db->query("SELECT id,business,username,name FROM login WHERE status!='delete' AND status!='suspended' AND active!='0' AND id!='0'");
   while($rs=$q->fetch(PDO::FETCH_ASSOC)){
     echo'<option value="'.$rs['id'].'"';
-    if($r['cid']==$rs['id'])echo' selected';
+    if($rs['id']==$r['cid'])echo' selected="selected"';
     echo'>'.$rs['username'];
     if($rs['name']!='')echo' ['.$rs['name'].']';
     if($rs['business']!='')echo' -> '.$rs['business'].'</option>';
@@ -187,8 +191,7 @@ elseif($args[0]=='edit'){
         <input type="text" id="postcode" class="form-control textinput" name="postcode" value="<?php if($r['postcode']!=0){echo$r['postcode'];}?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="postcode" placeholder="Enter a Postcode...">
       </div>
     </div>
-<?php $sql=$db->query("SELECT id,contentType,code,title,assoc FROM content WHERE bookable='1' AND title!='' AND status='published' AND internal!='1' ORDER BY code ASC, title ASC");
-  if($sql->rowCount()>0){?>
+<?php $sql=$db->query("SELECT id,contentType,code,title,assoc FROM content WHERE bookable='1' AND title!='' AND status='published' AND internal!='1' ORDER BY code ASC, title ASC");?>
     <div class="form-group">
       <label for="rid" class="control-label col-xs-5 col-sm-3 col-lg-2">Booked</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
@@ -205,7 +208,6 @@ elseif($args[0]=='edit'){
         </select>
       </div>
     </div>
-<?php }?>
     <div class="form-group">
       <label for="notes" class="control-label col-xs-5 col-sm-3 col-lg-2">Notes</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">

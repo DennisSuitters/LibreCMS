@@ -595,7 +595,10 @@ if($config['backup_ti']<$tid){
       <div id="preference-info" name="preference-info" class="tab-pane fade in">
         <h4>Information</h4>
           <div class="form-group">
-<?php ob_start();
+<?php if(version_compare(phpversion(),'7.0','<')){?>
+            <div class="alert alert-info">LibreCMS is able to run on PHP 7+</div>
+<?php }
+ob_start();
 phpinfo();
 preg_match('%<style type="text/css">(.*?)</style>.*?(<body>.*</body>)%s',ob_get_clean(),$matches);
 echo"<div class='phpinfodisplay'><style type='text/css'>\n",join("\n",array_map(create_function('$i','return ".phpinfodisplay ".preg_replace("/,/",",.phpinfodisplay ",$i);'),preg_split('/\n/',$matches[1]))),"</style>\n",$matches[2],"\n</div>\n";?>

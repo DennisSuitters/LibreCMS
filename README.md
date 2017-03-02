@@ -10,7 +10,6 @@ a **Free** Open Source [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) Conten
   - LibreCMS was, and is targetted towards English Speaking Australian Business's. We may in the future decide, or if someone wants to add Language support, then we may do that, or merge their changes.
 
 ### Features
-- Installer when first Opened.
 - Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs, Messages, and Newsletters.
 - Messaging - Whenever a message is created via the Contact Us page, it is stored in the Messages system as well as emailed.
 - Orders - Create Quotes, Invoices. Client viewing of Orders.
@@ -73,9 +72,9 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 
 ### Tested on:
 - CentOS Linux 7.2.1511 with Webmin 1.791
-- Ubuntu Linux 14.04 + Apache v2.4.7 + PHP v5.5.9-1 + MySQL v5.5.37
-- Linux Mint Ubuntu Edition
-- Linux Mint Debian Edition
+- Ubuntu Linux 14.04 + Apache v2.4.7 + PHP v5.6 + MySQL v5.5.37
+- Linux Mint Ubuntu Edition Apache 2.4.7 + PHP v5.6-7.1 + MySQL v5.5.37
+- Linux Mint Debian Edition Apache 2.4.7 + PHP v5.6-7.1 + MySQL v5.5.37
 - Debian 7 + nGinx + PHP 5.5 + MySQL
 - Windows 7 + WAMP + PHP 5.5 + MySQL
 

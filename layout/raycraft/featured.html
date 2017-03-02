@@ -1,0 +1,33 @@
+<settings itemcount="6" contenttype="folder" order="random">
+<div class="full-width">
+	<div class="relative">
+		<div id="myCarousel" class="carousel slide carousel-fade">
+			<featuredIndicators>
+				<ol class="carousel-indicators">
+					<indicators>
+						<li data-target="#featured" data-slide-to="<print indicatorCount>" class="<print active>"></li>
+					</indicators>
+				</ol>
+			</featuredIndicators>
+			<div class="carousel-inner">
+				<items>
+					<div class="item<print active>">
+						<div class="pull-right">
+							<img class="img-responsive" itemprop="image" alt="<print content=title>" src="<print content=image>">
+						</div>
+					</div>
+				</items>
+			</div>
+		</div>
+		<div class="bigpic animated bounceIn">
+			<img src="layout/raycraft/images/bigpic.png" alt="Big Pic">
+		</div>
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+	$('#myCarousel').carousel({
+ 		interval: 4000
+	})
+});
+</script>

@@ -35,9 +35,9 @@ $s=$db->prepare("SELECT * FROM ".$tbl." WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);
 $oldda=$r[$col];
-if($col=='tis')$da=strtotime($da);
-if($col=='tie')$da=strtotime($da);
-if($col=='pti')$da=strtotime($da);
+//if($col=='tis')$da=strtotime($da);
+//if($col=='tie')$da=strtotime($da);
+//if($col=='pti')$da=strtotime($da);
 if($tbl=='content'&&$col=='status'&&$da=='published'){
   $q=$db->prepare("UPDATE content SET pti=:pti WHERE id=:id");
   $q->execute(array(':pti'=>$ti,':id'=>$id));

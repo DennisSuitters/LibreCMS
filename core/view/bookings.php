@@ -80,7 +80,7 @@ if($act=='add_booking'){
 					}
 					$mail2->Subject=$subject;
 					if($config['bookingAutoReplyLayout']){
-						$msg2=$config['bookingAutoReplyLayout'];
+						$msg2=rawurldecode($config['bookingAutoReplyLayout']);
 						if(stristr($msg2,'{business}'))$msg2=str_replace('{business}',$config['business'],$msg2);
 						if(stristr($msg2,'{name}'))$msg2=str_replace('{name}',$name,$msg2);
 						if(stristr($msg2,'{first}'))$msg2=str_replace('{first}',$namefirst,$msg2);

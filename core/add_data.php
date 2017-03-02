@@ -50,7 +50,7 @@ if($act!=''){
 			$id=$db->lastInsertId();
 			$e=$db->errorInfo();
 			if(is_null($e[2])){?>
-	window.top.window.$('#rewards').append('<tr id="l_<?php echo$id;?>"><td class="col-xs-1 text-center"><?php echo$code;?></td><td class="col-xs-5 text-center"><?php echo$title;?></td><td class="text-center"><?php if($method==0)echo'% Off';else echo'$ Off';?></td><td class="col-xs-1 text-center"><?php echo$value;?>&nbsp;</td><td class="col-xs-1 text-center"><?php echo$quantity;?>&nbsp;</td><td class="col-xs-1 text-center"><small><?php if($tis!=0){echo date($config['dateFormat'],$tis);}?></small></td><td class="col-xs-1 text-center"><small><?php if($tie!=0){echo date($config['dateFormat'],$tie);}?></small></td><td><form target="sp" action="core/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="rewards"><button class="btn btn-default trash"><?php svg('trash');?></button></form></td></tr>');
+	window.top.window.$('#rewards').append('<tr id="l_<?php echo$id;?>"><td class="col-xs-1 text-center"><small><?php echo$code;?></small></td><td class="col-xs-4 text-center"><small><?php echo$title;?></small></td><td class="col-xs-1 text-center"><small><?php if($method==0)echo'% Off';else echo'$ Off';?></small></td><td class="col-xs-1 text-center"><small><?php echo$value;?></small></td><td class="col-xs-1 text-center"><small><?php echo$quantity;?></small></td><td class="col-xs-2 text-center"><small><?php if($tis!=0){echo date($config['dateFormat'],$tis);}?></small></td><td class="col-xs-2 text-center"><small><?php if($tie!=0){echo date($config['dateFormat'],$tie);}?></small></td><td><form target="sp" action="core/purge.php"><input type="hidden" name="id" value="<?php echo$id;?>"><input type="hidden" name="t" value="rewards"><button class="btn btn-default btn-sm trash"><?php svg('trash');?></button></form></td></tr>');
 <?php	}else{?>
   window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue adding the Reward'}}).show();
 <?php }
@@ -228,6 +228,26 @@ if($act!=''){
       }?>
   window.top.window.Pace.stop();
 <?php break;
+    case'add_media':
+      $id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
+      $t=filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING);
+      $fu=filter_input(INPUT_POST,'fu',FILTER_SANITIZE_STRING);
+      if($fu!=''){
+        if($t=='pages'||$t=='content'){
+          if($t=='pages')
+            $q=$db->prepare("INSERT INTO media (rid,pid,file,ti) VALUES (0,:pid,:file,:ti)");
+          if($t=='content')
+            $q=$db->prepare("INSERT INTO media (rid,pid,file,ti) VALUES (:pid,0,:file,:ti)");
+          $q->execute(array(':pid'=>$id,':file'=>$fu,':ti'=>time()));
+          $iid=$db->lastInsertId();
+          $q=$db->prepare("UPDATE media SET ord=:ord WHERE id=:id");
+          $q->execute(array(':id'=>$iid,':ord'=>$iid+1));?>
+  window.top.window.$('#media_items').append('<li id="media_items_<?php echo$iid;?>" class="col-xs-6 col-sm-3 animated zoomIn"><div class="panel panel-default media"><div class="controls btn-group"><span class="handle btn btn-default btn-xs"><?php svg('drag');?></span><button class="btn btn-default btn-xs media-edit" data-dbid="<?php echo$iid;?>"><?php svg('edit');?></button><button class="btn btn-default trash btn-xs" onclick="purge(\'<?php echo$iid;?>\',\'media\')"><?php svg('trash');?></button></div><div class="panel-body"><img src="<?php echo$fu;?>"><div id="media-title<?php echo$iid;?>" class="panel-footer"></div></div></li>');
+  setTimeout(function(){window.top.window.$('#media_items_<?php echo$iid;?>').removeClass('animated zoomIn');},800);
+  window.top.window.Pace.stop();
+<?php   }
+      }
+      break;
     case'add_orderitem':
       $oid=filter_input(INPUT_GET,'oid',FILTER_SANITIZE_NUMBER_INT);
       $iid=filter_input(INPUT_GET,'iid',FILTER_SANITIZE_NUMBER_INT);

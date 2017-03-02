@@ -17,9 +17,10 @@ $act=filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
 $q=$db->prepare("SELECT * FROM orders WHERE id=:id");
 $q->execute(array(':id'=>$id));
 $r=$q->fetch(PDO::FETCH_ASSOC);
-$q=$db->prepare("SELECT * FROM login WHERE id=:id");
-$q->execute(array(':id'=>$r['cid']));
-$c=$q->fetch(PDO::FETCH_ASSOC);
+$r['notes']=rawurldecode($r['notes']);
+$s=$db->prepare("SELECT * FROM login WHERE id=:id");
+$s->execute(array(':id'=>$r['cid']));
+$c=$s->fetch(PDO::FETCH_ASSOC);
 $ti=time();
 if($r['qid']!="")$oid=$r['qid'];
 if($r['iid']!="")$oid=$r['iid'];
@@ -59,7 +60,7 @@ elseif(file_exists('..'.DS.'media'.DS.'orderheading.jpg'))
 	$pdflogo='..'.DS.'media'.DS.'orderheading.jpg';
 elseif(file_exists('..'.DS.'media'.DS.'orderheading.gif'))
 	$pdflogo='..'.DS.'media'.DS.'orderheading.gif';
-elseif(file_exists('..'.Ds.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png'))
+elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png'))
 	$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png';
 elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg'))
 	$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg';
@@ -129,7 +130,7 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 	$i=$si->fetch(PDO::FETCH_ASSOC);
 	$sc=$db->prepare("SELECT * FROM choices WHERE id=:id");
 	$sc->execute(array(':id'=>$ro['cid']));
-	$c=$sc->fetch(PDO::FETCH_ASSOC);
+	$ch=$sc->fetch(PDO::FETCH_ASSOC);
 			$html.='<tr';
 	if($zeb==1){
 				$html.=' style="background-color:#f4f4f4;"';
@@ -143,7 +144,7 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 				$html.='<td class="col-150"><small>';
 	if($ro['title']=='')$html.=$i['title'];else$html.=$ro['title'];
 				$html.='</small></td>';
-				$html.='<td class="col-150"><small>'.$c['title'].'</small></td>';
+				$html.='<td class="col-150"><small>'.$ch['title'].'</small></td>';
 				$html.='<td class="col-50 text-center"><small>'.$ro['quantity'].'</small></td>';
 				$html.='<td class="col-50 text-right"><small>'.$ro['cost'].'</small></td>';
 	$st=$ro['cost']*$ro['quantity'];
@@ -194,7 +195,7 @@ if($r['postage']!=0){
 			$html.='<tr>';
 				$html.='<td>';
 					$html.='<h4>Notes</h4>';
-					$html.='<p style="font-size:8px">'.rawurldecode($r['notes']).'</p>';
+					$html.='<p style="font-size:8px">'.$r['notes'].'</p>';
 				$html.='</td>';
 				$html.='<td>';
 					$html.='<h4>Banking Details</h4>';
@@ -210,12 +211,11 @@ if($r['postage']!=0){
 	$html.='</table>';
 $html.='</body>';
 $pdf->writeHTML($html,true,false,true,false,'');
-$pdf->Output(__DIR__.DS'..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf','F');
+$pdf->Output(__DIR__.DS.'..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf','F');
 chmod('..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf',0777);?>
 <script>/*<![CDATA[*/
-	window.top.window.Pace.stop();
-<?php if($c['email']==''||$act=='print'){?>
-	window.top.window.open('media'.DS.'orders'.DS.'<?php echo$oid;?>.pdf');
+<?php if($act=='print'){?>
+	window.top.window.open('media/orders/<?php echo$oid;?>.pdf');
 <?php }else{
 	require"class.phpmailer.php";
 	$mail=new PHPMailer();
@@ -224,22 +224,31 @@ chmod('..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf',0777);?>
 	$mail->SetFrom($config['email'],$config['business']);
 	$mail->AddAddress($c['email']);
 	$mail->IsHTML(true);
+  if($config['orderEmailReadNotification']{0}==1){
+    $mail->AddCustomHeader("X-Confirm-Reading-To:".$config['email']);
+    $mail->AddCustomHeader("Return-receipt-to:".$config['email']);
+    $mail->AddCustomHeader("Disposition-Notification-To:".$config['email']);
+    $mail->ConfirmReadingTo=$config['email'];
+  }
 	$mail->Subject='Order #'.$oid;
-	$msg=$config['orderEmailLayout'];
+	$msg=rawurldecode($config['orderEmailLayout']);
 	$msg=str_replace('{name}',$c['name'],$msg);
 	$name=explode(' ',$c['name']);
 	$msg=str_replace('{first}',$name[0],$msg);
-	$msg=str_replace('{last}',$name[1],$msg);
+  if(isset($name[1]))$msg=str_replace('{last}',$name[1],$msg);else$msg=str_replace('{last}','',$msg);
 	$msg=str_replace('{date}',date($config['dateFormat'],$r['ti']),$msg);
 	$msg=str_replace('{order_number}',$oid,$msg);
-	$msg=str_replace('{notes}',rawurldecode($r['notes']),$msg);
+	$msg=str_replace('{notes}',$r['notes'],$msg);
 	$mail->Body=$msg;
 	$mail->AltBody=$msg;
 	$mail->AddAttachment('..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf');
 	if($mail->Send()){?>
-	window.top.window.$('.notifications').notify({type:'success',icon:'',message:{text:'The Order was Sent Successfully'}}).show();
+	window.top.window.$('#notifications').append('<div class="alert alert-success notification_<?php echo$r['ti'];?> animated">The Order to <?php if($c['business'])echo$c['business'];else echo$c['name'];?> was Sent Successfully<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+  window.top.window.$('.notification_<?php echo$r['ti'];?>').addClass("bounceIn").delay(4000).queue(function(){$(this).addClass("zoomOut").delay(500).queue(function(){$(this).remove().dequeue();}).dequeue();});
 <?php }else{?>
-	window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'There was an issue sending the Order'}}).show();
+	window.top.window.$('#notifications').append('<div class="alert alert-danger notification_<?php echo$r['ti'];?> animated bounceIn">There was an issue sending the Order<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+  window.top.window.$('.notification_<?php echo$r['ti'];?>').addClass("bounceIn").delay(4000).queue(function(){$(this).addClass("zoomOut").delay(500).queue(function(){$(this).remove().dequeue();}).dequeue();});
 <?php }
 }?>
+  window.top.window.Pace.stop();
 /*]]>*/</script>

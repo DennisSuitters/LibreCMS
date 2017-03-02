@@ -1,0 +1,95 @@
+<block include="meta_head.html">
+<block include="header.html">
+<block inbed="featured-left">
+<div class="relative">
+	<div class="featured-side left">
+		<div class="featured-body">
+			<nav role="complementary">
+				<div class="list-group">
+					<span class="list-group-item-heading" role="heading">Product Categories</span>
+					<categories>
+						<a class="list-group-item" href="<print content=link>" role="link"><print content="category_1"></a>
+					</categories>
+				</div>
+			</nav>
+		</div>
+	</div>
+</block>
+<block include="featured.html">
+<block inbed="featured-right">
+	<div class="featured-side right">
+		<div class="featured-body">
+		<div class="list-group">
+				<div class="list-group-item">
+					<span class="list-group-item-heading" role="heading"><a href="events/" role="link">Events</a></span>
+				</div>
+				<events>
+					<a class="list-group-item" href="<print link>" itemscope itemtype="<print content=schematype>" role="link">
+						<span class="" itemprop="headline" role="heading"><print content="title"></span>
+						<meta itemprop="datePublished" content="<print metaDate>"/>
+						<p class="list-group-item-text text-muted">
+							<small><time datetime="<print metaDate>"><print time></time></small>
+							<small><small><print content="caption"></small></small>
+						</p>
+					</a>
+				</events>
+			</div>
+			<div class="list-group">
+				<div class="list-group-item">
+					<span class="list-group-item-heading" role="heading"><a href="news/" role="link">News</a></span>
+				</div>
+				<news>
+					<a class="list-group-item" href="<print link>" itemscope itemtype="<print content=schematype>">
+						<span class="" itemprop="headline"><print content="title"></span>
+						<meta itemprop="datePublished" content="<print metaDate>"/>
+						<p class="list-group-item-text text-muted">
+							<small><time datetime="<print metaDate>"><print time></time></small>
+							<small><small><print content="caption"></small></small>
+						</p>
+					</a>
+				</news>
+			</div>
+		</div>
+	</div>
+</div>
+</block>
+<block inbed="content">
+	<div class="clearfix"></div>
+	<main id="content" class="home" role="main">
+		<div class="pagenotes" role="description"><print page="notes"></div>
+		<settings items="3" contenttype="inventory">
+		<items>
+			<article class="col-xs-12 col-sm-6 col-md-4" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+				<div class="content-item">
+					<a href="<print content=linktitle>" role="link">
+          	<span class="content-item-image">
+							<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>" role="img">
+            </span>
+          </a>
+        	<div class="content-item-info clearfix">
+						<controls>
+							<view>
+								<div class="content-item-title">
+									<a href="<print content=linktitle>" itemprop="name" role="link"><print content="title"></a>
+								</div>
+							</view>
+							<service>
+								<a class="btn btn-success btn-sm" href="bookings/<print content=bookservice>" role="link">Book Now</a>
+							</service>
+							<inventory>
+								<button class="addCart btn btn-success btn-sm" data-cartid="<print content=id>" data-cartchoice="0" role="button">Buy Now</button>
+							</inventory>
+						</controls>
+						<cost>
+							<span class="content-item-price pull-right" itemscope itemtype="http://schema.org/Offer">
+								<print content="cost">
+							</span>
+						</cost>
+                    </div>
+                </div>
+			</article>
+		</items>
+	</main>
+</block>
+<block include="footer.html">
+<block include="meta_footer.html">
