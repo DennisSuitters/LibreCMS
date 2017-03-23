@@ -5,9 +5,11 @@ a **Free** Open Source [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) Conten
 
 ### FAQ
 - Why no Version Numbers?
-  - Some people have asked why we don't use a Versioning System of some sorts. Well, as this is an ever changing and growing project, rather than having version numbers, we're going to be doing releases instead. The other reason, is due to my laziness. I originally was updating version numbers to files, but laziness gets the better of me, so I just stopped doing that completely.
+  - Some people have asked why we don't use a Versioning System of some sorts. Well, as this is an ever changing and growing project, rather than having version numbers, we're going to be doing releases instead. The other reason, is due to my laziness. I originally was updating version numbers to files, but laziness got the better of me, so I just stopped doing that completely.
 - Why is English the only Language available?
   - LibreCMS was, and is targetted towards English Speaking Australian Business's. We may in the future decide, or if someone wants to add Language support, then we may do that, or merge their changes.
+- Why no Plugins?
+  - Anybody who's worked on or developed any kind of Content Mangement System in any Programming Language knows that Plugins are a potential security problem. Plugins are something that because third parties can build them, end up being out of the control of the developer, especially if the Plugin Maker disregards the conventions set by the project.
 
 ### Features
 - Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs, Messages, and Newsletters.
