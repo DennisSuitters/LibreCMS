@@ -8,9 +8,10 @@ if(file_exists(THEME.$amp.DS.'side_menu.html')){
 			$sideCost.='<span class="cost" itemprop="price" content="'.$r['cost'].'">';
 			if(is_numeric($r['cost']))$sideCost.='&#36;';
 			$sideCost.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
-		}else$sideCost='<span>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
-		$sideTemp=str_replace('<print content="cost">',$sideCost,$sideTemp);
-		$sideTemp=str_replace('<print content=id>',$r['id'],$sideTemp);
+		}else
+			$sideCost='<span>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
+		$sideTemp=str_replace(array('<print content=cost>','<print content="cost">'),$sideCost,$sideTemp);
+		$sideTemp=str_replace(array('<print content=id>','<print content="id">'),$r['id'],$sideTemp);
 		$sideQuantity='';
 		if($r['contentType']=='inventory'){
 			if(is_numeric($r['quantity'])&&$r['quantity']!=0){
@@ -20,7 +21,7 @@ if(file_exists(THEME.$amp.DS.'side_menu.html')){
 				$sideQuantity='<link itemprop="availability" href="http://schema.org/OutOfStock">';
 				$sideQuantity.='<div class="quantity">Out of Stock</div>';
 			}else$sideQuantity.='<div>Quantity<br>'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').'</div>';
-			$sideTemp=str_replace('<print content="quantity">',$sideQuantity,$sideTemp);
+			$sideTemp=str_replace(array('<print content=quantity>','<print content="quantity">'),$sideQuantity,$sideTemp);
 			if(stristr($sideTemp,'<choices>')){
 				$scq=$db->prepare("SELECT * FROM choices WHERE rid=:id ORDER BY title ASC");
 				$scq->execute(array(':id'=>$r['id']));
@@ -32,30 +33,33 @@ if(file_exists(THEME.$amp.DS.'side_menu.html')){
 					}
 					$choices.='</select>';
 					$sideTemp=str_replace('<choices>',$choices,$sideTemp);
-				}else$sideTemp=str_replace('<choices>','',$sideTemp);
-			}else$sideTemp=str_replace('<choices>','',$sideTemp);
-		}else$sideTemp=str_replace('<print content="quantity">','',$sideTemp);
+				}else
+					$sideTemp=str_replace('<choices>','',$sideTemp);
+			}else
+				$sideTemp=str_replace('<choices>','',$sideTemp);
+		}else
+			$sideTemp=str_replace(array('<print content=quantity>','<print content="quantity">'),'',$sideTemp);
 		if($r['contentType']=='service'||$r['contentType']=='events'){
 			if($r['bookable']==1){
 				if(stristr($sideTemp,'<service>')){
-					$sideTemp=str_replace('<print content=bookservice>',$r['id'],$sideTemp);
-					$sideTemp=str_replace('<service>','',$sideTemp);
-					$sideTemp=str_replace('</service>','',$sideTemp);
+					$sideTemp=str_replace(array('<print content=bookservice>','<print content="bookservice">'),$r['id'],$sideTemp);
+					$sideTemp=str_replace(array('<service>','</service>'),'',$sideTemp);
 					$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
 				}
-			}else$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
-		}else$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
+			}else
+				$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
+		}else
+			$sideTemp=preg_replace('~<service.*?>.*?<\/service>~is','',$sideTemp,1);
 		if($r['contentType']=='inventory'&&is_numeric($r['cost'])){
 			if(stristr($sideTemp,'<inventory>')){
-				$sideTemp=str_replace('<inventory>','',$sideTemp);
-				$sideTemp=str_replace('</inventory>','',$sideTemp);
+				$sideTemp=str_replace(array('<inventory>','</inventory>'),'',$sideTemp);
 				$sideTemp=preg_replace('~<service>.*?<\/service>~is','',$sideTemp,1);
-			}elseif(stristr($sideTemp,'<inventory>')&&$r['contentType']!='inventory')$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
-		}else$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
-		$sideTemp=str_replace('<controls>','',$sideTemp);
-		$sideTemp=str_replace('</controls>','',$sideTemp);
-		$sideTemp=str_replace('<review>','',$sideTemp);
-		$sideTemp=str_replace('</review>','',$sideTemp);
+			}elseif(stristr($sideTemp,'<inventory>')&&$r['contentType']!='inventory')
+				$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
+		}else
+			$sideTemp=preg_replace('~<inventory>.*?<\/inventory>~is','',$sideTemp,1);
+		$sideTemp=str_replace(array('<controls>','</controls>'),'',$sideTemp);
+		$sideTemp=str_replace(array('<review>','</review>'),'',$sideTemp);
 	}else{
 		$sideTemp=preg_replace('/<controls>([\w\W]*?)<\/controls>/','',$sideTemp,1);
 		$sideTemp=preg_replace('/<review>([\w\W]*?)<\/review>/','',$sideTemp,1);
@@ -76,18 +80,25 @@ if(file_exists(THEME.$amp.DS.'side_menu.html')){
 	if(stristr($sideTemp,'<settings')){
 		preg_match('/<settings items="(.*?)" contenttype="(.*?)">/',$outside,$matches);
 		if(isset($matches[1])){
-			if($matches[1]=='all'||$matches[1]=='')$show='';elseif($matches[1]=='limit')$show=' LIMIT '.$config['showItems'];else$show=' LIMIT '.$matches[1];
-		}else$show='';
+			if($matches[1]=='all'||$matches[1]=='')
+				$show='';
+			elseif($matches[1]=='limit')
+				$show=' LIMIT '.$config['showItems'];
+			else
+				$show=' LIMIT '.$matches[1];
+		}else
+			$show='';
 		if(isset($matches[2])){
 			if($matches[2]=='current')$contentType=strtolower($view);
 			if($matches[2]=='all'||$matches[2]==''){$contentType='';$heading='';}
-		}else$contentType='';
+		}else
+			$contentType='';
 	}
 	$r=$db->query("SELECT * FROM menu WHERE id=17")->fetch(PDO::FETCH_ASSOC);
 	if($r['active']{0}==1){
-		$sideTemp=str_replace('<newsletters>','',$sideTemp);
-		$sideTemp=str_replace('</newsletters>','',$sideTemp);
-	}else$sideTemp=preg_replace('/<newsletters>([\w\W]*?)<\/newsletters>/','',$sideTemp,1);
+		$sideTemp=str_replace(array('<newsletters>','</newsletters>'),'',$sideTemp);
+	}else
+		$sideTemp=preg_replace('/<newsletters>([\w\W]*?)<\/newsletters>/','',$sideTemp,1);
 	preg_match('/<items>([\w\W]*?)<\/items>/',$outside,$matches);
 	$insides=$matches[1];
 	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE :contentType AND internal!='1' AND status='published' ORDER BY featured DESC, ti DESC $show");
@@ -97,14 +108,9 @@ if(file_exists(THEME.$amp.DS.'side_menu.html')){
 		if($r['contentType']=='gallery'){
 			preg_match('/<media>([\w\W]*?)<\/media>/',$insides,$matches);
 			$inside=$matches[1];
-		}else$inside=preg_replace('/<media>([\w\W]*?)<\/media>/','',$insides,1);
+		}else
+			$inside=preg_replace('/<media>([\w\W]*?)<\/media>/','',$insides,1);
 		$items=$inside;
-		$items=str_replace('<print content=thumb>',$r['thumb'],$items);
-		$items=str_replace('<print link>',URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$items);
-		$items=str_replace('<print content=schematype>',$r['schemaType'],$items);
-		$items=str_replace('<print metaDate>',date('Y-m-d',$r['ti']),$items);
-		$items=str_replace('<print content=title>',$r['title'],$items);
-		$items=str_replace('<print content="title">',$r['title'],$items);
 		$time='<time datetime='.date('Y-m-d',$r['ti']).'">'.date($config['dateFormat'],$r['ti']).'</time>';
 		if($r['contentType']=='events'||$r['contentType']=='news'){
 			if($r['tis']!=0){
@@ -112,12 +118,32 @@ if(file_exists(THEME.$amp.DS.'side_menu.html')){
 				if($r['tie']!=0)$time.=' &rarr; <time datetime="'.date('Y-m-d',$r['tie']).'">'.date('dS M H:i',$r['tie']).'</time>';
 			}
 		}
-		$items=str_replace('<print time>',$time,$items);
-		if($r['seoCaption']!='')$items=str_replace('<print content="caption">',$r['seoCaption'],$items);else$items=str_replace('<print content="caption">',substr(strip_tags(rawurldecode($r['notes'])),0,100).'...',$items);
+		if($r['seoCaption']!='')
+			$caption=$r['seoCaption'];
+		else
+			$caption=substr(strip_tags(rawurldecode($r['notes'])),0,100).'...';
+		$items=str_replace(array(
+			'<print content=thumb>','<print content="thumb">',
+			'<print link>',
+			'<print content=schematype>','<print content="schemaType">',
+			'<print metaDate>',
+			'<print content=title>','<print content="title">',
+			'<print time>',
+			'<print content=caption>','<print content="caption">'
+		),array(
+			htmlspecialchars($r['thumb'],ENT_QUOTES,'UTF-8'),htmlspecialchars($r['thumb'],ENT_QUOTES,'UTF-8'),
+			URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),
+			htmlspecialchars($r['schemaType'],ENT_QUOTES,'UTF-8'),htmlspecialchars($r['schemaType'],ENT_QUOTES,'UTF-8'),
+			date('Y-m-d',$r['ti']),
+			htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
+			$time,
+			htmlspecialchars($caption,ENT_QUOTES,'UTF-8'),htmlspecialchars($caption,ENT_QUOTES,'UTF-8')
+		),$items);
 		$output.=$items;
 	}
 	$outside=preg_replace('~<items>.*?<\/items>~is',$output,$outside,1);
 	$outside=preg_replace('~<settings.*?>~is','',$outside,1);
 	$sideTemp=preg_replace('~<item>.*?<\/item>~is',$outside,$sideTemp,1);
-}else$sideTemp='';
+}else
+	$sideTemp='';
 $content.=$sideTemp;

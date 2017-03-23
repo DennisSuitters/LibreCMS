@@ -7,13 +7,23 @@ if(stristr($html,'<events')){
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$items=$event;
-		$items=str_replace('<print content=schematype',$r['schemaType'],$items);
-		$items=str_replace('<print content="title">',$r['title'],$items);
-		$items=str_replace('<print metaDate>',date($config['dateFormat'],$r['tis']),$items);
-		$items=str_replace('<print time',date($config['dateFormat'],$r['tis']),$items);
-		$items=str_replace('<print link>',URL.'events/'.urlencode(str_replace(' ','-',$r['title'])),$items);
-		if($r['seoCaption']=='')$r['seoCaption']=strip_tags($r['notes']);
-		$items=str_replace('<print content="caption">',preg_replace('/\s+?(\S+)?$/','',substr($r['seoCaption'],0,151)),$items);
+		if($r['seoCaption']=='')
+			$r['seoCaption']=strip_tags($r['notes']);
+		$items=str_replace(array(
+			'<print content=schematype>','<print content="schematype">',
+			'<print content=title>','<print content="title">',
+			'<print metaDate>',
+			'<print time>',
+			'<print link>',
+			'<print content=caption>','<print content="caption">'
+		),array(
+			$r['schemaType'],$r['schemaType'],
+			htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
+			date($config['dateFormat'],$r['tis']),
+			date($config['dateFormat'],$r['tis']),
+			URL.'events/'.urlencode(str_replace(' ','-',$r['title'])),
+			htmlspecialchars(preg_replace('/\s+?(\S+)?$/','',substr($r['seoCaption'],0,151)),ENT_QUOTES,'UTF-8'),htmlspecialchars(preg_replace('/\s+?(\S+)?$/','',substr($r['seoCaption'],0,151)),ENT_QUOTES,'UTF-8'),
+		),$items);
 		$output.=$items;
 	}
 	$html=preg_replace('~<events>.*?<\/events>~is',$output,$html,1);
@@ -26,13 +36,23 @@ if(stristr($html,'<news')){
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$items=$news;
-		$items=str_replace('<print content=schematype',$r['schemaType'],$items);
-		$items=str_replace('<print content="title">',$r['title'],$items);
-		$items=str_replace('<print metaDate>',date($config['dateFormat'],$r['tis']),$items);
-		$items=str_replace('<print time',date($config['dateFormat'],$r['tis']),$items);
-		$items=str_replace('<print link>',URL.'news/'.urlencode(str_replace(' ','-',$r['title'])),$items);
-		if($r['seoCaption']=='')$r['seoCaption']=strip_tags($r['notes']);
-		$items=str_replace('<print content="caption">',preg_replace('/\s+?(\S+)?$/','',substr($r['seoCaption'],0,151)),$items);
+		if($r['seoCaption']=='')
+			$r['seoCaption']=strip_tags($r['notes']);
+		$items=str_replace(array(
+			'<print content=schemaType>','<print content="schemaType">',
+			'<print content=title>','<print content="title">',
+			'<print metaDate>',
+			'<print time>',
+			'<print link>',
+			'<print content=caption>','<print content="caption">'
+		),array(
+			$r['schemaType'],$r['schemaType'],
+			htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
+			date($config['dateFormat'],$r['tis']),
+			date($config['dateFormat'],$r['tis']),
+			URL.'news/'.urlencode(str_replace(' ','-',$r['title'])),
+			htmlspecialchars(preg_replace('/\s+?(\S+)?$/','',substr($r['seoCaption'],0,151)),ENT_QUOTES,'UTF-8'),htmlspecialchars(preg_replace('/\s+?(\S+)?$/','',substr($r['seoCaption'],0,151)),ENT_QUOTES,'UTF-8')
+		),$items);
 		$output.=$items;
 	}
 	$html=preg_replace('~<news>.*?<\/news>~is',$output,$html,1);

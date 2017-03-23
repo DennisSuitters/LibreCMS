@@ -5,7 +5,8 @@
 */
 .libre,
 .libre-social{display:inline-block}
-.libre{font:normal normal normal 1em/1;font-size:1em;width:1em;height:1em;vertical-align:-5%;text-rendering:auto;fill:currentColor;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background-repeat:no-repeat;background-position:center center}
+.libre{font:normal normal normal 1em/1;font-size:1em;width:1em;height:1em;vertical-align:-5%;text-rendering:auto;fill:currentColor!important;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background-repeat:no-repeat;background-position:center center}
+.libre path{color:currentColor!important}
 .libre-lg{font-size:1.33333333em;line-height:.75em;vertical-align:-15%}
 .libre-2x{font-size:2em}
 .libre-3x{font-size:3em}
@@ -18,7 +19,7 @@
 .btn:hover.trash{color:#fff;background:#d9534f;border-color:#d43f3a}
 .btn:hover.add{color:#fff;background-color:#5cb85c;border-color:#4cae4c}
 .btn:hover.info{color:#fff;background-color:#5bc0de;border-color:#46b8da}
-.libre-social{position:relative;width:16px;height:16px;background:#fff;color:#000;fill:#000;border:0;-webkit-border-radius:2px;border-radius:2px}
+.libre-social{position:relative;width:16px;height:16px;background-color:inherit;color:inherit;fill:currentColor;border:0;-webkit-border-radius:2px;border-radius:2px}
 .libre-social.s32{width:32px;height:32px;-webkit-border-radius:5px;border-radius:5px}
 .libre-social.s64{width:64px;height:64px;-webkit-border-radius:5px;border-radius:5px}
 .libre-social svg{-webkit-border-radius:2px;border-radius:2px}

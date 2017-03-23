@@ -152,10 +152,10 @@ if($rr['num']!=0)echo'<a href="'.URL.$settings['system']['admin'].'/content/edit
               <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','unpublished')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
               <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','content','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
               <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','content')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+<?php }?>
             </td>
           </tr>
-<?php }
-    }?>
+<?php }?>
         </tbody>
       </table>
     </div>
@@ -1207,6 +1207,20 @@ if($cntc<0){
             </div>
           </div>
         </div>
+<?php /*
+        <div class="form-group">
+          <label for="mid" class="control-label col-xs-5 col-sm-3 col-lg-2">SubMenu</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+            <select id="mid" class="form-control" onchange="update('<?php echo$r['id'];?>','content','mid',$(this).val());" data-dbid-"<?php echo$r['id'];?>" data-dbt="menu" data-dbc="mid">
+              <option value="0"<?php if($r['mid']==0)echo' selected';?>>None</option>
+  <?php $sm=$db->prepare("SELECT id,title from menu WHERE mid=0 AND mid!=:mid AND active=1 ORDER BY ord ASC, title ASC");
+  $sm->execute(array(':mid'=>$r['id']));
+  while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
+    echo'<option value="'.$rm['id'].'"';if($r['mid']==$rm['id'])echo' selected';echo'>'.$rm['title'].'</option>';
+  }?>
+            </select>
+          </div>
+        </div> */ ?>
       </div>
     </div>
   </div>

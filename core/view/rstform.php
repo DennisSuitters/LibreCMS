@@ -25,9 +25,12 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
   	$msg=str_replace('{password}',$password,$msg);
   	$mail->Body=$msg;
   	$mail->AltBody=$msg;
-  	if($mail->Send())echo'<div class="alert alert-success text-center">Check your Email!</div>';
-    else echo'<div class="alert alert-danger text-center">Problem Sending Email!</div>';
-  }else echo'<div class="alert alert-danger text-center">No Account Found!</div>';
+  	if($mail->Send())
+      echo'<div class="alert alert-success text-center">Check your Email!</div>';
+    else
+      echo'<div class="alert alert-danger text-center">Problem Sending Email!</div>';
+  }else
+    echo'<div class="alert alert-danger text-center">No Account Found!</div>';
 }else{
   $r=rand(0,10);
   switch($r){

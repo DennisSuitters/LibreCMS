@@ -307,7 +307,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
         start:'<?php echo date("Y-m-d H:i:s",$r['tis']);?>',
 <?php if($r['tie']>$r['tis']){echo'eventend: \''.date("Y-m-d H:i:s",$r['tie']).'\',';}?>
         allDay:false,
-        color:'<?php if($r['status']=='confirmed')echo'#88f288';else echo'#f28888';?>',
+        color:'<?php if($r['status']=='confirmed')echo'#00bc8c';else echo'#e74c3c';?>',
         description:'<?php if($r['business'])echo'Business: '.$r['business'].'<br>';if($r['name'])echo'Name'.': '.$r['name'].'<br>';if($r['email'])echo'Email'.': <a href="mailto:'.$r['email'].'">'.$r['email'].'</a><br>';if($r['phone'])echo'Phone'.': '.$r['phone'].'<br>';?>',
         status:'<?php echo$r['status'];?>',
       },
@@ -332,7 +332,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
       $("#cbut"+event.id).click(function(){
         $("#cbut"+event.id).remove();
         $("#events-layer").remove();
-        event.color="#88f288";
+        event.color="#00bc8c";
         event.status="confirmed";
         update(event.id,"content","status","confirmed");
         $("#calendar").fullCalendar("updateEvent",event);

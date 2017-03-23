@@ -22,7 +22,8 @@ body .fc{font-size:1em}
 .fc-rtl{text-align:right}
 .fc th,
 .fc-basic-view .fc-week-number,
-.fc-icon,.fc-toolbar{text-align:center}
+.fc-icon,
+.fc-toolbar{text-align:center}
 .fc-unthemed .fc-content,
 .fc-unthemed .fc-divider,
 .fc-unthemed .fc-popover,
@@ -55,9 +56,13 @@ body .fc{font-size:1em}
 .fc-state-default.fc-corner-left{border-top-left-radius:4px;border-bottom-left-radius:4px}
 .fc-state-default.fc-corner-right{border-top-right-radius:4px;border-bottom-right-radius:4px}
 .fc button .fc-icon{position:relative;top:-.05em;margin:0 .2em;vertical-align:middle}
-.fc-state-active,.fc-state-disabled,.fc-state-down,.fc-state-hover{color:#333;background-color:#e6e6e6}
+.fc-state-active,
+.fc-state-disabled,
+.fc-state-down,
+.fc-state-hover{color:#333;background-color:#e6e6e6}
 .fc-state-hover{color:#333;text-decoration:none;background-position:0 -15px;-webkit-transition:background-position .1s linear;-moz-transition:background-position .1s linear;-o-transition:background-position .1s linear;transition:background-position .1s linear}
-.fc-state-active,.fc-state-down{background-color:#ccc;background-image:none;box-shadow:inset 0 2px 4px rgba(0,0,0,.15),0 1px 2px rgba(0,0,0,.05)}
+.fc-state-active,
+.fc-state-down{background-color:#ccc;background-image:none;box-shadow:inset 0 2px 4px rgba(0,0,0,.15),0 1px 2px rgba(0,0,0,.05)}
 .fc-state-disabled{cursor:default;background-image:none;opacity:.65;filter:alpha(opacity=65);box-shadow:none}
 .fc-event.fc-draggable,
 .fc-event[href],

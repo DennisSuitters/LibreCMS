@@ -2,12 +2,16 @@ body{width:100%;background:#fff}
 header .navbar.navbar-default{z-index:100;border:0;background-color:rgba(128,128,128,.8);-webkit-box-shadow:0 8px 30px rgba(0,0,0,.5);box-shadow:0 8px 30px rgba(0,0,0,.5);border-radius:0}
 header .navbar-brand a{color:#eee;font-size:1.2em;font-weight:700;text-shadow:1px 2px 6px #000}
 header .navbar-brand a:hover{color:#fff;text-decoration:none;text-shadow:2px 4px 8px #000}
-header .navbar-default .navbar-nav>li>a{color:#eee;font-size:1.2em;text-shadow:0 1px 1px #000}
+header .navbar-default .navbar-nav>li{padding-top:15px}
+header .navbar-default .navbar-nav>li>a{color:#eee;font-size:1.2em;text-shadow:0 1px 1px #000;display:inline}
 header .navbar-default .navbar-nav>li>a:focus,
 header .navbar-default .navbar-nav>li>a:hover{color:#fff;text-shadow:0 2px 4px #000}
 header .navbar-default .navbar-nav>.active>a,
 header .navbar-default .navbar-nav>.active>a:focus,
 header .navbar-default .navbar-nav>.active>a:hover{color:#fff;background-color:transparent;text-shadow:0 2px 4px #000}
+.navbar-default .navbar-nav .dropdown-toggle{padding-left:0;margin-left:-5px}
+.navbar .nav>li.dropdown.open.active>a:hover,
+.navbar .nav>li.dropdown.open>a{color:#ddd;background:none}
 .navbar-inverse{margin-bottom:0;border-radius:0}
 .navbar-inverse .navbar-nav{margin-bottom:0}
 #avatar{position:absolute;top:0;right:0;max-height:50px;width:50px}
@@ -48,13 +52,9 @@ header .navbar-default .navbar-nav>.active>a:hover{color:#fff;background-color:t
 .jumbotron:empty{display:none}
 .content-item{position:relative;display:block;background-color:#fff;color:#000;margin-bottom:30px!important}
 .content-item-info{padding:5px 20px;background-color:transparent}
-.content-item-image{
-  display:block;height:220px;overflow:hidden;
-  background:#bdc3c7;
-  background:-webkit-linear-gradient(135deg,#bdc3c7,#2c3e50);
-  background:linear-gradient(135deg,#bdc3c7,#2c3e50);
-}
+.content-item-image{display:block;height:220px;overflow:hidden;background:#bdc3c7;background:-webkit-linear-gradient(135deg,#bdc3c7,#2c3e50);background:linear-gradient(135deg,#bdc3c7,#2c3e50)}
 .content-item-image img{width:100%}
+.content-item-image img:empty{display:none}
 .content-item-title{width:100%;color:#000;margin-bottom:10px;text-align:center;font-size:1.1em;font-weight:700}
 .content-item-title a{color:#000}
 .content-item-price{font-weight:700;font-size:28px}

@@ -1,6 +1,51 @@
 <?php
 $rank=0;
 $show='pages';
+if($args[0]=='add'){
+  $ti=time();
+  $q=$db->prepare("INSERT INTO menu (
+    uid,
+    sid,
+    login_user,
+    title,
+    seoTitle,
+    file,
+    contentType,
+    schemaType,
+    menu,
+    active,
+    ord,
+    eti
+  ) VALUES (
+    :uid,
+    '0',
+    :login_user,
+    :title,
+    '',
+    'page',
+    'page',
+    'Article',
+    'other',
+    '0',
+    :ord,
+    :eti
+  )");
+  $q->execute(array(
+    ':uid'=>$user['id'],
+    ':login_user'=>$user['name']?$user['name']:$user['username'],
+    ':title'=>'New Page '.$ti.'',
+    ':ord'=>$ti,
+    ':eti'=>$ti
+  ));
+  $id=$db->lastInsertId();
+  $rank=0;
+  $args[0]='edit';
+  $args[1]=$id;?>
+<script>/*<![CDATA[*/
+  history.replaceState('','','<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$args[1];?>');
+/*]]>*/</script>
+<?php
+}
 if($args[0]=='settings')include'core'.DS.'layout'.DS.'set_pages.php';
 else{
   if($args[0]=='edit')$show='item';
@@ -10,6 +55,9 @@ else{
     <h4 class="col-xs-8">Pages</h4>
     <div class="pull-right">
       <div class="btn-group">
+        <a class="btn btn-default add" href="<?php echo URL.$settings['system']['admin'].'/pages/add';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>><?php svg('add');?></a>
+      </div>
+      <div class="btn-group">
         <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
       </div>
       <div class="btn-group">
@@ -18,12 +66,15 @@ else{
     </div>
   </div>
   <div class="panel-body">
-    <small class="text-muted">Pages can be dragged to change their order.</small>
+    <small class="help-block text-muted text-right">Pages can be dragged to change their order.</small>
     <div class="table-responsive">
       <table class="table table-condensed table-striped table-hover">
         <thead>
           <tr>
-            <th class="col-xs-10 col-sm-6">Title</th>
+            <th class="col-xs-10 col-sm-6">
+              Title
+              <small class="text-muted pull-right"><span class="small">Submenu Title</span></small>
+            </th>
             <th class="col-sm-1 text-center hidden-xs">Menu</th>
             <th class="col-sm-2 text-center hidden-xs">Views</th>
             <th class="col-sm-1 text-center hidden-xs">Active</th>
@@ -31,11 +82,50 @@ else{
           </tr>
         </thead>
         <tbody id="sortable">
-<?php $s=$db->prepare("SELECT * FROM menu ORDER BY ord ASC");
+<?php $s=$db->prepare("SELECT * FROM menu WHERE mid=0 ORDER BY ord ASC");
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-          <tr id="l_<?php echo$r['id'];?>" class="item">
-            <td><a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a></td>
+          <tr id="l_<?php echo$r['id'];?>" class="item subsortable">
+            <td>
+              <a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a>
+<?php $sm=$db->prepare("SELECT id,title,contentType,views FROM menu WHERE mid!=0 AND mid=:mid ORDER BY ord ASC");
+  $sm->execute(array(':mid'=>$r['id']));
+  while($rm=$sm->fetch(PDO::FETCH_ASSOC)){?>
+              <small id="s_<?php echo$rm['id'];?>" class="sub help-block zebra text-right">
+                <a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$rm['id'];?>"><?php echo$rm['title'];?></a>
+                <span id="controls_<?php echo$rm['id'];?>" class="text-right">
+                  <button class="btn btn-default btn-xs trash" onclick="$('#views<?php echo$rm['id'];?>').text('0');update('<?php echo$rm['id'];?>','menu','views','0');"><?php svg('eraser');?> <span id="views<?php echo$rm['id'];?>"><?php echo$rm['views'];?></span></button>
+                  <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$rm['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+<?php if($rm['contentType']=='page'){?>
+                  <button class="btn btn-default btn-xs trash" onclick="purge('<?php echo$rm['id'];?>','menu')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+<?php }?>
+                </span>
+              </small>
+              <script>
+                $('#l_<?php echo$r['id'];?>').sortable({
+                  items:"small",
+                  placeholder:".ghost",
+                  helper:fixWidthHelper,
+                  axis:"y",
+                  update:function(e,ui){
+                    var order=$("#l_<?php echo$r['id'];?>").sortable("serialize");
+                    $.ajax({
+                      type:"POST",
+                      dataType:"json",
+                      url:"core/reordersub.php",
+                      data:order
+                    });
+                  }
+                }).disableSelection();
+                function fixWidthHelper(e,ui){
+                  ui.children().each(function(){
+                    $(this).width($(this).width());
+                  });
+                  return ui;
+                }
+              </script>
+<?php }?>
+            </td>
             <td class="text-center hidden-xs"><?php echo ucfirst($r['menu']);?></td>
             <td class="text-center hidden-xs">
               <button class="btn btn-default trash" onclick="$('#views<?php echo$r['id'];?>').text('0');update('<?php echo$r['id'];?>','menu','views','0');"><?php svg('eraser');?> <span id="views<?php echo$r['id'];?>"><?php echo$r['views'];?></span></button>
@@ -50,6 +140,9 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
             </td>
             <td id="controls_<?php echo$r['id'];?>" class="text-right">
               <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+<?php if($r['contentType']=='page'){?>
+              <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','menu')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
+<?php }?>
             </td>
           </tr>
 <?php }?>
@@ -464,6 +557,19 @@ if($cntc<0){
             <option value="head"<?php if($r['menu']=='head')echo' selected';?>>Head</option>
             <option value="other"<?php if($r['menu']=='other')echo' selected';?>>Other</option>
             <option value="footer"<?php if($r['menu']=='footer')echo' selected';?>>Footer</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="mid" class="control-label col-xs-5 col-sm-3 col-lg-2">SubMenu</label>
+        <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+          <select id="mid" class="form-control" onchange="update('<?php echo$r['id'];?>','menu','mid',$(this).val());" data-dbid-"<?php echo$r['id'];?>" data-dbt="menu" data-dbc="mid">
+            <option value="0"<?php if($r['mid']==0)echo' selected';?>>None</option>
+<?php $sm=$db->prepare("SELECT id,title from menu WHERE mid=0 AND mid!=:mid AND active=1 ORDER BY ord ASC, title ASC");
+$sm->execute(array(':mid'=>$r['id']));
+while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
+  echo'<option value="'.$rm['id'].'"';if($r['mid']==$rm['id'])echo' selected';echo'>'.$rm['title'].'</option>';
+}?>
           </select>
         </div>
       </div>

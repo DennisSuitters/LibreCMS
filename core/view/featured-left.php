@@ -7,10 +7,16 @@ if(stristr($html,'<categories')){
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$items=$cat;
-		$items=str_replace('<print content=link>',URL.'inventory/'.urlencode(str_replace(' ','-',$r['category_1'])),$items);
-    $items=str_replace('<print content="category_1">',$r['category_1'],$items);
+		$items=str_replace(array(
+			'<print content=link>','<print content="link">',
+			'<print content=category_1>','<print content="category_1">'
+		),array(
+			URL.'inventory/'.urlencode(str_replace(' ','-',$r['category_1'])),URL.'inventory/'.urlencode(str_replace(' ','-',$r['category_1'])),
+			htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8'),htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8')
+		),$items);
 		$output.=$items;
 	}
 	$cats=preg_replace('~<categories>.*?<\/categories>~is',$output,$html,1);
-}else$cats='';
+}else
+	$cats='';
 $content.=$cats;

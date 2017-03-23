@@ -4,6 +4,14 @@ use SEOstats\Common\SEOstatsException as E;
 use SEOstats\SEOstats as SEOstats;
 use SEOstats\Config as Config;
 use SEOstats\Helper as Helper;
+function env($config,$default){
+  $config_value=getenv($config);
+  if(is_string($config_value)&&(strlen(trim($config_value))>0)){
+    return$config_value;
+  }else{
+    return$default;
+  }
+}
 class Google extends SEOstats{
   public static function getPageRank($url=false){if(!class_exists('\GTB_PageRank'))require_once realpath(__DIR__.'/3rdparty/GTB_PageRank.php');$gtb=new \GTB_PageRank(parent::getUrl($url));$result=$gtb->getPageRank();return$result!=""?$result:static::noDataDefaultValue();}
   public static function getSiteindexTotal($url=false){$url=parent::getUrl($url);$query=urlencode("site:{$url}");return self::getSearchResultsTotal($query);}

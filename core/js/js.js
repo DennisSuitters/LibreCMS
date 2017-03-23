@@ -6,7 +6,7 @@ function blocker(){
 }
 $("#menu-toggle").click(function(e){
 	e.preventDefault();
-	$("#sidemenu,#content,#menu-toggle").toggleClass("toggled");
+	$("#sidemenu,#content,#menu-toggle,.navbar-inverse").toggleClass("toggled");
 });
 function getExif(id,t,c){
 	Pace.restart();
@@ -433,4 +433,22 @@ function toggleCalendar(){
 	}else{
 		Cookies.set('bookingview','table',{expires:14});
 	}
+}
+function changeBackground(bg){
+	$(document.body).removeClass('bg1');
+	$(document.body).removeClass('bg2');
+	$(document.body).removeClass('bg3');
+	$(document.body).removeClass('bg4');
+	$(document.body).removeClass('bg5');
+	$(document.body).removeClass('bg6');
+	$('.adminbg').removeClass('active');
+	$('#'+bg).addClass('active');
+	if(bg=='bg0'){
+		bg='';
+	}else{
+		$(document.body).addClass(bg);
+	}
+	Cookies.remove('adminbg');
+	Cookies.set('adminbg',bg,{expires:14});
+	document.styleSheets.reload();
 }

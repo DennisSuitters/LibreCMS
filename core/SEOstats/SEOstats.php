@@ -12,6 +12,7 @@ if(1==ini_get('safe_mode')||'on'===strtolower(ini_get('safe_mode'))){
   throw new E('Because some SEOstats functions require the CURLOPT_FOLLOWLOCATION flag, you must not run PHP in safe mode! (This flag can not be set in safe mode.)');
   exit();
 }
+
 class SEOstats{
   const BUILD_NO=Config\Package::VERSION_CODE;
   protected static$_url,$_host,$_lastHtml,$_lastLoadedUrl=false;

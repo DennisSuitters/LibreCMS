@@ -16,9 +16,9 @@
     <link rel="stylesheet" type="text/css" href="core/css/style.css">
     <script src="core/js/jquery-2.1.3.min.js"></script>
   </head>
-  <body>
+  <body class="<?php if(isset($_COOKIE['adminbg']))echo$_COOKIE['adminbg'].'l';?>">
     <div class="container">
-      <div id="panelLogin" class="panel panel-default login center-block animated fadeInDown">
+      <div id="panelLogin" class="panel panel-default login center-block<?php if(!isset($_COOKIE['adminbg'])||(isset($_COOKIE['adminbg'])&&$_COOKIE['adminbg']==''))echo' animated fadeInDown';?>">
         <div class="panel-body">
           <form id="login" role="form" method="post" action="<?php if (!empty($_SERVER['HTTP_REFERER']))echo$_SERVER['HTTP_REFERER'];else echo'admin/';?>" accept-charset="UTF-8">
             <input type="hidden" name="act" value="login">

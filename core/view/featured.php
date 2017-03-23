@@ -35,7 +35,8 @@ if($cT=='all'||$cT=='mixed'||$cT=='folder'){
 			$filetime=filemtime($file);
 			$fileinfo=pathinfo($file);
 			$filename=basename($file,'.'.$fileinfo['extension']);
-			if(file_exists('media'.DS.'carousel'.DS.$filename.'.html'))$filehtml=file_get_contents('media'.DS.'carousel'.DS.$filename.'.html');else$filehtml='';
+			if(file_exists('media'.DS.'carousel'.DS.$filename.'.html'))
+				$filehtml=file_get_contents('media'.DS.'carousel'.DS.$filename.'.html');else$filehtml='';
 			$featuredfiles[]=['contentType'=>'carousel','thumb'=>'','file'=>$file,'title'=>basename(rtrim($file),3),'link'=>'nolink','seoCaption'=>$filehtml,'notes'=>'','ti'=>$filetime];
 		}
 	}
@@ -54,7 +55,12 @@ if($cT!='folder'){
 $indicators='';
 $indicator='';
 $featuredIndicators='';
-if($arrayOrder=='random')shuffle($featuredfiles);elseif($arrayOrder=='asc')asort($featuredfiles);else arsort($featuredfiles);
+if($arrayOrder=='random')
+	shuffle($featuredfiles);
+elseif($arrayOrder=='asc')
+	asort($featuredfiles);
+else
+	arsort($featuredfiles);
 $featuredfiles=array_slice($featuredfiles,0,$itemCount);
 $ii=count($featuredfiles);
 $i=0;
@@ -74,38 +80,55 @@ if($ii>0){
 			$indicatorItem=str_replace('<print active>','',$indicatorItem);
 		}
 		$indicatorItem=str_replace('<print indicatorCount>',$i,$indicatorItem);
-		if($r['link']=='nolink')$item=preg_replace('~<link>.*?<\/link>~is','',$item,1);
+		if($r['link']=='nolink')
+			$item=preg_replace('~<link>.*?<\/link>~is','',$item,1);
 		else{
-			$item=str_replace('<link>','',$item);
-			$item=str_replace('</link>','',$item);
+			$item=str_replace(array('<link>','</link>'),'',$item);
 			$item=str_replace('<print link>',$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$item);
 		}
-		$item=str_replace('<print content=title>',$r['title'],$item);
-		if(stristr($item,'<print content=thumb>')){
-			if($r['thumb']!='')$item=str_replace('<print content=thumb>',$r['thumb'],$item);elseif($r['file']!='')$item=str_replace('<print content=thumb>',$r['file'],$item);else$item=str_replace('<print content=thumb>','',$item);
+		$item=str_replace(array('<print content=title>','<print content="title">'),$r['title'],$item);
+		if(stristr($item,'<print content=thumb>')||stristr($item,'<print content="thumb">')){
+			if($r['thumb']!='')
+				$item=str_replace(array('<print content=thumb>','<print content="thumb">'),$r['thumb'],$item);
+			elseif($r['file']!='')
+				$item=str_replace(array('<print content=thumb>','<print content="thumb">'),$r['file'],$item);
+			else
+				$item=str_replace(array('<print content=thumb>','<print content="thumb">'),'',$item);
 		}
-		if(stristr($item,'<print content=alt>')){
+		if(stristr($item,'<print content=alt>')||stristr($item,'<print content="alt">')){
 			if($r['file']!=''){
 				$alt=pathinfo($r['file']);
 				$alt=$alt['filename'];
 				$alt=str_replace('-',' ',$alt);
 				$alt=ucfirst($alt);
-			}else$alt=$r['title'];
-			$item=str_replace('<print content=alt>',$alt,$item);
+			}else
+				$alt=$r['title'];
+			$item=str_replace(array('<print content=alt>','<print content="alt"'),$alt,$item);
 		}
-		if(stristr($item,'<print content=image>')){
-			if($r['file']!='')$item=str_replace('<print content=image>',$r['file'],$item);else$item=str_replace('<print content=image>','',$item);
+		if(stristr($item,'<print content=image>')||stristr($item,'<print content="image">')){
+			if($r['file']!='')
+				$item=str_replace(array('<print content=image>','<print content="image">'),$r['file'],$item);
+			else
+				$item=str_replace(array('<print content=image>','<print content="image">'),'',$item);
 		}
-		if($r['link']=='nolink')$item=str_replace('<print content="title">','<span class="hidden">'.$r['title'].'</span>',$item);else$item=str_replace('<print content="title">',$r['title'],$item);
-		if($r['contentType']=='carousel')$item=preg_replace('~<caption>.*?<\/caption>~is',$r['seoCaption'],$item,1);
+		if($r['link']=='nolink')
+			$item=str_replace(array('<print content=title>','<print content="title">'),'<span class="hidden">'.$r['title'].'</span>',$item);
+		else
+			$item=str_replace(array('<print content=title>','<print content="title">'),$r['title'],$item);
+		if($r['contentType']=='carousel')
+			$item=preg_replace('~<caption>.*?<\/caption>~is',$r['seoCaption'],$item,1);
 		else{
 			$r['notes']=strip_tags($r['notes']);
 			$pos=strpos($r['notes'],' ',300);
 			$r['notes']=substr(rawurldecode($r['notes']),0,$pos).'...';
-			if($r['seoCaption']!='')$item=str_replace('<print content="caption">',$r['seoCaption'],$item);elseif($r['notes']!='')$item=str_replace('<print content="caption">',strip_tags(rawurldecode($r['notes'])),$item);else$item=str_replace('<print content="caption">','',$item);
+			if($r['seoCaption']!='')
+				$item=str_replace(array('<print content=caption>','<print content="caption">'),$r['seoCaption'],$item);
+			elseif($r['notes']!='')
+				$item=str_replace(array('<print content=caption>','<print content="caption">'),strip_tags(rawurldecode($r['notes'])),$item);
+			else
+				$item=str_replace(array('<print content=caption>','<print content="caption">'),'',$item);
 			if($r['notes']!='')$item=str_replace('<print content="notes">',strip_tags(rawurldecode($r['notes'])),$item);else$item=str_replace('<print content="notes">','',$item);
-			$item=str_replace('<caption>','',$item);
-			$item=str_replace('</caption>','',$item);
+			$item=str_replace(array('<caption>','</caption>'),'',$item);
 		}
 		$items.=$item;
 		$i++;
@@ -114,13 +137,14 @@ if($ii>0){
 }
 if($ii>1){
 	$html=preg_replace('~<indicators>.*?<\/indicators>~is',$indicators,$html,1);
-	$html=str_replace('<featuredIndicators>','',$html);
-	$html=str_replace('</featuredIndicators>','',$html);
-	$html=str_replace('<featuredControls>','',$html);
-	$html=str_replace('</featuredControls>','',$html);
+	$html=str_replace(array('<featuredIndicators>','</featuredIndicators>'),'',$html);
+	$html=str_replace(array('<featuredControls>','</featuredControls>'),'',$html);
 }else{
 	$html=preg_replace('~<featuredControls>.*?<\/featuredControls>~is','',$html,1);
-	$html=str_replace('<featuredIndicators>','',$html);
+	$html=str_replace(array('<featuredIndicators>','</featuredIndicators>'),'',$html);
 }
-if($i>0)$html=preg_replace('~<items>.*?<\/items>~is',$items,$html,1);else$html='';
+if($i>0)
+	$html=preg_replace('~<items>.*?<\/items>~is',$items,$html,1);
+else
+	$html='';
 $content.=$html;

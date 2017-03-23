@@ -1,7 +1,8 @@
 <?php
 if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
   require'..'.DS.'db.php';
-  if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
+  if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)
+    define('PROTOCOL','https://');else define('PROTOCOL','http://');
   define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url']);
   $eml=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
   $un=filter_input(INPUT_POST,'username',FILTER_SANITIZE_STRING);
@@ -10,7 +11,8 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
     $s=$db->prepare("SELECT username FROM login WHERE username=:username LIMIT 1");
     $s->execute(array(':username'=>$un));
     $r=$s->fetch(PDO::FETCH_ASSOC);
-    if($s->rowCount()>0)echo'<div class="alert alert-danger text-center">Username Already Exists!</div>';
+    if($s->rowCount()>0)
+      echo'<div class="alert alert-danger text-center">Username Already Exists!</div>';
     else{
       $chars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&";
       $password=substr(str_shuffle($chars),0,8);
@@ -32,9 +34,13 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
     	$msg=str_replace('{password}',$password,$msg);
     	$mail->Body=$msg;
     	$mail->AltBody=$msg;
-    	if($mail->Send())echo'<div class="alert alert-success text-center">Check your Email!</div>';else echo'<div class="alert alert-danger text-center">Problem Sending Email!</div>';
+    	if($mail->Send())
+        echo'<div class="alert alert-success text-center">Check your Email!</div>';
+      else
+        echo'<div class="alert alert-danger text-center">Problem Sending Email!</div>';
     }
-  }else echo'<div class="alert alert-danger text-center">Must have a username</div>';
+  }else
+    echo'<div class="alert alert-danger text-center">Must have a username</div>';
 }else{
   $r=rand(0,10);
   switch($r){

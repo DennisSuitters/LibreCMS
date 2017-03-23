@@ -34,10 +34,28 @@
 			</div>
 			<div class="collapse navbar-collapse" id="libreCMS-collapse">
 				<ul class="nav navbar-nav navbar-right" role="list">
-					<buildMenu>
-						<li class="<print active=menu>" role="listitem"><a href="<print menu=url>" role="link" rel="<print rel=contentType>"><print menu="title"></a><menuCart></li>
-					</buildMenu>
-				</ul>
+						<buildMenu>
+							<nondropDown>
+								<li class="<print active=menu>" role="listitem">
+									<a href="<print menu=url>" role="link" rel="<print rel=contentType>"><print menu="title"></a>
+									<menuCart>
+								</li>
+							</nondropDown>
+							<dropDown>
+								<li class="dropdown<print active=menu>" role="listitem">
+									<a href="<print menu=url>" role="link" rel="<print rel=contentType>"><print menu="title"></a>
+									<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>
+									<subMenu>
+										<ul class="dropdown-menu">
+											<subMenuItem>
+											 <li><a href="<print submenu=url>" role="link" rel="<print rel=contentType"><print submenu="title"></a></li>
+											</subMenuItem>
+										 </ul>
+									</subMenu>
+								</li>
+							</dropDown>
+						</buildMenu>
+					</ul>
 			</div>
 		</div>
 	</nav>

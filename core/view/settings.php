@@ -60,44 +60,61 @@ if(isset($user)&&$user['rank']>0){
 	if(stristr($html,'<error matchPassCSS>'))$html=str_replace('<error matchPassCSS>',$matchPassCSS,$html);
 	if(stristr($html,'<error matchPassHidden>'))$html=str_replace('<error matchPassHidden>',$matchPassHidden,$html);
 	if(stristr($html,'<success passUpdated>'))$html=str_replace('<success passUpdated>',$success,$html);
-	if(stristr($html,'<print user=gravatar>'))$html=str_replace('<print user=gravatar>',$user['gravatar'],$html);
-	if(stristr($html,'<print user=ti>'))$html=str_replace('<print user=ti>',date($config['dateFormat'],$user['ti']),$html);
-	if(stristr($html,'<print user=username>'))$html=str_replace('<print user=username>',$user['username'],$html);
-	if(stristr($html,'<print user=rank>')){
-		$rank='Visitor';
-		switch($user['rank']){
-			case 100:$rank='Subscriber';break;
-			case 200:$rank='Member';break;
-			case 300:$rank='Client';break;
-			case 400:$rank='Contributor';break;
-			case 500:$rank='Moderator';break;
-			case 600:$rank='Author';break;
-			case 700:$rank='Editor';break;
-			case 800:$rank='Manager';break;
-			case 900:$rank='Administrator';break;
-			case 1000:$rank='Developer';break;
-			default:$rank='Visitor';break;
-		}
-		$html=str_replace('<print user=rank>',$rank,$html);
+	$rank='Visitor';
+	switch($user['rank']){
+		case 100:$rank='Subscriber';break;
+		case 200:$rank='Member';break;
+		case 300:$rank='Client';break;
+		case 400:$rank='Contributor';break;
+		case 500:$rank='Moderator';break;
+		case 600:$rank='Author';break;
+		case 700:$rank='Editor';break;
+		case 800:$rank='Manager';break;
+		case 900:$rank='Administrator';break;
+		case 1000:$rank='Developer';break;
+		default:$rank='Visitor';break;
 	}
-	if(stristr($html,'<print user=id>'))$html=str_replace('<print user=id>',$user['id'],$html);
-	if(stristr($html,'<print user=email>'))$html=str_replace('<print user=email>',$user['email'],$html);
-	if(stristr($html,'<print user=name>'))$html=str_replace('<print user=name>',$user['name'],$html);
-	if(stristr($html,'<print user=url>'))$html=str_replace('<print user=url>',$user['url'],$html);
-	if(stristr($html,'<print user=business>'))$html=str_replace('<print user=business>',$user['business'],$html);
-	if(stristr($html,'<print user=phone>'))$html=str_replace('<print user=phone>',$user['phone'],$html);
-	if(stristr($html,'<print user=mobile>'))$html=str_replace('<print user=mobile>',$user['mobile'],$html);
-	if(stristr($html,'<print user=address>'))$html=str_replace('<print user=address>',$user['address'],$html);
-	if(stristr($html,'<print user=suburb>'))$html=str_replace('<print user=suburb>',$user['suburb'],$html);
-	if(stristr($html,'<print user=city>'))$html=str_replace('<print user=city>',$user['city'],$html);
-	if(stristr($html,'<print user=state>'))$html=str_replace('<print user=state>',$user['state'],$html);
-	if(stristr($html,'<print user=postcode>')){
-		if($user['postcode']==0)$user['postcode']='';
-		$html=str_replace('<print user=postcode>',$user['postcode'],$html);
-	}
-	if(stristr($html,'<print user=country>'))$html=str_replace('<print user=country>',$user['country'],$html);
+	if($user['postcode']==0)$user['postcode']='';
+	$html=str_replace(array(
+		'<print user=gravatar>','<print user="gravatar">',
+		'<print user=ti>','<print user="ti">',
+		'<print user=username>','<print user="username">',
+		'<print user=rank>','<print user="rank">',
+		'<print user=id>','<print user="id">',
+		'<print user=email>','<print user="email">',
+		'<print user=name>','<print user="name">',
+		'<print user=url>','<print user="url">',
+		'<print user=business>','<print user="business">',
+		'<print user=phone>','<print user="phone">',
+		'<print user=mobile>','<print user="mobile">',
+		'<print user=address>','<print user="address">',
+		'<print user=suburb>','<print user="suburb">',
+		'<print user=city>','<print user="city">',
+		'<print user=state>','<print user="state">',
+		'<print user=postcode>','<print user="postcode">',
+		'<print user=country>','<print user="country">'
+	),array(
+		htmlspecialchars($user['gravatar'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['gravatar'],ENT_QUOTES,'UTF-8'),
+		date($config['dateFormat'],$user['ti']),date($config['dateFormat'],$user['ti']),
+		htmlspecialchars($user['username'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['username'],ENT_QUOTES,'UTF-8'),
+		$rank,$rank,
+		htmlspecialchars($user['id'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['id'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['email'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['email'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['name'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['name'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['url'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['url'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['business'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['business'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['phone'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['phone'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['mobile'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['mobile'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['address'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['address'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['suburb'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['suburb'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['city'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['city'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['state'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['state'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['postcode'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['postcode'],ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($user['country'],ENT_QUOTES,'UTF-8'),htmlspecialchars($user['country'],ENT_QUOTES,'UTF-8')
+	),$html);
 }else{
 	$html='';
-	if(file_exists(THEME.DS.$amp.DS.'noaccess.html'))$html=file_get_contents(THEME.DS.$amp.DS.'noaccess.html');
+	if(file_exists(THEME.DS.$amp.DS.'noaccess.html'))
+		$html=file_get_contents(THEME.DS.$amp.DS.'noaccess.html');
 }
 $content.=$html;

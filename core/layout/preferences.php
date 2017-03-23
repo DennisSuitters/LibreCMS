@@ -414,6 +414,39 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
           </div>
           <small class="help-block text-right">For information on Date Format Characters click <a target="_blank" href="http://php.net/manual/en/function.date.php#refsect1-function.date-parameters">here</a>.</small>
         </div>
+        <div class="form-group">
+          <small class="help-block text-right">Select a theme image to use. We'll add more from time to time. Photo's are from <a target="_blank" href="https://unsplash.com/">UnSplash</a></small>
+          <div class="input-group col-xs-12">
+            <div id="bg0" class="col-xs-3 col-sm-2 adminbg<?php if(isset($_COOKIE['adminbg'])&&$_COOKIE['adminbg']=='')echo' active';?>" onclick="changeBackground('bg0');">
+              <img class="img-thumbnail" src="core/images/bg0-menu.png">
+<?php // https://unsplash.com/@vingtcent ?>
+            </div>
+            <div id="bg1" class="col-xs-3 col-sm-2 adminbg<?php if(isset($_COOKIE['adminbg'])&&$_COOKIE['adminbg']=='bg1')echo' active';?>" onclick="changeBackground('bg1');">
+              <img class="img-thumbnail" src="core/images/bg1-menu.jpg">
+<?php // https://unsplash.com/@vingtcent ?>
+            </div>
+            <div id="bg2" class="col-xs-3 col-sm-2 adminbg<?php if(isset($_COOKIE['adminbg'])&&$_COOKIE['adminbg']=='bg2')echo' active';?>" onclick="changeBackground('bg2');">
+              <img class="img-thumbnail" src="core/images/bg2-menu.jpg">
+<?php // https://unsplash.com/@alanaut24 ?>
+            </div>
+            <div id="bg3" class="col-xs-3 col-sm-2 adminbg<?php if(isset($_COOKIE['adminbg'])&&$_COOKIE['adminbg']=='bg3')echo' active';?>" onclick="changeBackground('bg3');">
+              <img class="img-thumbnail" src="core/images/bg3-menu.jpg">
+<?php // https://unsplash.com/@hilesy ?>
+            </div>
+            <div id="bg4" class="col-xs-3 col-sm-2 adminbg<?php if(isset($_COOKIE['adminbg'])&&$_COOKIE['adminbg']=='bg4')echo' active';?>" onclick="changeBackground('bg4');">
+              <img class="img-thumbnail" src="core/images/bg4-menu.jpg">
+<?php // https://unsplash.com/@shontzphotography ?>
+            </div>
+            <div id="bg5" class="col-xs-3 col-sm-2 adminbg<?php if(isset($_COOKIE['adminbg'])&&$_COOKIE['adminbg']=='bg5')echo' active';?>" onclick="changeBackground('bg5');">
+              <img class="img-thumbnail" src="core/images/bg5-menu.jpg">
+<?php // https://unsplash.com/@adriel ?>
+            </div>
+            <div id="bg6" class="col-xs-3 col-sm-2 adminbg<?php if(isset($_COOKIE['adminbg'])&&$_COOKIE['adminbg']=='bg6')echo' active';?>" onclick="changeBackground('bg6');">
+              <img class="img-thumbnail" src="core/images/bg6-menu.jpg">
+<?php // https://unsplash.com/@devel ?>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="preference-seo" name="preference-seo" class="tab-pane fade in">
         <div class="form-group">

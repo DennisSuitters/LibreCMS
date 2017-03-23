@@ -5,13 +5,16 @@ if($args[0]=="confirm"){
 	if($_POST['emailtrap']==''){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
 		$rewards=filter_input(INPUT_POST,'rewards',FILTER_SANITIZE_STRING);
-		if(isset($_SESSION['uid']))$uid=$_SESSION['uid'];else$uid=0;
+		$uid=isset($_SESSION['uid'])?$_SESSION['uid']:0;
 		if(filter_var($email,FILTER_VALIDATE_EMAIL)){
 			$s=$db->prepare("SELECT id,status FROM login WHERE email=:email");
 			$s->execute(array(':email'=>$email));
 			if($s->rowCount()>0){
 				$ru=$s->fetch(PDO::FETCH_ASSOC);
-				if($ru['status']=='delete'||$ru['status']=='disabled')$notification.=$theme['settings']['account_suspend'];else$uid=$ru['id'];
+				if($ru['status']=='delete'||$ru['status']=='disabled')
+					$notification.=$theme['settings']['account_suspend'];
+				else
+					$uid=$ru['id'];
 			}else{
 				$business=filter_input(INPUT_POST,'business',FILTER_SANITIZE_STRING);
 				$address=filter_input(INPUT_POST,'address',FILTER_SANITIZE_STRING);
@@ -36,13 +39,16 @@ if($args[0]=="confirm"){
 			$sr->execute(array(':code'=>$rewards));
 			if($sr->rowCount()>0){
 				$reward=$sr->fetch(PDO::FETCH_ASSOC);
-				if(!$reward['tis']>$ti&&!$reward['tie']<$ti)$rewards['id']=0;
-				if($reward['quantity']<1)$reward['id']=0;
+				if(!$reward['tis']>$ti&&!$reward['tie']<$ti)
+					$rewards['id']=0;
+				if($reward['quantity']<1)
+					$reward['id']=0;
 				else{
 					$sr=$db->prepare("UPDATE rewards SET quantity=:quantity WHERE code=:code");
 					$sr->execute(array(':quantity'=>$rewards['quantity']-1,':code'=>$rewards));
 				}
-			}else$reward['id']=0;
+			}else
+				$reward['id']=0;
 			$dti=$ti+$config['orderPayti'];
 			$qid='Q'.date("ymd",$ti).sprintf("%06d",$r['id']+1,6);
 			$q=$db->prepare("INSERT INTO orders (cid,uid,qid,qid_ti,due_ti,rid,status,ti) VALUES (:cid,:uid,:qid,:qid_ti,:due_ti,:rid,'pending',:ti)");
@@ -78,9 +84,11 @@ if($args[0]=="confirm"){
 				if($mail->Send()){}
 			}
 			$notification.=$theme['settings']['cart_success'];
-		}else$notification.=$theme['settings']['cart_suspend'];
+		}else
+			$notification.=$theme['settings']['cart_suspend'];
 		$html=preg_replace('~<emptycart>.*?<\/emptycart>~is',$notification,$html,1);
-	}else$html=preg_replace('~<emptycart>.*?<\/emptycart>~is','',$html,1);
+	}else
+		$html=preg_replace('~<emptycart>.*?<\/emptycart>~is','',$html,1);
 }else{
 	$total=0;
 	if(stristr($html,'<items')){
@@ -98,21 +106,33 @@ if($args[0]=="confirm"){
 				$sc=$db->prepare("SELECT * FROM choices WHERE id=:id");
 				$sc->execute(array(':id'=>$ci['cid']));
 				$c=$sc->fetch(PDO::FETCH_ASSOC);
-				$cartitem=str_replace('<print content="code">',$i['code'],$cartitem);
-				$cartitem=str_replace('<print content="title">',$i['title'],$cartitem);
-				$cartitem=str_replace('<print choice>',$c['title'],$cartitem);
-				$cartitem=str_replace('<print cart=id>',$ci['id'],$cartitem);
-				$cartitem=str_replace('<print cart=quantity>',$ci['quantity'],$cartitem);
-				$cartitem=str_replace('<print cart=cost>',$ci['cost'],$cartitem);
-				$cartitem=str_replace('<print itemscalculate>',$ci['cost']*$ci['quantity'],$cartitem);
+				$cartitem=str_replace(array(
+					'<print content=code>','<print content="code">',
+					'<print content=title>','<print content="title">',
+					'<print choice>',
+					'<print cart=id>','<print cart="id">',
+					'<print cart=quantity>','<print cart="quantity">',
+					'<print cart=cost>','<print cart="cost">',
+					'<print itemscalculate>'
+				),array(
+					htmlspecialchars($i['code'],ENT_QUOTES,'UTF-8'),htmlspecialchars($i['code'],ENT_QUOTES,'UTF-8'),
+					htmlspecialchars($i['title'],ENT_QUOTES,'UTF-8'),htmlspecialchars($i['title'],ENT_QUOTES,'UTF-8'),
+					htmlspecialchars($c['title'],ENT_QUOTES,'UTF-8'),
+					$ci['id'],$ci['id'],
+					htmlspecialchars($ci['quantity'],ENT_QUOTES,'UTF-8'),htmlspecialchars($ci['quantity'],ENT_QUOTES,'UTF-8'),
+					$ci['cost'],$ci['cost'],
+					$ci['cost']*$ci['quantity']
+				),$cartitem);
 				$total=$total+($ci['cost']*$ci['quantity']);
 				$cartitems.=$cartitem;
 			}
 			$html=preg_replace('~<items>.*?<\/items>~is',$cartitems,$html,1);
 			$total=$total+$ci['postagecost'];
 			$html=str_replace('<print totalcalculate>',$total,$html);
-			if(isset($user['id'])&&$user['id']>0)$html=preg_replace('~<loggedin>.*?<\/loggedin>~is','<input type="hidden" name="email" value="'.$user['email'].'">',$html,1);
-		}else$html=preg_replace('~<emptycart>.*?<\/emptycart>~is',$theme['settings']['cart_empty'],$html,1);
+			if(isset($user['id'])&&$user['id']>0)
+				$html=preg_replace('~<loggedin>.*?<\/loggedin>~is','<input type="hidden" name="email" value="'.$user['email'].'">',$html,1);
+		}else
+			$html=preg_replace('~<emptycart>.*?<\/emptycart>~is',$theme['settings']['cart_empty'],$html,1);
 	}
 }
 $content.=$html;

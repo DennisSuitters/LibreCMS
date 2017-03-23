@@ -366,13 +366,13 @@ class front{
 		$view='newsletters';
 		require'process.php';
 	}
-	function content($args=false){
-		$view=$args[0];
+	function page($args=false){
+		$view='page';
 		require'process.php';
 	}
 }
 $route=new router();
-$rts=array(
+$routes=array(
   $settings['system']['admin'].'/add'=>array('admin','add'),
 	$settings['system']['admin'].'/accounts'=>array('admin','accounts'),
 	$settings['system']['admin'].'/activity'=>array('admin','activity'),
@@ -407,11 +407,11 @@ $s=$db->prepare("SELECT * FROM menu WHERE active=1");
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
 	if(method_exists('front',$r['contentType']))
-    $rts[$r['contentType']]=array('front',$r['contentType']);
+    $routes[$r['contentType']]=array('front',$r['contentType']);
   else
-    $rts[$r['contentType']]=array('front','content');
+    $routes[$r['contentType']]=array('front','content');
 }
-$route->setRoutes($rts);
+$route->setRoutes($routes);
 $route->routeURL(preg_replace("|/$|","",filter_input(INPUT_GET,'url',FILTER_SANITIZE_URL)));
 class router{
 	protected$route_match=false;

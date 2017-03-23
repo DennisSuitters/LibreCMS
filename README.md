@@ -11,10 +11,11 @@ a **Free** Open Source [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) Conten
 
 ### Features
 - Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs, Messages, and Newsletters.
+- Add and Remove Custom Pages. Submenu custom and existing pages.
 - Messaging - Whenever a message is created via the Contact Us page, it is stored in the Messages system as well as emailed.
 - Orders - Create Quotes, Invoices. Client viewing of Orders.
 - Media - Upload and manage various types of files for addition into content using elFinder.
-- Featured Content - Can use Content Items as Featured Content, or Images uploaded into the `media/carousel/` folder. Which then will get sorted, and number of items depending on the settings attributes in the `featured.html` template file.
+- Featured Content - Can use Content Items as Featured Content, or Images and HTML Templates uploaded into the `media/carousel/` folder. Which then will get sorted, and number of items displayed depending on the settings attributes in the `featured.html` template file.
 - Accounts - Create Accounts for co-workers with Account Types for Administrators, Editors (especially good for SEO and Copywriters), Client's, and Visitors.
 - Client Proofs and Commenting
 - Easy Theme Selector
@@ -40,9 +41,10 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 
 ### Dependencies
 - PHP > 5.6 - Must have PDO, and Password Compat support. If you have tried LibreCMS with a higher version, please report your experiences.
+- Now works with PHP 7+. Please make sure PHP Libraries are installed before reporting Issues.
 - mod_rewrite
-- PHP5-gd2 (GD-Image) & Imagemagick- LibreCMS will work without them, but things like Thumbnails, and image resizing won't work.
-- mail services - Are need for mail notification sending, and for the Newsletters.
+- GD-Image & Imagemagick- LibreCMS will work without them, but things like Thumbnails, and image resizing won't work.
+- mail services - Are needed for mail notification sending, and for the Newsletters.
 
 #### Integrated Projects:
 - [LibreICONS](https://github.com/StudioJunkyard/LibreICONS)
@@ -73,8 +75,8 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 ### Tested on:
 - CentOS Linux 7.2.1511 with Webmin 1.791
 - Ubuntu Linux 14.04 + Apache v2.4.7 + PHP v5.6 + MySQL v5.5.37
-- Linux Mint Ubuntu Edition Apache 2.4.7 + PHP v5.6-7.1 + MySQL v5.5.37
-- Linux Mint Debian Edition Apache 2.4.7 + PHP v5.6-7.1 + MySQL v5.5.37
+- Linux Mint Ubuntu Edition Apache 2.4.7 + PHP v5.6-7+ & MySQL v5.5.37
+- Linux Mint Debian Edition Apache 2.4.7 + PHP v5.6-7+ & MySQL v5.5.37
 - Debian 7 + nGinx + PHP 5.5 + MySQL
 - Windows 7 + WAMP + PHP 5.5 + MySQL
 

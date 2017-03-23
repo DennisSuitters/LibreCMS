@@ -13,12 +13,13 @@
 .fc-icon-x:after{background-position:-168px -70px}
 .fc button{display:inline-block;padding:6px 12px;margin-bottom:0;font-size:14px;font-weight:400;line-height:1.2em;text-align:center;white-space:nowrap;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;border:1px solid #ccc;border-radius:4px;color:#333;background-color:#fff}
 .fc button:active:focus,
-.fc button:focus{outline:dotted thin;outline:-webkit-focus-ring-color auto 5px;outline-offset:-2px}
+.fc button:focus{outline:none;outline:none;outline-offset:none}
 .fc button:focus,
 .fc button:hover{text-decoration:none}
 .fc button:active{outline:0;-webkit-box-shadow:inset 0 3px 5px rgba(0,0,0,.125);box-shadow:inset 0 3px 5px rgba(0,0,0,.125)}
+body.bg1 .fc button:active{outline:0;-webkit-box-shadow:inset 0 3px 5px rgba(0,0,0,.125);box-shadow:inset 0 3px 5px rgba(0,0,0,.125)}
 .fc button:focus{color:#333;background-color:#e6e6e6;border-color:#8c8c8c}
 .fc button:active,
-.fc button:hover{color:#333;background-color:#e6e6e6;border-color:#adadad}
+.fc button:hover{color:#fff;background-color:#e6e6e6;border-color:#adadad}
 .fc button:active:focus,
 .fc button:active:hover{color:#333;background-color:#d4d4d4;border-color:#8c8c8c}
