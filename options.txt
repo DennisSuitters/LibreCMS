@@ -1,0 +1,47 @@
+config
+  options
+    0
+    1
+    2   Media Auto Resizing
+    3   Account Signups
+    4   Tooltips
+    5
+    6
+    7
+    8
+    9   RSS Feed Icon
+    10  Dashboard RSS Feeds
+    11  LibreCMS Git Commits
+    12
+    13
+    14
+    15
+
+content
+  options
+    0
+    1   Enable Comments
+
+login
+  options
+    0   Add/Remove Content
+    1   Edit Content
+    2   Add/Edit Bookings
+    3   Message Viewing/Editing
+    4   Orders Viewing/Editing
+    5   User Accounts Viewing/Editing
+    6   SEO Viewing/Editing
+    7   Preferences Viewing/Editing
+    
+  rank
+    0     Visitor
+    100   Subscriber
+    200   Member
+    300   Client
+    400   Contributor
+    500   Author
+    600   Editor
+    700   Moderator
+    800   Manager
+    900   Administrator
+    1000  Developer

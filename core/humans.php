@@ -1,24 +1,30 @@
 <?php
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */
 header("Content-Type:text/plain");
-require'core'.DS.'db.php';
-$config=$db->query("SELECT development,seoTitle,theme FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-$theme=parse_ini_file('layout'.DS.$config['theme'].DS.'theme.ini',true);
-if($config['seoTitle']!='')$siteTitle=$config['seoTitle'];else$siteTitle=URL;
-$themeTitle=$theme['title'];
-$themeCreator=$theme['creator'];
-$themeURL=$theme['creator_url'];
+if (!defined('DS'))
+  define('DS', DIRECTORY_SEPARATOR);
+require 'core' . DS . 'db.php';
+$config = $db -> query("SELECT development,seoTitle,theme FROM config WHERE id='1'") -> fetch(PDO::FETCH_ASSOC);
+$theme = parse_ini_file('layout' . DS . $config['theme'] . DS . 'theme.ini', true);
+$siteTitle=($config['seoTitle']!=''?$config['seoTitle']:URL);
+$themeTitle = $theme['title'];
+$themeCreator = $theme['creator'];
+$themeURL = $theme['creator_url'];
 echo <<< "OUT"
-$siteTitle is powered by LibreCMS [https://github.com/StudioJunkyard/LibreCMS]
+$siteTitle is powered by LibreCMS [https://github.com/DiemenDesign/LibreCMS]
 Theme "$themeTitle" by $themeCreator [$themeURL]
 
 /* TEAM */
 Developer: Dennis Suitters
-Site: http://www.studiojunkyard.com/
-Twitter: @studiojunkyard
+Site: https://github.com/DiemenDesign/
 Location: Nirvana, Earth
 
 Help: You, are you interested in helping develop LibreCMS further?
-Site: Jump into the GitHub Repo. https://github.com/StudioJunkyard/LibreCMS
+Site: Jump into the GitHub Repo. https://github.com/DiemenDesign/LibreCMS
 Location: Your Work Station
 
 /* THANKS */

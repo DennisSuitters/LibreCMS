@@ -1,34 +1,43 @@
 <?php
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */
+if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 if(isset($_GET['is'])){
   session_start();
-  require'../db.php';
+  require'..'.DS.'db.php';
   $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
   $su=$db->prepare("SELECT * FROM login WHERE id=:id");
   $su->execute(array(':id'=>$_SESSION['uid']));
-  $user=$su->fetch(PDO::FETCH_ASSOC);
-  $is=$_GET['is'];
-  $ie=$_GET['ie'];
-  $action=$_GET['action'];
+  $user   = $su->fetch(PDO::FETCH_ASSOC);
+  $is     = $_GET['is'];
+  $ie     = $_GET['ie'];
+  $action = $_GET['action'];
   function _ago($time){
     $timeDiff=floor(abs(time()-$time)/60);
-    if($timeDiff<2)$timeDiff='Just Now';
-    elseif($timeDiff>2&&$timeDiff<60)$timeDiff=floor(abs($timeDiff)).' Minutes Ago';
-    elseif($timeDiff>60&&$timeDiff<120)$timeDiff=floor(abs($timeDiff/60)).' Hour ago';
-    elseif($timeDiff<1440)$timeDiff=floor(abs($timeDiff/60)).' Hours ago';
-    elseif($timeDiff>1440&&$timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440)).' Day Ago';
-    elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
+    if    ($timeDiff<2)      $timeDiff='Just Now';
+    elseif($timeDiff>2 &&    $timeDiff<60)$timeDiff=floor(abs($timeDiff)).' Minutes Ago';
+    elseif($timeDiff>60 &&   $timeDiff<120)$timeDiff=floor(abs($timeDiff/60)).' Hour ago';
+    elseif($timeDiff<1440)   $timeDiff=floor(abs($timeDiff/60)).' Hours ago';
+    elseif($timeDiff>1440 && $timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440)).' Day Ago';
+    elseif($timeDiff>2880)   $timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
     return$timeDiff;
   }
-  function svg($svg,$size=null,$color=null){
-    echo'<i class="libre';
-    if($size!=null)echo' libre-'.$size;
-    if($color!=null)echo' libre-'.$color;echo'">';
-    include'../svg/libre-'.$svg.'.svg';
-    echo'</i>';
+  function svg($svg,$color=null,$class=null,$size=null){
+  	echo'<i class="libre';
+  	if($size!=null)echo' libre-'.$size;
+  	if($color==true)$svg='col'.DS.$svg;
+  	elseif($color!=null)echo' libre-'.$color;
+    if($class!=null)echo' '.$class;
+  	echo'">';
+  	include '..'.DS.'svg'.DS.$svg.'.svg';
+  	echo'</i>';
   }
 }
 if($action!=''){
-  $s=$db->prepare("SELECT * FROM logs WHERE action=:action ORDER BY ti DESC LIMIT ".$is.",".$ie);
+  $s=$db->prepare("SELECT * FROM logs WHERE action=:action ORDER BY ti DESC LIMIT ".$is."," . $ie);
   $s->execute(array(':action'=>$action));
 }else{
   $s=$db->prepare("SELECT * FROM logs ORDER BY ti DESC LIMIT ".$is.",".$ie);
@@ -50,7 +59,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
   if($r['action']=='purge')$action.=' Purged<br>';
   if(isset($c['title'])&&$c['title']!=''){
     $action.='<strong>Title:</strong> '.$c['title'].'<br>';
-    if($r['action']=='update')$action.='<strong>Table:</strong> '.$r['refTable'].'<br>';
+    $action.=($r['action']=='update'?'<strong>Table:</strong> '.$r['refTable'].'<br>':'');
     $action.='<strong>Column:</strong> '.$r['refColumn'].'<br>';
     $action.='<strong>Data:</strong>'.strip_tags(rawurldecode(substr($r['oldda'],0,300))).'<br>';
     $action.='<strong>Changed To:</strong>'.strip_tags(rawurldecode(substr($r['newda'],0,300))).'<br>';
@@ -64,11 +73,9 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
   </td>
   <td class="break-word hidden-xs"><?php echo$action;?></td>
   <td id="controls_<?php echo$r['id'];?>" class="text-right">
-    <button class="btn btn-default" onclick="activitySpy('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="View Details"';?>><?php svg('fingerprint');?></button>
-<?php if($r['action']=='update'){?>
-    <button class="btn btn-default" onclick="restore('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('undo');?></button>
-<?php }?>
-    <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','logs')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('trash');?></button>
+    <button class="btn btn-default" onclick="activitySpy('<?php echo$r['id'];?>');" data-toggle="tooltip" title="View Details"><?php svg('libre-gui-fingerprint',($config['iconsColor']==1?true:null));?></button>
+<?php echo($r['action']=='update'?'<button class="btn btn-default" onclick="restore(\''.$r['id'].'\');" data-toggle="tooltip" title="Restore">'.svg2('libre-gui-undo',($config['iconsColor']==1?true:null)).'</button>':'');?>
+    <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','logs')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
   </td>
 </tr>
 <tr id="details<?php echo$r['id'];?>" class="hidden">

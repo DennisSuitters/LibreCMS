@@ -1,3 +1,9 @@
+<?php
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */?>
 <!DOCTYPE HTML>
 <html lang="en-AU">
 	<head>
@@ -25,11 +31,9 @@
 				<div id="d0" class="panel-body">
 <?php
 $error=0;
-if(version_compare(phpversion(),'5.5.9','<')){
-	echo'<div class="alert alert-warning">LibreCMS was built using PHPv5.5.9, your installed version is lower. While LibreCMS may operate on your system, some functionality may not work or be available.</div>';
-}
+if(version_compare(phpversion(),'5.5.9','<'))echo'<div class="alert alert-warning">LibreCMS was built using PHP v5.5.9, your installed version is lower. While LibreCMS may operate on your system, some functionality may not work or be available. We recommend using PHP 7+ if available on you\'re services.</div>';
 if(extension_loaded('pdo')){
-	if(empty(PDO::getAvailableDrivers())){
+	if (empty(PDO::getAvailableDrivers())){
 		$error=1;
 		echo'<div class="alert aler-danger">Great PDO is Installed and Active, but there are no Database Drivers Installed.</div>';
 	}
@@ -49,13 +53,9 @@ if(!extension_loaded('gd')&&!function_exists('gd_info')){
 	$error=1;
 	echo'<div class="alert alert-danger">GD-Image is NOT Installed or Enabled.</div>';
 }
-if(!function_exists('exif_read_data')){
-	echo'<div class="alert alert-info">EXIF Functions are NOT enabled or installed. While not Mandatory, some features won\'t work.</div>';
-}
-if($error==1){
-	echo'<div class="alert alert-danger">Please fix the above Issue\'s outlined within the Red Sections, then Refresh the page to Check Again.</div>';
-}?>
-<?php if($error==0){?>
+echo(!function_exists('exif_read_data')?'<div class="alert alert-info">EXIF Functions are NOT enabled or installed. While not Mandatory, some features won\'t work.</div>':'');
+echo($error==1?'<div class="alert alert-danger">Please fix the above Issue\'s outlined within the Red Sections, then Refresh the page to Check Again.</div>':'');
+if($error==0){?>
 					<form target="sp" method="post" action="core/installer.php" onsubmit="Pace.restart();">
 						<input type="hidden" name="emailtrap" value="">
 						<div class="well">
@@ -65,9 +65,7 @@ if($error==1){
 								<label for="dbtype" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Database Type</label>
 								<div class="input-group col-xs-8 col-sm-9 col-md-9 col-lg-10">
 									<select id="dbtype" name="dbtype" class="form-control">
-<?php	foreach(PDO::getAvailableDrivers()as$DRIVER){
-			echo'<option value="'.$DRIVER.'">'.strtoupper($DRIVER).'</option>';
-		}?>
+<?php	foreach(PDO::getAvailableDrivers() as$DRIVER)echo'<option value="'.$DRIVER.'">'.strtoupper($DRIVER).'</option>';?>
 									</select>
 								</div>
 							</div>
@@ -131,8 +129,8 @@ if($error==1){
 <?php foreach(new DirectoryIterator('layout') as$folder){
     if($folder->isDOT())continue;
     if($folder->isDir()){
-        $theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);?>
-										<option value="<?php echo$folder;?>"<?php if(stristr($folder,'default'))echo' selected';?>><?php echo$theme['title'];?></option>
+      $theme=parse_ini_file('layout/'.$folder.'/theme.ini',true);?>
+										<option value="<?php echo$folder;?>"<?php echo(stristr($folder,'default')?' selected':'');?>><?php echo$theme['title'];?></option>
 <?php }
 }?>
 									</select>

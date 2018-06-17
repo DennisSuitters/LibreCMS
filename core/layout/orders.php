@@ -1,5 +1,10 @@
 <?php
-if(isset($_SESSION['uid']))$uid=$_SESSION['uid'];else$uid=0;
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */
+$uid=(isset($_SESSION['uid'])?$_SESSION['uid']:$uid=0);
 $error=0;
 $ti=time();
 $oid='';
@@ -9,7 +14,18 @@ if($args[0]=='duplicate'){
   $sd->execute(array(':id'=>$id));
   $rd=$sd->fetch(PDO::FETCH_ASSOC);
   $s=$db->prepare("INSERT INTO orders (cid,uid,contentType,due_ti,notes,status,recurring,ti) VALUES (:cid,:uid,:contentType,:due_ti,:notes,:status,:recurring,:ti)");
-  $s->execute(array(':cid'=>$rd['cid'],':uid'=>$uid,':contentType'=>$rd['contentType'],':due_ti'=>$ti+$config['orderPayti'],':notes'=>$rd['notes'],':status'=>'outstanding',':recurring'=>$rd['recurring'],':ti'=>$ti));
+  $s->execute(
+    array(
+      ':cid'         => $rd['cid'],
+      ':uid'         => $uid,
+      ':contentType' => $rd['contentType'],
+      ':due_ti'      => $ti + $config['orderPayti'],
+      ':notes'       => $rd['notes'],
+      ':status'      => 'outstanding',
+      ':recurring'   => $rd['recurring'],
+      ':ti'          => $ti
+    )
+  );
   $iid=$db->lastInsertId();
   if($rd['qid']!=''){
     $rd['qid']='Q'.date("ymd",$ti).sprintf("%06d",$iid+1,6);
@@ -20,16 +36,40 @@ if($args[0]=='duplicate'){
     $iid_ti=$ti+$config['orderPayti'];
   }else$iid_ti=0;
   $s=$db->prepare("UPDATE orders SET qid=:qid,qid_ti=:qid_ti,iid=:iid,iid_ti=:iid_ti WHERE id=:id");
-  $s->execute(array(':qid'=>$rd['qid'],':qid_ti'=>$qid_ti,':iid'=>$rd['iid'],':iid_ti'=>$iid_ti,':id'=>$iid));
+  $s->execute(
+    array(
+      ':qid'    => $rd['qid'],
+      ':qid_ti' => $qid_ti,
+      ':iid'    => $rd['iid'],
+      ':iid_ti' => $iid_ti,
+      ':id'     => $iid
+    )
+  );
   $s=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid");
   $s->execute(array(':oid'=>$id));
   while($r=$s->fetch(PDO::FETCH_ASSOC)){
     $so=$db->prepare("INSERT INTO orderitems (oid,iid,title,quantity,cost,status,ti) VALUES (:oid,:iid,:title,:quantity,:cost,:status,:ti)");
-    $so->execute(array(':oid'=>$iid,':iid'=>$r['iid'],':title'=>$r['title'],':quantity'=>$r['quantity'],':cost'=>$r['cost'],':status'=>$r['status'],':ti'=>$ti));
+    $so->execute(
+      array(
+        ':oid'      => $iid,
+        ':iid'      => $r['iid'],
+        ':title'    => $r['title'],
+        ':quantity' => $r['quantity'],
+        ':cost'     => $r['cost'],
+        ':status'   => $r['status'],
+        ':ti'       => $ti
+      )
+    );
   }
   $aid='A'.date("ymd",$ti).sprintf("%06d",$id,6);
   $s=$db->prepare("UPDATE orders SET aid=:aid,aid_ti=:aid_ti WHERE id=:id");
-  $s->execute(array(':aid'=>$aid,':aid_ti'=>$ti,':id'=>$id));
+  $s->execute(
+    array(
+      ':aid'    => $aid,
+      ':aid_ti' => $ti,
+      ':id'     => $id
+    )
+  );
   $args[0]='all';
 }
 if($args[0]=='addquote'||$args[0]=='addinvoice'){
@@ -38,12 +78,26 @@ if($args[0]=='addquote'||$args[0]=='addinvoice'){
   if($args[0]=='addquote'){
     $oid='Q'.date("ymd",$ti).sprintf("%06d",$r['id']+1,6);
     $q=$db->prepare("INSERT INTO orders (uid,qid,qid_ti,due_ti,status) VALUES (:uid,:qid,:qid_ti,:due_ti,'pending')");
-    $q->execute(array(':uid'=>$uid,':qid'=>$oid,':qid_ti'=>$ti,':due_ti'=>$dti));
+    $q->execute(
+      array(
+        ':uid'    => $uid,
+        ':qid'    => $oid,
+        ':qid_ti' => $ti,
+        ':due_ti' => $dti
+      )
+    );
   }
   if($args[0]=='addinvoice'){
     $oid='I'.date("ymd",$ti).sprintf("%06d",$r['id']+1,6);
     $s=$db->prepare("INSERT INTO orders (uid,iid,iid_ti,due_ti,status) VALUES (:uid,:iid,:iid_ti,:due_ti,'pending')");
-    $s->execute(array(':uid'=>$uid,':iid'=>$oid,':iid_ti'=>$ti,':due_ti'=>$dti));
+    $s->execute(
+      array(
+        ':uid'    => $uid,
+        ':iid'    => $oid,
+        ':iid_ti' => $ti,
+        ':due_ti' => $dti
+      )
+    );
   }
   $id=$db->lastInsertId();
   $e=$db->errorInfo();
@@ -57,13 +111,20 @@ if($args[0]=='to_invoice'){
   $q->execute(array(':id'=>$id));
   $r=$q->fetch(PDO::FETCH_ASSOC);
   $q=$db->prepare("UPDATE orders SET iid=:iid,iid_ti=:iid_ti,qid='',qid_ti='0' WHERE id=:id");
-  $q->execute(array(':iid'=>'I'.date("ymd",$ti).sprintf("%06d",$id,6),':iid_ti'=>$ti,':id'=>$id));
-  if(file_exists('../media/orders/'.$r['qid'].'.pdf'))unlink('../media/orders/'.$r['qid'].'.pdf');
+  $q->execute(
+    array(
+      ':iid'    => 'I'.date("ymd",$ti).sprintf("%06d",$id,6),
+      ':iid_ti' => $ti,
+      ':id'     => $id
+    )
+  );
+  if(file_exists('..'.DS.'media'.DS.'order'.DS.$r['qid'].'.pdf'))
+    unlink('..'.DS.'media'.DS.'orders'.DS.$r['qid'].'.pdf');
   $args[0]='invoices';
 }
-if($args[0]=='settings'){
+if($args[0]=='settings')
   include'core'.DS.'layout'.DS.'set_orders.php';
-  }elseif($args[0]=='edit'){
+elseif($args[0]=='edit'){
     $q=$db->prepare("SELECT * FROM orders WHERE id=:id");
     $q->execute(array(':id'=>$id));
     $r=$q->fetch(PDO::FETCH_ASSOC);
@@ -76,24 +137,32 @@ if($args[0]=='settings'){
     if($r['notes']==''){
       $r['notes']=$config['orderEmailNotes'];
       $q=$db->prepare("UPDATE orders SET notes=:notes WHERE id=:id");
-      $q->execute(array(':notes'=>$config['orderEmailNotes'],':id'=>$r['id']));
+      $q->execute(
+        array(
+          ':notes' => $config['orderEmailNotes'],
+          ':id'    => $r['id']
+        )
+      );
     }
-    if($error==1)echo'<div class="alert alert-danger">'.$e[0].'</div>';else{?>
+    if($error==1)
+      echo'<div class="alert alert-danger">'.$e[0].'</div>';
+    else{?>
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 class="col-xs-8">Order #<?php echo$r['qid'].$r['iid'];?></h4>
     <div class="pull-right">
       <div class="btn-group">
-        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/orders';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Back"';?>><?php svg('back');?></a>
+        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/orders';?>" data-toggle="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back',($config['iconsColor']==1?true:null));?></a>
       </div>
       <div class="btn-group">
-        <button class="btn btn-default" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Print Order"';?>><?php svg('print');?></button>
+        <button class="btn btn-default" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');" data-toggle="tooltip" data-placement="left" title="Print Order"><?php svg('libre-gui-print',($config['iconsColor']==1?true:null));?></button>
       </div>
       <div class="btn-group">
-        <button class="btn btn-default" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Email Order"';?>><?php svg('email-send');?></button>
+        <button class="btn btn-default" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');" data-toggle="tooltip" data-placement="left" title="Email Order"><?php svg('libre-gui-email-send',($config['iconsColor']==1?true:null));?></button>
       </div>
       <div class="btn-group">
-        <a target="_blank" class="btn btn-default info" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#orders-edit"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+        <a target="_blank" class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#orders-edit" data-toggle="tooltip" data-placement="left" title="Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
+        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
       </div>
     </div>
   </div>
@@ -139,7 +208,7 @@ if($args[0]=='settings'){
           <div class="form-group">
             <label class="control-label col-sm-3">Postcode</label>
             <div class="input-group col-sm-9">
-              <input type="text" class="form-control" value="<?php if($config['postcode']!=0){echo$config['postcode'];}?>" readonly>
+              <input type="text" class="form-control" value="<?php echo($config['postcode']!=0?$config['postcode']:'');?>" readonly>
             </div>
           </div>
           <div class="form-group">
@@ -164,57 +233,57 @@ if($args[0]=='settings'){
         <div class="col-xs-12 col-sm-4 border-right">
           <h2>To</h2>
           <div class="form-group">
-            <input type="text" id="client_business" class="form-control" value="<?php echo$client['username'];if($client['name']!=''){echo' ['.$client['name'].']';}if($client['business']!=''){echo' -> '.$client['business'];}?>" placeholder="Username, Business or Name..." readonly>
+            <input type="text" id="client_business" class="form-control" value="<?php echo$client['username'];echo($client['name']!=''?' ['.$client['name'].']':'');echo($client['business']!=''?' -> '.$client['business']:'');?>" placeholder="Username, Business or Name..." readonly>
           </div>
           <div class="form-group form-group-xs">
             <label for="address" class="control-label col-xs-3">Address</label>
             <div class="input-group col-xs-9">
-              <input type="text" id="address" class="form-control input-xs textinput" value="<?php echo$client['address'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="address" data-bs="btn-danger" placeholder="Enter an Address..."<?php if($r['status']=='archived')echo' readonly';?>>
+              <input type="text" id="address" class="form-control input-xs textinput" value="<?php echo$client['address'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="address" data-bs="btn-danger" placeholder="Enter an Address..."<?php echo($r['status']=='archived'?' readonly':'');?>>
             </div>
           </div>
           <div class="form-group form-group-xs">
             <label for="suburb" class="control-label col-xs-3">Suburb</label>
             <div class="input-group col-xs-9">
-              <input type="text" id="suburb" class="form-control textinput" value="<?php echo$client['suburb'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="suburb" data-bs="btn-danger" placeholder="Enter a Suburb..."<?php if($r['status']=='archived')echo' readonly';?>>
+              <input type="text" id="suburb" class="form-control textinput" value="<?php echo$client['suburb'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="suburb" data-bs="btn-danger" placeholder="Enter a Suburb..."<?php echo($r['status']=='archived'?' readonly':'');?>>
             </div>
           </div>
           <div class="form-group form-group-xs">
             <label for="city" class="control-label col-xs-3">City</label>
             <div class="input-group col-xs-9">
-              <input type="text" id="city" class="form-control textinput" value="<?php echo$client['city'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="city" data-bs="btn-danger" placeholder="Enter a City..."<?php if($r['status']=='archived')echo' readonly';?>>
+              <input type="text" id="city" class="form-control textinput" value="<?php echo$client['city'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="city" data-bs="btn-danger" placeholder="Enter a City..."<?php echo($r['status']=='archived'?' readonly':'');?>>
             </div>
           </div>
           <div class="form-group form-group-xs">
             <label for="state" class="control-label col-xs-3">State</label>
             <div class="input-group col-xs-9">
-              <input type="text" id="state" class="form-control textinput" value="<?php echo$client['state'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="state" data-bs="btn-danger" placeholder="Enter a State..."<?php if($r['status']=='archived')echo' readonly';?>>
+              <input type="text" id="state" class="form-control textinput" value="<?php echo$client['state'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="state" data-bs="btn-danger" placeholder="Enter a State..."<?php echo($r['status']=='archived'?' readonly':'');?>>
             </div>
           </div>
           <div class="form-group form-group-xs">
             <label for="postcode" class="control-label col-xs-3">Postcode</label>
             <div class="input-group col-xs-9">
-              <input type="text" id="postcode" class="form-control textinput" value="<?php if($client['postcode']!=0)echo$client['postcode'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="postcode" data-bs="btn-danger" placeholder="Enter a Postcode..."<?php if($r['status']=='archived')echo' readonly';?>>
+              <input type="text" id="postcode" class="form-control textinput" value="<?php echo($client['postcode']!=0?$client['postcode']:'');?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="postcode" data-bs="btn-danger" placeholder="Enter a Postcode..."<?php echo($r['status']=='archived'?' readonly':'');?>>
             </div>
           </div>
           <div class="form-group form-group-xs">
             <label for="email" class="control-label col-xs-3">Email</label>
             <div class="input-group col-xs-9">
-              <input type="text" id="email" class="form-control textinput" value="<?php echo$client['email'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="email" data-bs="btn-danger" placeholder="Enter an Email..."<?php if($r['status']=='archived')echo' readonly';?>>
+              <input type="text" id="email" class="form-control textinput" value="<?php echo$client['email'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="email" data-bs="btn-danger" placeholder="Enter an Email..."<?php echo($r['status']=='archived'?' readonly':'');?>>
               <div class="input-group-btn">
-                <a class="btn btn-default" href="mailto:<?php echo$client['email'];?>"><?php svg('email-send');?></a>
+                <a class="btn btn-default" href="mailto:<?php echo$client['email'];?>"><?php svg('libre-gui-email-send',($config['iconsColor']==1?true:null));?></a>
               </div>
             </div>
           </div>
           <div class="form-group form-group-xs">
             <label for="phone" class="control-label col-xs-3">Phone</label>
             <div class="input-group col-xs-9">
-              <input type="text" id="phone" class="form-control textinput" value="<?php echo$client['phone'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="phone" data-bs="btn-danger" placeholder="Enter a Phone Number..."<?php if($r['status']=='archived')echo' readonly';?>>
+              <input type="text" id="phone" class="form-control textinput" value="<?php echo$client['phone'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="phone" data-bs="btn-danger" placeholder="Enter a Phone Number..."<?php echo($r['status']=='archived'?' readonly':'');?>>
             </div>
           </div>
           <div class="form-group form-group-xs">
             <label for="mobile" class="control-label col-xs-3">Mobile</label>
             <div class="input-group col-xs-9">
-              <input type="text" id="mobile" class="form-control textinput" value="<?php echo$client['mobile'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="mobile" data-bs="btn-danger" placeholder="Enter a Mobile Number..."<?php if($r['status']=='archived')echo' readonly';?>>
+              <input type="text" id="mobile" class="form-control textinput" value="<?php echo$client['mobile'];?>" data-dbid="<?php echo$client['id'];?>" data-dbt="login" data-dbc="mobile" data-bs="btn-danger" placeholder="Enter a Mobile Number..."<?php echo($r['status']=='archived'?' readonly':'');?>>
             </div>
           </div>
 <?php if($r['status']!='archived'){?>
@@ -222,17 +291,12 @@ if($args[0]=='settings'){
             <label for="changeClient" class="control-label col-xs-3">Client</label>
             <div class="input-group col-xs-9">
               <select id="changeClient" class="form-control input-xs" onchange="changeClient($(this).val(),'<?php echo$r['id'];?>');">
-                <option value="0"<?php if($r['cid']=='0')echo' selected';?>>None</option>
+                <option value="0"<?php echo($r['cid']=='0'?' selected':'');?>>None</option>
 <?php $q=$db->query("SELECT id,business,username,name FROM login WHERE status!='delete' AND status!='suspended' AND active!='0' AND id!='0'");
-while($rs=$q->fetch(PDO::FETCH_ASSOC)){
-  echo'<option value="'.$rs['id'].'"';
-  if($r['cid']==$rs['id'])echo' selected';
-  echo'>'.$rs['username'];
-  if($rs['name']!='')echo' ['.$rs['name'].']';
-  if($rs['business']!='')echo' -> '.$rs['business'].'</option>';
-}?>
+while($rs=$q->fetch(PDO::FETCH_ASSOC))
+  echo'<option value="'.$rs['id'].'"'.($r['cid']==$rs['id']?' selected':'').'>'.$rs['username'].($rs['name']!=''?' ['.$rs['name'].']':'').($rs['business']!=''?' -> '.$rs['business'].'</option>':'');?>
               </select>
-              <small class="help-block"><small>Note: Changing values above will update the User's Account details.</small></small>
+              <small class="help-block"><small>Note: Changing values above will update the Users Account details.</small></small>
             </div>
           </div>
 <?php }?>
@@ -242,13 +306,13 @@ while($rs=$q->fetch(PDO::FETCH_ASSOC)){
           <div class="form-group">
             <label class="control-label col-xs-4">Order #</label>
             <div class="input-group col-xs-8">
-              <input type="text" class="form-control" value="<?php if($r['iid']=='')echo$r['qid'];else echo$r['iid'];?>" readonly>
+              <input type="text" class="form-control" value="<?php echo($r['iid']==''?$r['qid']:$r['iid']);?>" readonly>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-xs-4">Order Date</label>
             <div class="input-group col-xs-8">
-              <input type="text" class="form-control" value="<?php if($r['iid_ti']!=0)echo date($config['dateFormat'],$r['iid_ti']);else echo date($config['dateFormat'],$r['qid_ti']);?>" readonly>
+              <input type="text" class="form-control" value="<?php echo($r['iid_ti']!=0?date($config['dateFormat'],$r['iid_ti']):date($config['dateFormat'],$r['qid_ti']));?>" readonly>
             </div>
           </div>
           <div class="form-group">
@@ -257,7 +321,7 @@ while($rs=$q->fetch(PDO::FETCH_ASSOC)){
               <input type="text" id="due_ti" class="form-control" value="<?php echo date($config['dateFormat'],$r['due_ti']);?>">
 <?php if($r['status']!='archived'){?>
               <div class="input-group-btn">
-                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><?php svg('add');?></button>
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><?php svg('libre-gui-add',($config['iconsColor']==1?true:null));?></button>
                 <ul class="dropdown-menu pull-right">
                   <li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+604800;?>');return false;">7 Days</a></li>
                   <li><a href="#" onclick="update('<?php echo$r['id'];?>','orders','due_ti','<?php echo$r['due_ti']+1209600;?>');return false;">14 Days</a></li>
@@ -271,14 +335,14 @@ while($rs=$q->fetch(PDO::FETCH_ASSOC)){
           <div class="form-group">
             <label class="control-label col-xs-4">Status</label>
             <div class="input-group col-xs-8">
-<?php if($r['status']=='archived'){?>
-              <input type="text" class="form-control" value="Archived" readonly>
-<?php }else{?>
+<?php if($r['status']=='archived')
+  echo'<input type="text" class="form-control" value="Archived" readonly>';
+else{?>
               <select id="status" class="form-control" onchange="update('<?php echo$r['id'];?>','orders','status',$(this).val());">
-                <option value="pending"<?php if($r['status']=='pending')echo' selected';?>>Pending</option>
-                <option value="overdue"<?php if($r['status']=='overdue')echo' selected';?>>Overdue</option>
-                <option value="cancelled"<?php if($r['status']=='cancelled')echo' selected';?>>Cancelled</option>
-                <option value="paid"<?php if($r['status']=='paid')echo' selected';?>>Paid</option>
+                <option value="pending"<?php echo($r['status']=='pending'?' selected':'');?>>Pending</option>
+                <option value="overdue"<?php echo($r['status']=='overdue'?' selected':'');?>>Overdue</option>
+                <option value="cancelled"<?php echo($r['status']=='cancelled'?' selected':'');?>>Cancelled</option>
+                <option value="paid"<?php echo($r['status']=='paid'?' selected':'');?>>Paid</option>
               </select>
 <?php }?>
             </div>
@@ -299,7 +363,7 @@ while($rs=$q->fetch(PDO::FETCH_ASSOC)){
 while($i=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$i['id'].'">'.ucfirst(rtrim($i['contentType'],'s')).$i['code'].':$'.$i['cost'].':'.$i['title'].'</option>';?>
             </select>
             <div class="input-group-btn">
-              <button class="btn btn-default add"><?php svg('plus');?></button>
+              <button class="btn btn-default add"><?php svg('libre-gui-plus',($config['iconsColor']==1?true:null));?></button>
             </div>
           </div>
         </div>
@@ -330,13 +394,11 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
   $sc->execute(array(':id'=>$oi['cid']));
   $c=$sc->fetch(PDO::FETCH_ASSOC);?>
             <tr>
-              <td class="text-left">
-                <?php echo$i['code'];?>
-              </td>
+              <td class="text-left"><?php echo$i['code'];?></td>
               <td class="text-left">
 <?php if($oi['iid']!=0)
-        echo$i['title'];
-      else{?>
+    echo$i['title'];
+  else{?>
                 <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
                   <input type="hidden" name="act" value="title">
                   <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
@@ -354,7 +416,7 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
                   <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
                   <input type="hidden" name="t" value="orderitems">
                   <input type="hidden" name="c" value="quantity">
-                  <input type="text" class="form-control text-center" name="da" value="<?php echo$oi['quantity'];?>"<?php if($r['status']=='archived')echo' readonly';?>>
+                  <input type="text" class="form-control text-center" name="da" value="<?php echo$oi['quantity'];?>"<?php echo($r['status']=='archived'?' readonly':'');?>>
                 </form>
 <?php }else{
   if($oi['iid']!=0)echo$oi['quantity'];
@@ -367,11 +429,11 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
                   <input type="hidden" name="id" value="<?php echo$oi['id'];?>">
                   <input type="hidden" name="t" value="orderitems">
                   <input type="hidden" name="c" value="cost">
-                  <input class="form-control text-center" name="da" value="<?php echo$oi['cost'];?>"<?php if($r['status']=='archived')echo' readonly';?>>
+                  <input class="form-control text-center" name="da" value="<?php echo$oi['cost'];?>"<?php echo($r['status']=='archived'?' readonly':'');?>>
                 </form>
 <?php }elseif($oi['iid']!=0)echo$oi['cost'];?>
               </td>
-              <td class="col-sm-1 text-right"><?php if($oi['iid']!=0)echo$oi['cost']*$oi['quantity'];?></td>
+              <td class="col-sm-1 text-right"><?php echo($oi['iid']!=0?$oi['cost']*$oi['quantity']:'');?></td>
               <td class="text-right">
                 <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
                   <input type="hidden" name="act" value="trash">
@@ -379,7 +441,7 @@ while($oi=$s->fetch(PDO::FETCH_ASSOC)){
                   <input type="hidden" name="t" value="orderitems">
                   <input type="hidden" name="c" value="quantity">
                   <input type="hidden" name="da" value="0">
-                  <button class="btn btn-default trash"><?php svg('trash');?></button>
+                  <button class="btn btn-default trash"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
                 </form>
               </td>
             </tr>
@@ -396,7 +458,7 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
                   <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                   <input type="hidden" name="t" value="orders">
                   <input type="hidden" name="c" value="rid">
-                  <input type="text" class="form-control" name="da" value="<?php if($sr->rowCount()==1)echo$reward['code'];?>">
+                  <input type="text" class="form-control" name="da" value="<?php echo($sr->rowCount()==1?$reward['code']:'');?>">
                 </form>
               </td>
               <td class="text-center">
@@ -445,9 +507,8 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
           <input type="hidden" name="c" value="notes">
           <textarea class="summernote" name="da"><?php echo rawurldecode($r['notes']);?></textarea>
         </form>
-<?php }else{?>
-        <div class="well"><?php echo$r['notes'];?></div>
-<?php }?>
+<?php }else
+        echo'<div class="well">'.$r['notes'].'</div>';?>
       </div>
     </div>
   </div>
@@ -490,7 +551,7 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
       <ol class="breadcrumb">
         <li><a href="<?php echo URL.$settings['system']['admin'].'/orders';?>">Orders</a></li>
         <li class="relative">
-          <a class="dropdown-toggle" data-toggle="dropdown"><?php if(isset($args[0]))echo ucfirst($args[0]);else echo'All';?> <i class="caret"></i></a>
+          <a class="dropdown-toggle" data-toggle="dropdown"><?php echo(isset($args[0])?ucfirst($args[0]):'All');?> <i class="caret"></i></a>
           <ul class="dropdown-menu">
             <li><a href="<?php echo URL.$settings['system']['admin'].'/orders';?>">All</a></li>
             <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/quotes';?>">Quotes</a></li>
@@ -503,18 +564,19 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
       </ol>
     </h4>
     <div class="pull-right">
-      <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Add"';?>>
-        <button class="btn btn-default add dropdown-toggle" data-toggle="dropdown" data-placement="right"><?php svg('plus');?></button>
+      <div class="btn-group" data-toggle="tooltip" data-placement="left" title="Add">
+        <button class="btn btn-default add dropdown-toggle" data-toggle="dropdown" data-placement="right"><?php svg('libre-gui-plus',($config['iconsColor']==1?true:null));?></button>
         <ul class="dropdown-menu multi-level pull-right">
           <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/addquote';?>">Quote</a></li>
           <li><a href="<?php echo URL.$settings['system']['admin'].'/orders/addinvoice';?>">Invoice</a></li>
         </ul>
       </div>
       <div class="btn-group">
-        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/orders/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/orders/settings';?>" data-toggle="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings',($config['iconsColor']==1?true:null));?></a>
       </div>
       <div class="btn-group">
-        <a target="_blank" class="btn btn-default info" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#orders"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+        <a target="_blank" class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#orders" data-toggle="tooltip" data-placement="left" title="Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
+        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
       </div>
     </div>
   </div>
@@ -541,47 +603,41 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
   $cs=$db->prepare("SELECT username,name,email,business FROM login WHERE id=:id");
   $cs->execute(array(':id'=>$r['cid']));
   $c=$cs->fetch(PDO::FETCH_ASSOC);?>
-          <tr id="l_<?php echo$r['id'];?>"<?php if(($ti>$r['due_ti'])||($r['status']=='overdue'))echo' class="danger text-danger"';?>>
+          <tr id="l_<?php echo$r['id'];?>"<?php echo(($ti>$r['due_ti'])||($r['status']=='overdue')?' class="danger text-danger"':'');?>>
             <td>
               <small>
                 <a href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'];?>">
-<?php if($r['aid']!='')echo$r['aid'].'<br>';
-echo$r['qid'].$r['iid'];?>
+<?php echo($r['aid']!=''?$r['aid'].'<br>':'');
+  echo$r['qid'].$r['iid'];?>
                 </a>
               </small>
               <small class="visible-xs hidden-sm hidden-md hidden-lg">
 <?php echo$c['username'];
-if($c['name']!='')echo' ['.$c['name'].']';
-if($c['business']!='')echo' -> '.$c['business'];?>
+  echo($c['name']!=''?' ['.$c['name'].']':'');
+  echo($c['business']!=''?' -> '.$c['business']:'');?>
               </small>
             </td>
             <td class="hidden-xs">
-              <small><?php echo$c['username'];if($c['name']!='')echo' ['.$c['name'].']';if($c['name']!=''&&$c['business']!='')echo'<br>';if($c['business']!='')echo$c['business'];?></small>
+              <small><?php echo$c['username'].($c['name']!=''?' ['.$c['name'].']':'').($c['name']!=''&&$c['business']!=''?'<br>':'').($c['business']!=''?$c['business']:'');?></small>
             </td>
             <td class="hidden-xs">
               <small><?php echo' '.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']);?></small><br>
               <small>Due: <?php echo date($config['dateFormat'],$r['due_ti']);?></small>
             </td>
             <td class="hidden-xs">
-              <small><?php echo $r['status'];?></small>
+              <small><?php echo$r['status'];?></small>
             </td>
             <td id="controls_<?php echo$r['id'];?>" class="text-right">
-<?php if($r['qid']!=''&&$r['aid']==''){?>
-              <a class="btn btn-default<?php if($r['status']=='delete')echo' hidden';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/to_invoice/'.$r['id'].'"';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Convert to Invoice..."';?>><?php svg('order-quotetoinvoice');?></a>
-<?php }
-if($r['aid']==''){?>
-              <button class="btn btn-default<?php if($r['status']=='delete')echo' hidden';?>" onclick="update('<?php echo$r['id'];?>','orders','status','archived')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Archive"';?>><?php svg('archive');?></button>
-<?php }?>
-              <button class="btn btn-default" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Print Order"';?>><?php svg('print');?></button>
-<?php if($c['email']!=''){?>
-              <button class="btn btn-default" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Email Order"';?>><?php svg('email-send');?></button>
-<?php }?>
-              <a class="btn btn-default<?php if($r['status']=='delete')echo' hidden';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/duplicate/'.$r['id'].'"';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Duplicate"';?>><?php svg('copy');?></a>
-              <a class="btn btn-default<?php if($r['status']=='delete')echo' hidden';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'].'"';if($config['options']{4}==1)echo' data-toggle="tooltip" title="Edit"';?>><?php svg('edit');?></a>
+<?php         echo($r['qid']!=''&&$r['aid']==''?'<a class="btn btn-default'.($r['status']=='delete'?' hidden':'').'" href="'.URL.$settings['system']['admin'].'/orders/to_invoice/'.$r['id'].'" data-toggle="tooltip" title="Convert to Invoice...">'.svg2('libre-gui-order-quotetoinvoice',($config['iconsColor']==1?true:null)).'</a>':'');
+              echo($r['aid']==''?'<button class="btn btn-default'.($r['status']=='delete'?' hidden':'').'" onclick="update(\''.$r['id'].'\',\'orders\',\'status\',\'archived\')" data-toggle="tooltip" title="Archive">'.svg2('libre-gui-archive',($config['iconsColor']==1?true:null)).'</button>':'');?>
+              <button class="btn btn-default" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');" data-toggle="tooltip" title="Print Order"><?php svg('libre-gui-print',($config['iconsColor']==1?true:null));?></button>
+<?php         echo($c['email']!=''?'<button class="btn btn-default" onclick="$(\'#sp\').load(\'core/email_order.php?id='.$r['id'].'&act=\');" data-toggle="tooltip" title="Email Order">'.svg2('libre-gui-email-send',($config['iconsColor']==1?true:null)).'</button>':'');?>
+              <a class="btn btn-default<?php echo($r['status']=='delete'?' hidden':'');?>" href="<?php echo URL.$settings['system']['admin'].'/orders/duplicate/'.$r['id'];?>" data-toggle="tooltip" title="Duplicate"'><?php svg('libre-gui-copy',($config['iconsColor']==1?true:null));?></a>
+              <a class="btn btn-default<?php echo($r['status']=='delete'?' hidden':'');?>" href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'];?>" data-toggle="tooltip" title="Edit"><?php svg('libre-gui-edit',($config['iconsColor']==1?true:null));?></a>
 <?php if($user['rank']>399){?>
-              <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('email-reply');?></button>
-              <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
-              <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','orders')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+              <button class="btn btn-default<?php echo($r['status']!='delete'?' hidden':'');?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','')" data-toggle="tooltip" title="Restore"><?php svg('libre-gui-email-reply',($config['iconsColor']==1?true:null));?></button>
+              <button class="btn btn-default trash<?php echo($r['status']=='delete'?' hidden':'');?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','delete')" data-toggle="tooltip" title="Delete"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
+              <button class="btn btn-default trash<?php echo($r['status']!='delete'?' hidden':'');?>" onclick="purge('<?php echo$r['id'];?>','orders')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-purge',($config['iconsColor']==1?true:null));?></button>
 <?php }?>
             </td>
           </tr>

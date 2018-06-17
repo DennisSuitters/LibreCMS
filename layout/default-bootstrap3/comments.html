@@ -7,17 +7,16 @@
 			<div class="media-body">
 				<div class="well">
 					<print comments="name" class="media-heading" container="h6" leadingtext="Name: ">
-					<time><small class="text-muted"><print comments="dateCreated"></small></time>
+					<time><small class="text-muted"><print comments="dateCreated"></small></time><br>
 					<print comments="notes">
 				</div>
 			</div>
 		</div>
 	</items>
 	<comment>
-		<div id="notification" class="media col-xs-12">
-			<div class="media-body">
-				<iframe name="comments" id="comments" class="hidden"></iframe>
-				<form target="comments" method="post" action="core/add_comment.php" role="form">
+		<div class="media col-xs-12">
+			<div id="comment" class="media-body">
+				<form id="commentform" method="post" action="core/add_comment.php" role="form">
 					<input type="hidden" name="emailtrap" value="">
 					<input type="hidden" name="act" value="add_comment">
 					<input type="hidden" name="rid" value="<print content=id>">
@@ -41,6 +40,14 @@
 						</div>
 					</div>
 				</form>
+				<script>
+					$("#commentform").submit(function(){
+						$.post($(this).attr("action"),$(this).serialize(),function(data){
+							$("#comment").html(data);
+						});
+						return false;
+					});
+				</script>
 			</div>
 		</div>
 	</comment>

@@ -1,16 +1,22 @@
 <?php
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */
+if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 $action=isset($_GET['action'])?filter_input(INPUT_GET,'action',FILTER_SANITIZE_STRING):'';
 $sid=isset($_POST['sid'])?filter_input(INPUT_POST,'sid',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'sid',FILTER_SANITIZE_STRING);
 if(isset($_GET['is'])){
   session_start();
-  require'../db.php';
+  require'..'.DS.'db.php';
   $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
   $su=$db->prepare("SELECT * FROM login WHERE id=:id");
   $su->execute(array(':id'=>$_SESSION['uid']));
   $user=$su->fetch(PDO::FETCH_ASSOC);
   if(isset($_GET['is']))$is=filter_input(INPUT_GET,'is',FILTER_SANITIZE_STRING);
   if(isset($_GET['ie']))$ie=filter_input(INPUT_GET,'ie',FILTER_SANITIZE_STRING);
-  function _ago($time){
+  function _ago ($time){
     $timeDiff=floor(abs(time()-$time)/60);
     if($timeDiff<2)$timeDiff='Just Now';
     elseif($timeDiff>2&&$timeDiff<60)$timeDiff=floor(abs($timeDiff)).' Minutes Ago';
@@ -20,16 +26,28 @@ if(isset($_GET['is'])){
     elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
     return$timeDiff;
   }
-  function svg($svg,$size=null,$color=null){
-    echo'<i class="libre';
-    if($size!=null)echo' libre-'.$size;
-    if($color!=null)echo' libre-'.$color;echo'">';
-    include'../svg/libre-'.$svg.'.svg';
-    echo'</i>';
+  function svg ($svg,$color=null,$class=null,$size=null){
+  	echo'<i class="libre';
+  	if($size!= null)echo' libre-'.$size;
+  	if($color== true)$svg='col'.DS.$svg;elseif($color!=null)echo' libre-'.$color;
+    if($class!=null)echo' '.$class;
+  	echo'">';
+  	include '..'.DS.'svg'.DS.$svg.'.svg';
+  	echo'</i>';
+  }
+  function svg2($svg,$color=null,$class=null,$size=null){
+  	$svgout='<i class="libre';
+  	if($size!=null)$svgout.=' libre-'.$size;
+  	if($color==true)$svg='col'.DS.$svg;elseif($color!=null)$svgout.=' libre-'.$color;
+    if($class!=null)$svgout.=' '.$class;
+  	$svgout.='">';
+  	$svgout.=file_get_contents('..'.DS.'svg'.DS.$svg.'.svg');
+  	$svgout.='</i>';
+  	return$svgout;
   }
 }
 if($action!=''){
-  $s=$db->prepare("SELECT * FROM tracker WHERE sid=:sid ORDER BY ti ASC");
+  $s = $db->prepare("SELECT * FROM tracker WHERE sid=:sid ORDER BY ti ASC");
   $s->execute(array(':sid'=>$sid));
 }else{
   $s=$db->prepare("SELECT * FROM tracker ORDER BY ti DESC LIMIT ".$is.",".$ie);

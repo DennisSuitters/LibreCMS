@@ -13,8 +13,9 @@
 .libre-4x{font-size:4em}
 .libre-5x{font-size:5em}
 .libre-fw{width:1.28571429em;text-align:center}
-.libre-white{fill:#fff}
-.libre-red{fill:#f00}
+.libre-white{color:#fff}
+.libre-red{color:#d9534f}
+.libre-green{color:#5cb85c}
 .libre-hidden{display:none!important}
 .btn:hover.trash{color:#fff;background:#d9534f;border-color:#d43f3a}
 .btn:hover.add{color:#fff;background-color:#5cb85c;border-color:#4cae4c}

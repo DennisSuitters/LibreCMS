@@ -1,10 +1,15 @@
 <?php
-require'../db.php';
-$id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */
+if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
+require'..'.DS.'db.php';
+$id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET, 'id',FILTER_SANITIZE_NUMBER_INT);
 $s=$db->prepare("SELECT * FROM media WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);?>
-
 <div id="this<?php echo$r['id'];?>" class="form-group form-group-sm">
   <label for="mediatitle" class="control-label col-xs-4">Title</label>
   <div class="input-group col-xs-8">
@@ -16,7 +21,8 @@ $r=$s->fetch(PDO::FETCH_ASSOC);?>
   <div class="input-group col-xs-8">
     <input id="mediacategory_1" list="mediacategory_1_options" type="text" class="form-control" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="media" data-dbc="category_1" onchange="update('<?php echo$r['id'];?>','media','category_1',$(this).val());">
     <datalist id="mediacategory_1_options">
-<?php $s=$db->query("SELECT DISTINCT category_1 FROM media WHERE category_1!='' ORDER BY category_1 ASC");while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"/>';?>
+<?php $s=$db->query("SELECT DISTINCT category_1 FROM media WHERE category_1!='' ORDER BY category_1 ASC");
+while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"/>';?>
     </datalist>
   </div>
 </div>
@@ -25,7 +31,8 @@ $r=$s->fetch(PDO::FETCH_ASSOC);?>
   <div class="input-group col-xs-8">
     <input id="mediacategory_2" list="mediacategory_2_options" type="text" class="form-control" value="<?php echo$r['category_2'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="media" data-dbc="category_2" onchange="update('<?php echo$r['id'];?>','media','category_2',$(this).val());">
     <datalist id="mediacategory_2_options">
-<?php $s=$db->query("SELECT DISTINCT category_2 FROM media WHERE category_2!='' ORDER BY category_2 ASC");while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_2'].'"/>';?>
+<?php $s=$db->query("SELECT DISTINCT category_2 FROM media WHERE category_2!='' ORDER BY category_2 ASC");
+while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_2'].'"/>';?>
     </datalist>
   </div>
 </div>

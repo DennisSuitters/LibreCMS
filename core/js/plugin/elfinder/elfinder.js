@@ -9,23 +9,23 @@
 }
 (function($){
   $.extend($.summernote.plugins,{
-    'media':function(context){
+    'elfinder':function(context){
       var self=this;
       var ui=$.summernote.ui;
-      context.memo('button.media',function(){
+      context.memo('button.elfinder',function(){
         var button=ui.button({
           contents:'<i class="note-icon-browse-media"/>',
           tooltip:'Media Browser',
-            click:function(){
-              mediaDialog();
-            }
-          });
-          var $elfinder=button.render();
-          return $elfinder;
+          click:function(){
+            elfinderDialog(context);
+          }
         });
-        this.destroy=function(){
-          this.$panel.remove();
-          this.$panel=null;
+        var $elfinder=button.render();
+        return $elfinder;
+      });
+      this.destroy=function(){
+        this.$panel.remove();
+        this.$panel=null;
       };
     }
   });

@@ -78,6 +78,7 @@
         .camera_caption>div:empty{display:none}
         .camera_caption>div{font-size:1em;padding:10px 20px 100px 20px}
         .camera_caption .title{font-size:1.5em;font-weight:700;display:block}
+        .camera_caption .attribution{top:-30px;bottom:auto;}
         .camera_overlayer{opacity:.1}
       </style>
   		<script src="<print theme>/js/jquery-2.1.3.min.js"></script>
@@ -107,7 +108,7 @@
       <div class="camera_wrap camera_white_skin" id="camera">
         <items>
           <div data-thumb="<print media=file>" data-src="<print media=file>">
-            <div class="camera_caption fadeFromBottom"><print media="title"><print media="caption"></div>
+            <div class="camera_caption fadeFromBottom"><print media="title"><print media="caption"><attribution><div class="attribution"><a href="<print media=attributionURL>" target="_blank" rel="noopener noreferrer"><print media="attributionName"></a></div></attribution></div>
           </div>
         </items>
       </div>

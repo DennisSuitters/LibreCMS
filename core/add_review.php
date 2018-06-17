@@ -1,17 +1,14 @@
 <?php
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */
+$getcfg=true;
 include'db.php';
-$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-if($config['development']==1){
-  error_reporting(E_ALL);
-  ini_set('display_errors','On');
-}else{
-  error_reporting(E_ALL);
-  ini_set('display_errors','Off');
-  ini_set('log_errors','On');
-  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
-}
-
+$theme=parse_ini_file('..'.DS.'layout'.DS.$config['theme'].DS.'theme.ini',true);
 $ip=$_SERVER['REMOTE_ADDR'];
+$notification='';
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $emailtrap=isset($_POST['emailtrap'])?filter_input(INPUT_POST,'emailtrap',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'emailtrap',FILTER_SANITIZE_STRING);
 $rating=isset($_POST['rating'])?filter_input(INPUT_POST,'rating',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'rating',FILTER_SANITIZE_NUMBER_INT);
@@ -20,10 +17,25 @@ $name=isset($_POST['name'])?filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRIN
 $review=isset($_POST['review'])?filter_input(INPUT_POST,'review',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'review',FILTER_SANITIZE_STRING);
 if($emailtrap==''){
   if(filter_var($email,FILTER_VALIDATE_EMAIL)){
-    $q=$db->prepare("INSERT INTO comments (contentType,rid,ip,email,name,notes,cid,status,ti) VALUES('review',:rid,:ip,:email,:name,:notes,:cid,'unapproved',:ti)");
-    $q->execute(array(':rid'=>$id,':ip'=>$ip,':email'=>$email,':name'=>$name,':notes'=>$review,':cid'=>$rating,':ti'=>time()));
+    $q=$db->prepare("INSERT INTO comments (contentType,rid,ip,email,name,notes,cid,status,ti) VALUES ('review',:rid,:ip,:email,:name,:notes,:cid,'unapproved',:ti)");
+    $q->execute(
+      array(
+        ':rid'   => $id,
+        ':ip'    => $ip,
+        ':email' => $email,
+        ':name'  => $name,
+        ':notes' => $review,
+        ':cid'   => $rating,
+        ':ti'    => time()
+      )
+    );
     $e=$db->errorInfo();
-    if(is_null($e[2]))echo'<div class="alert alert-success">Thank you for your Review, it will be added once an Administrator Approves it.</div>';
-    else echo'<div class="alert alert-danger">There was an Issue adding your Review.</div>';
-  }else echo'<div class="alert alert-info">Spammers and Email Harvesters not welcome.</div>';
-}else echo'<div class="alert alert-info">Spammers and Email Harvesters not welcome.</div>';
+    if(is_null($e[2]))
+      $notification.=$theme['settings']['review_success'];
+    else
+      $notification.=$theme['settings']['review_error'];
+  }else
+    $notification.=$theme['settings']['review_errorspam'];
+}else
+  $notification.=$theme['settings']['review_errorspam'];
+echo$notification;

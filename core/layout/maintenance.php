@@ -1,3 +1,9 @@
+<?php
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */?>
 <!DOCTYPE HTML>
 <html lang="en-AU">
   <head>
@@ -21,7 +27,7 @@
           </div>
         </div>
         <div class="panel-footer text-right">
-          <a target="_blank" href="https://github.com/StudioJunkyard/LibreCMS">GitHub</a>
+          <a target="_blank" href="https://github.com/DiemenDesign/LibreCMS">GitHub</a>
         </div>
       </div>
     </div>

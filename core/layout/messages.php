@@ -1,5 +1,11 @@
 <?php
-if($args[0]=='settings')include'core'.DS.'layout'.DS.'set_messages.php';
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */
+if($args[0]=='settings')
+  include'core'.DS.'layout'.DS.'set_messages.php';
 elseif($args[0]=='view'||$args[0]=='compose'){
   if($args[0]=='view'){
     $q=$db->prepare("UPDATE messages SET status='read' WHERE id=:id");
@@ -13,10 +19,11 @@ elseif($args[0]=='view'||$args[0]=='compose'){
     <h4 class="col-xs-8">Messages</h4>
     <div class="pull-right">
       <div class="btn-group">
-        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('back');?></a>
+        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('libre-gui-back',($config['iconsColor']==1?true:null));?></a>
       </div>
       <div class="btn-group">
-        <a class="btn btn-default info" href="#"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+        <a class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#messages#" data-toggle="tooltip" data-placement="left" title="Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
+        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
       </div>
     </div>
   </div>
@@ -25,25 +32,25 @@ elseif($args[0]=='view'||$args[0]=='compose'){
     <div class="form-group">
       <label for="ti" class="control-label col-xs-4 col-sm-2 col-lg-1">Created</label>
       <div class="input-group col-xs-8 col-sm-10 col-lg-11">
-        <input type="text" id="ti" class="form-control" value="<?php if(isset($r['ti'])){echo date($config['dateFormat'],$r['ti']);}else{echo date($config['dateFormat'],time());}?>" readonly>
+        <input type="text" id="ti" class="form-control" value="<?php echo(isset($r['ti'])?date($config['dateFormat'],$r['ti']):date($config['dateFormat'],time()));?>" readonly>
       </div>
     </div>
-    <div class="form-group<?php if($args[0]=='compose')echo' has-error';?>">
+    <div class="form-group<?php if ($args[0] == 'compose') echo ' has-error';?>">
       <label for="subject" class="control-label col-xs-4 col-sm-2 col-lg-1">Subject</label>
       <div class="input-group col-xs-8 col-sm-10 col-lg-11">
-        <input type="text" id="subject" class="form-control" name="subject" value="<?php if($args[0]!='compose'){echo$r['subject'];}?>" placeholder="Enter a Subject"<?php if($args[0]!='compose')echo' readonly';else echo' required';?>>
+        <input type="text" id="subject" class="form-control" name="subject" value="<?php echo($args[0]!='compose'?$r['subject']:'');?>" placeholder="Enter a Subject"<?php echo($args[0]!='compose'?' readonly':' required');?>>
       </div>
     </div>
-    <div class="form-group<?php if($args[0]=='compose')echo' has-error';?>">
+    <div class="form-group<?php echo($args[0]=='compose'?' has-error':'');?>">
       <label for="email" class="control-label col-xs-4 col-sm-2 col-lg-1">To</label>
       <div class="input-group col-xs-8 col-sm-10 col-lg-11">
-        <input type="text" id="to_email" class="form-control" value="<?php if(isset($r)&&$r['to_name']!='')echo$r['to_name'];if($args[0]!='compose')echo' &lt;'.$r['to_email'].'&gt;';?>"<?php if($args[0]!='compose')echo' readonly';?> placeholder="Enter an Email, or Select from Contacts...">
+        <input type="text" id="to_email" class="form-control" value="<?php echo(isset($r)&&$r['to_name']!=''?$r['to_name']:'').($args[0]!='compose'?' &lt;'.$r['to_email'].'&gt;':'');?>"<?php echo($args[0]!='compose'?' readonly':'');?> placeholder="Enter an Email, or Select from Contacts...">
       </div>
     </div>
     <div class="form-group">
       <label for="email" class="control-label col-xs-4 col-sm-2 col-lg-1">From</label>
       <div class="input-group col-xs-8 col-sm-10 col-lg-11">
-        <input type="text" id="email" class="form-control" value="<?php if($args[0]=='compose')echo$user['name'].' &lt;'.$user['email'].'&gt;';else echo$r['from_name'].' &lt;'.$r['from_email'].'&gt;';?>" readonly>
+        <input type="text" id="email" class="form-control" value="<?php echo($args[0]=='compose'?$user['name'].' &lt;'.$user['email'].'&gt;':$r['from_name'].' &lt;'.$r['from_email'].'&gt;');?>" readonly>
       </div>
     </div>
     <div id="reply" class="hidden">
@@ -65,20 +72,21 @@ elseif($args[0]=='view'||$args[0]=='compose'){
 <?php }else{
   $folder="INBOX";
   if(isset($args[0])){
-    if($args[0]=='deleted')$folder='DELETE';
-    if($args[0]=='starred')$folder='starred';
-    if($args[0]=='important')$folder='important';
-    if($args[0]=='sent')$folder='sent';
+    if($args[0]=='deleted')   $folder='DELETE';
+    if($args[0]=='starred')   $folder='starred';
+    if($args[0]=='important') $folder='important';
+    if($args[0]=='sent')      $folder='sent';
   }?>
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 class="col-xs-8">Messages</h4>
     <div class="pull-right">
       <div class="btn-group">
-        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages/settings';?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Settings"';?>><?php svg('cogs');?></a>
+        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages/settings';?>" data-toggle="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings',($config['iconsColor']==1?true:null));?></a>
       </div>
       <div class="btn-group">
-        <a target="_blank" class="btn btn-default info" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#messages"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+        <a target="_blank" class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#messages" data-toggle="tooltip" data-placement="left" title="Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
+        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
       </div>
     </div>
   </div>
@@ -104,7 +112,8 @@ if(is_array($mailBoxArr)){
       echo '</ul>';
 } */
 ?>
-<?php $s=$db->prepare("SELECT * FROM messages ORDER BY ti DESC, subject ASC");
+<?php
+$s=$db->prepare("SELECT * FROM messages ORDER BY ti DESC, subject ASC");
 $s->execute(array(':folder'=>$folder));
 $ur=$db->query("SELECT COUNT(status) AS cnt FROM messages WHERE status='unread'")->fetch(PDO::FETCH_ASSOC);
 /*
@@ -135,15 +144,15 @@ $ur=$db->query("SELECT COUNT(status) AS cnt FROM messages WHERE status='unread'"
           </thead>
           <tbody>
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-            <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='delete')echo' danger';?>">
-              <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>"><?php echo $r['subject'];?></a></td>
-              <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>" title="<?php echo'&lt;'.$r['from_email'].'&gt;';?>"><?php if($r['from_name']!='')echo$r['from_name'];else echo'&lt;'.$r['from_email'].'&gt;';?></a></td>
+            <tr id="l_<?php echo$r['id'];?>" class="<?php echo($r['status']=='delete'?' danger':'');?>">
+              <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>"><?php echo$r['subject'];?></a></td>
+              <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>" title="<?php echo'&lt;'.$r['from_email'].'&gt;';?>"><?php echo($r['from_name']!=''?$r['from_name']:'&lt;'.$r['from_email'].'&gt;');?></a></td>
               <td class="text-center"><?php echo date('M j \a\t G:i',$r['ti']);?></td>
               <td id="controls_<?php echo$r['id'];?>" class="text-right">
-                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'];?>/messages/view/<?php echo$r['id'];?>"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="View"';?>><?php svg('view');?></a>
-                <button class="btn btn-default<?php if($r['status']!='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('restore');?></button>
-                <button class="btn btn-default trash<?php if($r['status']=='delete')echo' hidden';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','delete')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Delete"';?>><?php svg('trash');?></button>
-                <button class="btn btn-default trash<?php if($r['status']!='delete')echo' hidden';?>" onclick="purge('<?php echo$r['id'];?>','messages')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('purge');?></button>
+                <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'];?>/messages/view/<?php echo$r['id'];?>" data-toggle="tooltip" title="View"><?php svg('libre-gui-view',($config['iconsColor']==1?true:null));?></a>
+                <button class="btn btn-default<?php echo($r['status']!='delete'?' hidden':'');?>" onclick="updateButtons('<?php echo $r['id'];?>','messages','status','')" data-toggle="tooltip" title="Restore"><?php svg('libre-gui-restore',($config['iconsColor']==1?true:null));?></button>
+                <button class="btn btn-default trash<?php echo($r['status']=='delete'?' hidden':'');?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','delete')" data-toggle="tooltip" title="Delete"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
+                <button class="btn btn-default trash<?php echo($r['status']!='delete'?' hidden':'');?>" onclick="purge('<?php echo $r['id'];?>','messages')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-purge',($config['iconsColor']==1?true:null));?></button>
               </td>
             </tr>
 <?php }?>

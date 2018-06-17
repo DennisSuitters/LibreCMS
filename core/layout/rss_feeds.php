@@ -1,5 +1,11 @@
 <?php
-require'../db.php';
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */
+if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
+require'..'.DS.'db.php';
 $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 $s=$db->prepare("SELECT * FROM choices WHERE contentType='dashrss' ORDER BY ti");
 $s->execute();
@@ -8,7 +14,7 @@ $cnt=round($cnt,0,PHP_ROUND_HALF_UP);
 if($cnt==0)$cnt=1;
 $cache_time=86400*7;
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
-  $cache_file='..'.DS.'..'.DS.'media'.DS.'cache'.DS.'feed'.$r['id'].'.rss';
+  $cache_file ='..'.DS.'..'.DS.'media'.DS.'cache'.DS.'feed'.$r['id'].'.rss';
   $timedif=@(time()-filemtime($cache_file));
   if(file_exists($cache_file)&&$timedif<$cache_time)
     $string=file_get_contents($cache_file);

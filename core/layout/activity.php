@@ -1,12 +1,18 @@
+<?php
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */?>
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 class="col-xs-8">Activity</h4>
     <div class="pull-right">
-      <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Purge All"';?>>
-        <button class="btn btn-default trash" onclick="purge('0','logs')"><?php svg('purge');?></button>
+      <div class="btn-group" data-toggle="tooltip" data-placement="left" title="Purge All">
+        <button class="btn btn-default trash" onclick="purge('0','logs')"><?php svg('libre-gui-purge',($config['iconsColor']==1?true:null));?></button>
       </div>
-      <div class="btn-group"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Show Items"';?>>
-        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><?php svg('view');?></button>
+      <div class="btn-group" data-toggle="tooltip" data-placement="left" title="Show Items">
+        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown"><?php svg('libre-gui-view',($config['iconsColor']==1?true:null));?></button>
         <ul class="dropdown-menu pull-right">
           <li><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>">All</a></li>
 <?php $st=$db->query("SELECT DISTINCT action FROM logs ORDER BY action ASC");
@@ -14,7 +20,8 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC))echo'<li><a href="'.URL.$settings['system
         </ul>
       </div>
       <div class="btn-group">
-        <a target="_blank" class="btn btn-default info" href="https://github.com/StudioJunkyard/LibreCMS/wiki/Administration#activity"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" data-placement="left" title="Help"';?>><?php svg('help');?></a>
+        <a target="_blank" class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#activity" data-toggle="tooltip" data-placement="left" title="Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
+        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
       </div>
     </div>
   </div>
@@ -36,12 +43,12 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     $u=$su->fetch(PDO::FETCH_ASSOC);
   }else{
     $u=[
-      'id'=>0,
-      'username'=>'Anonymous',
-      'avatar'=>'',
-      'gravatar'=>'',
-      'name'=>'Anonymous',
-      'rank'=>1000
+      'id'       => 0,
+      'username' => 'Anonymous',
+      'avatar'   => '',
+      'gravatar' => '',
+      'name'     => 'Anonymous',
+      'rank'     => 1000
     ];
   }
   if($r['action']=='create')$action.=' Created<br>';
@@ -49,32 +56,28 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
   if($r['action']=='purge')$action.=' Purged<br>';
   if(isset($c['title'])&&$c['title']!=''){
     $action.='<strong>Title:</strong> '.$c['title'].'<br>';
-    if($r['action']=='update')$action.='<strong>Table:</strong> '.$r['refTable'].'<br>';
+    $action.=($r['action']=='update'?'<strong>Table:</strong> '.$r['refTable'].'<br>':'');
     $action.='<strong>Column:</strong> '.$r['refColumn'].'<br>';
     $action.='<strong>Data:</strong>'.strip_tags(rawurldecode(substr($r['oldda'],0,300))).'<br>';
     $action.='<strong>Changed To:</strong>'.strip_tags(rawurldecode(substr($r['newda'],0,300))).'<br>';
   }
   $action.='<strong>by</strong> '.$u['username'].':'.$u['name'];
   if(isset($u['avatar'])&&$u['avatar']!=''){
-    $image=basename($u['avatar']);
-    if(file_exists('media/avatar/'.$image))$image='media/avatar/'.$image;else$image='core/svg/libre-activity.svg';
-  }elseif(isset($u['gravatar'])&&$u['gravatar']!=''){
+    $image=(file_exists('media'.DS.'avatar'.DS.basename($u['avatar']))?'media'.DS.'avatar'.DS.basename($u['avatar']):NOAVATAR);
+  }elseif(isset($u['gravatar'])&&$u['gravatar']!='')
     $image=$u['gravatar'];
-  }else{
-    $image='core/svg/libre-user.svg';
-  }?>
+  else
+    $image=NOAVATAR;?>
       <div id="l_<?php echo$r['id'];?>" class="timeline-block">
-        <div class="timeline-img <?php echo$r['action'];?><?php if($i>3)echo' hidden';?>">
-          <img src="<?php echo$image;?>" alt="Picture">
+        <div class="timeline-img <?php echo$r['action'];?><?php echo($i>3?' hidden':'');?>">
+          <img class="img-circle" src="<?php echo$image;?>" alt="Picture">
         </div>
-        <div class="timeline-content<?php if($i>3)echo' hidden';?>">
-          <p><?php echo$action;?></p>
+        <div class="timeline-content<?php echo($i>3?' hidden':'');?>">
+          <p><?php echo $action;?></p>
           <span class="read-more">
-            <button class="btn btn-default" onclick="activitySpy('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="View Details"';?>><?php svg('fingerprint');?></button>
-<?php if($r['action']=='update'){?>
-            <button class="btn btn-default" onclick="restore('<?php echo$r['id'];?>');"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Restore"';?>><?php svg('undo');?></button>
-<?php }?>
-            <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','logs')"<?php if($config['options']{4}==1)echo' data-toggle="tooltip" title="Purge"';?>><?php svg('trash');?></button>
+            <button class="btn btn-default" onclick="activitySpy('<?php echo$r['id'];?>');" data-toggle="tooltip" title="View Details"><?php svg('libre-gui-fingerprint',($config['iconsColor']==1?true:null));?></button>
+<?php echo($r['action']=='update'?'<button class="btn btn-default" onclick="restore(\''.$r['id'].'\');" data-toggle="tooltip" title="Restore">'.svg2('libre-gui-undo',($config['iconsColor']==1?true:null)).'</button>':'');?>
+            <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','logs')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
           </span>
           <span class="date"><?php echo _ago($r['ti']);?></span>
         </div>
@@ -86,9 +89,9 @@ $i++;
   </div>
 </div>
 <script>
-  $(window).scroll(function(){
-  	$('.timeline-block').each(function(){
-  		if($(this).offset().top<=$(window).scrollTop()+$(window).height()*0.75&&$(this).find('.timeline-img').hasClass('hidden')){
+  $(window).scroll(function () {
+  	$('.timeline-block').each(function () {
+  		if ($(this).offset().top <= $(window).scrollTop() + $(window).height() * 0.75 &&$ (this).find('.timeline-img').hasClass('hidden')) {
   			$(this).find('.timeline-img,.timeline-content').removeClass('hidden').addClass('animated zoomIn');
   		}
   	});

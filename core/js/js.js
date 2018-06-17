@@ -23,6 +23,10 @@ function restore(id){
 //	$('#busy').css({'display':'block'});
 	$('#sp').load('core/restore.php?id='+id);
 }
+function suggest(id){
+	Pace.restart();
+	$('#sp').load('core/suggest.php?id='+id);
+}
 function makeClient(id){
 	Pace.restart();
 //	$('#busy').css({'display':'block'});
@@ -330,8 +334,8 @@ function imageUpdate(id,t,c,da){
 function updateButtons(id,t,c,da){
 	$('#sp').load('core/update.php?id='+id+'&t='+t+'&c='+c+'&da='+escape(da));
 }
-function removeBackup(id2,id){
-	$('#sp').load('core/removebackup.php?id2='+id2+'&id='+id);
+function removeBackup(id){
+	$('#sp').load('core/removebackup.php?id='+id);
 }
 function showDetails(id,c){
 	if($('#show'+id).hasClass('hidden')){

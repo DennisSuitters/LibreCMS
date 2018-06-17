@@ -1,50 +1,76 @@
 <?php
-error_reporting(0);
-define('DS',DIRECTORY_SEPARATOR);
-include_once dirname(__FILE__).DS.'elFinderConnector.class.php';
-include_once dirname(__FILE__).DS.'elFinder.class.php';
-include_once dirname(__FILE__).DS.'elFinderVolumeDriver.class.php';
-include_once dirname(__FILE__).DS.'elFinderVolumeLocalFileSystem.class.php';
-$settings=parse_ini_file('..'.DS.'..'.DS.'..'.DS.'core'.DS.'config.ini',TRUE);
-if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)
-  define('PROTOCOL','https://');
+define('DS', DIRECTORY_SEPARATOR);
+include_once dirname(__FILE__) . DS . 'autoload.php';
+include_once dirname(__FILE__) . DS . 'elFinderConnector.class.php';
+include_once dirname(__FILE__) . DS . 'elFinder.class.php';
+include_once dirname(__FILE__) . DS . 'elFinderVolumeDriver.class.php';
+include_once dirname(__FILE__) . DS . 'elFinderVolumeLocalFileSystem.class.php';
+$settings = parse_ini_file('..' . DS . '..' . DS . '..' . DS . 'core' . DS . 'config.ini',TRUE);
+$dns = ((!empty($settings['database']['driver'])) ? ($settings['database']['driver']) : '') .
+((!empty($settings['database']['host'])) ? (':host=' . $settings['database']['host']) : '') .
+((!empty($settings['database']['port'])) ? (';port=' . $settings['database']['port']) : '') .
+((!empty($settings['database']['schema'])) ? (';dbname=' . $settings['database']['schema']) : '');
+$db = new PDO($dns, $settings['database']['username'], $settings['database']['password']);
+$config = $db -> query("SELECT * FROM config WHERE id=1") -> fetch(PDO::FETCH_ASSOC);
+if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT']==443)
+  define('PROTOCOL', 'https://');
 else
-  define('PROTOCOL','http://');
-define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
-function access($attr,$path,$data,$volume){
-  return strpos(basename($path),'.')===0?!($attr=='read'||$attr=='write'):null;
+  define('PROTOCOL', 'http://');
+define('URL', PROTOCOL . $_SERVER['HTTP_HOST'] . $settings['system']['url'] . '/');
+function access($attr, $path, $data, $volume) {
+  return strpos(basename($path),'.') === 0 ? !($attr == 'read' || $attr == 'write') : null;
 }
-$opts=array(
-  'roots'=>array(
+$mediaEnable = ($config['options']{2} == 0) ? false : true;
+if($config['mediaMaxWidth'] == 0 && $mediaEnable == true) $mediaEnable == false;
+if($config['mediaMaxHeight'] == 0 && $mediaEnable == true) $mediaEnable == false;
+$opts = array(
+  'bind' => array(
+    'upload.presave' => array(
+      'Plugin.AutoResize.onUpLoadPreSave'
+    )
+  ),
+  'plugin' => array(
+    'AutoResize' => array(
+      'enable'       => $mediaEnable,
+      'maxWidth'     => $config['mediaMaxWidth'],
+      'maxHeight'    => $config['mediaMaxHeight'],
+      'quality'      => $config['mediaQuality'],
+      'preserveExif' => false,
+      'forceEffect'  => false,
+      'targetType'   => IMG_GIF|IMG_JPG|IMG_PNG|IMG_WBMP,
+      'offDropWith'  => null,
+      'onDropWith'   => null
+    )
+  ),
+  'roots' => array(
     array(
-      'imgLib'=>'gd',
-      'driver'=>'LocalFileSystem',
-//      'path'=>$_SERVER["DOCUMENT_ROOT"].DS.$settings['system']['url'].DS.'media'.DS,
-      'path'=>$_SERVER["DOCUMENT_ROOT"].DS.$settings['system']['url'].DS,
-//      'URL'=>URL.'media/',
-      'URL'=>URL,
-      'uploadDeny'=>array(
+      'imgLib'      => 'gd',
+      'driver'      => 'LocalFileSystem',
+      'path'        => $_SERVER["DOCUMENT_ROOT"] . DS . $settings['system']['url'] . DS . 'media' . DS,
+//      'path'=>$_SERVER["DOCUMENT_ROOT"].DS.$settings['system']['url'].DS,
+      'URL'         => URL . 'media' . DS,
+//      'URL'=>URL,
+      'uploadDeny'  => array(
         'all'
       ),
-      'uploadAllow'=>array(
+      'uploadAllow' => array(
         'image',
         'text/plain',
         'application/pdf'
       ),
-      'uploadOrder'=>array(
+      'uploadOrder' => array(
         'deny',
         'allow'
       ),
-      'accessControl'=>'access',
-      'attributes'=>array(
+      'accessControl' => 'access',
+      'attributes'    => array(
         array(
-//          'pattern'=>'',
-          'pattern'=>'!^/core|layout|index.php!',
-          'hidden'=>true
+          'pattern' => '!^/core|layout|index.php!',
+          'hidden'  => true
         )
       )
     )
   )
 );
-$connector=new elFinderConnector(new elFinder($opts));
-$connector->run();
+$connector = new elFinderConnector(new elFinder($opts));
+$connector -> run();

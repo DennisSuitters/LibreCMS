@@ -22,7 +22,8 @@
  *			'Sanitizer' => array(
  *				'enable' => true,
  *				'targets'  => array('\\','/',':','*','?','"','<','>','|'), // target chars
- *				'replace'  => '_'    // replace to this
+ *				'replace'  => '_', // replace to this
+ *				'callBack' => null // Or @callable sanitize function
  *			)
  *		),
  *		// each volume configure (optional)
@@ -35,7 +36,8 @@
  *					'Sanitizer' => array(
  *						'enable' => true,
  *						'targets'  => array('\\','/',':','*','?','"','<','>','|'), // target chars
- *						'replace'  => '_'    // replace to this
+ *						'replace'  => '_', // replace to this
+ *						'callBack' => null // Or @callable sanitize function
  *					)
  *				)
  *			)
@@ -46,9 +48,8 @@
  * @author Naoki Sawada
  * @license New BSD
  */
-class elFinderPluginSanitizer
+class elFinderPluginSanitizer extends elFinderPlugin
 {
-	private $opts = array();
 	private $replaced = array();
 	private $keyMap = array(
 		'ls' => 'intersect',
@@ -59,14 +60,14 @@ class elFinderPluginSanitizer
 		$defaults = array(
 			'enable'   => true,  // For control by volume driver
 			'targets'  => array('\\','/',':','*','?','"','<','>','|'), // target chars
-			'replace'  => '_'    // replace to this
+			'replace'  => '_',   // replace to this
+			'callBack' => null   // Or callable sanitize function
 		);
-	
 		$this->opts = array_merge($defaults, $opts);
 	}
 	
 	public function cmdPreprocess($cmd, &$args, $elfinder, $volume) {
-		$opts = $this->getOpts($volume);
+		$opts = $this->getCurrentOpts($volume);
 		if (! $opts['enable']) {
 			return false;
 		}
@@ -102,32 +103,20 @@ class elFinderPluginSanitizer
 		}
 	}
 	
-	public function onUpLoadPreSave(&$path, &$name, $src, $elfinder, $volume) {
-		$opts = $this->getOpts($volume);
+	// NOTE: $thash is directory hash so it unneed to process at here
+	public function onUpLoadPreSave(&$thash, &$name, $src, $elfinder, $volume) {
+		$opts = $this->getCurrentOpts($volume);
 		if (! $opts['enable']) {
 			return false;
-		}
-	
-		if ($path) {
-			$path = $this->sanitizeFileName($path, $opts, array('/'));
 		}
 		$name = $this->sanitizeFileName($name, $opts);
 		return true;
 	}
 	
-	private function getOpts($volume) {
-		$opts = $this->opts;
-		if (is_object($volume)) {
-			$volOpts = $volume->getOptionsPlugin('Sanitizer');
-			if (is_array($volOpts)) {
-				$opts = array_merge($this->opts, $volOpts);
-			}
+	protected function sanitizeFileName($filename, $opts) {
+		if(!empty($opts['callBack']) && is_callable($opts['callBack'])) {
+			return call_user_func_array($opts['callBack'], array($filename, $opts));
 		}
-		return $opts;
-	}
-	
-	private function sanitizeFileName($filename, $opts, $allows = array()) {
-		$targets = $allows? array_diff($opts['targets'], $allows) : $opts['targets'];
-		return str_replace($targets, $opts['replace'], $filename);
+		return str_replace($opts['targets'], $opts['replace'], $filename);
   	}
 }

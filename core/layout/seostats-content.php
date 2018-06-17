@@ -1,7 +1,12 @@
 <?php
+/*
+ * LibreCMS - Copyright (C) Diemen Design 2018
+ * This software may be modified and distributed under the terms
+ * of the MIT license (http://opensource.org/licenses/MIT).
+ */
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $t=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
-$u=isset($_POST['u'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'u',FILTER_SANITIZE_STRING);
+$u=isset($_POST['u'])?filter_input(INPUT_POST,'u',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'u',FILTER_SANITIZE_STRING);
 $a=isset($_POST['a'])?filter_input(INPUT_POST,'a',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'a',FILTER_SANITIZE_STRING);
 if($a=='social'){?>
 <legend class="control-legend clearfix">Social Shares<span id="social-loading" class="pull-right"><div class="loader display margin"></div> Loading Stats...</span></legend>
@@ -96,47 +101,47 @@ if($a=='social'){?>
   </div>
 </div>
 <script>/*<![CDATA[*/
-    $.get("core/layout/seostats-social.php?u=<?php echo$u;?>",{},function(results){
-      var social=results.split(",");
-      $('#social-loading').fadeOut();
-      if(social[0]!='n.a.')$('#social-google-plus').countTo({from:0,to:social[0]});
-      if(social[1]!='n.a.')$('#social-twitter').countTo({from:0,to:social[2]});
-      if(social[2]!='n.a.')$('#social-facebook').countTo({from:0,to:social[2]});
-      if(social[3]!='n.a.')$('#social-pinterest').countTo({from:0,to:social[3]});
-      if(social[4]!='n.a.')$('#social-linkedin').countTo({from:0,to:social[4]});
-      if(social[5]!='n.a.')$('#social-delicious').countTo({from:0,to:social[5]});
-      if(social[6]!='n.a.')$('#social-digg').countTo({from:0,to:social[6]});
-      if(social[7]!='n.a.')$('#social-stumbleupon').countTo({from:0,to:social[7]});
-    });
- /*]]>*/</script>
+  $.get("core/layout/seostats-social.php?u=<?php echo $u;?>", {}, function (results) {
+    var social = results.split(",");
+    $('#social-loading').fadeOut();
+    if (social[0] != 'n.a.') $('#social-google-plus').countTo({ from: 0, to: social[0]});
+    if (social[1] != 'n.a.') $('#social-twitter').countTo({     from: 0, to: social[2]});
+    if (social[2] != 'n.a.') $('#social-facebook').countTo({    from: 0, to: social[2]});
+    if (social[3] != 'n.a.') $('#social-pinterest').countTo({   from: 0, to: social[3]});
+    if (social[4] != 'n.a.') $('#social-linkedin').countTo({    from: 0, to: social[4]});
+    if (social[5] != 'n.a.') $('#social-delicious').countTo({   from: 0, to: social[5]});
+    if (social[6] != 'n.a.') $('#social-digg').countTo({        from: 0, to: social[6]});
+    if (social[7] != 'n.a.') $('#social-stumbleupon').countTo({ from: 0, to: social[7]});
+  });
+/*]]>*/</script>
 <?php }
 if($a=='google'){?>
 <legend class="control-legend clearfix">Google <span id="google-loading" class="pull-right"><div class="loader display margin"></div> Loading Stats...</span></legend>
 <div class="col-xs-12" id="seostats-google"></div>
 <script>/*<![CDATA[*/
-    $.get("core/layout/seostats-google.php?id=<?php echo$id;?>&t=content&u=<?php echo$u;?>",{},function(results){
-      $('#google-loading').fadeOut('hidden');
-      $('#seostats-google').html(results);
-    });
+  $.get("core/layout/seostats-google.php?id=<?php echo $id;?>&t=content&u=<?php echo $u;?>", {}, function (results) {
+    $('#google-loading').fadeOut('hidden');
+    $('#seostats-google').html(results);
+  });
 /*]]>*/</script>
 <?php }
 if($a=='alexa'){?>
 <legend class="control-legend clearfix">Alexa <span id="alexa-loading" class="pull-right"><div class="loader display margin"></div> Loading Stats...</span></legend>
 <div class="col-xs-12" id="seostats-alexa"></div>
 <script>/*<![CDATA[*/
-    $.get("core/layout/seostats-alexa.php?id=<?php echo$id;?>&t=content&u=<?php echo$u;?>",{},function(results){
-      $('#alexa-loading').fadeOut('hidden');
-      $('#seostats-alexa').html(results);
-    });
+  $.get("core/layout/seostats-alexa.php?id=<?php echo $id;?>&t=content&u=<?php echo $u;?>", {}, function (results) {
+    $('#alexa-loading').fadeOut('hidden');
+    $('#seostats-alexa').html(results);
+  });
 /*]]>*/</script>
 <?php }
 if($a=='moz'){?>
 <legend class="control-legend clearfix">Moz <span id="moz-loading" class="pull-right"><div class="loader display margin"></div> Loading Stats...</span></legend>
 <div class="col-xs-12" id="seostats-moz"></div>
 <script>/*<![CDATA[*/
-    $.get("core/layout/seostats-moz.php?id=<?php echo$id;?>&t=content&u=<?php echo$u;?>",{},function(results){
-      $('#moz-loading').fadeOut('hidden');
-      $('#seostats-moz').html(results);
-    });
+  $.get("core/layout/seostats-moz.php?id=<?php echo $id;?>&t=content&u=<?php echo $u;?>", {}, function (results) {
+    $('#moz-loading').fadeOut('hidden');
+    $('#seostats-moz').html(results);
+  });
 /*]]>*/</script>
 <?php }
