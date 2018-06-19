@@ -43,6 +43,7 @@ elseif($args[0]=='edit'){
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active"><a href="#account-general" aria-controls="account-general" role="tab" data-toggle="tab">General</a></li>
       <li role="presentation"><a href="#account-images" aria-controls="account-images" role="tab" data-toggle="tab">Images</a></li>
+      <li role="presentation"><a href="#account-proofs" aria-controls="account-proofs" role="tab" data-toggle="tab">Proofs</a></li>
       <li role="presentation"><a href="#account-social" aria-controls="account-social" role="tab" data-toggle="tab">Social</a></li>
       <li role="presentation"><a href="#account-settings" aria-controls="account-settings" role="tab" data-toggle="tab">Settings</a></li>
     </ul>
@@ -207,6 +208,47 @@ elseif($args[0]=='edit'){
           </div>
           <small class="help-block text-right"><a target="_blank" href="http://www.gravatar.com/">Gravatar</a> Link will override any image uploaded as your Avatar.</small>
         </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="account-proofs">
+<?php /* Proofs */ ?>
+        <ul id="proof_items">
+<?php $sm=$db->prepare("SELECT * FROM content WHERE contentType='proofs' AND uid=:id ORDER BY ord ASC");
+$sm->execute(array(':id'=>$r['id']));
+while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
+  if(!file_exists($rm['file']))$rm['file']='core'.DS.'images'.DS.'noimage.jpg';
+  list($width,$height)=getimagesize($rm['file']);?>
+          <li id="proof_items_<?php echo$rm['id'];?>" class="col-xs-6 col-sm-3">
+            <div class="panel panel-default media">
+              <div class="controls btn-group">
+                <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$rm['id'];?>"><?php svg('libre-gui-edit');?></a>
+<?php
+$scn=$sccn=0;
+$sc=$db->prepare("SELECT COUNT(rid) as cnt FROM comments WHERE rid=:rid AND contentType='proofs'");
+$sc->execute(array(':rid'=>$rm['id']));
+$scn=$sc->fetch(PDO::FETCH_ASSOC);
+$scc=$db->prepare("SELECT COUNT(rid) as cnt FROM comments WHERE rid=:rid AND status!='approved'");
+$scc->execute(array(':rid'=>$rm['id']));
+$sccn=$scc->fetch(PDO::FETCH_ASSOC);
+?>
+                <a class="btn btn-default btn-xs<?php echo($sccn['cnt']>0?' btn-success':'');?>" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$rm['id'].'#d43';?>"<?php echo($sccn['cnt']>0?' data-toggle="tooltip" title="'.$sccn['cnt'].' New Comments"':'');?>><?php svg('libre-gui-comments');?>&nbsp;<?php echo$scn['cnt'];?></a>
+                <span class="handle btn btn-default btn-xs"><?php svg('libre-gui-drag');?></span>
+              </div>
+              <div class="panel-body">
+                <a href="<?php echo$rm['file'];?>"
+                  data-srcset="<?php echo$rm['file'];?> <?php echo$width;?>w"
+                  data-fancybox="gallery"
+                  data-width="<?php echo$width;?>"
+                  data-height="<?php echo$height;?>"
+                  data-caption="<?php echo$rm['title'].($rm['seoCaption']!=''?' - '.$rm['seoCaption']:'');?>"
+                >
+                  <img src="<?php echo$rm['file'];?>" alt="">
+                </a></div>
+              <div id="media-title<?php echo$rm['id'];?>" class="panel-footer"><?php echo$rm['title'];?></div>
+            </div>
+          </li>
+<?php }?>
+        </ul>
+        
       </div>
       <div role="tabpanel" class="tab-pane" id="account-social">
         <div class="form-group">

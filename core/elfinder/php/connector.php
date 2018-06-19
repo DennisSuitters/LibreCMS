@@ -27,9 +27,20 @@ $opts = array(
   'bind' => array(
     'upload.presave' => array(
       'Plugin.AutoResize.onUpLoadPreSave'
+    ),
+    'mkdir.pre mkfile.pre rename.pre' => array(
+      'Plugin.Sanitizer.cmdPreprocess'
+    ),
+    'upload.presave' => array(
+      'Plugin.Sanitizer.onUploadPreSave'
     )
   ),
   'plugin' => array(
+    'Sanitizer' => array(
+      'enable' => true,
+      'targets' => array('\\','/',':','*','?','"','<','>','|',' '),
+      'replace' => '-'
+    ),
     'AutoResize' => array(
       'enable'       => $mediaEnable,
       'maxWidth'     => $config['mediaMaxWidth'],

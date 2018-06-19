@@ -147,12 +147,27 @@ else{
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
           <tr id="l_<?php echo$r['id'];?>" class="<?php if($r['status']=='delete')echo' danger';elseif($r['status']!='published')echo' warning';?>">
             <td class="hidden-xs">
-<?php echo(file_exists('media'.DS.basename($r['thumb']))?'<img class="img-responsive img-rounded" style="max-width:32px;" src="'.$r['thumb'].'">':'');?>
+<?php 
+if($r['thumb']!='')
+  echo'<img class="img-responsive img-rounded" style="max-width:32px;" src="'.$r['thumb'].'">';
+elseif($r['file']!='')
+  echo'<img class="img-responsive img-rounded" style="max-width:32px;" src="'.$r['file'].'">';
+elseif($r['fileURL']!='')
+  echo'<img class="img-responsive img-rounded" style="max-width:32px;" src="'.$r['fileURL'].'">';
+else
+  echo'';
+  ?>
             </td>
             <td>
               <div class="visible-xs"><small><?php echo ucfirst($r['contentType']);?></small></div>
               <a href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$r['id'];?>"><?php echo($r['thumb']!=''&&file_exists($r['thumb'])?'<img class="table-thumb" src="'.$r['thumb'].'"> ':'');echo$r['title'];?></a>
 <?php echo($r['suggestions']==1?'<span data-toggle="tooltip" data-placement="top" title="Editing suggestions.">'.svg2('libre-gui-lightbulb',($config['iconsColor']==1?true:null),'','green').'</span>':'');?>
+<?php if($r['contentType']=='proofs'){
+$sp=$db->prepare("SELECT * FROM login WHERE id=:id");
+$sp->execute(array(':id'=>$r['uid']));
+$sr=$sp->fetch(PDO::FETCH_ASSOC);?>
+              <div class="small"><small><small>Belongs to <a href="<?php echo URL.$settings['system']['admin'].'/accounts/edit/'.$sr['id'].'#account-proofs';?>"><?php echo$sr['username'].($sr['name']!=''?':'.$sr['name']:'');?></a></small></small></div>
+<?php }?>
             </td>
             <td class="text-center hidden-xs"><?php echo ucfirst($r['contentType']);?></td>
             <td class="text-center hidden-xs">
@@ -222,7 +237,7 @@ if($show=='item'){
     </h4>
     <div class="pull-right">
       <div class="btn-group">
-        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/content/type/'.$r['contentType'];?>" data-toggle="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back',($config['iconsColor']==1?true:null));?></a>
+        <a class="btn btn-default" href="<?php echo($r['contentType']=='proofs'?URL.$settings['system']['admin'].'/accounts/edit/'.$r['uid'].'#account-proofs':URL.$settings['system']['admin'].'/content/type/'.$r['contentType']);?>" data-toggle="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back',($config['iconsColor']==1?true:null));?></a>
       </div>
 <?php if($user['rank']==1000||$user['options']{0}==1){?>
       <div class="btn-group" data-toggle="tooltip" data-placement="left" title="Add">
@@ -557,12 +572,7 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['url'].'"/>';?>
                 </form>
               </div>
               <div class="input-group-addon img">
-<?php if($r['file']!=''&&file_exists('media'.DS.basename($r['file'])))
-  echo'<a href="'.$r['file'].'" data-featherlight="image"><img id="fileimage" src="'.$r['file'].'"></a>';
-elseif($r['fileURL']!='')
-  echo'<a href="'.$r['fileURL'].'" data-featherlight="image"><img id="fileimage" src="'.$r['fileURL'].'"></a>';
-else
-  echo'<img id="fileimage" src="'.NOIMAGE.'">';?>
+<?php echo($r['file']!=''?'<a href="'.$r['file'].'" data-featherlight="image"><img id="thumbimage" src="'.$r['file'].'"></a>':'<img id="thumbimage" src="'.NOIMAGE.'">');?>
               </div>
               <div class="input-group-btn">
                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
@@ -586,7 +596,7 @@ else
                 </form>
               </div>
               <div class="input-group-addon img">
-<?php echo($r['thumb']!=''&&file_exists('media'.DS.basename($r['thumb']))?'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="'.$r['thumb'].'"></a>':'<img id="thumbimage" src="'.NOIMAGE.'">');?>
+<?php echo($r['thumb']!=''?'<a href="'.$r['thumb'].'" data-featherlight="image"><img id="thumbimage" src="'.$r['thumb'].'"></a>':'<img id="thumbimage" src="'.NOIMAGE.'">');?>
               </div>
               <div class="input-group-btn">
                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>

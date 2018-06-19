@@ -24,14 +24,12 @@ else{?>
     <noscript><div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div></noscript>
 <?php echo($config['maintenance']{0}==1?'<div class="alert alert-warning">Note: Site is currently in <a href="'.URL.$settings['system']['admin'].'/preferences#preference-interface">Maintenance Mode</a></div>':'');
 $tid=$ti-2592000;
-if($config['backup_ti']<$tid){
+if($config['backup_ti']<$tid)
   echo($config['backup_ti']==0?'<div class="alert alert-info" role="alert">A <a class="alert-link" href="'.URL.$settings['system']['admin'].'/preferences#preference-backrestore">Backup</a> has yet to be performed.</div>':'');
-}else{
+else
   echo'<div class="alert alert-danger" role="alert">It has been more than 30 days since a <a class="alert-link" href="'.URL.$settings['system']['admin'].'/preferences#preference-backrestore">Backup</a> has been performed.</div>';
-}
 echo($config['business']==''?'<div class="alert alert-danger" role="alert">The Site\'s <a class="alert-link" href="'.URL.$settings['system']['admin'].'/preferences#preference-contact">Business Name</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>':'');
-echo($config['email']==''?'<div class="alert alert-danger" role="alert">The Site\'s <a class="alert-link"   href="'.URL.$settings['settings']['admin'].'/preferences#preference-contact">Email</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>':'');
-?>
+echo($config['email']==''?'<div class="alert alert-danger" role="alert">The Site\'s <a class="alert-link"   href="'.URL.$settings['system']['admin'].'/preferences#preference-contact">Email</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>':'');?>
     <div class="row visible-xs">
       <div class="col-xs-4">
         <div class="panel panel-default text-center">

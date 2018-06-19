@@ -45,19 +45,19 @@
 				</form>
 				<div id="rstresponse"></div>
 				<script>/*<![CDATA[*/
-				$('#rstform').submit(function(){
-	                $('#rstbusy').html('<i class="libre libre-spinner-1"></i>');
-	                $.ajax({
-	                    data:$(this).serialize(),
-	                    type:$(this).attr('method'),
-	                    url:$(this).attr('action'),
-	                    success:function(response){
-	                        $('#rstresponse').html(response);
-	                        $('#rstbusy').html('Reset');
-	                    }
-	                });
-	                return false;
-	            });
+					$('#rstform').submit(function(){
+            $('#rstbusy').html('<i class="libre libre-spinner-1"></i>');
+            $.ajax({
+              data:$(this).serialize(),
+              type:$(this).attr('method'),
+              url:$(this).attr('action'),
+              success:function(response){
+                $('#rstresponse').html(response);
+                $('#rstbusy').html('Reset');
+              }
+            });
+            return false;
+          });
 				/*]]>*/</script>
 			</div>
 		</div>

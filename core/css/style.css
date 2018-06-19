@@ -278,7 +278,9 @@ input[type="range"].form-control{outline:none}
 .popover.suggestions,
 .popover.accessibility{min-width:200px!important;max-width:800px!important;max-height:600px!important}
 ul#media_items,
+ul#proof_items,
 ul#media_items li{list-style:none;margin:5px;padding:0}
+ul#media_items .panel,
 ul#media_items .panel{margin:0}
 .popover.media .control-label{font-size:10px;padding-top:5px}
 .popover.media .form-group-sm{font-size:10px}

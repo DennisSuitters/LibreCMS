@@ -4,11 +4,7 @@
  * This software may be modified and distributed under the terms
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
-if(!defined('DS'))define('DS', DIRECTORY_SEPARATOR);
-if(session_status()==PHP_SESSION_NONE){
-  session_start();
-  define('SESSIONID',session_id());
-}
+if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 if (file_exists('..' . DS . '..' . DS . 'core' . DS . 'config.ini'))
   $settings = parse_ini_file('..' . DS . '..' . DS . 'core' . DS . 'config.ini', TRUE);
 elseif (file_exists('..' . DS . 'core' . DS . 'config.ini'))
@@ -29,6 +25,10 @@ try{
   $db = new PDO($dns, $settings['database']['username'], $settings['database']['password']);
   $db -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   if (isset($getcfg) && $getcfg == true){
+    if(session_status()==PHP_SESSION_NONE){
+      session_start();
+      define('SESSIONID',session_id());
+    }
     $config = $db -> query("SELECT * FROM config WHERE id=1") -> fetch(PDO::FETCH_ASSOC);
     if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443)
       define('PROTOCOL', 'https://');

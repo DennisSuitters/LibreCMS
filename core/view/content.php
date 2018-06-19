@@ -119,7 +119,7 @@ elseif($view == 'search') {
 		)
 	);
 	if ($s -> rowCount() < 1) {
-		if ($view == 'proofs' || $view == 'proof') {
+		if ($view == 'proofs') {
 			$status = '%';
 			if ($_SESSION['loggedin'] == false) die();
 		}
@@ -135,12 +135,12 @@ elseif($view == 'search') {
 		$show = 'item';
 	}
 } else {
-	if ($view == 'proofs' || $view == 'proof') {
+	if ($view == 'proofs') {
 		if (isset($_SESSION['uid']) && $_SESSION['uid'] != 0) {
-			$s = $db -> prepare("SELECT * FROM content WHERE contentType LIKE 'proof%' AND cid=:cid ORDER BY ti DESC");
+			$s = $db -> prepare("SELECT * FROM content WHERE contentType LIKE 'proofs' AND uid=:uid ORDER BY ord ASC, ti DESC");
 			$s -> execute(
 				array(
-					':cid' => $_SESSION['uid']
+					':uid' => $_SESSION['uid']
 				)
 			);
 		}

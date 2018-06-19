@@ -455,6 +455,20 @@ if($config['idleTime']!=0){?>
             });
           }
         }).disableSelection();
+        $('#proof_items').sortable({
+          items: "li",
+          handle: ".handle",
+          helper: 'clone',
+          update: function (e, ui) {
+            var order = $("#proof_items").sortable("serialize");
+            $.ajax({
+              type: "POST",
+              dataType: "json",
+              url: "core/reorderproofs.php",
+              data: order
+            });
+          }
+        }).disableSelection();
         $('.media-edit').popover({
           html: true,
           trigger: 'click',

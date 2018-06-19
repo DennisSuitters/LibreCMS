@@ -8,11 +8,7 @@ $getcfg = true;
 require 'db.php';
 $config = $db -> query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $nous = $db -> prepare("SELECT COUNT(id) AS cnt FROM login WHERE lti>:lti AND rank!=1000");
-$nous -> execute(
-  array(
-    ':lti' => time() - 300
-  )
-);
+$nous -> execute(array(':lti' => time() - 300));
 $nou = $nous -> fetch(PDO::FETCH_ASSOC);
 $nc = $db -> query("SELECT COUNT(status) AS cnt FROM comments WHERE contentType!='review' AND status='unapproved'") -> fetch(PDO::FETCH_ASSOC);
 $nr = $db -> query("SELECT COUNT(id) AS cnt FROM comments WHERE contentType='review' AND  status='unapproved'") -> fetch(PDO::FETCH_ASSOC);
