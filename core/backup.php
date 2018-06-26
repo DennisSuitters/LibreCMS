@@ -23,13 +23,11 @@ function svg2($svg,$color=null,$class=null,$size=null){
 	if($color==true)$svg='col'.DS.$svg;
 	elseif($color!=null)$svgout.=' libre-'.$color;
   if($class!= null)$svgout.=' '.$class;
-	$svgout.='">';
-	$svgout.=file_get_contents('svg'.DS.$svg.'.svg');
-	$svgout.='</i>';
+	$svgout.='">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
 	return$svgout;
 }
 $tables=array();
-$db->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_TO_STRING);
+$db->setAttribute(PDO::ATTR_ORACLE_NULLS,PDO::NULL_TO_STRING);
 $compression=true;
 $nowtimename=time();
 if($compression){
@@ -65,10 +63,8 @@ foreach($tables as$table){
 	$row2=$pstm2->fetch(PDO::FETCH_NUM);
 	$ifnotexists=str_replace('CREATE TABLE','CREATE TABLE IF NOT EXISTS',$row2[1]);
 	$return.="\n\n".$ifnotexists.";\n\n";
-	if($compression)
-		gzwrite($zp,$return);
-	else
-		fwrite($handle,$return);
+	if($compression)gzwrite($zp,$return);
+	else fwrite($handle,$return);
 	$return="";
 	if($num_rows){
 		$return="INSERT INTO `".$table."` (";
@@ -82,10 +78,8 @@ foreach($tables as$table){
 			if($count<($pstm3->rowCount()))$return.=", ";
 		}
 		$return.=") VALUES";
-		if($compression)
-			gzwrite($zp,$return);
-		else
-			fwrite($handle,$return);
+		if($compression)gzwrite($zp,$return);
+		else fwrite($handle,$return);
 		$return="";
 	}
 	$count=0;
@@ -98,24 +92,18 @@ foreach($tables as$table){
 		}
 		$count++;
 		$return.=($count<($result->rowCount())?"),":");");
-		if($compression)
-			gzwrite($zp,$return);
-		else
-			fwrite($handle,$return);
+		if($compression) gzwrite($zp,$return);
+		else fwrite($handle,$return);
 		$return="";
 	}
 	$return="\n\n-- ------------------------------------------------ \n\n";
-	if($compression)
-		gzwrite($zp,$return);
-	else
-		fwrite($handle,$return);
+	if($compression) gzwrite($zp,$return);
+	else fwrite($handle,$return);
 	$return="";
 }
-if($compression)
-	gzclose($zp);
-else
-	fclose($handle);
-if (file_exists('..'.DS.'media'.DS.'backup'.DS.$file)){
+if($compression) gzclose($zp);
+else fclose($handle);
+if(file_exists('..'.DS.'media'.DS.'backup'.DS.$file)){
   chmod('..'.DS.'media'.DS.'backup'.DS.$file,0777);
   $fileid=str_replace('.','',$file);
   $fileid=str_replace(DS,'',$fileid);
@@ -130,4 +118,4 @@ if (file_exists('..'.DS.'media'.DS.'backup'.DS.$file)){
 <?php }?>
   window.top.window.Pace.stop();
 <?php
-echo '/*]]>*/</script>';
+echo'/*]]>*/</script>';

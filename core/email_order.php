@@ -50,22 +50,14 @@ $html='<style>'.
         '</style>'.
         '<body>';
 $pdflogo='';
-if(file_exists('..'.DS.'media'.DS.'orderheading.png'))
-  $pdflogo='..'.DS.'media'.DS.'orderheading.png';
-elseif(file_exists('..'.DS.'media'.DS.'orderheading.jpg'))
-  $pdflogo='..'.DS.'media'.DS.'orderheading.jpg';
-elseif(file_exists('..'.DS.'media'.DS.'orderheading.gif'))
-  $pdflogo='..'.DS.'media'.DS.'orderheading.gif';
-elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png'))
-  $pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png';
-elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg'))
-  $pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg';
-elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif'))
-  $pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif';
-else
-  $pdflogo='';
-if($pdflogo!='')
-  $html.='<table class="table"><tr><td style="text-align:right"><img src="'.$pdflogo.'"></td></tr></table>';
+if(file_exists('..'.DS.'media'.DS.'orderheading.png'))$pdflogo='..'.DS.'media'.DS.'orderheading.png';
+elseif(file_exists('..'.DS.'media'.DS.'orderheading.jpg'))$pdflogo='..'.DS.'media'.DS.'orderheading.jpg';
+elseif(file_exists('..'.DS.'media'.DS.'orderheading.gif'))$pdflogo='..'.DS.'media'.DS.'orderheading.gif';
+elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png'))$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png';
+elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg'))$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg';
+elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif'))$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif';
+else$pdflogo='';
+if($pdflogo!='')$html.='<table class="table"><tr><td style="text-align:right"><img src="'.$pdflogo.'"></td></tr></table>';
 $html.='<table class="table">'.
             '<tr>'.
               '<td>'.
@@ -109,9 +101,7 @@ $html.='<table class="table">'.
             '</thead>'.
             '<tbody>';
 $i=13;
-$ot=0;
-$st=0;
-$pwc=0;
+$ot=$st=$pwc=0;
 $zeb=1;
 $s=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid AND status!='delete'");
 $s->execute(array(':oid'=>$id));
@@ -132,7 +122,7 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
            '<td class="col-50 text-right">'.$st.'</td>'.
           '</tr>';
   $ot=$ot+$st;
-  $zeb=($zeb==1?$zeb=0:$zeb=1);
+  $zeb=($zeb==1?0:1);
 }
 $html.='</tbody>'.
         '<tfoot>';

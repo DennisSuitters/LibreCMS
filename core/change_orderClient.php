@@ -11,31 +11,31 @@ $oid=filter_input(INPUT_GET,'oid',FILTER_SANITIZE_NUMBER_INT);
 $q=$db->prepare("UPDATE orders SET cid=:cid WHERE id=:oid");
 $q->execute(
   array(
-    ':cid' => $id,
-    ':oid' => $oid
+    ':cid'=>$id,
+    ':oid'=>$oid
   )
 );
 if($id==0){
   $c=array(
-    'id'       => 0,
-    'username' => '',
-    'name'     => '',
-    'business' => '',
-    'address'  => '',
-    'suburb'   => '',
-    'state'    => '',
-    'city'     => '',
-    'postcode' => '',
-    'email'    => '',
-    'phone'    => '',
-    'mobile'   => ''
+    'id'      =>0,
+    'username'=>'',
+    'name'    =>'',
+    'business'=>'',
+    'address' =>'',
+    'suburb'  =>'',
+    'state'   =>'',
+    'city'    =>'',
+    'postcode'=>'',
+    'email'   =>'',
+    'phone'   =>'',
+    'mobile'  =>''
   );
-} else {
+}else{
   $q=$db->prepare("SELECT * FROM login WHERE id=:id");
   $q->execute(array(':id'=>$id));
   $c=$q->fetch(PDO::FETCH_ASSOC);
 }?>
-  window.top.window.$('#client_business').val('<?php echo$c['username'];if($c['name']!='')echo' ['.$c['name'].']';if($c['business']!='')echo' -> '.$c['business'];?>');
+  window.top.window.$('#client_business').val('<?php echo$c['username'].($c['name']!=''?' ['.$c['name'].']':'').($c['business']!=''?' -> '.$c['business']:'');?>');
   window.top.window.$('#client_address').val('<?php echo$c['address'];?>').data("dbid",<?php echo$c['id'];?>);
   window.top.window.$('#client_suburb').val('<?php echo$c['suburb'];?>').data("dbid",<?php echo$c['id'];?>);
   window.top.window.$('#client_state').val('<?php echo$c['state'];?>').data("dbid",<?php echo$c['id'];?>);

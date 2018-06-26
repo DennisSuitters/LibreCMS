@@ -578,7 +578,7 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['url'].'"/>';?>
                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
               </div>
             </div>
-            <small class="help-block pull-right">Using the <span class="btn btn-default btn-xs"><?php svg('libre-gui-magic',($config['iconsColor']==1?true:null));?></span> button will resize the uploaded image. (<?php echo$theme['settings']['image_width'].'x'.$theme['settings']['image_height'];?>)</small>
+            <small class="help-block pull-right">Using the <span class="btn btn-default btn-xs"><?php svg('libre-gui-magic',($config['iconsColor']==1?true:null));?></span> button will resize the uploaded image. (<?php echo$config['mediaMaxWidth'].'x'.$config['mediaMaxHeight'];?>)</small>
           </div>
           <div id="d29" class="form-group clearfix">
             <label for="thumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Thumbnail</label>
@@ -602,7 +602,7 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['url'].'"/>';?>
                 <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
               </div>
             </div>
-            <small class="help-block pull-right">Using the <span class="btn btn-default btn-xs"><?php svg('libre-gui-magic',($config['iconsColor']==1?true:null));?></span> button will create a Thumbnail from the Center of the above uploaded image. (<?php echo$theme['settings']['thumb_width'].'x'.$theme['settings']['thumb_height'];?>). Uploaded Images take Precedence over URL's.</small>
+            <small class="help-block pull-right">Using the <span class="btn btn-default btn-xs"><?php svg('libre-gui-magic',($config['iconsColor']==1?true:null));?></span> button will create a Thumbnail from the Center of the above uploaded image. (<?php echo$config['mediaMaxWidthThumb'].'x'.$config['mediaMaxHeightThumb'];?>). Uploaded Images take Precedence over URL's.</small>
           </div>
           <fieldset id="d30" class="control-fieldset">
             <legend class="control-legend">Exif Information</legend>

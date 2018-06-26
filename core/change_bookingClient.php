@@ -10,18 +10,18 @@ $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $bid=filter_input(INPUT_GET,'bid',FILTER_SANITIZE_NUMBER_INT);
 if($id==0){
   $c=array(
-    'id'       => 0,
-    'username' => '',
-    'name'     => '',
-    'business' => '',
-    'address'  => '',
-    'suburb'   => '',
-    'state'    => '',
-    'city'     => '',
-    'postcode' => '',
-    'email'    => '',
-    'phone'    => '',
-    'mobile'   => ''
+    'id'      =>0,
+    'username'=>'',
+    'name'    =>'',
+    'business'=>'',
+    'address' =>'',
+    'suburb'  =>'',
+    'state'   =>'',
+    'city'    =>'',
+    'postcode'=>'',
+    'email'   =>'',
+    'phone'   =>'',
+    'mobile'  =>''
   );
 }else{
   $q=$db->prepare("SELECT * FROM login WHERE id=:id");
@@ -31,18 +31,18 @@ if($id==0){
 $q=$db->prepare("UPDATE content SET  cid=:cid,business=:business,name=:name,address=:address,suburb=:suburb,state=:state,city=:city,postcode=:postcode,email=:email,phone=:phone,mobile=:mobile WHERE id=:id");
 $q->execute(
   array(
-    ':cid'      => $id,
-    ':business' => $c['business'],
-    ':name'     => $c['name'],
-    ':address'  => $c['address'],
-    ':suburb'   => $c['suburb'],
-    ':state'    => $c['state'],
-    ':city'     => $c['city'],
-    ':postcode' => $c['postcode'],
-    ':email'    => $c['email'],
-    ':phone'    => $c['phone'],
-    ':mobile'   => $c['mobile'],
-    ':id'       => $bid
+    ':cid'     =>$id,
+    ':business'=>$c['business'],
+    ':name'    =>$c['name'],
+    ':address' =>$c['address'],
+    ':suburb'  =>$c['suburb'],
+    ':state'   =>$c['state'],
+    ':city'    =>$c['city'],
+    ':postcode'=>$c['postcode'],
+    ':email'   =>$c['email'],
+    ':phone'   =>$c['phone'],
+    ':mobile'  =>$c['mobile'],
+    ':id'      =>$bid
   )
 );?>
   window.top.window.$('#business').val('<?php echo$c['business'];?>').data("dbid",<?php echo$c['id'];?>);

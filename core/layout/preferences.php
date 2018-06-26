@@ -497,9 +497,9 @@ if($config['suggestions']==1){
 <?php echo($user['rank']>899?'<div class="input-group-btn" data-toggle="tooltip" data-placement="top" title="Add Suggestion"><button class="btn btn-default addsuggestion hidden-xs" data-toggle="popover" data-dbgid="seoKeywords">'.svg2('libre-gui-idea',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
           </div>
         </div>
-        <h4>Google Analytics</h4>
+        <h4>SEO Analytics</h4>
         <div class="form-group">
-          <label for="ga_verification" class="control-label col-xs-5 col-sm-3 col-lg-2">Site Verification</label>
+          <label for="ga_verification" class="control-label col-xs-5 col-sm-3 col-lg-2">Google Verification</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
 <?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="ga_verification">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
             <input type="text" id="ga_verification" class="form-control textinput" value="<?php echo$config['ga_verification'];?>" data-dbid="1" data-dbt="config" data-dbc="ga_verification" placeholder="Enter Google Site Verification Code...">
@@ -508,19 +508,74 @@ if($config['suggestions']==1){
         <div class="form-group">
           <label for="ga_tracking" class="control-label col-xs-5 col-sm-3 col-lg-2">Tracking Code</label>
 <?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs" style="background-color:#f5f5f5;border:1px solid #ccc;border-bottom:0;"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="ga_tracking">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div><div id="da" class="hidden-xs" data-dbid="1" data-dbt="config" data-dbc="ga_tracking"></div>':'');?>
-            <form target="sp" method="post" action="core/update.php" onsubmit="Pace.restart();$('#ga_tracking_save').removeClass('btn-danger');">
-              <input type="hidden" name="id" value="1">
-              <input type="hidden" name="t" value="config">
-              <input type="hidden" name="c" value="ga_tracking">
-              <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right" style="background-color:#f5f5f5;padding:5px;border:1px solid #ccc;border-bottom:0;">
-                <button type="submit" id="ga_tracking_save" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="bottom" title="Save"><?php svg('libre-gui-save',($config['iconsColor']==1?true:null));?></button>
-              </div>
-              <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
-                <textarea id="ga_tracking" class="form-control" style="height:100px" name="da" onkeyup="$('#ga_tracking_save').addClass('btn-danger');"><?php echo $config['ga_tracking'];?></textarea>
-                <small class="help-block clearfix text-right">Go to <a target="_blank" href="https://analytics.google.com">Google Analytics</a> to setup a Google Analytics Account, and get your Page Tracking Code.<br>The <code>&lt;script&gt;&lt;/script&gt;</code> tags aren't necessary as they will be stripped from the text when saved.</small>
-              </div>
-            </form>
+          <form target="sp" method="post" action="core/update.php" onsubmit="Pace.restart();$('#ga_tracking_save').removeClass('btn-danger');">
+            <input type="hidden" name="id" value="1">
+            <input type="hidden" name="t" value="config">
+            <input type="hidden" name="c" value="ga_tracking">
+            <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right" style="background-color:#f5f5f5;padding:5px;border:1px solid #ccc;border-bottom:0;">
+              <button type="submit" id="ga_tracking_save" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="bottom" title="Save"><?php svg('libre-gui-save',($config['iconsColor']==1?true:null));?></button>
+            </div>
+            <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
+              <textarea id="ga_tracking" class="form-control" style="height:100px" name="da" onkeyup="$('#ga_tracking_save').addClass('btn-danger');"><?php echo $config['ga_tracking'];?></textarea>
+              <small class="help-block clearfix text-right">Go to <a target="_blank" href="https://analytics.google.com">Google Analytics</a> to setup a Google Analytics Account, and get your Page Tracking Code.<br>The <code>&lt;script&gt;&lt;/script&gt;</code> tags aren't necessary as they will be stripped from the text when saved.</small>
+            </div>
+          </form>
         </div>
+        <div class="clearfix"></div>
+        <div class="form-group">
+          <label for="seo_msvalidate" class="control-label col-xs-5 col-sm-3 col-lg-2">Microsoft Validate</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seo_msvalidate">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <input type="text" id="seo_msvalidate" class="form-control textinput" value="<?php echo$config['seo_msvalidate'];?>" data-dbid="1" data-dbt="config" data-dbc="seo_msvalidate" placeholder="Enter Microsoft Site Validation Code...">
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group">
+          <label for="seo_yandexverification" class="control-label col-xs-5 col-sm-3 col-lg-2">Yandex Verification</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seo_yandexverification">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <input type="text" id="seo_yandexverification" class="form-control textinput" value="<?php echo$config['seo_yandexverification'];?>" data-dbid="1" data-dbt="config" data-dbc="seo_yandexverification" placeholder="Enter Yandex Site Verification Code...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="seo_alexaverification" class="control-label col-xs-5 col-sm-3 col-lg-2">Alexa Verification</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seo_alexaverification">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <input type="text" id="seo_alexaverification" class="form-control textinput" value="<?php echo$config['seo_alexaverification'];?>" data-dbid="1" data-dbt="config" data-dbc="seo_alexaverification" placeholder="Enter Alexa Site Verification Code...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="seo_domainverify" class="control-label col-xs-5 col-sm-3 col-lg-2">Domain Verify</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="seo_domainverify">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <input type="text" id="seo_domainverify" class="form-control textinput" value="<?php echo$config['seo_domainverify'];?>" data-dbid="1" data-dbt="config" data-dbc="seo_domainverify" placeholder="Enter Domain Verify Code...">
+          </div>
+        </div>
+        <h4>GEO Location</h4>
+        <div class="form-group">
+          <label for="geo_region" class="control-label col-xs-5 col-sm-3 col-lg-2">Region</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="geo_region">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <input type="text" id="geo_region" class="form-control textinput" value="<?php echo$config['geo_region'];?>" data-dbid="1" data-dbt="config" data-dbc="geo_region" placeholder="Enter GEO Region...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="geo_placename" class="control-label col-xs-5 col-sm-3 col-lg-2">Placename</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="geo_placename">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <input type="text" id="geo_placename" class="form-control textinput" value="<?php echo$config['geo_placename'];?>" data-dbid="1" data-dbt="config" data-dbc="geo_placename" placeholder="Enter GEO Placename...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="geo_position" class="control-label col-xs-5 col-sm-3 col-lg-2">Position</label>
+          <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="geo_position">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <input type="text" id="geo_position" class="form-control textinput" value="<?php echo$config['geo_position'];?>" data-dbid="1" data-dbt="config" data-dbc="geo_position" placeholder="Enter GEO Position...">
+          </div>
+        </div>
+        
+        
+        
       </div>
       <div id="preference-backrestore" name="preference-backrestore" class="tab-pane fade in">
         <div id="backup" name="backup">

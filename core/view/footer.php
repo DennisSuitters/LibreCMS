@@ -4,11 +4,9 @@
  * This software may be modified and distributed under the terms
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
-if(isset($_SESSION['rank'])&&$_SESSION['rank']>0)
-	$link='<a href="?act=logout">Logout</a>';
+if(isset($_SESSION['rank'])&&$_SESSION['rank']>0)$link='<a href="?act=logout">Logout</a>';
 else{
-	if($config['options']{3}==1)
-		$link_x=' or Sign Up';
+	if($config['options']{3}==1)$link_x=' or Sign Up';
 	else{
 		$link_x='';
 		$html=preg_replace('~<block signup>.*?<\/block signup>~is','',$html,1);
@@ -35,20 +33,20 @@ $html=preg_replace(
 		'/<print config=[\"\']?mobile[\"\']?>/'
 	),
 	array(
-		htmlspecialchars($theme['title'],             ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($theme['creator'],           ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($theme['creator_url'],       ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($theme['creator_url_title'], ENT_QUOTES, 'UTF-8'),
+		htmlspecialchars($theme['title'],            ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($theme['creator'],          ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($theme['creator_url'],      ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($theme['creator_url_title'],ENT_QUOTES,'UTF-8'),
 		$link,
-		htmlspecialchars($config['business'],         ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($config['abn'],              ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($config['address'],          ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($config['suburb'],           ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($config['postcode'],         ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($config['country'],          ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($config['email'],            ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($config['phone'],            ENT_QUOTES, 'UTF-8'),
-		htmlspecialchars($config['mobile'],           ENT_QUOTES, 'UTF-8')
+		htmlspecialchars($config['business'],        ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($config['abn'],             ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($config['address'],         ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($config['suburb'],          ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($config['postcode'],        ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($config['country'],         ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($config['email'],           ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($config['phone'],           ENT_QUOTES,'UTF-8'),
+		htmlspecialchars($config['mobile'],          ENT_QUOTES,'UTF-8')
 	),
 	$html
 );
@@ -87,21 +85,14 @@ if(stristr($html,'<buildMenu')){
 	$menu='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$buildMenu=$htmlMenu;
-		if($r['contentType']=='page'&&$r['title']==$activeTitle)
-			$buildMenu=preg_replace('/<print active=[\"\']?menu[\"\']?>/',' active',$buildMenu);
-		elseif($view==$r['contentType']||$view==$r['contentType'].'s')
-			$buildMenu=preg_replace('/<print active=[\"\']?menu[\"\']?>/',' active',$buildMenu);
-		else
-			$buildMenu=preg_replace('/<print active=[\"\']?menu[\"\']?>/','',$buildMenu);
+		if($r['contentType']=='page'&&$r['title']==$activeTitle)$buildMenu=preg_replace('/<print active=[\"\']?menu[\"\']?>/',' active',$buildMenu);
+		elseif($view==$r['contentType']||$view==$r['contentType'].'s')$buildMenu=preg_replace('/<print active=[\"\']?menu[\"\']?>/',' active',$buildMenu);
+		else$buildMenu=preg_replace('/<print active=[\"\']?menu[\"\']?>/','',$buildMenu);
 		if($r['contentType']!='index'){
-			if(isset($r['url'][0])&&$r['url'][0]=='#')
-				$buildMenu=preg_replace('/<print menu=[\"\']?url[\"\']?>/',URL.$r['url'],$buildMenu);
-			elseif(filter_var($r['url'],FILTER_VALIDATE_URL))
-				$buildMenu=preg_replace('/<print menu=[\"\']?url[\"\']?>/',$r['url'],$buildMenu);
-			elseif($r['contentType']=='page'&&$r['title']!='')
-				$buildMenu=preg_replace('/<print menu=[\"\']?url[\"\']?>/',URL.strtolower($r['contentType']).'/'.str_replace(' ','-',$r['title']),$buildMenu);
-			else
-				$buildMenu=preg_replace('/<print menu=[\"\']?url[\"\']?>/',URL.$r['contentType'],$buildMenu);
+			if(isset($r['url'][0])&&$r['url'][0]=='#')$buildMenu=preg_replace('/<print menu=[\"\']?url[\"\']?>/',URL.$r['url'],$buildMenu);
+			elseif(filter_var($r['url'],FILTER_VALIDATE_URL))$buildMenu=preg_replace('/<print menu=[\"\']?url[\"\']?>/',$r['url'],$buildMenu);
+			elseif($r['contentType']=='page'&&$r['title']!='')$buildMenu=preg_replace('/<print menu=[\"\']?url[\"\']?>/',URL.strtolower($r['contentType']).'/'.str_replace(' ','-',$r['title']),$buildMenu);
+			else$buildMenu=preg_replace('/<print menu=[\"\']?url[\"\']?>/',URL.$r['contentType'],$buildMenu);
 			$buildMenu=preg_replace('/<print rel=[\"\']?contentType[\"\']?>/',strtolower($r['contentType']),$buildMenu);
 		}else{
 			$buildMenu=preg_replace(
@@ -117,14 +108,7 @@ if(stristr($html,'<buildMenu')){
 			);
 		}
 		$buildMenu=preg_replace('/<print menu=[\"\']?title[\"\']?>/',$r['title'],$buildMenu);
-		if($r['contentType']=='cart')
-			$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);
-		else
-			$buildMenu=str_replace('<menuCart>','',$buildMenu);
-		if($r['contentType']=='cart')
-			$buildMenu=str_replace('<menuCart>',$cart,$buildMenu);
-		else
-			$buildMenu=str_replace('<menuCart>','',$buildMenu);
+		$buildMenu=($r['contentType']=='cart'?str_replace('<menuCart>',$cart,$buildMenu):str_replace('<menuCart>','',$buildMenu));
 		$menu.=$buildMenu;
 	}
 	$html=preg_replace(
@@ -160,8 +144,7 @@ if(stristr($html,'<buildSocial')){
 			);
 			$socialItems.=$buildSocial;
 		}
-	}else
-		$socialItems='';
+	}else$socialItems='';
 	$html=preg_replace('~<buildSocial>.*?<\/buildSocial>~is',$socialItems,$html,1);
 	if($config['options']{9}==1){
 		$html=str_replace(
@@ -174,7 +157,6 @@ if(stristr($html,'<buildSocial')){
 		);
 		$html=($page['contentType']=='article'||$page['contentType']=='portfolio'||$page['contentType']=='event'||$page['contentType']=='news'||$page['contentType']=='inventory'||$page['contentType']=='service'?str_replace('<print rsslink>','rss/'.$page['contentType'],$html):str_replace('<print rsslink>','rss',$html));
 		$html=str_replace('<print rssicon>',frontsvg('social-rss'),$html);
-	}else
-		$html=preg_replace('~<rss>.*?<\/rss>~is','',$html,1);
+	}else$html=preg_replace('~<rss>.*?<\/rss>~is','',$html,1);
 }
 $content.=$html;

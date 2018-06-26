@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="form-group clearfix">
-      <label for="mediaMaxWidth" class="control-label col-xs-5 col-sm-3 col-lg-2">Maximum Size</label>
+      <label for="mediaMaxWidth" class="control-label col-xs-5 col-sm-3 col-lg-2">Max Image Size</label>
       <div class="input-group col-xs-7 col-sm-9 col-lg-10">
         <div class="input-group-addon">Max Width</div>
         <input type="text" id="mediaMaxWidth" class="form-control textinput" value="<?php echo$config['mediaMaxWidth'];?>" data-dbid="1" data-dbt="config" data-dbc="mediaMaxWidth">
@@ -40,6 +40,15 @@
         Uploaded images larger than the above size will be resized to their long edge using the entered values.<br>
         If either value is '0', resizing will be disabled.
       </small>
+    </div>
+    <div class="form-group clearfix">
+      <label for="mediaMaxWidthThumb" class="control-label col-xs-5 col-sm-3 col-lg-2">Max Thumb Size</label>
+      <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+        <div class="input-group-addon">Max Thumb Width</div>
+        <input type="text" id="mediaMaxWidthThumb" class="form-control textinput" value="<?php echo$config['mediaMaxWidthThumb'];?>" data-dbid="1" data-dbt="config" data-dbc="mediaMaxWidthThumb">
+        <div class="input-group-addon">Max Thumb Height</div>
+        <input type="text" id="mediaMaxHeightThumb" class="form-control textinput" value="<?php echo$config['mediaMaxHeightThumb'];?>" data-dbid="1" data-dbt="config" data-dbc="mediaMaxHeightThumb">
+      </div>
     </div>
     <div class="form-group clearfix">
       <label for="mediaQuality" class="control-label col-xs-5 col-sm-3 col-lg-2">Image Quality</label>

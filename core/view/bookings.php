@@ -8,11 +8,8 @@ $sql=$db->query("SELECT * FROM content WHERE bookable='1' AND title!='' AND stat
 if($sql->rowCount()>0){
 	$bookable='';
 	while($row=$sql->fetch(PDO::FETCH_ASSOC)){
-		$bookable.='<option value="'.htmlentities($row['id'],ENT_QUOTES,'UTF-8').'" role="option"';
-		if($row['id']==$args[0])$bookable.=' selected';
-		$bookable.='>'.ucfirst(htmlentities($row['contentType'],ENT_QUOTES,'UTF-8'));
-		if($row['code']!='')$bookable.=':'.htmlentities($row['code'],ENT_QUOTES,'UTF-8');
-		$bookable.=':'.htmlentities($row['title'],ENT_QUOTES,'UTF-8').'</option>';
+		$bookable.='<option value="'.htmlentities($row['id'],ENT_QUOTES,'UTF-8').'" role="option"'.($row['id']==$args[0]?' selected':'').'>'.ucfirst(htmlentities($row['contentType'],ENT_QUOTES,'UTF-8'));
+		($row['code']!=''?':'.htmlentities($row['code'],ENT_QUOTES,'UTF-8'):'').':'.htmlentities($row['title'],ENT_QUOTES,'UTF-8').'</option>';
 	}
 	$html=str_replace(
 		array(

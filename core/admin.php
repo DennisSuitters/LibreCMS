@@ -4,7 +4,7 @@
  * This software may be modified and distributed under the terms
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
-if(!defined('DS'))define('DS', DIRECTORY_SEPARATOR);
+if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 require'core'.DS.'db.php';
 if(isset($_GET['previous']))header("location:".$_GET['previous']);
 $config=$this->getconfig($db);
@@ -150,10 +150,8 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
               <div class="userpic"><img id="menu_avatar" src="<?php if($user['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$user['avatar']))
                   echo'media'.DS.'avatar'.DS.$user['avatar'];
                 elseif($user['gravatar']!=''){
-                  if(stristr($user['gravatar'],'@'))
-                    echo'http://gravatar.com/avatar/'.md5($user['gravatar']);
-                  elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))
-                    echo $user['gravatar'];
+                  if(stristr($user['gravatar'],'@'))echo'http://gravatar.com/avatar/'.md5($user['gravatar']);
+                  elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))echo$user['gravatar'];
                   else echo NOAVATAR;
                 } else echo NOAVATAR;?>"></div>
               </a>
@@ -175,7 +173,7 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
   else
     require'core'.DS.'layout'.DS.'content.php';
 }else
-  require 'core'.DS.'layout'.DS.$view.'.php';?>
+  require'core'.DS.'layout'.DS.$view.'.php';?>
     </main>
     <script src="core/js/js.js"></script>
     <script>/*<![CDATA[*/
@@ -202,7 +200,7 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
 }?>
       $('#tags').tokenfield({
         autocomplete: {
-          source: [<?php echo $tags;?>],
+          source: [<?php echo$tags;?>],
           delay: 100
         },
         showAutocompleteOnFocus: false
@@ -243,7 +241,7 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
           }
         }).dialogelfinder('instance');
       }
-<?php if ($view == 'media') {?>
+<?php if($view=='media'){?>
       $().ready(function () {
         var fm = $('#elfinder').elfinder({
           url: "<?php echo URL.DS.'core'.DS.'elfinder'.DS.'php'.DS.'connector.php';?>",
@@ -385,7 +383,7 @@ if($config['idleTime']!=0){?>
 <?php if($config['notification_volume']!=0){?>
       ion.sound({
         sounds: [
-<?php if (file_exists('core'.DS.'sounds'.DS.'notification.mp3')){?>
+<?php if(file_exists('core'.DS.'sounds'.DS.'notification.mp3')){?>
           {
             name: "notification"
           },
@@ -407,7 +405,7 @@ if($config['idleTime']!=0){?>
               stats[0] = '';
             $('#nav-nou').html(stats[2]);
             if (stats[1] == 1) {
-<?php if (file_exists('core'.DS.'sounds'.DS.'notification.mp3')&&$config['notification_volume']!=0){?>
+<?php if(file_exists('core'.DS.'sounds'.DS.'notification.mp3')&&$config['notification_volume']!=0){?>
               ion.sound.play("notification");
 <?php }?>
             }
@@ -635,7 +633,7 @@ if($config['idleTime']!=0){?>
              videoSRCauto = videoSRC + "?autoplay=1";
              $(theModal + ' ' + theFrame).attr('src', videoSRCauto);
              $(theModal).on('hidden.bs.modal', function () {
-                 $(theModal + ' ' + theFrame).removeAttr('src');
+               $(theModal + ' ' + theFrame).removeAttr('src');
              })
            });
          }

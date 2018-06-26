@@ -5,15 +5,14 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 header("Content-Type:text/plain");
-if (!defined('DS'))
-  define('DS', DIRECTORY_SEPARATOR);
-require 'core' . DS . 'db.php';
-$config = $db -> query("SELECT development,seoTitle,theme FROM config WHERE id='1'") -> fetch(PDO::FETCH_ASSOC);
-$theme = parse_ini_file('layout' . DS . $config['theme'] . DS . 'theme.ini', true);
+if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
+require'core'.DS.'db.php';
+$config=$db->query("SELECT development,seoTitle,theme FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+$theme=parse_ini_file('layout'.DS.$config['theme'].DS.'theme.ini',true);
 $siteTitle=($config['seoTitle']!=''?$config['seoTitle']:URL);
-$themeTitle = $theme['title'];
-$themeCreator = $theme['creator'];
-$themeURL = $theme['creator_url'];
+$themeTitle=$theme['title'];
+$themeCreator=$theme['creator'];
+$themeURL=$theme['creator_url'];
 echo <<< "OUT"
 $siteTitle is powered by LibreCMS [https://github.com/DiemenDesign/LibreCMS]
 Theme "$themeTitle" by $themeCreator [$themeURL]

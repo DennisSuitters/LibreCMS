@@ -72,15 +72,15 @@
 					<button type="submit" class="btn btn-success btn-block" role="button">Submit your Testimonial</button>
 				</div>
 			</form>
+			<script>
+				$("#testimonialform").submit(function(){
+					$.post($(this).attr("action"),$(this).serialize(),function(data){
+						$("#testimonial").html(data);
+					});
+					return false;
+				});
+			</script>
 		</div>
-		<script>
-			$("#testimonialform").submit(function(){
-		    $.post($(this).attr("action"),$(this).serialize(),function(data){
-	        $("#testimonial").html(data);
-		    });
-	    	return false;
-			});
-		</script>
 	</main>
 </block>
 <block include="footer.html">

@@ -34,7 +34,7 @@
 <?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="passwordResetSubject">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
         <input type="text" id="passwordResetSubject" class="form-control textinput" value="<?php echo$config['passwordResetSubject'];?>" data-dbid="1" data-dbt="config" data-dbc="passwordResetSubject">
       </div>
-      <small class="help-block text-right">Tokens: {site} {name} {first} {last} {date}</small>
+      <small class="help-block text-right">Tokens: {business} {date}</small>
     </div>
     <div class="form-group clearfix">
       <label for="passwordResetLayout" class="control-label col-xs-5 col-sm-3 col-lg-2">Layout</label>
@@ -45,7 +45,7 @@
           <input type="hidden" name="t" value="config">
           <input type="hidden" name="c" value="passwordResetLayout">
           <textarea id="passwordResetLayout" class="form-control summernote" name="da"><?php echo rawurldecode($config['passwordResetLayout']);?></textarea>
-          <small class="help-block text-right">Tokens: {site} {name} {first} {last} {password}</small>
+          <small class="help-block text-right">Tokens: {business} {name} {first} {last} {date} {password}</small>
         </form>
       </div>
     </div>

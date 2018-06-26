@@ -20,22 +20,18 @@ if($emailtrap==''){
     $q=$db->prepare("INSERT INTO comments (contentType,rid,ip,email,name,notes,cid,status,ti) VALUES ('review',:rid,:ip,:email,:name,:notes,:cid,'unapproved',:ti)");
     $q->execute(
       array(
-        ':rid'   => $id,
-        ':ip'    => $ip,
-        ':email' => $email,
-        ':name'  => $name,
-        ':notes' => $review,
-        ':cid'   => $rating,
-        ':ti'    => time()
+        ':rid'  =>$id,
+        ':ip'   =>$ip,
+        ':email'=>$email,
+        ':name' =>$name,
+        ':notes'=>$review,
+        ':cid'  =>$rating,
+        ':ti'   =>time()
       )
     );
     $e=$db->errorInfo();
-    if(is_null($e[2]))
-      $notification.=$theme['settings']['review_success'];
-    else
-      $notification.=$theme['settings']['review_error'];
-  }else
-    $notification.=$theme['settings']['review_errorspam'];
-}else
-  $notification.=$theme['settings']['review_errorspam'];
+    if(is_null($e[2]))$notification.=$theme['settings']['review_success'];
+    else$notification.=$theme['settings']['review_error'];
+  }else$notification.=$theme['settings']['review_errorspam'];
+}else$notification.=$theme['settings']['review_errorspam'];
 echo$notification;

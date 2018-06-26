@@ -15,17 +15,17 @@ if($act=='add_booking'){
 	if($_POST['emailtrap']=='none'){
 		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
 		if(filter_var($email,FILTER_VALIDATE_EMAIL)){
-			$name     =filter_input(INPUT_POST,'name',    FILTER_SANITIZE_STRING);
-			$business =filter_input(INPUT_POST,'business',FILTER_SANITIZE_STRING);
-			$address  =filter_input(INPUT_POST,'address', FILTER_SANITIZE_STRING);
-			$suburb   =filter_input(INPUT_POST,'suburb',  FILTER_SANITIZE_STRING);
-			$city     =filter_input(INPUT_POST,'city',    FILTER_SANITIZE_STRING);
-			$state    =filter_input(INPUT_POST,'state',   FILTER_SANITIZE_STRING);
-			$postcode =filter_input(INPUT_POST,'postcode',FILTER_SANITIZE_STRING);
-			$phone    =filter_input(INPUT_POST,'phone',   FILTER_SANITIZE_STRING);
-			$notes    =filter_input(INPUT_POST,'notes',   FILTER_SANITIZE_STRING);
-			$tis      =filter_input(INPUT_POST,'tis',     FILTER_SANITIZE_STRING);
-			$tim      =filter_input(INPUT_POST,'tim',     FILTER_SANITIZE_STRING);
+			$name    =filter_input(INPUT_POST,'name',    FILTER_SANITIZE_STRING);
+			$business=filter_input(INPUT_POST,'business',FILTER_SANITIZE_STRING);
+			$address =filter_input(INPUT_POST,'address', FILTER_SANITIZE_STRING);
+			$suburb  =filter_input(INPUT_POST,'suburb',  FILTER_SANITIZE_STRING);
+			$city    =filter_input(INPUT_POST,'city',    FILTER_SANITIZE_STRING);
+			$state   =filter_input(INPUT_POST,'state',   FILTER_SANITIZE_STRING);
+			$postcode=filter_input(INPUT_POST,'postcode',FILTER_SANITIZE_STRING);
+			$phone   =filter_input(INPUT_POST,'phone',   FILTER_SANITIZE_STRING);
+			$notes   =filter_input(INPUT_POST,'notes',   FILTER_SANITIZE_STRING);
+			$tis     =filter_input(INPUT_POST,'tis',     FILTER_SANITIZE_STRING);
+			$tim     =filter_input(INPUT_POST,'tim',     FILTER_SANITIZE_STRING);
 			$tis=($tis==0?$ti:strtotime($tis.$tim));
 			$rid=isset($_POST['rid'])?filter_input(INPUT_POST,'rid',FILTER_SANITIZE_STRING):0;
 			if($rid!=0){
@@ -33,27 +33,26 @@ if($act=='add_booking'){
 				$s->execute(array(':id'=>$rid));
 				$r=$s->fetch(PDO::FETCH_ASSOC);
 				$tie=$r['tie'];
-			}else
-				$tie=0;
+			}else$tie=0;
 			$q=$db->prepare("INSERT INTO content (rid,contentType,name,email,business,address,suburb,city,state,postcode,phone,notes,status,tis,tie,ti) VALUES (:rid,:contentType,:name,:email,:business,:address,:suburb,:city,:state,:postcode,:phone,:notes,:status,:tis,:tie,:ti)");
 			$q->execute(
 				array(
-					':rid'         => $rid,
-					':contentType' => 'booking',
-					':name'        => $name,
-					':email'       => $email,
-					':business'    => $business,
-					':address'     => $address,
-					':suburb'      => $suburb,
-					':city'        => $city,
-					':state'       => $state,
-					':postcode'    => $postcode,
-					':phone'       => $phone,
-					':notes'       => $notes,
-					':status'      => 'unconfirmed',
-					':tis'         => $tis,
-					':tie'         => $tie,
-					':ti'          => $ti
+					':rid'        =>$rid,
+					':contentType'=>'booking',
+					':name'       =>$name,
+					':email'      =>$email,
+					':business'   =>$business,
+					':address'    =>$address,
+					':suburb'     =>$suburb,
+					':city'       =>$city,
+					':state'      =>$state,
+					':postcode'   =>$postcode,
+					':phone'      =>$phone,
+					':notes'      =>$notes,
+					':status'     =>'unconfirmed',
+					':tis'        =>$tis,
+					':tie'        =>$tie,
+					':ti'         =>$ti
 				)
 			);
 			$e=$db->errorInfo();
@@ -86,8 +85,7 @@ if($act=='add_booking'){
 								'Notes: '.$notes;
 					$mail->Body=$msg;
 					$mail->AltBody=strip_tags(preg_replace('/<br(\s+)?\/?>/i',"\n",$msg));
-					if($mail->Send())
-						$notification=$theme['settings']['booking_success'];
+					if($mail->Send())$notification=$theme['settings']['booking_success'];
 				}
 				if($email!=''){
 					$mail2=new PHPMailer;
@@ -143,13 +141,10 @@ if($act=='add_booking'){
 					);
 					$mail2->Body=$msg2;
 					$mail2->AltBody=strip_tags(preg_replace('/<br(\s+)?\/?>/i',"\n",$msg2));
-					if($mail2->Send())
-						$notification=$theme['settings']['booking_success'];
-					else
-						$notification=$theme['settings']['booking_error'];
+					if($mail2->Send())$notification=$theme['settings']['booking_success'];
+					else$notification=$theme['settings']['booking_error'];
 				}
-			}else
-				$notification=$theme['settings']['booking_error'];
+			}else$notification=$theme['settings']['booking_error'];
 		}
 	}
 }

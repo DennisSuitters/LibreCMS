@@ -101,10 +101,10 @@
 			</form>
 			<script>
 				$("#bookingform").submit(function(){
-						$.post($(this).attr("action"),$(this).serialize(),function(data){
-								$("#booking").html(data);
-						});
-						return false;
+					$.post($(this).attr("action"),$(this).serialize(),function(data){
+						$("#booking").html(data);
+					});
+					return false;
 				});
 			</script>
 		</div>

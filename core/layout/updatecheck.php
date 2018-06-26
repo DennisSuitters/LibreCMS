@@ -4,9 +4,10 @@
  * This software may be modified and distributed under the terms
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
+if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 require'..'.DS.'db.php';
 $config=$db->query("SELECT update_url FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
-$settings=parse_ini_file('..'.DS.'config.ini', TRUE);
+$settings=parse_ini_file('..'.DS.'config.ini',TRUE);
 $gV=@file_get_contents($config['update_url'].'versions') or die();
 $update=0;
 $uL='';

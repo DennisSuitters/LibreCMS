@@ -21,23 +21,19 @@ if($act=='add_test'){
       $q=$db->prepare("INSERT INTO content (contentType,ip,title,email,name,business,notes,status,ti) VALUES ('testimonials',:ip,:title,:email,:name,:business,:notes,'unapproved',:ti)");
       $q->execute(
         array(
-          ':ip'       => $ip,
-          ':title'    => $name.' - '.$business,
-          ':email'    => $email,
-          ':name'     => $name,
-          ':business' => $business,
-          ':notes'    => $review,
-          ':ti'       => time()
+          ':ip'      =>$ip,
+          ':title'   =>$name.' - '.$business,
+          ':email'   =>$email,
+          ':name'    =>$name,
+          ':business'=>$business,
+          ':notes'   =>$review,
+          ':ti'      =>time()
         )
       );
       $e=$db->errorInfo();
-      if(is_null($e[2]))
-        $notification.=$theme['settings']['testimonial_success'];
-      else
-        $notification.=$theme['settings']['testimonial_error'];
-    }else
-      $notification.=$theme['settings']['testimonial_erroremail'];
-  }else
-    $notification.=$theme['settings']['testimonial_errorspam'];
+      if(is_null($e[2]))$notification.=$theme['settings']['testimonial_success'];
+      else$notification.=$theme['settings']['testimonial_error'];
+    }else$notification.=$theme['settings']['testimonial_erroremail'];
+  }else$notification.=$theme['settings']['testimonial_errorspam'];
 }
 echo$notification;

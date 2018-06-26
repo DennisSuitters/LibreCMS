@@ -18,20 +18,15 @@ if($emailtrap==''){
       $q=$db->prepare("INSERT INTO subscribers (email,hash,ti) VALUES (:email,:hash,:ti)");
       $q->execute(
         array(
-          ':email' => $email,
-          ':hash'  => md5($email),
-          ':ti'    => time()
+          ':email'=>$email,
+          ':hash' =>md5($email),
+          ':ti'   =>time()
         )
       );
       $e=$db->errorInfo();
-      if(is_null($e[2]))
-        $notification.=$theme['settings']['subscriber_success'];
-      else
-        $notification.=$theme['settings']['subscriber_error'];
-    } else
-      $notification.=$theme['settings']['subscriber_already'];
-  } else
-    $notification.=$theme['settings']['subscriber_spam'];
-} else
-  $notification.=$theme['settings']['subscriber_spam'];
+      if(is_null($e[2]))$notification.=$theme['settings']['subscriber_success'];
+      else$notification.=$theme['settings']['subscriber_error'];
+    }else$notification.=$theme['settings']['subscriber_already'];
+  }else$notification.=$theme['settings']['subscriber_spam'];
+}else$notification.=$theme['settings']['subscriber_spam'];
 echo$notification;

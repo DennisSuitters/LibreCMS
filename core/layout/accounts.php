@@ -11,8 +11,8 @@ if($args[0]=='add'){
   $q=$db->prepare("UPDATE login SET username=:username WHERE id=:id");
   $q->execute(
     array(
-      ':username' => 'User '.$args[1],
-      ':id'       => $args[1]
+      ':username'=>'User '.$args[1],
+      ':id'      =>$args[1]
     )
   );
   $args[0]='edit';?>

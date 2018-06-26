@@ -11,11 +11,11 @@ if($args[0]=='add'){
   $q=$db->prepare("INSERT INTO menu (uid,mid,login_user,title,seoTitle,file,contentType,schemaType,menu,active,ord,eti) VALUES (:uid,'0',:login_user,:title,'','page','page','Article','other','0',:ord,:eti)");
   $q->execute(
     array(
-      ':uid'        => $user['id'],
-      ':login_user' => (isset($user['name'])?$user['name']:$user['username']),
-      ':title'      => 'New Page '.$ti.'',
-      ':ord'        => $ti,
-      ':eti'        => $ti
+      ':uid'       =>$user['id'],
+      ':login_user'=>(isset($user['name'])?$user['name']:$user['username']),
+      ':title'     =>'New Page '.$ti.'',
+      ':ord'       =>$ti,
+      ':eti'       =>$ti
     )
   );
   $id=$db->lastInsertId();
@@ -267,6 +267,22 @@ else
             </div>
             <small class="help-block text-right">Uploaded Images take Precedence over URL's.</small>
           </div>
+          
+          <div class="form-group clearfix">
+            <label for="coverVideo" class="col-xs-5 col-sm-3 col-lg-2">Video URL</label>
+            <div class="input-group col-xs-7 col-sm-9 col-lg-10">
+<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="coverVideo">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+              <input type="text" id="coverVideo" class="form-control" name="feature_image" value="<?php echo$r['coverVideo'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="coverVideo" readonly>
+              <div class="input-group-btn">
+                <button class="btn btn-default" onclick="elfinderDialog('<?php echo$r['id'];?>','menu','coverVideo');"><?php svg('libre-gui-browse-media',($config['iconsColor']==1?true:null));?></button>
+              </div>
+              <div class="input-group-btn">
+                <button class="btn btn-default trash" onclick="coverUpdate('<?php echo$r['id'];?>','menu','coverVideo','');"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
+              </div>
+            </div>
+            <small class="help-block text-right">Video's take Precedence over Cover Images but will appear of Video's are broken.</small>
+          </div>
+          
         </fieldset>
         <fieldset class="control-fieldset">
           <legend class="control-legend">Image Attribution</legend>
@@ -327,7 +343,7 @@ while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
           <li id="media_items_<?php echo$rm['id'];?>" class="col-xs-6 col-sm-3">
             <div class="panel panel-default media">
               <div class="controls btn-group">
-                <span class="handle btn btn-default btn-xs"><?php svg('drag');?></span>
+                <span class="handle btn btn-default btn-xs"><?php svg('libre-gui-drag',($config['iconsColor']==1?true:null));?></span>
                 <button class="btn btn-default btn-xs media-edit" data-dbid="<?php echo$rm['id'];?>"><?php svg('libre-gui-edit',($config['iconsColor']==1?true:null));?></button>
                 <button class="btn btn-default trash btn-xs" onclick="purge('<?php echo$rm['id'];?>','media')"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
               </div>

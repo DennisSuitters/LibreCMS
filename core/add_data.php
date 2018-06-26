@@ -12,26 +12,24 @@ require'sanitise.php';
 define('THEME','..'.DS.'layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
-function svg ($svg, $color = null, $class = null, $size = null) {
-	echo '<i class="libre';
-	if ($size != null) echo ' libre-' . $size;
-	if ($color == true) $svg = 'col' . DS . $svg;
-	elseif ($color != null) echo ' libre-' . $color;
-  if ($class != null) echo ' ' . $class;
-	echo '">';
-	include 'svg' . DS . $svg . '.svg';
-	echo '</i>';
+function svg($svg,$color=null,$class=null,$size=null){
+	echo'<i class="libre';
+	if($size!=null)echo' libre-'.$size;
+	if($color==true)$svg='col'.DS.$svg;
+	elseif($color!= null)echo' libre-'.$color;
+  if($class!=null)echo' '.$class;
+	echo'">';
+	include'svg'.DS.$svg.'.svg';
+	echo'</i>';
 }
-function svg2 ($svg, $color = null, $class = null, $size = null) {
-	$svgout = '<i class="libre';
-	if ($size != null) $svgout .= ' libre-' . $size;
-	if ($color == true) $svg = 'col' . DS . $svg;
-	elseif ($color != null) $svgout .= ' libre-' . $color;
-  if ($class != null) $svgout .= ' ' . $class;
-	$svgout .= '">';
-	$svgout .= file_get_contents('svg' . DS . $svg . '.svg');
-	$svgout .= '</i>';
-	return $svgout;
+function svg2 ($svg, $color = null, $class = null,$size=null){
+	$svgout='<i class="libre';
+	if($size!=null)$svgout.=' libre-'.$size;
+	if($color==true)$svg='col'.DS.$svg;
+	elseif($color!=null)$svgout.=' libre-'.$color;
+  if($class!=null)$svgout.=' ' .$class;
+	$svgout.='">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
+	return$svgout;
 }
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
@@ -54,14 +52,14 @@ if($act!=''){
 			$q=$db->prepare("INSERT INTO rewards (code,title,method,value,quantity,tis,tie,ti) VALUES (:code,:title,:method,:value,:quantity,:tis,:tie,:ti)");
 			$q->execute(
         array(
-          ':code'     => $code,
-          ':title'    => $title,
-          ':method'   => $method,
-          ':value'    => $value,
-          ':quantity' => $quantity,
-          ':tis'      => $tis,
-          ':tie'      => $tie,
-          ':ti'       => $ti
+          ':code'    =>$code,
+          ':title'   =>$title,
+          ':method'  =>$method,
+          ':value'   =>$value,
+          ':quantity'=>$quantity,
+          ':tis'     =>$tis,
+          ':tie'     =>$tie,
+          ':ti'      =>$ti
         )
       );
 			$id=$db->lastInsertId();
@@ -95,8 +93,8 @@ echo'<tr id="l_'.$id.'">'.
         $q=$db->prepare("INSERT INTO choices (uid,contentType,url,ti) VALUES (:uid,'dashrss',:url,'0')");
         $q->execute(
           array(
-            ':uid' => $uid,
-            ':url' => $url
+            ':uid'=>$uid,
+            ':url'=>$url
           )
         );
         $id=$db->lastInsertId();
@@ -129,17 +127,17 @@ echo'<div id="l_'.$id.'" class="form-group">'.
     case'add_social':
       $user=filter_input(INPUT_POST,'user',FILTER_SANITIZE_NUMBER_INT);
       $icon=filter_input(INPUT_POST,'icon',FILTER_SANITIZE_STRING);
-      $url= filter_input(INPUT_POST,'url', FILTER_SANITIZE_URL);
+      $url =filter_input(INPUT_POST,'url', FILTER_SANITIZE_URL);
       if(filter_var($url,FILTER_VALIDATE_URL)){
         if($icon=='none'||$url==''){?>
-  window.top.window.$('.notifications').notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
+  window.top.window.$.notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
 <?php   }else{
           $q=$db->prepare("INSERT INTO choices (uid,contentType,icon,url) VALUES (:uid,'social',:icon,:url)");
           $q->execute(
             array(
-              ':uid'  => kses($user,array()),
-              ':icon' => $icon,
-              ':url'  => kses($url,array())
+              ':uid' =>kses($user,array()),
+              ':icon'=>$icon,
+              ':url' =>kses($url,array())
             )
           );
           $id=$db->lastInsertId();
@@ -184,10 +182,10 @@ echo'<div id="l_'.$id.'" class="form-group">'.
         $q=$db->prepare("INSERT INTO choices (uid,rid,contentType,title,ti) VALUES (:uid,:rid,'option',:title,:ti)");
         $q->execute(
           array(
-            ':uid'   => $uid,
-            ':rid'   => $rid,
-            ':title' => kses($ttl,array()),
-            ':ti'    => $qty
+            ':uid'  =>$uid,
+            ':rid'  =>$rid,
+            ':title'=>kses($ttl,array()),
+            ':ti'   =>$qty
           )
         );
         $id=$db->lastInsertId();
@@ -234,8 +232,8 @@ echo'<div id="l_'.$id.'" class="form-group">'.
         $q=$db->prepare("INSERT INTO choices (contentType,title,url) VALUES ('subject',:title,:url)");
         $q->execute(
           array(
-            ':title' => kses($sub,array()),
-            ':url'   => kses($eml,array())
+            ':title'=>kses($sub,array()),
+            ':url'  =>kses($eml,array())
           )
         );
         $id=$db->lastInsertId();
@@ -281,10 +279,10 @@ echo'<div id="l_'.$id.'" class="form-group">'.
       $q=$db->prepare("INSERT INTO login (name,email,phone,ti) VALUES (:name,:email,:phone,:ti)");
       $q->execute(
         array(
-          ':name'  => $r['name'],
-          ':email' => $r['email'],
-          ':phone' => $r['phone'],
-          ':ti'    => $ti
+          ':name' =>$r['name'],
+          ':email'=>$r['email'],
+          ':phone'=>$r['phone'],
+          ':ti'   =>$ti
         )
       );
       $e=$db->errorInfo();
@@ -295,30 +293,30 @@ echo'<div id="l_'.$id.'" class="form-group">'.
 <?php }
       break;
     case'add_comment':
-      $rid=  filter_input(INPUT_POST,'rid',  FILTER_SANITIZE_NUMBER_INT);
+      $rid  =filter_input(INPUT_POST,'rid',  FILTER_SANITIZE_NUMBER_INT);
       $email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
       if(filter_var($email,FILTER_VALIDATE_EMAIL)){
         $q=$db->prepare("SELECT * FROM login WHERE email=:email");
         $q->execute(array(':email'=>$email));
         $c=$q->fetch(PDO::FETCH_ASSOC);
         $cid=($c['id']!=0?$c['id']:0);
-        $name=       filter_input(INPUT_POST,'name',       FILTER_SANITIZE_STRING);
+        $name       =filter_input(INPUT_POST,'name',       FILTER_SANITIZE_STRING);
         $contentType=filter_input(INPUT_POST,'contentType',FILTER_SANITIZE_STRING);
-        $da=         filter_input(INPUT_POST,'da',         FILTER_SANITIZE_STRING);
-        $status=     'approved';
+        $da         =filter_input(INPUT_POST,'da',         FILTER_SANITIZE_STRING);
+        $status     ='approved';
         $q=$db->prepare("INSERT INTO comments (contentType,rid,uid,cid,ip,name,email,notes,status,ti) VALUES (:contentType,:rid,:uid,:cid,:ip,:name,:email,:notes,:status,:ti)");
         $q->execute(
           array(
-            ':contentType' => $contentType,
-            ':rid'         => $rid,
-            ':uid'         => $uid,
-            ':cid'         => $cid,
-            ':ip'          => $ip,
-            ':name'        => $name,
-            ':email'       => $email,
-            ':notes'       => $da,
-            ':status'      => $status,
-            ':ti'          => $ti
+            ':contentType'=>$contentType,
+            ':rid'        =>$rid,
+            ':uid'        =>$uid,
+            ':cid'        =>$cid,
+            ':ip'         =>$ip,
+            ':name'       =>$name,
+            ':email'      =>$email,
+            ':notes'      =>$da,
+            ':status'     =>$status,
+            ':ti'         =>$ti
           )
         );
         $id=$db->lastInsertId();
@@ -359,7 +357,7 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
       break;
     case'add_avatar':
 		case'add_tstavatar':
-      $id= filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
+      $id =filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
       $tbl=filter_input(INPUT_POST,'t', FILTER_SANITIZE_STRING);
       $tbl=kses($tbl,array());
       $col=filter_input(INPUT_POST,'c', FILTER_SANITIZE_STRING);
@@ -371,21 +369,17 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
         if($ft=="image/jpeg"||$ft=="image/pjpeg"||$ft=="image/png"||$ft=="image/gif"){
           $tp='..'.DS.'media'.DS.basename($_FILES['fu']['name']);
           if(move_uploaded_file($_FILES['fu']['tmp_name'],$tp)){
-            if($ft=="image/jpeg"||$ft=="image/pjpeg")
-							$fn=$col.'_'.$id.'.jpg';
-            if($ft=="image/png")
-							$fn=$col.'_'.$id.'.png';
-            if($ft=="image/gif")
-							$fn=$col.'_'.$id.'.gif';
+            if($ft=="image/jpeg"||$ft=="image/pjpeg")$fn=$col.'_'.$id.'.jpg';
+            if($ft=="image/png")$fn=$col.'_'.$id.'.png';
+            if($ft=="image/gif")$fn=$col.'_'.$id.'.gif';
 						if($act=='add_tstavatar'){
 							$fn='tst'.$fn;
 							$q=$db->prepare("UPDATE content SET file=:avatar WHERE id=:id");
-						}else
-            	$q=$db->prepare("UPDATE login SET avatar=:avatar WHERE id=:id");
+						}else$q=$db->prepare("UPDATE login SET avatar=:avatar WHERE id=:id");
 						$q->execute(
 							array(
-								':avatar' => 'avatar'.$fn,
-								':id'     => $id
+								':avatar'=>'avatar'.$fn,
+								':id'    =>$id
 							)
 						);
             $image=new Zebra_image();
@@ -408,24 +402,24 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
 <?php break;
     case'add_media':
       $id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
-      $t= filter_input(INPUT_POST,'t', FILTER_SANITIZE_STRING);
+      $t =filter_input(INPUT_POST,'t', FILTER_SANITIZE_STRING);
       $fu=filter_input(INPUT_POST,'fu',FILTER_SANITIZE_STRING);
       if($fu!=''){
         if($t=='pages'||$t=='content'){
           $q=$db->prepare("INSERT INTO media (rid,pid,file,ti) VALUES (0,:pid,:file,:ti)");
           $q->execute(
             array(
-              ':pid'  => $id,
-              ':file' => $fu,
-              ':ti'   => time()
+              ':pid' =>$id,
+              ':file'=>$fu,
+              ':ti'  =>time()
             )
           );
           $iid=$db->lastInsertId();
           $q=$db->prepare("UPDATE media SET ord=:ord WHERE id=:id");
           $q->execute(
             array(
-              ':id'  => $iid,
-              ':ord' => $iid+1
+              ':id' =>$iid,
+              ':ord'=>$iid+1
             )
           );?>
   window.top.window.$('#media_items').append('<?php
@@ -434,7 +428,7 @@ echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
 				'<div class="controls btn-group">'.
 					'<span class="handle btn btn-default btn-xs">'.svg2('libre-gui-drag',($config['iconsColor']==1?true:null)).'</span>'.
 					'<button class="btn btn-default btn-xs media-edit" data-dbid="'.$iid.'">'.svg2('libre-gui-edit',($config['iconsColor']==1?true:null)).'</button>'.
-					'<button class="btn btn-default trash btn-xs" onclick="purge(\''.$iid.'\',\'media\')">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button>'.
+					'<button class="btn btn-default trash btn-xs" onclick="purge(`'.$iid.'`,`media`)">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button>'.
 				'</div>'.
 				'<div class="panel-body">'.
 					'<img src="'.$fu.'">'.
@@ -458,18 +452,18 @@ echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
 				if($r['cost']==''||!is_numeric($r['cost']))$r['cost']=0;
       }else{
         $r=array(
-          'title' => '',
-          'cost'  => 0
+          'title'=>'',
+          'cost' =>0
         );
       }
       $q=$db->prepare("INSERT INTO orderitems (oid,iid,title,quantity,cost,ti) VALUES (:oid,:iid,:title,'1',:cost,:ti)");
       $q->execute(
         array(
-          ':oid'   => $oid,
-          ':iid'   => $iid,
-          ':title' => $r['title'],
-          ':cost'  => $r['cost'],
-          ':ti'    => time()
+          ':oid'  =>$oid,
+          ':iid'  =>$iid,
+          ':title'=>$r['title'],
+          ':cost' =>$r['cost'],
+          ':ti'   =>time()
         )
       );
       $total=0;
@@ -482,19 +476,11 @@ echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
         $s->execute(array(':id'=>$oi['iid']));
         $i=$s->fetch(PDO::FETCH_ASSOC);
         echo'<tr>'.
-							'<td class="text-left">'.$i['code'].
-								'<div class="visible-xs">'.$i['title'].'</div>'.
-							'</td>'.
+							'<td class="text-left">'.$i['code'].'<div class="visible-xs">'.$i['title'].'</div></td>'.
 							'<td class="text-left hidden-xs">'.$i['title'].'</td>'.
-							'<td class="col-md-1 text-center">'.
-								($oi['iid']!=0?'<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'"></form>':'').
-							'</td>'.
-							'<td class="col-md-1 text-right">'.
-								($oi['iid']!=0?'<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" name="da" value="'.$oi['cost'].'"></form>':'').
-							'</td>'.
-							'<td class="text-right">'.
-								($oi['iid']!=0?$oi['cost']*$oi['quantity']:'').
-							'</td>'.
+							'<td class="col-md-1 text-center">'.($oi['iid']!=0?'<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'"></form>':'').'</td>'.
+							'<td class="col-md-1 text-right">'.($oi['iid']!=0?'<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" name="da" value="'.$oi['cost'].'"></form>':'').'</td>'.
+							'<td class="text-right">'.($oi['iid']!=0?$oi['cost']*$oi['quantity']:'').'</td>'.
 							'<td class="text-right">'.
 								'<form target="sp" action="core/update.php">'.
 									'<input type="hidden" name="id" value="'.$oi['id'].'">'.

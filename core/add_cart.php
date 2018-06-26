@@ -11,17 +11,17 @@ $ti=time();
 $sc=$db->prepare("SELECT id FROM cart WHERE iid=:iid AND cid=:cid AND si=:si");
 $sc->execute(
   array(
-    ':iid' => $iid,
-    ':cid' => $cid,
-    ':si'  => SESSIONID
+    ':iid'=>$iid,
+    ':cid'=>$cid,
+    ':si' =>SESSIONID
   )
 );
 if($sc->rowCount()>0){
   $q=$db->prepare("UPDATE cart SET quantity=quantity+1 WHERE iid=:iid AND si=:si");
   $q->execute(
     array(
-      ':iid' => $iid,
-      ':si'  => SESSIONID
+      ':iid'=>$iid,
+      ':si' =>SESSIONID
     )
   );
 }else{
@@ -33,11 +33,11 @@ if($sc->rowCount()>0){
       $q=$db->prepare("INSERT INTO cart (iid,cid,quantity,cost,si,ti) VALUES (:iid,:cid,'1',:cost,:si,:ti)");
       $q->execute(
         array(
-          ':iid'  => $iid,
-          ':cid'  => $cid,
-          ':cost' => $r['cost'],
-          ':si'   => SESSIONID,
-          ':ti'   => $ti
+          ':iid' =>$iid,
+          ':cid' =>$cid,
+          ':cost'=>$r['cost'],
+          ':si'  =>SESSIONID,
+          ':ti'  =>$ti
         )
       );
     }
