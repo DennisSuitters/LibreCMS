@@ -6,25 +6,12 @@
  */
 echo'<script>/*<![CDATA[*/';
 if(session_status()==PHP_SESSION_NONE)session_start();
-require'db.php';
-function svg($svg,$color = null,$class=null,$size=null){
-	echo'<i class="libre';
-	if($size!=null)echo' libre-'.$size;
-	if($color==true)$svg='col'.DS.$svg;
-	elseif($color!=null)echo' libre-'.$color;
-  if($class!=null)echo' '.$class;
-	echo'">';
-	include'svg'.DS.$svg.'.svg';
-	echo'</i>';
+require_once'db.php';
+function svg($svg,$class=null,$size=null){
+	echo'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
 }
-function svg2($svg,$color=null,$class=null,$size=null){
-	$svgout='<i class="libre';
-	if($size!=null)$svgout.=' libre-'.$size;
-	if($color==true)$svg='col'.DS.$svg;
-	elseif($color!=null)$svgout.=' libre-'.$color;
-  if($class!= null)$svgout.=' '.$class;
-	$svgout.='">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
-	return$svgout;
+function svg2($svg,$class=null,$size=null){
+	return'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
 }
 $tables=array();
 $db->setAttribute(PDO::ATTR_ORACLE_NULLS,PDO::NULL_TO_STRING);
@@ -51,8 +38,7 @@ $numtypes=array(
 if(empty($tables)){
 	$pstm1=$db->query('SHOW TABLES');
 	while($row=$pstm1->fetch(PDO::FETCH_NUM))$tables[]=$row[0];
-}else
-	$tables=is_array($tables)?$tables:explode(',',$tables);
+}else$tables=is_array($tables)?$tables:explode(',',$tables);
 foreach($tables as$table){
 	$result=$db->query('SELECT * FROM '.$table);
 	$num_fields=$result->columnCount();
@@ -109,9 +95,9 @@ if(file_exists('..'.DS.'media'.DS.'backup'.DS.$file)){
   $fileid=str_replace(DS,'',$fileid);
 	$filename=basename($file);
   $ti=time();
-  $q=$db->prepare("UPDATE config SET backup_ti=:backup_ti WHERE id='1'");
+  $q=$db->prepare("UPDATE `".$prefix."config` SET backup_ti=:backup_ti WHERE id='1'");
   $q->execute(array(':backup_ti'=>$ti));?>
-  window.top.window.$('#backups').append('<?php echo'<div id="l_'.$fileid.'" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><a class="btn btn-default btn-block" href="media/backup/'.$file.'">Click to Download '.$file.'</a><div class="input-group-btn"><button class="btn btn-default trash" onclick="removeBackup(\''.$fileid.'\',\''.$filename.'\')">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button></div></div></div>';?>');
+  window.top.window.$('#backups').append('<?php echo'<div id="l_'.$fileid.'" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><a class="btn btn-default btn-block" href="media/backup/'.$file.'">Click to Download '.$file.'</a><div class="input-group-btn"><button class="btn btn-default trash" onclick="removeBackup(\''.$fileid.'\',\''.$filename.'\')">'.svg2('libre-gui-trash').'</button></div></div></div>';?>');
   window.top.window.$('#alert_backup').addClass('hidden');
 <?php }else{?>
 	window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue performing the backup!'});

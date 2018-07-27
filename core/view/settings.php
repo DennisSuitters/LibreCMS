@@ -12,7 +12,7 @@ $currentPassHidden=$matchPassHidden=$successHidden=$success=$theme['settings']['
 $successShow=$theme['settings']['settings_show'];
 $act=filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING);
 if(isset($_SESSION['uid'])&&$_SESSION['uid']>0){
-	$s=$db->prepare("SELECT * FROM login WHERE id=:id");
+	$s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
 	$s->execute(array(':id'=>$_SESSION['uid']));
 	$user=$s->fetch(PDO::FETCH_ASSOC);
 }
@@ -21,50 +21,50 @@ if(isset($user)&&$user['rank']>0){
 		if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
 			$password=filter_input(INPUT_POST,'newPass',FILTER_SANITIZE_STRING);
 			$hash=password_hash($password,PASSWORD_DEFAULT);
-			$su=$db->prepare("UPDATE login SET password=:hash WHERE id=:id");
+			$su=$db->prepare("UPDATE `".$prefix."login` SET password=:hash WHERE id=:id");
 			$su->execute(
 				array(
 					':hash'=>$hash,
-					':id'  =>$user['id']
+					':id'=>$user['id']
 				)
 			);
 			$success='';
 		}
 	}
 	if(isset($act)&&$act=='updateAccount'&&isset($_POST['emailTrap'])&&$_POST['emailTrap']==''){
-		$email   =filter_input(INPUT_POST,'email',   FILTER_SANITIZE_STRING);
-		$name    =filter_input(INPUT_POST,'name',    FILTER_SANITIZE_STRING);
-		$url     =filter_input(INPUT_POST,'url',     FILTER_SANITIZE_STRING);
+		$email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_STRING);
+		$name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
+		$url=filter_input(INPUT_POST,'url',FILTER_SANITIZE_STRING);
 		$business=filter_input(INPUT_POST,'business',FILTER_SANITIZE_STRING);
-		$phone   =filter_input(INPUT_POST,'phone',   FILTER_SANITIZE_STRING);
-		$mobile  =filter_input(INPUT_POST,'mobile',  FILTER_SANITIZE_STRING);
-		$address =filter_input(INPUT_POST,'address', FILTER_SANITIZE_STRING);
-		$suburb  =filter_input(INPUT_POST,'suburb',  FILTER_SANITIZE_STRING);
-		$city    =filter_input(INPUT_POST,'city',    FILTER_SANITIZE_STRING);
-		$state   =filter_input(INPUT_POST,'state',   FILTER_SANITIZE_STRING);
+		$phone=filter_input(INPUT_POST,'phone',FILTER_SANITIZE_STRING);
+		$mobile=filter_input(INPUT_POST,'mobile',FILTER_SANITIZE_STRING);
+		$address=filter_input(INPUT_POST,'address',FILTER_SANITIZE_STRING);
+		$suburb=filter_input(INPUT_POST,'suburb',FILTER_SANITIZE_STRING);
+		$city=filter_input(INPUT_POST,'city',FILTER_SANITIZE_STRING);
+		$state=filter_input(INPUT_POST,'state',FILTER_SANITIZE_STRING);
 		$postcode=filter_input(INPUT_POST,'postcode',FILTER_SANITIZE_STRING);
-		$country =filter_input(INPUT_POST,'country', FILTER_SANITIZE_STRING);
-		$s=$db->prepare("UPDATE login SET email=:email,name=:name,url=:url,business=:business,phone=:phone,mobile=:mobile,address=:address,suburb=:suburb,city=:city,state=:state,postcode=:postcode,country=:country WHERE id=:id");
+		$country=filter_input(INPUT_POST,'country',FILTER_SANITIZE_STRING);
+		$s=$db->prepare("UPDATE `".$prefix."login` SET email=:email,name=:name,url=:url,business=:business,phone=:phone,mobile=:mobile,address=:address,suburb=:suburb,city=:city,state=:state,postcode=:postcode,country=:country WHERE id=:id");
 		$s->execute(
 			array(
-				':email'   =>$email,
-				':name'    =>$name,
-				':url'     =>$url,
+				':email'=>$email,
+				':name'=>$name,
+				':url'=>$url,
 				':business'=>$business,
-				':phone'   =>$phone,
-				':mobile'  =>$mobile,
-				':address' =>$address,
-				':suburb'  =>$suburb,
-				':city'    =>$city,
-				':state'   =>$state,
+				':phone'=>$phone,
+				':mobile'=>$mobile,
+				':address'=>$address,
+				':suburb'=>$suburb,
+				':city'=>$city,
+				':state'=>$state,
 				':postcode'=>$postcode,
-				':country' =>$country,
-				':id'      =>$user['id']
+				':country'=>$country,
+				':id'=>$user['id']
 			)
 		);
 		$e=$db->errorInfo();
 		if(is_null($e[2])){
-			$s=$db->prepare("SELECT * FROM login WHERE id=:id");
+			$s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
 			$s->execute(array(':id'=>$user['id']));
 			$user=$s->fetch(PDO::FETCH_ASSOC);
 			if(stristr($html,'<success accountHidden>'))$html=str_replace('<success accountHidden>',$theme['settings']['settings_show'],$html);
@@ -144,19 +144,19 @@ if(isset($user)&&$user['rank']>0){
 			date($config['dateFormat'],$user['ti']),
 			htmlspecialchars($user['username'],ENT_QUOTES,'UTF-8'),
 			$rank,
-			htmlspecialchars($user['id'],      ENT_QUOTES,'UTF-8'),
-			htmlspecialchars($user['email'],   ENT_QUOTES,'UTF-8'),
-			htmlspecialchars($user['name'],    ENT_QUOTES,'UTF-8'),
-			htmlspecialchars($user['url'],     ENT_QUOTES,'UTF-8'),
+			htmlspecialchars($user['id'],ENT_QUOTES,'UTF-8'),
+			htmlspecialchars($user['email'],ENT_QUOTES,'UTF-8'),
+			htmlspecialchars($user['name'],ENT_QUOTES,'UTF-8'),
+			htmlspecialchars($user['url'],ENT_QUOTES,'UTF-8'),
 			htmlspecialchars($user['business'],ENT_QUOTES,'UTF-8'),
-			htmlspecialchars($user['phone'],   ENT_QUOTES,'UTF-8'),
-			htmlspecialchars($user['mobile'],  ENT_QUOTES,'UTF-8'),
-			htmlspecialchars($user['address'], ENT_QUOTES,'UTF-8'),
-			htmlspecialchars($user['suburb'],  ENT_QUOTES,'UTF-8'),
-			htmlspecialchars($user['city'],    ENT_QUOTES,'UTF-8'),
-			htmlspecialchars($user['state'],   ENT_QUOTES,'UTF-8'),
+			htmlspecialchars($user['phone'],ENT_QUOTES,'UTF-8'),
+			htmlspecialchars($user['mobile'],ENT_QUOTES,'UTF-8'),
+			htmlspecialchars($user['address'],ENT_QUOTES,'UTF-8'),
+			htmlspecialchars($user['suburb'],ENT_QUOTES,'UTF-8'),
+			htmlspecialchars($user['city'],ENT_QUOTES,'UTF-8'),
+			htmlspecialchars($user['state'],ENT_QUOTES,'UTF-8'),
 			htmlspecialchars($user['postcode'],ENT_QUOTES,'UTF-8'),
-			htmlspecialchars($user['country'], ENT_QUOTES,'UTF-8')
+			htmlspecialchars($user['country'],ENT_QUOTES,'UTF-8')
 		),
 		$html
 	);

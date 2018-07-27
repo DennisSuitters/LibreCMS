@@ -5,24 +5,24 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 $getcfg=true;
-require'db.php';
+require_once'db.php';
 if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
   $eml=filter_input(INPUT_POST,'rst',FILTER_SANITIZE_STRING);
-  $s=$db->prepare("SELECT id,name,email FROM login WHERE email=:email LIMIT 1");
+  $s=$db->prepare("SELECT id,name,email FROM `".$prefix."login` WHERE email=:email LIMIT 1");
   $s->execute(array(':email'=>$eml));
   $c=$s->fetch(PDO::FETCH_ASSOC);
   if($s->rowCount()>0){
     $chars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&";
     $password=substr(str_shuffle($chars),0,8);
     $hash=password_hash($password,PASSWORD_DEFAULT);
-    $us=$db->prepare("UPDATE login SET password=:password WHERE id=:id");
+    $us=$db->prepare("UPDATE `".$prefix."login` SET password=:password WHERE id=:id");
     $us->execute(
       array(
         ':password'=>$hash,
-        ':id'      =>$c['id']
+        ':id'=>$c['id']
       )
     );
-    require'class.phpmailer.php';
+    include'class.phpmailer.php';
   	$mail=new PHPMailer;
   	$mail->isSendmail();
   	$toname=$c['name'];

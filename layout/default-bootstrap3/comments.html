@@ -17,7 +17,7 @@
 		<div class="media col-xs-12">
 			<div id="comment" class="media-body">
 				<form id="commentform" method="post" action="core/add_comment.php" role="form">
-					<input type="hidden" name="emailtrap" value="">
+					<input type="hidden" name="emailtrap" value="none">
 					<input type="hidden" name="act" value="add_comment">
 					<input type="hidden" name="rid" value="<print content=id>">
 					<input type="hidden" name="ct" value="<print content=contentType>">
@@ -40,14 +40,14 @@
 						</div>
 					</div>
 				</form>
-				<script>
+				<script>/*<![CDATA[*/
 					$("#commentform").submit(function(){
 						$.post($(this).attr("action"),$(this).serialize(),function(data){
 							$("#comment").html(data);
 						});
 						return false;
 					});
-				</script>
+				/*]]>*/</script>
 			</div>
 		</div>
 	</comment>

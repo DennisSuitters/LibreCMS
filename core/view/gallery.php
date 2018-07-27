@@ -8,7 +8,7 @@ $gals='';
 if(stristr($html,'<items')){
   preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
   $gal=$matches[1];
-  $s=$db->prepare("SELECT * FROM media WHERE pid=:pid ORDER BY ord ASC");
+  $s=$db->prepare("SELECT * FROM `".$prefix."media` WHERE pid=:pid ORDER BY ord ASC");
   $s->execute(array(':pid'=>10));
   $output='';
   while($r=$s->fetch(PDO::FETCH_ASSOC)){
@@ -39,9 +39,11 @@ if(stristr($html,'<items')){
         '',
         $items
       );
-    }else$items=preg_replace('~<attribution>.*?<\/attribution>~is','',$items);
+    }else
+      $items=preg_replace('~<attribution>.*?<\/attribution>~is','',$items);
     $output.=$items;
   }
 	$gals=preg_replace('~<items>.*?<\/items>~is',$output,$html,1);
-}else$gals='';
+}else
+  $gals='';
 $content.=$gals;

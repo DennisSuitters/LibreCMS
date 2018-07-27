@@ -140,7 +140,7 @@ header .navbar-default .navbar-nav>.active>a:hover{color:#fff;background-color:t
 .search-item .search-item-info .search-item-title a:link{color:#00f!important}
 .search-item .search-item-info .search-item-title a:visited{color:#808!important}
 .jumbotron:empty{display:none}
-.jumbotron[style*="background-image"]{display:block;}
+.jumbotron[style*="background-image"]{display:block}
 .jumbotron{
   position:relative;
   z-index:-101;

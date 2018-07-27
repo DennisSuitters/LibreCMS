@@ -10,51 +10,51 @@ if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme']))$config['theme
 define('THEME','layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
-if(file_exists(THEME.DS.'images'.DS.'favicon.png'))define('FAVICON',THEME.DS.'images'.DS.'favicon.png');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif'))define('FAVICON',THEME.DS.'images'.DS.'favicon.gif');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg'))define('FAVICON',THEME.DS.'images'.DS.'favicon.jpg');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico'))define('FAVICON',THEME.DS.'images'.DS.'favicon.ico');
-else define('FAVICON','core'.DS.'images'.DS.'favicon.png');
-if(file_exists(THEME.DS.'images'.DS.'noimage.png'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');
-elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.gif');
-elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');
-else define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
-if(file_exists(THEME.DS.'images'.DS.'noavatar.png'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.png');
-elseif(file_exists(THEME.DS.'images'.DS.'noavatar.gif'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.gif');
-elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.jpg');
-else define('NOAVATAR','core'.DS.'images'.DS.'noavatar.jpg');
+if(file_exists(THEME.DS.'images'.DS.'favicon.png'))
+	define('FAVICON',THEME.DS.'images'.DS.'favicon.png');
+elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif'))
+	define('FAVICON',THEME.DS.'images'.DS.'favicon.gif');
+elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg'))
+	define('FAVICON',THEME.DS.'images'.DS.'favicon.jpg');
+elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico'))
+	define('FAVICON',THEME.DS.'images'.DS.'favicon.ico');
+else
+	define('FAVICON','core'.DS.'images'.DS.'favicon.png');
+if(file_exists(THEME.DS.'images'.DS.'noimage.png'))
+	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');
+elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))
+	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.gif');
+elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))
+	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');
+else
+	define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
+if(file_exists(THEME.DS.'images'.DS.'noavatar.png'))
+	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.png');
+elseif(file_exists(THEME.DS.'images'.DS.'noavatar.gif'))
+	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.gif');
+elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))
+	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.jpg');
+else
+	define('NOAVATAR','core'.DS.'images'.DS.'noavatar.jpg');
 require'login.php';
 function rank($txt){
-	if($txt==0)   return'visitor';
-	if($txt==100) return'subscriber';
-	if($txt==200) return'member';
-	if($txt==300) return'client';
-	if($txt==400) return'contributor';
-	if($txt==500) return'author';
-	if($txt==600) return'editor';
-	if($txt==700) return'moderator';
-	if($txt==800) return'manager';
-	if($txt==900) return'administrator';
+	if($txt==0)return'visitor';
+	if($txt==100)return'subscriber';
+	if($txt==200)return'member';
+	if($txt==300)return'client';
+	if($txt==400)return'contributor';
+	if($txt==500)return'author';
+	if($txt==600)return'editor';
+	if($txt==700)return'moderator';
+	if($txt==800)return'manager';
+	if($txt==900)return'administrator';
 	if($txt==1000)return'developer';
 }
-function svg($svg,$color=null,$class=null,$size=null){
-	echo'<i class="libre';
-	if($size!=null)echo' libre-'.$size;
-	if($color==true)$svg='col'.DS.$svg;
-	elseif($color!= null)echo' libre-'.$color;
-  if($class!=null)echo' '.$class;
-	echo'">';
-	include'svg'.DS.$svg.'.svg';
-	echo'</i>';
+function svg($svg,$class=null,$size=null){
+	echo'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('core'.DS.'svg'.DS.$svg.'.svg').'</i>';
 }
-function svg2($svg,$color=null,$class=null,$size=null){
-	$svgout='<i class="libre';
-	if($size!=null)$svgout.=' libre-'.$size;
-	if($color==true)$svg='col'.DS.$svg;
-	elseif($color!=null)$svgout.=' libre-'.$color;
-  if($class!=null)$svgout.=' '.$class;
-	$svgout.='">'.file_get_contents('core'.DS.'svg'.DS.$svg.'.svg').'</i>';
-	return$svgout;
+function svg2($svg,$class=null,$size=null){
+	return'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('core'.DS.'svg'.DS.$svg.'.svg').'</i>';
 }
 function frontsvg($svg){
 	return file_get_contents(THEME.DS.'svg'.DS.'libre-'.$svg.'.svg');
@@ -62,8 +62,7 @@ function frontsvg($svg){
 function microid($identity,$service,$algorithm='sha1'){
 	$microid=substr($identity,0,strpos($identity,':'))."+".substr($service,0,strpos($service,':')).":".strtolower($algorithm).":";
 	if(function_exists('hash')){
-		if(in_array(strtolower($algorithm),hash_algos()))
-			return$microid.=hash($algorithm,hash($algorithm,$identity).hash($algorithm,$service));
+		if(in_array(strtolower($algorithm),hash_algos()))return$microid.=hash($algorithm,hash($algorithm,$identity).hash($algorithm,$service));
 	}
 	if(function_exists('mhash')){
 		$hash_method=@constant('MHASH_'.strtoupper($algorithm));
@@ -73,14 +72,14 @@ function microid($identity,$service,$algorithm='sha1'){
 			return$microid.=bin2hex(mhash($hash_method,$identity_hash.$service_hash));
 		}
 	}
-	if(function_exists($algorithm))
-		return$microid.=$algorithm($algorithm($identity).$algorithm($service));
+	if(function_exists($algorithm))return$microid.=$algorithm($algorithm($identity).$algorithm($service));
 }
 function minify($txt){
 	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
 }
 function _ago($time){
-	if($time==0)$timeDiff='Never';
+	if($time==0)
+		$timeDiff='Never';
 	else{
 		$fromTime=$time;
 		$timeDiff=floor(abs(time()-$fromTime)/60);
@@ -107,183 +106,41 @@ function elapsed_time($b=0,$e=0){
     's'=>$td % 60
 	);
   if((int)$td>30){
-    $b='';
     foreach($tt as$u=>$ti){
       if($ti>0)$b.="$ti$u ";
     }
-  }else$b=number_format($td,3).'s';
+  }else
+		$b=number_format($td,3).'s';
   return trim($b);
 }
 function size_format($s,$p=2){
     $b=log($s,1024);
-    $s=array(
-      '',
-      'KB',
-      'MB',
-      'GB',
-      'TB'
-    );
+    $s=array('','KB','MB','GB','TB');
     return round(pow(1024,$b-floor($b)),$p).$s[floor($b)];
 }
 function tomoment($f){
-  $r=[
-    'd'=>'DD',
-    'D'=>'ddd',
-    'j'=>'D',
-    'l'=>'dddd',
-    'N'=>'E',
-    'S'=>'o',
-    'w'=>'e',
-    'z'=>'DDD',
-    'W'=>'W',
-    'F'=>'MMMM',
-    'm'=>'MM',
-    'M'=>'MMM',
-    'n'=>'M',
-    't'=>'',
-    'L'=>'',
-    'o'=>'YYYY',
-    'Y'=>'YYYY',
-    'y'=>'YY',
-    'a'=>'a',
-    'A'=>'A',
-    'B'=>'',
-    'g'=>'h',
-    'G'=>'H',
-    'h'=>'hh',
-    'H'=>'HH',
-    'i'=>'mm',
-    's'=>'ss',
-    'u'=>'SSS',
-    'e'=>'zz',
-    'I'=>'',
-    'O'=>'',
-    'P'=>'',
-    'T'=>'',
-    'Z'=>'',
-    'c'=>'',
-    'r'=>'',
-    'U'=>'X'
-  ];
+  $r=['d'=>'DD','D'=>'ddd','j'=>'D','l'=>'dddd','N'=>'E','S'=>'o','w'=>'e','z'=>'DDD','W'=>'W','F'=>'MMMM','m'=>'MM','M'=>'MMM','n'=>'M','t'=>'','L'=>'','o'=>'YYYY','Y'=>'YYYY','y'=>'YY','a'=>'a','A'=>'A','B'=>'','g'=>'h','G'=>'H','h'=>'hh','H'=>'HH','i'=>'mm','s'=>'ss','u'=>'SSS','e'=>'zz','I'=>'','O'=>'','P'=>'','T'=>'','Z'=>'','c'=>'','r'=>'','U'=>'X'];
   return strtr($f,$r);
 }
 function url_encode($str){
 	$str=trim(strtolower($str));
-	$str=str_replace(
-		array(
-			'%2D',
-			'%2D',
-			'%2D',
-			'%2D',
-	    '!',
-	    '*',
-	    "'",
-	    "(",
-	    ")",
-	    ";",
-	    ":",
-	    "@",
-	    "&",
-	    "=",
-	    "+",
-	    "$",
-	    ",",
-	    "/",
-	    "?",
-	    "#",
-	    "[",
-	    "]",
-			' '
-	  ),
-		array(
-			chr(149),
-			chr(150),
-			chr(151),
-			chr(45),
-	    '%21',
-	    '%2A',
-	    "%27",
-	    "%28",
-	    "%29",
-	    "%3B",
-	    "%3A",
-	    "%40",
-	    "%26",
-	    "%3D",
-	    "%2B",
-	    "%24",
-	    "%2C",
-	    "%2F",
-	    "%3F",
-	    "%23",
-	    "%5B",
-	    "%5D",
-			'-'
-	  ),
-		$str
-	);
+	$str=str_replace(array('%2D','%2D','%2D','%2D','!','*',"'","(",")",";",":","@","&","=","+","$",",","/","?","#","[","]",' '),array(chr(149),chr(150),chr(151),chr(45),'%21','%2A',"%27","%28","%29","%3B","%3A","%40","%26","%3D","%2B","%24","%2C","%2F","%3F","%23","%5B","%5D",'-'),$str);
 	return$str;
 }
 function escaper($val){
-  return str_replace(
-		array(
-	    "\\",
-	    "/",
-	    "\"",
-	    "\n",
-	    "\r",
-	    "\t",
-	    "\x08",
-	    "\x0c"
-	  ),
-		array(
-	    "\\\\",
-	    "\\/",
-	    "\\\"",
-	    "\\n",
-	    "\\r",
-	    "\\t",
-	    "\\f",
-	    "\\b"
-	  ),
-		$val
-	);
+  return str_replace(array("\\","/","\"","\n","\r","\t","\x08","\x0c"),array("\\\\","\\/","\\\"","\\n","\\r","\\t","\\f","\\b"),$val);
 }
 class internal{
-	function getconfig($db){
-		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-    return$config;
-	}
-	function humans($args=false){
-		require'core'.DS.'humans.php';
-	}
-	function sitemap($args=false){
-		require'core'.DS.'sitemap.php';
-	}
-	function robots($args=false){
-		require'core'.DS.'robots.php';
-	}
-	function rss($args=false){
-		require'core'.DS.'rss.php';
-	}
-	function unsubscribe($args=false){
-		require'core'.DS.'unsubscribe.php';
-	}
+	function humans($args=false){require'core'.DS.'humans.php';}
+	function sitemap($args=false){require'core'.DS.'sitemap.php';}
+	function robots($args=false){require'core'.DS.'robots.php';}
+	function rss($args=false){require'core'.DS.'rss.php';}
+	function unsubscribe($args=false){require'core'.DS.'unsubscribe.php';}
 }
 class admin{
-	function getconfig($db){
-		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-    return$config;
-	}
-	function favicon(){
-		return'core'.DS.'images'.DS.'favicon.png';
-	}
-	function noimage(){
-		return'core'.DS.'images'.DS.'noimage.jpg';
-	}
-	function noavatar(){
-		return'core'.DS.'images'.DS.'noavatar.jpg';
-	}
+	function favicon(){return'core'.DS.'images'.DS.'favicon.png';}
+	function noimage(){return'core'.DS.'images'.DS.'noimage.jpg';}
+	function noavatar(){return'core'.DS.'images'.DS.'noavatar.jpg';}
 	function accounts($args=false){
 		$view='accounts';
 		require'admin.php';
@@ -341,6 +198,10 @@ class admin{
 		$view='preferences';
 		require'admin.php';
 	}
+	function security($args=false){
+		$view='security';
+		require'admin.php';
+	}
 	function search($args=false){
 		$view='search';
 		require'admin.php';
@@ -351,10 +212,6 @@ class admin{
   }
 }
 class front{
-	function getconfig($db){
-		$config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-    return$config;
-	}
 	function about($args=false){
 		$view='aboutus';
 		require'process.php';
@@ -491,42 +348,45 @@ class front{
 }
 $route=new router();
 $routes=array(
-  $settings['system']['admin'].'/add'        =>array('admin',   'add'),
-	$settings['system']['admin'].'/accounts'   =>array('admin',   'accounts'),
-	$settings['system']['admin'].'/activity'   =>array('admin',   'activity'),
-	$settings['system']['admin'].'/bookings'   =>array('admin',   'bookings'),
-	$settings['system']['admin'].'/content'    =>array('admin',   'content'),
-	$settings['system']['admin'].'/dashboard'  =>array('admin',   'dashboard'),
-	$settings['system']['admin'].'/logout'     =>array('admin',   'logout'),
-	$settings['system']['admin'].'/media'      =>array('admin',   'media'),
-	$settings['system']['admin'].'/messages'   =>array('admin',   'messages'),
-	$settings['system']['admin'].'/newsletters'=>array('admin',   'newsletters'),
-	$settings['system']['admin'].'/orders'     =>array('admin',   'orders'),
-  $settings['system']['admin'].'/rewards'    =>array('admin',   'rewards'),
-	$settings['system']['admin'].'/pages'      =>array('admin',   'pages'),
-	$settings['system']['admin'].'/preferences'=>array('admin',   'preferences'),
-	$settings['system']['admin'].'/search'     =>array('admin',   'search'),
-  $settings['system']['admin'].'/tracker'    =>array('admin',   'tracker'),
-	$settings['system']['admin']               =>array('admin',   'dashboard'),
-	'humans.txt'                               =>array('internal','humans'),
-	'sitemap.xml'                              =>array('internal','sitemap'),
-	'robots.txt'                               =>array('internal','robots'),
-	'rss'                                      =>array('internal','rss'),
-	'error'                                    =>array('front',   'error'),
-  'home'                                     =>array('front',   'index'),
-	'index'                                    =>array('front',   'index'),
-	'sitemap'                                  =>array('front',   'sitemap'),
-	'orders'                                   =>array('front',   'orders'),
-	'proofs'                                   =>array('front',   'proofs'),
-	'login'                                    =>array('front',   'login'),
-	'settings'                                 =>array('front',   'settings'),
-  ''                                         =>array('front',   'index')
+  $settings['system']['admin'].'/add'=>array('admin','add'),
+	$settings['system']['admin'].'/accounts'=>array('admin','accounts'),
+	$settings['system']['admin'].'/activity'=>array('admin','activity'),
+	$settings['system']['admin'].'/bookings'=>array('admin','bookings'),
+	$settings['system']['admin'].'/content'=>array('admin','content'),
+	$settings['system']['admin'].'/dashboard'=>array('admin','dashboard'),
+	$settings['system']['admin'].'/logout'=>array('admin','logout'),
+	$settings['system']['admin'].'/media'=>array('admin','media'),
+	$settings['system']['admin'].'/messages'=>array('admin','messages'),
+	$settings['system']['admin'].'/newsletters'=>array('admin','newsletters'),
+	$settings['system']['admin'].'/orders'=>array('admin','orders'),
+  $settings['system']['admin'].'/rewards'=>array('admin','rewards'),
+	$settings['system']['admin'].'/pages'=>array('admin','pages'),
+	$settings['system']['admin'].'/preferences'=>array('admin','preferences'),
+	$settings['system']['admin'].'/search'=>array('admin','search'),
+	$settings['system']['admin'].'/security'=>array('admin','security'),
+  $settings['system']['admin'].'/tracker'=>array('admin','tracker'),
+	$settings['system']['admin']=>array('admin','dashboard'),
+	'humans.txt'=>array('internal','humans'),
+	'sitemap.xml'=>array('internal','sitemap'),
+	'robots.txt'=>array('internal','robots'),
+	'rss'=>array('internal','rss'),
+	'error'=>array('front','error'),
+  'home'=>array('front','index'),
+	'index'=>array('front','index'),
+	'sitemap'=>array('front','sitemap'),
+	'orders'=>array('front','orders'),
+	'proofs'=>array('front','proofs'),
+	'login'=>array('front','login'),
+	'settings'=>array('front','settings'),
+  ''=>array('front','index')
 );
-$s=$db->prepare("SELECT * FROM menu WHERE active=1");
+$s=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE active=1");
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
-	if(method_exists('front',$r['contentType']))$routes[$r['contentType']]=array('front',$r['contentType']);
-  else$routes[$r['contentType']]=array('front','content');
+	if(method_exists('front',$r['contentType']))
+		$routes[$r['contentType']]=array('front',$r['contentType']);
+  else
+		$routes[$r['contentType']]=array('front','content');
 }
 $route->setRoutes($routes);
 $route->routeURL(preg_replace("|/$|","",filter_input(INPUT_GET,'url',FILTER_SANITIZE_URL)));
@@ -566,9 +426,10 @@ class router{
 	}
 	private function callRoute(){
 		$call=$this->route_call;
-		if (is_array($call)){
+		if(is_array($call)){
 			$call_obj=new $call[0]();
 			$call_obj->{$call[1]}($this->route_call_args);
-		}else$call($this->route_call_args);
+		}else
+			$call($this->route_call_args);
 	}
 }

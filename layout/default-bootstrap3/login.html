@@ -8,15 +8,15 @@
 				<form method="post" action="index" role="form">
 					<input type="hidden" name="act" value="login">
 					<div class="form-group">
-						<label for="username" class="control-label col-xs-4">Username</label>
+						<label for="loginusername" class="control-label col-xs-4">Username</label>
 						<div class="input-group col-xs-8">
-							<input type="text" id="username" class="form-control" name="username" value="" placeholder="Enter a Username..." autofocus role="textbox">
+							<input type="text" id="loginusername" class="form-control" name="username" value="" placeholder="Enter a Username..." required aria-required="true" autofocus role="textbox">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="password" class="control-label col-xs-4">Password</label>
+						<label for="loginpassword" class="control-label col-xs-4">Password</label>
 						<div class="input-group col-xs-8">
-							<input type="password" id="password" class="form-control" name="password" placeholder="Enter a Password..." autocomplete="off" role="textbox">
+							<input type="password" id="loginpassword" class="form-control" name="password" placeholder="Enter a Password..." required aria-required="true" autocomplete="off" role="textbox">
 						</div>
 					</div>
 					<div class="form-group">
@@ -29,7 +29,7 @@
 				<br>
 				<h4 role="heading">Reset Password</h4>
 				<form target="rstresponse" id="rstform" method="post" action="core/view/rstform.php" role="form">
-					<input type="hidden" name="emailtrap" value="">
+					<input type="hidden" name="emailtrap" value="none">
 					<div class="form-group">
 						<label for="rsteml" class="control-label col-xs-4">&nbsp;</label>
 						<div class="input-group col-xs-8">
@@ -66,17 +66,17 @@
 				<div class="panel-body">
 					<h4 role="heading">Sign Up</h4>
 					<form target="signresponse" id="signform" method="post" action="core/view/newaccount.php" role="form">
-						<input type="hidden" name="emailtrap" value="">
+						<input type="hidden" name="emailtrap" value="none">
 						<div class="form-group">
-							<label for="email" class="control-label col-xs-4">Email</label>
+							<label for="newemail" class="control-label col-xs-4">Email</label>
 							<div class="input-group col-xs-8">
-								<input type="text" id="email" class="form-control" name="email" value="" placeholder="Enter an Email..." required aria-required="true" role="textbox">
+								<input type="text" id="newemail" class="form-control" name="email" value="" placeholder="Enter an Email..." required aria-required="true" role="textbox">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="username" class="control-label col-xs-4">Username</label>
+							<label for="newusername" class="control-label col-xs-4">Username</label>
 							<div class="input-group col-xs-8">
-								<input type="text" id="username" class="form-control" name="username" placeholder="Enter a Username..." required aria-required="true" role="textbox">
+								<input type="text" id="newusername" class="form-control" name="username" placeholder="Enter a Username..." required aria-required="true" role="textbox">
 							</div>
 						</div>
 						<div class="form-group text-right">

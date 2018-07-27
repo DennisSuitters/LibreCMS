@@ -7,7 +7,8 @@
 if(stristr($html,'<settings')){
 	preg_match('/<settings items="(.*?)">/',$html,$matches);
 	$count=$matches[1];
-}else$count=4;
+}else
+	$count=4;
 $html=preg_replace(
 	array(
 		'/<print page=[\"\']?notes[\"\']?>/',
@@ -21,7 +22,7 @@ $html=preg_replace(
 );
 preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 $item=$matches[1];
-$s=$db->query("SELECT * FROM content WHERE contentType='testimonials' AND status='published' ORDER BY ti DESC");
+$s=$db->query("SELECT * FROM `".$prefix."content` WHERE contentType='testimonials' AND status='published' ORDER BY ti DESC");
 $i=0;
 $items=$testitems='';
 if($s->rowCount()>0){
@@ -43,7 +44,7 @@ if($s->rowCount()>0){
 		);
 		if(preg_match('/<print content=[\"\']?avatar[\"\']?>/',$items)){
 			if($r['cid']!=0){
-				$su=$db->prepare("SELECT avatar,gravatar FROM login WHERE id=:id");
+				$su=$db->prepare("SELECT avatar,gravatar FROM `".$prefix."login` WHERE id=:id");
 				$su->execute(array(':id'=>$r['cid']));
 				$ru=$su->fetch(PDO::FETCH_ASSOC);
 				if($ru['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$ru['avatar']))
@@ -54,10 +55,12 @@ if($s->rowCount()>0){
 					$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/','http://gravatar.com/avatar/'.md5($ru['gravatar']),$items);
 				elseif(stristr($ru['gravatar'],'gravatar.com'))
 					$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$ru['gravatar'],$items);
-				else$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$noavatar,$items);
+				else
+					$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$noavatar,$items);
 			}elseif($r['file']&&file_exists('media'.DS.'avatar'.DS.basename($r['file'])))
 				$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/','media'.DS.'avatar'.DS.$r['file'],$items);
-			else$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$noavatar,$items);
+			else
+				$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$noavatar,$items);
 		}
 		$items=preg_replace(
 			array(
@@ -85,6 +88,7 @@ if($i>0){
 		'',
 		$html
 	);
-}else$html=preg_replace('~<controls>.*?<\/controls>~is','',$html,1);
+}else
+	$html=preg_replace('~<controls>.*?<\/controls>~is','',$html,1);
 $html=preg_replace('~<items>.*?<\/items>~is',$testitems,$html,1);
 $content.=$html;

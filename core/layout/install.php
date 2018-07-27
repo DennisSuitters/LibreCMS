@@ -14,13 +14,12 @@
 		<meta name="viewport" content="width=400,initial-scale=1.0">
 		<script src="core/js/jquery-2.1.3.min.js"></script>
 		<script src="core/js/pace.min.js"></script>
-		<script src="core/js/jquery.animatecss.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="core/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="core/css/libreicons-svg.css">
 		<link rel="stylesheet" type="text/css" href="core/css/style.css">
 	</head>
 	<body style="padding:20px;">
-		<div class="container col-xs-12 col-sm-4 col-sm-offset-4">
+		<div class="container col-xs-12 col-sm-6 col-sm-offset-3">
 			<noscript>
 				<div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div>
 			</noscript>
@@ -33,10 +32,11 @@
 					<h3 style="margin:0;">Installation</h3>
 				</div>
 				<div class="panel-body">
+					<div id="dbinfo"></div>
 <?php $error=0;
 if(version_compare(phpversion(),'5.5.9','<'))echo'<div class="alert alert-warning">LibreCMS was built using PHP v5.5.9, your installed version is lower. While LibreCMS may operate on your system, some functionality may not work or be available. We recommend using PHP 7+ if available on you\'re services.</div>';
 if(extension_loaded('pdo')){
-	if (empty(PDO::getAvailableDrivers())){
+	if(empty(PDO::getAvailableDrivers())){
 		$error=1;
 		echo'<div class="alert aler-danger">Great PDO is Installed and Active, but there are no Database Drivers Installed.</div>';
 	}
@@ -58,19 +58,32 @@ if(!extension_loaded('gd')&&!function_exists('gd_info')){
 }
 echo(!function_exists('exif_read_data')?'<div class="alert alert-info">EXIF Functions are NOT enabled or installed. While not Mandatory, some features won\'t work.</div>':'');
 echo($error==1?'<div class="alert alert-danger">Please fix the above Issue\'s outlined within the Red Sections, then Refresh the page to Check Again.</div>':'');
-if($error==0){?>
+if($error==0){
+	$help=parse_ini_file('core'.DS.'help.ini',TRUE);
+	if($help['intro_video']!=''){?>
+					<div id="step0">
+						<div class="well">
+							<h4 class="page-header" style="margin:0;">Introduction</h4>
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe class="embed-responsive-item" id="intro-video" src="<?php echo$help['intro_video'];?>" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+							</div>
+							<button type="submit" class="btn btn-success btn-sm btn-block" onclick="$('#intro-video').attr('src','');$('#step0').addClass('hidden');$('#step1').removeClass('hidden');">Next</button>
+						</div>
+					</div>
+					<div id="step1" class="hidden">
+<?php }else{?>
 					<div id="step1">
 						<div class="well">
+<?php }?>
 							<h4 class="page-header" style="margin:0;">Database Settings</h4>
 							<form target="sp" method="post" action="core/installer.php" onsubmit="Pace.restart();">
-								<input type="hidden" name="emailtrap" value="">
+								<input type="hidden" name="emailtrap" value="none">
 								<input type="hidden" name="act" value="step1">
-								<div id="dberror"></div>
 								<div class="form-group form-group-sm">
 									<label for="dbtype" class="control-label col-xs-4"><small>Type</small></label>
 									<div class="input-group col-xs-8">
 										<select id="dbtype" name="dbtype" class="form-control">
-<?php	foreach(PDO::getAvailableDrivers() as$DRIVER)echo'<option value="'.$DRIVER.'">'.strtoupper($DRIVER).'</option>';?>
+											<?php	foreach(PDO::getAvailableDrivers() as$DRIVER)echo'<option value="'.$DRIVER.'">'.strtoupper($DRIVER).'</option>';?>
 										</select>
 									</div>
 								</div>
@@ -84,6 +97,12 @@ if($error==0){?>
 									<label for="dbport" class="control-label col-xs-4"><small>Port</small></label>
 									<div class="input-group col-xs-8">
 										<input id="dbport" name="dbport" type="text" class="form-control" value="" placeholder="Enter Port Number, or leave blank for default...">
+									</div>
+								</div>
+								<div class="form-group form-group-sm">
+									<label for="dbprefix" class="control-label col-xs-4"><small>Table Prefix</small></label>
+									<div class="input-group col-xs-8">
+										<input id="dbprefix" name="dbprefix" type="text" class="form-control" value="lcms_" placeholder="Enter a Table Prefix...">
 									</div>
 								</div>
 								<div class="form-group form-group-sm">
@@ -109,15 +128,13 @@ if($error==0){?>
 								</div>
 								<div class="clearfix"></div>
 							</form>
-							<div id="dbsuccess"></div>
 						</div>
 					</div>
-
 					<div id="step2" class="hidden">
 						<div class="well">
 							<h4 class="page-header" style="margin:0;">System Settings</h4>
 							<form target="sp" method="post" action="core/installer.php" onsubmit="Pace.restart();">
-								<input type="hidden" name="emailtrap" value="">
+								<input type="hidden" name="emailtrap" value="none">
 								<input type="hidden" name="act" value="step2">
 								<div class="form-group form-group-sm">
 									<label for="sysurl" class="control-label col-xs-4"><small>Site URL</small></label>
@@ -147,18 +164,17 @@ if($error==0){?>
 									</div>
 								</div>
 								<div class="col-xs-8 pull-right">
-									<button type="submit" class="btn btn-success btn-sm btn-block">Next</button>
+									<button type="submit" class="btn btn-success btn-sm btn-block" onclick="$('#block').css({'display':'block'});">Next</button>
 								</div>
 								<div class="clearfix"></div>
 							</form>
 						</div>
 					</div>
-					
 					<div id="step3" class="hidden">
 						<div class="well">
 							<h4 class="page-header" style="margin:0;">Administrator Account Settings</h4>
 							<form target="sp" method="post" action="core/installer.php" onsubmit="Pace.restart();">
-								<input type="hidden" name="emailtrap" value="">
+								<input type="hidden" name="emailtrap" value="none">
 								<input type="hidden" name="act" value="step3">
 								<div class="form-group form-group-sm">
 									<label for="aName" class="control-label col-xs-4"><small>Name</small></label>
@@ -202,5 +218,6 @@ if($error==0){?>
 			</div>
 		</div>
 		<iframe id="sp" name="sp" class="hidden"></iframe>
+		<div id="block" class="lds-dual-ring"></div>
 	</body>
 </html>

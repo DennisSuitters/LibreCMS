@@ -6,12 +6,13 @@ include_once dirname(__FILE__) . DS . 'elFinder.class.php';
 include_once dirname(__FILE__) . DS . 'elFinderVolumeDriver.class.php';
 include_once dirname(__FILE__) . DS . 'elFinderVolumeLocalFileSystem.class.php';
 $settings = parse_ini_file('..' . DS . '..' . DS . '..' . DS . 'core' . DS . 'config.ini',TRUE);
+$prefix = $settings['database']['prefix'];
 $dns = ((!empty($settings['database']['driver'])) ? ($settings['database']['driver']) : '') .
 ((!empty($settings['database']['host'])) ? (':host=' . $settings['database']['host']) : '') .
 ((!empty($settings['database']['port'])) ? (';port=' . $settings['database']['port']) : '') .
 ((!empty($settings['database']['schema'])) ? (';dbname=' . $settings['database']['schema']) : '');
 $db = new PDO($dns, $settings['database']['username'], $settings['database']['password']);
-$config = $db -> query("SELECT * FROM config WHERE id=1") -> fetch(PDO::FETCH_ASSOC);
+$config = $db -> query("SELECT * FROM `".$prefix."config` WHERE id=1") -> fetch(PDO::FETCH_ASSOC);
 if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT']==443)
   define('PROTOCOL', 'https://');
 else

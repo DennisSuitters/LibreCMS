@@ -6,10 +6,10 @@
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 $getcfg=true;
-require'..'.DS.'db.php';
+require_once'..'.DS.'db.php';
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
-$s=$db->prepare("SELECT * FROM logs WHERE id=:id");
+$s=$db->prepare("SELECT * FROM `".$prefix."logs` WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);
 $r['oldda']=rawurldecode($r['oldda']);
@@ -36,8 +36,7 @@ $r['newda']=rawurldecode($r['newda']);?>
         <td class="text-center"><small><?php echo$r['action'];?></small></td>
         <td class="text-center"><small><small><?php echo date($config['dateFormat'],$r['ti']);?></small></small></td>
         <td>
-<?php if($r['refColumn']=='notes'&&strlen($r['oldda'])>400&&strlen($r['newda'])>400)
-  echo'<div><small>Dataset too large to display</small></div>';
+<?php if($r['refColumn']=='notes'&&strlen($r['oldda'])>400&&strlen($r['newda'])>400)echo'<div><small>Dataset too large to display</small></div>';
 else{?>
           <div><small>From: <small><?php echo(strlen($r['oldda'])>400?'Dataset too large to display.':htmlspecialchars($r['oldda']));?></small></small></div>
           <div><small>To: <small><?php echo(strlen($r['newda'])>400?'Dataset too large to display.':htmlspecialchars($r['newda']));?></small></small></div>
@@ -47,4 +46,3 @@ else{?>
     </tbody>
   </table>
 </td>
-<?php

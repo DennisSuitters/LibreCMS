@@ -6,24 +6,22 @@
  */
 if($args[0]=='add'){
   $type=filter_input(INPUT_GET,'type',FILTER_SANITIZE_STRING);
-  $q=$db->prepare("INSERT INTO login (options,active,ti) VALUES ('00000000','1',:ti)")->execute(array(':ti'=>time()));
+  $q=$db->prepare("INSERT INTO `".$prefix."login` (options,active,ti) VALUES ('00000000','1',:ti)")->execute(array(':ti'=>time()));
   $args[1]=$db->lastInsertId();
-  $q=$db->prepare("UPDATE login SET username=:username WHERE id=:id");
+  $q=$db->prepare("UPDATE `".$prefix."login` SET username=:username WHERE id=:id");
   $q->execute(
     array(
       ':username'=>'User '.$args[1],
-      ':id'      =>$args[1]
+      ':id'=>$args[1]
     )
   );
-  $args[0]='edit';?>
-<script>/*<![CDATA[*/
-  history.replaceState('','','<?php echo URL.$settings['system']['admin'].'/accounts/edit/'.$args[1];?>');
-/*]]>*/</script>
-<?php }
+  $args[0]='edit';
+  echo'<script>/*<![CDATA[*/history.replaceState("","","'.URL.$settings['system']['admin'].'/accounts/edit/'.$args[1].'");/*]]>*/</script>';
+}
 if($args[0]=='settings')
   include'core'.DS.'layout'.DS.'set_accounts.php';
 elseif($args[0]=='edit'){
-  $q=$db->prepare("SELECT * FROM login WHERE id=:id");
+  $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
   $q->execute(array(':id'=>$args[1]));
   $r=$q->fetch(PDO::FETCH_ASSOC);?>
 <div class="panel panel-default">
@@ -31,11 +29,8 @@ elseif($args[0]=='edit'){
     <h4 class="col-xs-8">Account: <?php echo$r['username'];echo($r['name']!=''?':'.$r['name']:'');?></h4>
     <div class="pull-right">
       <div class="btn-group">
-        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>" data-toggle="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back',($config['iconsColor']==1?true:null));?></a>
-      </div>
-      <div class="btn-group">
-        <a target="_blank" class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#accounts-edit" data-toggle="tooltip" data-placement="left" title="Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
-        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
+        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>" data-toggle="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
+        <?php if($help['accounts_edit_text']!='')echo'<a target="_blank" class="btn btn-default info" href="'.$help['accounts_edit_text'].'" data-toggle="tooltip" data-placement="left" title="Help">'.svg2('libre-gui-help').'</a>';if($help['accounts_edit_video']!='')echo'<a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['accounts_edit_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </div>
   </div>
@@ -64,7 +59,7 @@ elseif($args[0]=='edit'){
         <div class="form-group clearfix">
           <label for="username" class="control-label col-xs-4 col-sm-3 col-md-3 col-lg-2">Username</label>
           <div class="input-group col-xs-8 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="username">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="username">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="username" class="form-control textinput" value="<?php echo$r['username'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="username" placeholder="Enter a Username...">
           </div>
           <div id="uerror" class="alert alert-danger col-xs-8 col-sm-9 col-lg-10 pull-right hidden">Username already exists!</div>
@@ -72,7 +67,7 @@ elseif($args[0]=='edit'){
         <div class="form-group">
           <label for="email" class="control-label col-xs-5 col-sm-3 col-lg-2">Email</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="email">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="email">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="email" class="form-control textinput" value="<?php echo$r['email'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="email" placeholder="Enter an Email...">
           </div>
         </div>
@@ -80,7 +75,7 @@ elseif($args[0]=='edit'){
           <label for="newsletter" class="control-label check col-xs-5 col-sm-3 col-lg-2" data-toggle="tooltip" title="Toggle Newsletter Subscription.">Subscriber</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
             <div class="checkbox checkbox-success">
-              <input type="checkbox" id="newsletter" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="newsletter" data-dbb="0"<?php echo($r['newsletter']{0}==1?' checked':'');?>>
+              <input type="checkbox" id="newsletter" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="newsletter" data-dbb="0"<?php echo$r['newsletter']{0}==1?' checked':'';?>>
               <label for="newsletter"/>
             </div>
           </div>
@@ -88,85 +83,85 @@ elseif($args[0]=='edit'){
         <div class="form-group">
           <label for="name" class="control-label col-xs-5 col-sm-3 col-lg-2">Name</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="name">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="name">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="name" class="form-control textinput" value="<?php echo$r['name'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="name" placeholder="Enter a Name...">
           </div>
         </div>
         <div class="form-group">
           <label for="url" class="control-label col-xs-5 col-sm-3 col-lg-2">URL</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="url">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="url">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="url" class="form-control textinput" value="<?php echo$r['url'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="url" placeholder="Enter a URL...">
           </div>
         </div>
         <div class="form-group">
           <label for="business" class="control-label col-xs-5 col-sm-3 col-lg-2">Business</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="business">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="business">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="business" class="form-control textinput" value="<?php echo$r['business'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="business" placeholder="Enter a Business...">
           </div>
         </div>
         <div class="form-group">
           <label for="phone" class="control-label col-xs-5 col-sm-3 col-lg-2">Phone</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="phone">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="phone">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="phone" class="form-control textinput" value="<?php echo$r['phone'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="phone" placeholder="Enter a Phone Number...">
           </div>
         </div>
         <div class="form-group">
           <label for="mobile" class="control-label col-xs-5 col-sm-3 col-lg-2">Mobile</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="mobile">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="mobile">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="mobile" class="form-control textinput" value="<?php echo$r['mobile'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="mobile" placeholder="Enter a Mobile Number...">
           </div>
         </div>
         <div class="form-group">
           <label for="address" class="control-label col-xs-5 col-sm-3 col-lg-2">Address</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="address">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="address">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="address" class="form-control textinput" name="address" value="<?php echo$r['address'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="address" placeholder="Enter an Address...">
           </div>
         </div>
         <div class="form-group">
           <label for="suburb" class="control-label col-xs-5 col-sm-3 col-lg-2">Suburb</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="suburb">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="suburb">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="suburb" class="form-control textinput" name="suburb" value="<?php echo$r['suburb'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="suburb" placeholder="Enter a Suburb...">
           </div>
         </div>
         <div class="form-group">
           <label for="city" class="control-label col-xs-5 col-sm-3 col-lg-2">City</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="city">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="city">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="city" class="form-control textinput" name="city" value="<?php echo$r['city'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="city" placeholder="Enter a City...">
           </div>
         </div>
         <div class="form-group">
           <label for="state" class="control-label col-xs-5 col-sm-3 col-lg-2">State</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="state">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="state">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="state" class="form-control textinput" name="state" value="<?php echo$r['state'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="state" placeholder="Enter a State...">
           </div>
         </div>
         <div class="form-group">
           <label for="postcode" class="control-label col-xs-5 col-sm-3 col-lg-2">Postcode</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="postcode">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
-            <input type="text" id="postcode" class="form-control textinput" name="postcode" value="<?php echo($r['postcode']!=0?$r['postcode']:'');?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="postcode" placeholder="Enter a Postcode...">
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="postcode">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+            <input type="text" id="postcode" class="form-control textinput" name="postcode" value="<?php echo$r['postcode']!=0?$r['postcode']:'';?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="postcode" placeholder="Enter a Postcode...">
           </div>
         </div>
         <div class="form-group">
           <label for="country" class="control-label col-xs-5 col-sm-3 col-lg-2">Country</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="country">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn"><button class="btn btn-default fingerprint hidden-xs" data-toggle="popover" data-dbgid="country">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="country" class="form-control textinput" name="country" value="<?php echo$r['country'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="country" placeholder="Enter a Country...">
           </div>
         </div>
         <div class="form-group">
           <label for="notes" class="control-label col-xs-5 col-sm-3 col-lg-2">About</label>
-<?php echo($user['rank']>899?'<div class="input-group col-xs-7 col-sm-9 col-lg-10" style="background-color:#f5f5f5;border-top:1px solid #a9a9a9"><div class="input-group-btn"><div class="input-group-btn"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="da">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div></div></div>':'');?>
+          <?php echo$user['rank']>899?'<div class="input-group col-xs-7 col-sm-9 col-lg-10" style="background-color:#f5f5f5;border-top:1px solid #a9a9a9"><div class="input-group-btn"><div class="input-group-btn"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="da">'.svg2('libre-gui-fingerprint').'</button></div></div></div>':'';?>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10 pull-right">
-<?php echo($user['rank']>899?'<div id="da" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="notes"></div>':'');?>
+            <?php echo$user['rank']>899?'<div id="da" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="notes"></div>':'';?>
             <form method="post" target="sp" action="core/update.php">
               <input type="hidden" name="id" value="<?php echo$r['id'];?>">
               <input type="hidden" name="t" value="login">
@@ -186,33 +181,32 @@ elseif($args[0]=='edit'){
                 <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                 <input type="hidden" name="act" value="add_avatar">
                 <div class="btn btn-default btn-file" data-toggle="tooltip" title="Browse Computer for Image.">
-                  <?php svg('libre-gui-browse-computer',($config['iconsColor']==1?true:null));?>
+                  <?php svg('libre-gui-browse-computer');?>
                   <input type="file" name="fu">
                 </div>
-                <button class="btn btn-default" type="submit" data-toggle="tooltip" title="Upload Selected Image."><?php svg('libre-gui-upload',($config['iconsColor']==1?true:null));?></button>
+                <button class="btn btn-default" type="submit" data-toggle="tooltip" title="Upload Selected Image."><?php svg('libre-gui-upload');?></button>
               </form>
             </div>
             <div class="input-group-addon avatar">
-              <img id="avatar" src="<?php echo($r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$r['avatar'])?'media'.DS.'avatar'.DS.$r['avatar']:NOAVATAR);?>">
+              <img id="avatar" src="<?php echo$r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$r['avatar'])?'media'.DS.'avatar'.DS.$r['avatar']:NOAVATAR;?>">
             </div>
             <div class="input-group-btn">
-              <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','login','avatar','');"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
+              <button class="btn btn-default trash" onclick="imageUpdate('<?php echo$r['id'];?>','login','avatar','');"><?php svg('libre-gui-trash');?></button>
             </div>
           </div>
         </div>
         <div class="form-group clearfix">
           <label for="gravatar" class="control-label col-xs-5 col-sm-3 col-lg-2">Gravatar</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="gravatar">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="gravatar">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="gravatar" class="form-control textinput" value="<?php echo$r['gravatar'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="gravatar" placeholder="Enter Gravatar Link...">
           </div>
           <small class="help-block text-right"><a target="_blank" href="http://www.gravatar.com/">Gravatar</a> Link will override any image uploaded as your Avatar.</small>
         </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="account-proofs">
-<?php /* Proofs */ ?>
         <ul id="proof_items">
-<?php $sm=$db->prepare("SELECT * FROM content WHERE contentType='proofs' AND uid=:id ORDER BY ord ASC");
+<?php $sm=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType='proofs' AND uid=:id ORDER BY ord ASC");
 $sm->execute(array(':id'=>$r['id']));
 while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
   if(!file_exists($rm['file']))$rm['file']='core'.DS.'images'.DS.'noimage.jpg';
@@ -221,34 +215,24 @@ while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
             <div class="panel panel-default media">
               <div class="controls btn-group">
                 <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$rm['id'];?>"><?php svg('libre-gui-edit');?></a>
-<?php
-$scn=$sccn=0;
-$sc=$db->prepare("SELECT COUNT(rid) as cnt FROM comments WHERE rid=:rid AND contentType='proofs'");
+<?php $scn=$sccn=0;
+$sc=$db->prepare("SELECT COUNT(rid) as cnt FROM `".$prefix."comments` WHERE rid=:rid AND contentType='proofs'");
 $sc->execute(array(':rid'=>$rm['id']));
 $scn=$sc->fetch(PDO::FETCH_ASSOC);
-$scc=$db->prepare("SELECT COUNT(rid) as cnt FROM comments WHERE rid=:rid AND status!='approved'");
+$scc=$db->prepare("SELECT COUNT(rid) as cnt FROM `".$prefix."comments` WHERE rid=:rid AND status!='approved'");
 $scc->execute(array(':rid'=>$rm['id']));
-$sccn=$scc->fetch(PDO::FETCH_ASSOC);
-?>
-                <a class="btn btn-default btn-xs<?php echo($sccn['cnt']>0?' btn-success':'');?>" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$rm['id'].'#d43';?>"<?php echo($sccn['cnt']>0?' data-toggle="tooltip" title="'.$sccn['cnt'].' New Comments"':'');?>><?php svg('libre-gui-comments');?>&nbsp;<?php echo$scn['cnt'];?></a>
+$sccn=$scc->fetch(PDO::FETCH_ASSOC);?>
+                <a class="btn btn-default btn-xs<?php echo$sccn['cnt']>0?' btn-success':'';?>" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$rm['id'].'#d43';?>"<?php echo$sccn['cnt']>0?' data-toggle="tooltip" title="'.$sccn['cnt'].' New Comments"':'';?>><?php svg('libre-gui-comments');?>&nbsp;<?php echo$scn['cnt'];?></a>
                 <span class="handle btn btn-default btn-xs"><?php svg('libre-gui-drag');?></span>
               </div>
               <div class="panel-body">
-                <a href="<?php echo$rm['file'];?>"
-                  data-srcset="<?php echo$rm['file'];?> <?php echo$width;?>w"
-                  data-fancybox="gallery"
-                  data-width="<?php echo$width;?>"
-                  data-height="<?php echo$height;?>"
-                  data-caption="<?php echo$rm['title'].($rm['seoCaption']!=''?' - '.$rm['seoCaption']:'');?>"
-                >
-                  <img src="<?php echo$rm['file'];?>" alt="">
-                </a></div>
+                <a href="<?php echo$rm['file'];?>" data-srcset="<?php echo$rm['file'];?> <?php echo$width;?>w" data-fancybox="gallery" data-width="<?php echo$width;?>" data-height="<?php echo$height;?>" data-caption="<?php echo$rm['title'].$rm['seoCaption']!=''?' - '.$rm['seoCaption']:'';?>"><img src="<?php echo$rm['file'];?>" alt=""></a>
+              </div>
               <div id="media-title<?php echo$rm['id'];?>" class="panel-footer"><?php echo$rm['title'];?></div>
             </div>
           </li>
 <?php }?>
         </ul>
-        
       </div>
       <div role="tabpanel" class="tab-pane" id="account-social">
         <div class="form-group">
@@ -333,26 +317,26 @@ $sccn=$scc->fetch(PDO::FETCH_ASSOC);
               <div class="input-group-addon">URL</div>
               <input type="text" class="form-control" name="url" value="" placeholder="Enter a URL...">
               <div class="input-group-btn">
-                <button class="btn btn-default add"><?php svg('libre-gui-plus',($config['iconsColor']==1?true:null));?></button>
+                <button class="btn btn-default add"><?php svg('libre-gui-plus');?></button>
               </div>
             </div>
           </form>
         </div>
         <div id="social">
-<?php $ss=$db->prepare("SELECT * FROM choices WHERE contentType='social' AND uid=:uid ORDER BY icon ASC");
+<?php $ss=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE contentType='social' AND uid=:uid ORDER BY icon ASC");
 $ss->execute(array(':uid'=>$r['id']));
 while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
           <div id="l_<?php echo$rs['id'];?>" class="form-group">
             <div class="input-group col-xs-12">
               <div class="input-group-addon">
-                <span class="libre-social"><?php svg('libre-social-'.$rs['icon'],($config['iconsColor']==1?true:null));?></span>
+                <span class="libre-social"><?php svg('libre-social-'.$rs['icon']);?></span>
               </div>
               <input type="text" class="form-control" value="<?php echo$rs['url'];?>" onchange="update('<?php echo$rs['id'];?>','social','url',$(this).val());" placeholder="Enter a URL...">
               <div class="input-group-btn">
                 <form target="sp" action="core/purge.php">
                   <input type="hidden" name="id" value="<?php echo$rs['id'];?>">
                   <input type="hidden" name="t" value="choices">
-                  <button class="btn btn-default trash"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
+                  <button class="btn btn-default trash"><?php svg('libre-gui-trash');?></button>
                 </form>
               </div>
             </div>
@@ -369,9 +353,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
               <input type="hidden" name="t" value="login">
               <input type="hidden" name="c" value="password">
               <input type="password" id="password" class="form-control" name="da" value="" placeholder="Enter a New Password...">
-              <div class="input-group-btn">
-                <button type="submit" class="btn btn-default">Update Password</button>
-              </div>
+              <div class="input-group-btn"><button type="submit" class="btn btn-default">Update Password</button></div>
             </div>
           </form>
         </div>
@@ -379,7 +361,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
           <label for="active" class="control-label check col-xs-5 col-sm-3 col-lg-2">Active</label>
           <div class="input-group col-xs-7 col-sm-9 col-lg-10">
             <div class="checkbox checkbox-success">
-              <input type="checkbox" id="active" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="active" data-dbb="0"<?php echo($r['active']{0}==1?' checked':'');?>>
+              <input type="checkbox" id="active" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="active" data-dbb="0"<?php echo$r['active']{0}==1?' checked':'';?>>
               <label for="active"/>
             </div>
           </div>
@@ -388,7 +370,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
         <div class="form-group">
           <label for="rank" class="control-label col-xs-4 col-sm-3 col-lg-2">Rank</label>
           <div class="input-group col-xs-8 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="rank">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="rank">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <select id="rank" class="form-control" onchange="update('<?php echo$r['id'];?>','login','rank',$(this).val());" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="rank">
               <option value="0"<?php echo($r['rank']==0?' selected':'');?>>Visitor</option>
               <option value="100"<?php echo($r['rank']==100?' selected':'');?>>Subscriber</option>
@@ -400,7 +382,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
               <option value="700"<?php echo($r['rank']==700?' selected':'');?>>Moderator</option>
               <option value="800"<?php echo($r['rank']==800?' selected':'');?>>Manager</option>
               <option value="900"<?php echo($r['rank']==900?' selected':'');?>>Administrator</option>
-<?php echo($user['rank']==1000?'<option value="1000"'.($r['rank']==1000?' selected':'').'>Developer</option>':'');?>
+              <?php echo($user['rank']==1000?'<option value="1000"'.($r['rank']==1000?' selected':'').'>Developer</option>':'');?>
             </select>
           </div>
         </div>
@@ -412,7 +394,7 @@ if($user['rank']>899){?>
             <label for="options0" class="control-label check col-xs-6 col-sm-4 col-lg-3">Add/Remove Content</label>
             <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
-                <input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="0"<?php echo($r['options']{0}==1?' checked':'');?>>
+                <input type="checkbox" id="options0" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="0"<?php echo$r['options']{0}==1?' checked':'';?>>
                 <label for="options0"/>
               </div>
             </div>
@@ -421,7 +403,7 @@ if($user['rank']>899){?>
             <label for="options1" class="control-label check col-xs-6 col-sm-4 col-lg-3">Edit Content</label>
             <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
-                <input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="1"<?php echo($r['options']{1}==1?' checked':'');?>>
+                <input type="checkbox" id="options1" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="1"<?php echo$r['options']{1}==1?' checked':'';?>>
                 <label for="options1"/>
               </div>
             </div>
@@ -430,7 +412,7 @@ if($user['rank']>899){?>
             <label for="options2" class="control-label check col-xs-6 col-sm-4 col-lg-3">Add/Edit Bookings</label>
             <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
-                <input type="checkbox" id="options2" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="2"<?php echo($r['options']{2}==1?' checked':'');?>>
+                <input type="checkbox" id="options2" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="2"<?php echo$r['options']{2}==1?' checked':'';?>>
                 <label for="options2"/>
               </div>
             </div>
@@ -439,7 +421,7 @@ if($user['rank']>899){?>
             <label for="options3" class="control-label check col-xs-6 col-sm-4 col-lg-3">Message Viewing/Editing</label>
             <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
-                <input type="checkbox" id="options3" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="3"<?php echo($r['options']{3}==1?' checked':'');?>>
+                <input type="checkbox" id="options3" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="3"<?php echo$r['options']{3}==1?' checked':'';?>>
                 <label for="options3"/>
               </div>
             </div>
@@ -448,7 +430,7 @@ if($user['rank']>899){?>
             <label for="options4" class="control-label check col-xs-6 col-sm-4 col-lg-3">Orders Viewing/Editing</label>
             <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
-                <input type="checkbox" id="options4" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="4"<?php echo($r['options']{4}==1?' checked':'');?>>
+                <input type="checkbox" id="options4" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="4"<?php echo$r['options']{4}==1?' checked':'';?>>
                 <label for="options4"/>
               </div>
             </div>
@@ -457,7 +439,7 @@ if($user['rank']>899){?>
             <label for="options5" class="control-label check col-xs-6 col-sm-4 col-lg-3">User Accounts Viewing/Editing</label>
             <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
-                <input type="checkbox" id="options5" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="5"<?php echo($r['options']{5}==1?' checked':'');?>>
+                <input type="checkbox" id="options5" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="5"<?php echo$r['options']{5}==1?' checked':'';?>>
                 <label for="options5"/>
               </div>
             </div>
@@ -466,7 +448,7 @@ if($user['rank']>899){?>
             <label for="options6" class="control-label check col-xs-6 col-sm-4 col-lg-3">SEO Viewing/Editing</label>
             <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
-                <input type="checkbox" id="options6" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="6"<?php echo($r['options']{6}==1?' checked':'');?>>
+                <input type="checkbox" id="options6" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="6"<?php echo$r['options']{6}==1?' checked':'';?>>
                 <label for="options6"/>
               </div>
             </div>
@@ -475,7 +457,7 @@ if($user['rank']>899){?>
             <label for="options7" class="control-label check col-xs-6 col-sm-4 col-lg-3">Preferences Viewing/Editing</label>
             <div class="input-group col-xs-6 col-sm-8 col-lg-9">
               <div class="checkbox checkbox-success">
-                <input type="checkbox" id="options7" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="7"<?php echo($r['options']{7}==1?' checked':'');?>>
+                <input type="checkbox" id="options7" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="options" data-dbb="7"<?php echo$r['options']{7}==1?' checked':'';?>>
                 <label for="options7"/>
               </div>
             </div>
@@ -485,20 +467,19 @@ if($user['rank']>899){?>
         <div class="form-group">
           <label for="adminTheme" class="control-label col-xs-4 col-sm-3 col-lg-2">Admin Theme</label>
           <div class="input-group col-xs-8 col-sm-9 col-lg-10">
-<?php echo($user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="adminTheme">'.svg2('libre-gui-fingerprint',($config['iconsColor']==1?true:null)).'</button></div>':'');?>
+            <?php echo$user['rank']>899?'<div class="input-group-btn hidden-xs"><button class="btn btn-default fingerprint" data-toggle="popover" data-dbgid="adminTheme">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <select id="adminTheme" class="form-control" onchange="update('<?php echo$r['id'];?>','login','adminTheme',$(this).val());adminTheme($(this).val());" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="adminTheme">
-<?php
-$folders=preg_grep('/^([^.])/',scandir('core'.DS.'css'.DS.'theme'));
+<?php $folders=preg_grep('/^([^.])/',scandir('core'.DS.'css'.DS.'theme'));
 foreach($folders as$folder)echo'<option value="'.$folder.'"'.($folder==$r['adminTheme']?' selected':'').'>'.ucfirst($folder).'</option>';?>
             </select>
           </div>
-          <script>
-            function adminTheme (theme) {
+          <script>/*<![CDATA[*/
+            function adminTheme(theme){
               var expires=new Date();
-              expires.setTime(expires.getTime() + (30 * 24 * 60 * 60 * 1000));
-              document.cookie = 'admintheme' + '=' + theme + ';expires=' + expires.toUTCString();
+              expires.setTime(expires.getTime()+(30 * 24 * 60 * 60 * 1000));
+              document.cookie='admintheme'+'='+theme+';expires='+expires.toUTCString();
             }
-          </script>
+          /*]]>*/</script>
         </div>
       </div>
     </div>
@@ -508,21 +489,21 @@ foreach($folders as$folder)echo'<option value="'.$folder.'"'.($folder==$r['admin
   if($args[0]=='type'){
     if(isset($args[1])){
       $rank=0;
-      if($args[1]=='subscriber')    $rank=100;
-      if($args[1]=='member')        $rank=200;
-      if($args[1]=='client')        $rank=300;
-      if($args[1]=='contributor')   $rank=400;
-      if($args[1]=='author')        $rank=500;
-      if($args[1]=='editor')        $rank=600;
-      if($args[1]=='moderator')     $rank=700;
-      if($args[1]=='manager')       $rank=800;
-      if($args[1]=='administrator') $rank=900;
-      if($args[1]=='developer')     $rank=1000;
+      if($args[1]=='subscriber')$rank=100;
+      if($args[1]=='member')$rank=200;
+      if($args[1]=='client')$rank=300;
+      if($args[1]=='contributor')$rank=400;
+      if($args[1]=='author')$rank=500;
+      if($args[1]=='editor')$rank=600;
+      if($args[1]=='moderator')$rank=700;
+      if($args[1]=='manager')$rank=800;
+      if($args[1]=='administrator')$rank=900;
+      if($args[1]=='developer')$rank=1000;
     }
-    $s=$db->prepare("SELECT * FROM login WHERE rank=:rank ORDER BY ti DESC");
+    $s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE rank=:rank ORDER BY ti DESC");
     $s->execute(array(':rank'=>$rank));
   }else{
-    $s=$db->prepare("SELECT * FROM login WHERE rank<:rank ORDER BY ti DESC");
+    $s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE rank<:rank ORDER BY ti DESC");
     $s->execute(array(':rank'=>$_SESSION['rank']+1));
   }?>
 <div class="panel panel-default">
@@ -551,14 +532,9 @@ foreach($folders as$folder)echo'<option value="'.$folder.'"'.($folder==$r['admin
     </h4>
     <div class="pull-right">
       <div class="btn-group">
-        <a class="btn btn-default add" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>" data-toggle="tooltip" data-placement="left" title="Add"><?php svg('libre-gui-add',($config['iconsColor']==1?true:null));?></a>
-      </div>
-      <div class="btn-group">
-        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts/settings';?>" data-toggle="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings',($config['iconsColor']==1?true:null));?></a>
-      </div>
-      <div class="btn-group">
-        <a target="_blank" class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#accounts" data-toggle="tooltip" data-placement="left" title="Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
-        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
+        <a class="btn btn-default add" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>" data-toggle="tooltip" data-placement="left" title="Add"><?php svg('libre-gui-add');?></a>
+        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/accounts/settings';?>" data-toggle="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings');?></a>
+        <?php if($help['accounts_text']!='')echo'<a target="_blank" class="btn btn-default info" href="'.$help['accounts_text'].'" data-toggle="tooltip" data-placement="left" title="Help">'.svg2('libre-gui-help').'</a>';if($help['accounts_video']!='')echo'<a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['accounts_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </div>
   </div>
@@ -579,27 +555,26 @@ foreach($folders as$folder)echo'<option value="'.$folder.'"'.($folder==$r['admin
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
           <tr id="l_<?php echo$r['id'];?>" class="item">
             <td class="hidden-xs">
-<?php if($r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.basename($r['avatar'])))
-        echo'<img class="img-responsive img-rounded" style="max-width:32px;" src="media'.DS.'avatar'.DS.basename($r['avatar']).'">';
-      elseif($r['gravatar']!='')
-        echo'<img class="img-responsive img-rounded" style="max-width:32px;" src="'.$r['gravatar'].'">';
-      else
-        echo'<img class="img-responsive img-rounded" style="max-width:32px;" src="'.NOAVATAR.'">';?>
+              <?php if($r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.basename($r['avatar']))) echo'<img class="img-responsive img-rounded" style="max-width:32px;" src="media'.DS.'avatar'.DS.basename($r['avatar']).'">';elseif($r['gravatar']!='')echo'<img class="img-responsive img-rounded" style="max-width:32px;" src="'.$r['gravatar'].'">';else echo'<img class="img-responsive img-rounded" style="max-width:32px;" src="'.NOAVATAR.'">';?>
             </td>
             <td>
               <a href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>" data-toggle="tooltip" title="Edit"><?php echo$r['username'].':'.$r['name'];?></a>
-<?php echo($user['rank']==1000?'<br><small class="text-muted">IP: '.$r['userIP'].'<br>'.$r['userAgent'].'</small>':'');?>
+              <?php echo$user['rank']==1000?'<br><small class="text-muted">IP: '.$r['userIP'].'<br>'.$r['userAgent'].'</small>':'';?>
             </td>
-            <td class="text-center"><?php echo _ago($r['lti']);echo($r['lti']!=0&&$user['rank']==1000?'<br><small class="text-muted">'.date($config['dateFormat'],$r['lti']).'</small>':'');?></td>
+            <td class="text-center">
+              <?php echo _ago($r['lti']);echo$r['lti']!=0&&$user['rank']==1000?'<br><small class="text-muted">'.date($config['dateFormat'],$r['lti']).'</small>':'';?>
+            </td>
             <td class="text-center"><?php echo rank($r['rank']);?></td>
             <td class="text-center"><?php echo$r['status'];?></td>
-            <td id="controls_<?php echo$r['id'];?>" class="text-right">
-              <a class="btn btn-default" href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>" data-toggle="tooltip" title="Edit"><?php svg('libre-gui-edit',($config['iconsColor']==1?true:null));?></a>
+            <td id="controls_<?php echo$r['id'];?>">
+              <div class="btn-group pull-right">
+                <a class="btn btn-default" href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>" data-toggle="tooltip" title="Edit"><?php svg('libre-gui-edit');?></a>
 <?php if($r['rank']!=1000){?>
-              <button class="btn btn-default<?php echo($r['status']!='delete'?' hidden':'');?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')" data-toggle="tooltip" title="Restore"><?php svg('libre-gui-restore',($config['iconsColor']==1?true:null));?></button>
-              <button class="btn btn-default trash<?php echo($r['status']=='delete'?' hidden':'');?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')" data-toggle="tooltip" title="Delete"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
-              <button class="btn btn-default trash<?php echo($r['status']!='delete'?' hidden':'');?>" onclick="purge('<?php echo$r['id'];?>','login')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-purge',($config['iconsColor']==1?true:null));?></button>
+                <button class="btn btn-default<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','unpublished')" data-toggle="tooltip" title="Restore"><?php svg('libre-gui-restore');?></button>
+                <button class="btn btn-default trash<?php echo$r['status']=='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','login','status','delete')" data-toggle="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
+                <button class="btn btn-default trash<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="purge('<?php echo$r['id'];?>','login')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-purge');?></button>
 <?php }?>
+              </div>
             </td>
           </tr>
 <?php }?>

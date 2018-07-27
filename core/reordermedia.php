@@ -1,17 +1,17 @@
-<?php
+`".$prefix."<?php
 /*
  * LibreCMS - Copyright (C) Diemen Design 2018
  * This software may be modified and distributed under the terms
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
-require'db.php';
+require_once'db.php';
 $i=0;
 foreach($_POST['media_items'] as$id){
-  $s=$db->prepare("UPDATE media SET ord=:ord WHERE id=:id");
+  $s=$db->prepare("UPDATE `".$prefix."media` SET ord=:ord WHERE id=:id");
   $s->execute(
     array(
       ':ord'=>$i,
-      ':id' =>$id
+      ':id'=>$id
     )
   );
   $i++;

@@ -30,7 +30,7 @@
 		<div id="testimonial" class="col-xs-12 col-sm-6">
 			<form id="testimonialform" method="post" action="core/add_testimonial.php" role="form">
 				<input type="hidden" name="act" value="add_test">
-				<input type="hidden" name="emailtrap" value="">
+				<input type="hidden" name="emailtrap" value="none">
 				<div class="form-group">
 					<label class="control-label">
 						We would love to have you share your experience with us.
@@ -72,14 +72,14 @@
 					<button type="submit" class="btn btn-success btn-block" role="button">Submit your Testimonial</button>
 				</div>
 			</form>
-			<script>
+			<script>/*<![CDATA[*/
 				$("#testimonialform").submit(function(){
 					$.post($(this).attr("action"),$(this).serialize(),function(data){
 						$("#testimonial").html(data);
 					});
 					return false;
 				});
-			</script>
+			/*]]>*/</script>
 		</div>
 	</main>
 </block>

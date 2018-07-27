@@ -5,12 +5,11 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 if(!defined('DS')) define('DS',DIRECTORY_SEPARATOR);
-require'..'.DS.'db.php';
-$cache_time =3600 * 24 * 7;
+require_once'..'.DS.'db.php';
+$cache_time=3600 * 24 * 7;
 $cache_file='..'.DS.'..'.DS.'media'.DS.'cache'.DS.'commits.rss';
 $timedif=@(time()-filemtime($cache_file));
-if(file_exists($cache_file)&&$timedif<$cache_time)
-  $string=file_get_contents($cache_file);
+if(file_exists($cache_file)&&$timedif<$cache_time)$string=file_get_contents($cache_file);
 else{
   $string=get_json('repos/DiemenDesign/LibreCMS/commits');
   if($f=@fopen($cache_file,'w')){
@@ -45,14 +44,14 @@ echo date('M jS, Y g:i A',$time);?>
 </tr>
 <?php $i++;
 }
-function get_json ($url){
+function get_json($url){
   $base="https://api.github.com/";
   $agent='Mozilla/5.0 (compatible;DiemenDesign/LibreCMS)';
   $curl=curl_init();
-  curl_setopt($curl,CURLOPT_USERAGENT,      $agent);
-  curl_setopt($curl,CURLOPT_URL,            $base.$url);
-  curl_setopt($curl,CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($curl,CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($curl,CURLOPT_USERAGENT,$agent);
+  curl_setopt($curl,CURLOPT_URL,$base.$url);
+  curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
+  curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,false);
   $content=curl_exec($curl);
   curl_close($curl);
   return$content;

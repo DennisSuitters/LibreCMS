@@ -2,7 +2,8 @@
 <block include="header.html">
 <block include="featured.html">
 <block inbed="content">
-	<div class="jumbotron" style="background-image:url(<print page=cover>);"><print page="coverVideo"></div>
+	<div class="clearfix"></div>
+	<div class="jumbotron" style="<print page=cover>"><print page="coverVideo"></div>
 	<main id="content" class="col-xs-12 col-sm-9" role="main">
 		<div class="clearfix"><print page="notes"></div>
 		<settings items="3" contenttype="all">
@@ -17,8 +18,8 @@
       		<div class="content-item-info clearfix">
 						<controls>
 							<view>
-								<div class="content-item-title">
-									<a href="<print content=linktitle>" itemprop="name" role="link"><print content="title"></a>
+								<div class="content-item-title" itemprop="name">
+									<a href="<print content=linktitle>" itemprop="url" role="link"><print content="title"></a>
 								</div>
 							</view>
 							<service>
@@ -43,8 +44,8 @@
 	</main>
 	<aside class="side_menu col-xs-12 col-sm-3">
 		<div id="newsletters" class="list-group">
-			<form id="newslettersform" target="review" class="list-group-item" method="post" action="core/add_subscriber.php" role="form">
-				<input type="hidden" name="emailtrap" value="">
+			<form id="newslettersform" class="list-group-item" method="post" action="core/add_subscriber.php" role="form">
+				<input type="hidden" name="emailtrap" value="none">
 				<h4 role="heading">Subscribe to our Newsletters</h4>
 				<div class="form-group form-group-sm">
 					<label for="email" class="control-label col-xs-3"><small>Email</small></label>
@@ -57,14 +58,14 @@
 				</div>
 			</form>
 		</div>
-		<script>
+		<script>/*<![CDATA[*/
 			$("#newslettersform").submit(function(){
 				$.post($(this).attr("action"),$(this).serialize(),function(data){
 					$("#newsletters").html(data);
 				});
 				return false;
 			});
-		</script>
+		/*]]>*/</script>
 	</aside>
 </block>
 <block inbed="testimonials">

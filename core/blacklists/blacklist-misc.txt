@@ -1,0 +1,6 @@
+https?:\/\/[^\/]+\.com\/\S+,s,\d{2,8}\/
+https?:\/\/[^\/]+\.com\/\S*\?p=\d{2,8}
+<a href="[^"]*">Slots<\/a>
+<a href="[^"]*">Casino<\/a>
+<a href="[^"]*">HGH<\/a>
+

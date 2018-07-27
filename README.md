@@ -27,7 +27,13 @@ a **Free** Open Source [MIT](https://www.gnu.org/licenses/gpl-3.0.html) Content 
 - Administration uses jQuery, Modified Bootstrap, LibreICONS, and other jQuery Addons.
 - Activity Fingerprint Analysis Logs of Previous Content Changes with Undo, and who made the changes. Examine Content Inputs with Draggable Popover with Undoing.
 - Suggestions Editor to allow Administrators and Content Editor to make Editing Suggestions with Reasons, and Click Adding of Suggestions.
-- WYSIWYG Editor Content is encoded to get around some server filters blocking data such as iFrames.
+- Security:
+  - Spam Filter than can Auto Blacklist IP's using custom blacklist text files that can be edited.
+  - Project Honey Pot Integration that can Auto Blacklist when check IP's against the httpBL API Service when forms are submitted via visitors.
+  - Ability to Add suspicious visitor interactions to Blacklist.
+  - Site Block if visitor's IP is listed in Blacklist, saving servers resources, and to hopefully stop Spammers or Email Harvester's.
+  - Database Backup and ability to Prefix Table Names.
+- WYSIWYG Editor Content is encoded to get around some server filters blocking data such as iFrames that services such as YouTube use for Embedding.
 - Page and Visitor Tracking.
 - SEO Stats within Content, Google (currently broken), Alexa, and Moz.
 - Button links to Wiki Help pages, and popup Video Help.

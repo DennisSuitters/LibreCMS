@@ -5,7 +5,7 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 echo"<script>/*<![CDATA[*/window.top.window.$('#backup_info').html('');";
-include'db.php';
+require_once'db.php';
 $fu=$_FILES['fu'];
 if(isset($_FILES['fu'])){
   $file='..'.DS.'media'.DS.'backup'.DS.basename($_FILES['fu']['name']);

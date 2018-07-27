@@ -20,7 +20,7 @@
 		<div id="review" class="list-group">
 			<form id="reviewform" target="review" class="list-group-item" method="post" action="core/add_review.php" role="form">
 				<input type="hidden" name="id" value="<print content=id>">
-				<input type="hidden" name="emailtrap" value="">
+				<input type="hidden" name="emailtrap" value="none">
 				<h4 role="heading">Add a Review</h4>
 				<div class="form-group form-group-sm">
 					<label class="control-label col-xs-3"><small>Rating</small></label>
@@ -60,19 +60,19 @@
 				</div>
 			</form>
 		</div>
-		<script>
+		<script>/*<![CDATA[*/
 			$("#reviewform").submit(function(){
 			    $.post($(this).attr("action"),$(this).serialize(),function(data){
 			        $("#review").html(data);
 			    });
 			    return false;
 			});
-		</script>
+		/*]]>*/</script>
 	</review>
 	<newsletters>
 		<div id="newsletters" class="list-group">
 			<form id="newslettersform" target="review" class="list-group-item" method="post" action="core/add_subscriber.php" role="form">
-				<input type="hidden" name="emailtrap" value="">
+				<input type="hidden" name="emailtrap" value="none">
 				<h4 role="heading">Subscribe to our Newsletters</h4>
 				<div class="form-group form-group-sm">
 					<label for="email" class="control-label col-xs-3"><small>Email</small></label>
@@ -85,14 +85,14 @@
 				</div>
 			</form>
 		</div>
-		<script>
+		<script>/*<![CDATA[*/
 			$("#newslettersform").submit(function(){
 				$.post($(this).attr("action"),$(this).serialize(),function(data){
 					$("#newsletters").html(data);
 				});
 				return false;
 			});
-		</script>
+		/*]]>*/</script>
 	</newsletters>
 	<item>
 		<settings items="all" contenttype="current">

@@ -6,28 +6,28 @@
  */
 echo'<script>/*<![CDATA[*/';
 $getcfg=true;
-include'db.php';
+require_once'db.php';
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
-$id =filter_input(INPUT_POST,'id', FILTER_SANITIZE_NUMBER_INT);
+$id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
 $act=filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING);
-$s=$db->prepare("SELECT id,file,thumb FROM content WHERE id=:id");
+$s=$db->prepare("SELECT id,file,thumb FROM `".$prefix."content` WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);
-require'zebra_image.php';
+include'zebra_image.php';
 $image=new Zebra_Image();
 $image->auto_handle_exif_orientation=false;
 if($act=='thumb'){
   if(!file_exists($r['thumb'])){
-    $imgsrc =basename($r['file']);
+    $imgsrc=basename($r['file']);
     $imgdest='t_'.$imgsrc;
-    $width  =$config['mediaMaxWidthThumb'];
-    $height =$config['mediaMaxHeightThumb'];
+    $width=$config['mediaMaxWidthThumb'];
+    $height=$config['mediaMaxHeightThumb'];
     $process=true;
   }elseif($r['thumb']!=''&&file_exists($r['thumb'])){
-    $imgsrc =basename($r['thumb']);
+    $imgsrc=basename($r['thumb']);
     $imgdest=$imgsrc;
-    $width  =$config['mediaMaxWidthThumb'];
-    $height =$config['mediaMaxHeightThumb'];
+    $width=$config['mediaMaxWidthThumb'];
+    $height=$config['mediaMaxHeightThumb'];
     $process=true;
   }else{
     $process=false;?>
@@ -38,10 +38,10 @@ if($act=='file'){
   if($r['file']=='')
     $process=false;
   else{
-    $imgsrc =basename($r['file']);
+    $imgsrc=basename($r['file']);
     $imgdest=$imgsrc;
-    $width  =$config['mediaMaxWidth'];
-    $height =$config['mediaMaxHeight'];
+    $width=$config['mediaMaxWidth'];
+    $height=$config['mediaMaxHeight'];
     $process=true;
   }
 }
@@ -89,7 +89,7 @@ if($process==true){
       $s->execute(
         array(
           ':thumb'=>URL.'media'.DS.$imgdest,
-          ':id'   =>$id
+          ':id'=>$id
         )
       );?>
   window.top.window.$('#thumbimage').attr('src','<?php echo'media'.DS.$imgdest.'?'.time();?>');

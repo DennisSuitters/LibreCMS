@@ -7,14 +7,9 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 class="col-xs-8">Visitor Tracker</h4>
-    <div class="pull-right">
-      <div class="btn-group" data-toggle="tooltip" data-placement="left" title="Purge All">
-        <button class="btn btn-default trash" onclick="purge('0','tracker')"><?php svg('libre-gui-purge',($config['iconsColor']==1?true:null));?></button>
-      </div>
-      <div class="btn-group">
-        <a target="_blank" class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#activity" data-toggle="tooltip" data-placement="left" title="Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
-        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
-      </div>
+    <div class="btn-group pull-right">
+      <button class="btn btn-default trash" onclick="purge('0','tracker')" data-toggle="tooltip" data-placement="left" title="Purge All"><?php svg('libre-gui-purge');?></button>
+      <?php if($help['tracker_text']!='')echo'<a target="_blank" class="btn btn-default info" href="'.$help['tracker_text'].'" data-toggle="tooltip" data-placement="left" title="Help">'.svg2('libre-gui-help').'</a>';if($help['tracker_video']!='')echo'<a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['tracker_video'].'" data-toggle="tooltip" data-placement="left" title="Watch Video Help">'.svg2('libre-gui-video').'</a>';?>
     </div>
   </div>
   <div class="panel-body">
@@ -28,13 +23,13 @@
             <th class="col-xs-1 text-center">Browser</th>
             <th class="col-xs-1 text-center">OS</th>
             <th class="col-xs-4 text-center">Date</th>
+            <?php echo$config['php_options']{0}==1?'<th class="col-xs-1 text-center" data-toggle="tooltip" title="Project Honey Pot">PHP</th>':'';?>
           </tr>
         </thead>
         <tbody id="l_tracker">
-<?php
-$is=0;
+<?php $is=0;
 $ie=50;
-$action=(isset($args[1])?$args[1]:'');
+$action=isset($args[1])?$args[1]:'';
 include'core'.DS.'layout'.DS.'tracker_items.php';?>
         </tbody>
       </table>

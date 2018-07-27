@@ -6,7 +6,7 @@
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 $getcfg=true;
-require'..'.DS.'db.php';
+require_once'..'.DS.'db.php';
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $t=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
 $c=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
@@ -41,7 +41,7 @@ define('UNICODE','UTF-8');?>
     </div>
   </form>
 </div>
-<script>
+<script>/*<![CDATA[*/
   $('#suggestda').html($('#notes').summernote('code'));
   $("#suggestionsform").submit(function(){
       $.post($(this).attr("action"),$(this).serialize(),function(data){
@@ -49,4 +49,4 @@ define('UNICODE','UTF-8');?>
       });
       return false;
   });
-</script>
+/*]]>*/</script>

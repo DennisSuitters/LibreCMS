@@ -1,31 +1,36 @@
+<script>/*<![CDATA[*/
+  window.top.window.$('#updateheading').html('System Updates...');
+  window.top.window.$('#update').html('');
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
- */
-echo'<script>/*<![CDATA[*/';
-echo'window.top.window.$("#updateheading").html("System Updates...");';
-echo'window.top.window.$("#update").html("");';
 ini_set('max_execution_time',60);
 require'db.php';
 $config=$db->query("SELECT update_url,development FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+if($config['development']==1){
+  error_reporting(E_ALL);
+  ini_set('display_errors','On');
+}else{
+  error_reporting(E_ALL);
+  ini_set('display_errors','Off');
+  ini_set('log_errors','On');
+  ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
+}
 $settings=parse_ini_file('config.ini',TRUE);
 $gV=file_get_contents($config['update_url'].'versions');
 $update=0;
 $uL='';
 $found=true;
 $vL=explode("\n",$gV);
-foreach($vL as$aV){
+foreach($vL as $aV){
   if($aV=='')continue;
   if($aV<$settings['system']['version'])continue;
-  if(!is_file('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip')){?>
+  if(!is_file('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip' )){?>
   window.top.window.$('#update').append('<div class="alert alert-info">Downloading New Update...</div>');
-<?php if(false===file_get_contents($config['update_url'].$aV.".zip",0,null,0,1)){
+<?php
+   if(false===file_get_contents("https://www.studiojunkyard.com/update/".$aV.".zip",0,null,0,1)){
     $found=false;?>
   window.top.window.$('#update').append('<div class="alert alert-danger">File doesn\'t exist on remote server...</div>');
 <?php }else{
-    $newUpdate=file_get_contents($config['update_url'].$aV.'.zip');
+    $newUpdate=file_get_contents('https://www.studiojunkyard.com/update/'.$aV.'.zip');
     if(!is_dir('..'.DS.'media'.DS.'updates'.DS))mkdir('..'.DS.'media'.DS.'updates'.DS);
     $dlHandler=fopen('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip','w');
     if(!fwrite($dlHandler,$newUpdate)){
@@ -49,20 +54,37 @@ if($found==true){
     $thisFileDir=dirname($thisFileName);
     if(substr($thisFileName,-1,1)=='/')continue;
     if(!is_dir('..'.DS.$thisFileDir)){
-      mkdir('..'.DS.$thisFileDir);
+      mkdir('..'.DS.$thisFileDir );
       $html.='<li>Created Directory '.$thisFileDir.'</li>';
     }
     if(!is_dir('..'.DS.$thisFileName)){
       $html.='<li>'.$thisFileName.'...........';
       $contents=zip_entry_read($aF,zip_entry_filesize($aF));
       $updateThis='';
-      if($thisFileName=='core'.DS.'doupgrade.php'){
-        $upgradeExec=fopen('doupgrade.php', 'w');
+      if($thisFileName=='core'.DS.'upgrade.sql'){
+        $prefix=$settings['database']['prefix'];
+  			$sql=file_get_contents('core'.DS.'upgrade.sql');
+  			$sql=str_replace(
+  				array(
+  					"CREATE TABLE `",
+  					"INSERT INTO `",
+  					"ALTER TABLE `"
+  				),
+  				array(
+  					"CREATE TABLE `".$prefix,
+  					"INSERT INTO `".$prefix,
+  					"ALTER TABLE `".$prefix
+  				),
+  				$sql
+  			);
+  			$q=$db->exec($sql);
+  			$e=$db->errorInfo();        
+/*        $upgradeExec=fopen('doupgrade.php','w');
         fwrite($upgradeExec,$contents);
         fclose($upgradeExec);
         include('doupgrade.php');
-        unlink('doupgrade.php');
-        $html.=' <strong class="text-success">EXECUTED</strong></li>';
+        unlink('doupgrade.php');*/
+        $html.=' <strong class="text-success">SQL EXECUTED</strong></li>';
       }else{
         $updateThis=fopen('..'.DS.$thisFileName,'w');
         fwrite($updateThis,$contents);
@@ -74,17 +96,18 @@ if($found==true){
   }?>
   window.top.window.$('#update').append('<?php echo$html;?>');
 <?php $updated=TRUE;
-  $txt='[database]'.PHP_EOL.
-       'driver = '.$settings['database']['driver'].PHP_EOL.
-       'host = '.$settings['database']['host'].PHP_EOL.
-       (isset($settings['database']['port'])==''?';port = 3306'.PHP_EOL:'port = '.$settings['database']['post'].PHP_EOL).
-       'schema = '.$settings['database']['schema'].PHP_EOL.
-       'username = '.$settings['database']['username'].PHP_EOL.
-       'password = '.$settings['database']['password'].PHP_EOL.
-       '[system]'.PHP_EOL.
-       'version = '.time().PHP_EOL.
-       'url = '.$settings['system']['url'].PHP_EOL.
-       'admin = '.$settings['system']['admin'].PHP_EOL;
+  $txt='[database]'.PHP_EOL;
+  $txt.='driver = '.$settings['database']['driver'].PHP_EOL;
+  $txt.='host = '.$settings['database']['host'].PHP_EOL;
+  if(isset($settings['database']['port'])=='')$txt.=';port = 3306'.PHP_EOL;
+  else$txt.='port = '.$settings['database']['post'].PHP_EOL;
+  $txt.='schema = '.$settings['database']['schema'].PHP_EOL;
+  $txt.='username = '.$settings['database']['username'].PHP_EOL;
+  $txt.='password = '.$settings['database']['password'].PHP_EOL;
+  $txt.='[system]'.PHP_EOL;
+  $txt.='version = '.time().PHP_EOL;
+  $txt.='url = '.$settings['system']['url'].PHP_EOL;
+  $txt.='admin = '.$settings['system']['admin'].PHP_EOL;
   if(file_exists('config.ini'))unlink('config.ini');
   $oFH=fopen("config.ini",'w');
   fwrite($oFH,$txt);
@@ -95,6 +118,6 @@ if($found==true){
 <?php }
 }
 $su=$db->prepare("UPDATE config SET uti=:uti WHERE id='1'");
-$su->execute(array(':uti'=>time()));
-echo'window.top.window.Pace.stop();';
-echo'/*]]>*/</script>';
+$su->execute(array(':uti'=>time()));?>
+  window.top.window.Pace.stop();
+/*]]>*/</script>

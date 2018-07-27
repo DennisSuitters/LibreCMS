@@ -7,7 +7,7 @@
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 require'..'.DS.'db.php';
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET, 'id',FILTER_SANITIZE_NUMBER_INT);
-$s=$db->prepare("SELECT * FROM media WHERE id=:id");
+$s=$db->prepare("SELECT * FROM `".$prefix."media` WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);?>
 <div id="this<?php echo$r['id'];?>" class="form-group form-group-sm">
@@ -21,8 +21,7 @@ $r=$s->fetch(PDO::FETCH_ASSOC);?>
   <div class="input-group col-xs-8">
     <input id="mediacategory_1" list="mediacategory_1_options" type="text" class="form-control" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="media" data-dbc="category_1" onchange="update('<?php echo$r['id'];?>','media','category_1',$(this).val());">
     <datalist id="mediacategory_1_options">
-<?php $s=$db->query("SELECT DISTINCT category_1 FROM media WHERE category_1!='' ORDER BY category_1 ASC");
-while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"/>';?>
+      <?php $s=$db->query("SELECT DISTINCT category_1 FROM `".$prefix."media` WHERE category_1!='' ORDER BY category_1 ASC");while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"/>';?>
     </datalist>
   </div>
 </div>
@@ -31,8 +30,7 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"
   <div class="input-group col-xs-8">
     <input id="mediacategory_2" list="mediacategory_2_options" type="text" class="form-control" value="<?php echo$r['category_2'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="media" data-dbc="category_2" onchange="update('<?php echo$r['id'];?>','media','category_2',$(this).val());">
     <datalist id="mediacategory_2_options">
-<?php $s=$db->query("SELECT DISTINCT category_2 FROM media WHERE category_2!='' ORDER BY category_2 ASC");
-while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_2'].'"/>';?>
+      <?php $s=$db->query("SELECT DISTINCT category_2 FROM `".$prefix."media` WHERE category_2!='' ORDER BY category_2 ASC");while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_2'].'"/>';?>
     </datalist>
   </div>
 </div>
@@ -120,6 +118,6 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_2'].'"
     <input id="mediaviews" class="form-control" value="<?php echo$r['views'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="media" data-dbc="views" onchange="update('<?php echo$r['id'];?>','media','views',$(this).val());">
   </div>
 </div>
-<script>
+<script>/*<![CDATA[*/
   $('#this<?php echo$r['id'];?>').parent('div').prev('h3').append('<div class="mediaicon"><img src="<?php echo$r['file'].'?'.time();?>"></div>');
-</script>
+/*]]>*/</script>

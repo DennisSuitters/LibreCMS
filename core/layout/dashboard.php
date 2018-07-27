@@ -4,91 +4,85 @@
  * This software may be modified and distributed under the terms
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
-if($args[0]=='settings')
-  require'core'.DS.'layout'.DS.'set_dashboard.php';
+if($args[0]=='settings')include'core'.DS.'layout'.DS.'set_dashboard.php';
 else{?>
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 id="updateheading" class="col-xs-8">Dashboard</h4>
-    <div class="pull-right">
-      <div class="btn-group">
-        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/dashboard/settings';?>" data-toggle="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings',($config['iconsColor']==1?true:null));?></a>
-      </div>
-      <div class="btn-group">
-        <a target="_blank" class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#dashboard" data-toggle="tooltip" data-placement="left" title="Read Text Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
-        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
-      </div>
+    <div class="btn-group pull-right">
+      <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/dashboard/settings';?>" data-toggle="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings');?></a>
+      <?php if($help['dashboard_text']!='')echo'<a target="_blank" class="btn btn-default info" href="'.$help['dashboard_text'].'" data-toggle="tooltip" data-placement="left" title="Read Text Help">'.svg2('libre-gui-help').'</a>';if($help['dashboard_video']!='')echo'<span><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['dashboard_video'].'" data-toggle="tooltip" data-placement="left" title="Watch Video Help">'.svg2('libre-gui-video').'</a>';?>
     </div>
   </div>
   <div id="update" class="panel-body">
     <noscript><div class="alert alert-danger">Javascript MUST BE ENABLED for LibreCMS to function correctly!</div></noscript>
-<?php echo($config['maintenance']{0}==1?'<div class="alert alert-warning">Note: Site is currently in <a href="'.URL.$settings['system']['admin'].'/preferences#preference-interface">Maintenance Mode</a></div>':'');
+<?php echo$config['maintenance']{0}==1?'<div class="alert alert-warning">Note: Site is currently in <a href="'.URL.$settings['system']['admin'].'/preferences#preference-interface">Maintenance Mode</a></div>':'';
 $tid=$ti-2592000;
 if($config['backup_ti']<$tid)
-  echo($config['backup_ti']==0?'<div class="alert alert-info" role="alert">A <a class="alert-link" href="'.URL.$settings['system']['admin'].'/preferences#preference-backrestore">Backup</a> has yet to be performed.</div>':'');
+  echo$config['backup_ti']==0?'<div class="alert alert-info" role="alert">A <a class="alert-link" href="'.URL.$settings['system']['admin'].'/preferences#preference-backrestore">Backup</a> has yet to be performed.</div>':'';
 else
   echo'<div class="alert alert-danger" role="alert">It has been more than 30 days since a <a class="alert-link" href="'.URL.$settings['system']['admin'].'/preferences#preference-backrestore">Backup</a> has been performed.</div>';
-echo($config['business']==''?'<div class="alert alert-danger" role="alert">The Site\'s <a class="alert-link" href="'.URL.$settings['system']['admin'].'/preferences#preference-contact">Business Name</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>':'');
-echo($config['email']==''?'<div class="alert alert-danger" role="alert">The Site\'s <a class="alert-link"   href="'.URL.$settings['system']['admin'].'/preferences#preference-contact">Email</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>':'');?>
+echo$config['business']==''?'<div class="alert alert-danger" role="alert">The Site\'s <a class="alert-link" href="'.URL.$settings['system']['admin'].'/preferences#preference-contact">Business Name</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>':'';
+echo$config['email']==''?'<div class="alert alert-danger" role="alert">The Site\'s <a class="alert-link"   href="'.URL.$settings['system']['admin'].'/preferences#preference-contact">Email</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>':'';?>
     <div class="row visible-xs">
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><?php svg('content',($config['iconsColor']==1?true:null));?><br>Pages</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><?php svg('libre-gui-content');?><br>Pages</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/content';?>"><?php svg('content',($config['iconsColor']==1?true:null));?><br>Content</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/content';?>"><?php svg('libre-gui-content');?><br>Content</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><?php svg('calendar',($config['iconsColor']==1?true:null));?><br>Bookings</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><?php svg('libre-gui-calendar');?><br>Bookings</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><?php svg('order',($config['iconsColor']==1?true:null));?><br>Orders</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><?php svg('libre-gui-order');?><br>Orders</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/rewards';?>"><?php svg('credit-card',($config['iconsColor']==1?true:null));?><br>Rewards</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/rewards';?>"><?php svg('libre-gui-credit-card');?><br>Rewards</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/media';?>"><?php svg('picture',($config['iconsColor']==1?true:null));?><br>Media</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/media';?>"><?php svg('libre-gui-picture');?><br>Media</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('envelope',($config['iconsColor']==1?true:null));?><br>Messages</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('libre-gui-envelope');?><br>Messages</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/newsletters';?>"><?php svg('email-read',($config['iconsColor']==1?true:null));?><br>Newsletters</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/newsletters';?>"><?php svg('libre-gui-email-read');?><br>Newsletters</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><?php svg('users',($config['iconsColor']==1?true:null));?><br>Accounts</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><?php svg('libre-gui-users');?><br>Accounts</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><?php svg('settings',($config['iconsColor']==1?true:null));?><br>Preferences</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><?php svg('libre-gui-settings');?><br>Preferences</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><?php svg('activity',($config['iconsColor']==1?true:null));?><br>Activity</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><?php svg('libre-gui-activity');?><br>Activity</a>
         </div>
       </div>
       <div class="col-xs-4">
         <div class="panel panel-default text-center">
-          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/search';?>"><?php svg('search',($config['iconsColor']==1?true:null));?><br>Search</a>
+          <a class="panel-body dash" href="<?php echo URL.$settings['system']['admin'].'/search';?>"><?php svg('libre-gui-search');?><br>Search</a>
         </div>
       </div>
     </div>
@@ -198,34 +192,34 @@ echo($config['email']==''?'<div class="alert alert-danger" role="alert">The Site
         </div>
         <script>/*<![CDATA[*/
 <?php
-$bc=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Chrome'")->fetch(PDO::FETCH_ASSOC);
-$bie=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Explorer'")->fetch(PDO::FETCH_ASSOC);
-$be=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Edge'")->fetch(PDO::FETCH_ASSOC);
-$bf=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Firefox'")->fetch(PDO::FETCH_ASSOC);
-$bo=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Opera'")->fetch(PDO::FETCH_ASSOC);
-$bs=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Safari'")->fetch(PDO::FETCH_ASSOC);
-$sa=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Alexa'")->fetch(PDO::FETCH_ASSOC);
-$sb=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Bing'")->fetch(PDO::FETCH_ASSOC);
-$sd=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='DuckDuckGo'")->fetch(PDO::FETCH_ASSOC);
-$sf=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Facebook'")->fetch(PDO::FETCH_ASSOC);
-$sg=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Google'")->fetch(PDO::FETCH_ASSOC);
-$sy=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Yahoo'")->fetch(PDO::FETCH_ASSOC);?>
-          $('#browser-chrome').countTo({from:    0, to:<?php echo $bc['cnt'];?>});
-          $('#browser-explorer').countTo({from:  0, to:<?php echo $bie['cnt'];?>});
-          $('#browser-edge').countTo({from:      0, to:<?php echo $be['cnt'];?>});
-          $('#browser-firefox').countTo({from:   0, to:<?php echo $bf['cnt'];?>});
-          $('#browser-opera').countTo({from:     0, to:<?php echo $bo['cnt'];?>});
-          $('#browser-safari').countTo({from:    0, to:<?php echo $bs['cnt'];?>});
-          $('#search-bing').countTo({from:       0, to:<?php echo $sb['cnt'];?>});
-          $('#search-duckduckgo').countTo({from: 0, to:<?php echo $sd['cnt'];?>});
-          $('#search-google').countTo({from:     0, to:<?php echo $sg['cnt'];?>});
-          $('#search-yahoo').countTo({from:      0, to:<?php echo $sy['cnt'];?>});
-          $('#search-facebook').countTo({from:   0, to:<?php echo $sf['cnt'];?>});
-          $('#search-alexa').countTo({from:      0, to:<?php echo $sa['cnt'];?>});
+$bc=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Chrome'")->fetch(PDO::FETCH_ASSOC);
+$bie=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Explorer'")->fetch(PDO::FETCH_ASSOC);
+$be=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Edge'")->fetch(PDO::FETCH_ASSOC);
+$bf=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Firefox'")->fetch(PDO::FETCH_ASSOC);
+$bo=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Opera'")->fetch(PDO::FETCH_ASSOC);
+$bs=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Safari'")->fetch(PDO::FETCH_ASSOC);
+$sa=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Alexa'")->fetch(PDO::FETCH_ASSOC);
+$sb=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Bing'")->fetch(PDO::FETCH_ASSOC);
+$sd=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='DuckDuckGo'")->fetch(PDO::FETCH_ASSOC);
+$sf=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Facebook'")->fetch(PDO::FETCH_ASSOC);
+$sg=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Google'")->fetch(PDO::FETCH_ASSOC);
+$sy=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Yahoo'")->fetch(PDO::FETCH_ASSOC);?>
+          $('#browser-chrome').countTo({from:0,to:<?php echo $bc['cnt'];?>});
+          $('#browser-explorer').countTo({from:0,to:<?php echo $bie['cnt'];?>});
+          $('#browser-edge').countTo({from:0,to:<?php echo $be['cnt'];?>});
+          $('#browser-firefox').countTo({from:0,to:<?php echo $bf['cnt'];?>});
+          $('#browser-opera').countTo({from:0,to:<?php echo $bo['cnt'];?>});
+          $('#browser-safari').countTo({from:0,to:<?php echo $bs['cnt'];?>});
+          $('#search-bing').countTo({from:0,to:<?php echo $sb['cnt'];?>});
+          $('#search-duckduckgo').countTo({from:0,to:<?php echo $sd['cnt'];?>});
+          $('#search-google').countTo({from:0,to:<?php echo $sg['cnt'];?>});
+          $('#search-yahoo').countTo({from:0,to:<?php echo $sy['cnt'];?>});
+          $('#search-facebook').countTo({from:0,to:<?php echo $sf['cnt'];?>});
+          $('#search-alexa').countTo({from:0,to:<?php echo $sa['cnt'];?>});
         /*]]>*/</script>
         <h4 class="panel-header">Highest Viewed Pages</h4>
         <div id="seostats-pageviews">
-<?php $s=$db->query("SELECT urlDest,count(*) count FROM tracker GROUP BY urlDest ORDER BY count DESC LIMIT 10");?>
+<?php $s=$db->query("SELECT urlDest,count(*) count FROM `".$prefix."tracker` GROUP BY urlDest ORDER BY count DESC LIMIT 10");?>
           <table class="table table-condensed">
             <thead>
               <tr>
@@ -235,7 +229,7 @@ $sy=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Yah
             </thead>
             <tbody>
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){
-  $sc=$db->prepare("SELECT COUNT(urlDest) AS cnt FROM tracker WHERE urlDest=:urlDest");
+  $sc=$db->prepare("SELECT COUNT(urlDest) AS cnt FROM `".$prefix."tracker` WHERE urlDest=:urlDest");
   $sc->execute(array(':urlDest'=>$r['urlDest']));
   $c=$sc->fetch(PDO::FETCH_ASSOC);?>
               <tr>
@@ -285,7 +279,7 @@ $sy=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM tracker WHERE browser='Yah
       <div class="panel panel-body">
         <h4 class="page-header">RSS Feeds</h4>
         <div id="rssfeeds">
-          <?php svg('spinner-13',null,'animated spin');?>
+          <?php svg('spinner-13','animated spin');?>
         </div>
       </div>
       <script>/*<![CDATA[*/
@@ -307,7 +301,7 @@ if($config['options']{11}==1){?>
             </thead>
             <tbody id="commits">
               <tr>
-                <td colspan="4"><?php svg('spinner-13',null,'animated spin');?></td>
+                <td colspan="4"><?php svg('spinner-13','animated spin');?></td>
               </tr>
             </tbody>
           </table>

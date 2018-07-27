@@ -6,10 +6,10 @@
  */
 header("Content-Type:text/plain");
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
-require'core'.DS.'db.php';
-$config=$db->query("SELECT development,seoTitle,theme FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+require_once'core'.DS.'db.php';
+$config=$db->query("SELECT development,seoTitle,theme FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $theme=parse_ini_file('layout'.DS.$config['theme'].DS.'theme.ini',true);
-$siteTitle=($config['seoTitle']!=''?$config['seoTitle']:URL);
+$siteTitle=$config['seoTitle']!=''?$config['seoTitle']:URL;
 $themeTitle=$theme['title'];
 $themeCreator=$theme['creator'];
 $themeURL=$theme['creator_url'];

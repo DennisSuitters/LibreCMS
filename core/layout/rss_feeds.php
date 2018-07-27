@@ -5,9 +5,9 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
-require'..'.DS.'db.php';
-$config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
-$s=$db->prepare("SELECT * FROM choices WHERE contentType='dashrss' ORDER BY ti");
+require_once'..'.DS.'db.php';
+$config=$db->query("SELECT * FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+$s=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE contentType='dashrss' ORDER BY ti");
 $s->execute();
 $cnt=$config['showItems']/$s->rowCount();
 $cnt=round($cnt,0,PHP_ROUND_HALF_UP);

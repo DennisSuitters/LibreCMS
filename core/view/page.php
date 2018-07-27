@@ -8,11 +8,11 @@ $rank=0;
 $notification='';
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $html=str_replace('<print view>',$view,$html);
-$s=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType AND LOWER(title)=LOWER(:title)");
+$s=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE contentType=:contentType AND LOWER(title)=LOWER(:title)");
 $s->execute(
   array(
     ':contentType'=>$view,
-    ':title'      =>str_replace('-',' ',$args[0])
+    ':title'=>str_replace('-',' ',$args[0])
   )
 );
 $r=$s->fetch(PDO::FETCH_ASSOC);
@@ -47,7 +47,7 @@ $html=preg_replace(
   $html
 );
 $items=$html;
-require'core'.DS.'parser.php';
+include'core'.DS.'parser.php';
 $html=$items;
 $seoTitle=empty($r['seoTitle'])?trim(htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8')):htmlspecialchars($r['seoTitle'],ENT_QUOTES,'UTF-8');
 $metaRobots=!empty($r['metaRobots'])?htmlspecialchars($r['metaRobots'],ENT_QUOTES,'UTF-8'):'index,follow';

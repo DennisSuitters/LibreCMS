@@ -17,6 +17,7 @@ else{
   require'core'.DS.'layout'.DS.'install.php';
   die();
 }
+$prefix=$settings['database']['prefix'];
 try{
   $dns=((!empty($settings['database']['driver']))?($settings['database']['driver']):'').((!empty($settings['database']['host']))?(':host='.$settings['database']['host']):'').((!empty($settings['database']['port']))?(';port='.$settings['database']['port']):'').((!empty($settings['database']['schema']))?(';dbname='.$settings['database']['schema']):'');
   $db=new PDO($dns,$settings['database']['username'],$settings['database']['password']);
@@ -26,8 +27,11 @@ try{
       session_start();
       define('SESSIONID',session_id());
     }
-    $config=$db->query("SELECT * FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
-    if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443) define('PROTOCOL','https://');else define('PROTOCOL','http://');
+    $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+    if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)
+      define('PROTOCOL','https://');
+    else
+      define('PROTOCOL','http://');
     if($config['development']==1){
       error_reporting(E_ALL);
       ini_set('display_errors','On');

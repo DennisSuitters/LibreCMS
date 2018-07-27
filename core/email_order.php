@@ -5,16 +5,16 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 $getcfg=true;
-require'db.php';
-require'tcpdf'.DS.'tcpdf.php';
+require_once'db.php';
+include'tcpdf'.DS.'tcpdf.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $w=filter_input(INPUT_GET,'w',FILTER_SANITIZE_STRING);
 $act=filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
-$q=$db->prepare("SELECT * FROM orders WHERE id=:id");
+$q=$db->prepare("SELECT * FROM `".$prefix."orders` WHERE id=:id");
 $q->execute(array(':id'=>$id));
 $r=$q->fetch(PDO::FETCH_ASSOC);
 $r['notes']=rawurldecode($r['notes']);
-$s=$db->prepare("SELECT * FROM login WHERE id=:id");
+$s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
 $s->execute(array(':id'=>$r['cid']));
 $c=$s->fetch(PDO::FETCH_ASSOC);
 $ti=time();
@@ -33,83 +33,90 @@ $pdf->setPrintFooter(false);
 $pdf->SetFont('helvetica','',12);
 $pdf->AddPage();
 $html='<style>'.
-          'body{margin:0;padding:0}'.
-          'table{border:0;margin:0}'.
-          'table,table tr{background-color:#fff}'.
-          'table tr th{background-color:#000;color:#fff;font-size:10px}'.
-          'h1,h2,h3,h4,h5,h6,p{margin:0}'.
-          '.col-50{width:50px}'.
-          '.col-75{width:75px}'.
-          '.col-100{width:100px}'.
-          '.col-150{width:150px}'.
-          '.col-250{width:250px}'.
-          '.text-center{text-align:center}'.
-          '.text-right{text-align:right}'.
-          '.pending{color:#080}'.
-          '.overdue{color:#800}'.
-        '</style>'.
-        '<body>';
+        'body{margin:0;padding:0}'.
+        'table{border:0;margin:0}'.
+        'table,table tr{background-color:#fff}'.
+        'table tr th{background-color:#000;color:#fff;font-size:10px}'.
+        'h1,h2,h3,h4,h5,h6,p{margin:0}'.
+        '.col-50{width:50px}'.
+        '.col-75{width:75px}'.
+        '.col-100{width:100px}'.
+        '.col-150{width:150px}'.
+        '.col-250{width:250px}'.
+        '.text-center{text-align:center}'.
+        '.text-right{text-align:right}'.
+        '.pending{color:#080}'.
+        '.overdue{color:#800}'.
+      '</style>'.
+      '<body>';
 $pdflogo='';
-if(file_exists('..'.DS.'media'.DS.'orderheading.png'))$pdflogo='..'.DS.'media'.DS.'orderheading.png';
-elseif(file_exists('..'.DS.'media'.DS.'orderheading.jpg'))$pdflogo='..'.DS.'media'.DS.'orderheading.jpg';
-elseif(file_exists('..'.DS.'media'.DS.'orderheading.gif'))$pdflogo='..'.DS.'media'.DS.'orderheading.gif';
-elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png'))$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png';
-elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg'))$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg';
-elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif'))$pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif';
-else$pdflogo='';
+if(file_exists('..'.DS.'media'.DS.'orderheading.png'))
+  $pdflogo='..'.DS.'media'.DS.'orderheading.png';
+elseif(file_exists('..'.DS.'media'.DS.'orderheading.jpg'))
+  $pdflogo='..'.DS.'media'.DS.'orderheading.jpg';
+elseif(file_exists('..'.DS.'media'.DS.'orderheading.gif'))
+  $pdflogo='..'.DS.'media'.DS.'orderheading.gif';
+elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png'))
+  $pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.png';
+elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg'))
+  $pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.jpg';
+elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif'))
+  $pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif';
+else
+  $pdflogo='';
 if($pdflogo!='')$html.='<table class="table"><tr><td style="text-align:right"><img src="'.$pdflogo.'"></td></tr></table>';
 $html.='<table class="table">'.
+          '<tr>'.
+            '<td>'.
+              '<h3>From</h3>'.
+              '<p>'.
+                '<strong>'.$config['business'].'</strong><br />'.
+                'ABN: <strong>'.$config['abn'].'</strong><br />'.
+                $config['address'].', '.$config['suburb'].', '.$config['city'].', '.$config['state'].', '.$config['postcode'].
+              '</p>'.
+            '</td>'.
+            '<td>'.
+              '<h3>To</h3>'.
+              '<p>'.
+                '<strong>'.$c['business'] . '</strong><br />'.
+                $c['name'].'<br />'.$c['address'].', '.$c['suburb'].', '.$c['city'].', '.$c['state'].', '.$c['postcode'].
+              '</p>'.
+            '</td>'.
+            '<td>'.
+              '<h3>Details</h3>'.
+              '<p>'.
+                '<small>Order <strong>#'.$r['qid'] . $r['iid'].'</strong><br />'.
+                'Order Date <strong>'.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']) . '</strong><br />'.
+                'Due Date: <strong class="'.$r['status'].'">'.date($config['dateFormat'], $r['due_ti']) . '</strong><br />'.
+                'Status: <strong class="'.$r['status'].'">'.ucfirst($r['status']).'</strong></small>'.
+              '</p>'.
+            '</td>'.
+          '</tr>'.
+        '</table>'.
+        '<br />'.
+        '<br />'.
+        '<table class="table table-striped">'.
+          '<thead>'.
             '<tr>'.
-              '<td>'.
-                '<h3>From</h3>'.
-                '<p>'.
-                  '<strong>'.$config['business'].'</strong><br />'.
-                  'ABN: <strong>'.$config['abn'].'</strong><br />'.
-                  $config['address'].', '.$config['suburb'].', '.$config['city'].', '.$config['state'].', '.$config['postcode'].
-                '</p>'.
-              '</td>'.
-              '<td>'.
-                '<h3>To</h3>'.
-                '<p>'.
-                  '<strong>'.$c['business'] . '</strong><br />'.
-                  $c['name'].'<br />'.$c['address'].', '.$c['suburb'].', '.$c['city'].', '.$c['state'].', '.$c['postcode'].
-                '</p>'.
-              '</td>'.
-              '<td>'.
-                '<h3>Details</h3>'.
-                '<p>'.
-                  '<small>Order <strong>#'.$r['qid'] . $r['iid'].'</strong><br />'.
-                  'Order Date <strong>'.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']) . '</strong><br />'.
-                  'Due Date: <strong class="'.$r['status'].'">'.date($config['dateFormat'], $r['due_ti']) . '</strong><br />'.
-                  'Status: <strong class="'.$r['status'].'">'.ucfirst($r['status']).'</strong></small>'.
-                '</p>'.
-              '</td>'.
+              '<th class="col-75">Item Code</th>'.
+              '<th class="col-150">Title</th>'.
+              '<th class="col-150">Option</th>'.
+              '<th class="col-50 text-center">Quantity</th>'.
+              '<th class="col-50 text-right">Cost</th>'.
+              '<th class="col-50 text-right">Total</th>'.
             '</tr>'.
-          '</table>'.
-          '<br />'.
-          '<br />'.
-          '<table class="table table-striped">'.
-            '<thead>'.
-              '<tr>'.
-                '<th class="col-75">Item Code</th>'.
-                '<th class="col-150">Title</th>'.
-                '<th class="col-150">Option</th>'.
-                '<th class="col-50 text-center">Quantity</th>'.
-                '<th class="col-50 text-right">Cost</th>'.
-                '<th class="col-50 text-right">Total</th>'.
-              '</tr>'.
-            '</thead>'.
-            '<tbody>';
+          '</thead>'.
+          '<tbody>';
 $i=13;
 $ot=$st=$pwc=0;
 $zeb=1;
-$s=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid AND status!='delete'");
+$s=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid AND status!='delete'");
 $s->execute(array(':oid'=>$id));
 while($ro=$s->fetch(PDO::FETCH_ASSOC)){
-	$si=$db->prepare("SELECT code,title FROM content WHERE id=:id");
+	$si=$db->prepare("SELECT code,title FROM `".$prefix."content` WHERE id=:id");
 	$si->execute(array(':id'=>$ro['iid']));
 	$i=$si->fetch(PDO::FETCH_ASSOC);
-	$sc=$db->prepare("SELECT * FROM choices WHERE id=:id");
+	$sc=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE id=:id");
 	$sc->execute(array(':id'=>$ro['cid']));
 	$ch=$sc->fetch(PDO::FETCH_ASSOC);
   $st=$ro['cost']*$ro['quantity'];
@@ -126,7 +133,7 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 }
 $html.='</tbody>'.
         '<tfoot>';
-$sr=$db->prepare("SELECT * FROM rewards WHERE id=:rid");
+$sr=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:rid");
 $sr->execute(array(':rid'=>$r['rid']));
 if($sr->rowCount()>0){
 	$reward=$sr->fetch(PDO::FETCH_ASSOC);
@@ -143,8 +150,8 @@ if($sr->rowCount()>0){
     $ot=($ot*((100-$reward['value'])/100));
   }
   $html.=' Off</small></td>'.
-            '<td class="col-75 text-right"><strong>'.$ot.'</strong></td>'.
-          '</tr>';
+          '<td class="col-75 text-right"><strong>'.$ot.'</strong></td>'.
+        '</tr>';
 }
 if($r['postage']!=0){
 	$html.='<tr style="background-color:#f0f0f0">'.
@@ -155,34 +162,34 @@ if($r['postage']!=0){
 	$ot=$ot+$r['postage'];
 }
 $html.='<tr style="background-color:#f0f0f0">'.
-            '<td colspan="3">&nbsp;</td>'.
-            '<td class="col-75 text-right"><strong>Total</strong></td>'.
-            '<td class="col-75 text-right '.$r['status'].'"><strong>'.$ot.'</strong></td>'.
-          '</tr>'.
-        '</tfoot>'.
-      '</table>'.
-      '<br />'.
-      '<br />'.
-      '<table class="table">'.
-        '<tbody>'.
-          '<tr>'.
-            '<td>'.
-              '<h4>Notes</h4>'.
-              '<p style="font-size:8px">'.rawurldecode($r['notes']).'</p>'.
-            '</td>'.
-            '<td>'.
-              '<h4>Banking Details</h4>'.
-              '<p>'.
-                '<small>Bank: <strong>'.$config['bank'].'</strong><br />'.
-                'Account Name: <strong>'.$config['bankAccountName'].'</strong><br />'.
-                'Account Number: <strong>'.$config['bankAccountNumber'].'</strong><br />'.
-                'BSB: <strong>'.$config['bankBSB'].'</strong></small>'.
-              '</p>'.
-            '</td>'.
-          '</tr>'.
-        '</tbody>'.
-      '</table>'.
-    '</body>';
+          '<td colspan="3">&nbsp;</td>'.
+          '<td class="col-75 text-right"><strong>Total</strong></td>'.
+          '<td class="col-75 text-right '.$r['status'].'"><strong>'.$ot.'</strong></td>'.
+        '</tr>'.
+      '</tfoot>'.
+    '</table>'.
+    '<br />'.
+    '<br />'.
+    '<table class="table">'.
+      '<tbody>'.
+        '<tr>'.
+          '<td>'.
+            '<h4>Notes</h4>'.
+            '<p style="font-size:8px">'.rawurldecode($r['notes']).'</p>'.
+          '</td>'.
+          '<td>'.
+            '<h4>Banking Details</h4>'.
+            '<p>'.
+              '<small>Bank: <strong>'.$config['bank'].'</strong><br />'.
+              'Account Name: <strong>'.$config['bankAccountName'].'</strong><br />'.
+              'Account Number: <strong>'.$config['bankAccountNumber'].'</strong><br />'.
+              'BSB: <strong>'.$config['bankBSB'].'</strong></small>'.
+            '</p>'.
+          '</td>'.
+        '</tr>'.
+      '</tbody>'.
+    '</table>'.
+  '</body>';
 $pdf->writeHTML($html,true,false,true,false,'');
 $pdf->Output(__DIR__.DS.'..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf','F');
 chmod('..' .DS.'media'.DS.'orders'.DS.$oid.'.pdf',0777);
@@ -204,7 +211,7 @@ if($act=='print'){?>
     $mail->ConfirmReadingTo=$config['email'];
   }
   $namee=explode(' ',$c['name']);
-  $subject=(isset($config['orderEmailSubject'])&&$config['orderEmailSubject']!=''?$config['orderEmailSubject']:'Order {order_number} from {business}');
+  $subject=isset($config['orderEmailSubject'])&&$config['orderEmailSubject']!=''?$config['orderEmailSubject']:'Order {order_number} from {business}';
   $subject=str_replace(
     array(
       '{business}',
@@ -225,7 +232,7 @@ if($act=='print'){?>
     $subject
   );
 	$mail->Subject=$subject;
-	$msg=(isset($config['orderEmailLayout'])&&$config['orderEmailLayout']!=''?rawurldecode($config['orderEmailLayout']):'<p>Hello {first},</p><p>Please find attached Order {order_number}</p><p>Note: {notes}</p>');
+	$msg=isset($config['orderEmailLayout'])&&$config['orderEmailLayout']!=''?rawurldecode($config['orderEmailLayout']):'<p>Hello {first},</p><p>Please find attached Order {order_number}</p><p>Note: {notes}</p>';
   $msg=str_replace(
     array(
       '{business}',

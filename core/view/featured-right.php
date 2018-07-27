@@ -7,7 +7,7 @@
 if(stristr($html,'<events')){
 	preg_match('/<events>([\w\W]*?)<\/events>/',$html,$matches);
 	$event=$matches[1];
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE 'events' AND internal!='1' AND status='published' ORDER BY ti DESC LIMIT 2");
+	$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType LIKE 'events' AND internal!='1' AND status='published' ORDER BY ti DESC LIMIT 2");
 	$s->execute();
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
@@ -39,7 +39,7 @@ if(stristr($html,'<events')){
 if(stristr($html,'<news')){
 	preg_match('/<news>([\w\W]*?)<\/news>/',$html,$matches);
 	$news=$matches[1];
-	$s=$db->prepare("SELECT * FROM content WHERE contentType LIKE 'news' AND internal!='1' AND status='published' ORDER BY ti DESC LIMIT 2");
+	$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType LIKE 'news' AND internal!='1' AND status='published' ORDER BY ti DESC LIMIT 2");
 	$s->execute();
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){

@@ -7,50 +7,43 @@
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 if(isset($_GET['is'])){
   session_start();
-  require'..'.DS.'db.php';
-  $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
-  $su=$db->prepare("SELECT * FROM login WHERE id=:id");
+  require_once'..'.DS.'db.php';
+  $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+  $su=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
   $su->execute(array(':id'=>$_SESSION['uid']));
-  $user   = $su->fetch(PDO::FETCH_ASSOC);
-  $is     = $_GET['is'];
-  $ie     = $_GET['ie'];
-  $action = $_GET['action'];
+  $user=$su->fetch(PDO::FETCH_ASSOC);
+  $is=$_GET['is'];
+  $ie=$_GET['ie'];
+  $action=$_GET['action'];
   function _ago($time){
     $timeDiff=floor(abs(time()-$time)/60);
-    if    ($timeDiff<2)      $timeDiff='Just Now';
-    elseif($timeDiff>2 &&    $timeDiff<60)$timeDiff=floor(abs($timeDiff)).' Minutes Ago';
-    elseif($timeDiff>60 &&   $timeDiff<120)$timeDiff=floor(abs($timeDiff/60)).' Hour ago';
-    elseif($timeDiff<1440)   $timeDiff=floor(abs($timeDiff/60)).' Hours ago';
-    elseif($timeDiff>1440 && $timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440)).' Day Ago';
-    elseif($timeDiff>2880)   $timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
+    if($timeDiff<2)$timeDiff='Just Now';
+    elseif($timeDiff>2&&$timeDiff<60)$timeDiff=floor(abs($timeDiff)).' Minutes Ago';
+    elseif($timeDiff>60&&$timeDiff<120)$timeDiff=floor(abs($timeDiff/60)).' Hour ago';
+    elseif($timeDiff<1440)$timeDiff=floor(abs($timeDiff/60)).' Hours ago';
+    elseif($timeDiff>1440&&$timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440)).' Day Ago';
+    elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
     return$timeDiff;
   }
-  function svg($svg,$color=null,$class=null,$size=null){
-  	echo'<i class="libre';
-  	if($size!=null)echo' libre-'.$size;
-  	if($color==true)$svg='col'.DS.$svg;
-  	elseif($color!=null)echo' libre-'.$color;
-    if($class!=null)echo' '.$class;
-  	echo'">';
-  	include '..'.DS.'svg'.DS.$svg.'.svg';
-  	echo'</i>';
+  function svg($svg,$class=null,$size=null){
+	   echo'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('..'.DS.'svg'.DS.$svg.'.svg').'</i>';
   }
 }
 if($action!=''){
-  $s=$db->prepare("SELECT * FROM logs WHERE action=:action ORDER BY ti DESC LIMIT ".$is."," . $ie);
+  $s=$db->prepare("SELECT * FROM `".$prefix."logs` WHERE action=:action ORDER BY ti DESC LIMIT ".$is."," . $ie);
   $s->execute(array(':action'=>$action));
 }else{
-  $s=$db->prepare("SELECT * FROM logs ORDER BY ti DESC LIMIT ".$is.",".$ie);
+  $s=$db->prepare("SELECT * FROM `".$prefix."logs` ORDER BY ti DESC LIMIT ".$is.",".$ie);
   $s->execute();
 }
 $cnt=$s->rowCount();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
   if($r['refTable']=='content'){
-    $sql=$db->prepare("SELECT * FROM ".$r['refTable']." WHERE id=:id");
+    $sql=$db->prepare("SELECT * FROM ".$prefix.$r['refTable']." WHERE id=:id");
     $sql->execute(array(':id'=>$r['id']));
     $c=$sql->fetch(PDO::FETCH_ASSOC);
   }
-  $su=$db->prepare("SELECT id,username,name,rank FROM login WHERE id=:id");
+  $su=$db->prepare("SELECT id,username,name,rank FROM `".$prefix."login` WHERE id=:id");
   $su->execute(array(':id'=>$r['uid']));
   $u=$su->fetch(PDO::FETCH_ASSOC);
   $action='<strong>Action:</strong> '.ucfirst($r['contentType']);
@@ -58,11 +51,11 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
   if($r['action']=='update')$action.=' Updated<br>';
   if($r['action']=='purge')$action.=' Purged<br>';
   if(isset($c['title'])&&$c['title']!=''){
-    $action.='<strong>Title:</strong> '.$c['title'].'<br>';
-    $action.=($r['action']=='update'?'<strong>Table:</strong> '.$r['refTable'].'<br>':'');
-    $action.='<strong>Column:</strong> '.$r['refColumn'].'<br>';
-    $action.='<strong>Data:</strong>'.strip_tags(rawurldecode(substr($r['oldda'],0,300))).'<br>';
-    $action.='<strong>Changed To:</strong>'.strip_tags(rawurldecode(substr($r['newda'],0,300))).'<br>';
+    $action.='<strong>Title:</strong> '.$c['title'].'<br>'.
+              ($r['action']=='update'?'<strong>Table:</strong> '.$r['refTable'].'<br>':'').
+              '<strong>Column:</strong> '.$r['refColumn'].'<br>'.
+              '<strong>Data:</strong>'.strip_tags(rawurldecode(substr($r['oldda'],0,300))).'<br>'.
+              '<strong>Changed To:</strong>'.strip_tags(rawurldecode(substr($r['newda'],0,300))).'<br>';
   }
   $action.='<strong>by</strong> '.$u['username'].':'.$u['name'];?>
 <tr id="l_<?php echo$r['id'];?>">
@@ -72,10 +65,12 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
     <div class="visible-xs"><?php echo$action;?></div>
   </td>
   <td class="break-word hidden-xs"><?php echo$action;?></td>
-  <td id="controls_<?php echo$r['id'];?>" class="text-right">
-    <button class="btn btn-default" onclick="activitySpy('<?php echo$r['id'];?>');" data-toggle="tooltip" title="View Details"><?php svg('libre-gui-fingerprint',($config['iconsColor']==1?true:null));?></button>
-<?php echo($r['action']=='update'?'<button class="btn btn-default" onclick="restore(\''.$r['id'].'\');" data-toggle="tooltip" title="Restore">'.svg2('libre-gui-undo',($config['iconsColor']==1?true:null)).'</button>':'');?>
-    <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','logs')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
+  <td id="controls_<?php echo$r['id'];?>">
+    <div class="btn-group pull-right">
+      <button class="btn btn-default" onclick="activitySpy('<?php echo$r['id'];?>');" data-toggle="tooltip" title="View Details"><?php svg('libre-gui-fingerprint');?></button>
+      <?php echo$r['action']=='update'?'<button class="btn btn-default" onclick="restore(\''.$r['id'].'\');" data-toggle="tooltip" title="Restore">'.svg2('libre-gui-undo',($config['iconsColor']==1?true:null)).'</button>':'';?>
+      <button class="btn btn-default trash" onclick="purge('<?php echo$r['id'];?>','logs')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-trash');?></button>
+    </div>
   </td>
 </tr>
 <tr id="details<?php echo$r['id'];?>" class="hidden">

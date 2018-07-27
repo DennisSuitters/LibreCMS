@@ -5,8 +5,8 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
-require'..'.DS.'db.php';
-$config=$db->query("SELECT update_url FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+require_once'..'.DS.'db.php';
+$config=$db->query("SELECT update_url FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 $settings=parse_ini_file('..'.DS.'config.ini',TRUE);
 $gV=@file_get_contents($config['update_url'].'versions') or die();
 $update=0;
@@ -18,10 +18,7 @@ if($gV!=''){
     $uV=(int)$aV;
     if($uV>$settings['system']['version']){
       $update=1;
-      $uL.='<p>';
-        $uL.='Update available: '.date('M jS, Y g:i A',$uV).'.<br>';
-        $uL.=@file_get_contents($config['update_url'].$uV.'.nfo');
-      $uL.='</p>';
+      $uL.='<p>Update available: '.date('M jS, Y g:i A',$uV).'.<br>'.@file_get_contents($config['update_url'].$uV.'.nfo').'</p>';
     }
   }
 }

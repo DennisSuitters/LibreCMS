@@ -5,14 +5,14 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 $getcfg=false;
-require'db.php';
+require_once'db.php';
 $i=0;
 foreach($_POST['l'] as$id){
-  $s=$db->prepare("UPDATE menu SET ord=:ord WHERE id=:id");
+  $s=$db->prepare("UPDATE `".$prefix."menu` SET ord=:ord WHERE id=:id");
   $s->execute(
     array(
       ':ord'=>$i,
-      ':id' =>$id
+      ':id'=>$id
     )
   );
   $i++;

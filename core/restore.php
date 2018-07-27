@@ -6,15 +6,15 @@
  */
 echo'<script>/*<![CDATA[*/';
 if(session_status()==PHP_SESSION_NONE)session_start();
-include'db.php';
+require_once'db.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $uid=$_SESSION['uid'];
-$s=$db->prepare("SELECT * FROM logs WHERE id=:id");
+$s=$db->prepare("SELECT * FROM `".$prefix."logs` WHERE id=:id");
 $s->execute(array(':id'=>$id));
 $r=$s->fetch(PDO::FETCH_ASSOC);
 $tbl=$r['refTable'];
 $col=$r['refColumn'];
-$sl=$db->prepare("UPDATE $tbl SET $col=:da WHERE id=:id");
+$sl=$db->prepare("UPDATE `".$prefix.$tbl."` SET $col=:da WHERE id=:id");
 $sl->execute(
   array(
     ':da'=>$r['oldda'],

@@ -1,7 +1,5 @@
 <?php
-
 define('ELFINDER_PHP_ROOT_PATH', dirname(__FILE__));
-
 function elFinderAutoloader($name) {
 	$map = array(
 		'elFinder' => ELFINDER_PHP_ROOT_PATH . '/elFinder.class.php',
@@ -45,10 +43,8 @@ function elFinderAutoloader($name) {
 	}
 	return false;
 }
-
 if (version_compare(PHP_VERSION, '5.3', '<')) {
 	spl_autoload_register('elFinderAutoloader');
 } else {
 	spl_autoload_register('elFinderAutoloader', true, true);
 }
-

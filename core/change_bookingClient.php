@@ -5,44 +5,44 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 echo'<script>/*<![CDATA[*/';
-include'db.php';
+require_once'db.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $bid=filter_input(INPUT_GET,'bid',FILTER_SANITIZE_NUMBER_INT);
 if($id==0){
   $c=array(
-    'id'      =>0,
+    'id'=>0,
     'username'=>'',
-    'name'    =>'',
+    'name'=>'',
     'business'=>'',
-    'address' =>'',
-    'suburb'  =>'',
-    'state'   =>'',
-    'city'    =>'',
+    'address'=>'',
+    'suburb'=>'',
+    'state'=>'',
+    'city'=>'',
     'postcode'=>'',
-    'email'   =>'',
-    'phone'   =>'',
-    'mobile'  =>''
+    'email'=>'',
+    'phone'=>'',
+    'mobile'=>''
   );
 }else{
-  $q=$db->prepare("SELECT * FROM login WHERE id=:id");
+  $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
   $q->execute(array(':id'=>$id));
   $c=$q->fetch(PDO::FETCH_ASSOC);
 }
-$q=$db->prepare("UPDATE content SET  cid=:cid,business=:business,name=:name,address=:address,suburb=:suburb,state=:state,city=:city,postcode=:postcode,email=:email,phone=:phone,mobile=:mobile WHERE id=:id");
+$q=$db->prepare("UPDATE `".$prefix."content` SET  cid=:cid,business=:business,name=:name,address=:address,suburb=:suburb,state=:state,city=:city,postcode=:postcode,email=:email,phone=:phone,mobile=:mobile WHERE id=:id");
 $q->execute(
   array(
-    ':cid'     =>$id,
+    ':cid'=>$id,
     ':business'=>$c['business'],
-    ':name'    =>$c['name'],
-    ':address' =>$c['address'],
-    ':suburb'  =>$c['suburb'],
-    ':state'   =>$c['state'],
-    ':city'    =>$c['city'],
+    ':name'=>$c['name'],
+    ':address'=>$c['address'],
+    ':suburb'=>$c['suburb'],
+    ':state'=>$c['state'],
+    ':city'=>$c['city'],
     ':postcode'=>$c['postcode'],
-    ':email'   =>$c['email'],
-    ':phone'   =>$c['phone'],
-    ':mobile'  =>$c['mobile'],
-    ':id'      =>$bid
+    ':email'=>$c['email'],
+    ':phone'=>$c['phone'],
+    ':mobile'=>$c['mobile'],
+    ':id'=>$bid
   )
 );?>
   window.top.window.$('#business').val('<?php echo$c['business'];?>').data("dbid",<?php echo$c['id'];?>);

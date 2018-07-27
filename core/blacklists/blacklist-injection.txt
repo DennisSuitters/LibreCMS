@@ -1,0 +1,4 @@
+\$RandomStr
+cl_prem:
+%url%
+%BLOGTITLE%

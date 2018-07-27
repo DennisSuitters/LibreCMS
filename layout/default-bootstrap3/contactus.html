@@ -61,14 +61,14 @@
 					</div>
 				</div>
 			</form>
-			<script>
+			<script>/*<![CDATA[*/
 				$("#contactform").submit(function(){
 					$.post($(this).attr("action"),$(this).serialize(),function(data){
 						$("#contact").html(data);
 					});
 					return false;
 				});
-			</script>
+			/*]]>*/</script>
 		</div>
 	</main>
 </block>

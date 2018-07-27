@@ -99,14 +99,14 @@
 					</div>
 				</div>
 			</form>
-			<script>
+			<script>/*<![CDATA[*/
 				$("#bookingform").submit(function(){
 					$.post($(this).attr("action"),$(this).serialize(),function(data){
 						$("#booking").html(data);
 					});
 					return false;
 				});
-			</script>
+			/*]]>*/</script>
 		</div>
 	</main>
 </block>

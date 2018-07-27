@@ -6,13 +6,13 @@
  */
 echo'<script>/*<![CDATA[*/';
 if(session_status()==PHP_SESSION_NONE)session_start();
-include'db.php';
-$id =filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-$tbl=filter_input(INPUT_GET,'t', FILTER_SANITIZE_STRING);
+require_once'db.php';
+$id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
+$tbl=filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
 $uid=isset($_SESSION['uid'])?$_SESSION['uid']:0;
 $el='l_';
 if($id!=0&&$tbl!='logs'){
-  $s=$db->prepare("SELECT * FROM ".$tbl." WHERE id=:id");
+  $s=$db->prepare("SELECT * FROM ".$prefix.$tbl." WHERE id=:id");
   $s->execute(array(':id'=>$id));
   $r=$s->fetch(PDO::FETCH_ASSOC);
   if($tbl=='config'||$tbl=='login')$r['contentType']='';
@@ -20,30 +20,30 @@ if($id!=0&&$tbl!='logs'){
   foreach($r as$o)$nda.=$o.'|';
 }
 if($tbl=='suggestions'){
-  $s=$db->prepare("SELECT * FROM suggestions WHERE id=:id");
+  $s=$db->prepare("SELECT * FROM `".$prefix."suggestions` WHERE id=:id");
   $s->execute(array(':id'=>$id));
   if($s->rowCount()==1){
     $r=$s->fetch(PDO::FETCH_ASSOC);
-    $ss=$db->prepare("UPDATE ".$r['t']." SET suggestions=0 WHERE id=:id");
+    $ss=$db->prepare("UPDATE ".$prefix.$r['t']." SET suggestions=0 WHERE id=:id");
     $ss->execute(array(':id'=>$r['rid']));
   }
 }
 if($id==0&&$tbl=='logs'){
-  $q=$db->query("DELETE FROM logs");
+  $q=$db->query("DELETE FROM `".$prefix."logs`");
   $q->execute();
   $id='timeline';
 }
 if($id==0&&$tbl=='tracker'){
-  $q=$db->query("DELETE FROM tracker");
+  $q=$db->query("DELETE FROM `".$prefix."tracker`");
   $q->execute();
   $id='tracker';
 }
 if($tbl=='orders'){
-  $q=$db->prepare("DELETE FROM orderitems WHERE oid=:oid");
+  $q=$db->prepare("DELETE FROM `".$prefix."orderitems` WHERE oid=:oid");
   $q->execute(array(':oid'=>$id));
 }
 if($id!=0&&$id!='activity'){
-  $q=$db->prepare("DELETE FROM $tbl WHERE id=:id");
+  $q=$db->prepare("DELETE FROM `".$prefix.$tbl."` WHERE id=:id");
   $q->execute(array(':id'=>$id));
   if($tbl=='media')$el='media_items_';
 }

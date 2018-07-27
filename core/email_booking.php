@@ -6,18 +6,18 @@
  */
 echo'<script>/*<![CDATA[*/';
 $getcfg=true;
-require'db.php';
+require_once'db.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-$q=$db->prepare("SELECT * FROM content WHERE id=:id");
+$q=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
 $q->execute(array(':id'=>$id));
 $r=$q->fetch(PDO::FETCH_ASSOC);
 $r['notes']=rawurldecode($r['notes']);
-$s=$db->prepare("SELECT * FROM login WHERE id=:id");
+$s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
 $s->execute(array(':id'=>$r['cid']));
 $c=$s->fetch(PDO::FETCH_ASSOC);
 $ti=time();
 if($c['email']!=''){
-  $si=$db->prepare("SELECT code,title FROM content WHERE id=:id");
+  $si=$db->prepare("SELECT code,title FROM `".$prefix."content` WHERE id=:id");
   $si->execute(array(':id'=>$r['rid']));
   $i=$si->fetch(PDO::FETCH_ASSOC);
   require'class.phpmailer.php';
@@ -33,7 +33,7 @@ if($c['email']!=''){
     $mail->AddCustomHeader("Disposition-Notification-To:".$config['email']);
     $mail->ConfirmReadingTo=$config['email'];
   }
-  $subject=(isset($config['bookingEmailSubject'])&&$config['bookingEmailSubject']!=''?$config['bookingEmailSubject']:'Booking Information from {business}');
+  $subject=isset($config['bookingEmailSubject'])&&$config['bookingEmailSubject']!=''?$config['bookingEmailSubject']:'Booking Information from {business}';
   $namee=explode(' ',$r['name']);
   $subject=str_replace(
     array(
@@ -53,7 +53,7 @@ if($c['email']!=''){
     $subject
   );
   $mail->Subject=$subject;
-  $msg=(isset($config['bookingEmailLayout'])&&$config['bookingEmailLayout']!=''?rawurldecode($config['bookingEmailLayout']):'Hi {first},<br />{details}<br /><br />Please check the details above, and get in touch if any need correcting.<br /><br />Kind Regards,<br />{business}');
+  $msg=isset($config['bookingEmailLayout'])&&$config['bookingEmailLayout']!=''?rawurldecode($config['bookingEmailLayout']):'Hi {first},<br />{details}<br /><br />Please check the details above, and get in touch if any need correcting.<br /><br />Kind Regards,<br />{business}';
   $msg=str_replace(
     array(
       '{business}',

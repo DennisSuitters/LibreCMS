@@ -7,16 +7,16 @@
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 require'core'.DS.'db.php';
 if(isset($_GET['previous']))header("location:".$_GET['previous']);
-$config=$this->getconfig($db);
+$config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $ti=time();
 $favicon=$this->favicon();
 $share_image=$favicon;
 $noimage=$this->noimage();
 $noavatar=$this->noavatar();
-$theme=parse_ini_file(THEME.DS.'theme.ini',TRUE);
-$sp=$db->prepare("SELECT * FROM menu WHERE contentType=:contentType");
+$help=parse_ini_file('core'.DS.'help.ini',TRUE);
+$sp=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE contentType=:contentType");
 $sp->execute(array(':contentType'=>$view));
-require'core'.DS.'login.php';
+include'core'.DS.'login.php';
 if($_SESSION['rank']>399){
   if(isset($_SESSION['rank'])){
     if($_SESSION['rank']==100)$rankText='Subscriber';
@@ -30,16 +30,16 @@ if($_SESSION['rank']>399){
     if($_SESSION['rank']==900)$rankText='Administrator';
     if($_SESSION['rank']==1000)$rankText='Developer';
   }else$rankText='Visitor';
-$nous=$db->prepare("SELECT COUNT(id) AS cnt FROM login WHERE lti>:lti AND rank!=1000");
+$nous=$db->prepare("SELECT COUNT(id) AS cnt FROM `".$prefix."login` WHERE lti>:lti AND rank!=1000");
 $nous->execute(array(':lti'=>time()-300));
 $nou=$nous->fetch(PDO::FETCH_ASSOC);
-$nc=$db->query("SELECT COUNT(status) AS cnt FROM comments WHERE contentType!='review' AND status='unapproved'")->fetch(PDO::FETCH_ASSOC);
-$nr=$db->query("SELECT COUNT(id) AS cnt FROM comments WHERE contentType='review' AND  status='unapproved'")->fetch(PDO::FETCH_ASSOC);
-$nm=$db->query("SELECT COUNT(status) AS cnt FROM messages WHERE status='unread'")->fetch(PDO::FETCH_ASSOC);
-$po=$db->query("SELECT COUNT(status) AS cnt FROM orders WHERE status='pending'")->fetch(PDO::FETCH_ASSOC);
-$nb=$db->query("SELECT COUNT(status) AS cnt FROM content WHERE contentType='booking' AND status!='confirmed'")->fetch(PDO::FETCH_ASSOC);
-$nu=$db->query("SELECT COUNT(id) AS cnt FROM login WHERE activate!='' AND active=0")->fetch(PDO::FETCH_ASSOC);
-$nt=$db->query("SELECT COUNT(id) AS cnt FROM content WHERE contentType='testimonials' AND status!='published'")->fetch(PDO::FETCH_ASSOC);
+$nc=$db->query("SELECT COUNT(status) AS cnt FROM `".$prefix."comments` WHERE contentType!='review' AND status='unapproved'")->fetch(PDO::FETCH_ASSOC);
+$nr=$db->query("SELECT COUNT(id) AS cnt FROM `".$prefix."comments` WHERE contentType='review' AND  status='unapproved'")->fetch(PDO::FETCH_ASSOC);
+$nm=$db->query("SELECT COUNT(status) AS cnt FROM `".$prefix."messages` WHERE status='unread'")->fetch(PDO::FETCH_ASSOC);
+$po=$db->query("SELECT COUNT(status) AS cnt FROM `".$prefix."orders` WHERE status='pending'")->fetch(PDO::FETCH_ASSOC);
+$nb=$db->query("SELECT COUNT(status) AS cnt FROM `".$prefix."content` WHERE contentType='booking' AND status!='confirmed'")->fetch(PDO::FETCH_ASSOC);
+$nu=$db->query("SELECT COUNT(id) AS cnt FROM `".$prefix."login` WHERE activate!='' AND active=0")->fetch(PDO::FETCH_ASSOC);
+$nt=$db->query("SELECT COUNT(id) AS cnt FROM `".$prefix."content` WHERE contentType='testimonials' AND status!='published'")->fetch(PDO::FETCH_ASSOC);
 $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['cnt'];?>
 <!DOCTYPE HTML>
 <html lang="en-AU" id="libreCMS">
@@ -107,22 +107,23 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
         </ul>
         <div id="menu-list" class="menu-list<?php echo(isset($_COOKIE['adminbg'])?' '.$_COOKIE['adminbg']:'');?>">
           <ul id="menu-content" class="menu-content">
-            <li<?php echo($view=='dashboard'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/dashboard';?>"><?php svg('libre-gui-chart-line',($config['iconsColor']==1?true:null));?> Dashboard</a></li>
-            <li<?php echo($view=='pages'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><?php svg('libre-gui-content',($config['iconsColor']==1?true:null));?> Pages</a></li>
-            <li<?php echo($view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/content';?>"><?php svg('libre-gui-content',($config['iconsColor']==1?true:null));?> Content</a></li>
-            <li<?php echo($view=='bookings'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><?php svg('libre-gui-calendar',($config['iconsColor']==1?true:null));?> Bookings</a></li>
-            <li<?php echo($view=='orders'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><?php svg('libre-gui-order',($config['iconsColor']==1?true:null));?> Orders</a></li>
-            <li<?php echo($view=='rewards'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/rewards';?>"><?php svg('libre-gui-credit-card',($config['iconsColor']==1?true:null));?> Rewards</a></li>
-            <li<?php echo($view=='media'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/media';?>"><?php svg('libre-gui-picture',($config['iconsColor']==1?true:null));?> Media</a></li>
-            <li<?php echo($view=='messages'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('libre-gui-envelope',($config['iconsColor']==1?true:null));?> Messages</a></li>
-            <li<?php echo($view=='newsletters'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/newsletters';?>"><?php svg('libre-gui-newsletter',($config['iconsColor']==1?true:null));?> Newsletters</a></li>
-            <li<?php echo($view=='accounts'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><?php svg('libre-gui-users',($config['iconsColor']==1?true:null));?> Accounts</a></li>
-            <li<?php echo($view=='preferences'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><?php svg('libre-gui-settings',($config['iconsColor']==1?true:null));?> Preferences<?php echo($config['suggestions']==1?'<span data-toggle="tooltip" data-placement="top" title="Editing suggestions.">'.svg2('libre-gui-gui-lightbulb',($config['iconsColor']==1?true:null),'','green').'</span>':'');?></a></li>
-            <li<?php echo($view=='activity'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><?php svg('libre-gui-activity',($config['iconsColor']==1?true:null));?> Activity</a></li>
+            <li<?php echo$view=='dashboard'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/dashboard';?>"><?php svg('libre-gui-chart-line');?> Dashboard</a></li>
+            <li<?php echo$view=='pages'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/pages';?>"><?php svg('libre-gui-content');?> Pages</a></li>
+            <li<?php echo$view=='content'||$view=='article'||$view=='portfolio'||$view=='events'||$view=='news'||$view=='testimonials'||$view=='inventory'||$view=='services'||$view=='gallery'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/content';?>"><?php svg('libre-gui-content');?> Content</a></li>
+            <li<?php echo$view=='bookings'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><?php svg('libre-gui-calendar');?> Bookings</a></li>
+            <li<?php echo$view=='orders'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/orders/all';?>"><?php svg('libre-gui-order');?> Orders</a></li>
+            <li<?php echo$view=='rewards'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/rewards';?>"><?php svg('libre-gui-credit-card');?> Rewards</a></li>
+            <li<?php echo$view=='media'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/media';?>"><?php svg('libre-gui-picture');?> Media</a></li>
+            <li<?php echo$view=='messages'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('libre-gui-envelope');?> Messages</a></li>
+            <li<?php echo$view=='newsletters'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/newsletters';?>"><?php svg('libre-gui-newsletter');?> Newsletters</a></li>
+            <li<?php echo$view=='accounts'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><?php svg('libre-gui-users');?> Accounts</a></li>
+            <li<?php echo$view=='preferences'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><?php svg('libre-gui-settings');?> Preferences<?php echo$config['suggestions']==1?'<span data-toggle="tooltip" data-placement="top" title="Editing suggestions.">'.svg2('libre-gui-gui-lightbulb','','green').'</span>':'';?></a></li>
+            <li<?php echo$view=='activity'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/activity';?>"><?php svg('libre-gui-activity');?> Activity</a></li>
 <?php if($user['rank']>899){?>
-            <li<?php echo($view=='tracker'?' class="active"':'');?>><a href="<?php echo URL.$settings['system']['admin'].'/tracker';?>"><?php svg('libre-gui-binoculars',($config['iconsColor']==1?true:null));?> Tracker</a></li>
+            <li<?php echo$view=='tracker'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/tracker';?>"><?php svg('libre-gui-binoculars');?> Tracker</a></li>
 <?php }?>
-            <li class="search<?php echo($view=='search'?' active':'');?>"><form class="" method="post" action="admin/search"><a href="<?php echo URL.$settings['system']['admin'].'/search';?>"><?php svg('libre-gui-search',($config['iconsColor']==1?true:null));?></a><input class="form-control" type="search" name="search" value="" placeholder="Search" onblur="$(this).val('');$('#menu_search_icon').toggleClass('hidden');" onfocus="$('#menu_search_icon').toggleClass('hidden');"></form></li>
+            <li<?php echo$view=='security'?' class="active"':'';?>><a href="<?php echo URL.$settings['system']['admin'].'/security';?>"><?php svg('libre-gui-security');?> Security</a></li>
+            <li class="search<?php echo$view=='search'?' active':'';?>"><form class="" method="post" action="admin/search"><a href="<?php echo URL.$settings['system']['admin'].'/search';?>"><?php svg('libre-gui-search');?></a><input class="form-control" type="search" name="search" value="" placeholder="Search" onblur="$(this).val('');$('#menu_search_icon').toggleClass('hidden');" onfocus="$('#menu_search_icon').toggleClass('hidden');"></form></li>
           </ul>
         </div>
       </aside>
@@ -132,35 +133,39 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
         <a href="#menu-toggle" class="navbar-brand" id="menu-toggle"><?php svg('libre-gui-layout-list');?></a>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php svg('libre-gui-bell',($config['iconsColor']==1?true:null),'','2x');?><span id="nav-stat" class="badge animated rubberBand"><?php echo($navStat>0?$navStat:'');?></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php svg('libre-gui-bell','','2x');?><span id="nav-stat" class="badge animated rubberBand"><?php echo($navStat>0?$navStat:'');?></span></a>
             <ul class="dropdown-menu">
-              <li><a href="<?php echo URL.$settings['system']['admin'];?>/content"><span id="nav-nc"><?php echo$nc['cnt'];?></span> Comments<?php svg('libre-gui-comments',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a href="<?php echo URL.$settings['system']['admin'];?>/content"><span id="nav-nr"><?php echo$nr['cnt'];?></span> Reviews<?php svg('libre-gui-layout-timeline',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a href="<?php echo URL.$settings['system']['admin'];?>/messages"><span id="nav-nm"><?php echo$nm['cnt'];?></span> Messages<?php svg('libre-gui-envelope',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a href="<?php echo URL.$settings['system']['admin'];?>/orders/pending"><span id="nav-po"><?php echo$po['cnt'];?></span> Orders<?php svg('libre-gui-shopping-cart',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a href="<?php echo URL.$settings['system']['admin'];?>/bookings"><span id="nav-nb"><?php echo$nb['cnt'];?></span> Bookings<?php svg('libre-gui-calendar',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a href="<?php echo URL.$settings['system']['admin'];?>/accounts"><span id="nav-nu"><?php echo$nu['cnt'];?></span> Users<?php svg('libre-gui-users',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a href="<?php echo URL.$settings['system']['admin'];?>/content/type/testimonials"><span id="nav-nt"><?php echo$nt['cnt'];?></span> Testimonials<?php svg('libre-gui-signature',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a href="<?php echo URL.$settings['system']['admin'];?>/accounts"><span id="nav-nou"><?php echo$nou['cnt'];?></span> Active Users <?php svg('libre-gui-users',($config['iconsColor']==1?true:null));?></a></li>
+              <li><a href="<?php echo URL.$settings['system']['admin'];?>/content"><span id="nav-nc"><?php echo$nc['cnt'];?></span> Comments<?php svg('libre-gui-comments');?></a></li>
+              <li><a href="<?php echo URL.$settings['system']['admin'];?>/content"><span id="nav-nr"><?php echo$nr['cnt'];?></span> Reviews<?php svg('libre-gui-layout-timeline');?></a></li>
+              <li><a href="<?php echo URL.$settings['system']['admin'];?>/messages"><span id="nav-nm"><?php echo$nm['cnt'];?></span> Messages<?php svg('libre-gui-envelope');?></a></li>
+              <li><a href="<?php echo URL.$settings['system']['admin'];?>/orders/pending"><span id="nav-po"><?php echo$po['cnt'];?></span> Orders<?php svg('libre-gui-shopping-cart');?></a></li>
+              <li><a href="<?php echo URL.$settings['system']['admin'];?>/bookings"><span id="nav-nb"><?php echo$nb['cnt'];?></span> Bookings<?php svg('libre-gui-calendar');?></a></li>
+              <li><a href="<?php echo URL.$settings['system']['admin'];?>/accounts"><span id="nav-nu"><?php echo$nu['cnt'];?></span> Users<?php svg('libre-gui-users');?></a></li>
+              <li><a href="<?php echo URL.$settings['system']['admin'];?>/content/type/testimonials"><span id="nav-nt"><?php echo$nt['cnt'];?></span> Testimonials<?php svg('libre-gui-signature');?></a></li>
+              <li><a href="<?php echo URL.$settings['system']['admin'];?>/accounts"><span id="nav-nou"><?php echo$nou['cnt'];?></span> Active Users <?php svg('libre-gui-users');?></a></li>
             </ul>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-<?php echo($user['name']!=''?$user['name']:$user['username']);?> <span class="caret"></span>
+<?php echo$user['name']!=''?$user['name']:$user['username'];?> <span class="caret"></span>
               <div class="userpic"><img id="menu_avatar" src="<?php if($user['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$user['avatar']))
-                  echo'media'.DS.'avatar'.DS.$user['avatar'];
-                elseif($user['gravatar']!=''){
-                  if(stristr($user['gravatar'],'@'))echo'http://gravatar.com/avatar/'.md5($user['gravatar']);
-                  elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))echo$user['gravatar'];
-                  else echo NOAVATAR;
-                } else echo NOAVATAR;?>"></div>
+                echo'media'.DS.'avatar'.DS.$user['avatar'];
+              elseif($user['gravatar']!=''){
+                if(stristr($user['gravatar'],'@'))
+                  echo'http://gravatar.com/avatar/'.md5($user['gravatar']);
+                elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))
+                  echo$user['gravatar'];
+                else
+                  echo NOAVATAR;
+              }else
+                echo NOAVATAR;?>"></div>
               </a>
             <ul class="dropdown-menu">
-              <li><a href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$user['id'];?>">Settings <?php svg('libre-gui-settings',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a target="_blank" href="core/vcard.php?u=<?php echo $user['username'];?>">vCard <?php svg('libre-social-vcard',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a target="_blank" href="https://github.com/DiemenDesign/LibreCMS/wiki">Help <?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a target="_blank" href="<?php echo URL;?>">View Site <?php svg('libre-gui-device-desktop',($config['iconsColor']==1?true:null));?></a></li>
-              <li><a href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out">Log Out <?php svg('libre-gui-sign-out',($config['iconsColor']==1?true:null));?></a></li>
+              <li><a href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$user['id'];?>">Settings <?php svg('libre-gui-settings');?></a></li>
+              <li><a target="_blank" href="core/vcard.php?u=<?php echo$user['username'];?>">vCard <?php svg('libre-social-vcard');?></a></li>
+              <li><a target="_blank" href="https://github.com/DiemenDesign/LibreCMS/wiki">Help <?php svg('libre-gui-help');?></a></li>
+              <li><a target="_blank" href="<?php echo URL;?>">View Site <?php svg('libre-gui-device-desktop');?></a></li>
+              <li><a href="<?php echo URL.$settings['system']['admin'].'/logout';?>" title="Sign Out">Log Out <?php svg('libre-gui-sign-out');?></a></li>
             </ul>
           </li>
         </ul>
@@ -185,8 +190,14 @@ $navStat=$nc['cnt']+$nr['cnt']+$nm['cnt']+$po['cnt']+$nb['cnt']+$nu['cnt']+$nt['
       }); */
 <?php if($config['options']{4}==0){?>
       $('[data-toggle="tooltip"]').tooltip('disable');
+      $('[data-tooltip="tooltip"]').tooltip('disable');
+<?php }else{?>
+      $('body').tooltip({
+        selector:"[data-tooltip=tooltip]",
+        container:"body"
+      });
 <?php }
-$st=$db->prepare("SELECT DISTINCT tags FROM content");
+$st=$db->prepare("SELECT DISTINCT tags FROM `".$prefix."content`");
 $st->execute();
 $tags='';
 while($sr=$st->fetch(PDO::FETCH_ASSOC)){
@@ -199,63 +210,67 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
   }
 }?>
       $('#tags').tokenfield({
-        autocomplete: {
-          source: [<?php echo$tags;?>],
-          delay: 100
+        autocomplete:{
+          source:[<?php echo$tags;?>],
+          delay:100
         },
-        showAutocompleteOnFocus: false
+        showAutocompleteOnFocus:false
       });
-      function elfinderDialog(id, t, c) {
-        var fm = $('<div/>').dialogelfinder({
-          url: "<?php echo URL.DS.'core'.DS.'elfinder'.DS.'php'.DS.'connector.php';?>",
-          lang: 'en',
-          width: 840,
-          height: 450,
-          destroyOnClose: true,
-          useBrowserHistory: false,
-          getFileCallback: function(file, fm) {
-            if (id > 0) {
+      function elfinderDialog(id,t,c){
+        var fm=$('<div/>').dialogelfinder({
+          url:"<?php echo URL.DS.'core'.DS.'elfinder'.DS.'php'.DS.'connector.php';?>",
+          lang:'en',
+          width:840,
+          height:450,
+          destroyOnClose:true,
+          useBrowserHistory:false,
+          getFileCallback:function(file,fm){
+            if(id>0){
               $('#'+c).val(file.url);
-              if (t != 'media') {
+              if(t!='media'){
                 Pace.start();
-                $('#'+c+'image').attr('src', file.url);
-                update(id, t, c, file.url);
+                update(id,t,c,file.url);
+                if(t=='config'&&c=='php_honeypot'){
+                  $('#php_honeypot_link').html('<a target="_blank" href="'+file.url+'">'+file.url+'</a>');
+                }else{
+                  $('#'+c+'image').attr('src',file.url);
+                }
               }
-            } else {
-              if (file.url.match(/\.(jpeg|jpg|gif|png)$/)) {
-                $('.summernote').summernote('editor.insertImage', file.url);
-              } else {
-                $('.summernote').summernote('createLink', {
-                  text: file.name,
-                  url: file.url,
-                  newWindow: true
+            }else{
+              if(file.url.match(/\.(jpeg|jpg|gif|png)$/)){
+                $('.summernote').summernote('editor.insertImage',file.url);
+              }else{
+                $('.summernote').summernote('createLink',{
+                  text:file.name,
+                  url:file.url,
+                  newWindow:true
                 });
               }
             }
           },
-          commandsOptions: {
-            getfile: {
-              oncomplete: 'close',
-              folders: false
+          commandsOptions:{
+            getfile:{
+              oncomplete:'close',
+              folders:false
             }
           }
         }).dialogelfinder('instance');
       }
 <?php if($view=='media'){?>
-      $().ready(function () {
-        var fm = $('#elfinder').elfinder({
-          url: "<?php echo URL.DS.'core'.DS.'elfinder'.DS.'php'.DS.'connector.php';?>",
-          handlers: {
-            dblclick: function (e, eI) {
+      $().ready(function(){
+        var fm=$('#elfinder').elfinder({
+          url:"<?php echo URL.DS.'core'.DS.'elfinder'.DS.'php'.DS.'connector.php';?>",
+          handlers:{
+            dblclick:function(e,eI){
               e.preventDefault();
-              eI.exec('getfile').done(function () {
+              eI.exec('getfile').done(function(){
                 eI.exec('quicklook');
-              }).fail(function () {
+              }).fail(function(){
                 eI.exec('open');
               });
             }
           },
-          getFileCallback: function () {
+          getFileCallback:function(){
             return false;
           },
         }).elfinder('instance');
@@ -263,148 +278,147 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC)){
 <?php }?>
         $('.summernote').summernote({
           height:<?php echo($view=='bookings'||$view=='orders'||$view=='preferences'||$view=='accounts'?'100':'300');?>,
-          codemirror: {
-            theme: 'default',
-            lineNumbers: true,
-            lineWrapping: true,
-            mode: "text/html"
+          codemirror:{
+            theme:'default',
+            lineNumbers:true,
+            lineWrapping:true,
+            mode:"text/html"
           },
-          tabsize: 2,
-          styleTags: ['p', 'blockquote', 'pre', 'h2', 'h3', 'h4', 'h5', 'h6'],
-          popover: {
+          tabsize:2,
+          styleTags:['p','blockquote','pre','h2','h3','h4','h5','h6'],
+          popover:{
             image:
               [
-                ['custom', ['imageAttributes', 'imageShapes', 'captionIt']],
-                ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
-                ['float', ['floatLeft', 'floatRight', 'floatNone']],
-                ['remove', ['removeMedia']],
+                ['custom',['imageAttributes','imageShapes','captionIt']],
+                ['imagesize',['imageSize100','imageSize50','imageSize25']],
+                ['float',['floatLeft','floatRight','floatNone']],
+                ['remove',['removeMedia']],
               ],
             link:
               [
-                ['link', ['linkDialogShow', 'unlink']]
+                ['link',['linkDialogShow','unlink']]
               ],
             air:
               [
-                ['color', ['color']],
-                ['font', ['bold', 'underline', 'clear']],
-                ['para', ['ul', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['media', 'link', 'picture']]
+                ['color',['color']],
+                ['font',['bold','underline','clear']],
+                ['para',['ul','paragraph']],
+                ['table',['table']],
+                ['insert',['media','link','picture']]
               ]
           },
-          lang: 'en-US',
+          lang:'en-US',
           toolbar:
             [
-              ['save', ['save']],
-              ['librecms', ['accessibility', 'findnreplace', 'cleaner', 'seo']],
-              ['style', ['style']],
-              ['font', ['bold', 'italic', 'underline', 'clear']],
-              ['fontname', ['fontname']],
-              ['fontsize', ['fontsize']],
-              ['color', ['color']],
-              ['para', ['ul', 'ol', 'paragraph']],
-              ['height', ['height']],
-              ['table', ['table']],
-              ['insert', ['videoAttributes','elfinder', 'link', 'hr']],
-              ['view', ['fullscreen', 'codeview']],
-              ['help', ['help']]
+              ['save',['save']],
+              ['librecms',['accessibility','findnreplace','cleaner','seo']],
+              ['style',['style']],
+              ['font',['bold','italic','underline','clear']],
+              ['fontname',['fontname']],
+              ['fontsize',['fontsize']],
+              ['color',['color']],
+              ['para',['ul','ol','paragraph']],
+              ['height',['height']],
+              ['table',['table']],
+              ['insert',['videoAttributes','elfinder','link','hr']],
+              ['view',['fullscreen','codeview']],
+              ['help',['help']]
             ],
-            callbacks: {
-              onInit: function () {
+            callbacks:{
+              onInit:function(){
                 $('body > .note-popover').appendTo(".note-editing-area");
               }
             }
         });
         $("#pti").datetimepicker({
-          defaultDate: moment($('#pti').data('datetime'),"<?php echo tomoment($config['dateFormat']);?>"),
-          format: '<?php echo tomoment($config['dateFormat']);?>'
-        }).on('dp.hide', function (e) {
-          update($('#pti').data('dbid'), 'content', 'pti', moment(e.date).unix());
+          defaultDate:moment($('#pti').data('datetime'),"<?php echo tomoment($config['dateFormat']);?>"),
+          format:'<?php echo tomoment($config['dateFormat']);?>'
+        }).on('dp.hide',function(e){
+          update($('#pti').data('dbid'),'content','pti',moment(e.date).unix());
         });
         $("#tis").datetimepicker({
-          defaultDate: moment($('#tis').data('datetime'), "<?php echo tomoment($config['dateFormat']);?>"),
-          format: '<?php echo tomoment($config['dateFormat']);?>'
-        }).on('dp.hide', function (e) {
+          defaultDate: moment($('#tis').data('datetime'),"<?php echo tomoment($config['dateFormat']);?>"),
+          format:'<?php echo tomoment($config['dateFormat']);?>'
+        }).on('dp.hide',function(e){
 <?php if($view!='rewards'){?>
-          update($('#tis').data('dbid'), 'content', 'tis', moment(e.date).unix());
+          update($('#tis').data('dbid'),'content','tis',moment(e.date).unix());
 <?php }?>
         });
         $("#tie").datetimepicker({
-          defaultDate: moment($('#tie').data('datetime'), "<?php echo tomoment($config['dateFormat']);?>"),
-          format: '<?php echo tomoment($config['dateFormat']);?>'
-        }).on('dp.hide', function (e) {
+          defaultDate:moment($('#tie').data('datetime'),"<?php echo tomoment($config['dateFormat']);?>"),
+          format:'<?php echo tomoment($config['dateFormat']);?>'
+        }).on('dp.hide',function(e){
 <?php if($view!='rewards'){?>
-          update($('#tie').data('dbid'), 'content', 'tie', moment(e.date).unix());
+          update($('#tie').data('dbid'),'content','tie',moment(e.date).unix());
 <?php }?>
         });
-        $(document).ready(function() {
+        $(document).ready(function(){
 <?php if($config['options']{4}==1){?>
           $('[data-toggle="tooltip"]').tooltip({
-            container: 'body',
-            title: "Tooltip Content Not Set..."
+            container:'body',
+            title:"Tooltip Content Not Set..."
           });
 <?php }
 if($view=='preferences'){}
 if($config['idleTime']!=0){?>
-          idleTimer = null;
-          idleState = false;
-          idleWait = <?php echo $config['idleTime'] * 60000;?>;
-          (function ($) {$(document).ready(function () {
-            $('*').bind('mousemove keydown scroll', function () {
+          idleTimer=null;
+          idleState=false;
+          idleWait=<?php echo$config['idleTime']*60000;?>;
+          (function($){$(document).ready(function(){
+            $('*').bind('mousemove keydown scroll',function(){
               clearTimeout(idleTimer);
-              idleState = false;
-              idleTimer = setTimeout(function () {
-                idleState = true;
-                unsaved = false;
-                ion.sound.play("autologout");
-                var newUrl = "<?php echo URL.$settings['system']['admin'].'/logout';?>";
-                document.location.href = newUrl;
+              idleState=false;
+              idleTimer=setTimeout(function(){
+                idleState=true;
+                unsaved=false;
+                ion.sound.play("notification");
+                var newUrl="<?php echo URL.$settings['system']['admin'].'/logout';?>";
+                document.location.href=newUrl;
               },idleWait);
             });
             $("body").trigger("mousemove");
           });
         })(jQuery);
 <?php }?>
-        $(function () {
-          var hash = document.location.hash;
-          if (hash) {
+        $(function(){
+          var hash=document.location.hash;
+          if(hash){
             $('.nav-tabs a[href='+hash+']').tab('show');
           }
-          $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-            window.location.hash = e.target.hash;
+          $('a[data-toggle="tab"]').on('show.bs.tab',function(e){
+            window.location.hash=e.target.hash;
           });
         });
       });
       $('[data-toggle="tooltip"]').on({
-        mouseleave: function () {
+        mouseleave:function(){
           $('*').tooltip('hide');
         }
       });
 <?php if($config['notification_volume']!=0){?>
       ion.sound({
-        sounds: [
+        sounds:[
 <?php if(file_exists('core'.DS.'sounds'.DS.'notification.mp3')){?>
           {
-            name: "notification"
+            name:"notification"
           },
 <?php }?>
         ],
-        path: "core/sounds/",
-        preload: true,
-        multiplay: true,
-        volume: <?php echo$config['notification_volume']/100;?>
+        path:"core/sounds/",
+        preload:true,
+        multiplay:true,
+        volume:<?php echo$config['notification_volume']/100;?>
       });
 <?php }?>
-        setInterval(function () {
-          $.get("core/nav-stats.php", {}, function (results) {
-            var stats = results.split(",");
-            var navStat = $('#nav-stat').html();
-            var stats = results.split(",");
-            var navStat = $('#nav-stat').html();
-            if (stats[0] == 0)
-              stats[0] = '';
+        setInterval(function(){
+          $.get("core/nav-stats.php",{},function(results){
+            var stats=results.split(",");
+            var navStat=$('#nav-stat').html();
+            var stats=results.split(",");
+            var navStat=$('#nav-stat').html();
+            if(stats[0]==0)stats[0]='';
             $('#nav-nou').html(stats[2]);
-            if (stats[1] == 1) {
+            if(stats[1]==1){
 <?php if(file_exists('core'.DS.'sounds'.DS.'notification.mp3')&&$config['notification_volume']!=0){?>
               ion.sound.play("notification");
 <?php }?>
@@ -419,172 +433,191 @@ if($config['idleTime']!=0){?>
             $('#nav-nb').html(stats[7]);
             $('#nav-nu').html(stats[8]);
             $('#nav-nt').html(stats[9]);
-            if (stats[1] == 0) {
-              document.title = 'Administration - LibreCMS';
-            } else {
+            if(stats[1]==0){
+              document.title='Administration - LibreCMS';
+            }else{
               $("#easyNotify").easyNotify({
-                title: 'LibreCMS Administration',
-                options: {
-                  body: '('+stats[0]+') New Notifications to view...',
-                  icon: 'core/images/favicon.png',
-                  lang: 'en-US'
+                title:'LibreCMS Administration',
+                options:{
+                  body:'('+stats[0]+') New Notifications to view...',
+                  icon:'core/images/favicon.png',
+                  lang:'en-US'
                 }
               });
             }
-            if (stats[0] > 0)
-              document.title = '(' + stats[0] + ') Administration - LibreCMS';
+            if(stats[0]>0)document.title='('+stats[0]+') Administration - LibreCMS';
           });
-      }, 30000);
-      $(document).ready( function () {
-        var badge = <?php echo $navStat;?>;
-        if (badge == 0) document.title = 'Administration - LibreCMS';
-        else document.title = '(' + badge + ') Administration - LibreCMS';
+      },30000);
+      $(document).ready(function(){
+        var badge=<?php echo$navStat;?>;
+        if(badge==0)document.title='Administration - LibreCMS';else document.title='('+badge+') Administration - LibreCMS';
         $('#media_items').sortable({
-          items: "li",
-          handle: ".handle",
-          helper: 'clone',
-          update: function (e, ui) {
-            var order = $("#media_items").sortable("serialize");
+          items:"li",
+          handle:".handle",
+          helper:'clone',
+          update:function(e,ui){
+            var order=$("#media_items").sortable("serialize");
             $.ajax({
-              type: "POST",
-              dataType: "json",
-              url: "core/reordermedia.php",
-              data: order
+              type:"POST",
+              dataType:"json",
+              url:"core/reordermedia.php",
+              data:order
             });
           }
         }).disableSelection();
         $('#proof_items').sortable({
-          items: "li",
-          handle: ".handle",
-          helper: 'clone',
-          update: function (e, ui) {
-            var order = $("#proof_items").sortable("serialize");
+          items:"li",
+          handle:".handle",
+          helper:'clone',
+          update:function(e,ui){
+            var order=$("#proof_items").sortable("serialize");
             $.ajax({
-              type: "POST",
-              dataType: "json",
-              url: "core/reorderproofs.php",
-              data: order
+              type:"POST",
+              dataType:"json",
+              url:"core/reorderproofs.php",
+              data:order
             });
           }
         }).disableSelection();
         $('.media-edit').popover({
-          html: true,
-          trigger: 'click',
-          title: 'Edit Media <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
-          container: 'body',
-          placement: 'auto',
-          template: '<div class="popover media" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
-          content: function () {
-            var id = $(this).data("dbid");
+          html:true,
+          trigger:'click',
+          title:'Edit Media <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
+          container:'body',
+          placement:'auto',
+          template:'<div class="popover media" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+          content:function(){
+            var id=$(this).data("dbid");
             return $.ajax({
-              url: 'core/layout/mediaedit.php',
-              dataType: 'html',
-              async: false,
-              data: {
-                id: id
+              url:'core/layout/mediaedit.php',
+              dataType:'html',
+              async:false,
+              data:{
+                id:id
               }
             }).responseText;
           }
         });
         $('.suggestion').popover({
-          html: true,
-          trigger: 'click',
-          title: 'Editing Suggestions <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
-          container: 'body',
-          placement: 'auto',
-          template: '<div class="popover suggestions" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
-          content: function () {
-            var el = $(this).data("dbgid");
-            var id = $('#' + el).data("dbid"),
-                t = $('#' + el).data("dbt"),
-                c = $('#' + el).data("dbc");
+          html:true,
+          trigger:'click',
+          title:'Editing Suggestions <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
+          container:'body',
+          placement:'auto',
+          template:'<div class="popover suggestions" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+          content:function(){
+            var el=$(this).data("dbgid");
+            var id=$('#'+el).data("dbid"),
+                t=$('#'+el).data("dbt"),
+                c=$('#'+el).data("dbc");
             return $.ajax({
-              url: 'core/layout/suggestions.php',
-              dataType: 'html',
-              async: false,
-              data: {
-                id: id,
-                t: t,
-                c: c
+              url:'core/layout/suggestions.php',
+              dataType:'html',
+              async:false,
+              data:{
+                id:id,
+                t:t,
+                c:c
+              }
+            }).responseText;
+          }
+        });
+        $('.phpviewer').popover({
+          html:true,
+          trigger:'click',
+          title:'Project Honey Pot Threat Assessment <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
+          container:'body',
+          placement:'auto',
+          template:'<div class="popover suggestions" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content">Looking up data...</div></div>',
+          content:function(){
+            var id=$(this).data("dbid"),
+                t=$(this).data("dbt");
+            return $.ajax({
+              url:'core/layout/phpviewer.php',
+              dataType:'html',
+              async:false,
+              data:{
+                id:id,
+                t:t
               }
             }).responseText;
           }
         });
 <?php if($user['rank']>899){?>
         $('.fingerprint').popover({
-          html: true,
-          trigger: 'click',
-          title: 'Fingerprint Analysis <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
-          container: 'body',
-          placement: 'auto',
-          template: '<div class="popover fingerprint" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
-          content: function () {
-            var el = $(this).data("dbgid");
-            var id = $('#' + el).data("dbid"),
-                t = $('#' + el).data("dbt"),
-                c = $('#' + el).data("dbc");
+          html:true,
+          trigger:'click',
+          title:'Fingerprint Analysis <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
+          container:'body',
+          placement:'auto',
+          template:'<div class="popover fingerprint" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+          content:function(){
+            var el=$(this).data("dbgid");
+            var id=$('#'+el).data("dbid"),
+                t=$('#'+el).data("dbt"),
+                c=$('#'+el).data("dbc");
             return $.ajax({
-              url: 'core/layout/dataspy.php',
-              dataType: 'html',
-              async: false,
-              data: {
-                id: id,
-                t: t,
-                c: c
+              url:'core/layout/dataspy.php',
+              dataType:'html',
+              async:false,
+              data:{
+                id:id,
+                t:t,
+                c:c
               }
             }).responseText;
           }
         });
         $('.addsuggestion').popover({
-          html: true,
-          trigger: 'click',
-          title: 'Add Suggestions <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
-          container: 'body',
-          placement: 'auto',
-          template: '<div class="popover suggestions" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
-          content: function () {
-            var el = $(this).data("dbgid");
-            var id = $('#' + el).data("dbid"),
-                t = $('#' + el).data("dbt"),
-                c = $('#' + el).data("dbc");
+          html:true,
+          trigger:'click',
+          title:'Add Suggestions <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
+          container:'body',
+          placement:'auto',
+          template:'<div class="popover suggestions" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+          content:function(){
+            var el=$(this).data("dbgid");
+            var id=$('#'+el).data("dbid"),
+                t=$('#'+el).data("dbt"),
+                c=$('#'+el).data("dbc");
             return $.ajax({
-              url: 'core/layout/suggestions-add.php',
-              dataType: 'html',
-              async: false,
-              data: {
-                id: id,
-                t: t,
-                c: c
+              url:'core/layout/suggestions-add.php',
+              dataType:'html',
+              async:false,
+              data:{
+                id:id,
+                t:t,
+                c:c
               }
             }).responseText;
           }
         });
-        $('.media-edit,[data-toggle="popover"],[data-toggle="analytics"]').each(function () {
-          var button = $(this);
-          button.popover().on('shown.bs.popover', function () {
+        $('.media-edit,[data-toggle="popover"],[data-toggle="analytics"]').each(function(){
+          var button=$(this);
+          button.popover().on('shown.bs.popover',function(){
             $('.popover').draggable({
-              zIndex: 2500,
-              handle: '.popover-title',
-              start: function () {
-                $('.popover').css({'z-index': '2500'});
-                $(this).css({'z-index': '2600'});
+              zIndex:2500,
+              handle:'.popover-title',
+              start:function(){
+                $('.popover').css({'z-index':'2500'});
+                $(this).css({'z-index':'2600'});
               },
-              stop: function () {
-                $(this).css({'z-index': '2600'});
+              stop:function(){
+                $(this).css({'z-index':'2600'});
               }
             });
             button.data('bs.popover')
               .tip().find('[data-dismiss="popover"]')
-              .on('click', function () {
+              .on('click',function(){
                 button.popover('hide');
               });
           });
         });
-        $('.media-edit,[data-toggle="tab"]').on('shown.bs.tab', function () {
+        $('.media-edit,[data-toggle="tab"]').on('shown.bs.tab',function(){
           $('*').popover('hide');
         });
-        $('body').on('hidden.bs.popover', function (e) {
-            $(e.target).data("bs.popover").inState.click = false;
+        $('body').on('hidden.bs.popover',function(e){
+            $(e.target).data("bs.popover").inState.click=false;
         });
 <?php }?>
       });
@@ -622,26 +655,27 @@ if($config['idleTime']!=0){?>
         </div>
       </div>
     </div>
-    <script>
-      $(document).ready( function () {
-         function autoPlayModal () {
-           var trigger = $("body").find('[data-toggle="modal"]');
-           trigger.click( function () {
-             var theFrame = $(this).data("frame");
-             var theModal = $(this).data("target");
-             var videoSRC = $(this).data("video");
-             videoSRCauto = videoSRC + "?autoplay=1";
-             $(theModal + ' ' + theFrame).attr('src', videoSRCauto);
-             $(theModal).on('hidden.bs.modal', function () {
-               $(theModal + ' ' + theFrame).removeAttr('src');
+    <script>/*<![CDATA[*/
+      $(document).ready(function(){
+         function autoPlayModal(){
+           var trigger=$("body").find('[data-toggle="modal"]');
+           trigger.click(function(){
+             var theFrame=$(this).data("frame");
+             var theModal=$(this).data("target");
+             var videoSRC=$(this).data("video");
+             videoSRCauto=videoSRC+"?autoplay=1";
+             $(theModal+' '+theFrame).attr('src',videoSRCauto);
+             $(theModal).on('hidden.bs.modal',function(){
+               $(theModal+' '+theFrame).removeAttr('src');
              })
            });
          }
-       autoPlayModal();
+         autoPlayModal();
+       Pace.restart();
      });
-    </script>
+    /*]]>*/</script>
   </body>
 </html>
 <?php
 }else
-require'core'.DS.'layout'.DS.'login.php';
+  require'core'.DS.'layout'.DS.'login.php';

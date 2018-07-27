@@ -7,14 +7,9 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 class="col-xs-8">Media Settings</h4>
-    <div class="pull-right">
-      <div class="btn-group">
-        <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/media';?>" data-toggle="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back',($config['iconsColor']==1?true:null));?></a>
-      </div>
-      <div class="btn-group">
-        <a target="_blank" class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#media-settings" data-toggle="tooltip" data-placement="left" title="Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
-        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
-      </div>
+    <div class="btn-group pull-right">
+      <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/media';?>" data-toggle="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
+      <?php if($help['media_settings_text']!='')echo'<a target="_blank" class="btn btn-default info" href="'.$help['media_settings_text'].'" data-toggle="tooltip" data-placement="left" title="Help">'.svg2('libre-gui-help').'</a>';if($help['media_settings_video']!='')echo'<a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['media_settings_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help">'.svg2('libre-gui-video').'</a>';?>
     </div>
   </div>
   <div class="panel-body">
@@ -23,7 +18,7 @@
       <label for="options2" class="control-label check col-xs-6 col-sm-4 col-lg-2" data-toggle="tooltip" title="Enable/Disable automatic image resizing when uploading images.">Enable Image Resizing</label>
       <div class="input-group col-xs-6 col-sm-8 col-lg-10">
         <div class="checkbox checkbox-success">
-          <input type="checkbox" id="options2" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="2"<?php echo($config['options']{2}==1?' checked':'');?>>
+          <input type="checkbox" id="options2" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="2"<?php echo$config['options']{2}==1?' checked':'';?>>
           <label for="options2"/>
         </div>
       </div>

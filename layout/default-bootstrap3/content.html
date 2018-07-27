@@ -1,6 +1,7 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="content">
+	<div class="jumbotron col-xs-12"><print page="cover"></div>
 	<main id="content" class="col-xs-12 col-sm-9" role="main">
 		<item>
 			<article class="article" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
@@ -33,6 +34,19 @@
 					<print content="dateEvent" class="text-muted" container="div" leadingtext="Event Date: ">
 					<print content="categories" class="text-muted" container="div" leadingtext="Categories: ">
 					<print content="tags" class="text-muted" container="div" leadingtext="Tags: ">
+					<mediaitems>
+						<div class="fancymedia">
+							<mediaimages>
+								<a data-fancybox="media-group" href="<print media=image>" data-width="<print media=width>" data-height="<print media=height>" data-caption="<print media=caption>"><img src="<print media=image>" alt="<print media=title> - <print media=caption>"></a>
+								<div class="mediadetails">
+									<h3><print media="title"></h3>
+									<p>
+										<print media="description">
+									</p>
+								</div>
+							</mediaimages>
+						</div>
+					</mediaitems>
 					<print content="notes">
 				</div>
 				<author>
@@ -75,17 +89,20 @@
 		<settings itemCount="10">
 		<items>
 			<article class="col-sm-4 col-md-4" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
-        <div class="content-item">
+				<meta itemprop="author" content="<print author=name>"/>
+				<meta itemprop="datePublished" content="<print content=datePublished>"/>
+				<meta itemprop="dateModified" content="<print content=dateEdited>"/>
+        <div class="content-item" data-contenttype="<print content=contentType>">
           <a href="<print content=linktitle>" role="link">
 						<span class="content-item-image">
-							<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>">
+							<img class="img-responsive" src="<print content=thumb>" alt="<print content=alttitle>" itemprop="thumbnail" role="image">
             </span>
           </a>
           <div class="content-item-info clearfix">
 						<controls>
 							<view>
-								<div class="content-item-title">
-									<a href="<print content=linktitle>" itemprop="name" role="link"><print content="title"></a>
+								<div class="content-item-title" itemprop="name headline">
+									<a href="<print content=linktitle>" itemprop="url" role="link"><print content="title"></a>
 								</div>
 							</view>
 							<service>
@@ -100,9 +117,9 @@
 								<print content="cost">
 							</span>
 						</cost>
-                    </div>
-                </div>
-            </article>
+          </div>
+      </div>
+  </article>
 		</items>
 		<more>
 			<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>

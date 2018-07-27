@@ -5,61 +5,48 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 $getcfg=true;
-require'db.php';
+require_once'db.php';
 echo'<script>/*<![CDATA[*/';
-require'zebra_image.php';
-require'sanitise.php';
+include'zebra_image.php';
+include'sanitise.php';
 define('THEME','..'.DS.'layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
-function svg($svg,$color=null,$class=null,$size=null){
-	echo'<i class="libre';
-	if($size!=null)echo' libre-'.$size;
-	if($color==true)$svg='col'.DS.$svg;
-	elseif($color!= null)echo' libre-'.$color;
-  if($class!=null)echo' '.$class;
-	echo'">';
-	include'svg'.DS.$svg.'.svg';
-	echo'</i>';
+function svg($svg,$class=null,$size=null){
+	echo'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
 }
-function svg2 ($svg, $color = null, $class = null,$size=null){
-	$svgout='<i class="libre';
-	if($size!=null)$svgout.=' libre-'.$size;
-	if($color==true)$svg='col'.DS.$svg;
-	elseif($color!=null)$svgout.=' libre-'.$color;
-  if($class!=null)$svgout.=' ' .$class;
-	$svgout.='">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
-	return$svgout;
+function svg2($svg,$class=null,$size=null){
+	return'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
 }
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
 if($act!=''){
   $uid=isset($_SESSION['uid'])?(int)$_SESSION['uid']:0;
-  $ip=$_SERVER['REMOTE_ADDR'];
+  $ip=$_SERVER['REMOTE_ADDR']=='::1'?'127.0.0.1':$_SERVER['REMOTE_ADDR'];
   $error=0;
   $ti=time();
   switch($act){
 		case'add_reward':
-			$code=    filter_input(INPUT_POST,'code',    FILTER_SANITIZE_STRING);
-			$title=   filter_input(INPUT_POST,'title',   FILTER_SANITIZE_STRING);
-			$method=  filter_input(INPUT_POST,'method',  FILTER_SANITIZE_NUMBER_INT);
-			$value=   filter_input(INPUT_POST,'value',   FILTER_SANITIZE_NUMBER_INT);
+			$code=filter_input(INPUT_POST,'code',FILTER_SANITIZE_STRING);
+			$title=filter_input(INPUT_POST,'title',FILTER_SANITIZE_STRING);
+			$method=filter_input(INPUT_POST,'method',FILTER_SANITIZE_NUMBER_INT);
+			$value=filter_input(INPUT_POST,'value',FILTER_SANITIZE_NUMBER_INT);
 			$quantity=filter_input(INPUT_POST,'quantity',FILTER_SANITIZE_NUMBER_INT);
-			$tis=     filter_input(INPUT_POST,'tis',     FILTER_SANITIZE_STRING);
-			$tie=     filter_input(INPUT_POST,'tie',     FILTER_SANITIZE_STRING);
-			$tis=($tis!=''?strtotime($tis):0);
-			$tie=($tie!=''?strtotime($tie):0);
-			$q=$db->prepare("INSERT INTO rewards (code,title,method,value,quantity,tis,tie,ti) VALUES (:code,:title,:method,:value,:quantity,:tis,:tie,:ti)");
+			$tis=filter_input(INPUT_POST,'tis',FILTER_SANITIZE_STRING);
+			$tie=filter_input(INPUT_POST,'tie',FILTER_SANITIZE_STRING);
+			$tis=$tis!=''?strtotime($tis):0;
+			$tie=$tie!=''?strtotime($tie):0;
+			$q=$db->prepare("INSERT INTO `".$prefix."rewards` (code,title,method,value,quantity,tis,tie,ti) VALUES (:code,:title,:method,:value,:quantity,:tis,:tie,:ti)");
 			$q->execute(
         array(
-          ':code'    =>$code,
-          ':title'   =>$title,
-          ':method'  =>$method,
-          ':value'   =>$value,
+          ':code'=>$code,
+          ':title'=>$title,
+          ':method'=>$method,
+          ':value'=>$value,
           ':quantity'=>$quantity,
-          ':tis'     =>$tis,
-          ':tie'     =>$tie,
-          ':ti'      =>$ti
+          ':tis'=>$tis,
+          ':tie'=>$tie,
+          ':ti'=>$ti
         )
       );
 			$id=$db->lastInsertId();
@@ -78,7 +65,7 @@ echo'<tr id="l_'.$id.'">'.
 				'<form target="sp" action="core/purge.php">'.
 					'<input type="hidden" name="id" value="'.$id.'">'.
 					'<input type="hidden" name="t" value="rewards">'.
-					'<button class="btn btn-default btn-sm trash">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button>'.
+					'<button class="btn btn-default btn-sm trash">'.svg2('libre-gui-trash').'</button>'.
 				'</form>'.
 			'</td>'.
 		'</tr>';?>
@@ -90,7 +77,7 @@ echo'<tr id="l_'.$id.'">'.
     case'add_dashrss':
       $url=filter_input(INPUT_POST,'url',FILTER_SANITIZE_URL);
       if(filter_var($url,FILTER_VALIDATE_URL)){
-        $q=$db->prepare("INSERT INTO choices (uid,contentType,url,ti) VALUES (:uid,'dashrss',:url,'0')");
+        $q=$db->prepare("INSERT INTO `".$prefix."choices` (uid,contentType,url,ti) VALUES (:uid,'dashrss',:url,'0')");
         $q->execute(
           array(
             ':uid'=>$uid,
@@ -113,7 +100,7 @@ echo'<div id="l_'.$id.'" class="form-group">'.
 					'<form target="sp" action="core/purge.php">'.
 						'<input type="hidden" name="id" value="'.$id.'">'.
 						'<input type="hidden" name="t" value="choices">'.
-						'<button class="btn btn-default trash">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button>'.
+						'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
 					'</form>'.
 				'</div>'.
 			'</div>'.
@@ -132,7 +119,7 @@ echo'<div id="l_'.$id.'" class="form-group">'.
         if($icon=='none'||$url==''){?>
   window.top.window.$.notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
 <?php   }else{
-          $q=$db->prepare("INSERT INTO choices (uid,contentType,icon,url) VALUES (:uid,'social',:icon,:url)");
+          $q=$db->prepare("INSERT INTO `".$prefix."choices` (uid,contentType,icon,url) VALUES (:uid,'social',:icon,:url)");
           $q->execute(
             array(
               ':uid' =>kses($user,array()),
@@ -147,7 +134,7 @@ echo'<div id="l_'.$id.'" class="form-group">'.
 echo'<div id="l_'.$id.'" class="form-group">'.
 			'<div class="input-group col-xs-12">'.
 				'<div class="input-group-addon">'.
-					'<span class="libre-social">'.svg2('libre-social-'.$icon,($config['iconsColor']==1?true:null)).'</span>'.
+					'<span class="libre-social">'.svg2('libre-social-'.$icon).'</span>'.
 				'</div>'.
 				'<form target="sp" method="post" action="core/update.php">'.
 					'<input type="hidden" name="t" value="social">'.
@@ -158,7 +145,7 @@ echo'<div id="l_'.$id.'" class="form-group">'.
 					'<form target="sp" action="core/purge.php">'.
 						'<input type="hidden" name="id" value="'.$id.'">'.
 						'<input type="hidden" name="t" value="choices">'.
-						'<button class="btn btn-default trash">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button>'.
+						'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
 					'</form>'.
 				'</div>'.
 			'</div>'.
@@ -179,13 +166,13 @@ echo'<div id="l_'.$id.'" class="form-group">'.
       if($ttl==''){?>
 	window.top.window.$.notify({type:'danger',icon:'',message:'Data not Entirely Entered'});
 <?php }else{
-        $q=$db->prepare("INSERT INTO choices (uid,rid,contentType,title,ti) VALUES (:uid,:rid,'option',:title,:ti)");
+        $q=$db->prepare("INSERT INTO `".$prefix."choices` (uid,rid,contentType,title,ti) VALUES (:uid,:rid,'option',:title,:ti)");
         $q->execute(
           array(
-            ':uid'  =>$uid,
-            ':rid'  =>$rid,
+            ':uid'=>$uid,
+            ':rid'=>$rid,
             ':title'=>kses($ttl,array()),
-            ':ti'   =>$qty
+            ':ti'=>$qty
           )
         );
         $id=$db->lastInsertId();
@@ -212,7 +199,7 @@ echo'<div id="l_'.$id.'" class="form-group">'.
 					'<form target="sp" action="core/purge.php">'.
 						'<input type="hidden" name="id" value="'.$id.'">'.
 						'<input type="hidden" name="t" value="choices">'.
-						'<button class="btn btn-default trash">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button>'.
+						'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
 					'</form>'.
 				'</div>'.
 			'</div>'.
@@ -229,11 +216,11 @@ echo'<div id="l_'.$id.'" class="form-group">'.
       if($sub==''){?>
   window.top.window.$.notify({type:'danger',icon:'',message:'Data not Entirely Entered'});
 <?php }else{
-        $q=$db->prepare("INSERT INTO choices (contentType,title,url) VALUES ('subject',:title,:url)");
+        $q=$db->prepare("INSERT INTO `".$prefix."choices` (contentType,title,url) VALUES ('subject',:title,:url)");
         $q->execute(
           array(
             ':title'=>kses($sub,array()),
-            ':url'  =>kses($eml,array())
+            ':url'=>kses($eml,array())
           )
         );
         $id=$db->lastInsertId();
@@ -260,7 +247,7 @@ echo'<div id="l_'.$id.'" class="form-group">'.
 					'<form target="sp" action="core/purge.php">'.
 						'<input type="hidden" name="id" value="'.$id.'">'.
 						'<input type="hidden" name="t" value="choices">'.
-						'<button class="btn btn-default trash">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button>'.
+						'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
 					'</form>'.
 				'</div>'.
 			'</div>'.
@@ -273,16 +260,16 @@ echo'<div id="l_'.$id.'" class="form-group">'.
       break;
     case'make_client':
       $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-      $q=$db->prepare("SELECT name,email,phone FROM messages WHERE id=:id");
+      $q=$db->prepare("SELECT name,email,phone FROM `".$prefix."messages` WHERE id=:id");
       $q->execute(array(':id'=>$id));
       $r=$q->fetch(PDO::FETCH_ASSOC);
-      $q=$db->prepare("INSERT INTO login (name,email,phone,ti) VALUES (:name,:email,:phone,:ti)");
+      $q=$db->prepare("INSERT INTO `".$prefix."login` (name,email,phone,ti) VALUES (:name,:email,:phone,:ti)");
       $q->execute(
         array(
-          ':name' =>$r['name'],
+          ':name'=>$r['name'],
           ':email'=>$r['email'],
           ':phone'=>$r['phone'],
-          ':ti'   =>$ti
+          ':ti'=>$ti
         )
       );
       $e=$db->errorInfo();
@@ -293,38 +280,37 @@ echo'<div id="l_'.$id.'" class="form-group">'.
 <?php }
       break;
     case'add_comment':
-      $rid  =filter_input(INPUT_POST,'rid',  FILTER_SANITIZE_NUMBER_INT);
+      $rid=filter_input(INPUT_POST,'rid',FILTER_SANITIZE_NUMBER_INT);
       $email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
       if(filter_var($email,FILTER_VALIDATE_EMAIL)){
-        $q=$db->prepare("SELECT * FROM login WHERE email=:email");
+        $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE email=:email");
         $q->execute(array(':email'=>$email));
         $c=$q->fetch(PDO::FETCH_ASSOC);
         $cid=($c['id']!=0?$c['id']:0);
-        $name       =filter_input(INPUT_POST,'name',       FILTER_SANITIZE_STRING);
+        $name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
         $contentType=filter_input(INPUT_POST,'contentType',FILTER_SANITIZE_STRING);
-        $da         =filter_input(INPUT_POST,'da',         FILTER_SANITIZE_STRING);
-        $status     ='approved';
-        $q=$db->prepare("INSERT INTO comments (contentType,rid,uid,cid,ip,name,email,notes,status,ti) VALUES (:contentType,:rid,:uid,:cid,:ip,:name,:email,:notes,:status,:ti)");
+        $da=filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING);
+        $status='approved';
+        $q=$db->prepare("INSERT INTO `".$prefix."comments` (contentType,rid,uid,cid,ip,name,email,notes,status,ti) VALUES (:contentType,:rid,:uid,:cid,:ip,:name,:email,:notes,:status,:ti)");
         $q->execute(
           array(
             ':contentType'=>$contentType,
-            ':rid'        =>$rid,
-            ':uid'        =>$uid,
-            ':cid'        =>$cid,
-            ':ip'         =>$ip,
-            ':name'       =>$name,
-            ':email'      =>$email,
-            ':notes'      =>$da,
-            ':status'     =>$status,
-            ':ti'         =>$ti
+            ':rid'=>$rid,
+            ':uid'=>$uid,
+            ':cid'=>$cid,
+            ':ip'=>$ip,
+            ':name'=>$name,
+            ':email'=>$email,
+            ':notes'=>$da,
+            ':status'=>$status,
+            ':ti'=>$ti
           )
         );
         $id=$db->lastInsertId();
         $e=$db->errorInfo();
         if(is_null($e[2])){
 					$avatar='core'.DS.'images'.DS.'noavatar.jpg';
-          if($c['avatar']!=''&&file_exists('..'.DS.'media'.DS.$c['avatar']))
-            $avatar='media'.DS.'avatar'.DS.$c['avatar'];
+          if($c['avatar']!=''&&file_exists('..'.DS.'media'.DS.$c['avatar']))$avatar='media'.DS.'avatar'.DS.$c['avatar'];
           elseif($c['gravatar']!=''){
             if(stristr($c['gravatar'],'@'))
 							$avatar='http://gravatar.com/avatar/'.md5($c['gravatar']);
@@ -339,7 +325,7 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
 			'<div class="media-body">'.
 				'<div class="well">'.
 					'<div id="controls-'.$id.'" class="btn-group btn-comments">'.
-						'<button class="btn btn-default btn-sm trash" onclick="purge(`'.$id.'`,`comments`);">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button>'.
+						'<button class="btn btn-default btn-sm trash" onclick="purge(`'.$id.'`,`comments`);">'.svg2('libre-gui-trash').'</button>'.
 					'</div>'.
 					'<h6 class="media-heading">'.$name.'</h6>'.
 					'<time><small class="text-muted">'.date($config['dateFormat'],$ti).'</small></time><br>'.
@@ -357,10 +343,10 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
       break;
     case'add_avatar':
 		case'add_tstavatar':
-      $id =filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
-      $tbl=filter_input(INPUT_POST,'t', FILTER_SANITIZE_STRING);
+      $id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
+      $tbl=filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING);
       $tbl=kses($tbl,array());
-      $col=filter_input(INPUT_POST,'c', FILTER_SANITIZE_STRING);
+      $col=filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING);
       $col=kses($col,array());
       $exif='none';
       $fu=$_FILES['fu'];
@@ -374,12 +360,13 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
             if($ft=="image/gif")$fn=$col.'_'.$id.'.gif';
 						if($act=='add_tstavatar'){
 							$fn='tst'.$fn;
-							$q=$db->prepare("UPDATE content SET file=:avatar WHERE id=:id");
-						}else$q=$db->prepare("UPDATE login SET avatar=:avatar WHERE id=:id");
+							$q=$db->prepare("UPDATE `".$prefix."content` SET file=:avatar WHERE id=:id");
+						}else
+							$q=$db->prepare("UPDATE `".$prefix."login` SET avatar=:avatar WHERE id=:id");
 						$q->execute(
 							array(
 								':avatar'=>'avatar'.$fn,
-								':id'    =>$id
+								':id'=>$id
 							)
 						);
             $image=new Zebra_image();
@@ -402,23 +389,23 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
 <?php break;
     case'add_media':
       $id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
-      $t =filter_input(INPUT_POST,'t', FILTER_SANITIZE_STRING);
+      $t=filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING);
       $fu=filter_input(INPUT_POST,'fu',FILTER_SANITIZE_STRING);
       if($fu!=''){
         if($t=='pages'||$t=='content'){
-          $q=$db->prepare("INSERT INTO media (rid,pid,file,ti) VALUES (0,:pid,:file,:ti)");
+          $q=$db->prepare("INSERT INTO `".$prefix."media` (rid,pid,file,ti) VALUES (0,:pid,:file,:ti)");
           $q->execute(
             array(
-              ':pid' =>$id,
+              ':pid'=>$id,
               ':file'=>$fu,
-              ':ti'  =>time()
+              ':ti'=>time()
             )
           );
           $iid=$db->lastInsertId();
-          $q=$db->prepare("UPDATE media SET ord=:ord WHERE id=:id");
+          $q=$db->prepare("UPDATE `".$prefix."media` SET ord=:ord WHERE id=:id");
           $q->execute(
             array(
-              ':id' =>$iid,
+              ':id'=>$iid,
               ':ord'=>$iid+1
             )
           );?>
@@ -426,9 +413,9 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
 echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
 			'<div class="panel panel-default media">'.
 				'<div class="controls btn-group">'.
-					'<span class="handle btn btn-default btn-xs">'.svg2('libre-gui-drag',($config['iconsColor']==1?true:null)).'</span>'.
-					'<button class="btn btn-default btn-xs media-edit" data-dbid="'.$iid.'">'.svg2('libre-gui-edit',($config['iconsColor']==1?true:null)).'</button>'.
-					'<button class="btn btn-default trash btn-xs" onclick="purge(`'.$iid.'`,`media`)">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button>'.
+					'<span class="handle btn btn-default btn-xs">'.svg2('libre-gui-drag').'</span>'.
+					'<button class="btn btn-default btn-xs media-edit" data-dbid="'.$iid.'">'.svg2('libre-gui-edit').'</button>'.
+					'<button class="btn btn-default trash btn-xs" onclick="purge(`'.$iid.'`,`media`)">'.svg2('libre-gui-trash').'</button>'.
 				'</div>'.
 				'<div class="panel-body">'.
 					'<img src="'.$fu.'">'.
@@ -446,33 +433,33 @@ echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
       $oid=filter_input(INPUT_GET,'oid',FILTER_SANITIZE_NUMBER_INT);
       $iid=filter_input(INPUT_GET,'iid',FILTER_SANITIZE_NUMBER_INT);
       if($iid!=0){
-        $q=$db->prepare("SELECT title,cost FROM content WHERE id=:id");
+        $q=$db->prepare("SELECT title,cost FROM `".$prefix."content` WHERE id=:id");
         $q->execute(array(':id'=>$iid));
         $r=$q->fetch(PDO::FETCH_ASSOC);
 				if($r['cost']==''||!is_numeric($r['cost']))$r['cost']=0;
       }else{
         $r=array(
           'title'=>'',
-          'cost' =>0
+          'cost'=>0
         );
       }
-      $q=$db->prepare("INSERT INTO orderitems (oid,iid,title,quantity,cost,ti) VALUES (:oid,:iid,:title,'1',:cost,:ti)");
+      $q=$db->prepare("INSERT INTO `".$prefix."orderitems` (oid,iid,title,quantity,cost,ti) VALUES (:oid,:iid,:title,'1',:cost,:ti)");
       $q->execute(
         array(
-          ':oid'  =>$oid,
-          ':iid'  =>$iid,
+          ':oid'=>$oid,
+          ':iid'=>$iid,
           ':title'=>$r['title'],
-          ':cost' =>$r['cost'],
-          ':ti'   =>time()
+          ':cost'=>$r['cost'],
+          ':ti'=>time()
         )
       );
       $total=0;
       $html='';
-      $q=$db->prepare("SELECT * FROM orderitems WHERE oid=:oid ORDER BY ti ASC,title ASC");
+      $q=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid ORDER BY ti ASC,title ASC");
       $q->execute(array(':oid'=>$oid));?>
   window.top.window.$('#updateorder').html('<?php
       while($oi=$q->fetch(PDO::FETCH_ASSOC)){
-        $s=$db->prepare("SELECT * FROM content WHERE id=:id");
+        $s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
         $s->execute(array(':id'=>$oi['iid']));
         $i=$s->fetch(PDO::FETCH_ASSOC);
         echo'<tr>'.
@@ -487,7 +474,7 @@ echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
 									'<input type="hidden" name="t" value="orderitems">'.
 									'<input type="hidden" name="c" value="quantity">'.
 									'<input type="hidden" name="da" value="0">'.
-									'<button class="btn btn-default trash">'.svg2('libre-gui-trash',($config['iconsColor']==1?true:null)).'</button>'.
+									'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
 								'</form>'.
 							'</td>'.
 						'</tr>';
@@ -498,4 +485,4 @@ echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
 <?php break;
   }
 }
-echo '/*]]>*/</script>';
+echo'/*]]>*/</script>';

@@ -35,16 +35,16 @@
               </span>
             </div>
             <div class="form-group input-group">
-              <div class="input-group-addon"><?php svg('libre-gui-user',($config['iconsColor']==1?true:null));?></div>
+              <div class="input-group-addon"><?php svg('libre-gui-user');?></div>
               <input type="text" id="username" class="form-control" name="username" value="" placeholder="Username..." autofocus required>
             </div>
             <div class="form-group input-group">
-              <div class="input-group-addon"><?php svg('libre-gui-lock',($config['iconsColor']==1?true:null));?></div>
+              <div class="input-group-addon"><?php svg('libre-gui-lock');?></div>
               <input type="password" id="password" class="form-control" name="password" placeholder="Password..." autocomplete="off" required>
             </div>
             <div class="form-group clearfix">
-              <button class="btn lgn btn-danger pull-left" type="reset"><?php svg('libre-gui-eraser',($config['iconsColor']==1?true:null));?>&nbsp;&nbsp;Reset</button>
-              <button class="btn lgn btn-primary pull-right" type="submit"><?php svg('libre-gui-sign-in',($config['iconsColor']==1?true:null));?>&nbsp;&nbsp;Sign in</button>
+              <button class="btn lgn btn-danger pull-left" type="reset"><?php svg('libre-gui-eraser');?>&nbsp;&nbsp;Reset</button>
+              <button class="btn lgn btn-primary pull-right" type="submit"><?php svg('libre-gui-sign-in');?>&nbsp;&nbsp;Sign in</button>
             </div>
           </form>
           <div class="form-group text-center">
@@ -56,7 +56,7 @@
               <div class="input-group col-xs-12">
                 <input type="text" id="rst" class="form-control" name="rst" value="" autocomplete="off" placeholder="Enter Account Email..." required>
                 <div class="input-group-btn">
-                  <button id="rstbusy" type="submit" class="btn btn-primary pull-right"><?php svg('libre-gui-envelope',($config['iconsColor']==1?true:null));?></button>
+                  <button id="rstbusy" type="submit" class="btn btn-primary pull-right"><?php svg('libre-gui-envelope');?></button>
                 </div>
               </div>
             </div>
@@ -66,21 +66,21 @@
       </div>
     </div>
     <script>/*<![CDATA[*/
-      $('#login').submit(function (e) {
-        var formId = this.id,
-            form   = this;
+      $('#login').submit(function(e){
+        var formId=this.id,
+            form=this;
         $('#panelLogin').addClass('animated flipOutX');
         e.preventDefault();
-        setTimeout(function () {
+        setTimeout(function(){
           form.submit();
         },420);
       });
-      $('#panel-rst').submit(function () {
+      $('#panel-rst').submit(function(){
         $('#rstbusy').html('<i class="libre libre-spinner-1"></i>');
         $.ajax({
-          data: $(this).serialize(),
-          type: $(this).attr('method'),
-          url:  $(this).attr('action'),
+          data:$(this).serialize(),
+          type:$(this).attr('method'),
+          url:$(this).attr('action'),
           success:function(response){
             $('#rstfeedback').html(response);
             $('#rstbusy').html('<i class="libre libre-envelope"></i>');

@@ -5,10 +5,10 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 echo'<script>/*<![CDATA[*/';
-include'db.php';
+require_once'db.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $oid=filter_input(INPUT_GET,'oid',FILTER_SANITIZE_NUMBER_INT);
-$q=$db->prepare("UPDATE orders SET cid=:cid WHERE id=:oid");
+$q=$db->prepare("UPDATE `".$prefix."orders` SET cid=:cid WHERE id=:oid");
 $q->execute(
   array(
     ':cid'=>$id,
@@ -17,21 +17,21 @@ $q->execute(
 );
 if($id==0){
   $c=array(
-    'id'      =>0,
+    'id'=>0,
     'username'=>'',
-    'name'    =>'',
+    'name'=>'',
     'business'=>'',
-    'address' =>'',
-    'suburb'  =>'',
-    'state'   =>'',
-    'city'    =>'',
+    'address'=>'',
+    'suburb'=>'',
+    'state'=>'',
+    'city'=>'',
     'postcode'=>'',
-    'email'   =>'',
-    'phone'   =>'',
-    'mobile'  =>''
+    'email'=>'',
+    'phone'=>'',
+    'mobile'=>''
   );
 }else{
-  $q=$db->prepare("SELECT * FROM login WHERE id=:id");
+  $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
   $q->execute(array(':id'=>$id));
   $c=$q->fetch(PDO::FETCH_ASSOC);
 }?>

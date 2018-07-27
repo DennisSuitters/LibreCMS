@@ -10,14 +10,14 @@ require'..'.DS.'db.php';
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $u=isset($_POST['u'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'u',FILTER_SANITIZE_STRING);
 $t=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
-$config=$db->query("SELECT seoKeywords FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+$config=$db->query("SELECT seoKeywords FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 if($t=='menu'){
-  $s=$db->prepare("SELECT seoKeywords FROM menu WHERE id=:id");
+  $s=$db->prepare("SELECT seoKeywords FROM `".$prefix."menu` WHERE id=:id");
   $s->execute(array(':id'=>$id));
   $r=$s->fetch(PDO::FETCH_ASSOC);
   $k=$r['seoKeywords'];
 }elseif($t=='content'){
-  $s=$db->prepare("SELECT seoKeywords FROM content WHERE id=:id");
+  $s=$db->prepare("SELECT seoKeywords FROM `".$prefix."content` WHERE id=:id");
   $s->execute(array(':id'=>$id));
   $r=$s->fetch(PDO::FETCH_ASSOC);
   $k=$r['seoKeywords'];

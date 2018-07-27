@@ -7,11 +7,8 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
     <h4 class="col-xs-8">Rewards</h4>
-    <div class="pull-right">
-      <div class="btn-group">
-        <a target="_blank" class="btn btn-default info" href="https://github.com/DiemenDesign/LibreCMS/wiki/Administration#messages-settings" data-toggle="tooltip" data-placement="left" title="Help"><?php svg('libre-gui-help',($config['iconsColor']==1?true:null));?></a>
-        <span data-toggle="tooltip" data-placement="left" title="Watch Video Help"><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="https://www.youtube.com/embed/FsXG1YSqcjU"><?php svg('libre-gui-video',($config['iconsColor']==1?true:null));?></a></span>
-      </div>
+    <div class="btn-group pull-right">
+      <?php if($help['rewards_text']!='')echo'<a target="_blank" class="btn btn-default info" href="'.$help['rewards_text'].'" data-toggle="tooltip" data-placement="left" title="Help">'.svg2('libre-gui-help').'</a>';if($help['rewards_video']!='')echo'<span><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['rewards_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help">'.svg2('libre-gui-video').'</a>';?>
     </div>
   </div>
   <div class="panel-body">
@@ -45,27 +42,27 @@
               <td><input type="text" class="form-control input-sm" name="quantity" value="" placeholder="Quantity..."></td>
               <td><div class="input-group"><input type="text" id="tis" class="form-control input-sm" data-datetime="<?php echo date($config['dateFormat'],time());?>" name="tis" value=""></div></td>
               <td><div class="input-group"><input type="text" id="tie" class="form-control input-sm" data-datetime="<?php echo date($config['dateFormat'],time());?>" name="tie" value=""></div></td>
-              <td><button class="btn btn-default btn-sm add" type="submit"><?php svg('libre-gui-plus',($config['iconsColor']==1?true:null));?></button></td>
+              <td><button class="btn btn-default btn-sm add" type="submit"><?php svg('libre-gui-plus');?></button></td>
             </tr>
           </thead>
         </form>
         <tbody id="rewards">
-<?php $s=$db->prepare("SELECT * FROM rewards ORDER BY ti ASC, code ASC");
+<?php $s=$db->prepare("SELECT * FROM `".$prefix."rewards` ORDER BY ti ASC, code ASC");
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
           <tr id="l_<?php echo$r['id'];?>">
             <td class="col-xs-1 text-center"><small><?php echo$r['code'];?></small></td>
             <td class="col-xs-4 text-center"><small><?php echo$r['title'];?></small></td>
-            <td class="col-xs-1 text-center"><small><?php echo($r['method']==0?'% Off':'$ Off');?></small></td>
+            <td class="col-xs-1 text-center"><small><?php echo$r['method']==0?'% Off':'$ Off';?></small></td>
             <td class="col-xs-1 text-center"><small><?php echo $r['value'];?></small></td>
             <td class="col-xs-1 text-center"><small><?php echo $r['quantity'];?></small></td>
-            <td class="col-xs-2 text-center"><small><?php echo($r['tis']!=0?date($config['dateFormat'],$r['tis']):'');?></small></td>
-            <td class="col-xs-2 text-center"><small><?php echo($r['tie']!=0?date($config['dateFormat'],$r['tie']):'');?></small></td>
+            <td class="col-xs-2 text-center"><small><?php echo$r['tis']!=0?date($config['dateFormat'],$r['tis']):'';?></small></td>
+            <td class="col-xs-2 text-center"><small><?php echo$r['tie']!=0?date($config['dateFormat'],$r['tie']):'';?></small></td>
             <td class="">
               <form target="sp" action="core/purge.php">
                 <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                 <input type="hidden" name="t" value="rewards">
-                <button class="btn btn-default btn-sm trash"><?php svg('libre-gui-trash',($config['iconsColor']==1?true:null));?></button>
+                <button class="btn btn-default btn-sm trash"><?php svg('libre-gui-trash');?></button>
               </form>
             </td>
           </tr>
