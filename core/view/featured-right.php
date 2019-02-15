@@ -12,7 +12,8 @@ if(stristr($html,'<events')){
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$items=$event;
-		if($r['seoCaption']=='')$r['seoCaption']=strip_tags($r['notes']);
+		if($r['seoCaption']=='')
+			$r['seoCaption']=strip_tags($r['notes']);
 		$items=preg_replace(
 			array(
 				'/<print content=[\"\']?schematype[\"\']?>/',
@@ -27,7 +28,7 @@ if(stristr($html,'<events')){
 				htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
 				date($config['dateFormat'],$r['tis']),
 				date($config['dateFormat'],$r['tis']),
-				URL.'events/'.urlencode(str_replace(' ','-',$r['title'])),
+				htmlspecialchars(URL.'events/'.urlencode(str_replace(' ','-',$r['title'])),ENT_QUOTES,'UTF-8'),
 				htmlspecialchars(preg_replace('/\s+?(\S+)?$/','',substr($r['seoCaption'],0,151)),ENT_QUOTES,'UTF-8')
 			),
 			$items
@@ -44,7 +45,8 @@ if(stristr($html,'<news')){
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$items=$news;
-		if($r['seoCaption']=='')$r['seoCaption']=strip_tags($r['notes']);
+		if($r['seoCaption']=='')
+			$r['seoCaption']=strip_tags($r['notes']);
 		$items=preg_replace(
 			array(
 				'/<print content=[\"\']?schemaType[\"\']?>/',
@@ -58,7 +60,7 @@ if(stristr($html,'<news')){
 				htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
 				date($config['dateFormat'],$r['tis']),
 				date($config['dateFormat'],$r['tis']),
-				URL.'news/'.urlencode(str_replace(' ','-',$r['title'])),
+				htmlspecialchars(URL.'news/'.urlencode(str_replace(' ','-',$r['title'])),ENT_QUOTES,'UTF-8'),
 				htmlspecialchars(preg_replace('/\s+?(\S+)?$/','',substr($r['seoCaption'],0,151)),ENT_QUOTES,'UTF-8')
 			),
 			$items

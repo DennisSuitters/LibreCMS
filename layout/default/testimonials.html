@@ -1,0 +1,71 @@
+<block include="meta_head.html">
+<block include="header.html">
+<block inbed="testimonials">
+	<div class="container">
+		<div class="row mt-4 mb-4 m-sm-5">
+			<print page="notes">
+			<div class="col-12 col-sm-6">
+				<items>
+					<div class="mt-5" itemscope itemtype="http://schema.org/Review">
+						<meta itemprop="itemReviewed" content="<print config=title>">
+						<meta itemprop="datePublished" content="<print datePub>">
+	          <div class="quote">
+	            <blockquote>
+	              <p itemprop="reviewBody">
+									<print content="notes">
+			          </p>
+			        </blockquote>
+			      </div>
+			      <div class="quote-footer text-right">
+			        <div class="quote-author-img">
+			          <img src="<print content=avatar>" role="img">
+			      	</div>
+			        <h4 itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><print content="name"></span></h4>
+			        <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+			          <strong itemprop="name"><print content="business"></strong>
+			        </p>
+			      </div>
+			    </div>
+				</items>
+			</div>
+			<div id="testimonial" class="col-12 col-sm-6">
+				<form id="testimonialform" method="post" action="core/add_testimonial.php" role="form">
+					<input type="hidden" name="act" value="add_test">
+					<input type="hidden" name="emailtrap" value="none">
+					<h1 class="h4">We would love to have you share your experience with us.</h1>
+					<div class="alert alert-info">Entering your email is only for our records, we don't use it for displaying your Testimonial.</div>
+					<div class="alert alert-danger">Red Highlighted fields are required.</div>
+					<div class="form-group">
+						<label for="review" class="text-danger">Enter how your Experience was with us</label>
+						<textarea id="review" class="form-control is-invalid" name="review" required aria-required="true" role="textbox"></textarea>
+					</div>
+					<div class="form-group">
+						<label for="email" class="text-danger">Please Enter your Email</label>
+						<input type="email" id="email" class="form-control is-invalid" name="email" required aria-required="true" role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="name" class="text-danger">Please Enter your Name</label>
+						<input type="text" id="name" class="form-control is-invalid" name="name" required aria-required="true" role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="business">Please Enter Your Business</label>
+						<input type="text" id="business" class="form-control" name="business" role="textbox">
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-success btn-block" role="button">Submit your Testimonial</button>
+					</div>
+				</form>
+				<script>/*<![CDATA[*/
+					$("#testimonialform").submit(function(){
+						$.post($(this).attr("action"),$(this).serialize(),function(data){
+							$("#testimonial").html(data);
+						});
+						return false;
+					});
+				/*]]>*/</script>
+			</div>
+		</div>
+	</div>
+</block>
+<block include="footer.html">
+<block include="meta_footer.html">

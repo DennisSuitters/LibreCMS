@@ -5,7 +5,8 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 echo'<script>/*<![CDATA[*/';
-if(session_status()==PHP_SESSION_NONE)session_start();
+if(session_status()==PHP_SESSION_NONE)
+  session_start();
 $getcfg=true;
 require_once'db.php';
 define('SESSIONID',session_id());
@@ -26,7 +27,11 @@ $cnt='';
 if($act=='quantity'){
   if($da==0){
     $q=$db->prepare("DELETE FROM `".$prefix."cart` WHERE id=:id");
-    $q->execute(array(':id'=>$id));
+    $q->execute(
+      array(
+        ':id'=>$id
+      )
+    );
   }else{
     $q=$db->prepare("UPDATE `".$prefix."cart` SET quantity=:quantity WHERE id=:id");
     $q->execute(
@@ -37,21 +42,34 @@ if($act=='quantity'){
     );
   }
   $q=$db->prepare("SELECT SUM(quantity) as quantity FROM `".$prefix."cart` WHERE si=:si");
-  $q->execute(array(':si'=>$si));
+  $q->execute(
+    array(
+      ':si'=>$si
+    )
+  );
   $r=$q->fetch(PDO::FETCH_ASSOC);
   $cnt=$r['quantity'];
-  if($r['quantity']==0)$cnt='';?>
+  if($r['quantity']==0)
+    $cnt='';?>
   window.top.document.getElementById("cart").innerHTML='<?php echo$cnt;?>';
 <?php $total=0;
   $content='';
   $q=$db->prepare("SELECT * FROM `".$prefix."cart` WHERE si=:si ORDER BY ti DESC");
-  $q->execute(array(':si'=>$si));
+  $q->execute(
+    array(
+      ':si'=>$si
+    )
+  );
   if($q->rowCount()==0){?>
   window.top.document.getElementById("content").innerHTML='<?php echo$theme['settings']['cart_empty'];?>';
 <?php }else{
   $total=0;
   $s=$db->prepare("SELECT * FROM `".$prefix."cart` WHERE si=:si ORDER BY ti DESC");
-  $s->execute(array(':si'=>SESSIONID));
+  $s->execute(
+    array(
+      ':si'=>SESSIONID
+    )
+  );
   $html=file_get_contents(THEME.DS.'cart.html');
   preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
   $cartloop=$matches[1];
@@ -60,7 +78,11 @@ if($act=='quantity'){
     while($ci=$s->fetch(PDO::FETCH_ASSOC)){
       $cartitem=$cartloop;
       $si=$db->prepare("SELECT id,code,title FROM `".$prefix."content` WHERE id=:id");
-      $si->execute(array(':id'=>$ci['iid']));
+      $si->execute(
+        array(
+          ':id'=>$ci['iid']
+        )
+      );
       $i=$si->fetch(PDO::FETCH_ASSOC);
       $cartitem=preg_replace(
         array(

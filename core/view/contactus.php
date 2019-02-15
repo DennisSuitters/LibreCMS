@@ -40,7 +40,8 @@ if($s->rowCount()>0){
 		$html
 	);
 	$options='';
-	while($r=$s->fetch(PDO::FETCH_ASSOC))$options.='<option value="'.$r['id'].'" role="option">'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'</option>';
+	while($r=$s->fetch(PDO::FETCH_ASSOC))
+		$options.='<option value="'.$r['id'].'" role="option">'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'</option>';
 	$html=str_replace('<subjectOptions>',$options,$html);
 }else{
 	$html=preg_replace(

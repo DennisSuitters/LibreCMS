@@ -1,8 +1,10 @@
-(go\s?daddy|host\s?monster|host\s?gator|blue\s?host|Host\s?papa|In\s?motion|just\s?host)\s*(web hosting|hosting|review|discount|coupon|c ?panel|reseller)
-(managed|vps|web|joomla|dedicated|reseller|windows|linux|a2|wordpress|server)\s*(hosting)
-just host
-host review
-vpn download
-XRumer
-host\s?monster
-blue\s?host
+blacklist-gambling.txt
+blacklist-hosting.txt
+blacklist-injection.txt
+blacklist-medication.txt
+blacklist-merchandise.txt
+blacklist-misc.txt
+blacklist-services.txt
+blacklist-software.txt
+blacklist-trading.txt
+blacklist-urls.txt

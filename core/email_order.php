@@ -11,15 +11,25 @@ $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $w=filter_input(INPUT_GET,'w',FILTER_SANITIZE_STRING);
 $act=filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
 $q=$db->prepare("SELECT * FROM `".$prefix."orders` WHERE id=:id");
-$q->execute(array(':id'=>$id));
+$q->execute(
+  array(
+    ':id'=>$id
+  )
+);
 $r=$q->fetch(PDO::FETCH_ASSOC);
 $r['notes']=rawurldecode($r['notes']);
 $s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
-$s->execute(array(':id'=>$r['cid']));
+$s->execute(
+  array(
+    ':id'=>$r['cid']
+  )
+);
 $c=$s->fetch(PDO::FETCH_ASSOC);
 $ti=time();
-if($r['qid']!='')$oid=$r['qid'];
-if($r['iid']!='')$oid=$r['iid'];
+if($r['qid']!='')
+  $oid=$r['qid'];
+if($r['iid']!='')
+  $oid=$r['iid'];
 $pdf=new TCPDF(PDF_PAGE_ORIENTATION,PDF_UNIT,PDF_PAGE_FORMAT,true,'UTF-8',false);
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor($config['business']);
@@ -64,7 +74,8 @@ elseif(file_exists('..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderhea
   $pdflogo='..'.DS.'layout'.DS.$config['theme'].DS.'images'.DS.'orderheading.gif';
 else
   $pdflogo='';
-if($pdflogo!='')$html.='<table class="table"><tr><td style="text-align:right"><img src="'.$pdflogo.'"></td></tr></table>';
+if($pdflogo!='')
+  $html.='<table class="table"><tr><td style="text-align:right"><img src="'.$pdflogo.'"></td></tr></table>';
 $html.='<table class="table">'.
           '<tr>'.
             '<td>'.
@@ -111,13 +122,25 @@ $i=13;
 $ot=$st=$pwc=0;
 $zeb=1;
 $s=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid AND status!='delete'");
-$s->execute(array(':oid'=>$id));
+$s->execute(
+  array(
+    ':oid'=>$id
+  )
+);
 while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 	$si=$db->prepare("SELECT code,title FROM `".$prefix."content` WHERE id=:id");
-	$si->execute(array(':id'=>$ro['iid']));
+	$si->execute(
+    array(
+      ':id'=>$ro['iid']
+    )
+  );
 	$i=$si->fetch(PDO::FETCH_ASSOC);
 	$sc=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE id=:id");
-	$sc->execute(array(':id'=>$ro['cid']));
+	$sc->execute(
+    array(
+      ':id'=>$ro['cid']
+    )
+  );
 	$ch=$sc->fetch(PDO::FETCH_ASSOC);
   $st=$ro['cost']*$ro['quantity'];
 	$html.='<tr'.($zeb==1?' style="background-color:#f4f4f4;"':' style="backgroound-color:#fff;"').'>'.
@@ -134,7 +157,11 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 $html.='</tbody>'.
         '<tfoot>';
 $sr=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:rid");
-$sr->execute(array(':rid'=>$r['rid']));
+$sr->execute(
+  array(
+    ':rid'=>$r['rid']
+  )
+);
 if($sr->rowCount()>0){
 	$reward=$sr->fetch(PDO::FETCH_ASSOC);
 	$html.='<tr style="background-color:#f0f0f0">'.

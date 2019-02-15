@@ -6,15 +6,21 @@
  */
 require_once'db.php';
 include'class.vcard.php';
-if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
+if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)
+  define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 $username=isset($_GET['u'])?filter_input(INPUT_GET,'u',FILTER_SANITIZE_STRING):0;
 if($username!= 0){
   $s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE username=:username");
-  $s->execute(array(':username'=>$username));
+  $s->execute(
+    array(
+      ':username'=>$username
+    )
+  );
   if($s->rowCount()==1){
     $user=$s->fetch(PDO::FETCH_ASSOC);
-    if($user['rank']>899)$config=$db->query("SELECT * FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+    if($user['rank']>899)
+      $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
     else{
       $config=array(
         'business'=>NULL,

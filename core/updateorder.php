@@ -5,9 +5,12 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 echo'<script>/*<![CDATA[*/';
-if(session_status()==PHP_SESSION_NONE)session_start();
+if(session_status()==PHP_SESSION_NONE)
+	session_start();
 $getcfg=true;
-require_once'db.php';
+require'db.php';
+define('THEME','layout'.DS.$config['theme']);
+define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 function svg($svg,$class=null,$size=null){
 	echo'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
 }
@@ -20,12 +23,25 @@ $t=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter
 $c=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
 $da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'da',FILTER_SANITIZE_STRING);
 $ti=time();
+if(file_exists(THEME.DS.'images'.DS.'noimage.png'))
+	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');
+elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))
+	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.gif');
+elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))
+	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');
+else
+	define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
 if($act=='additem'){
 	if($da!=0){
 		$q=$db->prepare("SELECT title,cost FROM `".$prefix."content` WHERE id=:id");
-		$q->execute(array(':id'=>$da));
+		$q->execute(
+			array(
+				':id'=>$da
+			)
+		);
 		$r=$q->fetch(PDO::FETCH_ASSOC);
-		if($r['cost']==''||!is_numeric($r['cost']))$r['cost']=0;
+		if($r['cost']==''||!is_numeric($r['cost']))
+			$r['cost']=0;
 	}else{
     $r=array(
       'title'=>'',
@@ -45,7 +61,11 @@ if($act=='additem'){
 }
 if($act=='title'){
   $ss=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE id=:id");
-  $ss->execute(array(':id'=>$id));
+  $ss->execute(
+		array(
+			':id'=>$id
+		)
+	);
   $r=$ss->fetch(PDO::FETCH_ASSOC);
   $s=$db->prepare("UPDATE `".$prefix."orderitems` SET title=:title WHERE id=:id");
   $s->execute(
@@ -58,11 +78,19 @@ if($act=='title'){
 }
 if($act=='quantity'||$act=='trash'){
   $ss=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE id=:id");
-  $ss->execute(array(':id'=>$id));
+  $ss->execute(
+		array(
+			':id'=>$id
+		)
+	);
   $r=$ss->fetch(PDO::FETCH_ASSOC);
   if($da==0){
     $s=$db->prepare("DELETE FROM `".$prefix."orderitems` WHERE id=:id");
-    $s->execute(array(':id'=>$id));
+    $s->execute(
+			array(
+				':id'=>$id
+			)
+		);
   }else{
     $s=$db->prepare("UPDATE `".$prefix."orderitems` SET quantity=:quantity WHERE id=:id");
     $s->execute(
@@ -76,7 +104,11 @@ if($act=='quantity'||$act=='trash'){
 }
 if($act=='cost'){
   $ss=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE id=:id");
-  $ss->execute(array(':id'=>$id));
+  $ss->execute(
+		array(
+			':id'=>$id
+		)
+	);
   $r=$ss->fetch(PDO::FETCH_ASSOC);
   $s=$db->prepare("UPDATE `".$prefix."orderitems` SET cost=:cost WHERE id=:id");
   $s->execute(
@@ -89,7 +121,11 @@ if($act=='cost'){
 }
 if($act=='reward'){
   $sr=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE code=:code");
-  $sr->execute(array(':code'=>$da));
+  $sr->execute(
+		array(
+			':code'=>$da
+		)
+	);
   $reward=$sr->fetch(PDO::FETCH_ASSOC);
   $s=$db->prepare("UPDATE `".$prefix."orders` SET rid=:rid WHERE id=:id");
   $s->execute(
@@ -109,54 +145,83 @@ if($act=='postage'){
   );
 }
 $s=$db->prepare("SELECT * FROM `".$prefix."orders` WHERE id=:id");
-$s->execute(array(':id'=>$id));
+$s->execute(
+	array(
+		':id'=>$id
+	)
+);
 $r=$s->fetch(PDO::FETCH_ASSOC);
 $si=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid ORDER BY ti ASC,title ASC");
-$si->execute(array(':oid'=>$r['id']));
+$si->execute(
+	array(
+		':oid'=>$r['id']
+	)
+);
 $total=0;
 $html='';
 while($oi=$si->fetch(PDO::FETCH_ASSOC)){
-  $is=$db->prepare("SELECT id,code,title FROM `".$prefix."content` WHERE id=:id");
-  $is->execute(array(':id'=>$oi['iid']));
+  $is=$db->prepare("SELECT id,thumb,file,fileURL,code,title FROM `".$prefix."content` WHERE id=:id");
+  $is->execute(
+		array(
+			':id'=>$oi['iid']
+		)
+	);
   $i=$is->fetch(PDO::FETCH_ASSOC);
   $sc=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE id=:id");
-  $sc->execute(array(':id'=>$oi['cid']));
+  $sc->execute(
+		array(
+			':id'=>$oi['cid']
+		)
+	);
   $c=$sc->fetch(PDO::FETCH_ASSOC);
+	$image='';
+	if($i['thumb']!=''&&file_exists('media'.DS.basename($i['thumb'])))
+		$image='media'.DS.basename($i['thumb']);
+	elseif($i['file']!=''&&file_exists('media'.DS.basename($i['file'])))
+		$image='media'.DS.basename($i['file']);
+	elseif($i['fileURL']!='')
+		$image=$i['fileURL'];
+	else
+		$image='';
   $html.='<tr>'.
-    			'<td class="text-left">'.$i['code'].'</td>'.
-    			'<td class="text-left">'.
-						($oi['iid']!=0?$i['title']:'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="blocker();"><input type="hidden" name="act" value="title"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="title"><input type="text" class="form-control" name="da" value="'.$oi['title'].'"></form>').
+					'<td class="text-center align-middle"><img class="img-fluid" style="max-width:24px;height:24px;" src="'.$image.'"></td>'.
+    			'<td class="text-left align-middle">'.$i['code'].'</td>'.
+    			'<td class="text-left align-middle">'.
+						($oi['iid']!=0?$i['title']:'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();"><input type="hidden" name="act" value="title"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="title"><input type="text" class="form-control" name="da" value="'.$oi['title'].'"></form>').
 					'</td>'.
-    			'<td class="text-left hidden-xs">'.$c['title'].'</td>'.
-					'<td class="col-sm-1 text-center">'.
-						($oi['iid']!=0?'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="blocker();"><input type="hidden" name="act" value="quantity"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'"'.($r['status']=='archived'?' readonly':'').'></form>':($oi['iid']!=0?$oi['quantity']:'')).
+    			'<td class="text-left align-middle">'.$c['title'].'</td>'.
+					'<td class="text-center align-middle">'.
+						($oi['iid']!=0?'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();"><input type="hidden" name="act" value="quantity"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'"'.($r['status']=='archived'?' readonly':'').'></form>':($oi['iid']!=0?$oi['quantity']:'')).
     			'</td>'.
-					'<td class="col-sm-1 text-right">'.
-  					($oi['iid'] != 0?'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="blocker();"><input type="hidden" name="act" value="cost"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" name="da" value="'.$oi['cost'].'"'.($r['status']=='archived'?' readonly':'').'></form>':($oi['iid'] != 0?$oi['cost']:'')).
+					'<td class="text-right align-middle">'.
+  					($oi['iid'] != 0?'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();"><input type="hidden" name="act" value="cost"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" style="min-width:80px" name="da" value="'.$oi['cost'].'"'.($r['status']=='archived'?' readonly':'').'></form>':($oi['iid'] != 0?$oi['cost']:'')).
     			'</td>'.
-    			'<td class="col-sm-1 text-right">'.
-  					($oi['iid']!=0?$oi['cost']*$oi['quantity']:'').
-    			'</td>'.
+    			'<td class="text-right align-middle">'.($oi['iid']!=0?$oi['cost']*$oi['quantity']:'').'</td>'.
 					'<td class="text-right">'.
-						'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="blocker();">'.
+						'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">'.
 							'<input type="hidden" name="act" value="trash">'.
 							'<input type="hidden" name="id" value="'.$oi['id'].'">'.
 							'<input type="hidden" name="t" value="orderitems">'.
 							'<input type="hidden" name="c" value="quantity">'.
 							'<input type="hidden" name="da" value="0">'.
-							'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
+							'<button class="btn btn-secondary trash" data-tooltip="tooltip" title="Delete">'.svg2('libre-gui-trash').'</button>'.
 						'</form>'.
 					'</td>'.
 				'</tr>';
-  if($oi['iid']!=0)$total=$total+($oi['cost']*$oi['quantity']);
+  if($oi['iid']!=0)
+		$total=$total+($oi['cost']*$oi['quantity']);
 }
 $rs=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:rid");
-$rs->execute(array(':rid'=>$r['rid']));
+$rs->execute(
+	array(
+		':rid'=>$r['rid']
+	)
+);
 $reward=$rs->fetch(PDO::FETCH_ASSOC);
   $html.='<tr>'.
-					'<td colspan="3" class="text-right"><strong>Rewards Code</strong></td>'.
+					'<td colspan="4" class="text-right align-middle"><strong>Rewards Code</strong></td>'.
 					'<td class="text-center">'.
-						'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="blocker();">'.
+						'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">'.
 							'<input type="hidden" name="act" value="reward">'.
 							'<input type="hidden" name="id" value="'.$r['id'].'">'.
 							'<input type="hidden" name="t" value="orders">'.
@@ -164,7 +229,7 @@ $reward=$rs->fetch(PDO::FETCH_ASSOC);
 							'<input type="text" class="form-control" name="da" value="'.($rs->rowCount()==1?$reward['code']:'').'">'.
 						'</form>'.
 					'</td>'.
-					'<td class="text-center">';
+					'<td class="text-center align-middle">';
 			if($rs->rowCount()==1){
 			  if($reward['method']==1){
 			    $html.='$';
@@ -177,26 +242,27 @@ $reward=$rs->fetch(PDO::FETCH_ASSOC);
 			  }
 			  $html.=' Off';
 			}
-    	$html.= '</td>'.
-							'<td class="text-right"><strong>'.$total.'</strong></td>'.
+    	$html.='</td>'.
+							'<td class="text-right align-middle"><strong>'.$total.'</strong></td>'.
 							'<td></td>'.
 						'</tr>'.
 						'<tr>'.
-							'<td colspan="5" class="text-right"><strong>Postage</strong></td>'.
-							'<td class="postage">'.
-								'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="blocker();">'.
+							'<td colspan="6" class="text-right align-middle"><strong>Postage</strong></td>'.
+							'<td class="text-right pr-0">'.
+								'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">'.
 									'<input type="hidden" name="act" value="postage">'.
 									'<input type="hidden" name="id" value="'.$r['id'].'">'.
 									'<input type="hidden" name="t" value="orders">'.
 									'<input type="hidden" name="c" value="postage">'.
-									'<input type="text" class="form-control text-right" name="da" value="'.$r['postage'].'">'.
-								'</form>'.
+									'<input type="text" class="form-control text-right" style="min-width:70px" name="da" value="'.$r['postage'].'">';
+									$total=$total+$r['postage'];
+					$html.='</form>'.
 							'</td>'.
 							'<td></td>'.
 						'</tr>'.
 						'<tr>'.
-							'<td colspan="5" class="text-right"><strong>Total</strong></td>'.
-							'<td class="total text-right"><strong>'.$total+$r['postage'].'</strong></td>'.
+							'<td colspan="6" class="text-right"><strong>Total</strong></td>'.
+							'<td class="total text-right border-top"><strong>'.$total.'</strong></td>'.
 							'<td></td>'.
 						'</tr>';?>
   window.top.window.$('#updateorder').html('<?php echo$html;?>');

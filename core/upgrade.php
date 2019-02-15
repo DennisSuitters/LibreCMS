@@ -21,8 +21,10 @@ $uL='';
 $found=true;
 $vL=explode("\n",$gV);
 foreach($vL as $aV){
-  if($aV=='')continue;
-  if($aV<$settings['system']['version'])continue;
+  if($aV=='')
+    continue;
+  if($aV<$settings['system']['version'])
+    continue;
   if(!is_file('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip' )){?>
   window.top.window.$('#update').append('<div class="alert alert-info">Downloading New Update...</div>');
 <?php
@@ -31,7 +33,8 @@ foreach($vL as $aV){
   window.top.window.$('#update').append('<div class="alert alert-danger">File doesn\'t exist on remote server...</div>');
 <?php }else{
     $newUpdate=file_get_contents('https://www.studiojunkyard.com/update/'.$aV.'.zip');
-    if(!is_dir('..'.DS.'media'.DS.'updates'.DS))mkdir('..'.DS.'media'.DS.'updates'.DS);
+    if(!is_dir('..'.DS.'media'.DS.'updates'.DS))
+      mkdir('..'.DS.'media'.DS.'updates'.DS);
     $dlHandler=fopen('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip','w');
     if(!fwrite($dlHandler,$newUpdate)){
       $found=false;?>
@@ -52,7 +55,8 @@ if($found==true){
   while($aF=zip_read($zipHandle)){
     $thisFileName=zip_entry_name($aF);
     $thisFileDir=dirname($thisFileName);
-    if(substr($thisFileName,-1,1)=='/')continue;
+    if(substr($thisFileName,-1,1)=='/')
+      continue;
     if(!is_dir('..'.DS.$thisFileDir)){
       mkdir('..'.DS.$thisFileDir );
       $html.='<li>Created Directory '.$thisFileDir.'</li>';
@@ -99,8 +103,10 @@ if($found==true){
   $txt='[database]'.PHP_EOL;
   $txt.='driver = '.$settings['database']['driver'].PHP_EOL;
   $txt.='host = '.$settings['database']['host'].PHP_EOL;
-  if(isset($settings['database']['port'])=='')$txt.=';port = 3306'.PHP_EOL;
-  else$txt.='port = '.$settings['database']['post'].PHP_EOL;
+  if(isset($settings['database']['port'])=='')
+    $txt.=';port = 3306'.PHP_EOL;
+  else
+    $txt.='port = '.$settings['database']['post'].PHP_EOL;
   $txt.='schema = '.$settings['database']['schema'].PHP_EOL;
   $txt.='username = '.$settings['database']['username'].PHP_EOL;
   $txt.='password = '.$settings['database']['password'].PHP_EOL;
@@ -108,7 +114,8 @@ if($found==true){
   $txt.='version = '.time().PHP_EOL;
   $txt.='url = '.$settings['system']['url'].PHP_EOL;
   $txt.='admin = '.$settings['system']['admin'].PHP_EOL;
-  if(file_exists('config.ini'))unlink('config.ini');
+  if(file_exists('config.ini'))
+    unlink('config.ini');
   $oFH=fopen("config.ini",'w');
   fwrite($oFH,$txt);
   fclose($oFH);?>
@@ -118,6 +125,10 @@ if($found==true){
 <?php }
 }
 $su=$db->prepare("UPDATE config SET uti=:uti WHERE id='1'");
-$su->execute(array(':uti'=>time()));?>
+$su->execute(
+  array(
+    ':uti'=>time()
+  )
+);?>
   window.top.window.Pace.stop();
 /*]]>*/</script>

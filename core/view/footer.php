@@ -4,9 +4,11 @@
  * This software may be modified and distributed under the terms
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
-if(isset($_SESSION['rank'])&&$_SESSION['rank']>0)$link='<a href="?act=logout">Logout</a>';
+if(isset($_SESSION['rank'])&&$_SESSION['rank']>0)
+	$link='<a href="logout">Logout</a>';
 else{
-	if($config['options']{3}==1)$link_x=' or Sign Up';
+	if($config['options']{3}==1)
+		$link_x=' or Sign Up';
 	else{
 		$link_x='';
 		$html=preg_replace('~<block signup>.*?<\/block signup>~is','',$html,1);
@@ -14,7 +16,7 @@ else{
 	$link='<a href="login/">Login'.$link_x.'</a>';
 }
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
-$html=isset($_SESSION['rank'])&&$_SESSION['rank']>899?str_replace('<administration>','<a target="_blank" href="'.$settings['system']['admin'].'">Administration</a>',$html):str_replace('<administration>','',$html);
+$html=isset($_SESSION['rank'])&&$_SESSION['rank']>899?str_replace('<administration>','<li role="listitem"><a target="_blank" href="'.$settings['system']['admin'].'">Administration</a></li>',$html):str_replace('<administration>','',$html);
 $html=preg_replace(
 	array(
 		'/<print year>/',
@@ -23,6 +25,7 @@ $html=preg_replace(
 		'/<print theme=[\"\']?creator_url[\"\']?>/',
 		'/<print theme=[\"\']?creator_url_title[\"\']?>/',
 		'/<login>/',
+		'/<print config=[\"\']?seoDescription[\"\']?>/',
 		'/<print config=[\"\']?business[\"\']?>/',
 		'/<print config=[\"\']?abn[\"\']?>/',
 		'/<print config=[\"\']?address[\"\']?>/',
@@ -32,6 +35,7 @@ $html=preg_replace(
 		'/<print config=[\"\']?email[\"\']?>/',
 		'/<print config=[\"\']?phone[\"\']?>/',
 		'/<print config=[\"\']?mobile[\"\']?>/',
+		'/<print hosting>/',
 		'/<print honey_pot_link>/',
 		'/<print honey_pot_quick_link>/'
 	),
@@ -42,8 +46,9 @@ $html=preg_replace(
 		htmlspecialchars($theme['creator_url'],ENT_QUOTES,'UTF-8'),
 		htmlspecialchars($theme['creator_url_title'],ENT_QUOTES,'UTF-8'),
 		$link,
+		htmlspecialchars($config['seoDescription'],ENT_QUOTES,'UTF-8'),
 		htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'),
-		htmlspecialchars($config['abn'],ENT_QUOTES,'UTF-8'),
+		$config['abn']!=''?htmlspecialchars('ABN '.$config['abn'],ENT_QUOTES,'UTF-8'):'',
 		htmlspecialchars($config['address'],ENT_QUOTES,'UTF-8'),
 		htmlspecialchars($config['suburb'],ENT_QUOTES,'UTF-8'),
 		htmlspecialchars($config['postcode'],ENT_QUOTES,'UTF-8'),
@@ -51,7 +56,8 @@ $html=preg_replace(
 		htmlspecialchars($config['email'],ENT_QUOTES,'UTF-8'),
 		htmlspecialchars($config['phone'],ENT_QUOTES,'UTF-8'),
 		htmlspecialchars($config['mobile'],ENT_QUOTES,'UTF-8'),
-		$config['php_options']{0}==1?'<a href="http://www.projecthoneypot.org?rf=113735"><img src="'.URL.'layout/'.$config['theme'].'/images/phpot.gif" alt="Stop Spam Harvesters, Join Project Honey Pot"></a>':'',
+		isset($theme['hosting'])&&$theme['hosting']!=''?'Hosting by <a target="_blank" role="link" href="'.$theme['hosting_url'].'">'.$theme['hosting'].'</a><br>':'',
+		$config['php_options']{0}==1?' | Protected by <a href="http://www.projecthoneypot.org?rf=113735"><img src="'.URL.'layout/'.$config['theme'].'/images/phpot.gif" alt="Stop Spam Harvesters, Join Project Honey Pot"></a><br>':'',
 		$config['php_options']{0}==1&&$config['php_options']{2}==1&&$config['php_quicklink']!=''?$config['php_quicklink']:''
 	),
 	$html
@@ -70,7 +76,8 @@ if(stristr($html,'<subjectText>')){
 			$html
 		);
 		$options='';
-		while($r=$s->fetch(PDO::FETCH_ASSOC))$options.='<option value="'.$r['id'].'" role="option">'.$r['title'].'</option>';
+		while($r=$s->fetch(PDO::FETCH_ASSOC))
+			$options.='<option value="'.$r['id'].'" role="option">'.$r['title'].'</option>';
 		$html=str_replace('<subjectOptions>',$options,$html);
 	}else{
 		$html=preg_replace(
@@ -91,9 +98,10 @@ if(stristr($html,'<buildMenu')){
 	$menu='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$buildMenu=$htmlMenu;
-		if($r['contentType']=='page'&&$r['title']==$activeTitle)
+/*		if($r['contentType']=='page'&&$r['title']==$activeTitle)
 			$buildMenu=preg_replace('/<print active=[\"\']?menu[\"\']?>/',' active',$buildMenu);
-		elseif($view==$r['contentType']||$view==$r['contentType'].'s')
+		else */
+		if($view==$r['contentType']||$view==$r['contentType'].'s')
 			$buildMenu=preg_replace('/<print active=[\"\']?menu[\"\']?>/',' active',$buildMenu);
 		else
 			$buildMenu=preg_replace('/<print active=[\"\']?menu[\"\']?>/','',$buildMenu);
@@ -147,11 +155,13 @@ if(stristr($html,'<buildSocial')){
 			$buildSocial=str_replace(
 				array(
 					'<print sociallink>',
+					'<print rel=label>',
 					'<print socialicon>'
 				),
 				array(
 					$r['url'],
-					frontsvg('social-'.$r['icon'])
+					ucfirst($r['icon']),
+					frontsvg('libre-social-'.$r['icon'])
 				),
 				$buildSocial
 			);
@@ -170,7 +180,7 @@ if(stristr($html,'<buildSocial')){
 			$html
 		);
 		$html=$page['contentType']=='article'||$page['contentType']=='portfolio'||$page['contentType']=='event'||$page['contentType']=='news'||$page['contentType']=='inventory'||$page['contentType']=='service'?str_replace('<print rsslink>','rss/'.$page['contentType'],$html):str_replace('<print rsslink>','rss',$html);
-		$html=str_replace('<print rssicon>',frontsvg('social-rss'),$html);
+		$html=str_replace('<print rssicon>',frontsvg('libre-social-rss'),$html);
 	}else
 		$html=preg_replace('~<rss>.*?<\/rss>~is','',$html,1);
 }

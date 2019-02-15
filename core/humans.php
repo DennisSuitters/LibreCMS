@@ -5,7 +5,8 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 header("Content-Type:text/plain");
-if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
+if(!defined('DS'))
+  define('DS',DIRECTORY_SEPARATOR);
 require_once'core'.DS.'db.php';
 $config=$db->query("SELECT development,seoTitle,theme FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $theme=parse_ini_file('layout'.DS.$config['theme'].DS.'theme.ini',true);

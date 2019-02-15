@@ -114,7 +114,7 @@ echo'<div id="l_'.$id.'" class="form-group">'.
     case'add_social':
       $user=filter_input(INPUT_POST,'user',FILTER_SANITIZE_NUMBER_INT);
       $icon=filter_input(INPUT_POST,'icon',FILTER_SANITIZE_STRING);
-      $url =filter_input(INPUT_POST,'url', FILTER_SANITIZE_URL);
+      $url=filter_input(INPUT_POST,'url',FILTER_SANITIZE_URL);
       if(filter_var($url,FILTER_VALIDATE_URL)){
         if($icon=='none'||$url==''){?>
   window.top.window.$.notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
@@ -122,35 +122,28 @@ echo'<div id="l_'.$id.'" class="form-group">'.
           $q=$db->prepare("INSERT INTO `".$prefix."choices` (uid,contentType,icon,url) VALUES (:uid,'social',:icon,:url)");
           $q->execute(
             array(
-              ':uid' =>kses($user,array()),
+              ':uid'=>kses($user,array()),
               ':icon'=>$icon,
-              ':url' =>kses($url,array())
+              ':url'=>kses($url,array())
             )
           );
           $id=$db->lastInsertId();
           $e=$db->errorInfo();
           if(is_null($e[2])){?>
-  window.top.window.$('#social').append('<?php
-echo'<div id="l_'.$id.'" class="form-group">'.
-			'<div class="input-group col-xs-12">'.
-				'<div class="input-group-addon">'.
-					'<span class="libre-social">'.svg2('libre-social-'.$icon).'</span>'.
-				'</div>'.
-				'<form target="sp" method="post" action="core/update.php">'.
-					'<input type="hidden" name="t" value="social">'.
-					'<input type="hidden" name="c" value="url">'.
-					'<input type="text"class="form-control" name="da" value="'.$url.'" placeholder="Enter a URL...">'.
-				'</form>'.
-				'<div class="input-group-btn">'.
+  window.top.window.$('#social').append(`<?php
+echo'<div id="l_'.$id.'" class="form-group row">'.
+			'<div class="input-group col-12">'.
+				'<div class="input-group-text" data-tooltip="tooltip" title="'.ucfirst($icon).'"><span class="libre-social">'.svg2('libre-social-'.$icon).'</span></div>'.
+				'<input type="text" class="form-control" value="'.$url.'" placeholder="Enter a URL..." readonly>'.
+				'<div class="input-group-append">'.
 					'<form target="sp" action="core/purge.php">'.
 						'<input type="hidden" name="id" value="'.$id.'">'.
 						'<input type="hidden" name="t" value="choices">'.
-						'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
+						'<button class="btn btn-secondary trash" data-tooltip="tooltip" title="Delete">'.svg2('libre-gui-trash').'</button>'.
 					'</form>'.
 				'</div>'.
 			'</div>'.
-		'</div>';?>
-');
+		'</div>';?>`);
 <?php     }else{?>
   window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue adding the Social Networking Link'});
 <?php     }
@@ -261,7 +254,11 @@ echo'<div id="l_'.$id.'" class="form-group">'.
     case'make_client':
       $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
       $q=$db->prepare("SELECT name,email,phone FROM `".$prefix."messages` WHERE id=:id");
-      $q->execute(array(':id'=>$id));
+      $q->execute(
+				array(
+					':id'=>$id
+				)
+			);
       $r=$q->fetch(PDO::FETCH_ASSOC);
       $q=$db->prepare("INSERT INTO `".$prefix."login` (name,email,phone,ti) VALUES (:name,:email,:phone,:ti)");
       $q->execute(
@@ -284,9 +281,13 @@ echo'<div id="l_'.$id.'" class="form-group">'.
       $email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
       if(filter_var($email,FILTER_VALIDATE_EMAIL)){
         $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE email=:email");
-        $q->execute(array(':email'=>$email));
+        $q->execute(
+					array(
+						':email'=>$email
+					)
+				);
         $c=$q->fetch(PDO::FETCH_ASSOC);
-        $cid=($c['id']!=0?$c['id']:0);
+        $cid=$c['id']!=0?$c['id']:0;
         $name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
         $contentType=filter_input(INPUT_POST,'contentType',FILTER_SANITIZE_STRING);
         $da=filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING);
@@ -434,7 +435,11 @@ echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
       $iid=filter_input(INPUT_GET,'iid',FILTER_SANITIZE_NUMBER_INT);
       if($iid!=0){
         $q=$db->prepare("SELECT title,cost FROM `".$prefix."content` WHERE id=:id");
-        $q->execute(array(':id'=>$iid));
+        $q->execute(
+					array(
+						':id'=>$iid
+					)
+				);
         $r=$q->fetch(PDO::FETCH_ASSOC);
 				if($r['cost']==''||!is_numeric($r['cost']))$r['cost']=0;
       }else{
@@ -456,11 +461,19 @@ echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
       $total=0;
       $html='';
       $q=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid ORDER BY ti ASC,title ASC");
-      $q->execute(array(':oid'=>$oid));?>
+      $q->execute(
+				array(
+					':oid'=>$oid
+				)
+			);?>
   window.top.window.$('#updateorder').html('<?php
       while($oi=$q->fetch(PDO::FETCH_ASSOC)){
         $s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
-        $s->execute(array(':id'=>$oi['iid']));
+        $s->execute(
+					array(
+						':id'=>$oi['iid']
+					)
+				);
         $i=$s->fetch(PDO::FETCH_ASSOC);
         echo'<tr>'.
 							'<td class="text-left">'.$i['code'].'<div class="visible-xs">'.$i['title'].'</div></td>'.

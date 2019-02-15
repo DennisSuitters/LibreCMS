@@ -15,12 +15,6 @@
         tooltip: 'Save',
         unsaved: 'You have unsaved changes in the Editor. Do you want to leave this page and discard your changes or stay on this page?'
       }
-    },
-    'pt-BR': {
-      save: {
-        tooltip: 'Salvar',
-        unsaved: 'You have unsaved changes in the Editor. Do you want to leave this page and discard your changes or stay on this page?'
-      }
     }
   });
   $.extend($.summernote.keyMap, {
@@ -39,6 +33,7 @@
   });
   $.extend($.summernote.plugins, {
     'save':function (context) {
+      $('.summernote').after('<div class="note-block"><div class="sk-circle"><div class="sk-circle1 sk-child"></div><div class="sk-circle2 sk-child"></div><div class="sk-circle3 sk-child"></div><div class="sk-circle4 sk-child"></div><div class="sk-circle5 sk-child"></div><div class="sk-circle6 sk-child"></div><div class="sk-circle7 sk-child"></div><div class="sk-circle8 sk-child"></div><div class="sk-circle9 sk-child"></div><div class="sk-circle10 sk-child"></div><div class="sk-circle11 sk-child"></div><div class="sk-circle12 sk-child"></div></div></div>');
       var ui      = $.summernote.ui,
           $editor = context.layoutInfo.editor,
           options = context.options,
@@ -46,18 +41,21 @@
       context.memo('button.save',function () {
         var button = ui.button({
           contents: options.save.icon,
+          container: 'body',
           tooltip:  lang.save.tooltip,
-          click:function () {
+          click:function (e) {
+            e.preventDefault();
+            $('.note-block').addClass('blocked');
             if (options.save.encode) {
               var noteText = $note.summernote('code');
               $note.summernote('code', escape(noteText));
-              this.form.submit();
+            }
+            this.form.submit();
+            if (options.save.encode) {
               $note.summernote('code', noteText);
-            } else {
-              this.form.submit();
             }
             unsaved = false;
-            $editor.find('.note-save .btn').removeClass('btn-danger');
+            $editor.find('.note-save button').removeClass('btn-danger');
           }
         });
         return button.render();
@@ -65,7 +63,7 @@
       this.events = {
         'summernote.change':function (we, e) {
           unsaved = true;
-          $editor.find('.note-save .btn').addClass('btn-danger');
+          $editor.find('.note-save button').addClass('btn-danger');
         },
         'summernote.keydown':function (we, e) {
           if(e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
@@ -73,13 +71,13 @@
             if (options.save.encode) {
               var noteText = $note.summernote('code');
               $note.summernote('code', escape(noteText));
-              this.form.submit();
+            }
+            this.form.submit();
+            if (options.save.encode) {
               $note.summernote('code', noteText);
-            } else {
-              this.form.submit();
             }
             unsaved = false;
-            $editor.find('.note-save .btn').removeClass('btn-danger');
+            $editor.find('.note-save button').removeClass('btn-danger');
           }
         }
       };

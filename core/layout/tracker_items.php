@@ -9,7 +9,7 @@ $action=isset($_GET['action'])?filter_input(INPUT_GET,'action',FILTER_SANITIZE_S
 $sid=isset($_POST['sid'])?filter_input(INPUT_POST,'sid',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'sid',FILTER_SANITIZE_STRING);
 if(isset($_GET['is'])){
   session_start();
-  require_once'..'.DS.'db.php';
+  require'..'.DS.'db.php';
   $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
   $su=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
   $su->execute(array(':id'=>$_SESSION['uid']));
@@ -37,27 +37,26 @@ if($action!=''){
   $s=$db->prepare("SELECT * FROM `".$prefix."tracker` WHERE sid=:sid ORDER BY ti ASC");
   $s->execute(array(':sid'=>$sid));
 }else{
-  $s=$db->prepare("SELECT * FROM `".$prefix."tracker` ORDER BY ti DESC LIMIT ".$is.",".$ie);
+  $s=$db->prepare("SELECT * FROM `".$prefix."tracker` ORDER BY ti DESC");
   $s->execute();
 }
 $cnt=$s->rowCount();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-<tr id="l_<?php echo$r['id'];?>">
-  <td class="text-nooverflow"><small><a href="<?php echo URL.$settings['system']['admin'].'/tracker?action=view&sid='.$r['sid'];?>"><?php echo$r['urlDest'];?></a></small></td>
-  <td class="text-nooverflow"><small><?php if($r['urlFrom']!='')echo'<a target="_blank" href="'.$r['urlFrom'].'">'.$r['urlFrom'].'</a>';?></small></td>
-  <td class="text-center"><small><a target="_blank" href="http://www.ipaddress-finder.com/?ip=<?php echo$r['ip'];?>"><?php echo$r['ip'];?></a></small></td>
-  <td class="text-center"><small><?php echo ucfirst($r['browser']);?></small></td>
-  <td class="text-center"><small><?php echo ucfirst($r['os']);?></small></td>
-  <td class="text-center"><small><?php echo date($config['dateFormat'],$r['ti']);?></small></td>
+<tr id="l_<?php echo$r['id'];?>" class="small align-middle">
+  <td class="text-nooverflow align-middle"><small><a href="<?php echo URL.$settings['system']['admin'].'/tracker?action=view&sid='.$r['sid'];?>"><?php echo$r['urlDest'];?></a></small></td>
+  <td class="text-nooverflow align-middle"><small><?php if($r['urlFrom']!='')echo'<a target="_blank" href="'.$r['urlFrom'].'">'.$r['urlFrom'].'</a>';?></small></td>
+  <td class="text-center align-middle"><small><a target="_blank" href="http://www.ipaddress-finder.com/?ip=<?php echo$r['ip'];?>"><?php echo$r['ip'];?></a></small></td>
+  <td class="text-center align-middle"><small><?php echo ucfirst($r['browser']);?></small></td>
+  <td class="text-center align-middle"><small><?php echo ucfirst($r['os']);?></small></td>
+  <td class="text-center align-middle"><small><?php echo date($config['dateFormat'],$r['ti']);?></small></td>
+  <td class="align-middle">
+    <div class="btn-group float-right">
+      <button class="btn btn-secondary pathviewer" data-toggle="popover" data-dbid="<?php echo$r['id'];?>"><?php svg('libre-seo-path');?></button>
 <?php if($config['php_options']{0}==1){?>
-  <td class="text-center"><button class="btn btn-default phpviewer hidden-xs" data-toggle="popover" data-dbid="<?php echo$r['id'];?>" data-dbt="tracker"><?php svg('libre-brand-projecthoneypot');?></button></td>
+      <button class="btn btn-secondary phpviewer" data-toggle="popover" data-dbid="<?php echo$r['id'];?>" data-dbt="tracker"><?php svg('libre-brand-projecthoneypot');?></button>
 <?php }?>
-</tr>
-<?php }
-if($cnt==$ie){?>
-<tr id="more_<?php echo$is+$ie+1;?>">
-  <td colspan="5">
-    <button class="btn btn-default btn-block" onclick="loadMore('tracker_items','<?php echo$is+$ie+1;?>','<?php echo$ie;?>','<?php echo$action;?>');">More</button>
+      <button class="btn btn-secondary trash" onclick="purge('<?php echo$r['id'];?>','tracker')" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
+    </div>
   </td>
 </tr>
 <?php }

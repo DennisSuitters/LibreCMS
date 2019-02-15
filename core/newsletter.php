@@ -14,7 +14,11 @@ define('UNICODE','UTF-8');
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $s=$db->prepare("SELECT title,notes FROM `".$prefix."content` WHERE id=:id");
-$s->execute(array(':id'=>$id));
+$s->execute(
+  array(
+    ':id'=>$id
+  )
+);
 $news=$s->fetch(PDO::FETCH_ASSOC);
 $u=$db->prepare("UPDATE `".$prefix."content` SET status=:status,tis=:tis WHERE id=:id");
 $u->execute(
@@ -41,24 +45,27 @@ if($config['email']!=''){
       foreach($matches[0] as$img){
         $imgid='img'.($i++);
         preg_match('/src="(.*?)"/',$body,$m);
-        if(!isset($m[1]))continue;
+        if(!isset($m[1]))
+          continue;
         $arr=parse_url($m[1]);
-        if(!isset($arr['host'])||!isset($arr['path']))continue;
+        if(!isset($arr['host'])||!isset($arr['path']))
+          continue;
         $imgname=basename($m[1]);
         $mail->AddEmbeddedImage('..'.DS.'media'.DS.$imgname,$imgid,$imgname);
         $body=str_replace($img,'<img alt="" src="cid:'.$imgid.'" style="border:none"/>',$body);
       }
     }
   }
-  $betweenDelay=($config['newslettersSendMax']!=''||$config['newslettersSendMax']==0?$config['newslettersSendMax']:$betweenDelay=50);
+  $betweenDelay=$config['newslettersSendMax']!=''||$config['newslettersSendMax']==0?$config['newslettersSendMax']:$betweenDelay=50;
   $sendCount=1;
-  $sendDelay=($config['newslettersSendDelay']!=''||$config['newslettersSendDelay']==0?$config['newslettersSendDelay']:1);
+  $sendDelay=$config['newslettersSendDelay']!=''||$config['newslettersSendDelay']==0?$config['newslettersSendDelay']:1;
   ignore_user_abort(true);
   set_time_limit(300);
   $s=$db->prepare("SELECT DISTINCT email,hash FROM `".$prefix."subscribers` UNION SELECT DISTINCT email,hash FROM `".$prefix."login` WHERE newsletter=1");
   $s->execute();
   while($r=$s->fetch(PDO::FETCH_ASSOC)){
-    if(($sendCount % $betweenDelay)==0)sleep($sendDelay);
+    if(($sendCount % $betweenDelay)==0)
+      sleep($sendDelay);
     $mail->AddAddress($r['email']);
     $optOut=$config['newslettersOptOutLayout'];
     $optOut=str_replace('{optOutLink}',URL.'newsletters/unsubscribe/'.$r['hash'],$optOut);

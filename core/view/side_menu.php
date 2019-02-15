@@ -7,7 +7,7 @@
 if(file_exists(THEME.DS.'side_menu.html')){
 	$sideTemp=file_get_contents(THEME.DS.'side_menu.html');
 	if($show=='item'&&($view=='service'||$view=='inventory'||$view=='events')){
-		$sideCost=(is_numeric($r['cost'])&&$r['cost']!=0?'<meta itemprop="priceCurrency" content="AUD"><span class="cost" itemprop="price" content="'.$r['cost'].'">'.(is_numeric($r['cost'])?'&#36;':'').htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>':'<span>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>');
+		$sideCost=is_numeric($r['cost'])&&$r['cost']!=0?'<meta itemprop="priceCurrency" content="AUD"><span class="cost" itemprop="price" content="'.$r['cost'].'">'.(is_numeric($r['cost'])?'&#36;':'').htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>':'<span>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
 		$sideTemp=preg_replace(
 			array(
 				'/<print content=[\"\']?cost[\"\']?>/',
@@ -30,11 +30,16 @@ if(file_exists(THEME.DS.'side_menu.html')){
 			$sideTemp=str_replace(array('<print content=quantity>','<print content="quantity">'),$sideQuantity,$sideTemp);
 			if(stristr($sideTemp,'<choices>')){
 				$scq=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE rid=:id ORDER BY title ASC");
-				$scq->execute(array(':id'=>$r['id']));
+				$scq->execute(
+					array(
+						':id'=>$r['id']
+					)
+				);
 				if($scq->rowCount()>0){
 					$choices='<select class="choices form-control" onchange="$(\'.addCart\').data(\'cartchoice\',$(this).val());$(\'.choices\').val($(this).val());"><option value="0">Select an Option</option>';
 					while($rcq=$scq->fetch(PDO::FETCH_ASSOC)){
-						if($rcq['ti']==0)continue;
+						if($rcq['ti']==0)
+							continue;
 						$choices.='<option value="'.$rcq['id'].'">'.$rcq['title'].':'.$rcq['ti'].'</option>';
 					}
 					$choices.='</select>';
@@ -139,8 +144,10 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		}else
 			$show='';
 		if(isset($matches[2])){
-			if($matches[2]=='current')$contentType=strtolower($view);
-			if($matches[2]=='all'||$matches[2]=='')$contentType=$heading='';
+			if($matches[2]=='current')
+				$contentType=strtolower($view);
+			if($matches[2]=='all'||$matches[2]=='')
+				$contentType=$heading='';
 		}else
 			$contentType='';
 	}
@@ -159,7 +166,11 @@ if(file_exists(THEME.DS.'side_menu.html')){
 	preg_match('/<items>([\w\W]*?)<\/items>/',$outside,$matches);
 	$insides=$matches[1];
 	$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType LIKE :contentType AND internal!='1' AND status='published' ORDER BY featured DESC, ti DESC $show");
-	$s->execute(array(':contentType'=>$contentType));
+	$s->execute(
+		array(
+			':contentType'=>$contentType
+		)
+	);
 	$output='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		if($r['contentType']=='gallery'){
@@ -172,7 +183,8 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		if($r['contentType']=='events'||$r['contentType']=='news'){
 			if($r['tis']!=0){
 				$time='<time datetime="'.date('Y-m-d',$r['tis']).'">'.date('dS M H:i',$r['tis']).'</time>';
-				if($r['tie']!=0)$time.=' &rarr; <time datetime="'.date('Y-m-d',$r['tie']).'">'.date('dS M H:i',$r['tie']).'</time>';
+				if($r['tie']!=0)
+					$time.=' &rarr; <time datetime="'.date('Y-m-d',$r['tie']).'">'.date('dS M H:i',$r['tie']).'</time>';
 			}
 		}
 		$caption=$r['seoCaption']!=''?$r['seoCaption']:substr(strip_tags(rawurldecode($r['notes'])),0,100).'...';

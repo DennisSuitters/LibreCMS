@@ -14,7 +14,8 @@ if($itemCount==0){
 }
 $contentType=$matches[2];
 $cT=$matches[2];
-if($contentType=='all'||$contentType=='mixed')$contentType='%';
+if($contentType=='all'||$contentType=='mixed')
+	$contentType='%';
 if($matches[3]=='asc'||$matches[3]=='ASC'){
 	$order='ti ASC';
 	$arrayOrder='asc';
@@ -34,9 +35,12 @@ if($cT=='all'||$cT=='mixed'||$cT=='folder'){
 	if(file_exists('media'.DS.'carousel'.DS)){
 		foreach(glob('media'.DS.'carousel'.DS.'*.*')as$file){
 			$fileinfo=pathinfo($file);
-			if($file=='.')continue;
-			if($file=='..')continue;
-			if($fileinfo['extension']=='html')continue;
+			if($file=='.')
+				continue;
+			if($file=='..')
+				continue;
+			if($fileinfo['extension']=='html')
+				continue;
 			$filetime=filemtime($file);
 			$fileinfo=pathinfo($file);
 			$filename=basename($file,'.'.$fileinfo['extension']);
@@ -59,9 +63,14 @@ if($cT=='all'||$cT=='mixed'||$cT=='folder'){
 }
 if($cT!='folder'){
 	$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE file!='' OR thumb!='' AND featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY $order $limit");
-	$s->execute(array(':contentType'=>$contentType));
+	$s->execute(
+		array(
+			':contentType'=>$contentType
+		)
+	);
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
-		if($r['featured']!=1||$r['internal']==1)continue;
+		if($r['featured']!=1||$r['internal']==1)
+			continue;
 		$filechk=basename($r['file']);
 		if(file_exists('media'.DS.$filechk)){
 			$featuredfiles[]=[
@@ -141,22 +150,21 @@ if($ii>0){
 				$alt=ucfirst($alt);
 			}else
 				$alt=$r['title'];
-			$item=preg_replace('/<print content=[\"\']?alt[\"\']?>/',$alt,$item);
+			$item=preg_replace('/<print content=[\"\']?alt[\"\']?>/',htmlspecialchars($alt,ENT_QUOTES,'UTF-8'),$item);
 		}
-		if(preg_match('/<print content=[\"\']?image[\"\']?>/',$item)){
-			$item=$r['file']!=''?preg_replace('/<print content=[\"\']?image[\"\']?>/',$r['file'], $item):preg_replace('/<print content=[\"\']?image[\"\']?>/','',$item);
-		}
-		$item=$r['link']=='nolink'?preg_replace('/<print content=[\"\']?title[\"\']?>/','<span class="hidden">'.$r['title'].'</span>',$item):preg_replace('/<print content=[\"\']?title[\"\']?>/',$r['title'],$item);
+		if(preg_match('/<print content=[\"\']?image[\"\']?>/',$item))
+			$item=$r['file']!=''?preg_replace('/<print content=[\"\']?image[\"\']?>/',htmlspecialchars($r['file'],ENT_QUOTES,'UTF-8'),$item):preg_replace('/<print content=[\"\']?image[\"\']?>/','',$item);
+		$item=$r['link']=='nolink'?preg_replace('/<print content=[\"\']?title[\"\']?>/','<span class="hidden">'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'</span>',$item):preg_replace('/<print content=[\"\']?title[\"\']?>/',htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),$item);
 		if($r['contentType']=='carousel')
-			$item=preg_replace('~<caption>.*?<\/caption>~is',$r['seoCaption'],$item,1);
+			$item=preg_replace('~<caption>.*?<\/caption>~is',htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8'),$item,1);
 		else{
 			$r['notes']=strip_tags($r['notes']);
 			$pos=strpos($r['notes'],' ',300);
 			$r['notes']=substr(rawurldecode($r['notes']),0,$pos).'...';
 			if($r['seoCaption']!='')
-				$item=preg_replace('/<print content=[\"\']?caption[\"\']?>/',$r['seoCaption'],$item);
+				$item=preg_replace('/<print content=[\"\']?caption[\"\']?>/',htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8'),$item);
 			elseif($r['notes']!='')
-				$item=preg_replace('/<print content=[\"\']?caption[\"\']?>/',strip_tags(rawurldecode($r['notes'])),$item);
+				$item=preg_replace('/<print content=[\"\']?caption[\"\']?>/',htmlspecialchars(rawurldecode($r['notes']),ENT_QUOTES,'UTF-8'),$item);
 			else
 				$item=preg_replace('/<print content=[\"\']?caption[\"\']?>/','',$item);
 			if($r['attributionImageName']!=''&&$r['attributionImageURL']!=''){
@@ -177,7 +185,7 @@ if($ii>0){
 				);
 			}else
 				$item=preg_replace('~<attribution>.*?<\/attribution>~is','',$items);
-			$item=$r['notes']!=''?preg_replace('/<print content=[\"\']notes[\"\']?>/',strip_tags(rawurldecode($r['notes'])),$item):preg_replace('/<print content=[\"\']notes[\"\']?>/','',$item);
+			$item=$r['notes']!=''?preg_replace('/<print content=[\"\']?notes[\"\']?>/',htmlspecialchars(strip_tags(rawurldecode($r['notes'])),$item,ENT_QUOTES,'UTF-8')):preg_replace('/<print content=[\"\']?notes[\"\']?>/','',$item);
 			$item=str_replace(
 				array(
 					'<caption>',

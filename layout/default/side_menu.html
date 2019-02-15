@@ -1,0 +1,103 @@
+		<aside class="side_menu col-12 col-sm-4 mt-5" role="complementary">
+			<controls>
+				<div class="list-group price_side mb-4 d-none d-sm-block">
+					<div class="list-group-item" itemscope itemtype="http://schema.org/Offer">
+						<div class="h4" role="heading"><print content="cost"></div>
+						<print content="quantity">
+						<service>
+							<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>" role="link">Book Now</a>
+						</service>
+						<inventory>
+							<choices>
+							<button class="addCart btn btn-success btn-block" data-cartid="<print content=id>" data-cartchoice="0" role="button">Buy Now</button>
+						</inventory>
+					</div>
+				</div>
+			</controls>
+			<review>
+				<div id="review" class="list-group mb-4">
+					<form id="reviewform" target="review" class="list-group-item" method="post" action="core/add_review.php" role="form">
+						<input type="hidden" name="id" value="<print content=id>">
+						<input type="hidden" name="emailtrap" value="none">
+						<div class="h4" role="heading">Add a Review</div>
+						<div class="form-group">
+							<label for="rating5">Rating</label>
+							<div class="input-group">
+								<span class="starRating">
+					        <input id="rating5" type="radio" name="rating" value="5" checked>
+					        	<label for="rating5" title="Awesome!">5</label>
+					        <input id="rating4" type="radio" name="rating" value="4">
+					        	<label for="rating4" title="Great!">4</label>
+					        <input id="rating3" type="radio" name="rating" value="3">
+					        	<label for="rating3" title="Meh!">3</label>
+					        <input id="rating2" type="radio" name="rating" value="2">
+					        	<label for="rating2" title="So So!">2</label>
+					        <input id="rating1" type="radio" name="rating" value="1">
+					        	<label for="rating1" title="Bad!">1</label>
+					      </span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="email">Email</label>
+							<div class="input-group">
+								<input type="text" id="email" class="form-control" name="email" value="" required aria-required="true" role="textbox">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name">Name</label>
+							<div class="input-group">
+								<input type="text" id="name" class="form-control" name="name" value="" role="textbox">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="review">Review</label>
+							<div class="input-group">
+								<textarea id="review" class="form-control" name="review"  role="textbox"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-success btn-block" role="button">Add Review</button>
+						</div>
+					</form>
+				</div>
+				<script>/*<![CDATA[*/
+					$("#reviewform").submit(function(){
+					    $.post($(this).attr("action"),$(this).serialize(),function(data){
+					        $("#review").html(data);
+					    });
+					    return false;
+					});
+				/*]]>*/</script>
+			</review>
+			<item>
+				<settings items="all" contenttype="current">
+				<div class="list-group mb-4">
+					<items>
+						<a class="list-group-item" href="<print link>" itemscope role="link">
+							<span class="list-group-item-heading" itemprop="headline"><print content="title"></span>
+							<meta itemprop="datePublished" content="<print metaDate>">
+							<p class="list-group-item-text text-muted">
+								<small><print time></small><br>
+								<small><small><print content="caption"></small></small>
+							</p>
+						</a>
+						<media>
+							<a class="list-group-item" href="<print link>" itemscope role="link">
+								<span class="media">
+									<span class="media-left">
+										<img class="img-thumbnail side_menu_gallery pull-left" src="<print content=thumb>" role="img">
+									</span>
+									<meta itemprop="datePublished" content="<print metaDate>">
+									<span class="media-body text-muted">
+										<span class="media-heading"><print content="title"></span>
+										<small><small><print content="caption"></small></small>
+									</span>
+								</span>
+							</a>
+						</media>
+					</items>
+				</div>
+			</item>
+		</aside>
+	</div>
+</div>

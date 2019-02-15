@@ -9,7 +9,11 @@ if(stristr($html,'<items')){
   preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
   $gal=$matches[1];
   $s=$db->prepare("SELECT * FROM `".$prefix."media` WHERE pid=:pid ORDER BY ord ASC");
-  $s->execute(array(':pid'=>10));
+  $s->execute(
+    array(
+      ':pid'=>10
+    )
+  );
   $output='';
   while($r=$s->fetch(PDO::FETCH_ASSOC)){
     $items=$gal;
@@ -18,8 +22,8 @@ if(stristr($html,'<items')){
         '/<print media=[\"\']?file[\"\']?>/',
         '/<print media=[\"\']?title[\"\']?>/',
         '/<print media=[\"\']?caption[\"\']?>/',
-        '/<print media=[\"\']?attributionName[\"\']?>/',
-        '/<print media=[\"\']?attributionURL[\"\']?>/'
+        '/<print media=[\"\']?attributionImageName[\"\']?>/',
+        '/<print media=[\"\']?attributionImageURL[\"\']?>/'
       ),
       array(
         $r['file'],

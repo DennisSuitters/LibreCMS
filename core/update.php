@@ -5,8 +5,10 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 echo'<script>/*<![CDATA[*/';
-if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
-if(session_status()==PHP_SESSION_NONE)session_start();
+if(!defined('DS'))
+	define('DS',DIRECTORY_SEPARATOR);
+if(session_status()==PHP_SESSION_NONE)
+	session_start();
 require_once'db.php';
 $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 include'sanitise.php';
@@ -20,18 +22,24 @@ $e='';
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $tbl=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
 $col=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
-if($tbl=='content'||$tbl=='menu'||$tbl=='config'&&$col=='notes'||$col=='PasswordResetLayout'||$col=='orderEmailLayout'||$col=='orderEmailNotes'||$col=='passwordResetLayout'||$col=='accountActivationLayout'||$col=='bookingEmailLayout'||$col=='bookingAutoReplyLayout'||$col=='contactAutoReplyLayout'||$col=='dateFormat'||$col=='newslettersOptOutLayout'||$col=='php_quicklink'){
+if($tbl=='content'||$tbl=='menu'||$tbl=='config'||$tbl=='login'&&$col=='notes'||$col=='PasswordResetLayout'||$col=='orderEmailLayout'||$col=='orderEmailNotes'||$col=='passwordResetLayout'||$col=='accountActivationLayout'||$col=='bookingEmailLayout'||$col=='bookingAutoReplyLayout'||$col=='contactAutoReplyLayout'||$col=='dateFormat'||$col=='newslettersOptOutLayout'||$col=='php_quicklink'){
   $da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_UNSAFE_RAW):filter_input(INPUT_GET,'da',FILTER_UNSAFE_RAW);
 }else{
   $da=isset($_POST['da'])?filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'da',FILTER_SANITIZE_STRING);
   $da=kses($da,array());
 }
-if(strlen($da)<12&&$da=='<p><br></p>')$da=str_replace('<p><br></p>','',$da);
-if(strlen($da)<24&&$da=='%3Cp%3E%3Cbr%3E%3C/p%3E')$da=str_replace('%3Cp%3E%3Cbr%3E%3C/p%3E','',$da);
+if(strlen($da)<12&&$da=='<p><br></p>')
+	$da=str_replace('<p><br></p>','',$da);
+if(strlen($da)<24&&$da=='%3Cp%3E%3Cbr%3E%3C/p%3E')
+	$da=str_replace('%3Cp%3E%3Cbr%3E%3C/p%3E','',$da);
 $si=session_id();
 $ti=time();
 $s=$db->prepare("SELECT * FROM `".$prefix.$tbl."` WHERE id=:id");
-$s->execute(array(':id'=>$id));
+$s->execute(
+	array(
+		':id'=>$id
+	)
+);
 $r=$s->fetch(PDO::FETCH_ASSOC);
 $oldda=$r[$col];
 if($tbl=='content'&&$col=='status'&&$da=='published'){
@@ -43,7 +51,8 @@ if($tbl=='content'&&$col=='status'&&$da=='published'){
     )
   );
 }
-if($tbl=='config'||$tbl=='login'||$tbl=='orders'||$tbl=='orderitems'||$tbl=='messages')$r['contentType']='';
+if($tbl=='config'||$tbl=='login'||$tbl=='orders'||$tbl=='orderitems'||$tbl=='messages')
+	$r['contentType']='';
 $log=[
   'uid'=>0,
   'rid'=>$id,
@@ -58,13 +67,18 @@ $log=[
   'action'=>'update',
   'ti'=>$ti
 ];
-if($r['contentType']=='booking')$log['view']=$r['contentType'].'s';
+if($r['contentType']=='booking')
+	$log['view']=$r['contentType'].'s';
 if(isset($_SESSION['uid'])){
   $uid=(int)$_SESSION['uid'];
   $q=$db->prepare("SELECT rank,username,name FROM `".$prefix."login` WHERE id=:id");
-  $q->execute(array(':id'=>$uid));
+  $q->execute(
+		array(
+			':id'=>$uid
+		)
+	);
   $u=$q->fetch(PDO::FETCH_ASSOC);
-  $login_user=($u['name']!=''?$u['name']:$u['username']);
+  $login_user=$u['name']!=''?$u['name']:$u['username'];
   $log['uid']=$uid;
 	$log['username']=$u['username'];
 	$log['name']=$u['name'];
@@ -92,7 +106,11 @@ if($tbl=='content'||$tbl=='menu'){
 }
 if($tbl=='login'&&$col=='username'){
   $uc1=$db->prepare("SELECT username FROM `".$prefix."login` WHERE username=:da");
-  $uc1->execute(array(':da'=>$da));
+  $uc1->execute(
+		array(
+			':da'=>$da
+		)
+	);
   if($uc1->rowCount()<1){
     $q=$db->prepare("UPDATE `".$prefix."login` SET username=:da WHERE id=:id");
     $q->execute(
@@ -104,7 +122,11 @@ if($tbl=='login'&&$col=='username'){
 	window.top.window.$('#uerror').addClass('hidden');
 <?php }else{
     $uc2=$db->prepare("SELECT username FROM `".$prefix."login` WHERE id=:id");
-    $uc2->execute(array(':id'=>$id));
+    $uc2->execute(
+			array(
+				':id'=>$id
+			)
+		);
     $uc=$uc2->fetch(PDO::FETCH_ASSOC);?>
 	window.top.window.$('#uerror').removeClass('hidden');
 <?php }
@@ -141,13 +163,19 @@ if($tbl=='orders'&&$col=='status'&&$da=='archived'){
 }
 if(is_null($e[2])){
 	if($tbl=='orders'&&$col=='due_ti'){?>
-	window.top.window.$("#due_ti").val("<?php echo date($config['dateFormat'],$da);?>");
+	window.top.window.$("#due_ti").val(`<?php echo date($config['dateFormat'],$da);?>`);
 <?php }
 	if($tbl=='content'&&$col=='file'&&$da==''){
-    if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.jpg'))unlink('..'.DS.'media'.DS.'file_'.$id.'.jpg');
-    if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.png'))unlink('..'.DS.'media'.DS.'file_'.$id.'.png');
-    if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.gif'))unlink('..'.DS.'media'.DS.'file_'.$id.'.gif');
-		if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.tif'))unlink('..'.DS.'media'.DS.'file_'.$id.'.tif');
+		if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.jpeg'))
+			unlink('..'.DS.'media'.DS.'file_'.$id.'.jpeg');
+    if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.jpg'))
+			unlink('..'.DS.'media'.DS.'file_'.$id.'.jpg');
+    if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.png'))
+			unlink('..'.DS.'media'.DS.'file_'.$id.'.png');
+    if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.gif'))
+			unlink('..'.DS.'media'.DS.'file_'.$id.'.gif');
+		if(file_exists('..'.DS.'media'.DS.'file_'.$id.'.tif'))
+			unlink('..'.DS.'media'.DS.'file_'.$id.'.tif');
 	}
 	if($tbl=='config'&&$col=='php_honeypot'){?>
 	window.top.window.$('#php_honeypot_link').html('<?php echo($da!=''?'<a target="_blank" href="'.$da.'">'.$da.'</a>':'Honey Pot File Not Uploaded.');?>');
@@ -156,38 +184,67 @@ if(is_null($e[2])){
     if($tbl=='cart'&&$col=='quantity'){
       if($da==0){
         $q=$db->prepare("DELETE FROM `".$prefix."cart` WHERE id=:id");
-        $q->execute(array(':id'=>$id));
+        $q->execute(
+					array(
+						':id'=>$id
+					)
+				);
         $cnt='';
       }
       $q=$db->prepare("SELECT SUM(quantity) as quantity FROM `".$prefix."cart` WHERE si=:si");
-      $q->execute(array(':si'=>$si));
+      $q->execute(
+				array(
+					':si'=>$si
+				)
+			);
       $r=$q->fetch(PDO::FETCH_ASSOC);
       $cnt=$r['quantity'];
-      if($r['quantity']==0)$cnt='';?>
+      if($r['quantity']==0)
+				$cnt='';?>
 	window.top.window.$('#cart').html('<?php echo$cnt;?>');
 <?php	}
       if($tbl=='orderitems'){
         $q=$db->prepare("SELECT oid FROM `".$prefix."orderitems` WHERE id=:id");
-        $q->execute(array(':id'=>$id));
+        $q->execute(
+					array(
+						':id'=>$id
+					)
+				);
         $iid=$q->fetch(PDO::FETCH_ASSOC);
       }
       if($tbl=='orderitems'&&$col=='quantity'&&$da==0){
         $q=$db->prepare("DELETE FROM `".$prefix."orderitems` WHERE id=:id");
-        $q->execute(array(':id'=>$id));
+        $q->execute(
+					array(
+						':id'=>$id
+					)
+				);
       }
       $total=0;
       $content=$html='';
       if($tbl=='cart'){
         $q=$db->prepare("SELECT * FROM `".$prefix."cart` WHERE si=:si ORDER BY ti DESC");
-        $q->execute(array(':si'=>$si));
+        $q->execute(
+					array(
+						':si'=>$si
+					)
+				);
       }
       if($tbl=='orderitems'){
         $q=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid ORDER BY ti ASC,title ASC");
-        $q->execute(array(':oid'=>$iid['oid']));
+        $q->execute(
+					array(
+						':oid'=>$iid['oid']
+					)
+				);
       }
       while($oi=$q->fetch(PDO::FETCH_ASSOC)){
         $s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
-        $s->execute(array(':id'=>$oi['iid']));
+        $s->execute(
+					array(
+						':id'=>$oi['iid']
+					)
+				);
         $i=$s->fetch(PDO::FETCH_ASSOC);
         $html.='<tr>'.
                 '<td class="text-left">'.$i['code'].'</td>'.
@@ -216,7 +273,8 @@ if(is_null($e[2])){
                   '</form>'.
                 '</td>'.
               '</tr>';
-        if($oi['iid']!=0)$total=$total+($oi['cost']*$oi['quantity']);
+        if($oi['iid']!=0)
+					$total=$total+($oi['cost']*$oi['quantity']);
       }
       $html.='<tr>'.
               '<td colspan="3">&nbsp;</td>'.
@@ -229,7 +287,11 @@ if(is_null($e[2])){
     	if($tbl=='login'&&$col=='gravatar'){
         if($da==''){
           $sav=$db->prepare("SELECT avatar FROM `".$prefix."login` WHERE id=:id");
-          $sav->execute(array(':id'=>$id));
+          $sav->execute(
+						array(
+							':id'=>$id
+						)
+					);
           $av=$sav->fetch(PDO::FETCH_ASSOC);
           if($av['avatar']!=''&&file_exists('..'.DS.'media'.DS.'avatar'.DS.$av['avatar']))
 						$avatar='media'.DS.'avatar'.DS.$av['avatar'];
@@ -241,6 +303,9 @@ if(is_null($e[2])){
 	window.top.window.$('#avatar').attr('src','<?php echo$avatar.'?'.time();?>');
 <?php	}
 	}
+	if($col=='notes'){?>
+	window.top.window.$('.note-block').removeClass('blocked');
+<?php }
 	if($col=='status'){
 		if($da=='archived'){?>
 	window.top.window.$('#l_<?php echo$id;?>').slideUp(500,function(){$(this).remove()});

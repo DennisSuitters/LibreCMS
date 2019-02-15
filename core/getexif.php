@@ -7,11 +7,15 @@
 $getcfg=true;
 require_once'db.php';
 echo'<script>/*<![CDATA[*/window.top.window.$("#notification").html("");';
-$id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-$t=filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
-$c=filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
+$id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
+$t=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
+$c=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
 $s=$db->prepare("SELECT file FROM ".$prefix."$t WHERE id=:id");
-$s->execute(array(':id'=>$id));
+$s->execute(
+  array(
+    ':id'=>$id
+  )
+);
 $r=$s->fetch(PDO::FETCH_ASSOC);
 if($r['file']!=''){
   switch($c){

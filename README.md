@@ -1,5 +1,3 @@
-[![LibreCMS Introduction](http://img.youtube.com/vi/ssYaSJWPgMQ/0.jpg)](https://youtu.be/ssYaSJWPgMQ "LibreCMS Introduction")
-
 ![LibreCMS](core/images/librecms.png)  
 a **Free** Open Source [MIT](https://www.gnu.org/licenses/gpl-3.0.html) Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/DiemenDesign/LibreICONS). Built to take advantage of HTML5 and CSS3, with necessary SEO attributes that fit in with Google's recommendations, and Micro-formats to help with Search Engine ranking.
 (AMP has been removed as testing proved that there was nothing to be gained from using it).
@@ -13,7 +11,8 @@ a **Free** Open Source [MIT](https://www.gnu.org/licenses/gpl-3.0.html) Content 
   - Anybody who's worked on or developed any kind of Content Mangement System in any Programming Language knows that Plugins are a potential security problem. Plugins are something that because third parties can build them, end up being out of the control of the developer, especially if the Plugin Maker disregards the conventions set by the project.
 
 ### Features
-- Blog, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs, Messages, and Newsletters.
+- Blog Articles, Portfolio's, Bookings, Events, News, Testimonials, Inventory, Services, Gallery, Proofs, Messages, and Newsletters.
+- Content Scheduler. Calendar based Scheduler.
 - Add and Remove Custom Pages. Submenu custom and existing pages.
 - Messaging - Whenever a message is created via the Contact Us page, it is stored in the Messages system as well as emailed.
 - Orders - Create Quotes, Invoices. Client viewing of Orders.
@@ -31,8 +30,10 @@ a **Free** Open Source [MIT](https://www.gnu.org/licenses/gpl-3.0.html) Content 
   - Spam Filter than can Auto Blacklist IP's using custom blacklist text files that can be edited.
   - Project Honey Pot Integration that can Auto Blacklist when check IP's against the httpBL API Service when forms are submitted via visitors.
   - Ability to Add suspicious visitor interactions to Blacklist.
+  - 30 Day Auto-Clearance of Blacklisted IP's.
   - Site Block if visitor's IP is listed in Blacklist, saving servers resources, and to hopefully stop Spammers or Email Harvester's.
   - Database Backup and ability to Prefix Table Names.
+  - Blacklist IP's that try to access WordPress based files.
 - WYSIWYG Editor Content is encoded to get around some server filters blocking data such as iFrames that services such as YouTube use for Embedding.
 - Page and Visitor Tracking.
 - SEO Stats within Content, Google (currently broken), Alexa, and Moz.
@@ -52,7 +53,7 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 
 ### Dependencies
 - PHP > 5.6 - Must have PDO, and Password Compat support. If you have tried LibreCMS with a higher version, please report your experiences.
-- Now works with PHP 7+. Please make sure PHP Libraries are installed before reporting Issues.
+- Works with PHP 7+. Please make sure PHP Libraries are installed before reporting Issues.
 - mod_rewrite
 - GD-Image & Imagemagick- LibreCMS will work without them, but things like Thumbnails, and image resizing won't work.
 - mail services - Are needed for mail notification sending, and for the Newsletters.
@@ -81,7 +82,6 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
   - We've modified kses to include HTML5, and minified the source.
 - [elFinder](https://github.com/Studio-42/elFinder)
   - [elFinder-bootstrap-theme](https://github.com/DiemenDesign/LibreICONS/tree/master/themes/elFinder)
-- [bootstrap-tokenfield](https://github.com/sliptree/bootstrap-tokenfield)
 
 ### Tested on:
 - CentOS Linux 7.2.1511 with Webmin 1.791
@@ -107,9 +107,12 @@ By downloading LibreCMS you hereby agree not to hold Diemen Design liable for an
 
 ### LibreCMS Live Sites by Diemen Design:
 - [Anime Excess](https://www.animeexcess.com.au/)
+- [Diemen Design](https://diemen.design/)
 - [Fast Track Business Club](https://www.fasttrackbusinessclub.com.au/)
 - [Live Lightly Centre](https://www.livelightlycentre.com.au/)
+- [Lovely Gardens](https://www.lovelygardens.com.au/)
 - [Powerline Automotive Services](https://www.powerlineauto.com.au/)
 - [Raycraft Computer Services](https://www.raycraft.com.au/)
 - [Raycraft Entertainment](https://www.entertainme.net.au/)
-- [StudioJunkyard](https://www.studiojunkyard.com/)
+- [AAA Earthworx](https://www.aaaearthworx.com.au/)
+- [BizzyKnits](https://www.bizzyknits.biz/)

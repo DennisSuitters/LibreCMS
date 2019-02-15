@@ -1,0 +1,114 @@
+<block include="meta_head.html">
+<block include="header.html">
+<block inbed="content">
+	<div class="container">
+		<div class="row mt-4 mb-4 m-sm-5">
+			<main id="content" class="col-12 col-sm-8" role="main">
+				<item>
+					<article class="card default-full border-0" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+						<json-ld>
+						<print class="card-img-top img-fluid" content="image">
+						<div class="card-body">
+							<h1 class="card-title" itemprop="name" role="heading"><print content="title"></h1>
+							<div class="card-text" itemprop="description">
+							<cost>
+								<div class="price_content mb-4 d-block d-sm-none">
+									<div itemscope itemtype="http://schema.org/Offer">
+										<div class="h4 text-right"><print content="cost"></div>
+										<print content="quantity">
+										<service>
+											<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>" role="link">Book Now</a>
+										</service>
+										<inventory>
+											<choices>
+											<button class="addCart btn btn-success btn-block" data-cartid="<print content=id>" data-cartchoice="0" role="button">Buy Now</button>
+										</inventory>
+									</div>
+								</div>
+							</cost>
+							<print content="dateCreated" userrank="399" class="text-muted small" container="div" leadingtext="Created: ">
+							<print content="datePublished" class="text-muted small" container="div" leadingtext="Published: ">
+							<print content="dateEdited" userrank="399" class="text-muted small" container="div" leadingtext="Edited: ">
+							<print content="dateEvent" class="text-muted small" container="div" leadingtext="Event Date: ">
+							<print content="categories" class="text-muted small" container="div" leadingtext="Categories: ">
+							<print content="tags" class="text-muted small" container="div" leadingtext="Tags: ">
+							<mediaitems>
+								<div class="fancymedia">
+									<mediaimages>
+										<a data-fancybox="media-group" href="<print media=image>" data-width="<print media=width>" data-height="<print media=height>" data-caption="<print media=caption>"><img src="<print media=image>" alt="<print media=title> - <print media=caption>"></a>
+										<div class="mediadetails">
+											<h3><print media="title"></h3>
+											<p>
+												<print media="description">
+											</p>
+										</div>
+									</mediaimages>
+								</div>
+							</mediaitems>
+							<print content="notes">
+						</div>
+						<author>
+							<hr role="separator">
+							<aside class="vcard p-2">
+								<print author="avatar" alt="name" class="col-3 col-sm-2 align-text-top m-0">
+								This article was written by <span class="fn"><a href="<print author=link>"><print author="name"></a></span>.<br>
+								<div class="small p-2"><print author="notes"></div>
+								<print author="social" type="icon" class="libre libre-social libre-2x m-2">
+							</aside>
+						</author>
+						<div class="reviews">
+							<review>
+								<div class="hreview-aggregate media" itemprop="review" itemscope itemtype="http://schema.org/Review">
+									<json-ld-review>
+									<div class="media-body well" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+										<p>
+											<data class="p-rating" value="<print review=rating>">
+												<meta itemprop="worstRating" content="1">
+												<meta itemprop="ratingValue" content="<print review=rating>">
+												<meta itemprop="bestRating" content="5">
+												<span class="rat">
+													<span class="<print review=set5>">☆</span>
+													<span class="<print review=set4>">☆</span>
+													<span class="<print review=set3>">☆</span>
+													<span class="<print review=set2>">☆</span>
+													<span class="<print review=set1>">☆</span>
+												</span>
+											</data>
+											Published <time class="dt-published" datetime="<print review=datetime>"><print review="date"></time> by <span class="p-author h-card"><print review="name"></span>
+										</p>
+										<div class="e-content summary" itemprop="description"><print review="review"></div>
+									</div>
+								</div>
+							</review>
+						</div>
+					</article>
+				</item>
+				<h1 role="heading"><print page="contentType"></h1>
+				<print page="notes">
+				<settings itemCount="10">
+				<items>
+					<article class="card default" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+						<meta itemprop="author" content="<print author=name>">
+						<meta itemprop="datePublished" content="<print content=datePublished>">
+						<meta itemprop="dateModified" content="<print content=dateEdited>">
+						<div class="card-img"><img class="card-img-top img-fluid" src="<print content=thumb>" alt="<print content=alttitle>" itemprop="thumbnail" role="image"></div>
+        		<div class="card-body text-center" data-contenttype="<print content=contentType>">
+							<div class="card-subtitle mb-2 small text-muted text-center">By <a href="<print profileLink>"><print content="author"></a> on <print content="datePublished"></div>
+							<controls>
+								<view>
+									<h2 class="card-title" itemprop="name headline"><a href="<print content=linktitle>" itemprop="url" role="link"><print content="title"></a></h2>
+								</view>
+							</controls>
+							<div class="card-text"><print content="notes"></div>
+							<a class="btn btn-success mt-2" href="<print content=linktitle>">View</a>
+						</div>
+	  			</article>
+				</items>
+				<more>
+					<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
+				</more>
+			</main>
+</block>
+<block include="side_menu.html">
+<block include="footer.html">
+<block include="meta_footer.html">

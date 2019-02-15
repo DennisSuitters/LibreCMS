@@ -1,0 +1,122 @@
+<block include="meta_head.html">
+<block include="header.html">
+<block inbed="settings">
+	<div class="container">
+		<div class="row mt-4 mb-4 m-sm-5">
+			<div class="col-12 col-sm-6 m-auto">
+				<div class="form-group">
+					<label for="avatar">Avatar</label>
+					<iframe id="sp" name="sp" class="d-none"></iframe>
+					<form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php" role="form">
+						<input type="hidden" name="id" value="<print user=id>">
+						<input type="hidden" name="act" value="add_avatar">
+						<div class="input-group">
+							<div class="custom-file">
+								<input type="file" name="fu" class="custom-file-input">
+								<label class="custom-file-label" for="fu">Choose File</label>
+							</div>
+							<div class="input-group-append">
+								<button class="btn btn-default" role="button">Upload</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="form-group">
+					<label for="gravatar">Gravatar</label>
+					<div class="input-group">
+						<input type="text" id="gravatar" class="form-control" value="<print user=gravatar>" placeholder="Enter Gravatar Link..." role="textbox">
+						<div id="gravatarsave" class="input-group-append hidden"><button class="btn btn-danger" role="button">Save</button></div>
+					</div>
+				</div>
+				<form method="post" action="settings" role="form">
+					<input type="hidden" name="act" value="updatePassword">
+					<input type="hidden" name="emailtrap" value="">
+					<h4 role="heading">Reset Password</h4>
+					<div class="alert alert-danger<error currentPassHidden>">The Password you entered was incorrect!</div>
+					<div class="alert alert-danger<error matchPassHidden>">The New &amp; Confirm Passwords do NOT match!</div>
+					<div class="alert alert-success<success passUpdated>">Password Successfully Updated!</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<div class="input-group">
+							<input type="password" id="password" class="form-control" name="newPass" value="" placeholder="Enter New Password..." required aria-required="true" role="textbox">
+							<div class="input-group-append">
+								<button class="btn btn-success pull-right" type="submit" role="button">Update Password</button>
+							</div>
+						</div>
+						<div class="form-text small text-muted">Changing Password will Sign you Out</div>
+					</div>
+				</form>
+				<form method="post" action="settings" role="form">
+					<input type="hidden" name="act" value="updateAccount">
+					<input type="hidden" name="emailTrap" value="">
+					<div class="alert alert-success<success accountHidden>">Account Details Updated!</div>
+					<div class="alert alert-danger<error accountHidden>">There was an Issue Updating your Account Details!</div>
+					<div class="form-group">
+						<label for="ti">Created</label>
+						<input type="text" id="ti" class="form-control" value="<print user=ti>" readonly role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="username">Username</label>
+						<input type="text" id="username" class="form-control" name="usrname" value="<print user=username>" readonly role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="rank">Rank</label>
+						<input type="text" class="form-control" value="<print user=rank>" readonly role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="text" id="email" class="form-control" name="email" value="<print user=email>" placeholder="Enter an Email..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input type="text" id="name" class="form-control" name="name" value="<print user=name>" placeholder="Enter a Name..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="url">URL</label>
+						<input type="text" id="url" class="form-control" name="url" value="<print user=url>" placeholder="Enter a URL..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="business">Business</label>
+						<input type="text" id="business" class="form-control" name="business" value="<print user=business>" placeholder="Enter a Business..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="phone">Phone</label>
+						<input type="text" id="phone" class="form-control" name="phone" value="<print user=phone>" placeholder="Enter a Phone Number..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="mobile">Mobile</label>
+						<input type="text" id="mobile" class="form-control" name="mobile" value="<print user=mobile>" placeholder="Enter a Mobile Number..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="address">Address</label>
+						<input type="text" id="address" class="form-control" name="address" value="<print user=address>" placeholder="Enter an Address..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="suburb">Suburb</label>
+						<input type="text" id="suburb" class="form-control" name="suburb" value="<print user=suburb>" placeholder="Enter a Suburb..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="city">City</label>
+						<input type="text" id="city" class="form-control" name="city" value="<print user=city>" placeholder="Enter a City..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="state">State</label>
+						<input type="text" id="state" class="form-control" name="state" value="<print user=state>" placeholder="Enter a State..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="postcode">Postcode</label>
+						<input type="text" id="postcode" class="form-control" name="postcode" value="<print user=postcode>" placeholder="Enter a Postcode..." role="textbox">
+					</div>
+					<div class="form-group">
+						<label for="country">Country</label>
+						<input type="text" id="country" class="form-control" name="country" value="<print user=country>" placeholder="Enter a Country..." role="textbox">
+					</div>
+					<div class="form-group">
+						<button class="btn btn-success btn-block" type="submit" role="button">Update Account</button>
+					</div>
+				</form>
+		</div>
+	</div>
+</block>
+<block include="footer.html">
+<block include="meta_footer.html">

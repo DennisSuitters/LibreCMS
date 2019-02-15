@@ -1,0 +1,22 @@
+@import url(https://fonts.googleapis.com/css?family=Coustard|Open+Sans);
+html{background:transparent url(../images/maintenance.jpg) no-repeat center center;-webkit-background-size:cover;-moz-background-size:cover;-o-background-size:cover;background-size:cover;height:100%;overflow:hidden;width:100%}
+html:before{content:'';background:transparent url(../images/gradient.png) no-repeat center center;-webkit-background-size:cover;-moz-background-size:cover;-o-background-size:cover;background-size:cover;left:0;height:100%;position:absolute;top:0;width:100%}
+body{font-family:'Open Sans',sans-serif;font-size:.7em;line-height:21px;font-weight:400;-webkit-font-smoothing:antialiased;font-smoothing:antialiased;color:#aaa;background:#000;z-index:+1}
+h1,h2,h3,h4,h5,h6{font-family:'Coustard',serif;color:#fff;font-weight:400;letter-spacing:1px}
+h1{font-size:2em;line-height:2em;padding:0;margin:0}
+h5{font-size:1.5em;line-height:1.5em;padding:0;margin:0;color:#ccc}
+a{color:#b7b7b7;text-decoration:none;font-weight:400}
+a:hover{text-decoration:underline}
+.show{display:block}
+.hide{opacity:0}
+.content{float:left;margin:40px;position:absolute;top:250px;z-index:9999;-webkit-font-smoothing:antialiased}
+#logo{font-family:'Coustard',serif;font-size:49px;bottom:40px;height:auto;left:40px;position:absolute;z-index:1000;color:#fff}
+.social-nav{position:absolute;top:0;left:40px}
+.social-nav ul{margin:0;padding:0}
+.social-nav ul li{list-style:none;display:block;float:left;background:#393939;padding:100px 10px 5px 10px;margin:1px;opacity:.5}
+.social-nav ul li svg{fill:currentColor}
+.social-nav ul li:hover{opacity:1}
+@media(min-width:360px){}
+@media(min-width:540px){}
+@media(min-width:768px){}
+@media(min-width:1200px){}

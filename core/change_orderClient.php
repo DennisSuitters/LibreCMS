@@ -32,18 +32,21 @@ if($id==0){
   );
 }else{
   $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
-  $q->execute(array(':id'=>$id));
+  $q->execute(
+    array(
+      ':id'=>$id
+    )
+  );
   $c=$q->fetch(PDO::FETCH_ASSOC);
 }?>
   window.top.window.$('#client_business').val('<?php echo$c['username'].($c['name']!=''?' ['.$c['name'].']':'').($c['business']!=''?' -> '.$c['business']:'');?>');
-  window.top.window.$('#client_address').val('<?php echo$c['address'];?>').data("dbid",<?php echo$c['id'];?>);
-  window.top.window.$('#client_suburb').val('<?php echo$c['suburb'];?>').data("dbid",<?php echo$c['id'];?>);
-  window.top.window.$('#client_state').val('<?php echo$c['state'];?>').data("dbid",<?php echo$c['id'];?>);
-  window.top.window.$('#client_city').val('<?php echo$c['city'];?>').data("dbid",<?php echo$c['id'];?>);
-  window.top.window.$('#client_postcode').val('<?php echo$c['postcode'];?>').data("dbid",<?php echo$c['id'];?>);
-  window.top.window.$('#client_email').val('<?php echo$c['email'];?>').data("dbid",<?php echo$c['id'];?>);
-  window.top.window.$('#client_phone').val('<?php echo$c['phone'];?>').data("dbid",<?php echo$c['id'];?>);
-  window.top.window.$('#client_mobile').val('<?php echo$c['mobile'];?>').data("dbid",<?php echo$c['id'];?>);
-  window.top.window.Pace.stop();
+  window.top.window.$('#address').val('<?php echo$c['address'];?>').data("dbid",<?php echo$c['id'];?>);
+  window.top.window.$('#suburb').val('<?php echo$c['suburb'];?>').data("dbid",<?php echo$c['id'];?>);
+  window.top.window.$('#state').val('<?php echo$c['state'];?>').data("dbid",<?php echo$c['id'];?>);
+  window.top.window.$('#city').val('<?php echo$c['city'];?>').data("dbid",<?php echo$c['id'];?>);
+  window.top.window.$('#postcode').val('<?php echo$c['postcode'];?>').data("dbid",<?php echo$c['id'];?>);
+  window.top.window.$('#email').val('<?php echo$c['email'];?>').data("dbid",<?php echo$c['id'];?>);
+  window.top.window.$('#phone').val('<?php echo$c['phone'];?>').data("dbid",<?php echo$c['id'];?>);
+  window.top.window.$('#mobile').val('<?php echo$c['mobile'];?>').data("dbid",<?php echo$c['id'];?>);
 <?php
 echo'/*]]>*/</script>';

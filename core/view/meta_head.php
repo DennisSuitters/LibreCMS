@@ -6,7 +6,7 @@
  */
 if(preg_match('/<block include=[\"\']?meta_head.html[\"\']?>/',$template)&&file_exists(THEME.DS.'meta_head.html'))
 	$head=file_get_contents(THEME.DS.'meta_head.html');
-elseif(stristr($template, '</head>')){
+elseif(stristr($template,'</head>')){
 	preg_match('/<head>([\w\W]*?)<\/head>/',$template,$matches);
 	$head=$matches[1];
 }else

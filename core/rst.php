@@ -9,7 +9,11 @@ require_once'db.php';
 if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
   $eml=filter_input(INPUT_POST,'rst',FILTER_SANITIZE_STRING);
   $s=$db->prepare("SELECT id,name,email FROM `".$prefix."login` WHERE email=:email LIMIT 1");
-  $s->execute(array(':email'=>$eml));
+  $s->execute(
+    array(
+      ':email'=>$eml
+    )
+  );
   $c=$s->fetch(PDO::FETCH_ASSOC);
   if($s->rowCount()>0){
     $chars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&";
@@ -36,9 +40,12 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
   	$msg=str_replace('{password}',$password,$msg);
   	$mail->Body=$msg;
   	$mail->AltBody=$msg;
-  	if($mail->Send())echo'<div class="alert alert-success text-center">Check your Email!</div>';
-    else echo'<div class="alert alert-danger text-center">Problem Sending Email!</div>';
-  } else echo'<div class="alert alert-danger text-center">No Account Found!</div>';
+  	if($mail->Send())
+      echo'<div class="alert alert-success text-center">Check your Email!</div>';
+    else
+      echo'<div class="alert alert-danger text-center">Problem Sending Email!</div>';
+  }else
+    echo'<div class="alert alert-danger text-center">No Account Found!</div>';
 }else{
   $r=rand(0,10);
   switch($r){

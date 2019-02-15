@@ -21,7 +21,11 @@ if($act=='add_comment'){
     if($h->hasRecord()==1||$h->isSuspicious()==1||$h->isCommentSpammer()==1){
       $blacklisted=$theme['settings']['blacklist'];
 			$sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-			$sc->execute(array(':ip'=>$ip));
+			$sc->execute(
+        array(
+          ':ip'=>$ip
+        )
+      );
 			if($sc->rowCount()<1){
 	      $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
 	      $s->execute(
@@ -54,7 +58,11 @@ if($act=='add_comment'){
       }
       if($config['spamfilter']{1}==1&&$spam==TRUE){
         $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-        $sc->execute(array(':ip'=>$ip));
+        $sc->execute(
+          array(
+            ':ip'=>$ip
+          )
+        );
         if($sc->rowCount()<1){
           $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
           $s->execute(
@@ -70,7 +78,11 @@ if($act=='add_comment'){
     if($spam==FALSE){
       if(filter_var($email,FILTER_VALIDATE_EMAIL)){
         $q=$db->prepare("SELECT id,name,email,avatar,gravatar FROM `".$prefix."login` WHERE email=:email");
-        $q->execute(array(':email'=>$email));
+        $q->execute(
+          array(
+            ':email'=>$email
+          )
+        );
         $u=$q->fetch(PDO::FETCH_ASSOC);
         if($u['email']==''){
           $u=array(

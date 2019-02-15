@@ -1,0 +1,111 @@
+<block include="meta_head.html">
+<block include="header.html">
+<block include="featured.html">
+<block inbed="content">
+	<div class="jumbotron" style="<print page=cover>"><print page="coverVideo"></div>
+	<div class="container">
+		<div class="row mt-3 mb-3 m-sm-5 p-0">
+			<main id="content" class="col-12 col-sm-8" role="main">
+				<h1>Default Bootstrap 4 Theme</h1>
+				<print page="notes">
+			</main>
+			<aside class="side_menu col-12 col-sm-4 mt-3 mt-sm-5">
+				<div id="newsletters" class="list-group">
+					<form id="newslettersform" class="list-group-item" method="post" action="core/add_subscriber.php" role="form">
+						<input type="hidden" name="emailtrap" value="none">
+						<div class="h5" role="heading">Subscribe to our Newsletters</div>
+						<div class="form-group">
+							<label for="newslettersemail">Email</label>
+							<div class="input-group">
+								<input type="text" id="newslettersemail" class="form-control" name="email" value="" required aria-required="true" placeholder="Email..." role="textbox">
+							</div>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-success btn-block" role="button">Subscribe</button>
+						</div>
+					</form>
+				</div>
+				<script>/*<![CDATA[*/
+					$("#newslettersform").submit(function(){
+						$.post($(this).attr("action"),$(this).serialize(),function(data){
+							$("#newsletters").html(data);
+						});
+						return false;
+					});
+				/*]]>*/</script>
+			</aside>
+		</div>
+	</div>
+	<div class="jumbotron jumbotron-fluid home-background-1">
+	  <div class="container">
+	    <h1 class="display-4">Fluid jumbotron</h1>
+	    <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+	  </div>
+	</div>
+	<settings items="4" contenttype="all">
+	<div class="container">
+		<div class="row m-0 p-0">
+			<items>
+				<div class="col-12 col-sm-3 d-flex align-items-stretch mt-2 mb-2">
+					<div class="card" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+						<img class="card-img-top home" src="<print content=thumb>" alt="<print content=alttitle>" role="img">
+     				<div class="card-body">
+							<h1 class="card-title h5 text-uppercase" role="heading"><a href="<print content=linktitle>" itemprop="url" role="link"><print content="title"></a></h1>
+							<div class="card-text truncate small"><print content="notes"></div>
+							<controls>
+								<view>
+									<div class="content-item-title text-center" itemprop="name">
+										<a class="btn btn-success" href="<print content=linktitle>" itemprop="url" role="link">View</a>
+									</div>
+								</view>
+							</controls>
+	   				</div>
+	  			</div>
+				</div>
+			</items>
+		</div>
+	</div>
+</block>
+<block inbed="testimonials">
+	<settings items="5">
+	<div class="testimonials">
+		<div class="container">
+			<div class="row mt-5 p-4">
+				<h2 class="text-center col-12 mb-2 text-uppercase text-white" role="heading"><strong><a class="text-white" href="testimonials/">Testimonials</a> <small>Our Clients Love Us!</small></strong></h2>
+				<div id="testimonials" class="carousel slide" data-ride="carousel">
+					<ol class="carousel-indicators d-none">
+			      <li data-target="#testimonials" data-slide-to="0" class="active"></li>
+			      <li data-target="#testimonials" data-slide-to="1"></li>
+			      <li data-target="#testimonials" data-slide-to="2"></li>
+			    </ol>
+					<div class="carousel-inner mt-4">
+						<items>
+							<div class="carousel-item text-center <print content=active>" itemscope itemtype="http://schema.org/Review">
+								<meta itemprop="itemReviewed" content="<print config=title>">
+								<meta itemprop="datePublished" content="<print datePub>">
+								<div class="img-box p-1 border rounded-circle m-auto text-white">
+									<img class="d-block rounded-circle m-auto" src="<print content=avatar>" alt="<print content=name>">
+								</div>
+								<h5 class="mt-4 mb-0 text-white" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><print content="name"></span></h5>
+								<h6 itemprop="publisher" itemscope itemtype="http://schema.org/Organization" role="heading"><strong itemprop="name"><print content="business"></strong></h6>
+								<p class="col-8 m-0 pt-3 text-center text-white m-auto"><print content="notes"></p>
+			      	</div>
+						</items>
+					</div>
+					<controls>
+						<a class="carousel-control-prev" href="#testimonials" role="button" data-slide="prev">
+			        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			        <span class="sr-only">Previous</span>
+			      </a>
+			      <a class="carousel-control-next" href="#testimonials" role="button" data-slide="next">
+			        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			        <span class="sr-only">Next</span>
+			      </a>
+					</controls>
+				</div>
+			</div>
+		</div>
+	</div>
+</block>
+<block include="footer.html">
+<block include="meta_footer.html">

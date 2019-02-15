@@ -29,25 +29,44 @@ if($view=='page'){
   );
 }else{
   $sp=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE contentType=:contentType");
-  $sp->execute(array(':contentType'=>$view));
+  $sp->execute(
+    array(
+      ':contentType'=>$view
+    )
+  );
 }
 $page=$sp->fetch(PDO::FETCH_ASSOC);
 $pu=$db->prepare("UPDATE `".$prefix."menu` SET views=views+1 WHERE id=:id");
-$pu->execute(array(':id'=>$page['id']));
+$pu->execute(
+  array(
+    ':id'=>$page['id']
+  )
+);
 if(isset($act)&&$act=='logout')
   require'core'.DS.'login.php';
 include'core'.DS.'cart_quantity.php';
 $status=isset($_SESSON['rank'])&&$_SESSION['rank']>699?"%":"published";
 if($config['php_options']{4}==1){
   $sb=$db->prepare("SELECT * FROM `".$prefix."iplist` WHERE ip=:ip");
-  $sb->execute(array(':ip'=>$ip));
+  $sb->execute(
+    array(
+      ':ip'=>$ip
+    )
+  );
   if($sb->rowCount()>0){
     $sbr=$sb->fetch(PDO::FETCH_ASSOC);
     echo'The IP "<strong>'.$ip.'</strong>" has been Blacklisted for suspicious activity.';
     die();
   }
 }
-if($config['maintenance']{0}==1&&(isset($_SESSION['rank'])&&$_SESSION['rank']<400)){
+if($config['comingsoon']{0}==1&&(isset($_SESSION['rank'])&&$_SESSION['rank']<400)){
+    if(file_exists(THEME.DS.'comingsoon.html'))
+      $template=file_get_contents(THEME.DS.'comingsoon.html');
+    else{
+      include'core'.DS.'layout'.DS.'comingsoon.php';
+      die();
+    }
+}elseif($config['maintenance']{0}==1&&(isset($_SESSION['rank'])&&$_SESSION['rank']<400)){
   if(file_exists(THEME.DS.'maintenance.html'))
     $template=file_get_contents(THEME.DS.'maintenance.html');
   else{
@@ -80,10 +99,14 @@ foreach($tag as$tag1){
   if($inbed!=''){
     preg_match('/<block inbed="'.$inbed.'">([\w\W]*?)<\/block>/',$template,$matches);
     $html=isset($matches[1])?$matches[1]:'';
-    if($view=='cart')$inbed='cart';
-    if($view=='sitemap')$inbed='sitemap';
-    if($view=='settings')$inbed='settings';
-    if($view=='page')$inbed='page';
+    if($view=='cart')
+      $inbed='cart';
+    if($view=='sitemap')
+      $inbed='sitemap';
+    if($view=='settings')
+      $inbed='settings';
+    if($view=='page')
+      $inbed='page';
     if(file_exists(THEME.'view'.DS.$inbed.'.php'))
       include THEME.'view'.DS.$inbed.'.php';
     elseif(file_exists('core'.DS.'view'.DS.$inbed.'.php'))
@@ -94,7 +117,6 @@ foreach($tag as$tag1){
   }
 }
 $metaRobots=!isset($metaRobots)&&empty($page['metaRobots'])?'index,follow':$page['metaRobots'];
-$seoTitle=empty($page['seoTitle'])?$config['seoTitle']:$page['seoTitle'];
 $seoCaption=!isset($seoCaption)&&empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
 $seoDescription=!isset($seoDescription)&&empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
 if(isset($args[1])&&$args[1]!=''&&isset($r['seoKeywords']))
@@ -135,7 +157,7 @@ $head=preg_replace(
   ),
   array(
     empty($metaRobots)?'index,follow':$page['metaRobots'],
-    (empty($seoTitle)?ucfirst($view).' - '.$config['seoTitle']:$page['seoTitle'].' - '.$config['seoTitle']).' - '.$config['business'],
+    empty($seoTitle)?ucfirst($view).' - '.$config['seoTitle'].' - '.$config['business']:$seoTitle.' - '.$config['business'],
     empty($seoDescription)?$seoDescription:$seoCaption,
     $seoKeywords,
     $contentTime,
@@ -170,7 +192,7 @@ else
 $current_page=PROTOCOL.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 if($config['maintenance']==0||$config['development']==0){
   if(!isset($_SESSION['current_page'])||(isset($_SESSION['current_page'])&&$_SESSION['current_page']!=$current_page)){
-    if(!stristr($current_page,'core')||!stristr($current_page,'admin')&&filter_var($current_page,FILTER_VALIDATE_URL)===TRUE){
+    if(!stristr($current_page,'core')||!stristr($current_page,'admin')||!stristr($current_page,'layout')||!stristr($current_page,'media')&&filter_var($current_page,FILTER_VALIDATE_URL)===TRUE){
       $s=$db->prepare("INSERT INTO `".$prefix."tracker` (pid,urlDest,urlFrom,userAgent,ip,browser,os,sid,ti) VALUES (:pid,:urlDest,:urlFrom,:userAgent,:ip,:browser,:os,:sid,:ti)");
       $hr=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
       $s->execute(
@@ -220,7 +242,8 @@ function getOS(){
     '/webos/i'=>'Mobile'
   );
   foreach($os_array as$regex=>$value){
-    if(preg_match($regex,$user_agent))$os_platform=$value;
+    if(preg_match($regex,$user_agent))
+      $os_platform=$value;
   }
   return$os_platform;
 }
@@ -228,6 +251,7 @@ function getBrowser(){
   $user_agent=$_SERVER['HTTP_USER_AGENT'];
   $browser="Unknown Browser";
   $browser_array=array(
+    '/brave/i'=>'Brave',
     '/msie/i'=>'Explorer',
     '/firefox/i'=>'Firefox',
     '/safari/i'=>'Safari',
@@ -259,7 +283,8 @@ function getBrowser(){
     '/alexa/i'=>'Alexa'
   );
   foreach($browser_array as$regex=>$value){
-    if(preg_match($regex,$user_agent))$browser=$value;
+    if(preg_match($regex,$user_agent))
+      $browser=$value;
   }
   return$browser;
 }

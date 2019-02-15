@@ -5,10 +5,24 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 $getcfg=true;
-require_once'db.php';
-if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme']))$config['theme']=$_GET['theme'];
+require'db.php';
+if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme']))
+	$config['theme']=$_GET['theme'];
 define('THEME','layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
+if($config['php_options']{6}==1){
+	$s=$db->prepare("DELETE FROM `".$prefix."iplist` WHERE ti<:ti");
+	$s->execute(array(':ti'=>time()-2592000));
+}
+if($config['php_options']{5}==1){
+	if(stristr($_SERVER['REQUEST_URI'],'xmlrpc.php') ||
+		 stristr($_SERVER['REQUEST_URI'],'wp-admin') ||
+		 stristr($_SERVER['REQUEST_URI'],'wp-login.php') ||
+		 (isset($_GET['author']) && $_GET['author']!='')){
+		require'core'.DS.'xmlrpc.php';
+		die();
+	}
+}
 define('UNICODE','UTF-8');
 if(file_exists(THEME.DS.'images'.DS.'favicon.png'))
 	define('FAVICON',THEME.DS.'images'.DS.'favicon.png');
@@ -57,12 +71,22 @@ function svg2($svg,$class=null,$size=null){
 	return'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('core'.DS.'svg'.DS.$svg.'.svg').'</i>';
 }
 function frontsvg($svg){
-	return file_get_contents(THEME.DS.'svg'.DS.'libre-'.$svg.'.svg');
+	if(file_exists(THEME.DS.'svg'.DS.$svg.'.svg'))
+		return file_get_contents(THEME.DS.'svg'.DS.$svg.'.svg');
+	elseif(file_exists('..'.DS.THEME.'svg'.DS.$svg.'.svg'))
+		return file_get_contents('..'.DS.THEME.DS.'svg'.DS.$svg.'.svg');
+	elseif(file_exists('..'.DS.THEME.'svg'.DS.$svg.'.svg'))
+		return file_get_contents('..'.DS.THEME.'svg'.DS.$svg.'.svg');
+	elseif(file_exists('..'.DS.'..'.DS.THEME.'svg'.DS.$svg.'.svg'))
+		return file_get_contents('..'.DS.'..'.DS.THEME.'svg'.DS.$svg.'.svg');
+	else
+		return'No Such File: '.$svg;
 }
 function microid($identity,$service,$algorithm='sha1'){
 	$microid=substr($identity,0,strpos($identity,':'))."+".substr($service,0,strpos($service,':')).":".strtolower($algorithm).":";
 	if(function_exists('hash')){
-		if(in_array(strtolower($algorithm),hash_algos()))return$microid.=hash($algorithm,hash($algorithm,$identity).hash($algorithm,$service));
+		if(in_array(strtolower($algorithm),hash_algos()))
+			return$microid.=hash($algorithm,hash($algorithm,$identity).hash($algorithm,$service));
 	}
 	if(function_exists('mhash')){
 		$hash_method=@constant('MHASH_'.strtoupper($algorithm));
@@ -72,7 +96,8 @@ function microid($identity,$service,$algorithm='sha1'){
 			return$microid.=bin2hex(mhash($hash_method,$identity_hash.$service_hash));
 		}
 	}
-	if(function_exists($algorithm))return$microid.=$algorithm($algorithm($identity).$algorithm($service));
+	if(function_exists($algorithm))
+		return$microid.=$algorithm($algorithm($identity).$algorithm($service));
 }
 function minify($txt){
 	return preg_replace(array('/ {2,}/','/<!--.*?-->|\t|(?:\r?\n[ \t]*)+/s'),array(' ',''),$txt);
@@ -83,19 +108,27 @@ function _ago($time){
 	else{
 		$fromTime=$time;
 		$timeDiff=floor(abs(time()-$fromTime)/60);
-		if($timeDiff<2)$timeDiff='Just Now';
-		elseif($timeDiff>2&&$timeDiff<60)$timeDiff=floor(abs($timeDiff)).' Minutes Ago';
-		elseif($timeDiff>60&&$timeDiff<120)$timeDiff=floor(abs($timeDiff/60)).' Hour Ago';
-		elseif($timeDiff<1440)$timeDiff=floor(abs($timeDiff/60)).' Hours Ago';
-		elseif($timeDiff>1440&&$timeDiff<2880)$timeDiff=floor(abs($timeDiff/1440)).' Day Ago';
-		elseif($timeDiff>2880)$timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
+		if($timeDiff<2)
+			$timeDiff='Just Now';
+		elseif($timeDiff>2&&$timeDiff<60)
+			$timeDiff=floor(abs($timeDiff)).' Minutes Ago';
+		elseif($timeDiff>60&&$timeDiff<120)
+			$timeDiff=floor(abs($timeDiff/60)).' Hour Ago';
+		elseif($timeDiff<1440)
+			$timeDiff=floor(abs($timeDiff/60)).' Hours Ago';
+		elseif($timeDiff>1440&&$timeDiff<2880)
+			$timeDiff=floor(abs($timeDiff/1440)).' Day Ago';
+		elseif($timeDiff>2880)
+			$timeDiff=floor(abs($timeDiff/1440)).' Days Ago';
 	}
 	return$timeDiff;
 }
 function elapsed_time($b=0,$e=0){
-  if($b==0)$b=$_SERVER["REQUEST_TIME_FLOAT"];
+  if($b==0)
+		$b=$_SERVER["REQUEST_TIME_FLOAT"];
   $b=explode(' ',$b);
-  if($e==0)$e=microtime();
+  if($e==0)
+		$e=microtime();
   $e=explode(' ',$e);
   @$td=($e[0]+$e[1])-($b[0]+$b[1]);
   $b='';
@@ -107,7 +140,8 @@ function elapsed_time($b=0,$e=0){
 	);
   if((int)$td>30){
     foreach($tt as$u=>$ti){
-      if($ti>0)$b.="$ti$u ";
+      if($ti>0)
+				$b.="$ti$u ";
     }
   }else
 		$b=number_format($td,3).'s';
@@ -131,16 +165,29 @@ function escaper($val){
   return str_replace(array("\\","/","\"","\n","\r","\t","\x08","\x0c"),array("\\\\","\\/","\\\"","\\n","\\r","\\t","\\f","\\b"),$val);
 }
 class internal{
-	function humans($args=false){require'core'.DS.'humans.php';}
-	function sitemap($args=false){require'core'.DS.'sitemap.php';}
-	function robots($args=false){require'core'.DS.'robots.php';}
-	function rss($args=false){require'core'.DS.'rss.php';}
-	function unsubscribe($args=false){require'core'.DS.'unsubscribe.php';}
+	function humans($args=false){
+		require'core'.DS.'humans.php';
+	}
+	function sitemap($args=false){
+		require'core'.DS.'sitemap.php';
+	}
+	function robots($args=false){
+		require'core'.DS.'robots.php';
+	}
+	function rss($args=false){
+		require'core'.DS.'rss.php';
+	}
 }
 class admin{
-	function favicon(){return'core'.DS.'images'.DS.'favicon.png';}
-	function noimage(){return'core'.DS.'images'.DS.'noimage.jpg';}
-	function noavatar(){return'core'.DS.'images'.DS.'noavatar.jpg';}
+	function favicon(){
+		return'core'.DS.'images'.DS.'favicon.png';
+	}
+	function noimage(){
+		return'core'.DS.'images'.DS.'noimage.jpg';
+	}
+	function noavatar(){
+		return'core'.DS.'images'.DS.'noavatar.jpg';
+	}
 	function accounts($args=false){
 		$view='accounts';
 		require'admin.php';
@@ -297,6 +344,10 @@ class front{
 		$view='portfolio';
 		require'process.php';
 	}
+	function profile($args=false){
+		$view='profile';
+		require'process.php';
+	}
 	function proof($args=false){
 		$view='proofs';
 		require'process.php';
@@ -334,7 +385,7 @@ class front{
 		require'process.php';
 	}
 	function tos($args=false){
-		$view='tos';
+		$view='tos';
 		require'process.php';
 	}
 	function newsletters($args=false){
@@ -371,13 +422,15 @@ $routes=array(
 	'robots.txt'=>array('internal','robots'),
 	'rss'=>array('internal','rss'),
 	'error'=>array('front','error'),
-  'home'=>array('front','index'),
 	'index'=>array('front','index'),
+	'home'=>array('front','index'),
 	'sitemap'=>array('front','sitemap'),
 	'orders'=>array('front','orders'),
+	'profile'=>array('front','profile'),
 	'proofs'=>array('front','proofs'),
 	'login'=>array('front','login'),
 	'settings'=>array('front','settings'),
+	'logout'=>array('front','logout'),
   ''=>array('front','index')
 );
 $s=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE active=1");
@@ -406,7 +459,8 @@ class router{
 			return true;
 		}
 		foreach($this->routes as$path=>$call){
-			if(empty($path))continue;
+			if(empty($path))
+				continue;
 			preg_match("|{$path}/(.*)$|i",$url,$match);
 			if(!empty($match[1])){
 				$this->route_match=$path;

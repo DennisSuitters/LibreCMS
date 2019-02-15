@@ -37,7 +37,7 @@ if($action!=''){
   $s=$db->prepare("SELECT * FROM `".$prefix."iplist` WHERE sid=:sid ORDER BY ti ASC");
   $s->execute(array(':sid'=>$sid));
 }else{
-  $s=$db->prepare("SELECT * FROM `".$prefix."iplist` ORDER BY ti DESC LIMIT ".$is.",".$ie);
+  $s=$db->prepare("SELECT * FROM `".$prefix."iplist` ORDER BY ti DESC");
   $s->execute();
 }
 $cnt=$s->rowCount();
@@ -47,18 +47,11 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
   <td class="text-center"><small><?php echo date($config['dateFormat'],$r['oti']);?></small></td>
   <td class="text-center"><small><?php echo'<strong>'.$r['ip'].'</strong>';?></small></td>
   <td id="controls_<?php echo$r['id'];?>">
-    <div class="btn-group pull-right">
-      <a class="btn btn-default" target="_blank" href="https://www.projecthoneypot.org/ip_<?php echo$r['ip'];?>"><?php echo svg2('libre-brand-projecthoneypot');?></a>
-      <a class="btn btn-default" target="_blank" href="http://www.ipaddress-finder.com/?ip=<?php echo$r['ip'];?>"><?php echo svg2('libre-gui-search');?></a>
-      <form target="sp" action="core/purge.php" style="display:inline;"><input type="hidden" name="id" value="<?php echo$r['id'];?>"><input type="hidden" name="t" value="iplist"><button class="btn btn-default trash"><?php svg('libre-gui-trash');?></button></form>
+    <div class="btn-group float-right">
+      <a class="btn btn-secondary" target="_blank" href="https://www.projecthoneypot.org/ip_<?php echo$r['ip'];?>"><?php echo svg2('libre-brand-projecthoneypot');?></a>
+      <a class="btn btn-secondary" target="_blank" href="http://www.ipaddress-finder.com/?ip=<?php echo$r['ip'];?>"><?php echo svg2('libre-gui-search');?></a>
+      <button class="btn btn-secondary trash" onclick="purge('<?php echo$r['id'];?>','blacklist');" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-purge');?></button>
     </div>
-  </td>
-</tr>
-<?php }
-if($cnt==$ie){?>
-<tr id="more_<?php echo$is+$ie+1;?>">
-  <td colspan="3">
-    <button class="btn btn-default btn-block" onclick="loadMore('tracker_items','<?php echo$is+$ie+1;?>','<?php echo$ie;?>','<?php echo$action;?>');">More</button>
   </td>
 </tr>
 <?php }

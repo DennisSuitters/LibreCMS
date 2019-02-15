@@ -1,0 +1,51 @@
+<div class="container">
+	<footer class="pt-4 my-md-5">
+		<div class="row">
+			<div class="col-12 col-sm-3">
+				<img class="mb-2" src="layout/default/images/logo.png" alt="<print config=business>" width="100">
+				<small class="d-block mb-3 text-muted">&copy; <print year>. <print config="abn"></small>
+			</div>
+			<div class="col-12 col-sm-3 mb-3">
+				<div class="h5">Extras</div>
+				<ul class="list-unstyled text-small extras">
+					<buildMenu>
+						<li role="listitem"><a href="<print menu=url>" role="link"><print menu="title"></a><menuCart></li>
+					</buildMenu>
+					<li role="listitem"><a href="sitemap" role="link">Sitemap</a></li>
+					<li role="listitem"><login></li>
+					<li role="listitem"><administration></li>
+				</ul>
+			</div>
+			<div class="col-12 col-sm-3 mb-3">
+				<div class="h5">Social Links</div>
+				<div class="searchsocial">
+					<buildSocial>
+						<a class="libre libre-social libre-2x" href="<print sociallink>" aria-label="<print rel=label>" role="link" rel="me"><print socialicon></a>
+					</buildSocial>
+					<rss>
+						<a class="libre libre-social libre-2x" href="<print rsslink>" aria-label="RSS" role="link" rel="rss"><print rssicon></a>
+					</rss>
+				</div>
+			</div>
+			<div class="col-12 col-sm-3">
+				<div class="h5">Search</div>
+				<form class="navbar-form" method="post" action="search" role="form">
+					<div class="form-group">
+						<div class="input-group">
+							<label for="footersearch" class="d-none">Search</label>
+							<input id="footersearch" type="text" class="form-control" name="search" placeholder="Enter a Search Term..." role="textbox">
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-success" role="button">Search</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div class="theme">
+					<print theme="title"> Theme by <a href="<print theme=creator_url>" role="link" rel="nofollow" title="<print theme=creator_url_title>"><print theme="creator"></a><br>
+					Powered by <a target="_blank" href="https://github.com/DiemenDesign/LibreCMS"><span class="libre">Libre</span><span class="cms">CMS</span></a><br>
+					<print honey_pot_quick_link>
+				</div>
+			</div>
+		</div>
+	</footer>
+</div>

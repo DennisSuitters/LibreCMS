@@ -4,7 +4,12 @@
  * This software may be modified and distributed under the terms
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
-if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
+if(!defined('DS'))
+  define('DS',DIRECTORY_SEPARATOR);
+if(session_status()==PHP_SESSION_NONE){
+  session_start();
+  define('SESSIONID',session_id());
+}
 if(file_exists('..'.DS.'..'.DS.'core'.DS.'config.ini'))
   $settings=parse_ini_file('..'.DS.'..'.DS.'core'.DS.'config.ini',TRUE);
 elseif(file_exists('..'.DS.'core'.DS.'config.ini'))
@@ -28,10 +33,11 @@ try{
       define('SESSIONID',session_id());
     }
     $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
-    if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)
-      define('PROTOCOL','https://');
-    else
-      define('PROTOCOL','http://');
+    if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443){
+      if(!defined('PROTOCOL'))define('PROTOCOL','https://');
+    }else{
+      if(!defined('PROTOCOL'))define('PROTOCOL','http://');
+    }
     if($config['development']==1){
       error_reporting(E_ALL);
       ini_set('display_errors','On');

@@ -28,7 +28,7 @@ $items=$testitems='';
 if($s->rowCount()>0){
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
 		$items=$item;
-		$items=($i==0?preg_replace('/<print content=[\"\']?active[\"\']?>/',' active', $items):preg_replace('/<print content=[\"\']?active[\"\']?>/','',$items));
+		$items=$i==0?preg_replace('/<print content=[\"\']?active[\"\']?>/',' active', $items):preg_replace('/<print content=[\"\']?active[\"\']?>/','',$items);
 		$items=preg_replace(
 			array(
 				'/<print content=[\"\']?schemaType[\"\']?>/',
@@ -45,7 +45,11 @@ if($s->rowCount()>0){
 		if(preg_match('/<print content=[\"\']?avatar[\"\']?>/',$items)){
 			if($r['cid']!=0){
 				$su=$db->prepare("SELECT avatar,gravatar FROM `".$prefix."login` WHERE id=:id");
-				$su->execute(array(':id'=>$r['cid']));
+				$su->execute(
+					array(
+						':id'=>$r['cid']
+					)
+				);
 				$ru=$su->fetch(PDO::FETCH_ASSOC);
 				if($ru['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$ru['avatar']))
 					$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/','media'.DS.'avatar'.DS.$ru['avatar'],$items);
@@ -59,6 +63,8 @@ if($s->rowCount()>0){
 					$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$noavatar,$items);
 			}elseif($r['file']&&file_exists('media'.DS.'avatar'.DS.basename($r['file'])))
 				$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/','media'.DS.'avatar'.DS.$r['file'],$items);
+			elseif($r['file']!='')
+				$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$r['file'],$items);
 			else
 				$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$noavatar,$items);
 		}
@@ -69,7 +75,7 @@ if($s->rowCount()>0){
 				'/<print content=[\"\']?name[\"\']?>/'
 			),
 			array(
-				strip_tags(rawurldecode($r['notes'])),
+				($view=='index'?substr(strip_tags(rawurldecode($r['notes'])),0,600):strip_tags(rawurldecode($r['notes']))),
 				$r['business'],
 				$r['name']
 			),

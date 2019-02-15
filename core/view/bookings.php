@@ -8,7 +8,7 @@ $sql=$db->query("SELECT * FROM `".$prefix."content` WHERE bookable='1' AND title
 if($sql->rowCount()>0){
 	$bookable='';
 	while($row=$sql->fetch(PDO::FETCH_ASSOC)){
-		$bookable.='<option value="'.htmlentities($row['id'],ENT_QUOTES,'UTF-8').'" role="option"'.($row['id']==$args[0]?' selected':'').'>'.ucfirst(htmlentities($row['contentType'],ENT_QUOTES,'UTF-8')).($row['code']!=''?':'.htmlentities($row['code'],ENT_QUOTES,'UTF-8'):'').':'.htmlentities($row['title'],ENT_QUOTES,'UTF-8').'</option>';
+		$bookable.='<option value="'.$row['id'].'" role="option"'.($row['id']==$args[0]?' selected':'').'>'.ucfirst(htmlspecialchars($row['contentType'],ENT_QUOTES,'UTF-8')).($row['code']!=''?':'.htmlspecialchars($row['code'],ENT_QUOTES,'UTF-8'):'').':'.htmlspecialchars($row['title'],ENT_QUOTES,'UTF-8').'</option>';
 	}
 	$html=str_replace(
 		array(
@@ -23,5 +23,6 @@ if($sql->rowCount()>0){
 		),
 		$html
 	);
-}else$html=preg_replace('~<bookservices>.*?<\/bookservices>~is','<input type="hidden" name="service" value="0">',$html,1);
+}else
+	$html=preg_replace('~<bookservices>.*?<\/bookservices>~is','<input type="hidden" name="service" value="0">',$html,1);
 $content.=$html;

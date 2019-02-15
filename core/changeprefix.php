@@ -5,7 +5,8 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 echo'<script>/*<![CDATA[*/';
-if(session_status()==PHP_SESSION_NONE)session_start();
+if(session_status()==PHP_SESSION_NONE)
+  session_start();
 $dbprefix=isset($_POST['dbprefix'])?filter_input(INPUT_POST,'dbprefix',FILTER_SANITIZE_STRING):'';
 $dbprefix=trim($dbprefix);
 require_once'db.php';
@@ -41,12 +42,12 @@ if($settings['database']['prefix']!=$dbprefix){
        'version = '.time().PHP_EOL.
        'url = '.$settings['system']['url'].PHP_EOL.
        'admin = '.$settings['system']['admin'].PHP_EOL;
-  if(file_exists('config.ini'))unlink('config.ini');
+  if(file_exists('config.ini'))
+    unlink('config.ini');
   $oFH=fopen("config.ini",'w');
   fwrite($oFH,$txt);
   fclose($oFH);
   echo'window.top.window.$.notify({type:"info",icon:"",message:"'.$error.'});';
-}else{
+}else
   echo'window.top.window.$.notify({type:"danger",icon:"",message:"Tables are already Prefixed with `'.$dbprefix.'`"});';
-}
 echo'window.top.window.$("#blocker").remove();/*]]>*/</script>';

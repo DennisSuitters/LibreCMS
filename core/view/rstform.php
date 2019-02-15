@@ -4,7 +4,8 @@
  * This software may be modified and distributed under the terms
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
-if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
+if(!defined('DS'))
+  define('DS',DIRECTORY_SEPARATOR);
 $getcfg=true;
 require_once'..'.DS.'db.php';
 $theme=parse_ini_file('..'.DS.'..'.DS.'layout'.DS.$config['theme'].DS.'theme.ini',true);
@@ -20,7 +21,11 @@ if($config['php_options']{3}==1&&$config['php_APIkey']!=''){
   if($h->hasRecord()==1||$h->isSuspicious()==1||$h->isCommentSpammer()==1){
     $blacklisted=$theme['settings']['blacklist'];
     $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-    $sc->execute(array(':ip'=>$ip));
+    $sc->execute(
+      array(
+        ':ip'=>$ip
+      )
+    );
     if($sc->rowCount()<1){
       $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
       $s->execute(
@@ -44,7 +49,11 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']=='none'){
     }
     if($config['spamfilter']{1}==1&&$spam==TRUE){
       $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-      $sc->execute(array(':ip'=>$ip));
+      $sc->execute(
+        array(
+          ':ip'=>$ip
+        )
+      );
       if($sc->rowCount()<1){
         $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
         $s->execute(
@@ -59,7 +68,11 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']=='none'){
   }
   if($spam==FALSE){
     $s=$db->prepare("SELECT id,name,email FROM `".$prefix."login` WHERE email=:email LIMIT 1");
-    $s->execute(array(':email'=>$email));
+    $s->execute(
+      array(
+        ':email'=>$email
+      )
+    );
     $c=$s->fetch(PDO::FETCH_ASSOC);
     if($s->rowCount()>0){
       $chars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&";

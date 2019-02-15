@@ -1,0 +1,73 @@
+<accountmenu>
+	<nav class="navbar navbar-dark navbar-expand-lg bg-dark account" role="navigation">
+		<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#admin-collapse" aria-controls="admin-collapse" aria-expanded="false" aria-label="Toggle Account Navigation" role="button"><span class="navbar-toggler-icon"></span></button>
+		<div class="collapse navbar-collapse" id="admin-collapse">
+			<ul class="navbar-nav ml-auto" role="list">
+				<li class="nav-item" <print active="proofs"> role="listitem"><a class="nav-link" href="proofs" aria-label="Proofs" role="link" rel="Proofs">Proofs</a></li>
+				<li class="nav-item" <print active="orders"> role="listitem"><a class="nav-link" href="orders" aria-label="Orders" role="link" rel="Orders">Orders</a></li>
+				<li class="nav-item" <print active="settings"> role="listitem"><a class="nav-link" href="settings" aria-label="Settings" role="link" rel="Settings">Settings</a></li>
+				<profile>
+					<li class="nav-item" role="listitem"><a class="nav-link" href="profile/<print user=name>" aria-label="Profile" role="link" rel="Profile">Profile</a></li>
+				</profile>
+				<administration>
+					<li class="nav-item" role="listitem"><a class="nav-link" href="<print administrationLink>" aria-label="Administration" role="link" rel="Administration">Administration</a></li>
+				</administration>
+				<li class="nav-item" role="listitem"><a class="nav-link" href="logout" aria-label="Logout" role="link" rel="Logout">Logout</a></li>
+			</ul>
+			<img id="avatar" class="rounded-circle" src="<print user=avatar>" alt="<print user=name>" role="img">
+		</div>
+	</nav>
+</accountmenu>
+<header>
+	<nav class="navbar navbar-light navbar-expand-lg bg-white" role="navigation">
+		<a class="navbar-brand" href=""><img src="layout/default/images/logo.png" width="128" alt="<print config=business>"></a>
+		<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#libreCMS-collapse" aria-controls="libreCMS-collapse" aria-expanded="false" aria-label="Toggle Navigation" role="button"><span class="navbar-toggler-icon"></span></button>
+		<div class="collapse navbar-collapse" id="libreCMS-collapse">
+			<ul class="navbar-nav ml-auto" role="list">
+				<buildMenu>
+					<nondropDown>
+						<li class="nav-item<print active=menu>" role="listitem">
+							<a class="nav-link" href="<print menu=url>" aria-label="<print rel=contentType>" role="link" rel="<print rel=contentType>"><print menu="title"></a>
+							<menuCart>
+						</li>
+					</nondropDown>
+					<dropDown>
+						<li class="nav-item dropdown<print active=menu>" role="listitem">
+							<a class="nav-link" href="<print menu=url>" role="link" rel="<print rel=contentType>" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><print menu="title"></a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<subMenuItem>
+									<a class="dropdown-item" href="<print submenu=url>" aria-label="<print rel=contentType>" role="link" rel="<print rel=contentType>"><print submenu="title"></a>
+								</subMenuItem>
+							</div>
+						</li>
+					</dropDown>
+					<menuLogin>
+						<li class="nav-item dropdown" role="listitem">
+							<a class="nav-link" href="" role="link" rel="login" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Login</a>
+							<div class="dropdown-menu dropdown-menu-right shadow">
+								<form class="px-4 py-3" method="post" action="<print url>" role="form">
+									<input type="hidden" name="act" value="login">
+									<div class="form-group">
+										<label for="menuLoginUsername">Username</label>
+										<input type="text" class="form-control" id="menuLoginUsername" name="username" placeholder="Username..." role="textbox">
+									</div>
+									<div class="form-group">
+										<label for="menuLoginPassword">Password</label>
+										<input type="password" class="form-control" id="loginMenuPassword" name="password" placeholder="Password..." role="textbox">
+									</div>
+									<button type="submit" class="btn btn-success btn-block">Sign in</button>
+								</form>
+								<div class="dropdown-divider"></div>
+								<signup>
+									<a class="dropdown-item" href="login#signup" aria-label="Sign Up" role="link" rel="Sign Up">New around here? Sign up</a>
+								</signup>
+								<a class="dropdown-item" href="login#reset" aria-label="Reset Password" role="link" rel="Reset Password">Forgot password?</a>
+							</div>
+						</li>
+					</menuLogin>
+				</buildMenu>
+			</ul>
+		</div>
+	</nav>
+</header>
+<activation>

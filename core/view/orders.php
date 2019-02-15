@@ -8,17 +8,21 @@ $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 if($_SESSION['loggedin']==false)
   $html=$theme['settings']['page_not_found'];
 else{
-  if(stristr($html,'<order>')){
+  if(stristr($html,'<order')){
     preg_match('/<order>([\w\W]*?)<\/order>/',$html,$matches);
     $order=$matches[1];
     $html=preg_replace('~<order>.*?<\/order>~is','<order>',$html,1);
   }
-  if(stristr($html,'<items>')){
+  if(stristr($html,'<items')){
     preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
     $items=$matches[1];
     $output='';
     $s=$db->prepare("SELECT * FROM `".$prefix."orders` WHERE uid=:uid AND status!='archived' ORDER BY ti DESC");
-    $s->execute(array(':uid'=>$_SESSION['uid']));
+    $s->execute(
+      array(
+        ':uid'=>$_SESSION['uid']
+      )
+    );
     while($r=$s->fetch(PDO::FETCH_ASSOC)){
       $item=$items;
       $item=preg_replace(
@@ -62,10 +66,12 @@ else{
     if($s->rowCount()>0){
       $r=$s->fetch(PDO::FETCH_ASSOC);
       $su=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:uid");
-      $su->execute(array(':uid'=>$_SESSION['uid']));
+      $su->execute(
+        array(
+          ':uid'=>$_SESSION['uid']
+        )
+      );
       $ru=$su->fetch(PDO::FETCH_ASSOC);
-      if($config['postcode']==0)$config['postcode']='';
-      if($ru['postcode']==0)$ru['postcode']='';
       $order=$r['iid_ti']>0?preg_replace('/<print order=[\"\']?date[\"\']?>/',date($config['dateFormat'],$r['iid_ti']),$order):preg_replace('/<print order=[\"\']?date[\"\']?>/',date($config['dateFormat'],$r['qid_ti']),$order);
       $order=preg_replace(
         array(
@@ -81,6 +87,7 @@ else{
           '/<print config=[\"\']?phone[\"\']?>/',
           '/<print config=[\"\']?mobile[\"\']?>/',
           '/<print config=[\"\']?bank[\"\']?>/',
+          '/<print config=[\"\']?bankAccountName[\"\']?>/',
           '/<print config=[\"\']?bankAccountNumber[\"\']?>/',
           '/<print config=[\"\']?bankBSB[\"\']?>/',
           '/<print user=[\"\']?name[\"\']?>/',
@@ -104,7 +111,7 @@ else{
           htmlspecialchars($config['suburb'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($config['city'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($config['state'],ENT_QUOTES,'UTF-8'),
-          htmlspecialchars($config['postcode'],ENT_QUOTES,'UTF-8'),
+          $config['postcode']==0?'':htmlspecialchars($config['postcode'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($config['email'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($config['phone'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($config['mobile'],ENT_QUOTES,'UTF-8'),
@@ -112,12 +119,12 @@ else{
           htmlspecialchars($config['bankAccountName'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($config['bankAccountNumber'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($config['bankBSB'],ENT_QUOTES,'UTF-8'),
-          htmlspecialchars($ru['name'].' ['.$ru['username'].']', ENT_QUOTES, 'UTF-8'),
+          htmlspecialchars($ru['name'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($ru['address'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($ru['suburb'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($ru['city'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($ru['state'],ENT_QUOTES,'UTF-8'),
-          htmlspecialchars($ru['postcode'],ENT_QUOTES,'UTF-8'),
+          $ru['postcode']==0?'':htmlspecialchars($ru['postcode'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($ru['email'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($ru['phone'],ENT_QUOTES,'UTF-8'),
           htmlspecialchars($ru['mobile'],ENT_QUOTES,'UTF-8'),
@@ -128,15 +135,27 @@ else{
         $order
       );
       $ois=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid");
-      $ois->execute(array(':oid'=>$r['id']));
+      $ois->execute(
+        array(
+          ':oid'=>$r['id']
+        )
+      );
       $outitems='';
       $total=0;
       while($oir=$ois->fetch(PDO::FETCH_ASSOC)){
         $is=$db->prepare("SELECT id,code,title FROM `".$prefix."content` WHERE id=:id");
-				$is->execute(array(':id'=>$oir['iid']));
+				$is->execute(
+          array(
+            ':id'=>$oir['iid']
+          )
+        );
 				$i=$is->fetch(PDO::FETCH_ASSOC);
         $sc=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE id=:id");
-        $sc->execute(array(':id'=>$oir['cid']));
+        $sc->execute(
+          array(
+            ':id'=>$oir['cid']
+          )
+        );
         $c=$sc->fetch(PDO::FETCH_ASSOC);
         $item=$orderItem;
         $item=preg_replace(
@@ -162,16 +181,17 @@ else{
         $outitems.=$item;
       }
       $sr=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:id");
-      $sr->execute(array(':id'=>$r['rid']));
+      $sr->execute(
+        array(
+          ':id'=>$r['rid']
+        )
+      );
       if($sr->rowCount()>0){
         $reward=$sr->fetch(PDO::FETCH_ASSOC);
-        if($reward['method']==1){
-          $method='$'.$reward['value'].' Off';
+        if($reward['method']==1)
           $total=$total-$reward['value'];
-        }else{
-          $method=$reward['value'].'% Off';
+        else
           $total=($total*((100-$reward['value'])/100));
-        }
         $order=preg_replace(
           array(
             '/<print rewards=[\"\']?code[\"\']?>/',
@@ -182,7 +202,7 @@ else{
           ),
           array(
             $reward['code'],
-            $method,
+            $reward['method']==1?'$'.$reward['value'].' Off':$reward['value'].'% Off',
             $total,
             '',
             ''

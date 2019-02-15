@@ -5,7 +5,8 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 $getcfg=true;
-if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
+if(!defined('DS'))
+  define('DS',DIRECTORY_SEPARATOR);
 require_once'..'.DS.'db.php';
 $theme=parse_ini_file('..'.DS.'..'.DS.'layout'.DS.$config['theme'].DS.'theme.ini',true);
 $notification=$blacklisted='';
@@ -21,7 +22,11 @@ if($config['php_options']{3}==1&&$config['php_APIkey']!=''){
   if($h->hasRecord()==1||$h->isSuspicious()==1||$h->isCommentSpammer()==1){
     $blacklisted=$theme['settings']['blacklist'];
     $sc=$db->prepare("SELECT id FROM iplist WHERE ip=:ip");
-    $sc->execute(array(':ip'=>$ip));
+    $sc->execute(
+      array(
+        ':ip'=>$ip
+      )
+    );
     if($sc->rowCount()<1){
       $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
       $s->execute(
@@ -46,7 +51,11 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']=='none'){
     }
     if($config['spamfilter']{1}==1&&$spam==TRUE){
       $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-      $sc->execute(array(':ip'=>$ip));
+      $sc->execute(
+        array(
+          ':ip'=>$ip
+        )
+      );
       if($sc->rowCount()<1){
         $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
         $s->execute(
@@ -64,7 +73,11 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']=='none'){
       define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url']);
       if($username!=''){
         $s=$db->prepare("SELECT username FROM `".$prefix."login` WHERE username=:username LIMIT 1");
-        $s->execute(array(':username'=>$username));
+        $s->execute(
+          array(
+            ':username'=>$username
+          )
+        );
         $r=$s->fetch(PDO::FETCH_ASSOC);
         if($s->rowCount()>0)
           $notification.=$theme['settings]']['signup_erroruserexists'];

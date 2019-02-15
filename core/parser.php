@@ -38,18 +38,27 @@ else
 $tags=$doc->getElementsByTagName('print');
 foreach($tags as$tag){
 	$parsing='';
-	if($tag->hasAttribute('page'))$attribute='page';
-	if($tag->hasAttribute('content'))$attribute='content';
-	if($tag->hasAttribute('user'))$attribute='user';
-	if($tag->hasAttribute('config'))$attribute='config';
+	if($tag->hasAttribute('page'))
+		$attribute='page';
+	if($tag->hasAttribute('content'))
+		$attribute='content';
+	if($tag->hasAttribute('user'))
+		$attribute='user';
+	if($tag->hasAttribute('config'))
+		$attribute='config';
 	if($tag->hasAttribute('author')){
 		$attribute='author';
 		$r['uid']=isset($r['uid'])?$r['uid']:0;
 		$sa=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
-		$sa->execute(array(':id'=>$r['uid']));
+		$sa->execute(
+			array(
+				':id'=>$r['uid']
+			)
+		);
 		$author=$sa->fetch(PDO::FETCH_ASSOC);
 	}
-	if($tag->hasAttribute('comments'))$attribute='comments';
+	if($tag->hasAttribute('comments'))
+		$attribute='comments';
 	$container=$tag->hasAttribute('container')?$tag->getAttribute('container'):'';
 	$leadingtext=$tag->hasAttribute('leadingtext')?$tag->getAttribute('leadingtext'):'';
 	$userrank=$tag->hasAttribute('userrank')?$tag->getAttribute('userrank'):-1;
@@ -59,8 +68,10 @@ foreach($tags as$tag){
 	$type=$tag->hasAttribute('type')?$tag->getAttribute('type'):'text';
 	$strip=$tag->hasAttribute('strip')&&$tag->getAttribute('type')=='true'?true:false;
 	$print=$tag->getAttribute($attribute);
-	if($container!='')$parsing.='<'.$container.($class!=''?' class="'.$class.'"':'').'>';
-	if($leadingtext!='')$parsing.=$leadingtext;
+	if($container!='')
+		$parsing.='<'.$container.($class!=''?' class="'.$class.'"':'').'>';
+	if($leadingtext!='')
+		$parsing.=$leadingtext;
 	switch($print){
 		case'contentType':
 			$parsing.=ucfirst($r['contentType']);
@@ -74,7 +85,7 @@ foreach($tags as$tag){
 				$container=$parsing='';
 			break;
 		case'datePublished':
-			if(isset($r['pti'])&&$r['pti']!= 0)
+			if(isset($r['pti'])&&$r['pti']!=0)
 				$parsing.=date($config['dateFormat'],$r['pti']);
 			elseif(isset($r['ti'])&&$r['ti']!=0)
 				$parsing.=date($config['dateFormat'],$r['ti']);
@@ -85,7 +96,8 @@ foreach($tags as$tag){
 			if(isset($r['tis'])){
 				if($r['tis']!=0){
 					$parsing.=date($config['dateFormat'],$r['tis']);
-					if($r['tie']!=0)$parsing.=' to '.date($config['dateFormat'],$r['tie']);
+					if($r['tie']!=0)
+						$parsing.=' to '.date($config['dateFormat'],$r['tie']);
 				}else
 					$container=$parsing='';
 			}
@@ -116,7 +128,8 @@ foreach($tags as$tag){
 				if($r['options']{0}==1||$r['cost']!=''){
 					if(is_numeric($r['cost'])&&$r['cost']!=0){
 						$parsing.='<meta itemprop="priceCurrency" content="AUD"><span class="cost" itemprop="price" content="'.$r['cost'].'">';
-						if(is_numeric($r['cost']))$parsing.='&#36;';
+						if(is_numeric($r['cost']))
+							$parsing.='&#36;';
 						$parsing.=htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
 					}else
 						$parsing.='<span class="cost">'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
@@ -186,13 +199,16 @@ foreach($tags as$tag){
 				$parsing.=NOIMAGE;
 			break;
 		case'image':
-			if(isset($r['file'])){
+			if(isset($r['file'])&&$r['file']!=''){
 				$filechk=basename($r['file']);
 				$parsing.=$r['file']!=''&&(file_exists('media'.DS.$filechk)||file_exists('..'.DS.'..'.DS.'media'.DS.$filechk))?'<img class="'.$class.'" src="'.$r['file'].'" alt="'.$r['title'].'">':'';
-			}
+			}elseif(isset($r['fileURL'])&&$r['fileURL']!=''){
+				$parsing.=$r['fileURL'];
+			}else
+				$parsing.='';
 			break;
 		case'imageURL':
-			$parsing.=$r['file'];
+			$parsing.=$r['fileURL'];
 		case'avatar':
 			$parsing.='<img class="'.$class.'" src="';
 			if($attribute=='author'){
@@ -252,30 +268,46 @@ foreach($tags as$tag){
 		case'caption':
 			$parsing.=$length!=0?strtok(wordwrap($r['seoCaption'],$length,"...\n"),"\n"):$r['seoCaption'];
 		case'notes':
-			if($attribute=='author')$notes=rawurldecode($author['notes']);
-			if($attribute=='comments')$notes=rawurldecode($rc['notes']);
-			if($attribute=='page')$notes=rawurldecode($page['notes']);
-			if($attribute=='content')$notes=rawurldecode($r['notes']);
-			if($strip==true)$notes=strip_tags($notes);
-			if($length!=0)$notes=strtok(wordwrap($notes,$length,"...\n"),"\n");
+			if($attribute=='author')
+				$notes=rawurldecode($author['notes']);
+			if($attribute=='comments')
+				$notes=rawurldecode($rc['notes']);
+			if($attribute=='page')
+				$notes=rawurldecode($page['notes']);
+			if($attribute=='content')
+				$notes=rawurldecode($r['notes']);
+			if($strip==true)
+				$notes=strip_tags($notes);
+			if($length!=0)
+				$notes=strtok(wordwrap($notes,$length,"...\n"),"\n");
 			$parsing.=$notes;
 			break;
 		case'notesCount':
-			if($attribute=='author')$notesCount=strlen(strip_tags(rawurldecode($author['notes'])));
-			if($attribute=='comments')$notesCount=strlen(strip_tags(rawurldecode($rc['notes'])));
-			if($attribute=='page')$notesCount=strlen(strip_tags(rawurldecode($page['notes'])));
-			if($attribute=='content')$notesCount=strlen(strip_tags(rawurldecode($r['notes'])));
+			if($attribute=='author')
+				$notesCount=strlen(strip_tags(rawurldecode($author['notes'])));
+			if($attribute=='comments')
+				$notesCount=strlen(strip_tags(rawurldecode($rc['notes'])));
+			if($attribute=='page')
+				$notesCount=strlen(strip_tags(rawurldecode($page['notes'])));
+			if($attribute=='content')
+				$notesCount=strlen(strip_tags(rawurldecode($r['notes'])));
 			$parsing.=$notesCount;
 		case'email':
 			if($attribute=='author'){
-				if($author['email'])$parsing.='<a href="mailto:'.$author['email'].'" rel="nofollow">'.($type=='icon'?'<'.$theme['settings']['icon_container'].' class="'.$class.'"></'.$theme['settings']['icon_container'].'>':$author['email']).'</a>';
+				if($author['email'])
+					$parsing.='<a href="mailto:'.$author['email'].'" rel="nofollow">'.($type=='icon'?'<'.$theme['settings']['icon_container'].' class="'.$class.'">'.frontsvg('libre-gui-email').'</'.$theme['settings']['icon_container'].'>':$author['email']).'</a>';
 			}
 			break;
 		case'social':
 			if($attribute=='author'){
-				$sa =$db->prepare("SELECT * FROM `".$prefix."choices` WHERE uid=:uid");
-				$sa->execute(array(':uid'=>$r['uid']));
-				while($sr=$sa->fetch(PDO::FETCH_ASSOC))$parsing.='<a href="'.$sr['url'].'" title="'.$sr['title'].'">'.($type=='icon'?'<'.$theme['settings']['icon_container'].' class="'.$class.$sr['icon'].'"></'.$theme['settings']['icon_container'].'>':$sr['title'].' ').'</a>';
+				$sa =$db->prepare("SELECT * FROM `".$prefix."choices` WHERE uid=:uid AND contentType='social'");
+				$sa->execute(
+					array(
+						':uid'=>$r['uid']
+					)
+				);
+				while($sr=$sa->fetch(PDO::FETCH_ASSOC))
+					$parsing.='<a href="'.$sr['url'].'" title="'.$sr['title'].'">'.($type=='icon'?'<'.$theme['settings']['icon_container'].' class="'.$class.'">'.frontsvg('libre-social-'.$sr['icon']).'</'.$theme['settings']['icon_container'].'>':$sr['title'].' ').'</a>';
 			}
 			break;
 		case'time':
@@ -301,6 +333,7 @@ foreach($tags as$tag){
 	}
 	if($container!='')$parsing.='</'.$container.'>';
 	$parse=preg_replace('~<print[^>]+.*?'.$attribute.'=.'.$print.'.*?[^>]+>~is',$parsing,$parse,1);
+/*	$parse=preg_replace('~<print '.$attribute.'=[\"\']?'.$print.'[\"\']?>~is',$parsing,$parse,1); */
 }
 if($show=='item'){
 	if(isset($comment)&&$comment!='')

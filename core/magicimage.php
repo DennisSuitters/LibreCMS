@@ -11,7 +11,11 @@ define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 $id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
 $act=filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING);
 $s=$db->prepare("SELECT id,file,thumb FROM `".$prefix."content` WHERE id=:id");
-$s->execute(array(':id'=>$id));
+$s->execute(
+  array(
+    ':id'=>$id
+  )
+);
 $r=$s->fetch(PDO::FETCH_ASSOC);
 include'zebra_image.php';
 $image=new Zebra_Image();

@@ -6,89 +6,34 @@
  */
 if($args[0]=='settings')
   include'core'.DS.'layout'.DS.'set_messages.php';
-elseif($args[0]=='view'||$args[0]=='compose'){
-  if($args[0]=='view'){
-    $q=$db->prepare("UPDATE `".$prefix."messages` SET status='read' WHERE id=:id");
-    $q->execute(array(':id'=>$args[1]));
-    $q=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE id=:id");
-    $q->execute(array(':id'=>$args[1]));
-    $r=$q->fetch(PDO::FETCH_ASSOC);
-  }?>
-<div class="panel panel-default">
-  <div class="panel-heading clearfix">
-    <h4 class="col-xs-8">Messages</h4>
-    <div class="btn-group pull-right">
-      <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('libre-gui-back');?></a>
-<?php $scc=$db->prepare("SELECT ip FROM `".$prefix."iplist` WHERE ip=:ip");
-$scc->execute(array(':ip'=>$r['ip']));
-if($scc->rowCount()<1){?>
-      <form id="blacklist<?php echo$r['id'];?>" target="sp" method="post" action="core/add_messageblacklist.php" style="display:inline-block;">
-        <input type="hidden" name="id" value="<?php echo$r['id'];?>">
-        <button class="btn btn-default" data-toggle="tooltip" title="Add Originators IP to the Blacklist."><?php echo svg2('libre-gui-security');?></button>
-      </form>
-<?php }?>
-      <?php if($help['messages_edit_text']!='')echo'<a class="btn btn-default info" href="'.$help['messages_edit_text'].'" data-toggle="tooltip" data-placement="left" title="Help">'.svg2('libre-gui-help').'</a>';if($help['messages_edit_video']!='')echo'<span><a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['messages_edit_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help">'.svg2('libre-gui-video').'</a>';?>
-    </div>
-  </div>
-  <div class="panel-body">
-    <div class="clearfix"></div>
-    <div class="form-group">
-      <label for="ti" class="control-label col-xs-4 col-sm-2 col-lg-1">Created</label>
-      <div class="input-group col-xs-8 col-sm-10 col-lg-11">
-        <input type="text" id="ti" class="form-control" value="<?php echo isset($r['ti'])?date($config['dateFormat'],$r['ti']):date($config['dateFormat'],time());?>" readonly>
-      </div>
-    </div>
-    <div class="form-group<?php echo$args[0]=='compose'?' has-error':'';?>">
-      <label for="subject" class="control-label col-xs-4 col-sm-2 col-lg-1">Subject</label>
-      <div class="input-group col-xs-8 col-sm-10 col-lg-11">
-        <input type="text" id="subject" class="form-control" name="subject" value="<?php echo$args[0]!='compose'?$r['subject']:'';?>" placeholder="Enter a Subject"<?php echo$args[0]!='compose'?' readonly':' required';?>>
-      </div>
-    </div>
-    <div class="form-group<?php echo$args[0]=='compose'?' has-error':'';?>">
-      <label for="email" class="control-label col-xs-4 col-sm-2 col-lg-1">To</label>
-      <div class="input-group col-xs-8 col-sm-10 col-lg-11">
-        <input type="text" id="to_email" class="form-control" value="<?php echo(isset($r)&&$r['to_name']!=''?$r['to_name']:'').($args[0]!='compose'?' &lt;'.$r['to_email'].'&gt;':'');?>"<?php echo($args[0]!='compose'?' readonly':'');?> placeholder="Enter an Email, or Select from Contacts...">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="email" class="control-label col-xs-4 col-sm-2 col-lg-1">From</label>
-      <div class="input-group col-xs-8 col-sm-10 col-lg-11">
-        <input type="text" id="email" class="form-control" value="<?php echo$args[0]=='compose'?$user['name'].' &lt;'.$user['email'].'&gt;':$r['from_name'].' &lt;'.$r['from_email'].'&gt;';?>" readonly>
-      </div>
-    </div>
-    <div id="reply" class="hidden">
-      <div class="form-group">
-        <label for="order_notes" class="control-label col-xs-4 col-sm-2 col-lg-1">Reply</label>
-        <div class="input-group col-xs-8 col-sm-10 col-lg-11">
-          <form target="sp">
-            <textarea name="da" class="form-control summernote"></textarea>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="order_notes" class="control-label col-xs-4 col-sm-2 col-lg-1">Message</label>
-      <iframe class="well col-xs-8 col-sm-10 col-lg-11" style="" src="core/viewemail.php?id=<?php echo$r['id'];?>"></iframe>
-    </div>
-  </div>
-</div>
-<?php }else{
+elseif($args[0]=='view'||$args[0]=='compose')
+  include'core'.DS.'layout'.DS.'edit_messages.php';
+else{
   $folder="INBOX";
   if(isset($args[0])){
-    if($args[0]=='deleted')$folder='DELETE';
+    if($args[0]=='unread')$folder='unread';
+    if($args[0]=='trash')$folder='trash';
+//     if($args[0]=='trash')$folder='DELETE';
     if($args[0]=='starred')$folder='starred';
     if($args[0]=='important')$folder='important';
     if($args[0]=='sent')$folder='sent';
+    if($args[0]=='spam')$folder='spam';
   }?>
-<div class="panel panel-default">
-  <div class="panel-heading clearfix">
-    <h4 class="col-xs-8">Messages</h4>
-    <div class="btn-group pull-right">
-      <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/messages/settings';?>" data-toggle="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings');?></a>
-      <?php if($help['messages_text']!='')echo'<a target="_blank" class="btn btn-default info" href="'.$help['messages_text'].'" data-toggle="tooltip" data-placement="left" title="Help">'.svg2('libre-gui-help').'</a>';if($help['messages_video']!='')echo'<a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['messages_video'].'" data-toggle="tooltip" data-placement="left" title="Watch Video Help">'.svg2('libre-gui-video').'</a>';?>
-    </div>
-  </div>
-  <div class="panel-body">
+<main id="content" class="main">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page" role="heading">Messages</li>
+    <li class="breadcrumb-menu">
+      <div class="btn-group" role="group" aria-label="">
+        <a class="btn btn-ghost-normal info" href="<?php echo URL.$settings['system']['admin'].'/messages/settings';?>" data-tooltip="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings');?></a>
+        <?php if($help['messages_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['messages_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
+        if($help['messages_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['messages_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+      </div>
+    </li>
+  </ol>
+  <div class="container-fluid">
+    <div class="alert alert-info">Not all the Messages Functions are currently working at this time, we are working on it though.</div>
+    <div class="card">
+      <div class="card-body">
 <?php /*
     <div class="alert alert-info">
       The Webmail is currently Under Construction.<br>
@@ -111,11 +56,128 @@ if(is_array($mailBoxArr)){
 } */
 ?>
 <?php
-$s=$db->prepare("SELECT * FROM `".$prefix."messages` ORDER BY ti DESC, subject ASC");
-$s->execute(array(':folder'=>$folder));
-$ur=$db->query("SELECT COUNT(status) AS cnt FROM `".$prefix."messages` WHERE status='unread'")->fetch(PDO::FETCH_ASSOC);
-/*
+  if($folder=='INBOX'){
+    $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE folder='INBOX' ORDER BY ti DESC, subject ASC");
+    $s->execute();
+  }
+  if($folder=='unread'){
+    $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE status='unread' ORDER BY ti DESC, subject ASC");
+    $s->execute();
+  }
+  if($folder=='trash'){
+    $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE status='trash' ORDER BY ti DESC, subject ASC");
+    $s->execute();
+  }
+  if($folder=='starred'){
+    $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE starred=1 ORDER BY ti DESC, subject ASC");
+    $s->execute();
+  }
+  if($folder=='important'){
+    $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE important=1 ORDER BY ti DESC, subject ASC");
+    $s->execute();
+  }
+  if($folder=='sent'){
+    $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE folder='sent' ORDER BY ti DESC, subject ASC");
+    $s->execute();
+  }
+  if($folder=='spam'){
+    $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE folder='spam' ORDER BY ti DESC, subject ASC");
+    $s->execute();
+  }
+$ur=$db->query("SELECT COUNT(status) AS cnt FROM `".$prefix."messages` WHERE status='unread' AND folder='INBOX'")->fetch(PDO::FETCH_ASSOC);
+$sp=$db->query("SELECT COUNT(folder) AS cnt FROM `".$prefix."messages` WHERE folder='spam' AND status='unread'")->fetch(PDO::FETCH_ASSOC);
 ?>
+        <div class="email-app mb-4">
+          <nav>
+            <a class="btn btn-secondary btn-block" href="#">Compose</a>
+            <ul class="nav">
+              <li class="nav-item<?php echo$folder=='INBOX'?' active':'';?>">
+                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages';?>">
+                  <?php svg('libre-gui-inbox');?> Inbox
+                </a>
+              </li>
+              <li class="nav-item<?php echo$folder=='unread'?' active':'';?>">
+                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/unread';?>">
+                  <?php svg('libre-gui-email');?> Unread
+                  <?php echo$ur['cnt']>0?'<span class="badge badge-danger">'.$ur['cnt'].'</span>':'';?>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/starred';?>">
+                  <?php svg('libre-shape-star');?> Starred
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/sent';?>">
+                  <?php svg('libre-gui-email-send');?> Sent
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/trash';?>">
+                  <?php svg('libre-gui-trash');?> Trash
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/important';?>">
+                  <?php svg('libre-gui-bookmark');?> Important
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/spam';?>">
+                  <?php svg('libre-gui-email-spam');?> Spam
+                  <?php echo$sp['cnt']>0?'<span class="badge badge-danger">'.$sp['cnt'].'</span>':'';?>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <main class="inbox">
+            <div class="toolbar">
+              <div class="btn-group">
+                <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email');?></button>
+                <button class="btn btn-secondary" type="button"><?php svg('libre-shape-star');?></button>
+                <button class="btn btn-secondary" type="button"><?php svg('libre-shape-star-o');?></button>
+                <button class="btn btn-secondary" type="button"><?php svg('libre-gui-bookmark');?></button>
+              </div>
+              <div class="btn-group">
+                <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email-reply');?></button>
+                <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email-reply');/* reply-all */?></button>
+                <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email-forward');?></button>
+              </div>
+              <button class="btn btn-secondary" type="button"><?php svg('libre-gui-trash');?></button>
+            </div>
+            <ul class="messages">
+<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
+              <li class="message <?php echo$r['status'];?>">
+                <div class="actions">
+                  <div class="btn-group-vertical">
+                    <div class="checkbox bg-secondary checkbox-success">
+                      <input type="checkbox" id="message<?php echo$r['id'];?>">
+                      <label for="message<?php echo$r['id'];?>"/>
+                    </div>
+                    <?php $scc=$db->prepare("SELECT ip FROM `".$prefix."iplist` WHERE ip=:ip");$scc->execute(array(':ip'=>$r['ip']));if($scc->rowCount()<1){?><button class="btn btn-secondary btn-sm" data-tooltip="tooltip" title="Add Originators IP to the Blacklist."><?php echo svg2('libre-gui-security');?></button><?php }?>
+                    <button class="btn btn-secondary btn-sm trash"><?php svg('libre-gui-trash');?></button>
+                  </div>
+                </div>
+                <a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>">
+                  <div class="header">
+                    <span class="from"><?php echo$r['from_name']!=''?$r['from_name'].'<br><small>&lt;'.$r['from_email'].'&gt;</small>':'&lt;'.$r['from_email'].'&gt;';?></span>
+                    <span class="date"><?php echo date('M j \a\t G:i',$r['ti']);?></span>
+                  </div>
+                  <span class="title d-block"><?php echo$r['subject'];?></span>
+                  <span class="description d-block"><?php echo strip_tags(substr($r['notes_raw'],0,255));?></span>
+                </a>
+              </li>
+<?php }?>
+            </ul>
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<?php /*
+?>
+
     <div class="nav-list col-xs-12 col-sm-2">
       <a href="" class="btn btn-default add btn-block">Compose</a>
       <br>
@@ -128,38 +190,51 @@ $ur=$db->query("SELECT COUNT(status) AS cnt FROM `".$prefix."messages` WHERE sta
         <a href="" class="list-group-item"><?php svg('trash');?> Trash<span id="email_trash" class="badge"></span></a>
       </div>
     </div>
-*/ ?>
-    <div id="emails" class="">
-      <div class="table-responsive mailbox-messages">
-        <table class="table table-hover table-striped">
-          <thead>
-            <tr>
-              <th class="col-xs-4">Subject</th>
-              <th class="col-xs-4">Name</th>
-              <th class="col-xs-2 text-center">Date</th>
-              <th class="col-xs-2"></th>
-            </tr>
-          </thead>
-          <tbody>
-<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-            <tr id="l_<?php echo$r['id'];?>" class="<?php echo$r['status']=='delete'?' danger':'';?>">
-              <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>"><?php echo$r['subject'];?></a></td>
-              <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>" title="<?php echo'&lt;'.$r['from_email'].'&gt;';?>"><?php echo$r['from_name']!=''?$r['from_name']:'&lt;'.$r['from_email'].'&gt;';?></a></td>
-              <td class="text-center"><?php echo date('M j \a\t G:i',$r['ti']);?></td>
-              <td id="controls_<?php echo$r['id'];?>">
-                <div class="btn-group pull-right">
-                  <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'];?>/messages/view/<?php echo$r['id'];?>" data-toggle="tooltip" title="View"><?php svg('libre-gui-view');?></a>
-                  <button class="btn btn-default<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','')" data-toggle="tooltip" title="Restore"><?php svg('libre-gui-restore');?></button>
-                  <button class="btn btn-default trash<?php echo$r['status']=='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','delete')" data-toggle="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
-                  <button class="btn btn-default trash<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="purge('<?php echo $r['id'];?>','messages')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-purge');?></button>
-                </div>
-              </td>
-            </tr>
-<?php }?>
-          </tbody>
-        </table>
+        <div id="emails" class="">
+          <div class="table-responsive mailbox-messages">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th class="">From</th>
+                  <th class="">Subject</th>
+                  <th class="">Name</th>
+                  <th class="">Date</th>
+                  <th class=""></th>
+                </tr>
+              </thead>
+              <tbody>
+              
+
+<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){
+  
+/*?>
+                <tr id="l_<?php echo$r['id'];?>" class="<?php echo$r['status']=='delete'?' danger':'';?>">
+                  <td><?php echo$r['from_name'].'<br><small>&lt;'.$r['from_email'].'&gt;</small>';?></td>
+                  <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>"><?php echo$r['subject'];?></a></td>
+                  <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>" title="<?php echo'&lt;'.$r['from_email'].'&gt;';?>"><?php echo$r['from_name']!=''?$r['from_name']:'&lt;'.$r['from_email'].'&gt;';?></a></td>
+                  <td class="text-center"><?php echo date('M j \a\t G:i',$r['ti']);?></td>
+                  <td id="controls_<?php echo$r['id'];?>">
+                    <div class="btn-group float-right">
+                      <a class="btn btn-secondary" href="<?php echo URL.$settings['system']['admin'];?>/messages/view/<?php echo$r['id'];?>" data-toggle="tooltip" title="View"><?php svg('libre-gui-view');?></a>
+                      <button class="btn btn-secondary<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','')" data-toggle="tooltip" title="Restore"><?php svg('libre-gui-untrash');?></button>
+                      <button class="btn btn-secondary trash<?php echo$r['status']=='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','delete')" data-toggle="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
+                      <button class="btn btn-secondary trash<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="purge('<?php echo $r['id'];?>','messages')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-purge');?></button>
+                    </div>
+                  </td>
+                </tr>
+<?php 
+}
+
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<?php }
+</main>
+<?php
+
+ }
+*/
+}

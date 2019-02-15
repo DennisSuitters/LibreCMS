@@ -9,16 +9,28 @@ $getcfg=true;
 require_once'db.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $q=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
-$q->execute(array(':id'=>$id));
+$q->execute(
+  array(
+    ':id'=>$id
+  )
+);
 $r=$q->fetch(PDO::FETCH_ASSOC);
 $r['notes']=rawurldecode($r['notes']);
 $s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
-$s->execute(array(':id'=>$r['cid']));
+$s->execute(
+  array(
+    ':id'=>$r['cid']
+  )
+);
 $c=$s->fetch(PDO::FETCH_ASSOC);
 $ti=time();
 if($c['email']!=''){
   $si=$db->prepare("SELECT code,title FROM `".$prefix."content` WHERE id=:id");
-  $si->execute(array(':id'=>$r['rid']));
+  $si->execute(
+    array(
+      ':id'=>$r['rid']
+    )
+  );
   $i=$si->fetch(PDO::FETCH_ASSOC);
   require'class.phpmailer.php';
   $mail=new PHPMailer;

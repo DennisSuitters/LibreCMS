@@ -27,7 +27,7 @@ define('UNICODE','UTF-8');?>
 <?php }else{?>
     <div class="form-group">
       <div class="alert alert-info">Edit the content within the Editor before adding this suggestion, just don't save the content.</div>
-      <textarea id="suggestda" name="da" class="hidden"></textarea>
+      <textarea id="suggestda" name="da" class="d-none"></textarea>
     </div>
 <?php }?> 
     <div class="form-group">
@@ -37,12 +37,14 @@ define('UNICODE','UTF-8');?>
       </div>
     </div>
     <div class="form-group text-right">
-      <button type="submit" class="btn btn-success">Add Suggestion</button>
+      <button type="submit" class="btn btn-secondary add">Add Suggestion</button>
     </div>
   </form>
 </div>
 <script>/*<![CDATA[*/
+<?php if($c=='notes'){?>
   $('#suggestda').html($('#notes').summernote('code'));
+<?php }?>
   $("#suggestionsform").submit(function(){
       $.post($(this).attr("action"),$(this).serialize(),function(data){
           $("#suggestions_add").html(data);

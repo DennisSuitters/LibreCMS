@@ -19,7 +19,11 @@ if($config['php_options']{3}==1&&$config['php_APIkey']!=''){
   if($h->hasRecord()==1||$h->isSuspicious()==1||$h->isCommentSpammer()==1){
     $blacklisted=$theme['settings']['blacklist'];
     $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-    $sc->execute(array(':ip'=>$ip));
+    $sc->execute(
+      array(
+        ':ip'=>$ip
+      )
+    );
     if($sc->rowCount()<1){
       $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
       $s->execute(
@@ -52,7 +56,11 @@ if($_POST['emailtrap']=='none'){
     }
     if($config['spamfilter']{1}==1&&$spam==TRUE){
       $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-      $sc->execute(array(':ip'=>$ip));
+      $sc->execute(
+        array(
+          ':ip'=>$ip
+        )
+      );
       if($sc->rowCount()<1){
         $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
         $s->execute(

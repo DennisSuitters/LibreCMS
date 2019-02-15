@@ -68,7 +68,9 @@ $opts = array(
       'uploadAllow' => array(
         'image',
         'text/plain',
-        'application/pdf'
+        'application/pdf',
+        'application/x-php',
+        'text/x-php'
       ),
       'uploadOrder' => array(
         'deny',
@@ -80,6 +82,11 @@ $opts = array(
           'pattern' => '!^/core|layout|index.php!',
           'hidden'  => true
         )
+      ),
+      'disabled' => array(
+        'extract',
+        'archive',
+        'mkdir'
       )
     )
   )

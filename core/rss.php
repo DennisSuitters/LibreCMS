@@ -6,8 +6,10 @@
  */
 header('Content-Type:application/rss+xml;charset=ISO-8859-1');
 $getcfg=true;
-require_once'db.php';
-if($args[0]==''||$args[0]=='index')$args[0]='%_%';
+require'db.php';
+define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
+if($args[0]==''||$args[0]=='index')
+  $args[0]='%_%';
 $ti=time();?>
 <?xml version="1.0"?>
 <rss version="2.0">
@@ -22,18 +24,22 @@ $ti=time();?>
 <?php $deffiletype=image_type_to_mime_type(exif_imagetype(FAVICON));
 $deflength=filesize(FAVICON);
 $s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType LIKE :contentType AND status='published' AND internal!='1' ORDER BY ti DESC LIMIT 25");
-$s->execute(array(':contentType'=>$args[0]));
+$s->execute(
+  array(
+    ':contentType'=>$args[0]
+  )
+);
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
   $img=URL.FAVICON;
   $filetype=$deffiletype;
   $length=$deflength;
   if($r['contentType']!='gallery'){
-    if($r['thumb']!=''){
+    if($r['thumb']!=''&&file_exists('media'.DS.$r['thumb'])&&!stristr('http',$r['thumb'])){
       $img=$r['thumb'];
       $filetype=image_type_to_mime_type(exif_imagetype($r['thumb']));
       $file=basename($r['thumb']);
       $length=filesize('media'.DS.$file);
-    }elseif($r['file']){
+    }elseif($r['file']&&file_exists('media'.DS.$r['file'])&&!stristr('http',$r['file'])){
       $img=$r['file'];
       $filetype=image_type_to_mime_type(exif_imagetype($r['file']));
       $file=basename($r['file']);
@@ -57,10 +63,10 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
       $filetype=image_type_to_mime_type(exif_imagetype('media'.DS.$r['file']));
       $length=filesize('media'.DS.$r['file']);
     }
-}?>
+  }?>
     <item>
       <title><?php echo$r['title'].' - '.ucfirst($r['contentType']).' - '.$config['seoTitle'];?></title>
-      <description><?php echo($r['seoCaption']==""?strip_tags(rawurldecode($r['notes'])):$r['seoCaption']);}?></description>
+      <description><?php echo($r['seoCaption']==""?strip_tags(rawurldecode($r['notes'])):$r['seoCaption']);?></description>
       <link><?php echo URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title']));?></link>
       <pubDate><?php echo strftime("%a, %d %b %Y %T %Z",$r['ti']);?></pubDate>
       <enclosure url="<?php echo$img;?>" length="<?php echo$length;?>" type="<?php echo$filetype;?>"/>

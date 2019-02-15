@@ -20,7 +20,11 @@ if($config['php_options']{3}==1&&$config['php_APIkey']!=''){
     $blacklisted=$theme['settings']['blacklist'];
     $spam=TRUE;
     $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-    $sc->execute(array(':ip'=>$ip));
+    $sc->execute(
+      array(
+        ':ip'=>$ip
+      )
+    );
     if($sc->rowCount()<1){
       $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
       $s->execute(
@@ -49,7 +53,11 @@ if($_POST['emailtrap']=='none'){
     }
     if($config['spamfilter']{1}==1&&$spam==TRUE){
       $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-      $sc->execute(array(':ip'=>$ip));
+      $sc->execute(
+        array(
+          ':ip'=>$ip
+        )
+      );
       if($sc->rowCount()<1){
         $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
         $s->execute(
@@ -65,7 +73,11 @@ if($_POST['emailtrap']=='none'){
   if($spam==FALSE){
     if(filter_var($email,FILTER_VALIDATE_EMAIL)){
       $q=$db->prepare("SELECT id FROM `".$prefix."subscribers` WHERE email=:email");
-      $q->execute(array(':email'=>$email));
+      $q->execute(
+        array(
+          ':email'=>$email
+        )
+      );
       if($q->rowCount()<1){
         $q=$db->prepare("INSERT INTO `".$prefix."subscribers` (email,hash,ti) VALUES (:email,:hash,:ti)");
         $q->execute(

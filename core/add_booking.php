@@ -22,7 +22,11 @@ if($act=='add_booking'){
       $blacklisted=$theme['settings']['blacklist'];
 			$spam=TRUE;
 			$sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-			$sc->execute(array(':ip'=>$ip));
+			$sc->execute(
+				array(
+					':ip'=>$ip
+				)
+			);
 			if($sc->rowCount()<1){
 	      $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
 	      $s->execute(
@@ -63,7 +67,11 @@ if($act=='add_booking'){
 			}
 			if($config['spamfilter']{1}==1&&$spam==TRUE){
 				$sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-				$sc->execute(array(':ip'=>$ip));
+				$sc->execute(
+					array(
+						':ip'=>$ip
+					)
+				);
 				if($sc->rowCount()<1){
 					$s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
 					$s->execute(
@@ -81,7 +89,11 @@ if($act=='add_booking'){
 				$tis=$tis==0?$ti:strtotime($tis.$tim);
 				if($rid!=0){
 					$s=$db->prepare("SELECT id,tie FROM `".$prefix."content` WHERE id=:id");
-					$s->execute(array(':id'=>$rid));
+					$s->execute(
+						array(
+							':id'=>$rid
+						)
+					);
 					$r=$s->fetch(PDO::FETCH_ASSOC);
 					$tie=$r['tie'];
 				}else
@@ -121,7 +133,11 @@ if($act=='add_booking'){
 						$msg='Booking Date: '.date($config['dateFormat'],$tis).'<br />';
 						if($rid!=0){
 							$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
-							$s->execute(array(':id'=>$rid));
+							$s->execute(
+								array(
+									':id'=>$rid
+								)
+							);
 							$r=$s->fetch(PDO::FETCH_ASSOC);
 							$msg.='Booked: '.ucfirst(rtrim($r['contentType'],'s')).' - '.$r['title'];
 						}
@@ -137,7 +153,8 @@ if($act=='add_booking'){
 									'Notes: '.$notes;
 						$mail->Body=$msg;
 						$mail->AltBody=strip_tags(preg_replace('/<br(\s+)?\/?>/i',"\n",$msg));
-						if($mail->Send())$notification=$theme['settings']['booking_success'];
+						if($mail->Send())
+							$notification=$theme['settings']['booking_success'];
 					}
 					if($email!=''){
 						$mail2=new PHPMailer;

@@ -5,12 +5,17 @@
  * of the MIT license (http://opensource.org/licenses/MIT).
  */
 echo'<script>/*<![CDATA[*/';
-if(session_status()==PHP_SESSION_NONE)session_start();
+if(session_status()==PHP_SESSION_NONE)
+  session_start();
 require_once'db.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $uid=$_SESSION['uid'];
 $s=$db->prepare("SELECT * FROM `".$prefix."suggestions` WHERE id=:id");
-$s->execute(array(':id'=>$id));
+$s->execute(
+  array(
+    ':id'=>$id
+  )
+);
 $r=$s->fetch(PDO::FETCH_ASSOC);
 $tbl=$r['t'];
 $col=$r['c'];
@@ -21,6 +26,7 @@ if($col=='notes'){?>
 <?php }else{?>
   if(window.top.window.$('#<?php echo$col;?>')){
     window.top.window.$('#<?php echo$col;?>').val('<?php echo$r['notes'];?>');
+    window.top.window.$('#save<?php echo$col;?>').addClass('btn-danger');
   }
 <?php }?>
   window.top.window.Pace.stop();

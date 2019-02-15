@@ -6,7 +6,7 @@
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 $getcfg=true;
-require_once'..'.DS.'db.php';
+require'..'.DS.'db.php';
 include'..'.DS.'class.projecthoneypot.php';
 $idh=time();
 echo'<div id="phpviewer'.$idh.'">';
@@ -30,25 +30,27 @@ if(!isset($config['php_APIkey'])||$config['php_APIkey']==''){
   $s->execute(array(':id'=>$id));
   if($s->rowCount()>0){
     $r=$s->fetch(PDO::FETCH_ASSOC);
-    $h=new ProjectHoneyPot($r['ip'],$config['php_APIkey']);
-    if($h->hasRecord()==1){
-      if($h->isSuspicious()==1){
-        echo'IP <strong>'.$r['ip'].'</strong> is listed as ';
-        if($h->isCommentSpammer()==1)echo'a Comment Spammer';
-        if($h->isHarvester()==1)echo'an Email Harvester';
-        if($h->isSearchEngine()==1)echo', but could be a Search Engine.<br>';else echo'.<br>';
-        if($h->getThreatScore()>0)echo'The Threat Score for this record is <strong>'.$h->getThreatScore().'</strong> <a target="_blank" href="https://www.projecthoneypot.org/threat_info.php" data-toggle="tooltip" title="Information about what this value represents.">?</a>.';
-      }
-    }else echo'No Recorded Incidents were found...';
-  $sql=$db->prepare("SELECT COUNT(id) as cnt FROM `".$prefix."iplist` WHERE ip=:ip");
-  $sql->execute(array(':ip'=>$r['ip']));
-  $row=$sql->fetch(PDO::FETCH_ASSOC);
-  if($row['cnt']<1){?>
+    if(filter_var($r['ip'],FILTER_VALIDATE_IP,FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)){
+      $h=new ProjectHoneyPot($r['ip'],$config['php_APIkey']);
+      if($h->hasRecord()==1){
+        if($h->isSuspicious()==1){
+          echo'IP <strong>'.$r['ip'].'</strong> is listed as ';
+          if($h->isCommentSpammer()==1)echo'a Comment Spammer';
+          if($h->isHarvester()==1)echo'an Email Harvester';
+          if($h->isSearchEngine()==1)echo', but could be a Search Engine.<br>';else echo'.<br>';
+          if($h->getThreatScore()>0)echo'The Threat Score for this record is <strong>'.$h->getThreatScore().'</strong> <a target="_blank" href="https://www.projecthoneypot.org/threat_info.php" data-toggle="tooltip" title="Information about what this value represents.">?</a>.';
+        }
+      }else
+        echo'No Recorded Incidents were found...';
+      $sql=$db->prepare("SELECT COUNT(id) as cnt FROM `".$prefix."iplist` WHERE ip=:ip");
+      $sql->execute(array(':ip'=>$r['ip']));
+      $row=$sql->fetch(PDO::FETCH_ASSOC);
+      if($row['cnt']<1){?>
   <div id="phpbuttons" class="btn-group pull-right" role="group">
     <form id="blacklist<?php echo$idh;?>" method="post" action="core/add_blacklist.php">
       <input type="hidden" name="id" value="<?php echo$id;?>">
       <input type="hidden" name="t" value="<?php echo$t;?>">
-      <button class="btn btn-default btn-xs" data-toggle="tooltip" title="Add Originators IP to Blacklist"><?php echo svg2('libre-gui-security');?></button>
+      <button class="btn btn-secondary btn-xs" data-toggle="tooltip" title="Add Originators IP to Blacklist"><?php echo svg2('libre-gui-security');?></button>
     </form>
   </div>
   </div>
@@ -64,5 +66,8 @@ if(!isset($config['php_APIkey'])||$config['php_APIkey']==''){
 <?php }?>
   /*]]>*/</script>
 <?php }
-  }else echo'No Results Found.';
+    }else
+      echo'The IP Recorded isn\'t valid.';
+  }else
+    echo'No Results Found.';
 }

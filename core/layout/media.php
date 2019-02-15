@@ -6,16 +6,20 @@
  */
 if($args[0]=='settings')include'core'.DS.'layout'.DS.'set_media.php';
 else{?>
-<div class="panel panel-default">
-  <div class="panel-heading clearfix">
-    <h4 class="col-xs-8">Media</h4>
-    <div class="btn-group pull-right">
-      <a class="btn btn-default" href="<?php echo URL.$settings['system']['admin'].'/media/settings';?>" data-toggle="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings',($config['iconsColor']==1?true:null));?></a>
-      <?php if($help['media_text']!='')echo'<a target="_blank" class="btn btn-default info" href="'.$help['media_text'].'" data-toggle="tooltip" data-placement="left" title="Help">'.svg2('libre-gui-help').'</a>';if($help['media_video']!='')echo'<a href="#" class="btn btn-default info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['media_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help">'.svg2('libre-gui-video').'</a>';?>
-    </div>
+<main id="content" class="main">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">Content</li>
+    <li class="breadcrumb-item active" aria-current="page">Media</li>
+    <li class="breadcrumb-menu">
+      <div class="btn-group" role="group" aria-label="Settings">
+        <a class="btn btn-ghost-normal info" href="<?php echo URL.$settings['system']['admin'].'/media/settings';?>" data-tooltip="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings',($config['iconsColor']==1?true:null));?></a>
+        <?php if($help['media_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['media_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
+        if($help['media_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['media_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+      </div>
+    </li>
+  </ol>
+  <div style="margin:0;padding:0;">
+    <div id="elfinder" style="margin-top:-24px;"></div>
   </div>
-  <div class="panel-body">
-    <div id="elfinder"></div>
-  </div>
-</div>
+</main>
 <?php }

@@ -1,0 +1,37 @@
+<block include="meta_head.html">
+<block include="header.html">
+<block inbed="content">
+	<div class="container">
+		<div class="row mt-4 mb-4 m-sm-5">
+			<main id="content" class="col-12 col-sm-8" role="main">
+				<print page="notes">
+				<settings itemCount="50">
+				<items>
+					<article class="search" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+		        <div class="search-item">
+		          <div class="search-item-info clearfix">
+								<controls>
+									<view>
+										<div class="search-item-title">
+											<a href="<print content=linktitle>" itemprop="name" role="link"><print content="title"></a>
+										</div>
+		                <div class="search-item-url">
+		                  <print content=linktitle>
+		                </div>
+									</view>
+								</controls>
+		            <print content="caption" length="200">
+		          </div>
+		        </div>
+		      </article>
+				</items>
+				<more>
+					<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
+				</more>
+			</main>
+		</div>
+	</div>
+</block>
+<block include="side_menu.html">
+<block include="footer.html">
+<block include="meta_footer.html">

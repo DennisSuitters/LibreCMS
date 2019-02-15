@@ -22,7 +22,11 @@ if($act=='add_test'){
       $blacklisted=$theme['settings']['blacklist'];
       $spam=TRUE;
       $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-      $sc->execute(array(':ip'=>$ip));
+      $sc->execute(
+        array(
+          ':ip'=>$ip
+        )
+      );
       if($sc->rowCount()<1){
         $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
         $s->execute(
@@ -55,7 +59,11 @@ if($act=='add_test'){
       }
       if($config['spamfilter']{1}==1&&$spam==TRUE){
         $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-  			$sc->execute(array(':ip'=>$ip));
+  			$sc->execute(
+          array(
+            ':ip'=>$ip
+          )
+        );
   			if($sc->rowCount()<1){
   	      $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
   	      $s->execute(

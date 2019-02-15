@@ -22,7 +22,11 @@ if($act=='add_message'){
 			$blacklisted=$theme['settings']['blacklist'];
       $spam=TRUE;
 			$sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-			$sc->execute(array(':ip'=>$ip));
+			$sc->execute(
+        array(
+          ':ip'=>$ip
+        )
+      );
 			if($sc->rowCount()<1){
 	      $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
 	      $s->execute(
@@ -54,7 +58,11 @@ if($act=='add_message'){
       }
       if($config['spamfilter']{1}==1&&$spam==TRUE){
         $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-  			$sc->execute(array(':ip'=>$ip));
+  			$sc->execute(
+          array(
+            ':ip'=>$ip
+          )
+        );
   			if($sc->rowCount()<1){
   	      $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
   	      $s->execute(
@@ -70,11 +78,16 @@ if($act=='add_message'){
     if($spam==FALSE){
   		if(filter_var($email,FILTER_VALIDATE_EMAIL)){
   			$ss=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE id=:id");
-  			$ss->execute(array(':id'=>$subject));
+  			$ss->execute(
+          array(
+            ':id'=>$subject
+          )
+        );
   			if($ss->rowCount()==1){
   				$rs=$ss->fetch(PDO::FETCH_ASSOC);
   				$subject=$rs['title'];
-  				if($rs['url']!='')$config['email']=$rs['url'];
+  				if($rs['url']!='')
+            $config['email']=$rs['url'];
   			}
   			$q=$db->prepare("INSERT INTO `".$prefix."messages` (uid,ip,folder,to_email,to_name,from_email,from_name,subject,status,notes_raw,ti) VALUES ('0',:ip,:folder,:to_email,:to_name,:from_email,:from_name,:subject,:status,:notes_raw,:ti)");
   			$q->execute(
