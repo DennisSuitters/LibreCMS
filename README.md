@@ -99,7 +99,7 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 - Testing, and Bug Squashing, as per the usual with ongoing projects.
 
 ### LEGAL:
-By downloading LibreCMS you hereby agree not to hold Diemen Design liable for any damages that your usage of LibreCMS may cause to your system, or persons. Damages may infer such things as Data Loss, Aural or Visual Impairment, Server Crashes, Alien Abduction, Coding nightmare's, Alien Implants, or Visiting Alternate Realities. LibreCMS is Licensed under GPLv3. We request that if you modify, and hopefully enhance LibreCMS, that you take part in maintaining, and contributing to it's code base here at GitHub.
+By downloading LibreCMS you hereby agree not to hold Diemen Design liable for any damages that your usage of LibreCMS may cause to your system, or persons. Damages may infer such things as Data Loss, Aural or Visual Impairment, Server Crashes, Alien Abduction, Coding nightmare's, Alien Implants, or Visiting Alternate Realities. LibreCMS is Licensed under [MIT](https://github.com/DiemenDesign/LibreCMS/blob/master/LICENSE). We request that if you modify, and hopefully enhance LibreCMS, that you take part in maintaining, and contributing to it's code base here at GitHub.
 
 ### Contributors:
 - [Raycraft Computer Services](https://www.raycraft.com.au/)
