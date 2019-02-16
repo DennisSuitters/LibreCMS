@@ -1,5 +1,5 @@
 ![LibreCMS](core/images/librecms.png)  
-a **Free** Open Source [MIT](https://www.gnu.org/licenses/gpl-3.0.html) Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/DiemenDesign/LibreICONS). Built to take advantage of HTML5 and CSS3, with necessary SEO attributes that fit in with Google's recommendations, and Micro-formats to help with Search Engine ranking.
+a **Free** Open Source [MIT](https://github.com/DiemenDesign/LibreCMS/blob/master/LICENSE) Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/DiemenDesign/LibreICONS). Built to take advantage of HTML5 and CSS3, with necessary SEO attributes that fit in with Google's recommendations, and Micro-formats to help with Search Engine ranking.
 (AMP has been removed as testing proved that there was nothing to be gained from using it).
 
 ### FAQ
