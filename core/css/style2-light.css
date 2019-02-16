@@ -1,5 +1,6 @@
 option[value='']{display:none!important}
 svg#librecms #libre{fill:#3da639!important}
+svg#librecms #cms{fill:#000!important}
 .navbar-brand svg{width:100px}
 .browser-stats{position:relative!important;height:92px;padding:0 3px;overflow:hidden}
 .browser-stats .text-value{padding:10px 10px 10px 5px;font-size:1.3em}

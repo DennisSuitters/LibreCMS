@@ -106,7 +106,9 @@ By downloading LibreCMS you hereby agree not to hold Diemen Design liable for an
   - Live Testing, Suggestions, and witty Banter.
 
 ### LibreCMS Live Sites by Diemen Design:
+- [AAA Earthworx](https://www.aaaearthworx.com.au/)
 - [Anime Excess](https://www.animeexcess.com.au/)
+- [BizzyKnits](https://www.bizzyknits.biz/)
 - [Diemen Design](https://diemen.design/)
 - [Fast Track Business Club](https://www.fasttrackbusinessclub.com.au/)
 - [Live Lightly Centre](https://www.livelightlycentre.com.au/)
@@ -114,5 +116,3 @@ By downloading LibreCMS you hereby agree not to hold Diemen Design liable for an
 - [Powerline Automotive Services](https://www.powerlineauto.com.au/)
 - [Raycraft Computer Services](https://www.raycraft.com.au/)
 - [Raycraft Entertainment](https://www.entertainme.net.au/)
-- [AAA Earthworx](https://www.aaaearthworx.com.au/)
-- [BizzyKnits](https://www.bizzyknits.biz/)
