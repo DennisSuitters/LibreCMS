@@ -1,8 +1,25 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Robots Generator
+ *
+ * robots.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Robots Generator
+ * @package    core/robots.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 header('Content-Type:text/plain');?>
 <?php echo'# As always, Asimov\'s Three Laws are in effect:'.
@@ -11,7 +28,7 @@ header('Content-Type:text/plain');?>
 '# 3. A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.';?>
 
 User-agent: *
-Disallow: /harming/humans
+Disallow: /harm/to/humans
 Disallow: /ignoring/human/orders
 Disallow: /harm/to/self
 Disallow: /cgi-bin/

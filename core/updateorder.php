@@ -1,12 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Update Order
+ *
+ * updateorder.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Update Order
+ * @package    core/updateorder.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-echo'<script>/*<![CDATA[*/';
-if(session_status()==PHP_SESSION_NONE)
-	session_start();
+echo'<script>';
+if(session_status()==PHP_SESSION_NONE)session_start();
 $getcfg=true;
 require'db.php';
 define('THEME','layout'.DS.$config['theme']);
@@ -34,145 +50,92 @@ else
 if($act=='additem'){
 	if($da!=0){
 		$q=$db->prepare("SELECT title,cost FROM `".$prefix."content` WHERE id=:id");
-		$q->execute(
-			array(
-				':id'=>$da
-			)
-		);
+		$q->execute([':id'=>$da]);
 		$r=$q->fetch(PDO::FETCH_ASSOC);
-		if($r['cost']==''||!is_numeric($r['cost']))
-			$r['cost']=0;
+		if($r['cost']==''||!is_numeric($r['cost']))$r['cost']=0;
 	}else{
-    $r=array(
+    $r=[
       'title'=>'',
       'cost'=>0
-    );
+    ];
   }
 	$q=$db->prepare("INSERT INTO `".$prefix."orderitems` (oid,iid,title,quantity,cost,ti) VALUES (:oid,:iid,:title,'1',:cost,:ti)");
-	$q->execute(
-    array(
-      ':oid'=>$id,
-      ':iid'=>$da,
-      ':title'=>$r['title'],
-      ':cost'=>$r['cost'],
-      ':ti'=>time()
-    )
-  );
+	$q->execute([
+    ':oid'=>$id,
+    ':iid'=>$da,
+    ':title'=>$r['title'],
+    ':cost'=>$r['cost'],
+    ':ti'=>time()
+  ]);
 }
 if($act=='title'){
   $ss=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE id=:id");
-  $ss->execute(
-		array(
-			':id'=>$id
-		)
-	);
+  $ss->execute([':id'=>$id]);
   $r=$ss->fetch(PDO::FETCH_ASSOC);
   $s=$db->prepare("UPDATE `".$prefix."orderitems` SET title=:title WHERE id=:id");
-  $s->execute(
-    array(
-      ':id'=>$id,
-      ':title'=>$da
-    )
-  );
+  $s->execute([
+    ':id'=>$id,
+    ':title'=>$da
+  ]);
   $id=$r['oid'];
 }
 if($act=='quantity'||$act=='trash'){
   $ss=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE id=:id");
-  $ss->execute(
-		array(
-			':id'=>$id
-		)
-	);
+  $ss->execute([':id'=>$id]);
   $r=$ss->fetch(PDO::FETCH_ASSOC);
   if($da==0){
     $s=$db->prepare("DELETE FROM `".$prefix."orderitems` WHERE id=:id");
-    $s->execute(
-			array(
-				':id'=>$id
-			)
-		);
+    $s->execute([':id'=>$id]);
   }else{
     $s=$db->prepare("UPDATE `".$prefix."orderitems` SET quantity=:quantity WHERE id=:id");
-    $s->execute(
-      array(
-        ':quantity'=>$da,
-        ':id'=>$id
-      )
-    );
+    $s->execute([
+      ':quantity'=>$da,
+      ':id'=>$id
+    ]);
   }
   $id=$r['oid'];
 }
 if($act=='cost'){
   $ss=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE id=:id");
-  $ss->execute(
-		array(
-			':id'=>$id
-		)
-	);
+  $ss->execute([':id'=>$id]);
   $r=$ss->fetch(PDO::FETCH_ASSOC);
   $s=$db->prepare("UPDATE `".$prefix."orderitems` SET cost=:cost WHERE id=:id");
-  $s->execute(
-    array(
-      ':cost'=>$da,
-      ':id'=>$id
-    )
-  );
+  $s->execute([
+    ':cost'=>$da,
+    ':id'=>$id
+  ]);
   $id=$r['oid'];
 }
 if($act=='reward'){
   $sr=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE code=:code");
-  $sr->execute(
-		array(
-			':code'=>$da
-		)
-	);
+  $sr->execute([':code'=>$da]);
   $reward=$sr->fetch(PDO::FETCH_ASSOC);
   $s=$db->prepare("UPDATE `".$prefix."orders` SET rid=:rid WHERE id=:id");
-  $s->execute(
-    array(
-      ':rid'=>$reward['id'],
-      ':id'=>$id
-    )
-  );
+  $s->execute([
+    ':rid'=>$reward['id'],
+    ':id'=>$id
+  ]);
 }
 if($act=='postage'){
   $s=$db->prepare("UPDATE `".$prefix."orders` SET postage=:postage WHERE id=:id");
-  $s->execute(
-    array(
-      ':postage'=>$da,
-      ':id'=>$id
-    )
-  );
+  $s->execute([
+    ':postage'=>$da,
+    ':id'=>$id
+  ]);
 }
 $s=$db->prepare("SELECT * FROM `".$prefix."orders` WHERE id=:id");
-$s->execute(
-	array(
-		':id'=>$id
-	)
-);
+$s->execute([':id'=>$id]);
 $r=$s->fetch(PDO::FETCH_ASSOC);
 $si=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid ORDER BY ti ASC,title ASC");
-$si->execute(
-	array(
-		':oid'=>$r['id']
-	)
-);
+$si->execute([':oid'=>$r['id']]);
 $total=0;
 $html='';
 while($oi=$si->fetch(PDO::FETCH_ASSOC)){
   $is=$db->prepare("SELECT id,thumb,file,fileURL,code,title FROM `".$prefix."content` WHERE id=:id");
-  $is->execute(
-		array(
-			':id'=>$oi['iid']
-		)
-	);
+  $is->execute([':id'=>$oi['iid']]);
   $i=$is->fetch(PDO::FETCH_ASSOC);
   $sc=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE id=:id");
-  $sc->execute(
-		array(
-			':id'=>$oi['cid']
-		)
-	);
+  $sc->execute([':id'=>$oi['cid']]);
   $c=$sc->fetch(PDO::FETCH_ASSOC);
 	$image='';
 	if($i['thumb']!=''&&file_exists('media'.DS.basename($i['thumb'])))
@@ -208,15 +171,10 @@ while($oi=$si->fetch(PDO::FETCH_ASSOC)){
 						'</form>'.
 					'</td>'.
 				'</tr>';
-  if($oi['iid']!=0)
-		$total=$total+($oi['cost']*$oi['quantity']);
+  if($oi['iid']!=0)$total=$total+($oi['cost']*$oi['quantity']);
 }
 $rs=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:rid");
-$rs->execute(
-	array(
-		':rid'=>$r['rid']
-	)
-);
+$rs->execute([':rid'=>$r['rid']]);
 $reward=$rs->fetch(PDO::FETCH_ASSOC);
   $html.='<tr>'.
 					'<td colspan="4" class="text-right align-middle"><strong>Rewards Code</strong></td>'.
@@ -268,4 +226,4 @@ $reward=$rs->fetch(PDO::FETCH_ASSOC);
   window.top.window.$('#updateorder').html('<?php echo$html;?>');
   window.top.window.Pace.stop();
 <?php
-echo'/*]]>*/</script>';
+echo'</script>';

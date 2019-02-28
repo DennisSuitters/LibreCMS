@@ -1,4 +1,27 @@
-<script>/*<![CDATA[*/
+<?php
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Upgrade
+ *
+ * upgrade.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Upgrade
+ * @package    core/upgrade.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
+ */?>
+<script>
   window.top.window.$('#updateheading').html('System Updates...');
   window.top.window.$('#update').html('');
 <?php
@@ -21,18 +44,16 @@ $uL='';
 $found=true;
 $vL=explode("\n",$gV);
 foreach($vL as $aV){
-  if($aV=='')
-    continue;
-  if($aV<$settings['system']['version'])
-    continue;
-  if(!is_file('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip' )){?>
+  if($aV=='')continue;
+  if($aV<$settings['system']['version'])continue;
+  if(!is_file('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip')){?>
   window.top.window.$('#update').append('<div class="alert alert-info">Downloading New Update...</div>');
 <?php
-   if(false===file_get_contents("https://www.studiojunkyard.com/update/".$aV.".zip",0,null,0,1)){
+   if(false===file_get_contents("https://diemen.design/update/".$aV.".zip",0,null,0,1)){
     $found=false;?>
   window.top.window.$('#update').append('<div class="alert alert-danger">File doesn\'t exist on remote server...</div>');
 <?php }else{
-    $newUpdate=file_get_contents('https://www.studiojunkyard.com/update/'.$aV.'.zip');
+    $newUpdate=file_get_contents('https://diemen.design/update/'.$aV.'.zip');
     if(!is_dir('..'.DS.'media'.DS.'updates'.DS))
       mkdir('..'.DS.'media'.DS.'updates'.DS);
     $dlHandler=fopen('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip','w');
@@ -55,8 +76,7 @@ if($found==true){
   while($aF=zip_read($zipHandle)){
     $thisFileName=zip_entry_name($aF);
     $thisFileDir=dirname($thisFileName);
-    if(substr($thisFileName,-1,1)=='/')
-      continue;
+    if(substr($thisFileName,-1,1)=='/')continue;
     if(!is_dir('..'.DS.$thisFileDir)){
       mkdir('..'.DS.$thisFileDir );
       $html.='<li>Created Directory '.$thisFileDir.'</li>';
@@ -68,19 +88,15 @@ if($found==true){
       if($thisFileName=='core'.DS.'upgrade.sql'){
         $prefix=$settings['database']['prefix'];
   			$sql=file_get_contents('core'.DS.'upgrade.sql');
-  			$sql=str_replace(
-  				array(
+  			$sql=str_replace([
   					"CREATE TABLE `",
   					"INSERT INTO `",
   					"ALTER TABLE `"
-  				),
-  				array(
+  				],[
   					"CREATE TABLE `".$prefix,
   					"INSERT INTO `".$prefix,
   					"ALTER TABLE `".$prefix
-  				),
-  				$sql
-  			);
+  				],$sql);
   			$q=$db->exec($sql);
   			$e=$db->errorInfo();        
 /*        $upgradeExec=fopen('doupgrade.php','w');
@@ -114,8 +130,7 @@ if($found==true){
   $txt.='version = '.time().PHP_EOL;
   $txt.='url = '.$settings['system']['url'].PHP_EOL;
   $txt.='admin = '.$settings['system']['admin'].PHP_EOL;
-  if(file_exists('config.ini'))
-    unlink('config.ini');
+  if(file_exists('config.ini'))unlink('config.ini');
   $oFH=fopen("config.ini",'w');
   fwrite($oFH,$txt);
   fclose($oFH);?>
@@ -125,10 +140,6 @@ if($found==true){
 <?php }
 }
 $su=$db->prepare("UPDATE config SET uti=:uti WHERE id='1'");
-$su->execute(
-  array(
-    ':uti'=>time()
-  )
-);?>
+$su->execute([':uti'=>time()]);?>
   window.top.window.Pace.stop();
-/*]]>*/</script>
+</script>

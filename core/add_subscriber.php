@@ -1,11 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Add Subscriber
+ *
+ * add_subscriber.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Add Subscriber
+ * @package    core/add_subscriber.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $getcfg=true;
-require_once'db.php';
+require'db.php';
 include'class.projecthoneypot.php';
 include'class.spamfilter.php';
 $theme=parse_ini_file('..'.DS.'layout'.DS.$config['theme'].DS.'theme.ini',true);
@@ -20,20 +37,14 @@ if($config['php_options']{3}==1&&$config['php_APIkey']!=''){
     $blacklisted=$theme['settings']['blacklist'];
     $spam=TRUE;
     $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-    $sc->execute(
-      array(
-        ':ip'=>$ip
-      )
-    );
+    $sc->execute([':ip'=>$ip]);
     if($sc->rowCount()<1){
       $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
-      $s->execute(
-        array(
-          ':ip'=>$ip,
-          ':oti'=>$ti,
-          ':ti'=>$ti
-        )
-      );
+      $s->execute([
+        ':ip'=>$ip,
+        ':oti'=>$ti,
+        ':ti'=>$ti
+      ]);
     }
   }
 }
@@ -53,40 +64,28 @@ if($_POST['emailtrap']=='none'){
     }
     if($config['spamfilter']{1}==1&&$spam==TRUE){
       $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-      $sc->execute(
-        array(
-          ':ip'=>$ip
-        )
-      );
+      $sc->execute([':ip'=>$ip]);
       if($sc->rowCount()<1){
         $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
-        $s->execute(
-          array(
-            ':ip'=>$ip,
-            ':oti'=>$ti,
-            ':ti'=>$ti
-          )
-        );
+        $s->execute([
+          ':ip'=>$ip,
+          ':oti'=>$ti,
+          ':ti'=>$ti
+        ]);
       }
     }
   }
   if($spam==FALSE){
     if(filter_var($email,FILTER_VALIDATE_EMAIL)){
       $q=$db->prepare("SELECT id FROM `".$prefix."subscribers` WHERE email=:email");
-      $q->execute(
-        array(
-          ':email'=>$email
-        )
-      );
+      $q->execute([':email'=>$email]);
       if($q->rowCount()<1){
         $q=$db->prepare("INSERT INTO `".$prefix."subscribers` (email,hash,ti) VALUES (:email,:hash,:ti)");
-        $q->execute(
-          array(
-            ':email'=>$email,
-            ':hash'=>md5($email),
-            ':ti'=>time()
-          )
-        );
+        $q->execute([
+          ':email'=>$email,
+          ':hash'=>md5($email),
+          ':ti'=>time()
+        ]);
         $e=$db->errorInfo();
         if(is_null($e[2]))
           $notification.=$theme['settings']['subscriber_success'];

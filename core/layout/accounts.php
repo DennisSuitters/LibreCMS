@@ -1,20 +1,32 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Displays a list of User Accounts
+ *
+ * accounts.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Accounts
+ * @package    core/layout/accounts.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if($args[0]=='add'){
   $type=filter_input(INPUT_GET,'type',FILTER_SANITIZE_STRING);
   $q=$db->prepare("INSERT INTO `".$prefix."login` (options,active,ti) VALUES ('00000000','1',:ti)")->execute(array(':ti'=>time()));
   $args[1]=$db->lastInsertId();
   $q=$db->prepare("UPDATE `".$prefix."login` SET username=:username WHERE id=:id");
-  $q->execute(
-    array(
-      ':username'=>'User '.$args[1],
-      ':id'=>$args[1]
-    )
-  );
+  $q->execute([':username'=>'User '.$args[1],':id'=>$args[1]]);
   $args[0]='edit';
   echo'<script>/*<![CDATA[*/history.replaceState("","","'.URL.$settings['system']['admin'].'/accounts/edit/'.$args[1].'");/*]]>*/</script>';
 }
@@ -38,18 +50,10 @@ else{
       if($args[1]=='developer')$rank=1000;
     }
     $s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE rank=:rank ORDER BY ti DESC");
-    $s->execute(
-      array(
-        ':rank'=>$rank
-      )
-    );
+    $s->execute([':rank'=>$rank]);
   }else{
     $s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE rank<:rank ORDER BY ti DESC");
-    $s->execute(
-      array(
-        ':rank'=>$_SESSION['rank']+1
-      )
-    );
+    $s->execute([':rank'=>$_SESSION['rank']+1]);
   }?>
 <main id="content" class="main">
   <ol class="breadcrumb">
@@ -58,7 +62,8 @@ else{
       <div class="btn-group" role="group" aria-label="">
         <a class="btn btn-ghost-normal add" href="<?php echo URL.$settings['system']['admin'].'/accounts/add';?>" data-tooltip="tooltip" data-placement="left" title="Add"><?php svg('libre-gui-add');?></a>
         <a class="btn btn-ghost-normal info" href="<?php echo URL.$settings['system']['admin'].'/accounts/settings';?>" data-tooltip="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings');?></a>
-        <?php if($help['accounts_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['accounts_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';if($help['accounts_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['accounts_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+<?php if($help['accounts_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['accounts_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
+if($help['accounts_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['accounts_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>
@@ -81,17 +86,10 @@ else{
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
               <tr id="l_<?php echo$r['id'];?>">
                 <td class="align-middle">
-<?php if($r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.basename($r['avatar'])))
-        echo'<img class="img-fluid img-circle" style="max-width:32px;max-height:32px;" src="media'.DS.'avatar'.DS.basename($r['avatar']).'">';
-      elseif($r['avatar']!='')
-        echo'<img class="img-fluid img-circle" style="max-width:32px;max-height:32px;" src="'.$r['avatar'].'">';
-      elseif($r['gravatar']!='')
-        echo'<img class="img-fluid img-circle" style="max-width:32px;max-height:32px;" src="'.$r['gravatar'].'">';
-      else
-        echo'<img class="img-fluid img-circle" style="max-width:32px;max-height:32px;" src="'.NOAVATAR.'">';?>
+                  <img class="img-fluid img-circle bg-white" style="max-width:32px;height:32px;" src="<?php if($r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.basename($r['avatar'])))echo'media'.DS.'avatar'.DS.basename($r['avatar']);elseif($r['avatar']!='')echo$r['avatar'];elseif($r['gravatar']!='')echo$r['gravatar'];else echo ADMINNOAVATAR;?>">
                 </td>
                 <td class="align-middle">
-                  <small><a href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>" data-tooltip="tooltip" title="Edit"><?php echo$r['username'].':'.$r['name'];?></a></small>
+                  <small><a href="<?php echo$settings['system']['admin'].'/accounts/edit/'.$r['id'];?>"><?php echo$r['username'].':'.$r['name'];?></a></small>
                   <?php echo$user['rank']==1000?'<br><small class="text-muted d-none d-sm-block">IP: '.$r['userIP'].'<br>'.$r['userAgent'].'</small>':'';?>
                 </td>
                 <td class="text-center align-middle"><span<?php echo$r['lti']!=0&&$user['rank']==1000?' data-tooltip="tooltip" title="'.date($config['dateFormat'],$r['lti']).'""':'';?>><?php echo _ago($r['lti']);?></span></td>

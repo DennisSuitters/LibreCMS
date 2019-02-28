@@ -1,8 +1,25 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Admin
+ *
+ * admin.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Admin
+ * @package    core/admin.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 require'core'.DS.'db.php';
@@ -15,11 +32,7 @@ $noimage=$this->noimage();
 $noavatar=$this->noavatar();
 $help=parse_ini_file('core'.DS.'help.ini',TRUE);
 $sp=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE contentType=:contentType");
-$sp->execute(
-  array(
-    ':contentType'=>$view
-  )
-);
+$sp->execute([':contentType'=>$view]);
 include'core'.DS.'login.php';
 if($_SESSION['rank']>399){
   if(isset($_SESSION['rank'])){
@@ -36,7 +49,7 @@ if($_SESSION['rank']>399){
   }else
     $rankText='Visitor';
   $nous=$db->prepare("SELECT COUNT(id) AS cnt FROM `".$prefix."login` WHERE lti>:lti AND rank!=1000");
-  $nous->execute(array(':lti'=>time()-300));
+  $nous->execute([':lti'=>time()-300]);
   $nou=$nous->fetch(PDO::FETCH_ASSOC);
   $nc=$db->query("SELECT COUNT(status) AS cnt FROM `".$prefix."comments` WHERE contentType!='review' AND status='unapproved'")->fetch(PDO::FETCH_ASSOC);
   $nr=$db->query("SELECT COUNT(id) AS cnt FROM `".$prefix."comments` WHERE contentType='review' AND  status='unapproved'")->fetch(PDO::FETCH_ASSOC);

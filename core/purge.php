@@ -1,12 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Purge Content Items
+ *
+ * purge.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Purge Content Items
+ * @package    core/purge.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-echo'<script>/*<![CDATA[*/';
-if(session_status()==PHP_SESSION_NONE)
-  session_start();
+echo'<script>';
+if(session_status()==PHP_SESSION_NONE)session_start();
 require'db.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $tbl=filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
@@ -15,32 +31,19 @@ $uid=isset($_SESSION['uid'])?$_SESSION['uid']:0;
 $el='l_';
 if($id!=0&&$tbl!='logs'){
   $s=$db->prepare("SELECT * FROM ".$prefix.$tbl." WHERE id=:id");
-  $s->execute(
-    array(
-      ':id'=>$id
-    )
-  );
+  $s->execute([':id'=>$id]);
   $r=$s->fetch(PDO::FETCH_ASSOC);
-  if($tbl=='config'||$tbl=='login')
-    $r['contentType']='';
+  if($tbl=='config'||$tbl=='login')$r['contentType']='';
   $nda='';
   foreach($r as$o)$nda.=$o.'|';
 }
 if($tbl=='suggestions'){
   $s=$db->prepare("SELECT * FROM `".$prefix."suggestions` WHERE id=:id");
-  $s->execute(
-    array(
-      ':id'=>$id
-    )
-  );
+  $s->execute([':id'=>$id]);
   if($s->rowCount()==1){
     $r=$s->fetch(PDO::FETCH_ASSOC);
     $ss=$db->prepare("UPDATE ".$prefix.$r['t']." SET suggestions=0 WHERE id=:id");
-    $ss->execute(
-      array(
-        ':id'=>$r['rid']
-      )
-    );
+    $ss->execute([':id'=>$r['rid']]);
   }
 }
 if($id==0&&$tbl=='iplist'){
@@ -65,30 +68,17 @@ if($id==0&&$tbl=='pageviews'){
 }
 if($id==0&&$tbl=='contentviews'){
   $q=$db->prepare("UPDATE content SET views='0' WHERE contentType=:contentType");
-  $q->execute(
-    array(
-      ':contentType'=>$col
-    )
-  );
+  $q->execute([':contentType'=>$col]);
   $id='';
 }
 if($tbl=='orders'){
   $q=$db->prepare("DELETE FROM `".$prefix."orderitems` WHERE oid=:oid");
-  $q->execute(
-    array(
-      ':oid'=>$id
-    )
-  );
+  $q->execute([':oid'=>$id]);
 }
 if($id!=0&&$id!='activity'){
   $q=$db->prepare("DELETE FROM `".$prefix.$tbl."` WHERE id=:id");
-  $q->execute(
-    array(
-      ':id'=>$id
-    )
-  );
-  if($tbl=='media')
-    $el='media_items_';
+  $q->execute([':id'=>$id]);
+  if($tbl=='media')$el='media_items_';
 }
 if($tbl=='errorlog'){
   unlink('..'.DS.'media'.DS.'cache'.DS.'error.log');
@@ -100,4 +90,4 @@ if($tbl=='choices'){?>
   window.top.window.setTimeout(function(){window.top.window.$('#l_<?php echo$id;?>').remove();},500);
   window.top.window.$('[data-tooltip="tooltip"], .tooltip').tooltip('hide');
 <?php }
-echo'/*]]>*/</script>';
+echo'</script>';

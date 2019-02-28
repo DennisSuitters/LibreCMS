@@ -1,11 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Generate VCard
+ *
+ * class.vcard.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Generate VCard
+ * @package    core/class.vcard.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 class vCard{
-  protected $data=array(
+  protected $data=[
     'display_name'=>NULL,
     'first_name'=>NULL,
     'last_name'=>NULL,
@@ -44,7 +61,7 @@ class vCard{
     'timezone'=>NULL,
     'sort_string'=>NULL,
     'note'=>NULL,
-  );
+  ];
   protected $filename;
   protected $class;
   protected $revision_date;
@@ -58,18 +75,12 @@ class vCard{
     return$this;
   }
   protected function build(){
-    if(!$this->class)
-      $this->class='PUBLIC';
-    if(!$this->data['display_name'])
-      $this->data['display_name']=$this->data['first_name'].' '.$this->data['last_name'];
-    if(!$this->data['sort_string'])
-      $this->data['sort_string']=$this->data['last_name'];
-    if(!$this->data['sort_string'])
-      $this->data['sort_string']=$this->data['company'];
-    if(!$this->data['timezone'])
-      $this->data['timezone']=date("O");
-    if(!$this->revision_date)
-      $this->revision_date=date('Y-m-d H:i:s');
+    if(!$this->class)$this->class='PUBLIC';
+    if(!$this->data['display_name'])$this->data['display_name']=$this->data['first_name'].' '.$this->data['last_name'];
+    if(!$this->data['sort_string'])$this->data['sort_string']=$this->data['last_name'];
+    if(!$this->data['sort_string'])$this->data['sort_string']=$this->data['company'];
+    if(!$this->data['timezone'])$this->data['timezone']=date("O");
+    if(!$this->revision_date)$this->revision_date=date('Y-m-d H:i:s');
     $this->card="BEGIN:VCARD".PHP_EOL;
     $this->card.="VERSION:3.0".PHP_EOL;
     $this->card.="CLASS:".$this->class.PHP_EOL;
@@ -77,41 +88,24 @@ class vCard{
     $this->card.="REV:".$this->revision_date.PHP_EOL;
     $this->card.="FN:".$this->data['display_name'].PHP_EOL;
     $this->card.="N:".$this->data['last_name'].";".$this->data['first_name'].";".$this->data['additional_name'].";".$this->data['name_prefix'].";".$this->data['name_suffix'].PHP_EOL;
-    if($this->data['nickname'])
-      $this->card.="NICKNAME:".$this->data['nickname'].PHP_EOL;
-    if($this->data['title'])
-      $this->card.="TITLE:".$this->data['title'].PHP_EOL;
-    if($this->data['company'])
-      $this->card.="ORG:".$this->data['company'];
-    if($this->data['department'])
-      $this->card.=";".$this->data['department'];
+    if($this->data['nickname'])$this->card.="NICKNAME:".$this->data['nickname'].PHP_EOL;
+    if($this->data['title'])$this->card.="TITLE:".$this->data['title'].PHP_EOL;
+    if($this->data['company'])$this->card.="ORG:".$this->data['company'];
+    if($this->data['department'])$this->card.=";".$this->data['department'];
     $this->card.=PHP_EOL;
-    if($this->data['work_po_box']||$this->data['work_extended_address']||$this->data['work_address']||$this->data['work_city']||$this->data['work_state']||$this->data['work_postal_code']||$this->data['work_country'])
-      $this->card.="ADR;type=WORK:".$this->data['work_po_box'].";".$this->data['work_extended_address'].";".$this->data['work_address'].";".$this->data['work_city'].";".$this->data['work_state'].";".$this->data['work_postal_code'].";".$this->data['work_country'].PHP_EOL;
-    if($this->data['home_po_box']||$this->data['home_extended_address']||$this->data['home_address']||$this->data['home_city']||$this->data['home_state']||$this->data['home_postal_code']||$this->data['home_country'])
-      $this->card.="ADR;type=HOME:".$this->data['home_po_box'].";".$this->data['home_extended_address'].";".$this->data['home_address'].";".$this->data['home_city'].";".$this->data['home_state'].";".$this->data['home_postal_code'].";".$this->data['home_country'].PHP_EOL;
-    if($this->data['email1'])
-      $this->card.="EMAIL;type=INTERNET,pref:".$this->data['email1'].PHP_EOL;
-    if($this->data['email2'])
-      $this->card.="EMAIL;type=INTERNET:".$this->data['email2'].PHP_EOL;
-    if($this->data['office_tel'])
-      $this->card.="TEL;type=WORK,voice:".$this->data['office_tel'].PHP_EOL;
-    if($this->data['home_tel'])
-      $this->card.="TEL;type=HOME,voice:".$this->data['home_tel'].PHP_EOL;
-    if($this->data['cell_tel'])
-      $this->card.="TEL;type=CELL,voice:".$this->data['cell_tel'].PHP_EOL;
-    if($this->data['fax_tel'])
-      $this->card.="TEL;type=WORK,fax:".$this->data['fax_tel'].PHP_EOL;
-    if($this->data['pager_tel'])
-      $this->card.="TEL;type=WORK,pager:".$this->data['pager_tel'].PHP_EOL;
-    if($this->data['url'])
-      $this->card.="URL;type=WORK:".$this->data['url'].PHP_EOL;
-    if($this->data['birthday'])
-      $this->card.="BDAY:".$this->data['birthday'].PHP_EOL;
-    if($this->data['role'])
-      $this->card.="ROLE:".$this->data['role'].PHP_EOL;
-    if($this->data['note'])
-      $this->card.="NOTE:".$this->data['note'].PHP_EOL;
+    if($this->data['work_po_box']||$this->data['work_extended_address']||$this->data['work_address']||$this->data['work_city']||$this->data['work_state']||$this->data['work_postal_code']||$this->data['work_country'])$this->card.="ADR;type=WORK:".$this->data['work_po_box'].";".$this->data['work_extended_address'].";".$this->data['work_address'].";".$this->data['work_city'].";".$this->data['work_state'].";".$this->data['work_postal_code'].";".$this->data['work_country'].PHP_EOL;
+    if($this->data['home_po_box']||$this->data['home_extended_address']||$this->data['home_address']||$this->data['home_city']||$this->data['home_state']||$this->data['home_postal_code']||$this->data['home_country'])$this->card.="ADR;type=HOME:".$this->data['home_po_box'].";".$this->data['home_extended_address'].";".$this->data['home_address'].";".$this->data['home_city'].";".$this->data['home_state'].";".$this->data['home_postal_code'].";".$this->data['home_country'].PHP_EOL;
+    if($this->data['email1'])$this->card.="EMAIL;type=INTERNET,pref:".$this->data['email1'].PHP_EOL;
+    if($this->data['email2'])$this->card.="EMAIL;type=INTERNET:".$this->data['email2'].PHP_EOL;
+    if($this->data['office_tel'])$this->card.="TEL;type=WORK,voice:".$this->data['office_tel'].PHP_EOL;
+    if($this->data['home_tel'])$this->card.="TEL;type=HOME,voice:".$this->data['home_tel'].PHP_EOL;
+    if($this->data['cell_tel'])$this->card.="TEL;type=CELL,voice:".$this->data['cell_tel'].PHP_EOL;
+    if($this->data['fax_tel'])$this->card.="TEL;type=WORK,fax:".$this->data['fax_tel'].PHP_EOL;
+    if($this->data['pager_tel'])$this->card.="TEL;type=WORK,pager:".$this->data['pager_tel'].PHP_EOL;
+    if($this->data['url'])$this->card.="URL;type=WORK:".$this->data['url'].PHP_EOL;
+    if($this->data['birthday'])$this->card.="BDAY:".$this->data['birthday'].PHP_EOL;
+    if($this->data['role'])$this->card.="ROLE:".$this->data['role'].PHP_EOL;
+    if($this->data['note'])$this->card.="NOTE:".$this->data['note'].PHP_EOL;
     $this->card.="TZ:".$this->data['timezone'].PHP_EOL;
     $this->card.="END:VCARD".PHP_EOL;
   }

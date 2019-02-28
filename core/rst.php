@@ -1,31 +1,42 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Reset Password
+ *
+ * rst.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Reset Password
+ * @package    core/rst.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $getcfg=true;
-require_once'db.php';
+require'db.php';
 if(isset($_POST['emailtrap'])&&$_POST['emailtrap']==''){
   $eml=filter_input(INPUT_POST,'rst',FILTER_SANITIZE_STRING);
   $s=$db->prepare("SELECT id,name,email FROM `".$prefix."login` WHERE email=:email LIMIT 1");
-  $s->execute(
-    array(
-      ':email'=>$eml
-    )
-  );
+  $s->execute([':email'=>$eml]);
   $c=$s->fetch(PDO::FETCH_ASSOC);
   if($s->rowCount()>0){
     $chars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&";
     $password=substr(str_shuffle($chars),0,8);
     $hash=password_hash($password,PASSWORD_DEFAULT);
     $us=$db->prepare("UPDATE `".$prefix."login` SET password=:password WHERE id=:id");
-    $us->execute(
-      array(
-        ':password'=>$hash,
-        ':id'=>$c['id']
-      )
-    );
+    $us->execute([
+      ':password'=>$hash,
+      ':id'=>$c['id']
+    ]);
     include'class.phpmailer.php';
   	$mail=new PHPMailer;
   	$mail->isSendmail();

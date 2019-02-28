@@ -1,12 +1,29 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Add Various Data Items
+ *
+ * add_data.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Add Various Data Items
+ * @package    core/add_data.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $getcfg=true;
-require_once'db.php';
-echo'<script>/*<![CDATA[*/';
+require'db.php';
+echo'<script>';
 include'zebra_image.php';
 include'sanitise.php';
 define('THEME','..'.DS.'layout'.DS.$config['theme']);
@@ -37,18 +54,16 @@ if($act!=''){
 			$tis=$tis!=''?strtotime($tis):0;
 			$tie=$tie!=''?strtotime($tie):0;
 			$q=$db->prepare("INSERT INTO `".$prefix."rewards` (code,title,method,value,quantity,tis,tie,ti) VALUES (:code,:title,:method,:value,:quantity,:tis,:tie,:ti)");
-			$q->execute(
-        array(
-          ':code'=>$code,
-          ':title'=>$title,
-          ':method'=>$method,
-          ':value'=>$value,
-          ':quantity'=>$quantity,
-          ':tis'=>$tis,
-          ':tie'=>$tie,
-          ':ti'=>$ti
-        )
-      );
+			$q->execute([
+        ':code'=>$code,
+        ':title'=>$title,
+        ':method'=>$method,
+        ':value'=>$value,
+        ':quantity'=>$quantity,
+        ':tis'=>$tis,
+        ':tie'=>$tie,
+        ':ti'=>$ti
+      ]);
 			$id=$db->lastInsertId();
 			$e=$db->errorInfo();
 			if(is_null($e[2])){?>
@@ -78,12 +93,10 @@ echo'<tr id="l_'.$id.'">'.
       $url=filter_input(INPUT_POST,'url',FILTER_SANITIZE_URL);
       if(filter_var($url,FILTER_VALIDATE_URL)){
         $q=$db->prepare("INSERT INTO `".$prefix."choices` (uid,contentType,url,ti) VALUES (:uid,'dashrss',:url,'0')");
-        $q->execute(
-          array(
-            ':uid'=>$uid,
-            ':url'=>$url
-          )
-        );
+        $q->execute([
+          ':uid'=>$uid,
+          ':url'=>$url
+        ]);
         $id=$db->lastInsertId();
         $e=$db->errorInfo();
         if(is_null($e[2])){?>
@@ -120,13 +133,11 @@ echo'<div id="l_'.$id.'" class="form-group">'.
   window.top.window.$.notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
 <?php   }else{
           $q=$db->prepare("INSERT INTO `".$prefix."choices` (uid,contentType,icon,url) VALUES (:uid,'social',:icon,:url)");
-          $q->execute(
-            array(
-              ':uid'=>kses($user,array()),
-              ':icon'=>$icon,
-              ':url'=>kses($url,array())
-            )
-          );
+          $q->execute([
+            ':uid'=>kses($user,array()),
+            ':icon'=>$icon,
+            ':url'=>kses($url,array())
+          ]);
           $id=$db->lastInsertId();
           $e=$db->errorInfo();
           if(is_null($e[2])){?>
@@ -160,14 +171,12 @@ echo'<div id="l_'.$id.'" class="form-group row">'.
 	window.top.window.$.notify({type:'danger',icon:'',message:'Data not Entirely Entered'});
 <?php }else{
         $q=$db->prepare("INSERT INTO `".$prefix."choices` (uid,rid,contentType,title,ti) VALUES (:uid,:rid,'option',:title,:ti)");
-        $q->execute(
-          array(
-            ':uid'=>$uid,
-            ':rid'=>$rid,
-            ':title'=>kses($ttl,array()),
-            ':ti'=>$qty
-          )
-        );
+        $q->execute([
+          ':uid'=>$uid,
+          ':rid'=>$rid,
+          ':title'=>kses($ttl,array()),
+          ':ti'=>$qty
+        ]);
         $id=$db->lastInsertId();
         $e=$db->errorInfo();
         if(is_null($e[2])){?>
@@ -210,12 +219,10 @@ echo'<div id="l_'.$id.'" class="form-group">'.
   window.top.window.$.notify({type:'danger',icon:'',message:'Data not Entirely Entered'});
 <?php }else{
         $q=$db->prepare("INSERT INTO `".$prefix."choices` (contentType,title,url) VALUES ('subject',:title,:url)");
-        $q->execute(
-          array(
-            ':title'=>kses($sub,array()),
-            ':url'=>kses($eml,array())
-          )
-        );
+        $q->execute([
+          ':title'=>kses($sub,array()),
+          ':url'=>kses($eml,array())
+				]);
         $id=$db->lastInsertId();
         $e=$db->errorInfo();
         if(is_null($e[2])){?>
@@ -254,21 +261,15 @@ echo'<div id="l_'.$id.'" class="form-group">'.
     case'make_client':
       $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
       $q=$db->prepare("SELECT name,email,phone FROM `".$prefix."messages` WHERE id=:id");
-      $q->execute(
-				array(
-					':id'=>$id
-				)
-			);
+      $q->execute([':id'=>$id]);
       $r=$q->fetch(PDO::FETCH_ASSOC);
       $q=$db->prepare("INSERT INTO `".$prefix."login` (name,email,phone,ti) VALUES (:name,:email,:phone,:ti)");
-      $q->execute(
-        array(
-          ':name'=>$r['name'],
-          ':email'=>$r['email'],
-          ':phone'=>$r['phone'],
-          ':ti'=>$ti
-        )
-      );
+      $q->execute([
+        ':name'=>$r['name'],
+        ':email'=>$r['email'],
+        ':phone'=>$r['phone'],
+        ':ti'=>$ti
+      ]);
       $e=$db->errorInfo();
       if(is_null($e[2])){?>
   window.top.window.$.notify({type:'success',icon:'',message:'Contact added as Client'});
@@ -281,11 +282,7 @@ echo'<div id="l_'.$id.'" class="form-group">'.
       $email=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
       if(filter_var($email,FILTER_VALIDATE_EMAIL)){
         $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE email=:email");
-        $q->execute(
-					array(
-						':email'=>$email
-					)
-				);
+        $q->execute([':email'=>$email]);
         $c=$q->fetch(PDO::FETCH_ASSOC);
         $cid=$c['id']!=0?$c['id']:0;
         $name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
@@ -293,25 +290,24 @@ echo'<div id="l_'.$id.'" class="form-group">'.
         $da=filter_input(INPUT_POST,'da',FILTER_SANITIZE_STRING);
         $status='approved';
         $q=$db->prepare("INSERT INTO `".$prefix."comments` (contentType,rid,uid,cid,ip,name,email,notes,status,ti) VALUES (:contentType,:rid,:uid,:cid,:ip,:name,:email,:notes,:status,:ti)");
-        $q->execute(
-          array(
-            ':contentType'=>$contentType,
-            ':rid'=>$rid,
-            ':uid'=>$uid,
-            ':cid'=>$cid,
-            ':ip'=>$ip,
-            ':name'=>$name,
-            ':email'=>$email,
-            ':notes'=>$da,
-            ':status'=>$status,
-            ':ti'=>$ti
-          )
-        );
+        $q->execute([
+          ':contentType'=>$contentType,
+          ':rid'=>$rid,
+          ':uid'=>$uid,
+          ':cid'=>$cid,
+          ':ip'=>$ip,
+          ':name'=>$name,
+          ':email'=>$email,
+          ':notes'=>$da,
+          ':status'=>$status,
+          ':ti'=>$ti
+        ]);
         $id=$db->lastInsertId();
         $e=$db->errorInfo();
         if(is_null($e[2])){
 					$avatar='core'.DS.'images'.DS.'noavatar.jpg';
-          if($c['avatar']!=''&&file_exists('..'.DS.'media'.DS.$c['avatar']))$avatar='media'.DS.'avatar'.DS.$c['avatar'];
+          if($c['avatar']!=''&&file_exists('..'.DS.'media'.DS.$c['avatar']))
+						$avatar='media'.DS.'avatar'.DS.$c['avatar'];
           elseif($c['gravatar']!=''){
             if(stristr($c['gravatar'],'@'))
 							$avatar='http://gravatar.com/avatar/'.md5($c['gravatar']);
@@ -356,20 +352,21 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
         if($ft=="image/jpeg"||$ft=="image/pjpeg"||$ft=="image/png"||$ft=="image/gif"){
           $tp='..'.DS.'media'.DS.basename($_FILES['fu']['name']);
           if(move_uploaded_file($_FILES['fu']['tmp_name'],$tp)){
-            if($ft=="image/jpeg"||$ft=="image/pjpeg")$fn=$col.'_'.$id.'.jpg';
-            if($ft=="image/png")$fn=$col.'_'.$id.'.png';
-            if($ft=="image/gif")$fn=$col.'_'.$id.'.gif';
+            if($ft=="image/jpeg"||$ft=="image/pjpeg")
+							$fn=$col.'_'.$id.'.jpg';
+            if($ft=="image/png")
+							$fn=$col.'_'.$id.'.png';
+            if($ft=="image/gif")
+							$fn=$col.'_'.$id.'.gif';
 						if($act=='add_tstavatar'){
 							$fn='tst'.$fn;
 							$q=$db->prepare("UPDATE `".$prefix."content` SET file=:avatar WHERE id=:id");
 						}else
 							$q=$db->prepare("UPDATE `".$prefix."login` SET avatar=:avatar WHERE id=:id");
-						$q->execute(
-							array(
-								':avatar'=>'avatar'.$fn,
-								':id'=>$id
-							)
-						);
+						$q->execute([
+							':avatar'=>'avatar'.$fn,
+							':id'=>$id
+						]);
             $image=new Zebra_image();
             $image->source_path=$tp;
             $image->target_path='..'.DS.'media'.DS.'avatar'.DS.'avatar'.$fn;
@@ -379,8 +376,7 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
 	window.top.window.$('#tstavatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
 	window.top.window.Pace.stop();
 <?php 			}else{?>
-  window.top.window.$('#avatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
-  window.top.window.$('#menu_avatar').attr('src','media/avatar/avatar<?php echo $fn.'?'.time();?>');
+  window.top.window.$('.img-avatar').attr('src','media/avatar/avatar<?php echo$fn.'?'.time();?>');
 	window.top.window.Pace.stop();
 <?php 			}
 					}
@@ -395,21 +391,17 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
       if($fu!=''){
         if($t=='pages'||$t=='content'){
           $q=$db->prepare("INSERT INTO `".$prefix."media` (rid,pid,file,ti) VALUES (0,:pid,:file,:ti)");
-          $q->execute(
-            array(
-              ':pid'=>$id,
-              ':file'=>$fu,
-              ':ti'=>time()
-            )
-          );
+          $q->execute([
+            ':pid'=>$id,
+            ':file'=>$fu,
+            ':ti'=>time()
+          ]);
           $iid=$db->lastInsertId();
           $q=$db->prepare("UPDATE `".$prefix."media` SET ord=:ord WHERE id=:id");
-          $q->execute(
-            array(
-              ':id'=>$iid,
-              ':ord'=>$iid+1
-            )
-          );?>
+          $q->execute([
+            ':id'=>$iid,
+            ':ord'=>$iid+1
+          ]);?>
   window.top.window.$('#media_items').append('<?php
 echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
 			'<div class="panel panel-default media">'.
@@ -435,45 +427,31 @@ echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
       $iid=filter_input(INPUT_GET,'iid',FILTER_SANITIZE_NUMBER_INT);
       if($iid!=0){
         $q=$db->prepare("SELECT title,cost FROM `".$prefix."content` WHERE id=:id");
-        $q->execute(
-					array(
-						':id'=>$iid
-					)
-				);
+        $q->execute([':id'=>$iid]);
         $r=$q->fetch(PDO::FETCH_ASSOC);
 				if($r['cost']==''||!is_numeric($r['cost']))$r['cost']=0;
       }else{
-        $r=array(
+        $r=[
           'title'=>'',
           'cost'=>0
-        );
+        ];
       }
       $q=$db->prepare("INSERT INTO `".$prefix."orderitems` (oid,iid,title,quantity,cost,ti) VALUES (:oid,:iid,:title,'1',:cost,:ti)");
-      $q->execute(
-        array(
-          ':oid'=>$oid,
-          ':iid'=>$iid,
-          ':title'=>$r['title'],
-          ':cost'=>$r['cost'],
-          ':ti'=>time()
-        )
-      );
+      $q->execute([
+        ':oid'=>$oid,
+        ':iid'=>$iid,
+        ':title'=>$r['title'],
+        ':cost'=>$r['cost'],
+        ':ti'=>time()
+      ]);
       $total=0;
       $html='';
       $q=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid ORDER BY ti ASC,title ASC");
-      $q->execute(
-				array(
-					':oid'=>$oid
-				)
-			);?>
+      $q->execute([':oid'=>$oid]);?>
   window.top.window.$('#updateorder').html('<?php
       while($oi=$q->fetch(PDO::FETCH_ASSOC)){
         $s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
-        $s->execute(
-					array(
-						':id'=>$oi['iid']
-					)
-				);
+        $s->execute([':id'=>$oi['iid']]);
         $i=$s->fetch(PDO::FETCH_ASSOC);
         echo'<tr>'.
 							'<td class="text-left">'.$i['code'].'<div class="visible-xs">'.$i['title'].'</div></td>'.
@@ -498,4 +476,4 @@ echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
 <?php break;
   }
 }
-echo'/*]]>*/</script>';
+echo'</script>';

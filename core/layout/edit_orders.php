@@ -1,42 +1,44 @@
 <?php
-/*
+/**
  * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+ *
+ * Administration - Edit Orders
+ *
+ * edit_orders.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Orders - Edit
+ * @package    core/layout/edit_orders.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $q=$db->prepare("SELECT * FROM `".$prefix."orders` WHERE id=:id");
-$q->execute(
-  array(
-    ':id'=>$id
-  )
-);
+$q->execute([':id'=>$id]);
 $r=$q->fetch(PDO::FETCH_ASSOC);
 $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
-$q->execute(
-  array(
-    ':id'=>$r['cid']
-  )
-);
+$q->execute([':id'=>$r['cid']]);
 $client=$q->fetch(PDO::FETCH_ASSOC);
 $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
-$q->execute(
-  array(
-    ':id'=>$r['uid']
-  )
-);
+$q->execute([':id'=>$r['uid']]);
 $usr=$q->fetch(PDO::FETCH_ASSOC);
 if($r['notes']==''){
   $r['notes']=$config['orderEmailNotes'];
   $q=$db->prepare("UPDATE `".$prefix."orders` SET notes=:notes WHERE id=:id");
-  $q->execute(
-    array(
-      ':notes'=>$config['orderEmailNotes'],
-      ':id'=>$r['id']
-    )
-  );
+  $q->execute([
+    ':notes'=>$config['orderEmailNotes'],
+    ':id'=>$r['id']
+  ]);
 }
-if($error==1)
-  echo'<div class="alert alert-danger">'.$e[0].'</div>';
+if($error==1)echo'<div class="alert alert-danger">'.$e[0].'</div>';
 else{?>
 <main id="content" class="main">
   <ol class="breadcrumb">
@@ -47,8 +49,8 @@ else{?>
         <a class="btn btn-ghost-normal add" href="<?php echo URL.$settings['system']['admin'].'/orders';?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
         <a href="#" class="btn btn-ghost-normal info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');return false;" data-tooltip="tooltip" data-placement="left" title="Print Order"><?php svg('libre-gui-print');?></a>
         <a href="#" class="btn btn-ghost-normal info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');return false;" data-tooltip="tooltip" data-placement="left" title="Email Order"><?php svg('libre-gui-email-send');?></a>
-        <?php if($help['orders_edit_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['orders_edit_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
-        if($help['orders_edit_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['orders_edit_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+<?php if($help['orders_edit_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['orders_edit_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
+if($help['orders_edit_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['orders_edit_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>
@@ -232,7 +234,7 @@ while($rs=$q->fetch(PDO::FETCH_ASSOC))
                 <label class="col-form-label col-sm-3">Status</label>
                 <div class="input-group col-sm-9">
 <?php if($r['status']=='archived')
-                  echo'<input type="text" class="form-control form-control-sm" value="Archived" readonly>';
+  echo'<input type="text" class="form-control form-control-sm" value="Archived" readonly>';
 else{?>
                   <select id="status" class="form-control form-control-sm" onchange="update('<?php echo$r['id'];?>','orders','status',$(this).val());" data-tooltip="tooltip" title="Change Order Status">
                     <option value="pending"<?php echo$r['status']=='pending'?' selected':'';?>>Pending</option>
@@ -281,14 +283,14 @@ while($i=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$i['id'].'">'.ucfirst
               </thead>
               <tbody id="updateorder">
 <?php $s=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid ORDER BY ti ASC,title ASC");
-$s->execute(array(':oid'=>$r['id']));
+$s->execute([':oid'=>$r['id']]);
 $total=0;
 while($oi=$s->fetch(PDO::FETCH_ASSOC)){
 $is=$db->prepare("SELECT id,thumb,file,fileURL,code,title FROM `".$prefix."content` WHERE id=:id");
-$is->execute(array(':id'=>$oi['iid']));
+$is->execute([':id'=>$oi['iid']]);
 $i=$is->fetch(PDO::FETCH_ASSOC);
 $sc=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE id=:id");
-$sc->execute(array(':id'=>$oi['cid']));
+$sc->execute([':id'=>$oi['cid']]);
 $c=$sc->fetch(PDO::FETCH_ASSOC);?>
                 <tr>
                   <td class="text-center align-middle">
@@ -304,7 +306,7 @@ else
                   <td class="text-left align-middle"><?php echo$i['code'];?></td>
                   <td class="text-left align-middle">
 <?php if($oi['iid']!=0)
-echo$i['title'];
+  echo$i['title'];
 else{?>
                     <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
                       <input type="hidden" name="act" value="title">
@@ -326,7 +328,8 @@ else{?>
                       <input type="text" class="form-control text-center" name="da" value="<?php echo$oi['quantity'];?>"<?php echo$r['status']=='archived'?' readonly':'';?>>
                     </form>
 <?php }else{
-if($oi['iid']!=0)echo$oi['quantity'];
+if($oi['iid']!=0)
+  echo$oi['quantity'];
 }?>
                   </td>
                   <td class="text-right align-middle">
@@ -338,7 +341,8 @@ if($oi['iid']!=0)echo$oi['quantity'];
                       <input type="hidden" name="c" value="cost">
                       <input class="form-control text-center" style="min-width:80px" name="da" value="<?php echo$oi['cost'];?>"<?php echo$r['status']=='archived'?' readonly':'';?>>
                     </form>
-<?php }elseif($oi['iid']!=0)echo$oi['cost'];?>
+<?php }elseif($oi['iid']!=0)
+  echo$oi['cost'];?>
                   </td>
                   <td class="text-right align-middle"><?php echo$oi['iid']!=0?$oi['cost']*$oi['quantity']:'';?></td>
                   <td class="text-right">
@@ -352,10 +356,11 @@ if($oi['iid']!=0)echo$oi['quantity'];
                     </form>
                   </td>
                 </tr>
-<?php if($oi['iid']!=0)$total=$total+($oi['cost']*$oi['quantity']);
+<?php if($oi['iid']!=0)
+  $total=$total+($oi['cost']*$oi['quantity']);
 }
 $sr=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:rid");
-$sr->execute(array(':rid'=>$r['rid']));
+$sr->execute([':rid'=>$r['rid']]);
 $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
                 <tr>
                   <td colspan="4" class="text-right align-middle"><strong>Rewards Code</strong></td>
@@ -370,16 +375,16 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
                   </td>
                   <td class="text-center align-middle">
 <?php if($sr->rowCount()==1){
-if($reward['method']==1){
-echo'$';
-$total=$total-$reward['value'];
-}
-echo$reward['value'];
-if($reward['method']==0){
-echo'%';
-$total=($total*((100-$reward['value'])/100));
-}
-echo' Off';
+  if($reward['method']==1){
+    echo'$';
+    $total=$total-$reward['value'];
+  }
+  echo$reward['value'];
+  if($reward['method']==0){
+    echo'%';
+    $total=($total*((100-$reward['value'])/100));
+  }
+  echo' Off';
 }?>
                   </td>
                   <td class="text-right align-middle"><strong><?php echo$total;?></strong></td>

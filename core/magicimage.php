@@ -1,21 +1,34 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Magic Image
+ *
+ * magicimage.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Magic Image
+ * @package    core/magicimage.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-echo'<script>/*<![CDATA[*/';
+echo'<script>';
 $getcfg=true;
-require_once'db.php';
+require'db.php';
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 $id=filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT);
 $act=filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING);
 $s=$db->prepare("SELECT id,file,thumb FROM `".$prefix."content` WHERE id=:id");
-$s->execute(
-  array(
-    ':id'=>$id
-  )
-);
+$s->execute([':id'=>$id]);
 $r=$s->fetch(PDO::FETCH_ASSOC);
 include'zebra_image.php';
 $image=new Zebra_Image();
@@ -90,12 +103,10 @@ if($process==true){
   }else{
     if($act=='thumb'){
       $s=$db->prepare("UPDATE content SET thumb=:thumb WHERE id=:id");
-      $s->execute(
-        array(
-          ':thumb'=>URL.'media'.DS.$imgdest,
-          ':id'=>$id
-        )
-      );?>
+      $s->execute([
+        ':thumb'=>URL.'media'.DS.$imgdest,
+        ':id'=>$id
+      ]);?>
   window.top.window.$('#thumbimage').attr('src','<?php echo'media'.DS.$imgdest.'?'.time();?>');
   window.top.window.$('#thumb').val('<?php echo URL.'media'.DS.$imgdest.'?'.time();?>');
 <?php } else {?>
@@ -104,4 +115,4 @@ if($process==true){
 <?php }
   }
 }
-echo'/*]]>*/</script>';
+echo'</script>';

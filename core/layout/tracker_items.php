@@ -1,8 +1,25 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Tracker Items
+ *
+ * tracker_items.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Tracker - Items
+ * @package    core/layout/tracker_items.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 $action=isset($_GET['action'])?filter_input(INPUT_GET,'action',FILTER_SANITIZE_STRING):'';
@@ -12,7 +29,7 @@ if(isset($_GET['is'])){
   require'..'.DS.'db.php';
   $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
   $su=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
-  $su->execute(array(':id'=>$_SESSION['uid']));
+  $su->execute([':id'=>$_SESSION['uid']]);
   $user=$su->fetch(PDO::FETCH_ASSOC);
   $is=isset($_GET['is'])?filter_input(INPUT_GET,'is',FILTER_SANITIZE_STRING):'';
   $ie=isset($_GET['ie'])?filter_input(INPUT_GET,'ie',FILTER_SANITIZE_STRING):'';
@@ -35,7 +52,7 @@ if(isset($_GET['is'])){
 }
 if($action!=''){
   $s=$db->prepare("SELECT * FROM `".$prefix."tracker` WHERE sid=:sid ORDER BY ti ASC");
-  $s->execute(array(':sid'=>$sid));
+  $s->execute([':sid'=>$sid]);
 }else{
   $s=$db->prepare("SELECT * FROM `".$prefix."tracker` ORDER BY ti DESC");
   $s->execute();

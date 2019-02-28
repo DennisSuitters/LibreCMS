@@ -1,12 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Add Blacklist Item
+ *
+ * add_blacklist.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Add Blacklist
+ * @package    core/add_blacklist.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-if(session_status()==PHP_SESSION_NONE)
-  session_start();
-require_once'db.php';
+if(session_status()==PHP_SESSION_NONE)session_start();
+require'db.php';
 $config=$db->query("SELECT * FROM config WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $t=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
@@ -14,23 +30,17 @@ if($t=='comments')
   $s=$db->prepare("SELECT ip,ti FROM `".$prefix."comments` WHERE id=:id");
 else
   $s=$db->prepare("SELECT ip,ti FROM `".$prefix."tracker` WHERE id=:id");
-$s->execute(
-  array(
-    ':id'=>$id
-  )
-);
+$s->execute([':id'=>$id]);
 if($s->rowCount()>0){
   $r=$s->fetch(PDO::FETCH_ASSOC);
   $sql=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
-  $sql->execute(array(
+  $sql->execute([
     ':ip'=>$r['ip'],
     ':oti'=>$r['ti'],
     ':ti'=>time()
-  ));
+  ]);
   echo'IP Added to Blacklist';
 }else
   echo'IP already exists in the Blacklist';
 ?>
-<script>/*<![CDATA[*/
-  window.top.window.$('[data-tooltip="tooltip"]').tooltip('hide');
-/*]]>*/</script>
+<script>window.top.window.$('[data-tooltip="tooltip"]').tooltip('hide');</script>

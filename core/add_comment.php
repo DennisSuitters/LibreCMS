@@ -1,11 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Add Comment
+ *
+ * add_comment.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Add Comment
+ * @package    core/add_comment.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $getcfg=true;
-require_once'db.php';
+require'db.php';
 include'class.projecthoneypot.php';
 include'class.spamfilter.php';
 $theme=parse_ini_file('..'.DS.'layout'.DS.$config['theme'].DS.'theme.ini',true);
@@ -21,20 +38,14 @@ if($act=='add_comment'){
     if($h->hasRecord()==1||$h->isSuspicious()==1||$h->isCommentSpammer()==1){
       $blacklisted=$theme['settings']['blacklist'];
 			$sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-			$sc->execute(
-        array(
-          ':ip'=>$ip
-        )
-      );
+			$sc->execute([':ip'=>$ip]);
 			if($sc->rowCount()<1){
 	      $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
-	      $s->execute(
-	        array(
-	          ':ip'=>$ip,
-	          ':oti'=>$ti,
-	          ':ti'=>$ti
-	        )
-	      );
+	      $s->execute([
+          ':ip'=>$ip,
+          ':oti'=>$ti,
+          ':ti'=>$ti
+        ]);
 			}
     }
   }
@@ -58,63 +69,51 @@ if($act=='add_comment'){
       }
       if($config['spamfilter']{1}==1&&$spam==TRUE){
         $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-        $sc->execute(
-          array(
-            ':ip'=>$ip
-          )
-        );
+        $sc->execute([':ip'=>$ip]);
         if($sc->rowCount()<1){
           $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
-          $s->execute(
-            array(
-              ':ip'=>$ip,
-              ':oti'=>$ti,
-              ':ti'=>$ti
-            )
-          );
+          $s->execute([
+            ':ip'=>$ip,
+            ':oti'=>$ti,
+            ':ti'=>$ti
+          ]);
         }
       }
     }
     if($spam==FALSE){
       if(filter_var($email,FILTER_VALIDATE_EMAIL)){
         $q=$db->prepare("SELECT id,name,email,avatar,gravatar FROM `".$prefix."login` WHERE email=:email");
-        $q->execute(
-          array(
-            ':email'=>$email
-          )
-        );
+        $q->execute([':email'=>$email]);
         $u=$q->fetch(PDO::FETCH_ASSOC);
         if($u['email']==''){
-          $u=array(
+          $u=[
             'id'=>'0',
             'name'=>$name,
             'email'=>$email,
             'avatar'=>'',
             'gravatar'=>''
-          );
+          ];
         }
         $q=$db->prepare("INSERT INTO `".$prefix."comments` (contentType,rid,uid,ip,avatar,gravatar,email,name,notes,status,ti) VALUES (:contentType,:rid,:uid,:ip,:avatar,:gravatar,:email,:name,:notes,:status,:ti)");
-        $q->execute(
-          array(
-            ':contentType'=>$contentType,
-            ':rid'=>$rid,
-            ':uid'=>$u['id'],
-            ':ip'=>$ip,
-            ':avatar'=>$u['avatar'],
-            ':gravatar'=>$u['gravatar'],
-            ':email'=>$u['email'],
-            ':name'=>$u['name'],
-            ':notes'=>$notes,
-            ':status'=>'unapproved',
-            ':ti'=>$ti
-          )
-        );
+        $q->execute([
+          ':contentType'=>$contentType,
+          ':rid'=>$rid,
+          ':uid'=>$u['id'],
+          ':ip'=>$ip,
+          ':avatar'=>$u['avatar'],
+          ':gravatar'=>$u['gravatar'],
+          ':email'=>$u['email'],
+          ':name'=>$u['name'],
+          ':notes'=>$notes,
+          ':status'=>'unapproved',
+          ':ti'=>$ti
+        ]);
         $id=$db->lastInsertId();
         $e=$db->errorInfo();
         if(is_null($e[2])){
           if($config['email']!=''){
             $q=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
-            $q->execute(array(':id'=>$rid));
+            $q->execute([':id'=>$rid]);
             $r=$q->fetch(PDO::FETCH_ASSOC);
             require'class.phpmailer.php';
             $mail=new PHPMailer;

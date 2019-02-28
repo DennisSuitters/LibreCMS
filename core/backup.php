@@ -1,12 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Backup Database
+ *
+ * backup.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Backup Database
+ * @package    core/backup.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-echo'<script>/*<![CDATA[*/';
-if(session_status()==PHP_SESSION_NONE)
-	session_start();
+echo'<script>';
+if(session_status()==PHP_SESSION_NONE)session_start();
 require_once'db.php';
 function svg($svg,$class=null,$size=null){
 	echo'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
@@ -25,7 +41,7 @@ if($compression){
 	$file=date('y-d-m',time()).'-'.$nowtimename.'.sql';
 	$handle=fopen('..'.DS.'media'.DS.'backup'.DS.$file,'a+');
 }
-$numtypes=array(
+$numtypes=[
 	'tinyint',
 	'smallint',
 	'mediumint',
@@ -35,7 +51,7 @@ $numtypes=array(
 	'double',
 	'decimal',
 	'real'
-);
+];
 if(empty($tables)){
 	$pstm1=$db->query('SHOW TABLES');
 	while($row=$pstm1->fetch(PDO::FETCH_NUM))
@@ -111,11 +127,7 @@ if(file_exists('..'.DS.'media'.DS.'backup'.DS.$file)){
 	$filename=basename($file);
   $ti=time();
   $q=$db->prepare("UPDATE `".$prefix."config` SET backup_ti=:backup_ti WHERE id='1'");
-  $q->execute(
-		array(
-			':backup_ti'=>$ti
-		)
-	);?>
+  $q->execute([':backup_ti'=>$ti]);?>
   window.top.window.$('#backups').append('<?php echo'<div id="l_'.$fileid.'" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><a class="btn btn-default btn-block" href="media/backup/'.$file.'">Click to Download '.$file.'</a><div class="input-group-btn"><button class="btn btn-default trash" onclick="removeBackup(\''.$fileid.'\',\''.$filename.'\')">'.svg2('libre-gui-trash').'</button></div></div></div>';?>');
   window.top.window.$('#alert_backup').addClass('hidden');
 <?php }else{?>
@@ -123,4 +135,4 @@ if(file_exists('..'.DS.'media'.DS.'backup'.DS.$file)){
 <?php }?>
   window.top.window.Pace.stop();
 <?php
-echo'/*]]>*/</script>';
+echo'</script>';

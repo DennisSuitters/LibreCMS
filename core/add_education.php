@@ -1,12 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Add Education Item
+ *
+ * add_education.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Add Education Item
+ * @package    core/add_education.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-if(session_status()==PHP_SESSION_NONE)
-  session_start();
-require_once'db.php';
+if(session_status()==PHP_SESSION_NONE)session_start();
+require'db.php';
 $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 include'sanitise.php';
 function svg2($svg,$class=null,$size=null){
@@ -26,42 +42,13 @@ if(strlen($da)<24&&$da=='%3Cp%3E%3Cbr%3E%3C/p%3E')
 $si=session_id();
 $ti=time();
 $s=$db->prepare("INSERT INTO `".$prefix."content` (cid,contentType,title,business,notes,tis,tie,ti) VALUES (:cid,'education',:title,:business,:notes,:tis,:tie,:ti)");
-$s->execute(
-  array(
-    ':cid'=>$id,
-    ':title'=>$title,
-    ':business'=>$business,
-    ':notes'=>$da,
-    ':tis'=>$tis,
-    ':tie'=>$tie,
-    ':ti'=>$ti
-  )
-);
-
-echo'<script>/*<![CDATA[*/';
-echo'window.top.window.$("#education").append(\'<div id="l_'.$id.'">';
-  echo'<div class="form-group row">';
-    echo'<div class="col-4">';
-      echo'<input type="text" class="form-control" value="'.$title.'" readonly>';
-    echo'</div>';
-    echo'<div class="col-4">';
-      echo'<input type="text" class="form-control" value='.$business.'" readonly>';
-    echo'</div>';
-    echo'<div class="col-2">';
-      echo'<input type="text" class="form-control" value="'.($tis==0?'Current':date('Y-M',$tis)).'" readonly>';
-    echo'</div>';
-    echo'<div class="col-2">';
-      echo'<input type="text" class="form-control" value="'.($tie==0?'Current':date('Y-M',$tie)).'" readonly>';
-    echo'</div>';
-  echo'</div>';
-  echo'<div class="form-group row">';
-    echo'<div class="col">';
-      echo'<div class="form-control" readonly>'.$da.'</div>';
-    echo'</div>';
-    echo'<div class="col-1">';
-      echo'<button class="btn btn-secondary trash" onclick="purge(`'.$id.'`,`content`)" data-toggle="tooltip" title="Delete">'.svg2('libre-gui-trash').'</button>';
-    echo'</div>';
-  echo'</div>';
-  echo'<hr>';
-echo'</div>\');';
-echo'/*]]>*/</script>';
+$s->execute([
+  ':cid'=>$id,
+  ':title'=>$title,
+  ':business'=>$business,
+  ':notes'=>$da,
+  ':tis'=>$tis,
+  ':tie'=>$tie,
+  ':ti'=>$ti
+]);
+echo'<script>window.top.window.$("#education").append(\'<div id="l_'.$id.'"><div class="form-group row"><div class="col-4"><input type="text" class="form-control" value="'.$title.'" readonly></div><div class="col-4"><input type="text" class="form-control" value='.$business.'" readonly></div>'<div class="col-2"><input type="text" class="form-control" value="'.($tis==0?'Current':date('Y-M',$tis)).'" readonly></div>'<div class="col-2"><input type="text" class="form-control" value="'.($tie==0?'Current':date('Y-M',$tie)).'" readonly></div>'</div><div class="form-group row"><div class="col"><div class="form-control" readonly>'.$da.'</div></div>'<div class="col-1">'<button class="btn btn-secondary trash" onclick="purge(`'.$id.'`,`content`)" data-tooltip="tooltip" title="Delete">'.svg2('libre-gui-trash').'</button>'</div></div><hr></div>\');</script>';

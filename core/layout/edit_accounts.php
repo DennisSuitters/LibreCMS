@@ -1,11 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Edit User Account
+ *
+ * edit_accounts.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Accounts - Edit
+ * @package    core/layout/edit_accounts.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
-$q->execute(array(':id'=>$args[1]));
+$q->execute([':id'=>$args[1]]);
 $r=$q->fetch(PDO::FETCH_ASSOC);?>
 <main id="content" class="main">
   <ol class="breadcrumb">
@@ -15,8 +32,8 @@ $r=$q->fetch(PDO::FETCH_ASSOC);?>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="">
         <a class="btn btn-ghost-normal add" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
-        <?php if($help['accounts_edit_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['accounts_edit_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
-        if($help['accounts_edit_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['accounts_edit_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+<?php if($help['accounts_edit_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['accounts_edit_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
+if($help['accounts_edit_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['accounts_edit_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>
@@ -48,22 +65,22 @@ $r=$q->fetch(PDO::FETCH_ASSOC);?>
             <div class="form-group row">
               <label for="username" class="col-form-label col-sm-2">Username</label>
               <div class="input-group col-sm-10">
-                <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="username" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="username" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                 <input type="text" id="username" class="form-control textinput" value="<?php echo$r['username'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="username" placeholder="Enter a Username...">
-                <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="saveusername" class="btn btn-secondary save" data-dbid="username" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="saveusername" class="btn btn-secondary save" data-dbid="username" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
               </div>
               <div id="uerror" class="alert alert-danger col-sm-10 float-right hidden">Username already exists!</div>
             </div>
             <div class="form-group row">
               <label for="email" class="col-form-label col-sm-2">Email</label>
               <div class="input-group col-sm-10">
-                <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="email" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="email" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                 <input type="text" id="email" class="form-control textinput" value="<?php echo$r['email'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="email" placeholder="Enter an Email...">
-                <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="saveemail" class="btn btn-secondary save" data-dbid="email" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="saveemail" class="btn btn-secondary save" data-dbid="email" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
               </div>
             </div>
             <div class="form-group row">
-              <label for="newsletter" class="col-form-label col-8 col-sm-2" data-toggle="tooltip" title="Toggle Newsletter Subscription.">Subscriber</label>
+              <label for="newsletter" class="col-form-label col-8 col-sm-2" data-tooltip="tooltip" title="Toggle Newsletter Subscription.">Subscriber</label>
               <div class="input-group col-4 col-sm-10">
                 <label class="switch switch-label switch-success"><input type="checkbox" id="newsletter" class="switch-input" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="newsletter" data-dbb="0"<?php echo$r['newsletter']{0}==1?' checked':'';?>><span class="switch-slider" data-checked="on" data-unchecked="off"></span></label>
               </div>
@@ -79,23 +96,15 @@ $r=$q->fetch(PDO::FETCH_ASSOC);?>
                     <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                     <input type="hidden" name="act" value="add_avatar">
                     <div class="btn btn-secondary custom-file" data-tooltip="tooltip" title="Browse Computer for Image.">
-                      <input id="avatarfu" type="file" class="custom-file-input hidden" name="fu">
+                      <input id="avatarfu" type="file" class="custom-file-input hidden" name="fu" onchange="form.submit()">
                       <label for="avatarfu"><?php svg('libre-gui-browse-computer');?></label>
                     </div>
-                    <button class="btn btn-secondary" type="submit" data-tooltip="tooltip" title="Upload Selected Image."><?php svg('libre-gui-upload');?></button>
                   </div>
                   <div class="input-group-text p-0">
-                    <img id="avatar" style="max-width:32px;max-height:32px;" src="<?php if($r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.basename($r['avatar'])))
-                            echo'media'.DS.'avatar'.DS.basename($r['avatar']);
-                          elseif($r['avatar']!='')
-                            echo$r['avatar'];
-                          elseif($r['gravatar']!='')
-                            echo$r['gravatar'];
-                          else
-                            echo NOAVATAR;?>">
+                    <img class="img-avatar img-fluid bg-white" style="width:32px;max-height:32px;border-radius:0" src="<?php if($r['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.basename($r['avatar'])))echo'media'.DS.'avatar'.DS.basename($r['avatar']);elseif($r['avatar']!='')echo$r['avatar'];elseif($r['gravatar']!='')echo$r['gravatar'];else echo ADMINNOAVATAR;?>">
                   </div>
                   <div class="input-group-append">
-                    <button class="btn btn-secondary trash" onclick="imageUpdate('<?php echo$r['id'];?>','login','avatar','');"><?php svg('libre-gui-trash');?></button>
+                    <button class="btn btn-secondary trash" onclick="imageUpdate('<?php echo$r['id'];?>','login','avatar','');" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
                   </div>
                 </div>
               </div>
@@ -104,30 +113,31 @@ $r=$q->fetch(PDO::FETCH_ASSOC);?>
             <div class="form-group row">
               <label for="gravatar" class="col-form-label col-sm-2">Gravatar</label>
               <div class="input-group col-xs-7 col-sm-9 col-lg-10">
-                <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="gravatar" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="gravatar" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                 <input type="text" id="gravatar" class="form-control textinput" value="<?php echo$r['gravatar'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="gravatar" placeholder="Enter Gravatar Link...">
+                <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savegravatar" class="btn btn-secondary save" data-dbid="gravatar" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
               </div>
             </div>
           </div>
           <div id="account-proofs" class="tab-pane" role="tabpanel">
             <ul id="proof_items">
 <?php $sm=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType='proofs' AND uid=:id ORDER BY ord ASC");
-$sm->execute(array(':id'=>$r['id']));
+$sm->execute([':id'=>$r['id']]);
 while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
-if(!file_exists($rm['file']))$rm['file']='core'.DS.'images'.DS.'noimage.jpg';
-list($width,$height)=getimagesize($rm['file']);?>
+  if(!file_exists($rm['file']))$rm['file']=ADMINNOIMAGE;
+  list($width,$height)=getimagesize($rm['file']);?>
               <li id="proof_items_<?php echo$rm['id'];?>" class="col-xs-6 col-sm-3">
                 <div class="panel panel-default media">
                   <div class="controls btn-group">
                     <a class="btn btn-default btn-xs" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$rm['id'];?>"><?php svg('libre-gui-edit');?></a>
 <?php $scn=$sccn=0;
-$sc=$db->prepare("SELECT COUNT(rid) as cnt FROM `".$prefix."comments` WHERE rid=:rid AND contentType='proofs'");
-$sc->execute(array(':rid'=>$rm['id']));
-$scn=$sc->fetch(PDO::FETCH_ASSOC);
-$scc=$db->prepare("SELECT COUNT(rid) as cnt FROM `".$prefix."comments` WHERE rid=:rid AND status!='approved'");
-$scc->execute(array(':rid'=>$rm['id']));
-$sccn=$scc->fetch(PDO::FETCH_ASSOC);?>
-                    <a class="btn btn-default btn-xs<?php echo$sccn['cnt']>0?' btn-success':'';?>" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$rm['id'].'#d43';?>"<?php echo$sccn['cnt']>0?' data-toggle="tooltip" title="'.$sccn['cnt'].' New Comments"':'';?>><?php svg('libre-gui-comments');?>&nbsp;<?php echo$scn['cnt'];?></a>
+  $sc=$db->prepare("SELECT COUNT(rid) as cnt FROM `".$prefix."comments` WHERE rid=:rid AND contentType='proofs'");
+  $sc->execute([':rid'=>$rm['id']]);
+  $scn=$sc->fetch(PDO::FETCH_ASSOC);
+  $scc=$db->prepare("SELECT COUNT(rid) as cnt FROM `".$prefix."comments` WHERE rid=:rid AND status!='approved'");
+  $scc->execute([':rid'=>$rm['id']]);
+  $sccn=$scc->fetch(PDO::FETCH_ASSOC);?>
+                    <a class="btn btn-default btn-xs<?php echo$sccn['cnt']>0?' btn-success':'';?>" href="<?php echo URL.$settings['system']['admin'].'/content/edit/'.$rm['id'].'#d43';?>"<?php echo$sccn['cnt']>0?' data-tooltip="tooltip" title="'.$sccn['cnt'].' New Comments"':'';?>><?php svg('libre-gui-comments');?>&nbsp;<?php echo$scn['cnt'];?></a>
                     <span class="handle btn btn-default btn-xs"><?php svg('libre-gui-drag');?></span>
                   </div>
                   <div class="panel-body">
@@ -233,7 +243,7 @@ $sccn=$scc->fetch(PDO::FETCH_ASSOC);?>
             </form>
             <div id="social">
 <?php $ss=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE contentType='social' AND uid=:uid ORDER BY icon ASC");
-$ss->execute(array(':uid'=>$r['id']));
+$ss->execute([':uid'=>$r['id']]);
 while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
               <div id="l_<?php echo$rs['id'];?>" class="form-group row">
                 <div class="input-group col-sm-12">
@@ -287,105 +297,104 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                 <div class="form-group row">
                   <label for="name" class="col-form-label col-sm-2">Name</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="name" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="name" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="name" class="form-control textinput" value="<?php echo$r['name'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="name" placeholder="Enter a Name...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savename" class="btn btn-secondary save" data-dbid="name" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savename" class="btn btn-secondary save" data-dbid="name" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="url" class="col-form-label col-sm-2">URL</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="url" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="url" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="url" class="form-control textinput" value="<?php echo$r['url'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="url" placeholder="Enter a URL...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="saveurl" class="btn btn-secondary save" data-dbid="url" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="saveurl" class="btn btn-secondary save" data-dbid="url" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="business" class="col-form-label col-sm-2">Business</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="business" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="business" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="business" class="form-control textinput" value="<?php echo$r['business'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="business" placeholder="Enter a Business...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savebusiness" class="btn btn-secondary save" data-dbid="business" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savebusiness" class="btn btn-secondary save" data-dbid="business" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="phone" class="col-form-label col-sm-2">Phone</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="phone" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="phone" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="phone" class="form-control textinput" value="<?php echo$r['phone'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="phone" placeholder="Enter a Phone Number...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savephone" class="btn btn-secondary save" data-dbid="phone" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savephone" class="btn btn-secondary save" data-dbid="phone" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="mobile" class="col-form-label col-sm-2">Mobile</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="mobile" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="mobile" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="mobile" class="form-control textinput" value="<?php echo$r['mobile'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="mobile" placeholder="Enter a Mobile Number...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savemobile" class="btn btn-secondary save" data-dbid="mobile" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savemobile" class="btn btn-secondary save" data-dbid="mobile" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="address" class="col-form-label col-sm-2">Address</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="address" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="address" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="address" class="form-control textinput" name="address" value="<?php echo$r['address'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="address" placeholder="Enter an Address...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="saveaddress" class="btn btn-secondary save" data-dbid="address" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="saveaddress" class="btn btn-secondary save" data-dbid="address" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="suburb" class="col-form-label col-sm-2">Suburb</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="suburb" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="suburb" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="suburb" class="form-control textinput" name="suburb" value="<?php echo$r['suburb'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="suburb" placeholder="Enter a Suburb...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savesuburb" class="btn btn-secondary save" data-dbid="suburb" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savesuburb" class="btn btn-secondary save" data-dbid="suburb" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="city" class="col-form-label col-sm-2">City</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="city" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="city" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="city" class="form-control textinput" name="city" value="<?php echo$r['city'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="city" placeholder="Enter a City...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savecity" class="btn btn-secondary save" data-dbid="city" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savecity" class="btn btn-secondary save" data-dbid="city" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="state" class="control-label col-sm-2">State</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="state" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="state" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="state" class="form-control textinput" name="state" value="<?php echo$r['state'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="state" placeholder="Enter a State...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savestate" class="btn btn-secondary save" data-dbid="state" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savestate" class="btn btn-secondary save" data-dbid="state" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="postcode" class="control-label col-sm-2">Postcode</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="postcode" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="postcode" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="postcode" class="form-control textinput" name="postcode" value="<?php echo$r['postcode']!=0?$r['postcode']:'';?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="postcode" placeholder="Enter a Postcode...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savepostcode" class="btn btn-secondary save" data-dbid="postcode" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savepostcode" class="btn btn-secondary save" data-dbid="postcode" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="country" class="control-label col-sm-2">Country</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="country" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="country" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="country" class="form-control textinput" name="country" value="<?php echo$r['country'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="country" placeholder="Enter a Country...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savecountry" class="btn btn-secondary save" data-dbid="country" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savecountry" class="btn btn-secondary save" data-dbid="country" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="caption" class="control-label col-sm-2">Caption</label>
                   <div class="input-group col-sm-10">
-                    <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="caption" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="caption" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                     <input type="text" id="caption" class="form-control textinput" name="caption" value="<?php echo$r['caption'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="caption" placeholder="Enter a Caption...">
-                    <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savecaption" class="btn btn-secondary save" data-dbid="caption" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                    <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savecaption" class="btn btn-secondary save" data-dbid="caption" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="notes" class="col-form-label col-sm-2">About</label>
                   <div class="col-sm-10">
                     <div class="card-header p-0">
-                      <?php echo$user['rank']>899?'<button class="btn btn-secondary btn-sm fingerprint" data-dbgid="da" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button>':'';?>
-                      <?php echo$user['rank']>899?'<div id="da" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="notes"></div>':'';?>
+<?php echo$user['rank']>899?'<button class="btn btn-secondary btn-sm fingerprint" data-dbgid="da" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button><div id="da" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="notes"></div>':'';?>
                       <form method="post" target="sp" action="core/update.php">
                         <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                         <input type="hidden" name="t" value="login">
@@ -408,8 +417,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                   <label for="resume_notes" class="col-form-label col-sm-2">Resume Notes</label>
                   <div class="col-sm-10">
                     <div class="card-header p-0">
-                      <?php echo$user['rank']>899?'<button class="btn btn-secondary btn-sm fingerprint" data-dbgid="da2" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button>':'';?>
-                      <?php echo$user['rank']>899?'<div id="da2" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="resume_notes"></div>':'';?>
+<?php echo$user['rank']>899?'<button class="btn btn-secondary btn-sm fingerprint" data-dbgid="da2" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button><div id="da2" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="resume_notes"></div>':'';?>
                       <form method="post" target="sp" action="core/update.php">
                         <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                         <input type="hidden" name="t" value="login">
@@ -490,7 +498,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
                 <hr>
                 <div id="careers">
 <?php $sc=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType='career' AND cid=:cid ORDER BY tis ASC");
-$sc->execute(array(':cid'=>$user['id']));
+$sc->execute([':cid'=>$user['id']]);
 while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
                   <div id="l_<?php echo$rc['id'];?>">
                     <div class="form-group row">
@@ -599,7 +607,7 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
                 <hr>
                 <div id="education">
 <?php $sc=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType='education' AND cid=:cid ORDER BY tis ASC");
-$sc->execute(array(':cid'=>$user['id']));
+$sc->execute([':cid'=>$user['id']]);
 while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
                   <div id="l_<?php echo$rc['id'];?>">
                     <div class="form-group row">
@@ -654,7 +662,7 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
             <div class="form-group row">
               <label for="rank" class="col-form-label col-sm-2">Rank</label>
               <div class="input-group col-sm-10">
-                <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="rank" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="rank" data-tooltip="tooltip" title="Fingerprint Analysis">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                 <select id="rank" class="form-control" onchange="update('<?php echo$r['id'];?>','login','rank',$(this).val());" data-dbid="<?php echo$r['id'];?>" data-dbt="login" data-dbc="rank">
                   <option value="0"<?php echo($r['rank']==0?' selected':'');?>>Visitor</option>
                   <option value="100"<?php echo($r['rank']==100?' selected':'');?>>Subscriber</option>

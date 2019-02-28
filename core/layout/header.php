@@ -1,3 +1,26 @@
+<?php
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Header for Administration area. 
+ *
+ * header.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Header
+ * @package    core/layout/header.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
+ */?>
 <header class="app-header navbar">
   <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show" aria-controls="sidebar" aria-label="Toggle Navigation Sidebar" role="button">
     <span class="navbar-toggler-icon"></span>
@@ -40,7 +63,7 @@
       <a class="nav-link" href="javascript:return false;" onclick="changeTheme();" data-tooltip="tooltip" data-placement="left" title="Switch Theme"><?php svg('libre-gui-tint');?></a>
     </li>
     <li class="nav-item dropdown">
-      <a class="nav-link nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" data-tooltip="tooltip" data-placement="left" title="Account"><img class="img-avatar" src="<?php if($user['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$user['avatar']))
+      <a class="nav-link nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" data-tooltip="tooltip" data-placement="left" title="Account"><img class="img-avatar bg-white" src="<?php if($user['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$user['avatar']))
         echo'media'.DS.'avatar'.DS.$user['avatar'];
       elseif($user['avatar']!='')
         echo$user['avatar'];
@@ -50,9 +73,9 @@
         elseif(stristr($user['gravatar'],'gravatar.com/avatar/'))
           echo$user['gravatar'];
         else
-          echo URL.'core/images/noavatar.jpg';
+          echo ADMINNOAVATAR;
       }else
-        echo URL.'core/images/noavatar.jpg';?>" alt="<?php echo$user['username'];?>"></a>
+        echo ADMINNOAVATAR;?>" alt="<?php echo$user['username'];?>"></a>
       <div class="dropdown-menu dropdown-menu-right">
         <div class="dropdown-header text-center"><strong>Account</strong></div>
         <a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'].'/accounts/edit/'.$user['id'];?>"><?php svg('libre-gui-user-settings');?> Settings</a>

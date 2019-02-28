@@ -1,48 +1,53 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * View - Gallery Renderer
+ *
+ * gallery.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - View - Gallery
+ * @package    core/view/gallery.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $gals='';
 if(stristr($html,'<items')){
   preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
   $gal=$matches[1];
   $s=$db->prepare("SELECT * FROM `".$prefix."media` WHERE pid=:pid ORDER BY ord ASC");
-  $s->execute(
-    array(
-      ':pid'=>10
-    )
-  );
+  $s->execute([':pid'=>10]);
   $output='';
   while($r=$s->fetch(PDO::FETCH_ASSOC)){
     $items=$gal;
-    $items=preg_replace(
-      array(
-        '/<print media=[\"\']?file[\"\']?>/',
-        '/<print media=[\"\']?title[\"\']?>/',
-        '/<print media=[\"\']?caption[\"\']?>/',
-        '/<print media=[\"\']?attributionImageName[\"\']?>/',
-        '/<print media=[\"\']?attributionImageURL[\"\']?>/'
-      ),
-      array(
-        $r['file'],
-        htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
-        htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8'),
-        htmlspecialchars($r['attributionImageName'],ENT_QUOTES,'UTF-8'),
-        htmlspecialchars($r['attributionImageURL'],ENT_QUOTES,'UTF-8')
-      ),
-      $items
-    );
+    $items=preg_replace([
+      '/<print media=[\"\']?file[\"\']?>/',
+      '/<print media=[\"\']?title[\"\']?>/',
+      '/<print media=[\"\']?caption[\"\']?>/',
+      '/<print media=[\"\']?attributionImageName[\"\']?>/',
+      '/<print media=[\"\']?attributionImageURL[\"\']?>/'
+    ],[
+      $r['file'],
+      htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
+      htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8'),
+      htmlspecialchars($r['attributionImageName'],ENT_QUOTES,'UTF-8'),
+      htmlspecialchars($r['attributionImageURL'],ENT_QUOTES,'UTF-8')
+    ],$items);
     if($r['attributionImageName']!=''&&$r['attributionImageURL']!=''){
-      $items=str_replace(
-        array(
-          '<attribution>',
-          '</attribution>'
-        ),
-        '',
-        $items
-      );
+      $items=str_replace([
+        '<attribution>',
+        '</attribution>'
+      ],'',$items);
     }else
       $items=preg_replace('~<attribution>.*?<\/attribution>~is','',$items);
     $output.=$items;

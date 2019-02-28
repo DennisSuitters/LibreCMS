@@ -1,14 +1,30 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Update Cart
+ *
+ * updatecart.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Update Cart
+ * @package    core/updatecart.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-echo'<script>/*<![CDATA[*/';
-if(session_status()==PHP_SESSION_NONE)
-  session_start();
+echo'<script>';
+if(session_status()==PHP_SESSION_NONE)session_start();
 $getcfg=true;
-require_once'db.php';
+require'db.php';
 define('SESSIONID',session_id());
 define('THEME','..'.DS.'layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
@@ -27,49 +43,30 @@ $cnt='';
 if($act=='quantity'){
   if($da==0){
     $q=$db->prepare("DELETE FROM `".$prefix."cart` WHERE id=:id");
-    $q->execute(
-      array(
-        ':id'=>$id
-      )
-    );
+    $q->execute([':id'=>$id]);
   }else{
     $q=$db->prepare("UPDATE `".$prefix."cart` SET quantity=:quantity WHERE id=:id");
-    $q->execute(
-      array(
-        ':id'=>$id,
-        ':quantity'=>$da
-      )
-    );
+    $q->execute([
+      ':id'=>$id,
+      ':quantity'=>$da
+    ]);
   }
   $q=$db->prepare("SELECT SUM(quantity) as quantity FROM `".$prefix."cart` WHERE si=:si");
-  $q->execute(
-    array(
-      ':si'=>$si
-    )
-  );
+  $q->execute([':si'=>$si]);
   $r=$q->fetch(PDO::FETCH_ASSOC);
   $cnt=$r['quantity'];
-  if($r['quantity']==0)
-    $cnt='';?>
+  if($r['quantity']==0)$cnt='';?>
   window.top.document.getElementById("cart").innerHTML='<?php echo$cnt;?>';
 <?php $total=0;
   $content='';
   $q=$db->prepare("SELECT * FROM `".$prefix."cart` WHERE si=:si ORDER BY ti DESC");
-  $q->execute(
-    array(
-      ':si'=>$si
-    )
-  );
+  $q->execute([':si'=>$si]);
   if($q->rowCount()==0){?>
   window.top.document.getElementById("content").innerHTML='<?php echo$theme['settings']['cart_empty'];?>';
 <?php }else{
   $total=0;
   $s=$db->prepare("SELECT * FROM `".$prefix."cart` WHERE si=:si ORDER BY ti DESC");
-  $s->execute(
-    array(
-      ':si'=>SESSIONID
-    )
-  );
+  $s->execute([':si'=>SESSIONID]);
   $html=file_get_contents(THEME.DS.'cart.html');
   preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
   $cartloop=$matches[1];
@@ -78,31 +75,23 @@ if($act=='quantity'){
     while($ci=$s->fetch(PDO::FETCH_ASSOC)){
       $cartitem=$cartloop;
       $si=$db->prepare("SELECT id,code,title FROM `".$prefix."content` WHERE id=:id");
-      $si->execute(
-        array(
-          ':id'=>$ci['iid']
-        )
-      );
+      $si->execute([':id'=>$ci['iid']]);
       $i=$si->fetch(PDO::FETCH_ASSOC);
-      $cartitem=preg_replace(
-        array(
-          '/<print content=[\"\']?code[\"\']?>/',
-          '/<print content=[\"\']?title[\"\']?>/',
-          '/<print cart=[\"\']?id[\"\']?>/',
-          '/<print cart=[\"\']?quantity[\"\']?>/',
-          '/<print cart=[\"\']?cost[\"\']?>/',
-          '/<print itemscalculate>/'
-        ),
-        array(
-          $i['code'],
-          $i['title'],
-          $ci['id'],
-          $ci['quantity'],
-          $ci['cost'],
-          $ci['cost']*$ci['quantity']
-        ),
-        $cartitem
-      );
+      $cartitem=preg_replace([
+        '/<print content=[\"\']?code[\"\']?>/',
+        '/<print content=[\"\']?title[\"\']?>/',
+        '/<print cart=[\"\']?id[\"\']?>/',
+        '/<print cart=[\"\']?quantity[\"\']?>/',
+        '/<print cart=[\"\']?cost[\"\']?>/',
+        '/<print itemscalculate>/'
+      ],[
+        $i['code'],
+        $i['title'],
+        $ci['id'],
+        $ci['quantity'],
+        $ci['cost'],
+        $ci['cost']*$ci['quantity']
+      ],$cartitem);
       $total=$total+($ci['cost']*$ci['quantity']);
       $cartitems.=$cartitem;
     }?>
@@ -111,4 +100,4 @@ if($act=='quantity'){
 <?php }
   }
 }
-echo'/*]]>*/</script>';
+echo'</script>';

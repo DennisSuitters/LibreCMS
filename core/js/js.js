@@ -141,9 +141,7 @@ function coverUpdate(id,t,c,da){
 	}).done(function(msg){
 		if(da==''){
 			$('#'+c).val('');
-			if(imgsrc==''){
-				$('#'+c+'image').attr('src','../core/images/nocover.jpg');
-			}
+			$('#'+c+'image').attr('src','core/images/libre-gui-noimage.svg');
 		}else{
 			if(imgsrc==''){
 				$('#'+c+'image').attr('src',da);
@@ -162,9 +160,8 @@ function imageUpdate(id,t,c,da){
 			da:da
 		}
 	}).done(function(msg){
-		if(t=='login'&&c=='avatar'){
-			$('#avatar').attr('src','');
-			$('#menu_avatar').attr('src','');
+		if(t=='login'&&c=='avatar'&&da==''){
+			$('.img-avatar').attr('src','core/images/libre-gui-noavatar.svg');
 		}else{
 			if(da==''){
 				$('#'+c).html('');
@@ -173,6 +170,19 @@ function imageUpdate(id,t,c,da){
 			}
 		}
 	})
+}
+function insertAtCaret(aId,t) {
+	var ta=document.getElementById(aId);
+	var sP=ta.scrollTop;
+	var cP=ta.selectionStart;
+	var f=(ta.value).substring(0,cP);
+	var b=(ta.value).substring(ta.selectionEnd,ta.value.length);
+	ta.value=f+t+b;
+	cP=cP+t.length;
+	ta.selectionStart=cP;
+	ta.selectionEnd=cP;
+	ta.focus();
+	ta.scrollTop=sP;
 }
 function removeStopWords(id,txt){
 	Pace.restart();

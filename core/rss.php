@@ -1,15 +1,31 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - RSS Generator
+ *
+ * rss.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - RSS Generator
+ * @package    core/rss.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 header('Content-Type:application/rss+xml;charset=ISO-8859-1');
 $getcfg=true;
 require'db.php';
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
-if($args[0]==''||$args[0]=='index')
-  $args[0]='%_%';
+if($args[0]==''||$args[0]=='index')$args[0]='%_%';
 $ti=time();?>
 <?xml version="1.0"?>
 <rss version="2.0">
@@ -24,11 +40,7 @@ $ti=time();?>
 <?php $deffiletype=image_type_to_mime_type(exif_imagetype(FAVICON));
 $deflength=filesize(FAVICON);
 $s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType LIKE :contentType AND status='published' AND internal!='1' ORDER BY ti DESC LIMIT 25");
-$s->execute(
-  array(
-    ':contentType'=>$args[0]
-  )
-);
+$s->execute([':contentType'=>$args[0]]);
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
   $img=URL.FAVICON;
   $filetype=$deffiletype;

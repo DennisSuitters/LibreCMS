@@ -1,24 +1,37 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Main Core of Whole System
+ *
+ * core.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Main Core of Whole System
+ * @package    core/core.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $getcfg=true;
 require'db.php';
-if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme']))
-	$config['theme']=$_GET['theme'];
+if(isset($_GET['theme'])&&file_exists('layout'.DS.$_GET['theme']))$config['theme']=$_GET['theme'];
 define('THEME','layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 if($config['php_options']{6}==1){
 	$s=$db->prepare("DELETE FROM `".$prefix."iplist` WHERE ti<:ti");
-	$s->execute(array(':ti'=>time()-2592000));
+	$s->execute([':ti'=>time()-2592000]);
 }
 if($config['php_options']{5}==1){
-	if(stristr($_SERVER['REQUEST_URI'],'xmlrpc.php') ||
-		 stristr($_SERVER['REQUEST_URI'],'wp-admin') ||
-		 stristr($_SERVER['REQUEST_URI'],'wp-login.php') ||
-		 (isset($_GET['author']) && $_GET['author']!='')){
+	if(stristr($_SERVER['REQUEST_URI'],'xmlrpc.php')||stristr($_SERVER['REQUEST_URI'],'wp-admin')||stristr($_SERVER['REQUEST_URI'],'wp-login.php') ||(isset($_GET['author']) && $_GET['author']!='')){
 		require'core'.DS.'xmlrpc.php';
 		die();
 	}
@@ -42,6 +55,7 @@ elseif(file_exists(THEME.DS.'images'.DS.'noimage.jpg'))
 	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.jpg');
 else
 	define('NOIMAGE','core'.DS.'images'.DS.'noimage.jpg');
+define('ADMINNOIMAGE','core'.DS.'images'.DS.'noimage.png');
 if(file_exists(THEME.DS.'images'.DS.'noavatar.png'))
 	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.png');
 elseif(file_exists(THEME.DS.'images'.DS.'noavatar.gif'))
@@ -50,6 +64,7 @@ elseif(file_exists(THEME.DS.'images'.DS.'noavatar.jpg'))
 	define('NOAVATAR',THEME.DS.'images'.DS.'noavatar.jpg');
 else
 	define('NOAVATAR','core'.DS.'images'.DS.'noavatar.jpg');
+define('ADMINNOAVATAR','core'.DS.'images'.DS.'libre-gui-noavatar.svg');
 require'login.php';
 function rank($txt){
 	if($txt==0)return'visitor';
@@ -124,27 +139,23 @@ function _ago($time){
 	return$timeDiff;
 }
 function elapsed_time($b=0,$e=0){
-  if($b==0)
-		$b=$_SERVER["REQUEST_TIME_FLOAT"];
+  if($b==0)$b=$_SERVER["REQUEST_TIME_FLOAT"];
   $b=explode(' ',$b);
-  if($e==0)
-		$e=microtime();
+  if($e==0)$e=microtime();
   $e=explode(' ',$e);
   @$td=($e[0]+$e[1])-($b[0]+$b[1]);
   $b='';
-  $tt=array(
+  $tt=[
     'd'=>(int)($td / 86400),
     'h'=>$td / 3600 % 24,
     'm'=>$td / 60 % 60,
     's'=>$td % 60
-	);
+	];
   if((int)$td>30){
     foreach($tt as$u=>$ti){
-      if($ti>0)
-				$b.="$ti$u ";
+      if($ti>0)$b.="$ti$u ";
     }
-  }else
-		$b=number_format($td,3).'s';
+  }else$b=number_format($td,3).'s';
   return trim($b);
 }
 function size_format($s,$p=2){
@@ -398,48 +409,48 @@ class front{
 	}
 }
 $route=new router();
-$routes=array(
-  $settings['system']['admin'].'/add'=>array('admin','add'),
-	$settings['system']['admin'].'/accounts'=>array('admin','accounts'),
-	$settings['system']['admin'].'/activity'=>array('admin','activity'),
-	$settings['system']['admin'].'/bookings'=>array('admin','bookings'),
-	$settings['system']['admin'].'/content'=>array('admin','content'),
-	$settings['system']['admin'].'/dashboard'=>array('admin','dashboard'),
-	$settings['system']['admin'].'/logout'=>array('admin','logout'),
-	$settings['system']['admin'].'/media'=>array('admin','media'),
-	$settings['system']['admin'].'/messages'=>array('admin','messages'),
-	$settings['system']['admin'].'/newsletters'=>array('admin','newsletters'),
-	$settings['system']['admin'].'/orders'=>array('admin','orders'),
-  $settings['system']['admin'].'/rewards'=>array('admin','rewards'),
-	$settings['system']['admin'].'/pages'=>array('admin','pages'),
-	$settings['system']['admin'].'/preferences'=>array('admin','preferences'),
-	$settings['system']['admin'].'/search'=>array('admin','search'),
-	$settings['system']['admin'].'/security'=>array('admin','security'),
-  $settings['system']['admin'].'/tracker'=>array('admin','tracker'),
-	$settings['system']['admin']=>array('admin','dashboard'),
-	'humans.txt'=>array('internal','humans'),
-	'sitemap.xml'=>array('internal','sitemap'),
-	'robots.txt'=>array('internal','robots'),
-	'rss'=>array('internal','rss'),
-	'error'=>array('front','error'),
-	'index'=>array('front','index'),
-	'home'=>array('front','index'),
-	'sitemap'=>array('front','sitemap'),
-	'orders'=>array('front','orders'),
-	'profile'=>array('front','profile'),
-	'proofs'=>array('front','proofs'),
-	'login'=>array('front','login'),
-	'settings'=>array('front','settings'),
-	'logout'=>array('front','logout'),
-  ''=>array('front','index')
-);
+$routes=[
+  $settings['system']['admin'].'/add'=>['admin','add'],
+	$settings['system']['admin'].'/accounts'=>['admin','accounts'],
+	$settings['system']['admin'].'/activity'=>['admin','activity'],
+	$settings['system']['admin'].'/bookings'=>['admin','bookings'],
+	$settings['system']['admin'].'/content'=>['admin','content'],
+	$settings['system']['admin'].'/dashboard'=>['admin','dashboard'],
+	$settings['system']['admin'].'/logout'=>['admin','logout'],
+	$settings['system']['admin'].'/media'=>['admin','media'],
+	$settings['system']['admin'].'/messages'=>['admin','messages'],
+	$settings['system']['admin'].'/newsletters'=>['admin','newsletters'],
+	$settings['system']['admin'].'/orders'=>['admin','orders'],
+  $settings['system']['admin'].'/rewards'=>['admin','rewards'],
+	$settings['system']['admin'].'/pages'=>['admin','pages'],
+	$settings['system']['admin'].'/preferences'=>['admin','preferences'],
+	$settings['system']['admin'].'/search'=>['admin','search'],
+	$settings['system']['admin'].'/security'=>['admin','security'],
+  $settings['system']['admin'].'/tracker'=>['admin','tracker'],
+	$settings['system']['admin']=>['admin','dashboard'],
+	'humans.txt'=>['internal','humans'],
+	'sitemap.xml'=>['internal','sitemap'],
+	'robots.txt'=>['internal','robots'],
+	'rss'=>['internal','rss'],
+	'error'=>['front','error'],
+	'index'=>['front','index'],
+	'home'=>['front','index'],
+	'sitemap'=>['front','sitemap'],
+	'orders'=>['front','orders'],
+	'profile'=>['front','profile'],
+	'proofs'=>['front','proofs'],
+	'login'=>['front','login'],
+	'settings'=>['front','settings'],
+	'logout'=>['front','logout'],
+  ''=>['front','index']
+];
 $s=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE active=1");
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
 	if(method_exists('front',$r['contentType']))
-		$routes[$r['contentType']]=array('front',$r['contentType']);
+		$routes[$r['contentType']]=['front',$r['contentType']];
   else
-		$routes[$r['contentType']]=array('front','content');
+		$routes[$r['contentType']]=['front','content'];
 }
 $route->setRoutes($routes);
 $route->routeURL(preg_replace("|/$|","",filter_input(INPUT_GET,'url',FILTER_SANITIZE_URL)));

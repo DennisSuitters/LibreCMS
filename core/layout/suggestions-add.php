@@ -1,12 +1,29 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Add Suggestions Popup
+ *
+ * suggestions-add.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Popup - Add Suggestions
+ * @package    core/layout/suggestions-add.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 $getcfg=true;
-require_once'..'.DS.'db.php';
+require'..'.DS.'db.php';
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $t=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
 $c=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'c',FILTER_SANITIZE_STRING);
@@ -41,14 +58,14 @@ define('UNICODE','UTF-8');?>
     </div>
   </form>
 </div>
-<script>/*<![CDATA[*/
+<script>
 <?php if($c=='notes'){?>
   $('#suggestda').html($('#notes').summernote('code'));
 <?php }?>
   $("#suggestionsform").submit(function(){
-      $.post($(this).attr("action"),$(this).serialize(),function(data){
-          $("#suggestions_add").html(data);
-      });
-      return false;
+    $.post($(this).attr("action"),$(this).serialize(),function(data){
+      $("#suggestions_add").html(data);
+    });
+    return false;
   });
-/*]]>*/</script>
+</script>

@@ -1,10 +1,12 @@
 ![LibreCMS](core/images/librecms.png)  
-a **Free** Open Source [MIT](https://github.com/DiemenDesign/LibreCMS/blob/master/LICENSE) Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/DiemenDesign/LibreICONS). Built to take advantage of HTML5 and CSS3, with necessary SEO attributes that fit in with Google's recommendations, and Micro-formats to help with Search Engine ranking.
+a **Free** Open Source [MIT](https://github.com/DiemenDesign/LibreCMS/blob/master/LICENSE) Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/DiemenDesign/LibreICONS). Built to take advantage of HTML5 and CSS3, with necessary SEO attributes that fit in with Google's recommendations, Micro-formats, ARIA (A11Y), and general SEO Markup.
 (AMP has been removed as testing proved that there was nothing to be gained from using it).
 
+#### We are currently at Version 2.0.0
+
+## NOTE: LibreCMS now only supports PHP 7 and above, and recommend running on PHP 7.3.
+
 ### FAQ
-- Why no Version Numbers?
-  - Some people have asked why we don't use a Versioning System of some sorts. Well, as this is an ever changing and growing project, rather than having version numbers, we're going to be doing releases instead. The other reason, is due to my laziness. I originally was updating version numbers to files, but laziness got the better of me, so I just stopped doing that completely.
 - Why is English the only Language available?
   - LibreCMS was, and is targetted towards English Speaking Australian Business's. We may in the future decide, or if someone wants to add Language support, then we may do that, or merge their changes.
 - Why no Plugins?
@@ -52,7 +54,7 @@ a **Free** Open Source [MIT](https://github.com/DiemenDesign/LibreCMS/blob/maste
 You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](https://github.com/DiemenDesign/LibreCMS-themes)
 
 ### Dependencies
-- PHP > 5.6 - Must have PDO, and Password Compat support. If you have tried LibreCMS with a higher version, please report your experiences.
+- PHP > 7.0 - Must have PDO, and Password Compat support. If you have tried LibreCMS with a higher version, please report your experiences.
 - Works with PHP 7+. Please make sure PHP Libraries are installed before reporting Issues.
 - mod_rewrite
 - GD-Image & Imagemagick- LibreCMS will work without them, but things like Thumbnails, and image resizing won't work.

@@ -1,19 +1,36 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Pages Settings
+ *
+ * set_pages.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Settings - Pages
+ * @package    core/layout/set_pages.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item">Content</li>
-    <li class="breadcrumb-item">Pages</li>
+    <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/content';?>">Content</a></li>
+    <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/pages';?>">Pages</a></li>
     <li class="breadcrumb-item active" aria-current="page"><strong>Settings</strong></li>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="Settings">
         <a class="btn btn-ghost-normal info" href="<?php echo URL.$settings['system']['admin'].'/pages';?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
-        <?php if($help['pages_settings_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['pages_settings_text'].'" data-tooltip="tooltip" data-placement="left" title="Read Text Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
-        if($help['pages_settings_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['pages_settings_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+<?php if($help['pages_settings_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['pages_settings_text'].'" data-tooltip="tooltip" data-placement="left" title="Read Text Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
+if($help['pages_settings_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['pages_settings_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>
@@ -21,23 +38,23 @@
     <div class="card">
       <div class="card-body">
 <?php if(!file_exists('layout'.DS.$config['theme'].DS.'theme.ini')){
-        echo'<div class="alert alert-danger">A Website Theme has not been set...</div>';
+  echo'<div class="alert alert-danger">A Website Theme has not been set...</div>';
 }else{?>
         
         <form target="sp" method="post" action="core/updatetheme.php">
           <div class="input-group">
             <label for="fileEditSelect" class="input-group-text">File:</label>
             <select id="filesEditSelect" class="custom-select" name="file">
-  <?php $fileDefault=($user['rank']==1000?'meta_head.html':'meta_head.html');
-    $files=array();
-    foreach(glob("layout".DS.$config['theme'].DS."*.{html}",GLOB_BRACE)as$file){
-      echo'<option value="'.$file.'"';
-      if(stristr($file,$fileDefault)){
-        echo' selected';
-        $fileDefault=$file;
-      }
-      echo'>'.basename($file).'</option>';
-    }?>
+<?php $fileDefault=($user['rank']==1000?'meta_head.html':'meta_head.html');
+  $files=array();
+  foreach(glob("layout".DS.$config['theme'].DS."*.{html}",GLOB_BRACE)as$file){
+    echo'<option value="'.$file.'"';
+    if(stristr($file,$fileDefault)){
+      echo' selected';
+      $fileDefault=$file;
+    }
+    echo'>'.basename($file).'</option>';
+  }?>
             </select>
             <div class="input-group-append">
               <button id="filesEditLoad" class="btn btn-secondary" onclick="Pace.restart();">Load</button>
@@ -45,7 +62,7 @@
           </div>
           <div class="form-group">
             <div class="input-group card-header p-2 mb-0">
-              <button id="codeSave" class="btn btn-secondary" onclick="populateTextarea();" data-tooltip="tooltip" data-placement="bottom" title="Save"><?php svg('libre-gui-save');?></button>
+              <button id="codeSave" class="btn btn-secondary" onclick="populateTextarea();" data-tooltip="tooltip" title="Save"><?php svg('libre-gui-save');?></button>
             </div>
           </div>
           <div class="form-group" style="margin-top:-15px">
@@ -54,14 +71,7 @@
           </div>
         </form>
       </div>
-      <script src="<?php echo URL.'core'.DS.'js'.DS.'codemirror.js';?>"></script>
-      <script src="<?php echo URL.'core'.DS.'js'.DS.'xml.js';?>"></script>
-      <script src="<?php echo URL.'core'.DS.'js'.DS.'autorefresh.js';?>"></script>
-      <script src="<?php echo URL.'core'.DS.'js'.DS.'htmlmixed.js';?>"></script>
-      <script src="<?php echo URL.'core'.DS.'js'.DS.'matchbrackets.js';?>"></script>
-      <script src="<?php echo URL.'core'.DS.'js'.DS.'matchtags.js';?>"></script>
-      <script src="<?php echo URL.'core'.DS.'js'.DS.'hardwrap.js';?>"></script>
-      <script>/*<![CDATA[*/
+      <script>
         $(document).ready(function (){
           var editor=CodeMirror.fromTextArea(document.getElementById("code"),{
             lineNumbers:true,
@@ -90,7 +100,7 @@
         function populateTextarea(){
           Pace.restart();
         }
-      /*]]>*/</script>
+      </script>
 <?php }?>
     </div>
   </div>

@@ -1,28 +1,40 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - VCard Generator
+ *
+ * vcard.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - VCard Generator
+ * @package    core/vcard.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-require_once'db.php';
+require'db.php';
 include'class.vcard.php';
-if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)
-  define('PROTOCOL','https://');else define('PROTOCOL','http://');
+if((!empty($_SERVER['HTTPS'])&&$_SERVER['HTTPS']!=='off')||$_SERVER['SERVER_PORT']==443)define('PROTOCOL','https://');else define('PROTOCOL','http://');
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 $username=isset($_GET['u'])?filter_input(INPUT_GET,'u',FILTER_SANITIZE_STRING):0;
 if($username!= 0){
   $s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE username=:username");
-  $s->execute(
-    array(
-      ':username'=>$username
-    )
-  );
+  $s->execute([':username'=>$username]);
   if($s->rowCount()==1){
     $user=$s->fetch(PDO::FETCH_ASSOC);
     if($user['rank']>899)
       $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
     else{
-      $config=array(
+      $config=[
         'business'=>NULL,
         'abn'=>NULL,
         'address'=>NULL,
@@ -34,12 +46,12 @@ if($username!= 0){
         'phone'=>NULL,
         'mobile'=>NULL,
         'email'=>NULL
-      );
+      ];
     }
     $namee=explode(' ',$user['name']);
     $card=new vCard();
     $card->set(
-      array(
+      [
         'display_name'=>$user['name'],
         'first_name'=>$namee[0],
         'last_name'=>end($namee),
@@ -78,14 +90,14 @@ if($username!= 0){
         'timezone'=>NULL,
         'sort_string'=>NULL,
         'note'=>$user['notes']
-      )
+      ]
     );
   }
 }else{
   $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
   $card=new vCard();
   $card->set(
-    array(
+    [
       'display_name'=>$config['business'],
       'first_name'=>NULL,
       'last_name'=>NULL,
@@ -124,7 +136,7 @@ if($username!= 0){
       'timezone'=>NULL,
       'sort_string'=>NULL,
       'note'=>NULL
-    )
+    ]
   );
 }
 $card->download();

@@ -1,11 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Add Contact Us Message
+ *
+ * add_contactus.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Add Contact Us Message
+ * @package    core/add_contactus.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $getcfg=true;
-require_once'db.php';
+require'db.php';
 include'class.projecthoneypot.php';
 include'class.spamfilter.php';
 $theme=parse_ini_file('..'.DS.'layout'.DS.$config['theme'].DS.'theme.ini',true);
@@ -22,20 +39,14 @@ if($act=='add_message'){
 			$blacklisted=$theme['settings']['blacklist'];
       $spam=TRUE;
 			$sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-			$sc->execute(
-        array(
-          ':ip'=>$ip
-        )
-      );
+			$sc->execute([':ip'=>$ip]);
 			if($sc->rowCount()<1){
 	      $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
-	      $s->execute(
-	        array(
-	          ':ip'=>$ip,
-	          ':oti'=>$ti,
-	          ':ti'=>$ti
-	        )
-	      );
+	      $s->execute([
+          ':ip'=>$ip,
+          ':oti'=>$ti,
+          ':ti'=>$ti
+        ]);
 			}
     }
   }
@@ -58,31 +69,21 @@ if($act=='add_message'){
       }
       if($config['spamfilter']{1}==1&&$spam==TRUE){
         $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-  			$sc->execute(
-          array(
-            ':ip'=>$ip
-          )
-        );
+  			$sc->execute([':ip'=>$ip]);
   			if($sc->rowCount()<1){
   	      $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
-  	      $s->execute(
-  	        array(
-  	          ':ip'=>$ip,
-  	          ':oti'=>$ti,
-  	          ':ti'=>$ti
-  	        )
-  	      );
+  	      $s->execute([
+	          ':ip'=>$ip,
+	          ':oti'=>$ti,
+	          ':ti'=>$ti
+	        ]);
   			}
       }
     }
     if($spam==FALSE){
   		if(filter_var($email,FILTER_VALIDATE_EMAIL)){
   			$ss=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE id=:id");
-  			$ss->execute(
-          array(
-            ':id'=>$subject
-          )
-        );
+  			$ss->execute([':id'=>$subject]);
   			if($ss->rowCount()==1){
   				$rs=$ss->fetch(PDO::FETCH_ASSOC);
   				$subject=$rs['title'];
@@ -90,20 +91,18 @@ if($act=='add_message'){
             $config['email']=$rs['url'];
   			}
   			$q=$db->prepare("INSERT INTO `".$prefix."messages` (uid,ip,folder,to_email,to_name,from_email,from_name,subject,status,notes_raw,ti) VALUES ('0',:ip,:folder,:to_email,:to_name,:from_email,:from_name,:subject,:status,:notes_raw,:ti)");
-  			$q->execute(
-          array(
-  					':ip'=>$ip,
-            ':folder'=>'INBOX',
-            ':to_email'=>$config['email'],
-            ':to_name'=>$config['business'],
-            ':from_email'=>$email,
-            ':from_name'=>$name,
-            ':subject'=>$subject,
-            ':status'=>'unread',
-            ':notes_raw'=>$notes,
-            ':ti'=>time()
-          )
-        );
+  			$q->execute([
+					':ip'=>$ip,
+          ':folder'=>'INBOX',
+          ':to_email'=>$config['email'],
+          ':to_name'=>$config['business'],
+          ':from_email'=>$email,
+          ':from_name'=>$name,
+          ':subject'=>$subject,
+          ':status'=>'unread',
+          ':notes_raw'=>$notes,
+          ':ti'=>time()
+        ]);
   			$id=$db->lastInsertId();
   			$e=$db->errorInfo();
   			if(is_null($e[2])){
@@ -135,41 +134,33 @@ if($act=='add_message'){
   						$mail2->AddAddress($email);
   						$mail2->IsHTML(true);
   						$subject=isset($config['contactAutoReplySubject'])&&$config['contactAutoReplySubject']=''?$config['contactAutoReplySubject']:'Thank you for contacting {business}';
-  						$subject=str_replace(
-  							array(
-  								'{business}',
-  								'{date}'
-  							),
-  							array(
-  								$config['business'],
-  								date($config['dateFormat'],$ti)
-  							),
-  							$subject
-  						);
+  						$subject=str_replace([
+								'{business}',
+								'{date}'
+							],[
+								$config['business'],
+								date($config['dateFormat'],$ti)
+							],$subject);
   						$mail2->Subject=$subject;
   						$msg2=isset($config['contactAutoReplyLayout'])&&$config['contactAutoReplyLayout']!=''?rawurldecode($config['contactAutoReplyLayout']):'Thank you for Contacting {business}<br />Someone will be in touch to respond to your request.<br />Kind Regards,<br />{business}';
   						$n=explode(' ',$name);
   						$namefirst=$n[0];
   						$namelast=end($n);
-  						$msg2=str_replace(
-  							array(
-  								'{business}',
-  								'{date}',
-  								'{name}',
-  								'{first}',
-  								'{last}',
-  								'{subject}'
-  							),
-  							array(
-  								$config['business']!=''?$config['business']:'us',
-  								date($config['dateFormat'],$ti),
-  								$name,
-  								$namefirst,
-  								$namelast,
-  								$subject
-  							),
-  							$msg2
-  						);
+  						$msg2=str_replace([
+								'{business}',
+								'{date}',
+								'{name}',
+								'{first}',
+								'{last}',
+								'{subject}'
+							],[
+								$config['business']!=''?$config['business']:'us',
+								date($config['dateFormat'],$ti),
+								$name,
+								$namefirst,
+								$namelast,
+								$subject
+							],$msg2);
   						$mail2->Body=$msg2;
   						$mail2->AltBody=strip_tags(preg_replace('/<br(\s+)?\/?>/i',"\n",$msg));
   						if($mail2->Send())

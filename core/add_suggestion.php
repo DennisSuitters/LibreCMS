@@ -1,12 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Add Suggestion
+ *
+ * add_suggestion.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Add Suggestion
+ * @package    core/add_suggestion.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-if(session_status()==PHP_SESSION_NONE)
-  session_start();
-require_once'db.php';
+if(session_status()==PHP_SESSION_NONE)session_start();
+require'db.php';
 $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 include'sanitise.php';
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
@@ -27,20 +43,14 @@ if(strlen($da)<24&&$da=='%3Cp%3E%3Cbr%3E%3C/p%3E')
 $si=session_id();
 $ti=time();
 $s=$db->prepare("INSERT INTO `".$prefix."suggestions` (rid,t,c,notes,reason,ti) VALUES (:rid,:t,:c,:notes,:r,:ti)");
-$s->execute(
-  array(
-    ':rid'=>$id,
-    ':t'=>$t,
-    ':c'=>$c,
-    ':notes'=>$da,
-    ':r'=>$r,
-    ':ti'=>$ti
-  )
-);
+$s->execute([
+  ':rid'=>$id,
+  ':t'=>$t,
+  ':c'=>$c,
+  ':notes'=>$da,
+  ':r'=>$r,
+  ':ti'=>$ti
+]);
 $s=$db->prepare("UPDATE ".$prefix.$t." SET suggestions=1 WHERE id=:id");
-$s->execute(
-  array(
-    ':id'=>$id
-  )
-);
+$s->execute([':id'=>$id]);
 echo'<div class="alert alert-success">Suggestion Saved.</div>';

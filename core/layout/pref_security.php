@@ -1,17 +1,34 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Security Preferences
+ *
+ * pref_security.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Preferences - Security
+ * @package    core/layout/pref_security.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/preferences';?>">Preferences</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><strong>Security</strong></li>
+    <li class="breadcrumb-item active" aria-current="page">Security</li>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="">
-        <?php if($help['security_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['security_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
-        if($help['security_video']!='')echo'<span><a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['security_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+<?php if($help['security_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['security_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
+if($help['security_video']!='')echo'<span><a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['security_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>
@@ -34,7 +51,7 @@
                     <a href="<?php echo URL.$settings['system']['admin'];?>"><?php echo URL;?></a>
                   </div>
                   <input type="text" id="adminfolder" class="form-control" name="adminfolder" value="<?php echo$settings['system']['admin'];?>" placeholder="This entry must NOT be blank..." require aria-required="true">
-                  <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Update Access Folder">
+                  <div class="input-group-append" data-tooltip="tooltip" title="Update Access Folder">
                     <button type="submit" class="btn btn-secondary">Update</button>
                   </div>
                   <div class="help-block col small text-muted">Changing the access folder for the Administration area may log you out.</div>
@@ -93,7 +110,7 @@
               <label for="php_honeypot" class="col-form-label col-sm-2">Honey Pot</label>
               <div class="input-group col-sm-10">
                 <div id="php_honeypot_link" class="input-group-text col">
-                  <?php echo$config['php_honeypot']!=''?'<a target="_blank" href="'.$config['php_honeypot'].'">'.$config['php_honeypot'].'</a>':'Honey Pot File Not Uploaded.';?>
+<?php echo$config['php_honeypot']!=''?'<a target="_blank" href="'.$config['php_honeypot'].'">'.$config['php_honeypot'].'</a>':'Honey Pot File Not Uploaded.';?>
                 </div>
                 <div class="input-group-append">
                   <button class="btn btn-secondary" onclick="elfinderDialog('1','config','php_honeypot');" data-tooltip="tooltip" title="Browse Media"><?php svg('libre-gui-browse-media');?></button>
@@ -173,15 +190,8 @@ foreach(glob("core".DS."blacklists".DS."*.{txt}",GLOB_BRACE)as$file){
                 </div>
               </form>
             </div>
-            <script src="<?php echo URL.'core'.DS.'js'.DS.'codemirror.js';?>"></script>
-            <script src="<?php echo URL.'core'.DS.'js'.DS.'xml.js';?>"></script>
-            <script src="<?php echo URL.'core'.DS.'js'.DS.'autorefresh.js';?>"></script>
-            <script src="<?php echo URL.'core'.DS.'js'.DS.'htmlmixed.js';?>"></script>
-            <script src="<?php echo URL.'core'.DS.'js'.DS.'matchbrackets.js';?>"></script>
-            <script src="<?php echo URL.'core'.DS.'js'.DS.'matchtags.js';?>"></script>
-            <script src="<?php echo URL.'core'.DS.'js'.DS.'hardwrap.js';?>"></script>
-            <script>/*<![CDATA[*/
-              $(document).ready(function (){
+            <script>
+              $(document).ready(function(){
                 var editor=CodeMirror.fromTextArea(document.getElementById("code"),{
                   lineNumbers:true,
                   lineWrapping:true,
@@ -209,7 +219,7 @@ foreach(glob("core".DS."blacklists".DS."*.{txt}",GLOB_BRACE)as$file){
               function populateTextarea(){
                 Pace.restart();
               }
-            /*]]>*/</script>
+            </script>
           </div>
           <div id="tab-security-blacklist" name="tab-security-blacklist" class="tab-pane">
             <div class="table-responsive">
@@ -221,7 +231,7 @@ foreach(glob("core".DS."blacklists".DS."*.{txt}",GLOB_BRACE)as$file){
                     <th class="col-xs-3 text-center">IP</th>
                     <th class="col-xs-3">
                       <div class="btn-group float-right">
-                        <button class="btn btn-secondary btn-sm trash" onclick="purge('0','iplist');return false;" data-tooltip="tooltip" data-placement="left" title="Purge All"><?php svg('libre-gui-purge');?></button>
+                        <button class="btn btn-secondary btn-sm trash" onclick="purge('0','iplist');return false;" data-tooltip="tooltip" title="Purge All"><?php svg('libre-gui-purge');?></button>
                       </div>
                     </th>
                   </tr>
@@ -238,7 +248,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                       <div class="btn-group float-right">
                         <a class="btn btn-secondary" target="_blank" href="https://www.projecthoneypot.org/ip_<?php echo$r['ip'];?>"><?php echo svg2('libre-brand-projecthoneypot');?></a>
                         <a class="btn btn-secondary" target="_blank" href="http://www.ipaddress-finder.com/?ip=<?php echo$r['ip'];?>"><?php echo svg2('libre-gui-search');?></a>
-                        <button class="btn btn-secondary trash" onclick="purge('<?php echo$r['id'];?>','iplist');return false;" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-purge');?></button>
+                        <button class="btn btn-secondary trash" onclick="purge('<?php echo$r['id'];?>','iplist');return false;" data-tooltip="tooltip" title="Purge"><?php svg('libre-gui-purge');?></button>
                       </div>
                     </td>
                   </tr>

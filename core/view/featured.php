@@ -1,8 +1,25 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * View - Featured Renderer
+ *
+ * featured.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - View - Featured
+ * @package    core/view/featured.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 preg_match('/<settings itemcount="([\w\W]*?)" contenttype="([\w\W]*?)" order="([\w\W]*?)">/',$html,$matches);
 $html=preg_replace('~<settings.*?>~is','',$html,1);
@@ -35,12 +52,9 @@ if($cT=='all'||$cT=='mixed'||$cT=='folder'){
 	if(file_exists('media'.DS.'carousel'.DS)){
 		foreach(glob('media'.DS.'carousel'.DS.'*.*')as$file){
 			$fileinfo=pathinfo($file);
-			if($file=='.')
-				continue;
-			if($file=='..')
-				continue;
-			if($fileinfo['extension']=='html')
-				continue;
+			if($file=='.')continue;
+			if($file=='..')continue;
+			if($fileinfo['extension']=='html')continue;
 			$filetime=filemtime($file);
 			$fileinfo=pathinfo($file);
 			$filename=basename($file,'.'.$fileinfo['extension']);
@@ -63,14 +77,9 @@ if($cT=='all'||$cT=='mixed'||$cT=='folder'){
 }
 if($cT!='folder'){
 	$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE file!='' OR thumb!='' AND featured='1' AND internal!='1' AND status='published' AND contentType LIKE :contentType ORDER BY $order $limit");
-	$s->execute(
-		array(
-			':contentType'=>$contentType
-		)
-	);
+	$s->execute([':contentType'=>$contentType]);
 	while($r=$s->fetch(PDO::FETCH_ASSOC)){
-		if($r['featured']!=1||$r['internal']==1)
-			continue;
+		if($r['featured']!=1||$r['internal']==1)continue;
 		$filechk=basename($r['file']);
 		if(file_exists('media'.DS.$filechk)){
 			$featuredfiles[]=[
@@ -119,19 +128,15 @@ if($ii>0){
 		if($r['link']=='nolink')
 			$item=preg_replace('~<link>.*?<\/link>~is','',$item,1);
 		else{
-			$item=str_replace(
-				array(
-					'<link>',
-					'</link>',
-					'<print link>',
-				),
-				array(
-					'',
-					'',
-					$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),
-				),
-				$item
-			);
+			$item=str_replace([
+				'<link>',
+				'</link>',
+				'<print link>',
+			],[
+				'',
+				'',
+				$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),
+			],$item);
 		}
 		$item=preg_replace('/<print content=[\"\']?title[\"\']?>/',$r['title'],$item);
 		if(preg_match('/<print content=[\"\']?thumb[\"\']?>/',$item)){
@@ -168,32 +173,24 @@ if($ii>0){
 			else
 				$item=preg_replace('/<print content=[\"\']?caption[\"\']?>/','',$item);
 			if($r['attributionImageName']!=''&&$r['attributionImageURL']!=''){
-				$item=preg_replace(
-					array(
-						'/<print media=[\"\']?attributionName[\"\']?>/',
-		        '/<print media=[\"\']?attributionURL[\"\']?>/',
-						'/<attribution>/',
-	          '/<\/attribution>/'
-					),
-					array(
-						htmlspecialchars($r['attributionImageName'],ENT_QUOTES,'UTF-8'),
-		        htmlspecialchars($r['attributionImageURL'],ENT_QUOTES,'UTF-8'),
-						'',
-						''
-					),
-					$item
-				);
+				$item=preg_replace([
+					'/<print media=[\"\']?attributionName[\"\']?>/',
+	        '/<print media=[\"\']?attributionURL[\"\']?>/',
+					'/<attribution>/',
+          '/<\/attribution>/'
+				],[
+					htmlspecialchars($r['attributionImageName'],ENT_QUOTES,'UTF-8'),
+	        htmlspecialchars($r['attributionImageURL'],ENT_QUOTES,'UTF-8'),
+					'',
+					''
+				],$item);
 			}else
 				$item=preg_replace('~<attribution>.*?<\/attribution>~is','',$items);
 			$item=$r['notes']!=''?preg_replace('/<print content=[\"\']?notes[\"\']?>/',htmlspecialchars(strip_tags(rawurldecode($r['notes'])),$item,ENT_QUOTES,'UTF-8')):preg_replace('/<print content=[\"\']?notes[\"\']?>/','',$item);
-			$item=str_replace(
-				array(
-					'<caption>',
-					'</caption>'
-				),
-				'',
-				$item
-			);
+			$item=str_replace([
+				'<caption>',
+				'</caption>'
+			],'',$item);
 		}
 		$items.=$item;
 		$i++;
@@ -201,33 +198,25 @@ if($ii>0){
 	}
 }
 if($ii>1){
-	$html=preg_replace(
-		array(
-			'~<indicators>.*?<\/indicators>~is',
-			'/<featuredIndicators>/',
-			'/<\/featuredIndicators>/',
-			'/<featuredControls>/',
-			'/<\/featuredControls>/'
-		),
-		array(
-			$indicators,
-			'',
-			'',
-			'',
-			''
-		),
-		$html
-	);
-}else{
-	$html=preg_replace(
-		array(
-			'~<featuredControls>.*?<\/featuredControls>~is',
-			'/<featuredIndicators>/',
-			'/<\/featuredIndicators>/'
-		),
+	$html=preg_replace([
+		'~<indicators>.*?<\/indicators>~is',
+		'/<featuredIndicators>/',
+		'/<\/featuredIndicators>/',
+		'/<featuredControls>/',
+		'/<\/featuredControls>/'
+	],[
+		$indicators,
 		'',
-		$html
-	);
+		'',
+		'',
+		''
+	],$html);
+}else{
+	$html=preg_replace([
+		'~<featuredControls>.*?<\/featuredControls>~is',
+		'/<featuredIndicators>/',
+		'/<\/featuredIndicators>/'
+	],'',$html);
 }
 $html=$i>0?preg_replace('~<items>.*?<\/items>~is',$items,$html,1):'';
 $content.=$html;

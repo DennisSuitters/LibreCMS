@@ -1,5 +1,28 @@
+<?php
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Sidebar Menu Layout
+ *
+ * sidebar.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Sidebar Menu
+ * @package    core/layout/set_sidebar.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
+ */?>
 <div class="app-body">
-  <div id="sidebar" class="sidebar">
+  <div id="sidebar" class="sidebar mt-5">
     <nav class="sidebar-nav">
       <ul class="nav">
         <li class="nav-item<?php echo$view=='dashboard'?' active':'';?>"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/dashboard';?>"><?php svg('libre-gui-dashboard','nav-icon');?> Dashboard</a></li>
@@ -8,9 +31,7 @@
           <ul class="nav-dropdown-items">
             <li class="nav-item"><a class="nav-link<?php echo$view=='media'?' active':'';?>" href="<?php echo URL.$settings['system']['admin'].'/media';?>">&nbsp;&nbsp;<?php svg('libre-gui-picture','nav-icon');?> Media</a></li>
             <li class="nav-item"><a class="nav-link<?php echo$view=='pages'?' active':'';?>" href="<?php echo URL.$settings['system']['admin'].'/pages';?>">&nbsp;&nbsp;<?php svg('libre-gui-content','nav-icon');?> Pages</a></li>
-            <li class="nav-item">
-              <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/content/scheduler';?>">&nbsp;&nbsp;<?php svg('libre-gui-calendar-time','nav-icon');?> Scheduler</a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/content/scheduler';?>">&nbsp;&nbsp;<?php svg('libre-gui-calendar-time','nav-icon');?> Scheduler</a></li>
             <li class="nav-item"><a id="menu-article" class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/content/type/article';?>">&nbsp;&nbsp;<?php svg('libre-gui-content','nav-icon');?> Articles</a></li>
             <li class="nav-item"><a id="menu-portfolio" class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/content/type/portfolio';?>">&nbsp;&nbsp;<?php svg('libre-gui-portfolio','nav-icon');?> Portfolio</a></li>
             <li class="nav-item"><a id="menu-events" class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/content/type/events';?>">&nbsp;&nbsp;<?php svg('libre-gui-calendar','nav-icon');?> Events</a></li>

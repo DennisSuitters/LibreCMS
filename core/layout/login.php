@@ -1,10 +1,33 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Login Page
+ *
+ * login.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Login
+ * @package    core/layout/login.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */?>
 <!DOCTYPE html>
+<!--
+     LibreCMS - Copyright (C) Diemen Design 2019
+          the MIT Licensed Open Source Content Management System.
+     
+     Project Maintained at https://github.com/DiemenDesign/LibreCMS
+-->
 <html lang="en-AU" id="libreCMS">
   <head>
     <meta charset="UTF-8">
@@ -21,7 +44,6 @@
     <link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>">
     <link id="themecss" rel="stylesheet" type="text/css" href="<?php echo URL.'core'.DS.'css'.DS.'style-'.(isset($_COOKIE['adminbg'])?$_COOKIE['adminbg']:'dark').'.css';?>">
     <Link rel="stylesheet" type="text/css" href="<?php echo URL.'core'.DS.'css'.DS.'libreicons-svg.css';?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo URL.'core'.DS.'css'.DS.'pace.min.css';?>">
   </head>
   <body class="app flex-row align-items-center">
     <main class="container">
@@ -61,10 +83,10 @@
                 </form>
                 <div class="row">
                   <div class="col-12 text-center">
-                    <a href="javascript:return false;" onclick="$('#panel-rst').toggleClass('d-none');" aria-label="Reset Password" role="button">Reset Password</a>
+                    <button class="btn btn-link" onclick="$('#panel-rst').slideToggle();" aria-label="Reset Password" role="button">Reset Password</button>
                   </div>
                 </div>
-                <form target="rstfeedback" id="panel-rst" class="d-none" role="form" method="post" action="core/rst.php" accept-charset="UTF-8">
+                <form target="rstfeedback" id="panel-rst" style="display:none;" role="form" method="post" action="core/rst.php" accept-charset="UTF-8">
                   <input type="hidden" name="emailtrap" value="none">
                   <div class="row">
                     <div class="col-12 text-center">
@@ -85,11 +107,9 @@
       </div>
     </main>
     <script src="<?php echo URL.'core'.DS.'js'.DS.'jquery.min.js';?>"></script>
-    <script src="<?php echo URL.'core'.DS.'js'.DS.'popper.min.js';?>"></script>
     <script src="<?php echo URL.'core'.DS.'js'.DS.'bootstrap.min.js';?>"></script>
     <script src="<?php echo URL.'core'.DS.'js'.DS.'js.cookie.js';?>"></script>
-    <script src="<?php echo URL.'core'.DS.'js'.DS.'js.js';?>"></script>
-    <script>/*<![CDATA[*/
+    <script>
       $('#panel-rst').submit(function(){
         $('#rstbusy').html('<i class="libre libre-spinner-1"></i>');
         $.ajax({
@@ -103,6 +123,15 @@
         });
         return false;
       });
-    /*]]>*/</script>
+      function changeTheme(){
+      	var link=$("#themecss[rel=stylesheet]")[0].href;
+      	var css=link.substring(link.lastIndexOf('/')+1,link.length);
+      	$('#themecss').attr('href','core/css/style-'+(css=='style-dark.css'?'light':'dark')+'.css');
+      	$('#theme2css').attr('href','core/css/style2-'+(css=='style-dark.css'?'light':'dark')+'.css');
+      	Cookies.remove('adminbg');
+      	Cookies.set('adminbg',(css=='style-dark.css'?'light':'dark'),{expires:14});
+      	return false;
+      }
+    </script>
   </body>
 </html>

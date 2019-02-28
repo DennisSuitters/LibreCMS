@@ -1,8 +1,25 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Login
+ *
+ * login.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Login
+ * @package    core/login.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if(!isset($act))
   $act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
@@ -16,11 +33,7 @@ if($act=='logout'){
   $username=isset($_POST['username'])?filter_input(INPUT_POST,'username',FILTER_SANITIZE_STRING):$_SESSION['username'];
   $password=isset($_POST['password'])?filter_input(INPUT_POST,'password',FILTER_SANITIZE_STRING):$_SESSION['password'];
   $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE username=:username AND activate='' AND active='1' LIMIT 1");
-  $q->execute(
-    array(
-      ':username'=>$username
-    )
-  );
+  $q->execute([':username'=>$username]);
   $user=$q->fetch(PDO::FETCH_ASSOC);
   if($user['id']!=0){
     if(password_verify($password,$user['password'])){
@@ -43,12 +56,10 @@ if($act=='logout'){
 }
 if(isset($_SESSION['loggedin'])&&$_SESSION['loggedin']==true){
   $q=$db->prepare("UPDATE `".$prefix."login` SET lti=:lti,userAgent=:userAgent,userIP=:userIP WHERE id=:id");
-  $q->execute(
-    array(
-      ':lti'=>time(),
-      ':id'=>$_SESSION['uid'],
-      ':userAgent'=>$_SERVER['HTTP_USER_AGENT'],
-      ':userIP'=>$_SERVER['REMOTE_ADDR']
-    )
-  );
+  $q->execute([
+    ':lti'=>time(),
+    ':id'=>$_SESSION['uid'],
+    ':userAgent'=>$_SERVER['HTTP_USER_AGENT'],
+    ':userIP'=>$_SERVER['REMOTE_ADDR']
+  ]);
 }

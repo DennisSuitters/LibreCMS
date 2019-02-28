@@ -1,8 +1,25 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Check for Updates
+ *
+ * updatecheck.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Update Check
+ * @package    core/layout/updatecheck.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 require'..'.DS.'db.php';
@@ -24,7 +41,7 @@ if($config['update_url']!=''){
     }
   }
 }
-  if($update==0){?>
+if($update==0){?>
   <div class="col-form-label col-sm-2"></div>
   <div class="input-group col-sm-10">
     <div class="col alert alert-success">There are currently no updates available or required!</div>

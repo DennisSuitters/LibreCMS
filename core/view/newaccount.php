@@ -1,12 +1,28 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * View - Create New Account
+ *
+ * newaccount.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Create New Account
+ * @package    core/view/newaccount.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $getcfg=true;
-if(!defined('DS'))
-  define('DS',DIRECTORY_SEPARATOR);
+if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 require_once'..'.DS.'db.php';
 $theme=parse_ini_file('..'.DS.'..'.DS.'layout'.DS.$config['theme'].DS.'theme.ini',true);
 $notification=$blacklisted='';
@@ -22,20 +38,14 @@ if($config['php_options']{3}==1&&$config['php_APIkey']!=''){
   if($h->hasRecord()==1||$h->isSuspicious()==1||$h->isCommentSpammer()==1){
     $blacklisted=$theme['settings']['blacklist'];
     $sc=$db->prepare("SELECT id FROM iplist WHERE ip=:ip");
-    $sc->execute(
-      array(
-        ':ip'=>$ip
-      )
-    );
+    $sc->execute([':ip'=>$ip]);
     if($sc->rowCount()<1){
       $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
-      $s->execute(
-        array(
-          ':ip'=>$ip,
-          ':oti'=>$ti,
-          ':ti'=>$ti
-        )
-      );
+      $s->execute([
+        ':ip'=>$ip,
+        ':oti'=>$ti,
+        ':ti'=>$ti
+      ]);
     }
   }
 }
@@ -51,20 +61,14 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']=='none'){
     }
     if($config['spamfilter']{1}==1&&$spam==TRUE){
       $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
-      $sc->execute(
-        array(
-          ':ip'=>$ip
-        )
-      );
+      $sc->execute([':ip'=>$ip]);
       if($sc->rowCount()<1){
         $s=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
-        $s->execute(
-          array(
-            ':ip'=>$ip,
-            ':oti'=>$ti,
-            ':ti'=>$ti
-          )
-        );
+        $s->execute([
+          ':ip'=>$ip,
+          ':oti'=>$ti,
+          ':ti'=>$ti
+        ]);
       }
     }
   }
@@ -73,11 +77,7 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']=='none'){
       define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url']);
       if($username!=''){
         $s=$db->prepare("SELECT username FROM `".$prefix."login` WHERE username=:username LIMIT 1");
-        $s->execute(
-          array(
-            ':username'=>$username
-          )
-        );
+        $s->execute([':username'=>$username]);
         $r=$s->fetch(PDO::FETCH_ASSOC);
         if($s->rowCount()>0)
           $notification.=$theme['settings]']['signup_erroruserexists'];
@@ -87,17 +87,15 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']=='none'){
           $hash=password_hash($password,PASSWORD_DEFAULT);
           $activate=md5(time());
           $us=$db->prepare("INSERT INTO `".$prefix."login` (username,password,email,hash,activate,active,ti) VALUES (:username,:password,:email,:hash,:activate,:active,:ti)");
-          $us->execute(
-            array(
-              ':username'=>$username,
-              ':password'=>$hash,
-              ':email'=>$email,
-              ':hash'=>md5($email),
-              ':activate'=>$activate,
-              ':active'=>0,
-              ':ti'=>time()
-            )
-          );
+          $us->execute([
+            ':username'=>$username,
+            ':password'=>$hash,
+            ':email'=>$email,
+            ':hash'=>md5($email),
+            ':activate'=>$activate,
+            ':active'=>0,
+            ':ti'=>time()
+          ]);
           include'..'.DS.'class.phpmailer.php';
           $mail=new PHPMailer;
         	$mail->isSendmail();
@@ -106,34 +104,26 @@ if(isset($_POST['emailtrap'])&&$_POST['emailtrap']=='none'){
         	$mail->AddAddress($email);
         	$mail->IsHTML(true);
           $subject=isset($config['accountActivationSubject'])&&$config['accountActivationSubject']!=''?$config['accountActivationLayout']:'Account Activation for {username} from {site}.';
-          $subject=str_replace(
-            array(
-              '{username}',
-              '{site}'
-            ),
-            array(
-              $username,
-              $config['business']
-            ),
-            $subject
-          );
+          $subject=str_replace([
+            '{username}',
+            '{site}'
+          ],[
+            $username,
+            $config['business']
+          ],$subject);
         	$mail->Subject=$subject;
         	$msg=isset($config['accountActivationLayout'])&&$config['accountActivationLayout']!=''?$config['accountActivationLayout']:'<p>Hi {username},</p><p>Below is the Activation Link to enable your Account at {site}.<br>{activation_link}</p><p>If this email is in error, and you did not sign up for an Account, please take the time to contact us to let us know, or alternatively ignore this email and your email will be purged from our system in a few days.</p>';
-          $msg=str_replace(
-            array(
-              '{username}',
-              '{site}',
-              '{activation_link}',
-              '{password}'
-            ),
-            array(
-              $username,
-              $config['business'],
-              '<a href="'.URL.'?activate='.$activate.'">'.URL.'?activate='.$activate.'</a>',
-              $password
-            ),
-            $msg
-          );
+          $msg=str_replace([
+            '{username}',
+            '{site}',
+            '{activation_link}',
+            '{password}'
+          ],[
+            $username,
+            $config['business'],
+            '<a href="'.URL.'?activate='.$activate.'">'.URL.'?activate='.$activate.'</a>',
+            $password
+          ],$msg);
         	$mail->Body=$msg;
         	$mail->AltBody=$msg;
         	if($mail->Send())

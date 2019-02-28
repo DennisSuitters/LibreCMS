@@ -1,8 +1,25 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - SEO Stats for Content
+ *
+ * seostats-content.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - SEO Stats for Alexa
+ * @package    core/layout/seostats-content.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $t=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
@@ -100,7 +117,7 @@ if($a=='social'){?>
     </div>
   </div>
 </div>
-<script>/*<![CDATA[*/
+<script>
   $.get("core/layout/seostats-social.php?u=<?php echo $u;?>", {}, function (results) {
     var social = results.split(",");
     $('#social-loading').fadeOut();
@@ -113,35 +130,35 @@ if($a=='social'){?>
     if (social[6] != 'n.a.') $('#social-digg').countTo({        from: 0, to: social[6]});
     if (social[7] != 'n.a.') $('#social-stumbleupon').countTo({ from: 0, to: social[7]});
   });
-/*]]>*/</script>
+</script>
 <?php }
 if($a=='google'){?>
 <legend class="control-legend clearfix">Google <span id="google-loading" class="pull-right"><div class="loader display margin"></div> Loading Stats...</span></legend>
 <div class="col-xs-12" id="seostats-google"></div>
-<script>/*<![CDATA[*/
+<script>
   $.get("core/layout/seostats-google.php?id=<?php echo $id;?>&t=content&u=<?php echo $u;?>", {}, function (results) {
     $('#google-loading').fadeOut('hidden');
     $('#seostats-google').html(results);
   });
-/*]]>*/</script>
+</script>
 <?php }
 if($a=='alexa'){?>
 <legend class="control-legend clearfix">Alexa <span id="alexa-loading" class="pull-right"><div class="loader display margin"></div> Loading Stats...</span></legend>
 <div class="col-xs-12" id="seostats-alexa"></div>
-<script>/*<![CDATA[*/
+<script>
   $.get("core/layout/seostats-alexa.php?id=<?php echo $id;?>&t=content&u=<?php echo $u;?>", {}, function (results) {
     $('#alexa-loading').fadeOut('hidden');
     $('#seostats-alexa').html(results);
   });
-/*]]>*/</script>
+</script>
 <?php }
 if($a=='moz'){?>
 <legend class="control-legend clearfix">Moz <span id="moz-loading" class="pull-right"><div class="loader display margin"></div> Loading Stats...</span></legend>
 <div class="col-xs-12" id="seostats-moz"></div>
-<script>/*<![CDATA[*/
+<script>
   $.get("core/layout/seostats-moz.php?id=<?php echo $id;?>&t=content&u=<?php echo $u;?>", {}, function (results) {
     $('#moz-loading').fadeOut('hidden');
     $('#seostats-moz').html(results);
   });
-/*]]>*/</script>
+</script>
 <?php }

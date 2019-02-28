@@ -1,8 +1,25 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Messages
+ *
+ * messages.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Messages
+ * @package    core/layout/messages.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if($args[0]=='settings')
   include'core'.DS.'layout'.DS.'set_messages.php';
@@ -25,8 +42,8 @@ else{
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="">
         <a class="btn btn-ghost-normal info" href="<?php echo URL.$settings['system']['admin'].'/messages/settings';?>" data-tooltip="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings');?></a>
-        <?php if($help['messages_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['messages_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
-        if($help['messages_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['messages_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+<?php if($help['messages_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['messages_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
+if($help['messages_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['messages_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>
@@ -84,9 +101,8 @@ if(is_array($mailBoxArr)){
     $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE folder='spam' ORDER BY ti DESC, subject ASC");
     $s->execute();
   }
-$ur=$db->query("SELECT COUNT(status) AS cnt FROM `".$prefix."messages` WHERE status='unread' AND folder='INBOX'")->fetch(PDO::FETCH_ASSOC);
-$sp=$db->query("SELECT COUNT(folder) AS cnt FROM `".$prefix."messages` WHERE folder='spam' AND status='unread'")->fetch(PDO::FETCH_ASSOC);
-?>
+  $ur=$db->query("SELECT COUNT(status) AS cnt FROM `".$prefix."messages` WHERE status='unread' AND folder='INBOX'")->fetch(PDO::FETCH_ASSOC);
+  $sp=$db->query("SELECT COUNT(folder) AS cnt FROM `".$prefix."messages` WHERE folder='spam' AND status='unread'")->fetch(PDO::FETCH_ASSOC);?>
         <div class="email-app mb-4">
           <nav>
             <a class="btn btn-secondary btn-block" href="#">Compose</a>
@@ -154,7 +170,9 @@ $sp=$db->query("SELECT COUNT(folder) AS cnt FROM `".$prefix."messages` WHERE fol
                       <input type="checkbox" id="message<?php echo$r['id'];?>">
                       <label for="message<?php echo$r['id'];?>"/>
                     </div>
-                    <?php $scc=$db->prepare("SELECT ip FROM `".$prefix."iplist` WHERE ip=:ip");$scc->execute(array(':ip'=>$r['ip']));if($scc->rowCount()<1){?><button class="btn btn-secondary btn-sm" data-tooltip="tooltip" title="Add Originators IP to the Blacklist."><?php echo svg2('libre-gui-security');?></button><?php }?>
+<?php $scc=$db->prepare("SELECT ip FROM `".$prefix."iplist` WHERE ip=:ip");
+      $scc->execute([':ip'=>$r['ip']]);
+      if($scc->rowCount()<1)echo'<button class="btn btn-secondary btn-sm" data-tooltip="tooltip" title="Add Originators IP to the Blacklist.">'.svg2('libre-gui-security').'</button>';?>
                     <button class="btn btn-secondary btn-sm trash"><?php svg('libre-gui-trash');?></button>
                   </div>
                 </div>
@@ -215,10 +233,10 @@ $sp=$db->query("SELECT COUNT(folder) AS cnt FROM `".$prefix."messages` WHERE fol
                   <td class="text-center"><?php echo date('M j \a\t G:i',$r['ti']);?></td>
                   <td id="controls_<?php echo$r['id'];?>">
                     <div class="btn-group float-right">
-                      <a class="btn btn-secondary" href="<?php echo URL.$settings['system']['admin'];?>/messages/view/<?php echo$r['id'];?>" data-toggle="tooltip" title="View"><?php svg('libre-gui-view');?></a>
-                      <button class="btn btn-secondary<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','')" data-toggle="tooltip" title="Restore"><?php svg('libre-gui-untrash');?></button>
-                      <button class="btn btn-secondary trash<?php echo$r['status']=='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','delete')" data-toggle="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
-                      <button class="btn btn-secondary trash<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="purge('<?php echo $r['id'];?>','messages')" data-toggle="tooltip" title="Purge"><?php svg('libre-gui-purge');?></button>
+                      <a class="btn btn-secondary" href="<?php echo URL.$settings['system']['admin'];?>/messages/view/<?php echo$r['id'];?>" data-tooltip="tooltip" title="View"><?php svg('libre-gui-view');?></a>
+                      <button class="btn btn-secondary<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','')" data-tooltip="tooltip" title="Restore"><?php svg('libre-gui-untrash');?></button>
+                      <button class="btn btn-secondary trash<?php echo$r['status']=='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','delete')" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
+                      <button class="btn btn-secondary trash<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="purge('<?php echo $r['id'];?>','messages')" data-tooltip="tooltip" title="Purge"><?php svg('libre-gui-purge');?></button>
                     </div>
                   </td>
                 </tr>

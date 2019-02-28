@@ -1,13 +1,30 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Interface Preferences
+ *
+ * pref_interface.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Preferences - Interface
+ * @package    core/layout/pref_interface.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/preferences';?>">Preferences</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><strong>Interface</strong></li>
+    <li class="breadcrumb-item active" aria-current="page">Interface</li>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="">
         
@@ -94,9 +111,9 @@
         <div class="form-group row">
           <label for="update_url" class="col-form-label col-sm-2" data-tooltip="tooltip" title="URL where new updates are checked and downloaded from.">Update URL</label>
           <div class="input-group col-sm-10">
-            <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="update_url" data-tooltip="tooltip" title="Fingerprint Analysis.">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="update_url" data-tooltip="tooltip" title="Fingerprint Analysis.">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="update_url" class="form-control textinput" value="<?php echo$config['update_url'];?>" data-dbid="1" data-dbt="config" data-dbc="update_url" placeholder="Enter an Update URL..." data-tooltip="tooltip" title="URL to Fetch System Updates From...">
-            <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="saveupdate_url" class="btn btn-secondary save" data-dbid="update_url" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+            <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="saveupdate_url" class="btn btn-secondary save" data-dbid="update_url" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
           </div>
         </div>
         <div class="help-block small text-muted text-right">'0' Disables Idle Timeout.</div>
@@ -105,16 +122,16 @@
           <div class="input-group col-sm-10">
             <input type="text" id="idleTime" class="form-control textinput" value="<?php echo$config['idleTime'];?>" data-dbid="1" data-dbt="config" data-dbc="idleTime" placeholder="Enter a Time in Minutes..." data-tooltip="tooltip" title="Time in Minutes for Idle Timeout for Auto Logout...">
             <div class="input-group-text">Minutes</div>
-            <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="saveidleTime" class="btn btn-secondary save" data-dbid="idleTime" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+            <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="saveidleTime" class="btn btn-secondary save" data-dbid="idleTime" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
           </div>
         </div>
         <div class="help-block small text-muted text-right">For information on Date Format Characters click <a target="_blank" href="http://php.net/manual/en/function.date.php#refsect1-function.date-parameters">here</a>.</div>
         <div class="form-group row">
           <label for="dateFormat" class="col-form-label col-sm-2">Date/Time Format</label>
           <div class="input-group col-sm-10">
-            <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="dateFormat" data-tooltip="tooltip" title="Fingerprint Analysis.">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+<?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="dateFormat" data-tooltip="tooltip" title="Fingerprint Analysis.">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
             <input type="text" id="dateFormat" class="form-control textinput" value="<?php echo$config['dateFormat'];?>" data-dbid="1" data-dbt="config" data-dbc="dateFormat" placeholder="Enter a Date/Time Format..." data-tooltip="tooltip" title="Format Layout of all Dates/Times displayed.">
-            <div class="input-group-append" data-tooltip="tooltip" data-placement="top" title="Save"><button id="savedateFormat" class="btn btn-secondary save" data-dbid="dateFormat" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+            <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savedateFormat" class="btn btn-secondary save" data-dbid="dateFormat" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
           </div>
         </div>
       </div>

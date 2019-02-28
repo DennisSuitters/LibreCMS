@@ -55,7 +55,7 @@
               $note.summernote('code', noteText);
             }
             unsaved = false;
-            $editor.find('.note-save button').removeClass('btn-danger');
+            $editor.find('.note-save button').removeClass('bg-danger');
           }
         });
         return button.render();
@@ -63,7 +63,7 @@
       this.events = {
         'summernote.change':function (we, e) {
           unsaved = true;
-          $editor.find('.note-save button').addClass('btn-danger');
+          $editor.find('.note-save button').addClass('bg-danger');
         },
         'summernote.keydown':function (we, e) {
           if(e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
@@ -77,11 +77,11 @@
               $note.summernote('code', noteText);
             }
             unsaved = false;
-            $editor.find('.note-save button').removeClass('btn-danger');
+            $editor.find('.note-save button').removeClass('bg-danger');
           }
         }
       };
-      var unsaved = false;
+      unsaved = false;
       $(window).bind('beforeunload',function () {
         if (unsaved) return lang.save.unsaved;
       });

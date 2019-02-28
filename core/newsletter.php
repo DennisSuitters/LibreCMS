@@ -1,12 +1,29 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Newsletter
+ *
+ * newsletter.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Newletter
+ * @package    core/newsletter.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-echo'<script>/*<![CDATA[*/';
+echo'<script>';
 $getcfg=true;
-require_once'db.php';
+require'db.php';
 define('THEME','..'.DS.'layout'.DS.$config['theme']);
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('ADMINURL',URL.$settings['system']['admin'].'/');
@@ -14,20 +31,14 @@ define('UNICODE','UTF-8');
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $s=$db->prepare("SELECT title,notes FROM `".$prefix."content` WHERE id=:id");
-$s->execute(
-  array(
-    ':id'=>$id
-  )
-);
+$s->execute([':id'=>$id]);
 $news=$s->fetch(PDO::FETCH_ASSOC);
 $u=$db->prepare("UPDATE `".$prefix."content` SET status=:status,tis=:tis WHERE id=:id");
-$u->execute(
-  array(
-    ':status'=>'published',
-    ':tis'=>time(),
-    ':id'=>$id
-  )
-);
+$u->execute([
+  ':status'=>'published',
+  ':tis'=>time(),
+  ':id'=>$id
+]);
 include'class.phpmailer.php';
 if($config['email']!=''){
   $mail=new PHPMailer;
@@ -45,11 +56,9 @@ if($config['email']!=''){
       foreach($matches[0] as$img){
         $imgid='img'.($i++);
         preg_match('/src="(.*?)"/',$body,$m);
-        if(!isset($m[1]))
-          continue;
+        if(!isset($m[1]))continue;
         $arr=parse_url($m[1]);
-        if(!isset($arr['host'])||!isset($arr['path']))
-          continue;
+        if(!isset($arr['host'])||!isset($arr['path']))continue;
         $imgname=basename($m[1]);
         $mail->AddEmbeddedImage('..'.DS.'media'.DS.$imgname,$imgid,$imgname);
         $body=str_replace($img,'<img alt="" src="cid:'.$imgid.'" style="border:none"/>',$body);
@@ -64,8 +73,7 @@ if($config['email']!=''){
   $s=$db->prepare("SELECT DISTINCT email,hash FROM `".$prefix."subscribers` UNION SELECT DISTINCT email,hash FROM `".$prefix."login` WHERE newsletter=1");
   $s->execute();
   while($r=$s->fetch(PDO::FETCH_ASSOC)){
-    if(($sendCount % $betweenDelay)==0)
-      sleep($sendDelay);
+    if(($sendCount % $betweenDelay)==0)sleep($sendDelay);
     $mail->AddAddress($r['email']);
     $optOut=$config['newslettersOptOutLayout'];
     $optOut=str_replace('{optOutLink}',URL.'newsletters/unsubscribe/'.$r['hash'],$optOut);
@@ -86,4 +94,4 @@ if($config['email']!=''){
   window.top.window.$('#notification').html('<div class="alert alert-danger">The Sites <a class="alert-link" href="<?php echo ADMINURL;?>preferences#preference-contact">Email</a> hasn\'t been set.</div>');
   window.top.window.Pace.stop();
 <?php }
-echo'/*]]>*/</script>';
+echo'</script>';

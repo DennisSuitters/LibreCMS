@@ -1,35 +1,42 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Email Order
+ *
+ * email_order.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Email Order
+ * @package    core/email_order.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 $getcfg=true;
-require_once'db.php';
+require'db.php';
 include'tcpdf'.DS.'tcpdf.php';
 $id=filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $w=filter_input(INPUT_GET,'w',FILTER_SANITIZE_STRING);
 $act=filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
 $q=$db->prepare("SELECT * FROM `".$prefix."orders` WHERE id=:id");
-$q->execute(
-  array(
-    ':id'=>$id
-  )
-);
+$q->execute([':id'=>$id]);
 $r=$q->fetch(PDO::FETCH_ASSOC);
 $r['notes']=rawurldecode($r['notes']);
 $s=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
-$s->execute(
-  array(
-    ':id'=>$r['cid']
-  )
-);
+$s->execute([':id'=>$r['cid']]);
 $c=$s->fetch(PDO::FETCH_ASSOC);
 $ti=time();
-if($r['qid']!='')
-  $oid=$r['qid'];
-if($r['iid']!='')
-  $oid=$r['iid'];
+if($r['qid']!='')$oid=$r['qid'];
+if($r['iid']!='')$oid=$r['iid'];
 $pdf=new TCPDF(PDF_PAGE_ORIENTATION,PDF_UNIT,PDF_PAGE_FORMAT,true,'UTF-8',false);
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor($config['business']);
@@ -122,25 +129,13 @@ $i=13;
 $ot=$st=$pwc=0;
 $zeb=1;
 $s=$db->prepare("SELECT * FROM `".$prefix."orderitems` WHERE oid=:oid AND status!='delete'");
-$s->execute(
-  array(
-    ':oid'=>$id
-  )
-);
+$s->execute([':oid'=>$id]);
 while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 	$si=$db->prepare("SELECT code,title FROM `".$prefix."content` WHERE id=:id");
-	$si->execute(
-    array(
-      ':id'=>$ro['iid']
-    )
-  );
+	$si->execute([':id'=>$ro['iid']]);
 	$i=$si->fetch(PDO::FETCH_ASSOC);
 	$sc=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE id=:id");
-	$sc->execute(
-    array(
-      ':id'=>$ro['cid']
-    )
-  );
+	$sc->execute([':id'=>$ro['cid']]);
 	$ch=$sc->fetch(PDO::FETCH_ASSOC);
   $st=$ro['cost']*$ro['quantity'];
 	$html.='<tr'.($zeb==1?' style="background-color:#f4f4f4;"':' style="backgroound-color:#fff;"').'>'.
@@ -157,11 +152,7 @@ while($ro=$s->fetch(PDO::FETCH_ASSOC)){
 $html.='</tbody>'.
         '<tfoot>';
 $sr=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:rid");
-$sr->execute(
-  array(
-    ':rid'=>$r['rid']
-  )
-);
+$sr->execute([':rid'=>$r['rid']]);
 if($sr->rowCount()>0){
 	$reward=$sr->fetch(PDO::FETCH_ASSOC);
 	$html.='<tr style="background-color:#f0f0f0">'.
@@ -220,7 +211,7 @@ $html.='<tr style="background-color:#f0f0f0">'.
 $pdf->writeHTML($html,true,false,true,false,'');
 $pdf->Output(__DIR__.DS.'..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf','F');
 chmod('..' .DS.'media'.DS.'orders'.DS.$oid.'.pdf',0777);
-echo'<script>/*<![CDATA[*/';
+echo'<script>';
 if($act=='print'){?>
 	window.top.window.open('media/orders/<?php echo$oid;?>.pdf','_blank');
 <?php }else{
@@ -239,48 +230,40 @@ if($act=='print'){?>
   }
   $namee=explode(' ',$c['name']);
   $subject=isset($config['orderEmailSubject'])&&$config['orderEmailSubject']!=''?$config['orderEmailSubject']:'Order {order_number} from {business}';
-  $subject=str_replace(
-    array(
-      '{business}',
-      '{name}',
-      '{first}',
-      '{last}',
-      '{date}',
-      '{order_number}'
-    ),
-    array(
-      $config['business'],
-      $c['name'],
-      $namee[0],
-      end($namee),
-      date($config['dateFormat'],$r['ti']),
-      $oid
-    ),
-    $subject
-  );
+  $subject=str_replace([
+    '{business}',
+    '{name}',
+    '{first}',
+    '{last}',
+    '{date}',
+    '{order_number}'
+  ],[
+    $config['business'],
+    $c['name'],
+    $namee[0],
+    end($namee),
+    date($config['dateFormat'],$r['ti']),
+    $oid
+  ],$subject);
 	$mail->Subject=$subject;
 	$msg=isset($config['orderEmailLayout'])&&$config['orderEmailLayout']!=''?rawurldecode($config['orderEmailLayout']):'<p>Hello {first},</p><p>Please find attached Order {order_number}</p><p>Note: {notes}</p>';
-  $msg=str_replace(
-    array(
-      '{business}',
-      '{name}',
-      '{first}',
-      '{last}',
-      '{date}',
-      '{order_number}',
-      '{notes}'
-    ),
-    array(
-      $config['business'],
-      $c['name'],
-      $namee[0],
-      end($namee),
-      date($config['dateFormat'],$r['ti']),
-      $oid,
-      rawurldecode($r['notes'])
-    ),
-    $msg
-  );
+  $msg=str_replace([
+    '{business}',
+    '{name}',
+    '{first}',
+    '{last}',
+    '{date}',
+    '{order_number}',
+    '{notes}'
+  ],[
+    $config['business'],
+    $c['name'],
+    $namee[0],
+    end($namee),
+    date($config['dateFormat'],$r['ti']),
+    $oid,
+    rawurldecode($r['notes'])
+  ],$msg);
 	$mail->Body=$msg;
 	$mail->AltBody=strip_tags(preg_replace('/<br(\s+)?\/?>/i',"\n",$msg));
 	$mail->AddAttachment('..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf');
@@ -292,4 +275,4 @@ window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue se
 }?>
   window.top.window.Pace.stop();
 <?php
-echo'/*]]>*/</script>';
+echo'</script>';

@@ -1,19 +1,30 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Displays Bookings
+ *
+ * bookings.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Bookings
+ * @package    core/layout/bookings.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if($view=='add'){
   $ti=time();
   $q=$db->prepare("INSERT INTO `".$prefix."content` (uid,contentType,status,ti,tis) VALUES (:uid,'booking','unconfirmed',:ti,:tis)");
-  $q->execute(
-    array(
-      ':uid'=>$user['id'],
-      ':ti'=>$ti,
-      ':tis'=>$ti
-    )
-  );
+  $q->execute([':uid'=>$user['id'],':ti'=>$ti,':tis'=>$ti]);
   $id=$db->lastInsertId();
   $view='bookings';
   $args[0]='edit';
@@ -26,7 +37,7 @@ elseif($args[0]=='edit')
   include'core'.DS.'layout'.DS.'edit_bookings.php';
 else{?>
 <main id="content" class="main">
-  <ol class="breadcrumb">
+  <ol class="breadcrumb shadow">
     <li class="breadcrumb-item active" aria-current="page">Bookings</li>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="">
@@ -34,8 +45,8 @@ else{?>
         <a id="calendar-view" href="#" class="btn btn-ghost-normal info<?php echo(isset($_COOKIE['bookingview'])&&($_COOKIE['bookingview']=='table'||$_COOKIE['bookingview']=='')?' hidden':'');?>" onclick="toggleCalendar();return false;" data-tooltip="tooltip" data-placement="left" title="Switch to Table View"><?php svg('libre-gui-table');?></a>
         <a id="table-view" href="#" class="btn btn-ghost-normal info<?php echo(isset($_COOKIE['bookingview'])&&$_COOKIE['bookingview']=='calendar'?' hidden':'');?>" onclick="toggleCalendar();return false;" data-tooltip="tooltip" data-placement="left" title="Switch to Calendar View"><?php svg('libre-gui-calendar');?></a>
         <a class="btn btn-ghost-normal info" href="<?php echo URL.$settings['system']['admin'].'/bookings/settings';?>" data-tooltip="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings');?></a>
-        <?php if($help['bookings_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['bookings_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
-        if($help['bookings_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['bookings_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+<?php if($help['bookings_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['bookings_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
+if($help['bookings_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['bookings_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>
@@ -50,14 +61,14 @@ else{?>
           <table class="table table-condensed table-striped table-hover">
             <thead>
               <tr>
-                <th></th>
-                <th class="col-xs-3"></th>
+                <th class="col"></th>
+                <th class="col-sm-3"></th>
               </tr>
             </thead>
             <tbody id="bookings">
 <?php $s=$db->query("SELECT * FROM `".$prefix."content` WHERE contentType='booking' ORDER BY ti DESC");
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-              <tr id="l_<?php echo$r['id'];?>" class="<?php echo($r['status']=='unconfirmed'?' danger':'');?>">
+              <tr id="l_<?php echo$r['id'];?>" class="<?php echo$r['status']=='unconfirmed'?' danger':'';?>">
                 <td>
                   <small><?php echo date($config['dateFormat'],$r['ti']).'<br>Start: '.date($config['dateFormat'],$r['tis']).($r['tie']>$r['tis']?'<br>End: ' . date($config['dateFormat'], $r['tie']):'').($r['business']!=''?'<br>Business: '.$r['business']:'').($r['name']!=''?'<br>Name'.': '.$r['name']:'').($r['email']!=''?'<br>Email'.': <a href="mailto:'.$r['email'].'">'.$r['email'].'</a>':'').($r['phone']!=''?'<br>Phone'.': '.$r['phone']:'');?></small>
                 </td>
@@ -78,9 +89,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
     </div>
   </div>
 </main>
-<script src="core/js/moment.min.js"></script>
-<script src="core/js/fullcalendar.min.js"></script>
-<script>/*<![CDATA[*/
+<script>
 <?php if($args[0]!='add'||$args[0]!='edit'){?>
   var $contextMenu=$("#contextMenu");
   $('#calendar').fullCalendar({
@@ -97,17 +106,17 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
 <?php $s=$db->query("SELECT * FROM `".$prefix."content` WHERE contentType='booking'");
 while($r=$s->fetch(PDO::FETCH_ASSOC)){
   $bs=$db->prepare("SELECT contentType,title,tis,tie,ti FROM content WHERE id=:id");
-  $bs->execute(array(':id'=>$r['rid']));
+  $bs->execute([':id'=>$r['rid']]);
   $br=$bs->fetch(PDO::FETCH_ASSOC);?>
       {
         id:'<?php echo$r['id'];?>',
         title:'<?php if($br['contentType']=='events'){?>Event: <?php echo$br['title'];}elseif($br['contentType']!=''){echo ucfirst(rtrim($br['contentType'],'s')).': '.$br['title'];}else echo$r['name'];?>',
         start:'<?php echo date("Y-m-d H:i:s",$r['tis']);?>',
-<?php echo($r['tie']>$r['tis']?'eventend: \''.date("Y-m-d H:i:s",$r['tie']).'\',':'');?>
+<?php echo$r['tie']>$r['tis']?'eventend: \''.date("Y-m-d H:i:s",$r['tie']).'\',':'';?>
         allDay:false,
-        color:'<?php echo($r['status']=='confirmed'?'#4dbd74':'#f86c6b');?>',
+        color:'<?php echo$r['status']=='confirmed'?'#4dbd74':'#f86c6b';?>',
         description:'<?php echo($r['business']!=''?'Business: '.$r['business'].'<br>':'').($r['name']!=''?'Name'.': '.$r['name'].'<br>':'').($r['email']!=''?'Email'.': <a href="mailto:'.$r['email'].'">'.$r['email'].'</a><br>':'').($r['phone']!=''?'Phone'.': '.$r['phone'].'<br>':'');?>',
-        status:'<?php echo $r['status'];?>',
+        status:'<?php echo$r['status'];?>',
       },
 <?php	}?>
     ],
@@ -116,7 +125,7 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
       if(event.status=="unconfirmed")layer+='<button id="cbut'+event.id+'" class="btn btn-secondary btn-sm add" data-tooltip="tooltip" title="Confirm"><?php svg('libre-gui-approve');?></button> ';
       layer+='<button id="edbut'+event.id+'" class="btn btn-secondary btn-sm" data-tooltip="tooltip" title="Edit"><?php svg('libre-gui-edit');?></button><button id="delbut'+event.id+'" class="btn btn-secondary btn-sm trash" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button></div>';
       var content='Start: '+$.fullCalendar.moment(event.start).format('HH:mm');
-<?php echo($r['tie']>$r['tis']?'content+=\'<br>End: \'+$.fullCalendar.moment(event.eventend).format(\'HH:mm\');':'');?>
+<?php echo$r['tie']>$r['tis']?'content+=\'<br>End: \'+$.fullCalendar.moment(event.eventend).format(\'HH:mm\');':'';?>
       if(event.description!='')content+='<br>'+event.description;
       var el=$(this);
       el.append(layer);
@@ -172,5 +181,5 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){
       $('#calendar').fullCalendar('option','height',calHeight);
     });
 <?php }?>
-/*]]>*/</script>
+</script>
 <?php }

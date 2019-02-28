@@ -1,12 +1,29 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Core - Change Admin Access Folder
+ *
+ * change_adminaccess.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Core - Change Admin Access Folder
+ * @package    core/change_adminaccess.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-echo'<script>/*<![CDATA[*/';
+echo'<script>';
 $getcfg=true;
-require_once'db.php';
+require'db.php';
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 $adminfolder=isset($_POST['adminfolder'])?filter_input(INPUT_POST,'adminfolder',FILTER_SANITIZE_STRING):'';
 if($adminfolder==''){?>
@@ -15,7 +32,7 @@ if($adminfolder==''){?>
 <?php
 }else{
   $s=$db->prepare("SELECT id FROM menu WHERE file LIKE :file");
-  $s->execute(array(':file'=>$adminfolder));
+  $s->execute([':file'=>$adminfolder]);
   if($s->rowCount()>0){?>
     window.top.window.$('#adminfolder').addClass('is-invalid');
     window.top.window.toastr["error"]("Folder must NOT be the same as an already existing Page!<br>Change not saved!");
@@ -48,4 +65,4 @@ if($adminfolder==''){?>
   window.top.window.toastr["success"]("Administration Access Folder Updated!");
 <?php }
 }
-echo'/*]]>*/</script>';
+echo'</script>';

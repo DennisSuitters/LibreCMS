@@ -1,8 +1,25 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * Administration - Displays Edited Data with Options in a Popup
+ *
+ * dataspy.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - Accounts
+ * @package    core/layout/dataspy.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 $getcfg=true;
@@ -14,13 +31,7 @@ $c=isset($_POST['c'])?filter_input(INPUT_POST,'c',FILTER_SANITIZE_STRING):filter
 define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
 define('UNICODE','UTF-8');
 $s=$db->prepare("SELECT * FROM `".$prefix."logs` WHERE rid=:id AND refTable=:t AND refColumn=:c ORDER BY ti DESC");
-$s->execute(
-  array(
-    ':id'=>$id,
-    ':t'=>$t,
-    ':c'=>$c
-  )
-);
+$s->execute([':id'=>$id,':t'=>$t,':c'=>$c]);
 if($s->rowCount()>0){?>
 <table class="table table-condensed table-striped table-hover">
   <thead>

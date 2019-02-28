@@ -1,24 +1,37 @@
 <?php
-/*
- * LibreCMS - Copyright (C) Diemen Design 2018
- * This software may be modified and distributed under the terms
- * of the MIT license (http://opensource.org/licenses/MIT).
+/**
+ * LibreCMS - Copyright (C) Diemen Design 2019
+ *
+ * View - Maintenance Renderer
+ *
+ * maintenance.php version 2.0.0
+ *
+ * LICENSE: This source file may be modifired and distributed under the terms of
+ * the MIT license that is available through the world-wide-web at the following
+ * URI: http://opensource.org/licenses/MIT.  If you did not receive a copy of
+ * the MIT License and are unable to obtain it through the web, please
+ * check the root folder of the project for a copy.
+ *
+ * @category   Administration - View - Maintenance
+ * @package    core/view/maintenance.php
+ * @author     Dennis Suitters <dennis@diemen.design>
+ * @copyright  2014-2019 Diemen Design
+ * @license    http://opensource.org/licenses/MIT  MIT License
+ * @version    2.0.0
+ * @link       https://github.com/DiemenDesign/LibreCMS
+ * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-$html=preg_replace(
-  array(
-    '/<print theme>/',
-    '/<print url>/',
-    '/<print meta=favicon>/',
-    '/<print config=[\"\']?business[\"\']?>/'
-  ),
-  array(
-    THEME,
-    URL,
-    $favicon,
-    $config['business']
-  ),
-  $html
-);
+$html=preg_replace([
+  '/<print theme>/',
+  '/<print url>/',
+  '/<print meta=favicon>/',
+  '/<print config=[\"\']?business[\"\']?>/'
+],[
+  THEME,
+  URL,
+  $favicon,
+  $config['business']
+],$html);
 if(stristr($html,'<buildSocial')){
 	preg_match('/<buildSocial>([\w\W]*?)<\/buildSocial>/',$html,$matches);
 	$htmlSocial=$matches[1];
@@ -27,21 +40,17 @@ if(stristr($html,'<buildSocial')){
 	if($s->rowCount()>0){
 		while($r=$s->fetch(PDO::FETCH_ASSOC)){
 			$buildSocial=$htmlSocial;
-			$buildSocial=str_replace(
-				array(
-					'<print sociallink>',
-					'<print socialicon>'
-				),
-				array(
-					$r['url'],
-					frontsvg('libre-social-'.$r['icon'])
-				),
-				$buildSocial
-			);
+			$buildSocial=str_replace([
+				'<print sociallink>',
+				'<print socialicon>'
+			],[
+				$r['url'],
+				frontsvg('libre-social-'.$r['icon'])
+			],$buildSocial);
 			$socialItems.=$buildSocial;
 		}
 	}else
-		$socialItems='';
+    $socialItems='';
 	$html=preg_replace('~<buildSocial>.*?<\/buildSocial>~is',$socialItems,$html,1);
 }
 $content.=$html;
