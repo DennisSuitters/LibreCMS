@@ -4,7 +4,7 @@
  *
  * Administration - Orders Settings
  *
- * set_orders.php version 2.0.0
+ * set_orders.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,17 +17,19 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Added ability to create Postage Options with Price
+ * @changes    v2.0.1 Change Back Link to Referer
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/orders';?>">Orders</a></li>
-    <li class="breadcrumb-item active"><strong>Settings</strong></li>
+    <li class="breadcrumb-item active">Settings</li>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="Settings">
-        <a class="btn btn-ghost-normal add" href="<?php echo URL.$settings['system']['admin'].'/orders';?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
+        <a class="btn btn-ghost-normal add" href="<?php echo$_SERVER['HTTP_REFERER'];?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
 <?php if($help['orders_settings_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['orders_settings_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
 if($help['orders_settings_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['orders_settings_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
@@ -36,6 +38,40 @@ if($help['orders_settings_video']!='')echo'<a href="#" class="btn btn-ghost-norm
   <div class="container-fluid">
     <div class="card">
       <div class="card-body">
+        <legend>Postage Options</legend>
+        <form target="sp" method="post" action="core/add_postoption.php">
+          <div class="form-group row">
+            <div class="input-group col">
+              <span class="input-group-text">Service</span>
+              <input type="text" class="form-control" name="t" value="" placeholder="Enter Service Option...">
+              <span class="input-group-text">Cost</span>
+              <input type="text" class="form-control" name="v" value="" placeholder="Enter Cost...">
+              <div class="input-group-append"><button class="btn btn-secondary add" data-tooltip="tooltip" title="Add"><?php svg('libre-gui-plus');?></button></div>
+            </div>
+          </div>
+        </form>
+        <div id="postoption">
+<?php $ss=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE contentType='postoption' AND uid=0 ORDER BY title ASC");
+$ss->execute();
+while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
+          <div id="l_<?php echo$r['id'];?>" class="form-group row">
+            <div class="input-group col">
+              <span class="input-group-text">Service</span>
+              <input type="text" class="form-control" name="service" value="<?php echo$rs['title'];?>" readonly>
+              <span class="input-group-text">Cost</span>
+              <input type="text" class="form-control" name="cost" value="<?php echo$rs['value']!=0?$rs['value']:'';?>" readonly>
+              <div class="input-group-append">
+                <form target="sp" action="core/purge.php">
+                  <input type="hidden" name="id" value="<?php echo$rs['id'];?>">
+                  <input type="hidden" name="t" value="choices">
+                  <button class="btn btn-secondary trash" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
+                </form>
+              </div>
+            </div>
+          </div>
+<?php }?>
+        </div>
+        <hr>
         <legend>Banking</legend>
         <div class="form-group row">
           <label for="bank" class="col-form-label col-sm-2">Bank</label>

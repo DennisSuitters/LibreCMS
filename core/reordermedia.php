@@ -4,7 +4,7 @@
  *
  * Core - Reorder Media Items
  *
- * reordermedia.php version 2.0.0
+ * reordermedia.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,13 +17,15 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Add $getcfg=false
  */
+$getcfg=false;
 require'db.php';
 $i=0;
-foreach($_POST['media_items'] as$id){
+foreach($_POST['mi'] as$id){
   $s=$db->prepare("UPDATE `".$prefix."media` SET ord=:ord WHERE id=:id");
   $s->execute([
     ':ord'=>$i,

@@ -4,7 +4,7 @@
  *
  * View - More Renderer - For Loading More In-Page Content Items
  *
- * more.php version 2.0.0
+ * more.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Add Sluggification
  */
 $getcfg=true;
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
@@ -83,12 +84,13 @@ if(stristr($html,'<items>')){
       $controls='';
     }else{
       if(stristr($items,'<view>')){
-        $items=preg_replace('/<print content=[\"\']?linktitle[\"\']?>/',URL.$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),$items);
         $items=preg_replace([
+          '/<print content=[\"\']?linktitle[\"\']?>/',
           '/<print content=[\"\']?title[\"\']?>/',
           '/<view>/',
           '/<\/view>/'
         ],[
+          URL.$r['contentType'].'/'.$r['urlSlug'],
           $r['title'],
           '',
           ''

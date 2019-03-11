@@ -5,16 +5,15 @@
 		<main id="content" class="col mt-5" role="main">
 			<emptycart>
 				<iframe id="sp2" name="sp" class="d-none"></iframe>
-				<div class="row m-4">
+				<div class="row">
         	<div class="col-md-6 order-md-2 mb-4">
-          	<h4 class="d-flex justify-content-between align-items-center mb-3">
-            	<span class="text-muted">Your cart</span>
-          	</h4>
+          	<h4 class="d-flex justify-content-between align-items-center mb-3">Your cart</h4>
           	<ul class="list-group mb-3">
 							<items>
 	            	<li class="list-group-item d-flex justify-content-between lh-condensed">
+									<img src="<print content=image>" style="max-width:32px;height:32px;" alt="<print content=title>">
 	              	<div>
-	                	<h6 class="my-0"><print content="code">: <print content="title"></h6>
+	                	<h6 class="my-0 text-left"><print content="code">: <print content="title"></h6>
 	                	<small class="text-muted"><print content="seoDescription"></small><br>
 										<small class="text-muted"><print choice></small>
 	              	</div>
@@ -28,51 +27,46 @@
           	</ul>
         	</div>
         	<div class="col-md-6 order-md-1">
-						<form class="form" method="post" action="cart/confirm" role="form">
-							<input type="hidden" name="emailtrap" value="">
+						<form method="post" action="cart/confirm" role="form">
+							<input type="hidden" name="emailtrap" value="none">
 							<loggedin>
-								<div class="row">
-          				<h4 class="mb-3">Billing address</h4>
-								</div>
-								<div class="row">
-									<h5 role="heading">Create or Add to Existing Account</h5>
-								</div>
+        				<h4 role="heading">Billing address</h4>
+								<h5 role="heading">Create or Add to Existing Account</h5>
 								<div class="alert alert-info">
 									If you have ordered from us previously, or already have an account, you can just enter your email below, and we will add this order using your account details.
 								</div>
         				<div class="alert alert-danger">Red Highlighted Fields are Required.</div>
-								<div class="mb-3">
+								<div class="form-group row">
 									<label for="email" class="text-danger">Email</label>
 									<input type="email" id="email" class="form-control is-invalid" name="email" value="" placeholder="Enter an Email..." required aria-required="true" role="textbox">
 								</div>
-								<div class="mb-3">
-									<label for="rewards">Rewards</label>
-									<input type="text" id="rewards" class="form-control" name="rewards" value="" placeholder="Enter Your Rewards Code..." role="textbox">
-								</div>
-              	<div class="mb-3">
+              	<div class="form-group row">
 									<label for="business">Business</label>
 									<input type="text" id="business" class="form-control" name="business" value="" placeholder="Enter a Business..." role="textbox">
               	</div>
-								<div class="mb-3">
+								<div class="form-group row">
 									<label for="phone">Phone</label>
 									<input type="tel" id="phone" class="form-control" name="phone" value="" placeholder="Enter a Phone Number..." role="textbox">
 								</div>
-	            	<div class="mb-3">
+	            	<div class="form-group row">
 									<label for="address">Address</label>
 									<input type="text" id="address" class="form-control" name="address" value="" placeholder="Enter an Address..." role="textbox">
 	            	</div>
-								<div class="mb-3">
+								<div class="form-group row">
+									<label for="city">City</label>
+									<input type="text" id="city" class="form-control" name="city" value="" placeholder="Enter a City..." role="textbox">
+	            	</div>
+								<div class="form-group row">
 									<label for="suburb">Suburb</label>
 									<input type="text" id="suburb" class="form-control" name="suburb" value="" placeholder="Enter a Suburb..." role="textbox">
 	            	</div>
-								<div class="mb-3">
+								<div class="form-group row">
 									<label for="country">Country</label>
 									<input type="text" id="country" class="form-control" name="country" value="Australia" placeholder="Enter a Country..." role="textbox">
 								</div>
-            		<div class="row">
-              		<div class="col-md-6 mb-3">
-                		<label for="state">State</label>
-                		<select class="custom-select d-block w-100" id="state" name="state" required aria-required="true">
+            		<div class="form-group row">
+              		<label for="state">State</label>
+              		<select class="form-control" id="state" name="state">
 		                  <option value="">Choose...</option>
 											<option value="New South Wales">New South Wales</option>
 											<option value="Northern Territory">Northern Territory</option>
@@ -82,14 +76,27 @@
 											<option value="Victoria">Victoria</option>
 											<option value="Western Australia">Western Australia</option>
 											<option value="Australian Capital Territory">Australian Capital Territory</option>
-		                </select>
-		              </div>
-		              <div class="col-md-6 mb-3">
-										<label for="postcode">Postcode</label>
-										<input type="text" id="postcode" class="form-control" name="postcode" value="" placeholder="Enter a Postcode..." role="textbox">
-		              </div>
-            		</div>
+	                </select>
+	              </div>
+								<div class="form-group row">
+									<label for="postcode">Postcode</label>
+									<input type="text" id="postcode" class="form-control" name="postcode" value="" placeholder="Enter a Postcode..." role="textbox">
+	              </div>
 							</loggedin>
+							<div class="form-group row">
+								<label for="rewards">Rewards</label>
+								<input type="text" id="rewards" class="form-control" name="rewards" value="" placeholder="Enter Your Rewards Code..." role="textbox">
+							</div>
+							<postageoptions>
+								<div class="form-group row">
+									<label for="postoption">Delivery Options</label>
+									<select class="form-control" id="postoption" name="postoption">
+										<option value="0">Select a Delivery Option</option>
+										<postoptions>
+									</select>
+									<small class="help-block">Note: Delivery prices are estimates, and may change depending on order items and location of delivery.</small>
+								</div>
+							</postageoptions>
 							<div class="row">
 								<button type="submit" class="btn btn-success btn-block" role="button">Confirm Order</button>
 							</div>

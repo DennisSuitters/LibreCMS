@@ -4,7 +4,7 @@
  *
  * Core - Update Order
  *
- * updateorder.php version 2.0.0
+ * updateorder.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,11 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Add in Postage Options Recalculating.
+ * @changes    v2.0.1 Add Dropdown to Select Rewards Code if Available
  */
 echo'<script>';
 if(session_status()==PHP_SESSION_NONE)session_start();
@@ -116,10 +118,35 @@ if($act=='reward'){
     ':id'=>$id
   ]);
 }
-if($act=='postage'){
-  $s=$db->prepare("UPDATE `".$prefix."orders` SET postage=:postage WHERE id=:id");
+if($act=='addpostoption'){
+	if($da==0){
+		$rc=[
+			'title'=>'',
+			'value'=>0
+		];
+	}else{
+		$sc=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE contentType='postoption' AND id=:id");
+		$sc->execute([':id'=>$da]);
+		$rc=$sc->fetch(PDO::FETCH_ASSOC);
+	}
+	$s=$db->prepare("UPDATE `".$prefix."orders` SET postageOption=:postoption, postageCost=:postcost WHERE id=:id");
+	$s->execute([
+		':id'=>$id,
+		':postoption'=>$rc['title'],
+		':postcost'=>$rc['value']
+	]);
+}
+if($act=='postoption'){
+	$s=$db->prepare("UPDATE `".$prefix."orders` SET postageOption=:postoption WHERE id=:id");
+	$s->execute([
+		':postoption'=>$da,
+		':id'=>$id
+	]);
+}
+if($act=='postcost'){
+  $s=$db->prepare("UPDATE `".$prefix."orders` SET postageCost=:postcost WHERE id=:id");
   $s->execute([
-    ':postage'=>$da,
+    ':postcost'=>$da,
     ':id'=>$id
   ]);
 }
@@ -161,7 +188,7 @@ while($oi=$si->fetch(PDO::FETCH_ASSOC)){
     			'</td>'.
     			'<td class="text-right align-middle">'.($oi['iid']!=0?$oi['cost']*$oi['quantity']:'').'</td>'.
 					'<td class="text-right">'.
-						'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">'.
+						'<form target="sp" method="post" action="core/updateorder.php" onsubmit="Pace.restart();">'.
 							'<input type="hidden" name="act" value="trash">'.
 							'<input type="hidden" name="id" value="'.$oi['id'].'">'.
 							'<input type="hidden" name="t" value="orderitems">'.
@@ -173,22 +200,40 @@ while($oi=$si->fetch(PDO::FETCH_ASSOC)){
 				'</tr>';
   if($oi['iid']!=0)$total=$total+($oi['cost']*$oi['quantity']);
 }
-$rs=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:rid");
-$rs->execute([':rid'=>$r['rid']]);
-$reward=$rs->fetch(PDO::FETCH_ASSOC);
+$sr=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:rid");
+$sr->execute([':rid'=>$r['rid']]);
+$reward=$sr->fetch(PDO::FETCH_ASSOC);
   $html.='<tr>'.
-					'<td colspan="4" class="text-right align-middle"><strong>Rewards Code</strong></td>'.
-					'<td class="text-center">'.
-						'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">'.
-							'<input type="hidden" name="act" value="reward">'.
-							'<input type="hidden" name="id" value="'.$r['id'].'">'.
-							'<input type="hidden" name="t" value="orders">'.
-							'<input type="hidden" name="c" value="rid">'.
-							'<input type="text" class="form-control" name="da" value="'.($rs->rowCount()==1?$reward['code']:'').'">'.
+					'<td colspan="3" class="text-right align-middle"><strong>Rewards Code</strong></td>'.
+					'<td colpsan="2" class="text-center">'.
+						'<form id="rewardsinput" target="sp" method="post" action="core/updateorder.php" onsubmit="Pace.restart();">'.
+							'<div class="form-group row">'.
+								'<div class="input-group">'.
+									'<input type="hidden" name="act" value="reward">'.
+									'<input type="hidden" name="id" value="'.$r['id'].'">'.
+									'<input type="hidden" name="t" value="orders">'.
+									'<input type="hidden" name="c" value="rid">'.
+									'<input type="text" id="rewardselect" class="form-control" name="da" value="'.($sr->rowCount()==1?$reward['code']:'').'">';
+$ssr=$db->prepare("SELECT * FROM `".$prefix."rewards` ORDER BY code ASC, title ASC");
+$ssr->execute();
+if($ssr->rowCount()>0){
+					$html.='<div class="input-group-append">'.
+										'<button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'.
+										'<div class="dropdown-menu">';
+	while($srr=$ssr->fetch(PDO::FETCH_ASSOC)){
+								$html.='<a class="dropdown-item" href="#" onclick="$(`#rewardselect`).val(`'.$srr['code'].'`);$(`#rewardsinput:first`).submit();return false;">';
+									$html.=$srr['code'].':'.($srr['method']==1?'$'.$srr['value']:$srr['value'].'%').' Off';
+								$html.='</a>';
+	}
+							$html.='</div>'.
+									'</div>';
+}
+					$html.='</div>'.
+							'</div>'.
 						'</form>'.
 					'</td>'.
 					'<td class="text-center align-middle">';
-			if($rs->rowCount()==1){
+			if($sr->rowCount()==1){
 			  if($reward['method']==1){
 			    $html.='$';
 			    $total=$total-$reward['value'];
@@ -205,15 +250,24 @@ $reward=$rs->fetch(PDO::FETCH_ASSOC);
 							'<td></td>'.
 						'</tr>'.
 						'<tr>'.
-							'<td colspan="6" class="text-right align-middle"><strong>Postage</strong></td>'.
-							'<td class="text-right pr-0">'.
-								'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">'.
-									'<input type="hidden" name="act" value="postage">'.
+							'<td class="text-right align-middle"><strong>Postage</strong></td>'.
+							'<td colspan="5" class="text-right align-middle">'.
+								'<form target="sp" method="post" action="core/updateorder.php" onchange="$(this).submit();" onsubmit="Pace.restart();">'.
+									'<input type="hidden" name="act" value="postoption">'.
+									'<input type="hidden" name="id" value="'.$r['id'].'">'.
+									'<input type="hidden" name="t" value="orders">'.
+									'<input type="hidden" name="c" value="postageOption">'.
+									'<input type="text" class="form-control" name="da" value="'.$r['postageOption'].'">'.
+								'</form>'.
+							'</td>'.
+							'<td class="text-right pl-0 pr-0">'.
+								'<form target="sp" method="POST" action="core/updateorder.php" onchange="$(this).submit();" onsubmit="Pace.restart();">'.
+									'<input type="hidden" name="act" value="postcost">'.
 									'<input type="hidden" name="id" value="'.$r['id'].'">'.
 									'<input type="hidden" name="t" value="orders">'.
 									'<input type="hidden" name="c" value="postage">'.
-									'<input type="text" class="form-control text-right" style="min-width:70px" name="da" value="'.$r['postage'].'">';
-									$total=$total+$r['postage'];
+									'<input type="text" class="form-control text-right" style="min-width:70px" name="da" value="'.$r['postageCost'].'">';
+									$total=$total+$r['postageCost'];
 					$html.='</form>'.
 							'</td>'.
 							'<td></td>'.

@@ -1,10 +1,10 @@
 ![LibreCMS](core/images/librecms.png)  
 a **Free** Open Source [MIT](https://github.com/DiemenDesign/LibreCMS/blob/master/LICENSE) Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/DiemenDesign/LibreICONS). Built to take advantage of HTML5 and CSS3, with necessary SEO attributes that fit in with Google's recommendations, Micro-formats, ARIA (A11Y), and general SEO Markup.
-(AMP has been removed as testing proved that there was nothing to be gained from using it).
 
-#### We are currently at Version 2.0.0
+#### We are currently at Version 2.0.1
+You can view the (CHANGELOG)[https://github.com/DiemenDesign/LibreCMS/CHANGELOG.md].
 
-## NOTE: LibreCMS now only supports PHP 7 and above, and recommend running on PHP 7.3.
+## NOTE: LibreCMS now only supports PHP 7 and above, and recommend running on PHP 7.2.
 
 ### FAQ
 - Why is English the only Language available?

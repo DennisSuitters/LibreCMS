@@ -4,7 +4,7 @@
  *
  * View - Featured Renderer
  *
- * featured.php version 2.0.0
+ * featured.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Add Sluggification
  */
 preg_match('/<settings itemcount="([\w\W]*?)" contenttype="([\w\W]*?)" order="([\w\W]*?)">/',$html,$matches);
 $html=preg_replace('~<settings.*?>~is','',$html,1);
@@ -87,7 +88,7 @@ if($cT!='folder'){
 				'thumb'=>$r['thumb'],
 				'file'=>$r['file'],
 				'title'=>$r['title'],
-				'link'=>$r['contentType'].'/'.url_encode($r['title']),
+				'link'=>$r['contentType'].'/'.$r['urlSLug'],
 				'seoCaption'=>$r['seoCaption'],
 				'attributionImageTitle'=>$r['attributionImageTitle'],
 				'attributionImageName'=>$r['attributionImageName'],
@@ -135,7 +136,7 @@ if($ii>0){
 			],[
 				'',
 				'',
-				$r['contentType'].'/'.urlencode(str_replace(' ','-',$r['title'])),
+				$r['contentType'].'/'.$r['urlSlug'],
 			],$item);
 		}
 		$item=preg_replace('/<print content=[\"\']?title[\"\']?>/',$r['title'],$item);

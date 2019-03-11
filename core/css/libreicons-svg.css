@@ -13,7 +13,8 @@
 .libre-fw{width:1.28571429em;text-align:center}
 .libre-white{fill:#fff}
 .libre-red{fill:#f00}
-.btn:hover.trash{background:#d9534f;border-color:#d43f3a;color:#fff}
+.btn:hover.add{color:#fff;background-color:#3ea662;border-color:#3a9d5d}
+.btn:hover.trash{color:#fff;background-color:#f64846;border-color:#f63c3a}
 .libre-social{position:relative;display:inline-block;width:14px;height:14px;color:#000;fill:#000;border:0;-webkit-border-radius:3px;border-radius:3px}
 .libre-social svg{border:0 solid transparent;margin:0;-webkit-border-radius:1px;border-radius:1px}
 .libre-social.libre-2x,

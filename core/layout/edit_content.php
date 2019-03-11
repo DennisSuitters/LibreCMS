@@ -4,7 +4,7 @@
  *
  * Administration - Edit Content
  *
- * edit_content.php version 2.0.0
+ * edit_content.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,19 +17,35 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Fix Media Item Layouts
+ * @changes    v2.0.1 Add Dropdown for Breadcrumb for other Content Access
  */
 $r=$s->fetch(PDO::FETCH_ASSOC);?>
 <main id="content" class="main">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/content';?>">Content</a></li>
     <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/content/type/'.$r['contentType'];?>"><?php echo ucfirst($r['contentType']).(in_array($r['contentType'],array('article'))?'s':'');?></a></li>
-    <li class="breadcrumb-item active" aria-current="page"><span id="titleupdate"><?php echo$r['title'];?></span></li>
+    <li class="breadcrumb-item active" aria-current="page">
+      <span id="titleupdate"><?php echo$r['title'];?></span>
+<?php $so=$db->prepare("SELECT id,title FROM content WHERE lower(contentType) LIKE lower(:contentType) AND id!=:id ORDER BY title ASC");
+$so->execute([
+  ':contentType'=>$r['contentType'],
+  ':id'=>$r['id']
+]);
+if($so->rowCount()>0){
+      echo'<a class="btn btn-ghost-normal dropdown-toggle m-0 p-0 pl-2 pr-2 text-white" data-toggle="dropdown" href="'.URL.$settings['system']['admin'].'/content/type/'.$r['contentType'].'" role="button" aria-label="Quick Content Selection" aria-haspopup="true" aria-expanded="false"></a><div class="dropdown-menu">';
+  while($ro=$so->fetch(PDO::FETCH_ASSOC)){
+      echo'<a class="dropdown-item" href="'.URL.$settings['system']['admin'].'/content/edit/'.$ro['id'].'">'.$ro['title'].'</a>';
+  }
+      echo'</div>';
+}?>
+    </li>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="">
-        <a class="btn btn-ghost-normal add" href="<?php echo$_SERVER['HTTP_REFERER'];?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
+        <a class="btn btn-ghost-normal add" href="<?php echo URL.$settings['system']['admin'].'/add/'.$r['contentType'];?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
 <?php if($help['content_edit_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['content_edit_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
 if($help['content_edit_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['content_edit_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
@@ -67,9 +83,15 @@ if($r['suggestions']==1){
               <script>
                 function genurl(){
                   var data=$('#title').val().toLowerCase();
-                  var url="<?php echo URL.$r['contentType'];?>/"+data.replace(/ /g,"-");
+                  var url="<?php echo URL.$r['contentType'];?>/"+slugify(data);
                   $('#genurl').attr('href',url);
                   $('#genurl').html(url);
+                }
+                function slugify(str){
+                  str=str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ').toLowerCase();
+                  str=str.replace(/^\s+|\s+$/gm,'');
+                  str=str.replace(/\s+/g, '-');	
+                  return str;
                 }
               </script>
             </div>
@@ -77,7 +99,7 @@ if($r['suggestions']==1){
               <label class="col-form-label col-sm-2">Generated URL</label>
               <div class="input-group col-sm-10">
                 <div class="input-group-text text-truncate col-sm-12">
-                  <a id="genurl" target="_blank" href="<?php echo URL.$r['contentType'].'/'.strtolower(str_replace(' ','-',$r['title']));?>"><?php echo URL.$r['contentType'].'/'.strtolower(str_replace(' ','-',$r['title']));?></a>
+                  <a id="genurl" target="_blank" href="<?php echo URL.$r['contentType'].'/'.$r['urlSlug'];?>"><?php echo URL.$r['contentType'].'/'.$r['urlSlug'];?></a>
                 </div>
               </div>
             </div>
@@ -510,26 +532,46 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))
                 </div>
               </div>
             </form>
-            <ul id="media_items">
-<?php $sm=$db->prepare("SELECT * FROM `".$prefix."media` WHERE file!='' AND pid=0 AND rid=:id ORDER BY ord ASC");
+            <div id="mi" class="row">
+<?php $sm=$db->prepare("SELECT * FROM `".$prefix."media` WHERE file!='' AND pid=:id ORDER BY ord ASC");
 $sm->execute([':id'=>$r['id']]);
 while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
+  if(file_exists('media/thumbs/'.substr(basename($rm['file']),0,-4).'.png'))
+    $rm['file']='media/thumbs/'.substr(basename($rm['file']),0,-4).'.png';
   list($width,$height)=getimagesize($rm['file']);?>
-              <li id="media_items_<?php echo$rm['id'];?>" class="col-xs-6 col-sm-3">
-                <div class="panel panel-default media">
+              <div id="mi_<?php echo$rm['id'];?>" class="media col-6 col-sm-2">
+                <img class="card-img" src="<?php echo$rm['file'];?>">
+                <div class="card-image-overlay position-relative">
                   <div class="controls btn-group">
-                    <span class="handle btn btn-default btn-xs"><?php svg('libre-gui-drag');?></span>
-                    <button class="btn btn-default btn-xs media-edit" data-dbid="<?php echo$rm['id'];?>" data-tooltip="tooltip" title="Edit"><?php svg('libre-gui-edit');?></button>
-                    <button class="btn btn-default trash btn-xs" onclick="purge('<?php echo$rm['id'];?>','media')" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
+                    <div class="handle btn btn-secondary btn-xs"><?php svg('libre-gui-drag');?></div>
+                    <button class="btn btn-secondary trash btn-xs" onclick="purge('<?php echo$rm['id'];?>','media')" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
                   </div>
-                  <div class="panel-body">
-                    <a href="<?php echo$rm['file'];?>" data-srcset="<?php echo$rm['file'];?> <?php echo$width;?>w" data-fancybox="gallery" data-width="<?php echo$width;?>" data-height="<?php echo$height;?>" data-caption="<?php echo$rm['title'].($rm['seoCaption']!=''?' - '.$rm['seoCaption']:'');?>"><img src="<?php echo$rm['file'];?>" alt=""></a>
-                  </div>
-                  <div id="media-title<?php echo$rm['id'];?>" class="panel-footer"><?php echo$rm['title'];?></div>
                 </div>
-              </li>
+              </div>
 <?php }?>
-            </ul>
+            </div>
+            <script>
+              $('#mi').sortable({
+                items:".media",
+                placeholder:".ghost",
+                helper:fixWidthHelper,
+                update:function(e,ui){
+                  var order=$("#mi").sortable("serialize");
+                  $.ajax({
+                    type:"POST",
+                    dataType:"json",
+                    url:"core/reordermedia.php",
+                    data:order
+                  });
+                }
+              }).disableSelection();
+              function fixWidthHelper(e,ui){
+                ui.children().each(function(){
+                  $(this).width($(this).width());
+                });
+                return ui;
+              }
+            </script>
           </div>
 <?php /* Options */ ?>
           <div id="tab-content-options" class="tab-pane<?php echo($r['contentType']!='inventory'?' hidden':'');?>" role="tabpanel">

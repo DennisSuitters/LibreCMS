@@ -4,7 +4,7 @@
  *
  * View - Content Renderer
  *
- * content.php version 2.0.0
+ * content.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Add Sluggification
  */
 $rank=0;
 $notification='';
@@ -103,10 +104,10 @@ elseif(isset($args[1])&&strlen($args[1])==2){
 			if($_SESSION['loggedin']==false)
 				die();
 		}
-		$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType LIKE :contentType AND LOWER(title) LIKE LOWER(:title) AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+		$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType LIKE :contentType AND LOWER(urlSlug) LIKE LOWER(:urlSlug) AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
 		$s->execute([
 			':contentType'=>$view,
-			':title'=>html_entity_decode(str_replace('-',' ',$args[0])),
+			':urlSlug'=>$args[0],
 			':status'=>$status,
 			':ti'=>time()
 		]);
@@ -303,7 +304,6 @@ if($show=='categories'){
 				'/<print content=[\"\']?datePublished[\"\']?>/',
 				'/<print content=[\"\']?dateEdited[\"\']?>/',
 				'/<print content=[\"\']?contentType[\"\']?>/',
-				'/<print content=[\"\']?alttitle[\"\']?>/',
 				'/<print content=[\"\']?notes[\"\']?>/'
 			],[
 				$shareImage,
@@ -311,13 +311,12 @@ if($show=='categories'){
 				$shareImage,
 				htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
 				URL.'profile/'.strtolower(str_replace(' ','-',htmlspecialchars($r['login_user'],ENT_QUOTES,'UTF-8'))),
-				URL.$r['contentType'].'/'.strtolower(str_replace(' ','-',htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'))),
+				URL.$r['contentType'].'/'.$r['urlSlug'],
 				htmlspecialchars($r['login_user'],ENT_QUOTES,'UTF-8'),
 				date($config['dateFormat'],$r['ti']),
 				date($theme['settings']['dateFormat'],$r['pti']),
 				date($theme['settings']['dateFormat'],$r['eti']),
 				$r['contentType'],
-				htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
 				($view=='index'?substr(htmlspecialchars(strip_tags($r['notes']),ENT_QUOTES,'UTF-8'),0,300).'...':htmlspecialchars(strip_tags($r['notes']),ENT_QUOTES,'UTF-8'))
 			],$items);
 			$r['notes']=strip_tags($r['notes']);
@@ -333,7 +332,7 @@ if($show=='categories'){
 						'/<view>/',
 						'/<\/view>/'
 					],[
-						URL.$r['contentType'].'/'.url_encode($r['title']),
+						URL.$r['contentType'].'/'.$r['urlSlug'],
 						htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
 						'',
 						''
@@ -434,13 +433,13 @@ if($show=='item'){
 	$seoDescription=empty($seoDescrption)?htmlspecialchars($config['seoDescription'],ENT_QUOTES,'UTF-8'):$seoDescription;
 	$seoKeywords=!empty($r['seoKeywods'])?htmlspecialchars($r['seoKeywords'],ENT_QUOTES,'UTF-8'):htmlspecialchars($page['seoKeywords'],ENT_QUOTES, 'UTF-8');
 	$seoKeywords=empty($seoKeywords)?htmlspecialchars($config['seoKeywords'],ENT_QUOTES,'UTF-8'):$seoKeywords;
-	$canonical=URL.$view.'/'.url_encode($r['title']);
+	$canonical=URL.$view.'/'.$r['urlSlug'];
 	$contentTime=isset($r['eti'])&&($r['eti']>$r['ti'])?$r['eti']:isset($r['ti'])?$r['ti']:0;
 	if(preg_match('/<print page=[\"\']?cover[\"\']?>/',$html)){
 		if($r['fileURL'])
-			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-responsive" src="'.$r['fileURL'].'" alt="'.$r['title'].'" role="image">',$html);
+			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-fluid" src="'.$r['fileURL'].'" alt="'.$r['title'].'" role="image">',$html);
 		elseif($r['file'])
-			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-responsive" src="'.$r['file'].'" alt="'.$r['title'].'" role="image">',$html);
+			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-fluid" src="'.$r['file'].'" alt="'.$r['title'].'" role="image">',$html);
 		elseif($page['cover'])
 			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img src="'.$page['cover'].'" alt="'.$r['title'].'" role="image">',$html);
 		elseif($page['coverURL'])
@@ -460,8 +459,8 @@ if($show=='item'){
 		preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);
 		$item=$matches[1];
 		if(stristr($item,'<mediaitems')){
-			$sm=$db->prepare("SELECT * FROM `".$prefix."media` WHERE pid=0 AND rid=:rid ORDER BY ord ASC");
-			$sm->execute([':rid'=>isset($r['id'])?$r['id']:$page['id']]);
+			$sm=$db->prepare("SELECT * FROM `".$prefix."media` WHERE pid=:id ORDER BY ord ASC");
+			$sm->execute([':id'=>isset($r['id'])?$r['id']:$page['id']]);
 			if($sm->rowCount()>0){
 				preg_match('/<mediaitems>([\w\W]*?)<\/mediaitems>/',$item,$matches2);
 				$media=$matches2[1];
@@ -477,7 +476,8 @@ if($show=='item'){
 						foreach($mediatags as$mt)$tags.='#'.htmlspecialchars($mt,ENT_QUOTES,'UTF-8').' ';
 					}
 					$mediaitems=preg_replace([
-						'/<print media=[\"\']?image[\"\']?>/',
+						'/<print media=[\"\']?thumb[\"\']?>/',
+						'/<print media=[\"\']?file[\"\']?>/',
 						'/<print media=[\"\']?width[\"\']?>/',
 						'/<print media=[\"\']?height[\"\']?>/',
 						'/<print media=[\"\']?title[\"\']?>/',
@@ -498,6 +498,7 @@ if($show=='item'){
 						'/<print media=[\"\']?caption[\"\']?>/',
 						'/<print media=[\"\']?description[\"\']?>/'
 					],[
+						URL.'media/thumbs/'.basename(substr($rm['file'],0,-4)).'.png',
 						htmlspecialchars($rm['file'],ENT_QUOTES,'UTF-8'),
 						$width,
 						$height,

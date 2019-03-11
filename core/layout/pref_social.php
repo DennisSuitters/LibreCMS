@@ -44,7 +44,7 @@
           <input type="hidden" name="user" value="0">
           <input type="hidden" name="act" value="add_social">
           <div class="form-group row">
-            <div class="input-group col-sm-12">
+            <div class="input-group col-12">
               <span class="input-group-text">Network</span>
               <select class="form-control" name="icon">
                 <option value="">Select a Social Network</option>

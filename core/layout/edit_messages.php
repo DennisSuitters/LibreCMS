@@ -4,7 +4,7 @@
  *
  * Administration - Edit Messages
  *
- * edit_messages.php version 2.0.0
+ * edit_messages.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Change Back Link to Referer
  */
 if($args[0]=='view'){
   $q=$db->prepare("UPDATE `".$prefix."messages` SET status='read' WHERE id=:id");
@@ -35,9 +36,8 @@ if($args[0]=='view'){
     <li class="breadcrumb-item active" aria-current="page"><strong id="titleupdate"><?php echo$r['subject'];?></strong></li>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="Settings">
-        <a class="btn btn-ghost-normal add" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('libre-gui-back');?></a>
-<?php $scc=$db->prepare("SELECT ip FROM `".$prefix."iplist` WHERE ip=:ip");$scc->execute([':ip'=>$r['ip']]);if($scc->rowCount()<1){?><form id="blacklist<?php echo$r['id'];?>" target="sp" method="post" action="core/add_messageblacklist.php" style="display:inline-block;"><input type="hidden" name="id" value="<?php echo$r['id'];?>"><button class="btn btn-ghost-normal info" style="background-color:transparent;" data-tooltip="tooltip" title="Add Originators IP to the Blacklist."><?php echo svg2('libre-gui-security');?></button></form><?php }
-if($help['messages_edit_text']!='')echo'<a class="btn btn-ghost-normal info" href="'.$help['messages_edit_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';if($help['messages_edit_video']!='')echo'<span><a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['messages_edit_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+        <a class="btn btn-ghost-normal add" href="<?php echo$_SERVER['HTTP_REFERER'];?>"><?php svg('libre-gui-back');?></a>
+<?php $scc=$db->prepare("SELECT ip FROM `".$prefix."iplist` WHERE ip=:ip");$scc->execute([':ip'=>$r['ip']]);if($scc->rowCount()<1){?><form id="blacklist<?php echo$r['id'];?>" target="sp" method="post" action="core/add_messageblacklist.php" style="display:inline-block;"><input type="hidden" name="id" value="<?php echo$r['id'];?>"><button class="btn btn-ghost-normal info" style="background-color:transparent;" data-tooltip="tooltip" title="Add Originators IP to the Blacklist."><?php echo svg2('libre-gui-security');?></button></form><?php }if($help['messages_edit_text']!='')echo'<a class="btn btn-ghost-normal info" href="'.$help['messages_edit_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';if($help['messages_edit_video']!='')echo'<span><a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['messages_edit_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>

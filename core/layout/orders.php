@@ -4,7 +4,7 @@
  *
  * Administration - Orders
  *
- * orders.php version 2.0.0
+ * orders.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,11 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Move Settings to Header
+ * @changes    v2.0.1 Add Indicator to determine if display "All" Orders
  */
 $uid=isset($_SESSION['uid'])?$_SESSION['uid']:$uid=0;
 $error=0;
@@ -120,8 +122,8 @@ else{
   }?>
 <main id="content" class="main">
   <ol class="breadcrumb shadow">
-    <li class="breadcrumb-item<?php if(!isset($args[0])&&$args[0]=='')echo' active';?>"><?php if(isset($args[0])&&$args[0]!='')echo'<a class="text-muted" href="'.URL.$settings['system']['admin'].'/orders">Orders</a>';else echo'Orders';?></li>
-<?php if($args[0]!='')echo'<li class="breadcrumb-item active">'.ucfirst($args[0]).'</li>';?>
+    <li class="breadcrumb-item"><?php if(isset($args[0])&&$args[0]!='')echo'<a class="text-muted" href="'.URL.$settings['system']['admin'].'/orders">Orders</a>';else echo'Orders';?></li>
+    <li class="breadcrumb-item active"><?php echo$args[0]!=''?ucfirst($args[0]):'All';?></li>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="">
           <a href="#" class="btn btn-ghost-normal add" id="addorder" onclick="return false;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-tooltip="tooltip" data-placement="left" title="Add Order"><?php svg('libre-gui-plus');?></a>
@@ -129,7 +131,6 @@ else{
             <a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'].'/orders/addquote';?>">Add Quote</a>
             <a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'].'/orders/addinvoice';?>">Add Invoice</a>
           </div>
-        <a class="btn btn-ghost-normal info" href="<?php echo URL.$settings['system']['admin'].'/orders/settings';?>" data-tooltip="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings');?></a>
 <?php if($help['orders_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['orders_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
   if($help['orders_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['orders_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>

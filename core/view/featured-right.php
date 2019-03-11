@@ -4,7 +4,7 @@
  *
  * View - Featured Right Renderer
  *
- * featured-right.php version 2.0.0
+ * featured-right.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Add Sluggification
  */
 if(stristr($html,'<events')){
 	preg_match('/<events>([\w\W]*?)<\/events>/',$html,$matches);
@@ -43,7 +44,7 @@ if(stristr($html,'<events')){
 			htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
 			date($config['dateFormat'],$r['tis']),
 			date($config['dateFormat'],$r['tis']),
-			htmlspecialchars(URL.'events/'.urlencode(str_replace(' ','-',$r['title'])),ENT_QUOTES,'UTF-8'),
+			URL.'events/'.$r['urlSlug'],
 			htmlspecialchars(preg_replace('/\s+?(\S+)?$/','',substr($r['seoCaption'],0,151)),ENT_QUOTES,'UTF-8')
 		],$items);
 		$output.=$items;
@@ -72,7 +73,7 @@ if(stristr($html,'<news')){
 			htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
 			date($config['dateFormat'],$r['tis']),
 			date($config['dateFormat'],$r['tis']),
-			htmlspecialchars(URL.'news/'.urlencode(str_replace(' ','-',$r['title'])),ENT_QUOTES,'UTF-8'),
+			URL.'news/'.$r['urlSlug'],
 			htmlspecialchars(preg_replace('/\s+?(\S+)?$/','',substr($r['seoCaption'],0,151)),ENT_QUOTES,'UTF-8')
 		],$items);
 		$output.=$items;

@@ -4,7 +4,7 @@
  *
  * Administration - Edit Pages
  *
- * edit_pages.php version 2.0.0
+ * edit_pages.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,12 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Change Back Link to Referer
+ * @changes    v2.0.1 Fix Media
+ * @changes    v2.0.1 Add Dropdown for Other Pages
  */
 $s=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE id=:id");
 $s->execute([':id'=>$args[1]]);
@@ -29,10 +32,23 @@ $r=$s->fetch(PDO::FETCH_ASSOC);?>
     <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/content';?>">Content</a></li>
     <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/pages';?>">Pages</a></li>
     <li class="breadcrumb-item">Edit</li>
-    <li class="breadcrumb-item active" aria-current="page"><span id="titleupdate"><?php echo$r['title'];?></span></li>
+    <li class="breadcrumb-item active" aria-current="page">
+      <span id="titleupdate"><?php echo$r['title'];?></span>
+<?php $so=$db->prepare("SELECT id,title FROM menu WHERE id!=:id ORDER BY title ASC");
+$so->execute([
+  ':id'=>$r['id']
+]);
+if($so->rowCount()>0){
+      echo'<a class="btn btn-ghost-normal dropdown-toggle m-0 p-0 pl-2 pr-2 text-white" data-toggle="dropdown" href="'.URL.$settings['system']['admin'].'/pages'.'" role="button" aria-label="Quick Content Selection" aria-haspopup="true" aria-expanded="false"></a><div class="dropdown-menu">';
+  while($ro=$so->fetch(PDO::FETCH_ASSOC)){
+      echo'<a class="dropdown-item" href="'.URL.$settings['system']['admin'].'/pages/edit/'.$ro['id'].'">'.$ro['title'].'</a>';
+  }
+      echo'</div>';
+}?>
+    </li>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="Settings">
-        <a class="btn btn-ghost-normal info" href="<?php echo URL.$settings['system']['admin'].'/pages';?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
+        <a class="btn btn-ghost-normal info" href="<?php echo$_SERVER['HTTP_REFERER'];?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
 <?php if($help['pages_edit_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['pages_edit_text'].'" data-tooltip="tooltip" data-placement="left" title="Read Text Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
 if($help['pages_edit_video']!='')echo'<span><a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['pages_edit_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>
@@ -202,26 +218,44 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))
                 </div>
               </div>
             </form>
-            <ul id="media_items">
+            <div id="mi" class="row">
 <?php $sm=$db->prepare("SELECT * FROM `".$prefix."media` WHERE file!='' AND rid=0 AND pid=:id ORDER BY ord ASC");
 $sm->execute([':id'=>$r['id']]);
 while($rm=$sm->fetch(PDO::FETCH_ASSOC)){
   list($width,$height)=getimagesize($rm['file']);?>
-              <li id="media_items_<?php echo$rm['id'];?>" class="col-xs-6 col-sm-3">
-                <div class="panel panel-default media">
+              <div id="mi_<?php echo$rm['id'];?>" class="media col-6 col-sm-2">
+                <img class="card-img" src="<?php echo$rm['file'];?>">
+                <div class="card-image-overlay position-relative">
                   <div class="controls btn-group">
-                    <span class="handle btn btn-default btn-xs"><?php svg('libre-gui-drag');?></span>
-                    <button class="btn btn-default btn-xs media-edit" data-dbid="<?php echo$rm['id'];?>"><?php svg('libre-gui-edit');?></button>
-                    <button class="btn btn-default trash btn-xs" onclick="purge('<?php echo$rm['id'];?>','media')"><?php svg('libre-gui-trash');?></button>
+                    <span class="handle btn btn-secondary btn-xs"><?php svg('libre-gui-drag');?></span>
+                    <button class="btn btn-secondary trash btn-xs" onclick="purge('<?php echo$rm['id'];?>','media')"><?php svg('libre-gui-trash');?></button>
                   </div>
-                  <div class="panel-body">
-                    <a href="<?php echo $rm['file'];?>" data-srcset="<?php echo$rm['file'];?> <?php echo$width;?>w" data-fancybox="gallery" data-width="<?php echo$width;?>" data-height="<?php echo$height;?>" data-caption="<?php echo $rm['title'];if($rm['seoCaption'])echo' - '.$rm['seoCaption'];?>"><img src="<?php echo$rm['file'];?>" alt=""></a>
-                  </div>
-                  <div id="media-title<?php echo$rm['id'];?>" class="panel-footer"><?php echo$rm['title'];?></div>
                 </div>
-              </li>
+              </div>
 <?php }?>
-            </ul>
+            </div>
+            <script>
+              $('#mi').sortable({
+                items:".media",
+                placeholder:".ghost",
+                helper:fixWidthHelper,
+                update:function(e,ui){
+                  var order=$("#mi").sortable("serialize");
+                  $.ajax({
+                    type:"POST",
+                    dataType:"json",
+                    url:"core/reordermedia.php",
+                    data:order
+                  });
+                }
+              }).disableSelection();
+              function fixWidthHelper(e,ui){
+                ui.children().each(function(){
+                  $(this).width($(this).width());
+                });
+                return ui;
+              }
+            </script>
           </div>
           <div id="tab-page-seo" class="tab-pane" role="tabpanel">
             <div class="form-group row">

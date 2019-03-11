@@ -4,7 +4,7 @@
  *
  * Administration - Pages
  *
- * pages.php version 2.0.0
+ * pages.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Move Settings to Header
  */
 $rank=0;
 $show='pages';
@@ -46,7 +47,6 @@ else{
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="">
         <a class="btn btn-ghost-normal add" href="<?php echo URL.$settings['system']['admin'].'/pages/add';?>" data-tooltip="tooltip" data-placement="left" title="Add"><?php svg('libre-gui-add');?></a>
-        <a class="btn btn-ghost-normal info" href="<?php echo URL.$settings['system']['admin'].'/pages/settings';?>" data-tooltip="tooltip" data-placement="left" title="Settings"><?php svg('libre-gui-settings');?></a>
 <?php if($help['pages_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['pages_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
   if($help['pages_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['pages_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
       </div>

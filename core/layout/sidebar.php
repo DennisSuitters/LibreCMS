@@ -4,7 +4,7 @@
  *
  * Administration - Sidebar Menu Layout
  *
- * sidebar.php version 2.0.0
+ * sidebar.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,12 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Add "All" to Orders section of menu
+ * @change     v2.0.1 Remove # in menu href's that forced slow loading to view
+ *                    front end.
  */?>
 <div class="app-body">
   <div id="sidebar" class="sidebar mt-5">
@@ -27,7 +30,7 @@
       <ul class="nav">
         <li class="nav-item<?php echo$view=='dashboard'?' active':'';?>"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/dashboard';?>"><?php svg('libre-gui-dashboard','nav-icon');?> Dashboard</a></li>
         <li class="nav-item nav-dropdown<?php echo($view=='media'||$view=='pages'||$view=='content'||$view=='rewards'||$view=='newsletters'?' open':'');?>">
-          <a class="nav-link nav-dropdown-toggle" href="#"><?php svg('libre-gui-content','nav-icon');?> Content</a>
+          <a class="nav-link nav-dropdown-toggle" href="<?php echo URL.$settings['system']['admin'].'/content';?>"><?php svg('libre-gui-content','nav-icon');?> Content</a>
           <ul class="nav-dropdown-items">
             <li class="nav-item"><a class="nav-link<?php echo$view=='media'?' active':'';?>" href="<?php echo URL.$settings['system']['admin'].'/media';?>">&nbsp;&nbsp;<?php svg('libre-gui-picture','nav-icon');?> Media</a></li>
             <li class="nav-item"><a class="nav-link<?php echo$view=='pages'?' active':'';?>" href="<?php echo URL.$settings['system']['admin'].'/pages';?>">&nbsp;&nbsp;<?php svg('libre-gui-content','nav-icon');?> Pages</a></li>
@@ -48,8 +51,9 @@
         <li class="nav-item"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages';?>"><?php svg('libre-gui-inbox','nav-icon');?> Messages</a></li>
         <li class="nav-item"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/bookings';?>"><?php svg('libre-gui-calendar','nav-icon');?> Bookings</a></li>
         <li class="nav-item nav-dropdown">
-          <a class="nav-link nav-dropdown-toggle" href="#"><?php svg('libre-gui-order','nav-icon');?> Orders</a>
+          <a class="nav-link nav-dropdown-toggle" href="<?php echo URL.$settings['system']['admin'].'/orders';?>"><?php svg('libre-gui-order','nav-icon');?> Orders</a>
           <ul class="nav-dropdown-items">
+            <li class="nav-item"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/orders';?>">&nbsp;&nbsp;<?php svg('libre-gui-order-quote','nav-icon');?> All</a></li>
             <li class="nav-item"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/orders/quotes';?>">&nbsp;&nbsp;<?php svg('libre-gui-order-quote','nav-icon');?> Quotes</a></li>
             <li class="nav-item"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/orders/invoices';?>">&nbsp;&nbsp;<?php svg('libre-gui-order-invoice','nav-icon');?> Invoices</a></li>
             <li class="nav-item"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/orders/pending';?>">&nbsp;&nbsp;<?php svg('libre-gui-order-pending','nav-icon');?> Pending</a></li>
@@ -59,7 +63,7 @@
         </li>
         <li class="nav-item"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/accounts';?>"><?php svg('libre-gui-users','nav-icon');?> Accounts</a></li>
         <li class="nav-item nav-dropdown">
-          <a class="nav-link nav-dropdown-toggle" href="#"><?php svg('libre-gui-settings','nav-icon');?> Preferences</a>
+          <a class="nav-link nav-dropdown-toggle" href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><?php svg('libre-gui-settings','nav-icon');?> Preferences</a>
           <ul class="nav-dropdown-items">
             <li class="nav-item"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/preferences/theme';?>">&nbsp;&nbsp;<?php svg('libre-gui-theme','nav-icon');?> Theme</a></li>
             <li class="nav-item"><a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/preferences/contact';?>">&nbsp;&nbsp;<?php svg('libre-gui-address-card','nav-icon');?> Contact</a></li>

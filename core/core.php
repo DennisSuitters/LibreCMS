@@ -4,7 +4,7 @@
  *
  * Core - Main Core of Whole System
  *
- * core.php version 2.0.0
+ * core.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Add Manifest
  */
 $getcfg=true;
 require'db.php';
@@ -37,16 +38,22 @@ if($config['php_options']{5}==1){
 	}
 }
 define('UNICODE','UTF-8');
-if(file_exists(THEME.DS.'images'.DS.'favicon.png'))
+if(file_exists(THEME.DS.'images'.DS.'favicon.png')){
 	define('FAVICON',THEME.DS.'images'.DS.'favicon.png');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif'))
+	define('FAVICONTYPE','image/png');
+}elseif(file_exists(THEME.DS.'images'.DS.'favicon.gif')){
 	define('FAVICON',THEME.DS.'images'.DS.'favicon.gif');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg'))
+	define('FAVICONTYPE','image/gif');
+}elseif(file_exists(THEME.DS.'images'.DS.'favicon.jpg')){
 	define('FAVICON',THEME.DS.'images'.DS.'favicon.jpg');
-elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico'))
+	define('FAVICONTYPE','image/jpg');
+}elseif(file_exists(THEME.DS.'images'.DS.'favicon.ico')){
 	define('FAVICON',THEME.DS.'images'.DS.'favicon.ico');
-else
+	define('FAVICONTYPE','image/ico');
+}else{
 	define('FAVICON','core'.DS.'images'.DS.'favicon.png');
+	define('FAVICONTYPE','image/png');
+}
 if(file_exists(THEME.DS.'images'.DS.'noimage.png'))
 	define('NOIMAGE',THEME.DS.'images'.DS.'noimage.png');
 elseif(file_exists(THEME.DS.'images'.DS.'noimage.gif'))
@@ -172,6 +179,18 @@ function url_encode($str){
 	$str=str_replace(array('%2D','%2D','%2D','%2D','!','*',"'","(",")",";",":","@","&","=","+","$",",","/","?","#","[","]",' '),array(chr(149),chr(150),chr(151),chr(45),'%21','%2A',"%27","%28","%29","%3B","%3A","%40","%26","%3D","%2B","%24","%2C","%2F","%3F","%23","%5B","%5D",'-'),$str);
 	return$str;
 }
+function sluggify($url){
+	$url=strtolower($url);
+	$url=strip_tags($url);
+	$url=stripslashes($url);
+	$url=html_entity_decode($url);
+	$url=str_replace('\'','',$url);
+	$match='/[^a-z0-9]+/';
+	$replace='-';
+	$url=preg_replace($match,$replace,$url);
+	$url=trim($url,'-');
+	return$url;
+}
 function escaper($val){
   return str_replace(array("\\","/","\"","\n","\r","\t","\x08","\x0c"),array("\\\\","\\/","\\\"","\\n","\\r","\\t","\\f","\\b"),$val);
 }
@@ -187,6 +206,12 @@ class internal{
 	}
 	function rss($args=false){
 		require'core'.DS.'rss.php';
+	}
+	function manifest($args=false){
+		require'core'.DS.'manifest.php';
+	}
+	function manifestadmin($args=false){
+		require'core'.DS.'manifestadmin.php';
 	}
 }
 class admin{
@@ -308,6 +333,7 @@ class front{
   }
 	function error($args=false){
 		$view='error';
+		$headerType=$_SERVER["SERVER_PROTOCOL"]." 404 Not Found";
 		require'process.php';
 	}
 	function event($args=false){
@@ -428,10 +454,12 @@ $routes=[
 	$settings['system']['admin'].'/security'=>['admin','security'],
   $settings['system']['admin'].'/tracker'=>['admin','tracker'],
 	$settings['system']['admin']=>['admin','dashboard'],
+	$settings['system']['admin'].'/manifest.json'=>['internal','manifestadmin'],
 	'humans.txt'=>['internal','humans'],
 	'sitemap.xml'=>['internal','sitemap'],
 	'robots.txt'=>['internal','robots'],
 	'rss'=>['internal','rss'],
+	'manifest.json'=>['internal','manifest'],
 	'error'=>['front','error'],
 	'index'=>['front','index'],
 	'home'=>['front','index'],

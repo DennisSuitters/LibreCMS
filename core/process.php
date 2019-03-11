@@ -22,6 +22,7 @@
  * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 require'core'.DS.'db.php';
+if(isset($headerType))header($headerType);
 $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 if(file_exists(THEME.DS.'theme.ini'))
   $theme=parse_ini_file(THEME.DS.'theme.ini',TRUE);

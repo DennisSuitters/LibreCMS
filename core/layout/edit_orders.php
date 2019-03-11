@@ -4,7 +4,7 @@
  *
  * Administration - Edit Orders
  *
- * edit_orders.php version 2.0.0
+ * edit_orders.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,13 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Change Back Link to Referer
+ * @changes    v2.0.1 Add Breadcrumb Linked Indicator for Order Type
+ * @changes    v2.0.1 Add Dropdown to Select Rewards Code if Available
+ * #changes    v2.0.1 Add Postage Options Selection and Editable in Order Fields
  */
 $q=$db->prepare("SELECT * FROM `".$prefix."orders` WHERE id=:id");
 $q->execute([':id'=>$id]);
@@ -43,10 +47,19 @@ else{?>
 <main id="content" class="main">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/orders';?>">Orders</a></li>
+    <li class="breadcrumb-item">
+<?php if($r['aid']!='')
+        echo'<a class="text-muted" href="'.URL.$settings['system']['admin'].'/orders/archived">Archived</a>';
+      elseif($r['iid']!='')
+        echo'<a class="text-muted" href="'.URL.$settings['system']['admin'].'/orders/invoices">Invoices</a>';
+      elseif($r['qid']!='')
+        echo'<a class="text-muted" href="'.URL.$settings['system']['admin'].'/orders/quotes">Qoutes</a>';
+?>
+    </li>
     <li class="breadcrumb-item active" aria-current="page"><span id="ordertitle"><?php echo$r['qid'].$r['iid'];?></span></li>
     <li class="breadcrumb-menu">
       <div class="btn-group" role="group" aria-label="">
-        <a class="btn btn-ghost-normal add" href="<?php echo URL.$settings['system']['admin'].'/orders';?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
+        <a class="btn btn-ghost-normal add" href="<?php echo$_SERVER['HTTP_REFERER'];?>" data-tooltip="tooltip" data-placement="left" title="Back"><?php svg('libre-gui-back');?></a>
         <a href="#" class="btn btn-ghost-normal info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');return false;" data-tooltip="tooltip" data-placement="left" title="Print Order"><?php svg('libre-gui-print');?></a>
         <a href="#" class="btn btn-ghost-normal info" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=');return false;" data-tooltip="tooltip" data-placement="left" title="Email Order"><?php svg('libre-gui-email-send');?></a>
 <?php if($help['orders_edit_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['orders_edit_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
@@ -253,20 +266,43 @@ else{?>
             <input type="hidden" name="id" value="<?php echo$r['id'];?>">
             <input type="hidden" name="t" value="orderitems">
             <input type="hidden" name="c" value="">
-            <div class="form-group">
-              <div class="input-group col-xs-12">
+            <div class="form-group row">
+              <div class="input-group col">
+                <div class="input-group-text">Inventory/Services</div>
                 <select class="form-control" name="da" data-tooltip="tooltip" title="Select Product, Service or Empty Entry">
                   <option value="0">Add Empty Entry...</option>
 <?php $s=$db->query("SELECT id,contentType,code,cost,title FROM `".$prefix."content` WHERE contentType='inventory' OR contentType='service' OR contentType='events' ORDER BY code ASC");
 while($i=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$i['id'].'">'.ucfirst(rtrim($i['contentType'],'s')).$i['code'].':$'.$i['cost'].':'.$i['title'].'</option>';?>
                 </select>
                 <div class="input-group-append">
-                  <button class="btn btn-secondary add" data-tooltip="tooltip" title="Add Selected Entry"><?php svg('libre-gui-plus');?></button>
+                  <button type="submit" class="btn btn-secondary add" data-tooltip="tooltip" title="Add"><?php svg('libre-gui-plus');?></button>
                 </div>
               </div>
             </div>
           </form>
-<?php }?>
+<?php $sp=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE contentType='postoption' ORDER BY title ASC");
+$sp->execute();
+if($sp->rowCount()>0){?>
+          <form target="sp" method="POST" action="core/updateorder.php">
+            <input type="hidden" name="act" value="addpostoption">
+            <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+            <input type="hidden" name="t" value="orders">
+            <input type="hidden" name="c" value="postageOption">
+            <div class="form-group row">
+              <div class="input-group col">
+                <div class="input-group-text">Postage Options</div>
+                <select class="form-control" name="da" data-tooltip="tooltip" title="Select Postage Option or Empty Entry">
+                  <option value="0">Clear Postage Option and Cost</option>
+<?php while($rp=$sp->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rp['id'].'">'.$rp['title'].':$'.$rp['value'].'</option>';?>
+                </select>
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-secondary add" data-tooltip="tooltip" title="Add"><?php svg('libre-gui-plus');?></button>
+                </div>
+              </div>
+            </div>
+          </form>
+<?php }
+}?>
           <div class="table-responsive">
             <table class="table table-condensed table-borderless">
               <thead class="thead-light">
@@ -363,14 +399,32 @@ $sr=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:rid");
 $sr->execute([':rid'=>$r['rid']]);
 $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
                 <tr>
-                  <td colspan="4" class="text-right align-middle"><strong>Rewards Code</strong></td>
-                  <td class="text-center">
-                    <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
-                      <input type="hidden" name="act" value="reward">
-                      <input type="hidden" name="id" value="<?php echo$r['id'];?>">
-                      <input type="hidden" name="t" value="orders">
-                      <input type="hidden" name="c" value="rid">
-                      <input type="text" class="form-control" name="da" value="<?php echo$sr->rowCount()==1?$reward['code']:'';?>">
+                  <td colspan="3" class="text-right align-middle"><strong>Rewards Code</strong></td>
+                  <td colspan="2" class="text-center">
+                    <form id="rewardsinput" target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
+                      <div class="form-group row">
+                        <div class="input-group">
+                          <input type="hidden" name="act" value="reward">
+                          <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                          <input type="hidden" name="t" value="orders">
+                          <input type="hidden" name="c" value="rid">
+                          <input type="text" id="rewardselect" class="form-control" name="da" value="<?php echo$sr->rowCount()==1?$reward['code']:'';?>">
+<?php $ssr=$db->prepare("SELECT * FROM `".$prefix."rewards` ORDER BY code ASC, title ASC");
+$ssr->execute();
+if($ssr->rowCount()>0){?>
+                          <div class="input-group-append">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu">
+<?php while($srr=$ssr->fetch(PDO::FETCH_ASSOC)){?>
+                              <a class="dropdown-item" href="#" onclick="$('#rewardselect').val('<?php echo$srr['code'];?>');$('#rewardsinput:first' ).submit();return false;">
+                                <?php echo$srr['code'].':'.($srr['method']==1?'$'.$srr['value']:$srr['value'].'%').' Off';?>
+                              </a>
+<?php }?>
+                            </div>
+                          </div>
+<?php }?>
+                        </div>
+                      </div>
                     </form>
                   </td>
                   <td class="text-center align-middle">
@@ -391,14 +445,23 @@ $reward=$sr->fetch(PDO::FETCH_ASSOC);?>
                   <td></td>
                 </tr>
                 <tr>
-                  <td colspan="6" class="text-right align-middle"><strong>Postage</strong></td>
-                  <td class="text-right pr-0">
-                    <form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();">
-                      <input type="hidden" name="act" value="postage">
+                  <td class="text-right align-middle"><strong>Postage</strong></td>
+                  <td colspan="5" class="text-right align-middle">
+                    <form target="sp" method="post" action="core/updateorder.php" onchange="$(this).submit();" onsubmit="Pace.restart();">
+                      <input type="hidden" name="act" value="postoption">
                       <input type="hidden" name="id" value="<?php echo$r['id'];?>">
                       <input type="hidden" name="t" value="orders">
-                      <input type="hidden" name="c" value="postage">
-                      <input type="text" class="form-control text-right" style="min-width:70px" name="da" value="<?php echo$r['postage'];$total=$total+$r['postage'];?>">
+                      <input type="hidden" name="c" value="postageOption">
+                      <input type="text" class="form-control" name="da" value="<?php echo$r['postageOption'];?>">
+                    </form>
+                  </td>
+                  <td class="text-right pl-0 pr-0">
+                    <form target="sp" method="POST" action="core/updateorder.php" onchange="$(this).submit();" onsubmit="Pace.restart();">
+                      <input type="hidden" name="act" value="postcost">
+                      <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                      <input type="hidden" name="t" value="orders">
+                      <input type="hidden" name="c" value="postageCost">
+                      <input type="text" class="form-control text-right" name="da" value="<?php echo$r['postageCost'];$total=$total+$r['postageCost'];?>">
                     </form>
                   </td>
                   <td></td>

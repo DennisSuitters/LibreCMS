@@ -402,20 +402,16 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
             ':id'=>$iid,
             ':ord'=>$iid+1
           ]);?>
-  window.top.window.$('#media_items').append('<?php
-echo'<li id="media_items_'.$iid.'" class="col-xs-6 col-sm-3 animated zoomIn">'.
-			'<div class="panel panel-default media">'.
+  window.top.window.$('#mi').append('<?php
+echo'<div id="mi_'.$iid.'" class="media col-6 col-sm-2 animated zoomIn">'.
+			'<img class="card-img" src="'.$fu.'">'.
+			'<div class="card-image-overlay position-relative">'.
 				'<div class="controls btn-group">'.
-					'<span class="handle btn btn-default btn-xs">'.svg2('libre-gui-drag').'</span>'.
-					'<button class="btn btn-default btn-xs media-edit" data-dbid="'.$iid.'">'.svg2('libre-gui-edit').'</button>'.
-					'<button class="btn btn-default trash btn-xs" onclick="purge(`'.$iid.'`,`media`)">'.svg2('libre-gui-trash').'</button>'.
-				'</div>'.
-				'<div class="panel-body">'.
-					'<img src="'.$fu.'">'.
-					'<div id="media-title'.$iid.'" class="panel-footer"></div>'.
+					'<span class="handle btn btn-secondary btn-xs">'.svg2('libre-gui-drag').'</span>'.
+					'<button class="btn btn-secondary trash btn-xs" onclick="purge(`'.$iid.'`,`media`)">'.svg2('libre-gui-trash').'</button>'.
 				'</div>'.
 			'</div>'.
-		'</li>';?>
+		'</div>';?>
 ');
   setTimeout(function(){window.top.window.$('#media_items_<?php echo $iid;?>').removeClass('animated zoomIn');},800);
   window.top.window.Pace.stop();

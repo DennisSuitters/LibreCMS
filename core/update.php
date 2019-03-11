@@ -4,7 +4,7 @@
  *
  * Core - Update
  *
- * update.php version 2.0.0
+ * update.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    Add Slugification
  */
 echo'<script>';
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
@@ -32,6 +33,18 @@ function svg($svg,$class=null,$size=null){
 }
 function svg2($svg,$class=null,$size=null){
 	return'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
+}
+function sluggify($url){
+	$url=strtolower($url);
+	$url=strip_tags($url);
+	$url=stripslashes($url);
+	$url=html_entity_decode($url);
+	$url=str_replace('\'','',$url);
+	$match='/[^a-z0-9]+/';
+	$replace='-';
+	$url=preg_replace($match,$replace,$url);
+	$url=trim($url,'-');
+	return$url;
 }
 $e='';
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
@@ -57,6 +70,11 @@ if($tbl=='content'&&$col=='status'&&$da=='published'){
     ':pti'=>$ti,
     ':id' =>$id
   ]);
+}
+if($tbl=='content'&&$col=='title'){
+	$slug=sluggify($da);
+	$ss=$db->prepare("UPDATE `".$prefix.$tbl."` SET urlSlug=:slug WHERE id=:id");
+	$ss->execute([':id'=>$id,':slug'=>$slug]);
 }
 if($tbl=='config'||$tbl=='login'||$tbl=='orders'||$tbl=='orderitems'||$tbl=='messages')$r['contentType']='';
 $log=[

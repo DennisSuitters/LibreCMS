@@ -4,7 +4,6 @@
 	<div class="container">
 		<div class="row mt-4 mb-4 m-sm-5">
 			<div id="content" class="col-12 col-sm-6 m-auto" role="main">
-				<div class="card p-4">
 					<form class="form" method="post" action="<print url>" role="form">
 						<h4 role="heading">Login</h4>
 						<input type="hidden" name="act" value="login">
@@ -20,8 +19,6 @@
 							<button class="btn btn-success btn-block" role="button">Login</button>
 						</div>
 					</form>
-				</div>
-				<div class="card mt-5 p-4">
 					<form class="form" target="rstresponse" id="rstform" method="post" action="core/view/rstform.php" role="form">
 						<h4 id="reset" role="heading">Reset Password</h4>
 						<input type="hidden" name="emailtrap" value="none">
@@ -51,7 +48,6 @@
 					/*]]>*/</script>
 				</div>
 				<signup>
-					<div class="card mt-5 p-4">
 						<form class="form" target="signresponse" id="signform" method="post" action="core/view/newaccount.php" role="form">
 							<h4 id="signup" role="heading">Sign Up</h4>
 							<input type="hidden" name="emailtrap" value="none">
@@ -88,11 +84,9 @@
 								return false;
 							});
 						/*]]>*/</script>
-					</div>
 				</signup>
 			</div>
 		</div>
-	</div>
 </block>
 <block include="footer.html">
 <block include="meta_footer.html">

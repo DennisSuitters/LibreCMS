@@ -73,13 +73,6 @@
 		<script src="<print theme>/js/bootstrap.min.js"></script>
     <script src="<print theme>/js/simpleLightbox.min.js"></script>
 		<script src="<print theme>/js/js.js"></script>
-    <style>
-      .card .card-img{width:100%;height:10rem;object-fit:cover;pointer-events:auto!important;cursor:pointer!important}
-      .card .gallery .card-img{}
-      .card .card-img-overlay{background-color:rgba(0,0,0,.5)!important;cursor:pointer}
-      .card .card-img-overlay a{color:#fff}
-      .card .card-img-overlay a:hover{text-decoration:underline}
-    </style>
 		<!-- Google Analytics -->
 	</head>
 	<body itemscope itemtype="http://schema.org/WebPage" role="document">
@@ -87,22 +80,16 @@
 <block include="header.html">
 <block inbed="gallery">
     <div class="container">
-      <div class="imageGallery row col-12 m-1 mt-sm-5 justify-content-center">
+      <div class="row col-12 m-1 mt-sm-5 justify-content-center">
         <items>
-          <div href="<print media=file>" data-toggle="lightbox" data-gallery="gallery" data-max-width="700" class="card gallery bg-dark text-white col-12 col-sm-3 m-1 m-sm-2 p-0">
-            <img src="<print media=file>" class="img-fluid" alt="<print media=title> - <print media=attributionImageName>">
-            <attribution>
-              <div class="card-img-overlay p-2">
-                <h5 class="card-title m-0 p-0"><print media="title"></h5><br>
-                <p class="card-text m-0 p-0"><print media="caption"></p><br>
-              </div>
-            </attribution>
-          </div>
+					<a href="<print media=file>" data-toggle="lightbox" data-gallery="gallery" data-max-width="700" class="card gallery bg-dark text-white col-12 col-sm-3 m-1 m-sm-2 p-0">
+						<img src="<print media=thumb>" class="img-fluid" alt="<print media=title>">
+					</a>
         </items>
       </div>
     </div>
     <script>
-      $('.imageGallery div').simpleLightbox();
+      $('[data-gallery="gallery"]').simpleLightbox();
     </script>
 </block>
 <block include="footer.html">

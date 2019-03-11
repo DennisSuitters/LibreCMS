@@ -62,6 +62,9 @@ $opts = array(
 //      'path'=>$_SERVER["DOCUMENT_ROOT"].DS.$settings['system']['url'].DS,
       'URL'         => URL . 'media' . DS,
 //      'URL'=>URL,
+      'tmbPath'     => $_SERVER["DOCUMENT_ROOT"] . DS . $settings['system']['url'] . DS . 'media' . DS . 'thumbs' . DS,
+      'tmbURL'      => URL . 'media' . DS . 'thumbs' . DS,
+      'tmbSize'     => $config['mediaMaxWidthThumb'],
       'uploadDeny'  => array(
         'all'
       ),

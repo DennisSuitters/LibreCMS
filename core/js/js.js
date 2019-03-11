@@ -107,6 +107,9 @@ function purge(id,t,c){
 		if(t=='iplist'||t=='tracker'||t=='logs'&&id==0){
 			$('#l_'+t).addClass('animated zoomOut');
 			setTimeout(function(){$('#l_'+t).remove();},500);
+		}else if(t=='media'){
+			$('#mi_'+id).addClass('animated zoomOut');
+			setTimeout(function(){$('#mi_'+id).remove();},500);			
 		}else{
 			$('#l_'+id).addClass('animated zoomOut');
 			setTimeout(function(){$('#l_'+id).remove();},500);

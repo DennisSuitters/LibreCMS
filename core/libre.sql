@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 28, 2019 at 11:25 PM
+-- Generation Time: Mar 12, 2019 at 12:27 AM
 -- Server version: 5.7.25-0ubuntu0.16.04.2
--- PHP Version: 7.3.2-3+ubuntu16.04.1+deb.sury.org+1
+-- PHP Version: 7.3.3-1+ubuntu16.04.1+deb.sury.org+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -217,6 +217,7 @@ CREATE TABLE `content` (
   `code` varchar(16) COLLATE utf8_bin DEFAULT NULL,
   `brand` varchar(40) COLLATE utf8_bin DEFAULT NULL,
   `title` varchar(60) COLLATE utf8_bin DEFAULT NULL,
+  `urlSlug` text COLLATE utf8_bin NOT NULL,
   `category_1` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `category_2` varchar(30) COLLATE utf8_bin DEFAULT NULL,
   `name` varchar(40) COLLATE utf8_bin DEFAULT NULL,
@@ -442,16 +443,16 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id`, `mid`, `uid`, `login_user`, `title`, `seoTitle`, `metaRobots`, `url`, `file`, `cover`, `coverURL`, `coverVideo`, `attributionImageTitle`, `attributionImageName`, `attributionImageURL`, `contentType`, `schemaType`, `seoKeywords`, `seoDescription`, `seoCaption`, `menu`, `notes`, `ord`, `active`, `views`, `suggestions`, `eti`) VALUES
-(1, 0, 1, 'Kenika Suitters', 'Home', 'Home SEO Title', 'index,follow', '', 'index', '', '', '', '', '', '', 'index', '', 'home,seo,keywords', 'Home SEO Description', 'Home SEO Caption', 'head', '<h2>Well, how\'d you become king, then?</h2>\r\n<p>And this isn\'t my nose. This is a false one. Camelot! Well, we did do the nose. Shh! Knights, I bid you welcome to your new home. Let us ride to Camelot! Why do you think that she is a witch? I have to push the pram a lot.</p>\r\n<p>I dunno. Must be a king. You can\'t expect to wield supreme power just \'cause some watery tart threw a sword at you! The Knights Who Say Ni demand a sacrifice! She looks like one. How do you know she is a witch?</p>\r\n', 0, 1, 16, 1, 1551220275),
+(1, 0, 1, 'Kenika Suitters', 'Home', 'Home SEO Title', 'index,follow', '', 'index', '', '', '', '', '', '', 'index', '', 'home,seo,keywords', 'Home SEO Description', 'Home SEO Caption', 'head', '<h2>Well, how\'d you become king, then?</h2>\r\n<p>And this isn\'t my nose. This is a false one. Camelot! Well, we did do the nose. Shh! Knights, I bid you welcome to your new home. Let us ride to Camelot! Why do you think that she is a witch? I have to push the pram a lot.</p>\r\n<p>I dunno. Must be a king. You can\'t expect to wield supreme power just \'cause some watery tart threw a sword at you! The Knights Who Say Ni demand a sacrifice! She looks like one. How do you know she is a witch?</p>\r\n', 0, 1, 6, 1, 1551220275),
 (2, 0, 1, 'Kenika Suitters', 'Blog', '', 'index,follow', '', 'article', '', '', '', '', '', '', 'article', '', '', '', '', 'head', '', 3, 1, 0, 0, 1544766529),
 (3, 0, 1, 'Kenika Suitters', 'Portfolio', '', 'index,follow', '', 'portfolio', '', '', '', '', '', '', 'portfolio', '', '', '', '', 'head', '', 2, 0, 0, 0, 1544766555),
 (4, 0, 1, 'Kenika Suitters', 'Bookings', '', 'noindex', '', 'bookings', '', '', '', '', '', '', 'bookings', '', '', '', '', 'head', '', 5, 0, 0, 0, 1544766553),
 (5, 0, 1, 'Kenika Suitters', 'Events', '', 'index,follow', '', 'events', '', '', '', '', '', '', 'events', '', '', '', '', 'head', '', 17, 0, 0, 0, 1544766557),
 (6, 0, 1, 'Kenika Suitters', 'News', '', 'index,follow', '', 'news', '', '', '', '', '', '', 'news', '', '', '', '', 'head', '', 12, 0, 0, 0, 1544766548),
 (7, 0, 1, 'Kenika Suitters', 'Testimonials', '', 'index,follow', '', 'testimonials', '', '', '', '', '', '', 'testimonials', '', '', '', '', 'head', '', 7, 1, 0, 0, 1544766533),
-(8, 0, 1, 'Kenika Suitters', 'Products', '', 'index,follow', '', 'inventory', '', '', '', '', '', '', 'inventory', '', '', '', '', 'head', '', 13, 1, 31, 0, 1544766549),
+(8, 0, 1, 'Kenika Suitters', 'Products', '', 'index,follow', '', 'inventory', '', '', '', '', '', '', 'inventory', '', '', '', '', 'head', '', 13, 1, 6, 0, 1544766549),
 (9, 0, 1, 'Kenika Suitters', 'Services', '', 'index,follow', '', 'services', '', '', '', '', '', '', 'service', '', '', '', '', 'head', '', 4, 1, 0, 0, 1544766547),
-(10, 0, 1, 'Kenika Suitters', 'Gallery', '', 'index,follow', '', 'gallery', '', '', '', '', '', '', 'gallery', '', '', '', '', 'head', '', 9, 0, 0, 0, 1544766537),
+(10, 0, 1, 'Kenika Suitters', 'Gallery', '', 'index,follow', '', 'gallery', '', '', '', '', '', '', 'gallery', '', '', '', '', 'head', '', 9, 1, 0, 0, 1544766537),
 (11, 0, 1, 'Kenika Suitters', 'Contact Us', '', 'noindex,nofollow', '', 'contactus', '', '', '', '', '', '', 'contactus', '', '', '', '', 'head', '', 6, 1, 0, 0, 1544766534),
 (12, 0, 1, 'Kenika Suitters', 'Cart', '', 'noindex,nofollow', '', 'cart', '', '', '', '', '', '', 'cart', '', '', '', '', 'head', '', 14, 1, 0, 0, 1544766550),
 (13, 0, 1, 'Kenika Suitters', 'Terms of Service', '', 'index,follow', '', 'tos', '', '', '', '', '', '', 'tos', '', '', '', '', 'footer', '<p>The below Terms of Service is only an example of what you can dispay on your website.</p>\r\n<h1>Terms of Service (\"Terms\")</h1>\r\n<p>Last updated: June 26, 2018</p>\r\n<p>Please read these Terms of Service (\"Terms\", \"Terms of Service\") carefully before using the https://diemen.design website (the \"Service\") operated by Diemen Design (\"us\", \"we\", or \"our\").</p>\r\n<p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service.</p>\r\n<p>By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service. This Terms of Service agreement  for Diemen Design based on the Terms and Conditions from <a href=\"https://termsfeed.com/\">TermsFeed</a>.</p>\r\n<h2>Accounts</h2>\r\n<p>When you create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.</p>\r\n<p>You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password, whether your password is with our Service or a third-party service.</p>\r\n<p>You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>\r\n<h2>Links To Other Web Sites</h2>\r\n<p>Our Service may contain links to third-party web sites or services that are not owned or controlled by Diemen Design.</p>\r\n<p>Diemen Design has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that Diemen Design shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such web sites or services.</p>\r\n<p>We strongly advise you to read the terms and conditions and privacy policies of any third-party web sites or services that you visit.</p>\r\n<h2>Termination</h2>\r\n<p>We may terminate or suspend access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>\r\n<p>All provisions of the Terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity and limitations of liability.</p>\r\n<p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>\r\n<p>Upon termination, your right to use the Service will immediately cease. If you wish to terminate your account, you may simply discontinue using the Service.</p>\r\n<p>All provisions of the Terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity and limitations of liability.</p>\r\n<h2>Governing Law</h2>\r\n<p>These Terms shall be governed and construed in accordance with the laws of Tasmania, Australia, without regard to its conflict of law provisions.</p>\r\n<p>Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect. These Terms constitute the entire agreement between us regarding our Service, and supersede and replace any prior agreements we might have between us regarding the Service.</p>\r\n<h2>Changes</h2>\r\n<p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will try to provide at least 30 days notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>\r\n<p>By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, please stop using the Service.</p>\r\n<h2>Contact Us</h2>\r\n<p>If you have any questions about these Terms, please contact us.</p>', 10, 1, 0, 0, 1544766540),
@@ -542,7 +543,8 @@ CREATE TABLE `orders` (
   `rid` bigint(20) NOT NULL,
   `notes` text COLLATE utf8_bin NOT NULL,
   `status` varchar(16) COLLATE utf8_bin NOT NULL,
-  `postage` int(4) NOT NULL,
+  `postageOption` tinytext COLLATE utf8_bin NOT NULL,
+  `postageCost` decimal(6,2) NOT NULL,
   `recurring` int(1) NOT NULL,
   `ti` int(10) UNSIGNED NOT NULL,
   `eti` bigint(20) NOT NULL

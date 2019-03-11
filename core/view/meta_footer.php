@@ -21,8 +21,13 @@
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  */
-if(preg_match('/<block include=[\"\']?meta_footer.html[\"\']?>/',$template)&&file_exists(THEME.DS.'meta_footer.html'))
+if(preg_match('/<block include=[\"\']?meta_footer.html[\"\']?>/',$template)&&file_exists(THEME.DS.'meta_footer.html')){
   $footer=file_get_contents(THEME.DS.'meta_footer.html');
-else
+  $footer=preg_replace([
+    '/<print theme>/'
+  ],[
+    THEME
+  ],$footer);
+}else
   $footer='You MUST include a meta_footer template';
 $content.=$footer;

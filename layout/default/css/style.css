@@ -1,6 +1,8 @@
 body{width:100%;background-color:#fff}
 a{color:#000;text-decoration:none;-webkit-transition:.3s all;-o-transition:.3s all;transition:.3s all}
 a:hover{color:#62be1e}
+h1.error{font-size:10em!important}
+h2.error{font-size:3em!important}
 .dropdown:hover>.dropdown-menu{display:block}
 .dropdown>.dropdown-toggle:active{pointer-events:none}
 .card-img-top{width:100%;height:17rem;object-fit:cover}

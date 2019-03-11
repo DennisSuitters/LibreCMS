@@ -22,7 +22,7 @@
  * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if(isset($_SESSION['rank'])&&$_SESSION['rank']>0)
-	$link='<a href="logout">Logout</a>';
+	$link='<li role="listitem"><a href="logout">Logout</a></li>';
 else{
 	if($config['options']{3}==1)
 		$link_x=' or Sign Up';
@@ -30,7 +30,7 @@ else{
 		$link_x='';
 		$html=preg_replace('~<block signup>.*?<\/block signup>~is','',$html,1);
 	}
-	$link='<a href="login/">Login'.$link_x.'</a>';
+	$link='<li role="listitem"><a href="login/">Login'.$link_x.'</a></li>';
 }
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 $html=isset($_SESSION['rank'])&&$_SESSION['rank']>899?str_replace('<administration>','<li role="listitem"><a target="_blank" href="'.$settings['system']['admin'].'">Administration</a></li>',$html):str_replace('<administration>','',$html);

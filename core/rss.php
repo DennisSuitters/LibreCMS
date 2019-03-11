@@ -4,7 +4,7 @@
  *
  * Core - RSS Generator
  *
- * rss.php version 2.0.0
+ * rss.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -12,14 +12,15 @@
  * the MIT License and are unable to obtain it through the web, please
  * check the root folder of the project for a copy.
  *
- * @category   Administration - Core - RSS Generator
+ * @category   Core - RSS Generator
  * @package    core/rss.php
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Fix Comment Information
  */
 header('Content-Type:application/rss+xml;charset=ISO-8859-1');
 $getcfg=true;

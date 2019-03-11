@@ -4,7 +4,7 @@
  *
  * View - Sitemap Renderer
  *
- * sitemap.php version 2.0.0
+ * sitemap.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes		 v2.0.1 Add Sluggification
  */
 $html=preg_replace([
 	'/<print page=[\"\']?notes[\"\']?>/'
@@ -38,7 +39,7 @@ if($s->rowCount()>0){
 		$ss=$db->prepare("SELECT DISTINCT id,title FROM `".$prefix."content` WHERE contentType=:content_type AND title!='' AND status='published' AND internal!='1' ORDER BY contentType ASC, ord ASC, ti DESC");
 		$ss->execute([':content_type'=>$r['contentType']]);
 		while($rs=$ss->fetch(PDO::FETCH_ASSOC))
-			$testlinks.='<a href="'.$r['contentType'].'/'.urlencode(str_replace(' ','-',$rs['title'])).'">'.$rs['title'].'</a><br>';
+			$testlinks.='<a href="'.$r['contentType'].'/'.$rs['urlSlug'].'">'.$rs['title'].'</a><br>';
 		$items=preg_replace([
 			'/<print links>/',
 		],[

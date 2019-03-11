@@ -4,7 +4,7 @@
  *
  * Administration - Meta-Footer containts inline Javascript
  *
- * meta_footer.php version 2.0.0
+ * meta_footer.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,12 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Remove Media Editing Popup
+ * @changes    v2.0.1 Fix Media ReOrdering Items
+ * @changes    v2.0.1 Make Images Uploading auto-populate thumbnail
  */?>
 <script>
 var unsaved=false;
@@ -224,6 +227,9 @@ if(isset($r['due_ti'])){?>
       getFileCallback:function(file,fm){
         if(id>0){
           $('#'+c).val(file.url);
+          if(t=='content'&&c=='file'){
+            $('#thumb').val(file.url.replace('media','media/thumbs'));
+          }
           if(t!='media'){
             update(id,t,c,file.url);
             if(t=='config'&&c=='php_honeypot'){
@@ -465,25 +471,6 @@ if(isset($r['due_ti'])){?>
       });
     }
     autoPlayModal();
-/*  $('.media-edit').popover({
-      html:true,
-      trigger:'click',
-      title:'Edit Media <button type="button" id="close" class="close" data-dismiss="popover">&times;</button>',
-      container:'body',
-      placement:'auto',
-      template:'<div class="popover media" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
-      content:function(){
-        var id=$(this).data("dbid");
-        return $.ajax({
-          url:'core/layout/mediaedit.php',
-          dataType:'html',
-          async:false,
-          data:{
-            id:id
-          }
-        }).responseText;
-      }
-    });*/
     $('.pathviewer').popover({
       html:true,
       trigger:'manual',

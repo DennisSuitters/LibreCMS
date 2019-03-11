@@ -4,7 +4,7 @@
  *
  * Administration - Displays some Statistics and is the Gateway to Greatness.
  *
- * dashboard.php version 2.0.0
+ * dashboard.php version 2.0.1
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,11 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.1
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.1 Add Changelog Viewing.
+ * @changes    v2.0.1 Replace Alexa count with 30 Blacklist and fix typos.
  */
 if($args[0]=='settings')
   include'core'.DS.'layout'.DS.'set_dashboard.php';
@@ -48,103 +50,105 @@ else{?>
   echo$config['business']==''?'<div class="alert alert-danger" role="alert">The <a class="alert-link" href="'.URL.$settings['system']['admin'].'/preferences/contact#business">Business Name</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>':'';
   echo$config['email']==''?'<div class="alert alert-danger" role="alert">The <a class="alert-link"   href="'.URL.$settings['system']['admin'].'/preferences/contact#email">Email</a> has not been set. Some functions such as Messages, and Bookings will NOT function correctly.</div>':'';?>
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-12">
         <div class="row">
-          <div class="col-6 col-sm-4">
+          <div class="col-6 col-sm-2">
             <div class="card browser-stats">
-              <div class="text-value"><span id="browser-chrome">0</span> Views</div>
-              <small>Chrome</small>
-              <div class="browser"><?php svg('libre-browser-chrome','libre-5x');?></div>
+              <div class="text-value"><span id="browser-blacklist">0</span> Added</div>
+              <small>Blacklist <small>Last 7 Days</small></small>
+              <div class="browser"><?php svg('libre-gui-security','libre-5x');?></div>
             </div>
           </div>
-          <div class="col-6 col-sm-4">
-            <div class="card browser-stats">
-              <div class="text-value"><span id="browser-edge">0</span> Views</div>
-              <small>Edge</small>
-              <div class="browser"><?php svg('libre-browser-edge','libre-5x');?></div>
-            </div>
-          </div>
-          <div class="col-6 col-sm-4">
-            <div class="card browser-stats">
-              <div class="text-value"><span id="browser-explorer">0</span> Views</div>
-              <small>Explorer</small>
-              <div class="browser"><?php svg('libre-browser-explorer','libre-5x');?></div>
-            </div>
-          </div>
-          <div class="col-6 col-sm-4">
-            <div class="card browser-stats">
-              <div class="text-value"><span id="browser-firefox">0</span> Views</div>
-              <small>Firefox</small>
-              <div class="browser"><?php svg('libre-browser-firefox','libre-5x');?></div>
-            </div>
-          </div>
-          <div class="col-6 col-sm-4">
-            <div class="card browser-stats">
-              <div class="text-value"><span id="browser-opera">0</span> Views</div>
-              <small>Opera</small>
-              <div class="browser"><?php svg('libre-browser-opera','libre-5x');?></div>
-            </div>
-          </div>
-          <div class="col-6 col-sm-4">
-            <div class="card browser-stats">
-              <div class="text-value"><span id="browser-safari">0</span> Views</div>
-              <small>Safari</small>
-              <div class="browser"><?php svg('libre-browser-safari','libre-5x');?></div>
-            </div>
-          </div>
-          <div class="col-6 col-sm-4">
-            <div class="card browser-stats">
-              <div class="text-value"><span id="browser-alexa">0</span> Views</div>
-              <small>Alexa</small>
-              <div class="browser"><?php svg('libre-brand-alexa','libre-5x');?></div>
-            </div>
-          </div>
-          <div class="col-6 col-sm-4">
-            <div class="card browser-stats">
-              <div class="text-value"><span id="browser-bing">0</span> Views</div>
-              <small>Bing</small>
-              <div class="browser"><?php svg('libre-brand-bing','libre-5x');?></div>
-            </div>
-          </div>
-          <div class="col-6 col-sm-4">
-            <div class="card browser-stats">
-              <div class="text-value"><span id="browser-duckduckgo">0</span> Views</div>
-              <small>Duck Duck Go</small>
-              <div class="browser"><?php svg('libre-brand-duckduckgo','libre-5x');?></div>
-            </div>
-          </div>
-          <div class="col-6 col-sm-4">
-            <div class="card browser-stats">
-              <div class="text-value"><span id="browser-facebook">0</span> Views</div>
-              <small>Facebook</small>
-              <div class="browser"><?php svg('libre-social-facebook','libre-5x');?></div>
-            </div>
-          </div>
-          <div class="col-6 col-sm-4">
+          <div class="col-6 col-sm-2">
             <div class="card browser-stats">
               <div class="text-value"><span id="browser-google">0</span> Views</div>
               <small>Google</small>
               <div class="browser"><?php svg('libre-brand-google','libre-5x');?></div>
             </div>
           </div>
-          <div class="col-6 col-sm-4">
+          <div class="col-6 col-sm-2">
             <div class="card browser-stats">
               <div class="text-value"><span id="browser-yahoo">0</span> Views</div>
               <small>Yahoo</small>
               <div class="browser"><?php svg('libre-social-yahoo','libre-5x');?></div>
             </div>
           </div>
+          <div class="col-6 col-sm-2">
+            <div class="card browser-stats">
+              <div class="text-value"><span id="browser-bing">0</span> Views</div>
+              <small>Bing</small>
+              <div class="browser"><?php svg('libre-brand-bing','libre-5x');?></div>
+            </div>
+          </div>
+          <div class="col-6 col-sm-2">
+            <div class="card browser-stats">
+              <div class="text-value"><span id="browser-duckduckgo">0</span> Views</div>
+              <small>Duck Duck Go</small>
+              <div class="browser"><?php svg('libre-brand-duckduckgo','libre-5x');?></div>
+            </div>
+          </div>
+          <div class="col-6 col-sm-2">
+            <div class="card browser-stats">
+              <div class="text-value"><span id="browser-facebook">0</span> Views</div>
+              <small>Facebook</small>
+              <div class="browser"><?php svg('libre-social-facebook','libre-5x');?></div>
+            </div>
+          </div>
+          <div class="col-6 col-sm-2">
+            <div class="card browser-stats">
+              <div class="text-value"><span id="browser-chrome">0</span> Views</div>
+              <small>Chrome</small>
+              <div class="browser"><?php svg('libre-browser-chrome','libre-5x');?></div>
+            </div>
+          </div>
+          <div class="col-6 col-sm-2">
+            <div class="card browser-stats">
+              <div class="text-value"><span id="browser-edge">0</span> Views</div>
+              <small>Edge</small>
+              <div class="browser"><?php svg('libre-browser-edge','libre-5x');?></div>
+            </div>
+          </div>
+          <div class="col-6 col-sm-2">
+            <div class="card browser-stats">
+              <div class="text-value"><span id="browser-explorer">0</span> Views</div>
+              <small>Explorer</small>
+              <div class="browser"><?php svg('libre-browser-explorer','libre-5x');?></div>
+            </div>
+          </div>
+          <div class="col-6 col-sm-2">
+            <div class="card browser-stats">
+              <div class="text-value"><span id="browser-firefox">0</span> Views</div>
+              <small>Firefox</small>
+              <div class="browser"><?php svg('libre-browser-firefox','libre-5x');?></div>
+            </div>
+          </div>
+          <div class="col-6 col-sm-2">
+            <div class="card browser-stats">
+              <div class="text-value"><span id="browser-opera">0</span> Views</div>
+              <small>Opera</small>
+              <div class="browser"><?php svg('libre-browser-opera','libre-5x');?></div>
+            </div>
+          </div>
+          <div class="col-6 col-sm-2">
+            <div class="card browser-stats">
+              <div class="text-value"><span id="browser-safari">0</span> Views</div>
+              <small>Safari</small>
+              <div class="browser"><?php svg('libre-browser-safari','libre-5x');?></div>
+            </div>
+          </div>
         </div>
       </div>
       <script>
 <?php
+  $ss=$db->prepare("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."iplist` WHERE ti >= :ti");
+  $ss->execute(['ti'=>time()-604800]);
+  $sa=$ss->fetch(PDO::FETCH_ASSOC);
   $bc=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Chrome'")->fetch(PDO::FETCH_ASSOC);
   $bie=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Explorer'")->fetch(PDO::FETCH_ASSOC);
   $be=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Edge'")->fetch(PDO::FETCH_ASSOC);
   $bf=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Firefox'")->fetch(PDO::FETCH_ASSOC);
   $bo=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Opera'")->fetch(PDO::FETCH_ASSOC);
   $bs=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Safari'")->fetch(PDO::FETCH_ASSOC);
-  $sa=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Alexa'")->fetch(PDO::FETCH_ASSOC);
   $sb=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Bing'")->fetch(PDO::FETCH_ASSOC);
   $sd=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='DuckDuckGo'")->fetch(PDO::FETCH_ASSOC);
   $sf=$db->query("SELECT COUNT(DISTINCT ip) AS cnt FROM `".$prefix."tracker` WHERE browser='Facebook'")->fetch(PDO::FETCH_ASSOC);
@@ -157,15 +161,15 @@ else{?>
           $('#browser-firefox').countTo({from:0,to:<?php echo $bf['cnt'];?>});
           $('#browser-opera').countTo({from:0,to:<?php echo $bo['cnt'];?>});
           $('#browser-safari').countTo({from:0,to:<?php echo $bs['cnt'];?>});
-          $('#search-bing').countTo({from:0,to:<?php echo $sb['cnt'];?>});
-          $('#search-duckduckgo').countTo({from:0,to:<?php echo $sd['cnt'];?>});
-          $('#search-google').countTo({from:0,to:<?php echo $sg['cnt'];?>});
-          $('#search-yahoo').countTo({from:0,to:<?php echo $sy['cnt'];?>});
-          $('#search-facebook').countTo({from:0,to:<?php echo $sf['cnt'];?>});
-          $('#search-alexa').countTo({from:0,to:<?php echo $sa['cnt'];?>});
+          $('#browser-bing').countTo({from:0,to:<?php echo $sb['cnt'];?>});
+          $('#browser-duckduckgo').countTo({from:0,to:<?php echo $sd['cnt'];?>});
+          $('#browesr-google').countTo({from:0,to:<?php echo $sg['cnt'];?>});
+          $('#browser-yahoo').countTo({from:0,to:<?php echo $sy['cnt'];?>});
+          $('#browser-facebook').countTo({from:0,to:<?php echo $sf['cnt'];?>});
+          $('#browser-blacklist').countTo({from:0,to:<?php echo $sa['cnt'];?>});
         });
       </script>
-      <div class="col-sm-6">
+      <div class="col-sm-6 d-none d-sm-block">
         <div class="card">
           <div class="card-header"><a href="<?php echo URL.$settings['system']['admin'].'/preferences/activity';?>">Recent Administration Activity</a></div>
           <div id="seostats-activity" class="card-body">
@@ -190,6 +194,8 @@ else{?>
             </table>
           </div>
         </div>
+      </div>
+      <div class="col-sm-6 d-none d-sm-block">
         <div class="card">
           <div class="card-header"><a href="<?php echo URL.$settings['system']['admin'].'/preferences/tracker';?>">Highest Viewed Pages</a></div>
           <div id="seostats-pageviews" class="card-body">
@@ -216,6 +222,18 @@ else{?>
           </div>
         </div>
       </div>
+<?php if(file_exists('CHANGELOG.md')){?>
+      <div class="col-12 col-sm-6">
+        <div class="card">
+          <div class="card-header"><a target="_blank" href="https://github.com/DiemenDesign/LibreCMS">Latest Github Project Updates.</a></div>
+          <div class="card-body">
+            <pre>
+<?php include'CHANGELOG.md';?>
+            </pre>
+          </div>
+        </div>
+      </div>
+<?php }?>
     </div>
   </div>
 </main>

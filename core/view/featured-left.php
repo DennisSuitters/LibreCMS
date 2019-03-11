@@ -33,7 +33,7 @@ if(stristr($html,'<categories')){
 			'/<print content=[\"\']?link[\"\']?>/',
 			'/<print content=[\"\']?category_1[\"\']?>/'
 		],[
-			htmlspecialchars(URL.'inventory/'.urlencode(str_replace(' ','-',$r['category_1'])),ENT_QUOTES,'UTF-8'),
+			URL.htmlspecialchars('inventory/'.urlencode(str_replace(' ','-',$r['category_1'])),ENT_QUOTES,'UTF-8'),
 			htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8')
 		],$items);
 		$output.=$items;
