@@ -4,7 +4,7 @@
  *
  * Core - Email Booking
  *
- * email_booking.php version 2.0.0
+ * email_booking.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,11 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix Notifications.
  */
 echo'<script>';
 $getcfg=true;
@@ -50,14 +52,14 @@ if($c['email']!=''){
     $mail->AddCustomHeader("Disposition-Notification-To:".$config['email']);
     $mail->ConfirmReadingTo=$config['email'];
   }
-  $subject=isset($config['bookingEmailSubject'])&&$config['bookingEmailSubject']!=''?$config['bookingEmailSubject']:'Booking Information from {business}';
+  $subject=isset($config['bookingEmailSubject'])&&$config['bookingEmailSubject']!=''?$config['bookingEmailSubject']:localize('booking_emailsubject');
   $namee=explode(' ',$r['name']);
   $subject=str_replace([
-    '{business}',
-    '{name}',
-    '{first}',
-    '{last}',
-    '{date}'
+    '{'.localize('business').'}',
+    '{'.localize('name').'}',
+    '{'.localize('first').'}',
+    '{'.localize('last').'}',
+    '{'.localize('date').'}'
   ],[
     $config['business'],
     $r['name'],
@@ -66,31 +68,33 @@ if($c['email']!=''){
     date($config['dateFormat'],$r['tis'])
   ],$subject);
   $mail->Subject=$subject;
-  $msg=isset($config['bookingEmailLayout'])&&$config['bookingEmailLayout']!=''?rawurldecode($config['bookingEmailLayout']):'Hi {first},<br />{details}<br /><br />Please check the details above, and get in touch if any need correcting.<br /><br />Kind Regards,<br />{business}';
+  $msg=isset($config['bookingEmailLayout'])&&$config['bookingEmailLayout']!=''?rawurldecode($config['bookingEmailLayout']):localize('booking_emaillayout');
   $msg=str_replace([
-    '{business}',
-    '{name}',
-    '{first}',
-    '{last}',
-    '{date}',
-    '{details}'
+    '{'.localize('business').'}',
+    '{'.localize('name').'}',
+    '{'.localize('first').'}',
+    '{'.localize('last').'}',
+    '{'.localize('date').'}',
+    '{'.localize('details').'}'
   ],[
     $config['business'],
     $r['name'],
     $namee[0],
     end($namee),
     date($config['dateFormat'],$r['tis']),
-    'Booking Status: '.ucfirst($r['status']).'<br />Name: '.$r['name'].'<br />Email: '.$r['email'].'<br />Business: '.$r['business'].'<br />Address: '.$r['address'].'<br />Suburb: '.$r['suburb'].'<br />City: '.$r['city'].'<br />State: '.$r['state'].'<br />Postcode: '.$r['postcode'].'<br />Phone: '.$r['phone'].'<br />Service/Event Booked: ['.$i['code'].'] '.$i['title'].'<br />Booked For: '.date($config['dateFormat'],$r['tis']).($r['tie']!=0?' To '.date($config['dateFormat'],$r['tie']):'').'<br />Notes: '.rawurldecode($r['notes'])
+    localize('Booking Status').': '.ucfirst($r['status']).'<br />'.localize('Name').': '.$r['name'].'<br />'.localize('Email').': '.$r['email'].'<br />'.localize('Business').': '.$r['business'].'<br />'.localize('Address').': '.$r['address'].'<br />'.localize('Suburb').': '.$r['suburb'].'<br />'.localize('City').': '.$r['city'].'<br />'.localize('State').': '.$r['state'].'<br />'.localize('Postcode').': '.$r['postcode'].'<br />'.localize('Phone').': '.$r['phone'].'<br />'.localize('Service/Event Booked').': ['.$i['code'].'] '.$i['title'].'<br />'.localize('Booked For').': '.date($config['dateFormat'],$r['tis']).($r['tie']!=0?' '.localize('To').' '.date($config['dateFormat'],$r['tie']):'').'<br />'.localize('Notes').': '.rawurldecode($r['notes'])
   ],$msg);
   $mail->Body=$msg;
   $mail->AltBody=strip_tags(preg_replace('/<br(\s+)?\/?>/i',"\n",$msg));
-  if($mail->Send()){?>
-window.top.window.$.notify({type:'success',icon:'',message:'The Booking to <?php echo($r['business']!=''?$r['business']:$r['name']);?> was Sent Successfully!'});
-  <?php }else{?>
-window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue sending the Order to <?php echo($r['business']!=''?$r['business']:$r['name']);?>!'});
+  if($mail->Send()){
+    $alertmsg=str_replace('{'.localize('business').'}',$r['business']!=''?$r['business']:$r['name'],localize('alert_booking_success_sent'));?>
+window.top.window.toastr["success"]('<?php echo$alertmsg;?>');
+  <?php }else{
+    $alertmsg=str_replace('{'.localize('business').'}',$r['business']!=''?$r['business']:$r['name'],localize('alert_booking_danger_errorsend'));?>
+window.top.window.toastr["danger"]('<?php echo$alertmsg;?>');
   <?php }
 }else{?>
-window.top.window.$.notify({type:'info',icon:'',message:'Client\'s Email has not been set!'});
+window.top.window.toastr["info"]('<?php echo localize('alert_booking_info_noclientemail');?>');
 <?php }?>
 window.top.window.Pace.stop();
 <?php

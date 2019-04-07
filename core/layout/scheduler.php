@@ -4,7 +4,7 @@
  *
  * Administration - Content Scheduler
  *
- * scheduler.php version 2.0.0
+ * scheduler.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,32 +17,36 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix ARIA Attributes.
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/content';?>">Content</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Scheduler</li>
+    <li class="breadcrumb-item"><a href="<?php echo URL.$settings['system']['admin'].'/content';?>"><?php echo localize('Content');?></a></li>
+    <li class="breadcrumb-item active"><?php echo localize('Scheduler');?></li>
     <li class="breadcrumb-menu">
-      <div class="btn-group" role="group" aria-label="">
-<?php if($help['scheduler_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['scheduler_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
-if($help['scheduler_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['scheduler_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+      <div class="btn-group" role="group">
+        <?php if($help['scheduler_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['scheduler_text'].'" data-tooltip="tooltip" data-placement="left" title="'.localize('Help').'" savefrom_lm="false" role="button" aria-label="'.localize('aria_view_texthelp').'">'.svg2('libre-gui-help').'</a>';
+        if($help['scheduler_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['scheduler_video'].'" data-tooltip="tooltip" data-placement="left" title="'.localize('Watch Video Help').'" savefrom_lm="false" role="button" aria-label="'.localize('aria_view_videohelp').'">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>
   <div class="container-fluid">
-    <div class="alert alert-info">Not all the Scheduler Functions are currently working at this time, we are working on it though.</div>
+    <noscript><div class="alert alert-danger" role="alert"><?php echo localize('alert_all_danger_noscript');?></div></noscript>
+    <div class="alert alert-warning d-sm-block d-md-none" role="alert"><?php echo localize('alert_all_warning_smallscreen');?></div>
+    <div class="alert alert-info" role="alert">Not all the Scheduler Functions are currently working at this time, we are working on it though.</div>
     <div class="card">
       <div class="card-body">
         <div id="calendar-view" class="col">
-          <small>Legend: <span class="badge badge-success" data-tooltip="tooltip" title="Content items that have already been Published">Published</span> <span class="badge badge-danger" data-tooltip="tooltip" title="Content items that have NOT been Published">Unpublished</span></small>
+          <small><?php echo localize('Legend');?>: <span class="badge badge-success" data-tooltip="tooltip" title="<?php echo localize('tooltip_contentpublished');?>"><?php echo localize('Published');?></span> <span class="badge badge-danger" data-tooltip="tooltip" title="<?php echo localize('tooltip_contentunpublished');?>"><?php echo localize('Unpublished');?></span></small>
           <div class="float-right">
-            <small>View: <a class="badge badge-<?php echo !isset($args[1])?'success':'secondary';?>" href="<?php echo URL.$settings['system']['admin'].'/content/scheduler';?>">All</a>
+            <small><?php echo localize('View');?>: <a class="badge badge-<?php echo !isset($args[1])?'success':'secondary';?>" href="<?php echo URL.$settings['system']['admin'].'/content/scheduler';?>"><?php echo localize('All');?></a>
 <?php $s=$db->query("SELECT DISTINCT(contentType) as contentType FROM `".$prefix."content` WHERE contentType!='booking' ORDER BY contentType ASC");
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-            <a class="badge badge-<?php echo isset($args[1])&&$args[1]==$r['contentType']?'success':'secondary';?>" href="<?php echo URL.$settings['system']['admin'].'/content/scheduler/'.$r['contentType'];?>"><?php echo ucfirst($r['contentType']);?></a>&nbsp;
+            <a class="badge badge-<?php echo isset($args[1])&&$args[1]==$r['contentType']?'success':'secondary';?>" href="<?php echo URL.$settings['system']['admin'].'/content/scheduler/'.$r['contentType'];?>"><?php echo localize(ucfirst($r['contentType']));?></a>&nbsp;
 <?php }?>
             </small>
           </div>
@@ -76,13 +80,13 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
         start:'<?php echo date("Y-m-d H:i:s",$r['pti']);?>',
         allDay:false,
         color:'<?php echo($r['status']=='published'?'#4dbd74':'#f86c6b');?>',
-        description:'<?php echo ucfirst($r['contentType']).': '.$r['title'];?>',
+        description:'<?php echo localize(ucfirst($r['contentType'])).': '.$r['title'];?>',
         status:'<?php echo $r['status'];?>',
       },
 <?php	}?>
     ],
     eventMouseover:function(event,domEvent,view){
-      var layer='<div id="events-layer" class="btn-group float-right"><button id="edbut'+event.id+'" class="btn btn-secondary btn-sm" data-tooltip="tooltip" title="Edit"><?php svg('libre-gui-edit');?></button><button id="delbut'+event.id+'" class="btn btn-secondary btn-sm trash" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button></div>';
+      var layer='<div id="events-layer" class="btn-group float-right"><button id="edbut'+event.id+'" class="btn btn-secondary btn-sm" data-tooltip="tooltip" title="<?php echo localize('Edit');?>" role="button" aria-label="<?php echo localize('aria_edit');?>"><?php svg('libre-gui-edit');?></button><button id="delbut'+event.id+'" class="btn btn-secondary btn-sm trash" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button></div>';
       var content='Published: '+$.fullCalendar.moment(event.start).format('HH:mm');
       if(event.description!='')content+='<br>'+event.description;
       var el=$(this);

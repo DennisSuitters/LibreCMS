@@ -9,7 +9,7 @@
 						<json-ld>
 						<img class="card-img-top img-fluid" src="<print content=image>" alt="">
 						<div class="card-body">
-							<h1 class="card-title" itemprop="name" role="heading"><print content="title"></h1>
+							<h1><print content="title"></h1>
 							<div class="card-text" itemprop="description">
 							<cost>
 								<div class="price_content mb-4 d-block d-sm-none">
@@ -17,11 +17,11 @@
 										<div class="h4 text-right"><print content="cost"></div>
 										<print content="quantity">
 										<service>
-											<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>" role="link">Book Now</a>
+											<a class="btn btn-outline-secondary btn-block" href="bookings/<print content=bookservice>" role="link">Book Now</a>
 										</service>
 										<inventory>
 											<choices>
-											<button class="addCart btn btn-success btn-block" data-cartid="<print content=id>" data-cartchoice="0" role="button">Buy Now</button>
+											<button class="addCart btn btn-outline-secondary btn-block" data-cartid="<print content=id>" data-cartchoice="0" role="button">Buy Now</button>
 										</inventory>
 									</div>
 								</div>
@@ -87,7 +87,6 @@
 						</div>
 					</article>
 				</item>
-				<h1 role="heading"><print page="contentType"></h1>
 				<print page="notes">
 				<settings itemCount="10">
 				<items>
@@ -95,7 +94,7 @@
 						<meta itemprop="author" content="<print author=name>">
 						<meta itemprop="datePublished" content="<print content=datePublished>">
 						<meta itemprop="dateModified" content="<print content=dateEdited>">
-						<div class="card-img"><img class="card-img-top img-fluid" src="<print content=thumb>" alt="<print content=alttitle>" itemprop="thumbnail" role="image"></div>
+						<div class="card-img"><img class="card-img-top img-fluid" src="<print content=thumb>" alt="<print content=alttitle>" itemprop="thumbnail"></div>
         		<div class="card-body text-center" data-contenttype="<print content=contentType>">
 							<div class="card-subtitle mb-2 small text-muted text-center">By <a href="<print profileLink>"><print content="author"></a> on <print content="datePublished"></div>
 							<controls>
@@ -104,12 +103,12 @@
 								</view>
 							</controls>
 							<div class="card-text"><print content="notes"></div>
-							<a class="btn btn-success mt-2" href="<print content=linktitle>">View</a>
+							<a class="btn btn-outline-secondary mt-2" href="<print content=linktitle>">View</a>
 						</div>
 	  			</article>
 				</items>
 				<more>
-					<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
+					<button id="more<print config=showItems>" class="addMore btn btn-outline-secondary btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
 				</more>
 			</main>
 </block>

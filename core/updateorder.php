@@ -4,7 +4,7 @@
  *
  * Core - Update Order
  *
- * updateorder.php version 2.0.1
+ * updateorder.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,11 +17,13 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.1
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Add in Postage Options Recalculating.
  * @changes    v2.0.1 Add Dropdown to Select Rewards Code if Available
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix ARIA Attributes.
  */
 echo'<script>';
 if(session_status()==PHP_SESSION_NONE)session_start();
@@ -173,28 +175,28 @@ while($oi=$si->fetch(PDO::FETCH_ASSOC)){
 		$image=$i['fileURL'];
 	else
 		$image='';
-  $html.='<tr>'.
-					'<td class="text-center align-middle"><img class="img-fluid" style="max-width:24px;height:24px;" src="'.$image.'"></td>'.
-    			'<td class="text-left align-middle">'.$i['code'].'</td>'.
-    			'<td class="text-left align-middle">'.
-						($oi['iid']!=0?$i['title']:'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();"><input type="hidden" name="act" value="title"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="title"><input type="text" class="form-control" name="da" value="'.$oi['title'].'"></form>').
+  $html.='<tr role="row">'.
+					'<td class="text-center align-middle" role="cell"><img class="img-fluid" style="max-width:24px;height:24px;" src="'.$image.'" alt="'.$c['title'].'"></td>'.
+    			'<td class="text-left align-middle" role="cell">'.$i['code'].'</td>'.
+    			'<td class="text-left align-middle" role="cell">'.
+						($oi['iid']!=0?$i['title']:'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();" role="form"><input type="hidden" name="act" value="title"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="title"><input type="text" class="form-control" name="da" value="'.$oi['title'].'" role="textbox"></form>').
 					'</td>'.
-    			'<td class="text-left align-middle">'.$c['title'].'</td>'.
-					'<td class="text-center align-middle">'.
-						($oi['iid']!=0?'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();"><input type="hidden" name="act" value="quantity"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'"'.($r['status']=='archived'?' readonly':'').'></form>':($oi['iid']!=0?$oi['quantity']:'')).
+    			'<td class="text-left align-middle" role="cell">'.$c['title'].'</td>'.
+					'<td class="text-center align-middle" role="cell">'.
+						($oi['iid']!=0?'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();" role="form"><input type="hidden" name="act" value="quantity"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'"'.($r['status']=='archived'?' readonly':'').' role="textbox"></form>':($oi['iid']!=0?$oi['quantity']:'')).
     			'</td>'.
-					'<td class="text-right align-middle">'.
-  					($oi['iid'] != 0?'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();"><input type="hidden" name="act" value="cost"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" style="min-width:80px" name="da" value="'.$oi['cost'].'"'.($r['status']=='archived'?' readonly':'').'></form>':($oi['iid'] != 0?$oi['cost']:'')).
+					'<td class="text-right align-middle" role="cell">'.
+  					($oi['iid'] != 0?'<form target="sp" method="POST" action="core/updateorder.php" onsubmit="Pace.restart();" role="form"><input type="hidden" name="act" value="cost"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" style="min-width:80px" name="da" value="'.$oi['cost'].'"'.($r['status']=='archived'?' readonly':'').' role="textbox"></form>':($oi['iid'] != 0?$oi['cost']:'')).
     			'</td>'.
-    			'<td class="text-right align-middle">'.($oi['iid']!=0?$oi['cost']*$oi['quantity']:'').'</td>'.
-					'<td class="text-right">'.
-						'<form target="sp" method="post" action="core/updateorder.php" onsubmit="Pace.restart();">'.
+    			'<td class="text-right align-middle" role="cell">'.($oi['iid']!=0?$oi['cost']*$oi['quantity']:'').'</td>'.
+					'<td class="text-right" role="cell">'.
+						'<form target="sp" method="post" action="core/updateorder.php" onsubmit="Pace.restart();" role="form">'.
 							'<input type="hidden" name="act" value="trash">'.
 							'<input type="hidden" name="id" value="'.$oi['id'].'">'.
 							'<input type="hidden" name="t" value="orderitems">'.
 							'<input type="hidden" name="c" value="quantity">'.
 							'<input type="hidden" name="da" value="0">'.
-							'<button class="btn btn-secondary trash" data-tooltip="tooltip" title="Delete">'.svg2('libre-gui-trash').'</button>'.
+							'<button class="btn btn-secondary trash" data-tooltip="tooltip" title="'.localize('Delete').'" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
 						'</form>'.
 					'</td>'.
 				'</tr>';
@@ -203,17 +205,17 @@ while($oi=$si->fetch(PDO::FETCH_ASSOC)){
 $sr=$db->prepare("SELECT * FROM `".$prefix."rewards` WHERE id=:rid");
 $sr->execute([':rid'=>$r['rid']]);
 $reward=$sr->fetch(PDO::FETCH_ASSOC);
-  $html.='<tr>'.
-					'<td colspan="3" class="text-right align-middle"><strong>Rewards Code</strong></td>'.
-					'<td colpsan="2" class="text-center">'.
-						'<form id="rewardsinput" target="sp" method="post" action="core/updateorder.php" onsubmit="Pace.restart();">'.
+  $html.='<tr role="row">'.
+					'<td colspan="3" class="text-right align-middle" rolw="cell"><strong>Rewards Code</strong></td>'.
+					'<td colpsan="2" class="text-center" role="cell">'.
+						'<form id="rewardsinput" target="sp" method="post" action="core/updateorder.php" onsubmit="Pace.restart();" role="form">'.
 							'<div class="form-group row">'.
 								'<div class="input-group">'.
 									'<input type="hidden" name="act" value="reward">'.
 									'<input type="hidden" name="id" value="'.$r['id'].'">'.
 									'<input type="hidden" name="t" value="orders">'.
 									'<input type="hidden" name="c" value="rid">'.
-									'<input type="text" id="rewardselect" class="form-control" name="da" value="'.($sr->rowCount()==1?$reward['code']:'').'">';
+									'<input type="text" id="rewardselect" class="form-control" name="da" value="'.($sr->rowCount()==1?$reward['code']:'').'" role="textbox">';
 $ssr=$db->prepare("SELECT * FROM `".$prefix."rewards` ORDER BY code ASC, title ASC");
 $ssr->execute();
 if($ssr->rowCount()>0){
@@ -232,7 +234,7 @@ if($ssr->rowCount()>0){
 							'</div>'.
 						'</form>'.
 					'</td>'.
-					'<td class="text-center align-middle">';
+					'<td class="text-center align-middle" role="cell">';
 			if($sr->rowCount()==1){
 			  if($reward['method']==1){
 			    $html.='$';
@@ -246,36 +248,36 @@ if($ssr->rowCount()>0){
 			  $html.=' Off';
 			}
     	$html.='</td>'.
-							'<td class="text-right align-middle"><strong>'.$total.'</strong></td>'.
-							'<td></td>'.
+							'<td class="text-right align-middle" role="cell"><strong>'.$total.'</strong></td>'.
+							'<td role="cell">&nbsp;</td>'.
 						'</tr>'.
-						'<tr>'.
-							'<td class="text-right align-middle"><strong>Postage</strong></td>'.
-							'<td colspan="5" class="text-right align-middle">'.
-								'<form target="sp" method="post" action="core/updateorder.php" onchange="$(this).submit();" onsubmit="Pace.restart();">'.
+						'<tr role="row">'.
+							'<td class="text-right align-middle" role="cell"><strong>Postage</strong></td>'.
+							'<td colspan="5" class="text-right align-middle" role="cell">'.
+								'<form target="sp" method="post" action="core/updateorder.php" onchange="$(this).submit();" onsubmit="Pace.restart();" role="form">'.
 									'<input type="hidden" name="act" value="postoption">'.
 									'<input type="hidden" name="id" value="'.$r['id'].'">'.
 									'<input type="hidden" name="t" value="orders">'.
 									'<input type="hidden" name="c" value="postageOption">'.
-									'<input type="text" class="form-control" name="da" value="'.$r['postageOption'].'">'.
+									'<input type="text" class="form-control" name="da" value="'.$r['postageOption'].'" role="textbox">'.
 								'</form>'.
 							'</td>'.
-							'<td class="text-right pl-0 pr-0">'.
-								'<form target="sp" method="POST" action="core/updateorder.php" onchange="$(this).submit();" onsubmit="Pace.restart();">'.
+							'<td class="text-right pl-0 pr-0" role="cell">'.
+								'<form target="sp" method="POST" action="core/updateorder.php" onchange="$(this).submit();" onsubmit="Pace.restart();" role="form">'.
 									'<input type="hidden" name="act" value="postcost">'.
 									'<input type="hidden" name="id" value="'.$r['id'].'">'.
 									'<input type="hidden" name="t" value="orders">'.
 									'<input type="hidden" name="c" value="postage">'.
-									'<input type="text" class="form-control text-right" style="min-width:70px" name="da" value="'.$r['postageCost'].'">';
+									'<input type="text" class="form-control text-right" style="min-width:70px" name="da" value="'.$r['postageCost'].'" role="textbox">';
 									$total=$total+$r['postageCost'];
 					$html.='</form>'.
 							'</td>'.
-							'<td></td>'.
+							'<td role="cell">&nbsp;</td>'.
 						'</tr>'.
-						'<tr>'.
-							'<td colspan="6" class="text-right"><strong>Total</strong></td>'.
-							'<td class="total text-right border-top"><strong>'.$total.'</strong></td>'.
-							'<td></td>'.
+						'<tr role="row">'.
+							'<td colspan="6" class="text-right" role="cell"><strong>'.localize('Total').'</strong></td>'.
+							'<td class="total text-right border-top" role="cell"><strong>'.$total.'</strong></td>'.
+							'<td role="cell">&nbsp;</td>'.
 						'</tr>';?>
   window.top.window.$('#updateorder').html('<?php echo$html;?>');
   window.top.window.Pace.stop();

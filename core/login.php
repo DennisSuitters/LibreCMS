@@ -4,7 +4,7 @@
  *
  * Core - Login
  *
- * login.php version 2.0.0
+ * login.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add User Timezone Setting.
  */
 if(!isset($act))
   $act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'act',FILTER_SANITIZE_STRING);
@@ -42,6 +43,7 @@ if($act=='logout'){
       $_SESSION['uid']=$user['id'];
       $_SESSION['rank']=$user['rank'];
       $_SESSION['loggedin']=true;
+      date_default_timezone_set($user['timezone']=='default'?$config['timezone']:$user['timezone']);
     }else{
       $_SESSION['loggedin']=false;
       $_SESSION['rank']=0;

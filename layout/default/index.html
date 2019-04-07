@@ -13,7 +13,7 @@
 				<div id="newsletters" class="list-group">
 					<form id="newslettersform" class="list-group-item" method="post" action="core/add_subscriber.php" role="form">
 						<input type="hidden" name="emailtrap" value="none">
-						<div class="h5" role="heading">Subscribe to our Newsletters</div>
+						<h5 class="h5">Subscribe to our Newsletters</h5>
 						<div class="form-group">
 							<label for="newslettersemail">Email</label>
 							<div class="input-group">
@@ -21,7 +21,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<button type="submit" class="btn btn-success btn-block" role="button">Subscribe</button>
+							<button type="submit" class="btn btn-outline-secondary btn-block" role="button">Subscribe</button>
 						</div>
 					</form>
 				</div>
@@ -50,12 +50,12 @@
 					<div class="card" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
 						<img class="card-img-top home" src="<print content=thumb>" alt="<print content=alttitle>" role="img">
      				<div class="card-body">
-							<h1 class="card-title h5 text-uppercase" role="heading"><a href="<print content=linktitle>" itemprop="url" role="link"><print content="title"></a></h1>
+							<h1 class="card-title h5 text-uppercase"><a href="<print content=linktitle>" itemprop="url" role="link"><print content="title"></a></h1>
 							<div class="card-text truncate small"><print content="notes"></div>
 							<controls>
 								<view>
 									<div class="content-item-title text-center" itemprop="name">
-										<a class="btn btn-success" href="<print content=linktitle>" itemprop="url" role="link">View</a>
+										<a class="btn btn-outline-secondary" href="<print content=linktitle>" itemprop="url" role="link">View</a>
 									</div>
 								</view>
 							</controls>
@@ -71,7 +71,7 @@
 	<div class="testimonials">
 		<div class="container">
 			<div class="row mt-5 p-4">
-				<h2 class="text-center col-12 mb-2 text-uppercase text-white" role="heading"><strong><a class="text-white" href="testimonials/">Testimonials</a> <small>Our Clients Love Us!</small></strong></h2>
+				<h2 class="text-center col-12 mb-2 text-uppercase text-white"><strong><a class="text-white" href="testimonials/">Testimonials</a> <small>Our Clients Love Us!</small></strong></h2>
 				<div id="testimonials" class="carousel slide" data-ride="carousel">
 					<ol class="carousel-indicators d-none">
 			      <li data-target="#testimonials" data-slide-to="0" class="active"></li>
@@ -87,7 +87,7 @@
 									<img class="d-block rounded-circle m-auto" src="<print content=avatar>" alt="<print content=name>">
 								</div>
 								<h5 class="mt-4 mb-0 text-white" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><print content="name"></span></h5>
-								<h6 itemprop="publisher" itemscope itemtype="http://schema.org/Organization" role="heading"><strong itemprop="name"><print content="business"></strong></h6>
+								<h6 itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name"><print content="business"></strong></h6>
 								<p class="col-8 m-0 pt-3 text-center text-white m-auto"><print content="notes"></p>
 			      	</div>
 						</items>

@@ -4,7 +4,7 @@
  *
  * Administration - Social Preferences
  *
- * pref-social.php version 2.0.0
+ * pref-social.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,37 +17,36 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix ARIA Attributes.
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a class="text-muted" href="<?php echo URL.$settings['system']['admin'].'/preferences';?>">Preferences</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Social Networking</li>
-    <li class="breadcrumb-menu">
-      <div class="btn-group" role="group" aria-label="">
-        
-      </div>
-    </li>
+    <li class="breadcrumb-item"><a href="<?php echo URL.$settings['system']['admin'].'/preferences';?>"><?php echo localize('Preferences');?></a></li>
+    <li class="breadcrumb-item active"><?php echo localize('Social Networking');?></li>
   </ol>
   <div class="container-fluid">
+    <noscript><div class="alert alert-danger" role="alert"><?php echo localize('alert_all_danger_noscript');?></div></noscript>
+    <div class="alert alert-warning d-sm-block d-md-none" role="alert"><?php echo localize('alert_all_warning_smallscreen');?></div>
     <div class="card">
       <div class="card-body">
         <div class="form-group row">
-          <label for="options9" class="col-form-label col-sm-2" data-tooltip="tooltip" title="Toggle RSS Feed Icon.">Show RSS Feed Icon</label>
+          <label for="options9" class="col-form-label col-sm-2"><?php echo localize('Show RSS Feed Icon');?></label>
           <div class="input-group col-sm-10">
-            <label class="switch switch-label switch-success"><input type="checkbox" id="options9" class="switch-input" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="9"<?php echo$config['options']{9}==1?' checked':'';?>><span class="switch-slider" data-checked="on" data-unchecked="off"></span></label>
+            <label class="switch switch-label switch-success"><input type="checkbox" id="options9" class="switch-input" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="9" role="checkbox"<?php echo$config['options']{9}==1?' checked aria-checked="true"':' aria-checked="false"';?>><span class="switch-slider" data-checked="<?php echo localize('on');?>" data-unchecked="<?php echo localize('off');?>"></span></label>
           </div>
         </div>
-        <form target="sp" method="post" action="core/add_data.php">
+        <form target="sp" method="post" action="core/add_data.php" role="form">
           <input type="hidden" name="user" value="0">
           <input type="hidden" name="act" value="add_social">
           <div class="form-group row">
             <div class="input-group col-12">
-              <span class="input-group-text">Network</span>
-              <select class="form-control" name="icon">
-                <option value="">Select a Social Network</option>
+              <label for="icon" class="input-group-text"><?php echo localize('Network');?></label>
+              <select id="icon" class="form-control" name="icon" role="listbox">
+                <option value=""><?php echo localize('Select a ').' '.localize('Social Network');?>...</option>
                 <option value="500px">500px</option>
                 <option value="aboutme">About Me</option>
                 <option value="airbnb">AirBNB</option>
@@ -125,9 +124,9 @@
                 <option value="zerply">Zerply</option>
                 <option value="zune">Zune</option>
               </select>
-              <div class="input-group-text">URL</div>
-              <input type="text" class="form-control" name="url" value="" placeholder="Enter a URL...">
-              <div class="input-group-append"><button class="btn btn-secondary add" data-tooltip="tooltip" title="Add"><?php svg('libre-gui-plus');?></button></div>
+              <label for="url" class="input-group-text"><?php echo localize('URL');?></label>
+              <input type="text" id="url" class="form-control" name="url" value="" placeholder="<?php echo localize('Enter a ').' '.localize('URL');?>..." role="textbox">
+              <div class="input-group-append"><button class="btn btn-secondary add" data-tooltip="tooltip" title="<?php echo localize('Add');?>" role="button" aria-label="<?php echo localize('aria_add');?>"><?php svg('libre-gui-plus');?></button></div>
             </div>
           </div>
         </form>
@@ -137,13 +136,13 @@ $ss->execute();
 while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
           <div id="l_<?php echo$rs['id'];?>" class="form-group row">
             <div class="input-group col-12">
-              <div class="input-group-text" data-tooltip="tooltip" title="<?php echo ucfirst($rs['icon']);?>"><span class="libre-social"><?php svg('libre-social-'.$rs['icon']);?></span></div>
-              <input type="text" class="form-control" value="<?php echo$rs['url'];?>" readonly>
+              <label for="icon<?php echo$rs['id'];?>" class="input-group-text" data-tooltip="tooltip" title="<?php echo ucfirst($rs['icon']);?>" aria-label="<?php echo ucfirst($rs['icon']);?>"><span class="libre-social"><?php svg('libre-social-'.$rs['icon']);?></span></label>
+              <input type="text" id="icon<?php echo$rs['id'];?>" class="form-control" value="<?php echo$rs['url'];?>" readonly role="textbox">
               <div class="input-group-append">
-                <form target="sp" action="core/purge.php">
+                <form target="sp" action="core/purge.php" role="form">
                   <input type="hidden" name="id" value="<?php echo$rs['id'];?>">
                   <input type="hidden" name="t" value="choices">
-                  <button class="btn btn-secondary trash" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
+                  <button class="btn btn-secondary trash" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
                 </form>
               </div>
             </div>

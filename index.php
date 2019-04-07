@@ -20,9 +20,11 @@
  * @version    2.0.0
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add ROOT_DIR Define to help Installer resolve from any folder location.
  */
 ini_set('session.use_trans_sid',0);
 ini_set('session.use_cookies',1);
 ini_set('session.use_only_cookies',1);
 define('MINIFY',0);
+define('ROOT_DIR',realpath(__DIR__));
 require'core/core.php';

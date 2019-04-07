@@ -4,7 +4,7 @@
  *
  * Core - Newsletter
  *
- * newsletter.php version 2.0.0
+ * newsletter.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,11 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix Notifications.
  */
 echo'<script>';
 $getcfg=true;
@@ -48,7 +50,7 @@ if($config['email']!=''){
   $mail->isHTML(true);
   $mail->SetFrom($config['email'],$config['business']);
   $mail->Subject=$news['title'];
-  $mail->AltBody="To view the message, please use an HTML compatible email viewer!";
+  $mail->AltBody=localize('warning_newsletteralt');
   if($config['newslettersEmbedImages']{0}==1){
     preg_match_all('/<img.*?>/',$body,$matches);
     if(isset($matches[0])){
@@ -84,14 +86,14 @@ if($config['email']!=''){
     }
   }
   if(!empty($mail->ErrorInfo)){?>
-    window.top.window.$('#notification').html('<div class="alert alert-danger"><?php echo$mail->ErrorInfo;?></div>');
+    window.top.window.toastr("danger")('<?php echo$mail->ErrorInfo;?>');
     window.top.window.$('#block').css({'display':'none'});
 <?php }else{?>
-    window.top.window.$('#notification').html('<div class="alert alert-success">Newsletters Sent Successfully!</div>');
+    window.top.window.toastr["success"]('<?php echo localize('alert_newsletter_success_sent');?>');
     window.top.window.$('#block').css({'display':'none'});
 <?php }
 }else{?>
-  window.top.window.$('#notification').html('<div class="alert alert-danger">The Sites <a class="alert-link" href="<?php echo ADMINURL;?>preferences#preference-contact">Email</a> hasn\'t been set.</div>');
+  window.top.window.toastr("danger")('<?php echo localize('alert_newsletter_danger_noemail');?>');
   window.top.window.Pace.stop();
 <?php }
 echo'</script>';

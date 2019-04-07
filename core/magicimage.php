@@ -4,7 +4,7 @@
  *
  * Core - Magic Image
  *
- * magicimage.php version 2.0.0
+ * magicimage.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,11 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix Notifications.
  */
 echo'<script>';
 $getcfg=true;
@@ -48,7 +50,7 @@ if($act=='thumb'){
     $process=true;
   }else{
     $process=false;?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'The file set as the Thumbnail does NOT exists on the server!'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_magicimage_danger_error');?>);
 <?php }
 }
 if($act=='file'){
@@ -73,31 +75,31 @@ if($process==true){
   if(!$image->resize($width,$height,ZEBRA_IMAGE_CROP_CENTER)){
     switch($image->error){
       case 1:?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'Source file could not be found!'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_magicimage_danger_notfound');?>');
 <?php   break;
       case 2:?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'Source file is not readable!'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_magicimage_danger_unreadable');?>');
 <?php   break;
       case 3:?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'Could not write target file!'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_magicimage_danger_unwritable');?>');
 <?php   break;
       case 4:?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'Unsupported source file format!'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_magicimage_danger_unsupportedsource');?>');
 <?php   break;
       case 5:?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'Unsupported target file format!'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_magicimage_danger_unsupportedtarget');?>');
 <?php   break;
       case 6:?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'GD library version does not support target file format!'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_magicimage_danger_unsupportedtarget');?>');
 <?php   break;
       case 7:?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'GD library is not installed!'});
+  window.top.window.toastr["danger"](<?php echo localize('alert_magicimage_danger_nogd');?>);
 <?php   break;
       case 8:?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'"chmod" command is disabled via configuration!'});
+  window.top.window.toastr["danger"](<?php echo localize('alert_magicimage_danger_nochmod');?>');
 <?php   break;
       case 9:?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'"exif_read_data" function is not available!'});
+  window.top.window.toastr["danger"](<?php echo localize('alert_magicimage_danger_noexif');?>');
 <?php   break;
     }
   }else{

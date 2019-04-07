@@ -4,7 +4,7 @@
  *
  * Administration - Project Honey Pot IP Information Viewer
  *
- * phpviewer.php version 2.0.0
+ * phpviewer.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,11 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix ARIA Attributes.
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 $getcfg=true;
@@ -28,7 +30,7 @@ include'..'.DS.'class.projecthoneypot.php';
 $idh=time();
 echo'<div id="phpviewer'.$idh.'">';
 if(!isset($config['php_APIkey'])||$config['php_APIkey']==''){
-  echo'<div class="alert alert-info">The Project Honey Pot API Key has not been entered in the Security Settings.</div>';
+  echo'<div class="alert alert-info" role="alert">'.localize('alert_php_info_nokey').'</div>';
 }else{
   function svg($svg,$class=null,$size=null){
   	echo'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('..'.'..'.DS.'svg'.DS.$svg.'.svg').'</i>';
@@ -51,23 +53,23 @@ if(!isset($config['php_APIkey'])||$config['php_APIkey']==''){
       $h=new ProjectHoneyPot($r['ip'],$config['php_APIkey']);
       if($h->hasRecord()==1){
         if($h->isSuspicious()==1){
-          echo'IP <strong>'.$r['ip'].'</strong> is listed as ';
-          if($h->isCommentSpammer()==1)echo'a Comment Spammer';
-          if($h->isHarvester()==1)echo'an Email Harvester';
-          if($h->isSearchEngine()==1)echo', but could be a Search Engine.<br>';else echo'.<br>';
-          if($h->getThreatScore()>0)echo'The Threat Score for this record is <strong>'.$h->getThreatScore().'</strong> <a target="_blank" href="https://www.projecthoneypot.org/threat_info.php" data-tooltip="tooltip" title="Information about what this value represents.">?</a>.';
+          echo'<strong>'.$r['ip'].'</strong> ',localize('php_listed');
+          if($h->isCommentSpammer()==1)echo localize('php_commentspammer');
+          if($h->isHarvester()==1)echo localize('php_harvester');
+          if($h->isSearchEngine()==1)echo localize('php_searchengine').'.<br>';else echo'.<br>';
+          if($h->getThreatScore()>0)echo localize('php_threatscore').' <strong>'.$h->getThreatScore().'</strong> <a target="_blank" href="https://www.projecthoneypot.org/threat_info.php" data-tooltip="tooltip" title="'.localize('php_linktooltip').'">?</a>.';
         }
       }else
-        echo'No Recorded Incidents were found...';
+        echo localize('php_norecords').'...';
       $sql=$db->prepare("SELECT COUNT(id) as cnt FROM `".$prefix."iplist` WHERE ip=:ip");
       $sql->execute([':ip'=>$r['ip']]);
       $row=$sql->fetch(PDO::FETCH_ASSOC);
       if($row['cnt']<1){?>
   <div id="phpbuttons" class="btn-group pull-right" role="group">
-    <form id="blacklist<?php echo$idh;?>" method="post" action="core/add_blacklist.php">
+    <form id="blacklist<?php echo$idh;?>" method="post" action="core/add_blacklist.php" role='form'>
       <input type="hidden" name="id" value="<?php echo$id;?>">
       <input type="hidden" name="t" value="<?php echo$t;?>">
-      <button class="btn btn-secondary btn-xs" data-tooltip="tooltip" title="Add Originators IP to Blacklist"><?php echo svg2('libre-gui-security');?></button>
+      <button class="btn btn-secondary btn-xs" data-tooltip="tooltip" title="<?php echo localize('php_addtooltip');?>" role="button" aria-label="<?php echo localize('aria_add');?>"><?php echo svg2('libre-gui-security');?></button>
     </form>
   </div>
   </div>
@@ -84,7 +86,7 @@ if(!isset($config['php_APIkey'])||$config['php_APIkey']==''){
   </script>
 <?php }
     }else
-      echo'The IP Recorded isn\'t valid.';
+      echo localize('php_ipinvalid');
   }else
-    echo'No Results Found.';
+    echo localize('No Results Found.');
 }

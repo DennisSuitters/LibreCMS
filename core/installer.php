@@ -20,6 +20,7 @@
  * @version    2.0.0
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Fix ARIA Attributes.
  */
 echo'<script>';
 $error=0;
@@ -78,7 +79,7 @@ if($_POST['emailtrap']=='none'){
 		require'db.php';
 		if(!isset($db)){
 			$error=1;?>
-	window.top.window.$('#dbsuccess').html('<div class="alert alert-danger">Database Connection Error!</div>');
+	window.top.window.$('#dbsuccess').html('<div class="alert alert-danger" role="alert"><?php echo localize('alert_install_danger_dberror');?></div>');
 <?php }
 		if($error==0){
 			$prefix=$settings['database']['prefix'];
@@ -95,7 +96,7 @@ if($_POST['emailtrap']=='none'){
 			$q=$db->exec($sql);
 			$e=$db->errorInfo();
 			if(is_null($e[2])){?>
-	window.top.window.$('#dbsuccess').html('<div class="alert alert-success">Database Import Succeeded.</div>');
+	window.top.window.$('#dbsuccess').html('<div class="alert alert-success" role="alert"><?php echo localize('alert_install_success_dbsuccess');?></div>');
 <?php	}
 			require'db.php';
 			$prefix=$settings['database']['prefix'];

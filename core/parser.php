@@ -4,7 +4,7 @@
  *
  * Core - Parser to Parse common tags
  *
- * parser.php version 2.0.0
+ * parser.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,11 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add Category 3 & 5 Parsing
+ * @changes    v2.0.2 Fix ARIA Attributes.
  */
 $doc=new DOMDocument();
 if($show=='item'){
@@ -118,6 +120,10 @@ foreach($tags as$tag){
 				$parsing.=' <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'" rel="tag">'.htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8').'</a>';
 				if($r['category_2']!='')
 					$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'" rel="tag">'.htmlspecialchars($r['category_2'],ENT_QUOTES,'UTF-8').'</a>';
+				if($r['category_3']!='')
+					$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'/'.urlencode(str_replace(' ','-',$r['category_3'])).'" rel="tag">'.htmlspecialchars($r['category_3'],ENT_QUOTES,'UTF-8').'</a>';
+				if($r['category_4']!='')
+					$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'/'.urlencode(str_replace(' ','-',$r['category_3'])).'/'.urlencode(str_replace(' ','-',$r['category_4'])).'" rel="tag">'.htmlspecialchars($r['category_4'],ENT_QUOTES,'UTF-8').'</a>';
 			}else
 				$container=$parsing='';
 			break;
@@ -288,7 +294,7 @@ foreach($tags as$tag){
 				$sa =$db->prepare("SELECT * FROM `".$prefix."choices` WHERE uid=:uid AND contentType='social'");
 				$sa->execute([':uid'=>$r['uid']]);
 				while($sr=$sa->fetch(PDO::FETCH_ASSOC))
-					$parsing.='<a href="'.$sr['url'].'" title="'.$sr['title'].'">'.($type=='icon'?'<'.$theme['settings']['icon_container'].' class="'.$class.'">'.frontsvg('libre-social-'.$sr['icon']).'</'.$theme['settings']['icon_container'].'>':$sr['title'].' ').'</a>';
+					$parsing.='<a href="'.$sr['url'].'" title="'.$sr['title'].'" rel="me" role="link" aria-label="'.ucfirst($sr['icon']).'">'.($type=='icon'?'<'.$theme['settings']['icon_container'].' class="'.$class.'">'.frontsvg('libre-social-'.$sr['icon']).'</'.$theme['settings']['icon_container'].'>':$sr['title'].' ').'</a>';
 			}
 			break;
 		case'time':

@@ -30,12 +30,14 @@
 						<form method="post" action="cart/confirm" role="form">
 							<input type="hidden" name="emailtrap" value="none">
 							<loggedin>
-        				<h4 role="heading">Billing address</h4>
-								<h5 role="heading">Create or Add to Existing Account</h5>
-								<div class="alert alert-info">
+        				<h4>Billing address</h4>
+								<h5>Create or Add to Existing Account</h5>
+								<div class="alert alert-info" role="alert">
 									If you have ordered from us previously, or already have an account, you can just enter your email below, and we will add this order using your account details.
 								</div>
-        				<div class="alert alert-danger">Red Highlighted Fields are Required.</div>
+        				<div class="alert alert-danger" role="alert">
+									Red Highlighted Fields are Required.
+								</div>
 								<div class="form-group row">
 									<label for="email" class="text-danger">Email</label>
 									<input type="email" id="email" class="form-control is-invalid" name="email" value="" placeholder="Enter an Email..." required aria-required="true" role="textbox">
@@ -66,7 +68,7 @@
 								</div>
             		<div class="form-group row">
               		<label for="state">State</label>
-              		<select class="form-control" id="state" name="state">
+              		<select id="state" class="form-control" name="state">
 		                  <option value="">Choose...</option>
 											<option value="New South Wales">New South Wales</option>
 											<option value="Northern Territory">Northern Territory</option>
@@ -90,7 +92,7 @@
 							<postageoptions>
 								<div class="form-group row">
 									<label for="postoption">Delivery Options</label>
-									<select class="form-control" id="postoption" name="postoption">
+									<select id="postoption" class="form-control" name="postoption" role="listbox">
 										<option value="0">Select a Delivery Option</option>
 										<postoptions>
 									</select>
@@ -98,7 +100,7 @@
 								</div>
 							</postageoptions>
 							<div class="row">
-								<button type="submit" class="btn btn-success btn-block" role="button">Confirm Order</button>
+								<button type="submit" class="btn btn-outline-secondary btn-block" role="button">Confirm Order</button>
 							</div>
           	</form>
         	</div>

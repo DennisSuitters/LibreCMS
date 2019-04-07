@@ -4,7 +4,7 @@
  *
  * View - Content Renderer
  *
- * content.php version 2.0.1
+ * content.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,10 +17,13 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.1
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Add Sluggification
+ * @changes    v2.0.2 Fix Number of Displayed Items
+ * @changes    v2.0.2 Fix retreiving any content, when "all" is used as an option for <settings contenttype="all">
+ * @changes    v2.0.2 Add Category 3 & 5 Parsing
  */
 $rank=0;
 $notification='';
@@ -44,7 +47,7 @@ elseif($view=='search'){
 		$search='%'.html_entity_decode(str_replace('-','%',filter_input(INPUT_POST,'search',FILTER_SANITIZE_STRING))).'%';
 	else
 		$search='%';
-	$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE LOWER(code) LIKE LOWER(:search) OR LOWER(brand) LIKE LOWER(:search) OR LOWER(title) LIKE LOWER(:search) OR LOWER(category_1) LIKE LOWER(:search) OR LOWER(category_2) LIKE LOWER(:search) OR LOWER(seoKeywords) LIKE LOWER(:search) OR LOWER(tags) LIKE LOWER(:search) OR LOWER(seoCaption) LIKE LOWER(:search) OR LOWER(seoDescription) LIKE LOWER(:search) OR LOWER(notes) LIKE LOWER(:search) AND status=:status ORDER BY ti DESC");
+	$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE LOWER(code) LIKE LOWER(:search) OR LOWER(brand) LIKE LOWER(:search) OR LOWER(title) LIKE LOWER(:search) OR LOWER(category_1) LIKE LOWER(:search) OR LOWER(category_2) LIKE LOWER(:search) OR LOWER(category_3) LIKE LOWER(:search) OR LOWER(category_4) LIKE LOWER(:search) OR LOWER(seoKeywords) LIKE LOWER(:search) OR LOWER(tags) LIKE LOWER(:search) OR LOWER(seoCaption) LIKE LOWER(:search) OR LOWER(seoDescription) LIKE LOWER(:search) OR LOWER(notes) LIKE LOWER(:search) AND status=:status ORDER BY ti DESC");
 	$s->execute([
 		':search'=>$search,
 		':status'=>$status
@@ -54,13 +57,13 @@ elseif($view=='search'){
 	$itemCount=4;
 	if(stristr($html,'<settings')){
 		preg_match('/<settings.*items=[\"\'](.+?)[\"\'].*>/',$html,$matches);
-		$itemCount=isset($matches[1])?$matches[1]:10;
+		$itemCount=isset($matches[1])&&$matches[1]!=0?$matches[1]+1:$config['showItems'];
 		preg_match('/<settings.*contenttype=[\"\'](.*?)[\"\'].*>/',$html,$matches);
-		$contentType=isset($matches[1])?$matches[1]:'';
+		$contentType=isset($matches[1])&&($matches[1]!='all')?$matches[1]:'%';
 	}
 	$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType LIKE :contentType AND contentType NOT LIKE 'message%' AND contentType NOT LIKE 'testimonial%' AND contentType NOT LIKE 'proof%' AND status LIKE :status AND internal!='1' AND pti < :ti	ORDER BY featured DESC, ti DESC LIMIT $itemCount");
 	$s->execute([
-		':contentType'=>$contentType.'%',
+		':contentType'=>$contentType,
 		':status'=>$status,
 		':ti'=>time()
 	]);
@@ -87,6 +90,27 @@ elseif(isset($args[1])&&strlen($args[1])==2){
 		':contentType'=>$view,
 		':category_1'=>html_entity_decode(str_replace('-',' ',$args[0])),
 		':category_2'=>html_entity_decode(str_replace('-',' ',$args[1])),
+		':status'=>$status,
+		':ti'=>time()
+	]);
+}elseif(isset($args[2])){
+	$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND LOWER(category_2) LIKE LOWER(:category_2) AND LOWER(category_3) LIKE LOWER(:category_3) AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+	$s->execute([
+		':contentType'=>$view,
+		':category_1'=>html_entity_decode(str_replace('-',' ',$args[0])),
+		':category_2'=>html_entity_decode(str_replace('-',' ',$args[1])),
+		':category_3'=>html_entity_decode(str_replace('-',' ',$args[2])),
+		':status'=>$status,
+		':ti'=>time()
+	]);
+}elseif(isset($args[3])){
+	$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE contentType LIKE :contentType AND LOWER(category_1) LIKE LOWER(:category_1) AND LOWER(category_2) LIKE LOWER(:category_2) AND LOWER(category_3) LIKE LOWER(:category_3) AND LOWER(category_4) LIKE LOWER(:category_4) AND status LIKE :status AND internal!='1' AND pti < :ti ORDER BY ti DESC");
+	$s->execute([
+		':contentType'=>$view,
+		':category_1'=>html_entity_decode(str_replace('-',' ',$args[0])),
+		':category_2'=>html_entity_decode(str_replace('-',' ',$args[1])),
+		':category_3'=>html_entity_decode(str_replace('-',' ',$args[2])),
+		':category_4'=>html_entity_decode(str_replace('-',' ',$args[3])),
 		':status'=>$status,
 		':ti'=>time()
 	]);
@@ -218,6 +242,8 @@ if($show=='categories'){
 					'/<print media=[\"\']?title[\"\']?>/',
 					'/<print media=[\"\']?category_1[\"\']?>/',
 					'/<print media=[\"\']?category_2[\"\']?>/',
+					'/<print media=[\"\']?category_3[\"\']?>/',
+					'/<print media=[\"\']?category_4[\"\']?>/',
 					'/<print media=[\"\']?attributionName[\"\']?>/',
 					'/<print media=[\"\']?attributionURL[\"\']?>/',
 					'/<print media=[\"\']?exifISO[\"\']?>/',
@@ -239,6 +265,8 @@ if($show=='categories'){
 					htmlspecialchars($rm['title'],ENT_QUOTES,'UTF-8'),
 					htmlspecialchars($rm['category_1'],ENT_QUOTES,'UTF-8'),
 					htmlspecialchars($rm['category_2'],ENT_QUOTES,'UTF-8'),
+					htmlspecialchars($rm['category_3'],ENT_QUOTES,'UTF-8'),
+					htmlspecialchars($rm['category_4'],ENT_QUOTES,'UTF-8'),
 					htmlspecialchars($rm['attributionImageName'],ENT_QUOTES,'UTF-8'),
 					htmlspecialchars($rm['attributionImageURL'],ENT_QUOTES,'UTF-8'),
 					htmlspecialchars($rm['exifISO'],ENT_QUOTES,'UTF-8'),
@@ -483,6 +511,8 @@ if($show=='item'){
 						'/<print media=[\"\']?title[\"\']?>/',
 						'/<print media=[\"\']?category_1[\"\']?>/',
 						'/<print media=[\"\']?category_2[\"\']?>/',
+						'/<print media=[\"\']?category_3[\"\']?>/',
+						'/<print media=[\"\']?category_4[\"\']?>/',
 						'/<print media=[\"\']?attributionName[\"\']?>/',
 						'/<print media=[\"\']?attributionURL[\"\']?>/',
 						'/<print media=[\"\']?exifISO[\"\']?>/',
@@ -505,6 +535,8 @@ if($show=='item'){
 						htmlspecialchars($rm['title'],ENT_QUOTES,'UTF-8'),
 						htmlspecialchars($rm['category_1'],ENT_QUOTES,'UTF-8'),
 						htmlspecialchars($rm['category_2'],ENT_QUOTES,'UTF-8'),
+						htmlspecialchars($rm['category_3'],ENT_QUOTES,'UTF-8'),
+						htmlspecialchars($rm['category_4'],ENT_QUOTES,'UTF-8'),
 						htmlspecialchars($rm['attributionImageName'],ENT_QUOTES,'UTF-8'),
 						htmlspecialchars($rm['attributionImageURL'],ENT_QUOTES,'UTF-8'),
 						htmlspecialchars($rm['exifISO'],ENT_QUOTES,'UTF-8'),

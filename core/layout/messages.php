@@ -4,7 +4,7 @@
  *
  * Administration - Messages
  *
- * messages.php version 2.0.1
+ * messages.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,10 +17,11 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.1
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Move Settings to Header
+ * @changes    v2.0.2 Add i18n.
  */
 if($args[0]=='settings')
   include'core'.DS.'layout'.DS.'set_messages.php';
@@ -39,15 +40,17 @@ else{
   }?>
 <main id="content" class="main">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item active" aria-current="page" role="heading">Messages</li>
+    <li class="breadcrumb-item active"><?php echo localize('Messages');?></li>
     <li class="breadcrumb-menu">
-      <div class="btn-group" role="group" aria-label="">
-<?php if($help['messages_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['messages_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
-if($help['messages_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['messages_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+      <div class="btn-group" role="group">
+        <?php if($help['messages_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['messages_text'].'" data-tooltip="tooltip" data-placement="left" title="'.localize('Help').'" savefrom_lm="false" role="button" aria-label="'.localize('aria_view_texthelp').'">'.svg2('libre-gui-help').'</a>';
+        if($help['messages_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['messages_video'].'" data-tooltip="tooltip" data-placement="left" title="'.localize('Watch Video Help').'" savefrom_lm="false" role="button" aria-label="'.localize('aria_view_videohelp').'">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>
   <div class="container-fluid">
+    <noscript><div class="alert alert-danger" role="alert"><?php echo localize('alert_all_danger_noscript');?></div></noscript>
+    <div class="alert alert-warning d-sm-block d-md-none" role="alert"><?php echo localize('alert_all_warning_smallscreen');?></div>
     <div class="alert alert-info">Not all the Messages Functions are currently working at this time, we are working on it though.</div>
     <div class="card">
       <div class="card-body">
@@ -108,38 +111,38 @@ if(is_array($mailBoxArr)){
             <a class="btn btn-secondary btn-block" href="#">Compose</a>
             <ul class="nav">
               <li class="nav-item<?php echo$folder=='INBOX'?' active':'';?>">
-                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages';?>">
+                <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages';?>">
                   <?php svg('libre-gui-inbox');?> Inbox
                 </a>
               </li>
               <li class="nav-item<?php echo$folder=='unread'?' active':'';?>">
-                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/unread';?>">
+                <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/unread';?>">
                   <?php svg('libre-gui-email');?> Unread
                   <?php echo$ur['cnt']>0?'<span class="badge badge-danger">'.$ur['cnt'].'</span>':'';?>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/starred';?>">
+                <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/starred';?>">
                   <?php svg('libre-shape-star');?> Starred
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/sent';?>">
+                <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/sent';?>">
                   <?php svg('libre-gui-email-send');?> Sent
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/trash';?>">
+                <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/trash';?>">
                   <?php svg('libre-gui-trash');?> Trash
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/important';?>">
+                <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/important';?>">
                   <?php svg('libre-gui-bookmark');?> Important
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-muted" href="<?php echo URL.$settings['system']['admin'].'/messages/spam';?>">
+                <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/spam';?>">
                   <?php svg('libre-gui-email-spam');?> Spam
                   <?php echo$sp['cnt']>0?'<span class="badge badge-danger">'.$sp['cnt'].'</span>':'';?>
                 </a>
@@ -148,13 +151,13 @@ if(is_array($mailBoxArr)){
           </nav>
           <main class="inbox">
             <div class="toolbar">
-              <div class="btn-group">
+              <div class="btn-group" role="group">
                 <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email');?></button>
                 <button class="btn btn-secondary" type="button"><?php svg('libre-shape-star');?></button>
                 <button class="btn btn-secondary" type="button"><?php svg('libre-shape-star-o');?></button>
                 <button class="btn btn-secondary" type="button"><?php svg('libre-gui-bookmark');?></button>
               </div>
-              <div class="btn-group">
+              <div class="btn-group" role="group">
                 <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email-reply');?></button>
                 <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email-reply');/* reply-all */?></button>
                 <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email-forward');?></button>

@@ -4,7 +4,7 @@
  *
  * Core - Admin
  *
- * admin.php version 2.0.0
+ * admin.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,11 +17,17 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix Booking View Cookie.
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
+if(!isset($_COOKIE['bookingview'])){
+  setcookie("bookingview","calendar",time()+(60*60*24*14));
+  $_COOKIE['bookingview']='calendar';
+}
 require'core'.DS.'db.php';
 if(isset($_GET['previous']))header("location:".$_GET['previous']);
 $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
@@ -36,18 +42,18 @@ $sp->execute([':contentType'=>$view]);
 include'core'.DS.'login.php';
 if($_SESSION['rank']>399){
   if(isset($_SESSION['rank'])){
-    if($_SESSION['rank']==100)$rankText='Subscriber';
-    if($_SESSION['rank']==200)$rankText='Member';
-    if($_SESSION['rank']==300)$rankText='Client';
-    if($_SESSION['rank']==400)$rankText='Contributor';
-    if($_SESSION['rank']==500)$rankText='Author';
-    if($_SESSION['rank']==600)$rankText='Editor';
-    if($_SESSION['rank']==700)$rankText='Moderator';
-    if($_SESSION['rank']==800)$rankText='Manager';
-    if($_SESSION['rank']==900)$rankText='Administrator';
-    if($_SESSION['rank']==1000)$rankText='Developer';
+    if($_SESSION['rank']==100)$rankText=localize('Subscriber');
+    if($_SESSION['rank']==200)$rankText=localize('Member');
+    if($_SESSION['rank']==300)$rankText=localize('Client');
+    if($_SESSION['rank']==400)$rankText=localize('Contributor');
+    if($_SESSION['rank']==500)$rankText=localize('Author');
+    if($_SESSION['rank']==600)$rankText=localize('Editor');
+    if($_SESSION['rank']==700)$rankText=localize('Moderator');
+    if($_SESSION['rank']==800)$rankText=localize('Manager');
+    if($_SESSION['rank']==900)$rankText=localize('Administrator');
+    if($_SESSION['rank']==1000)$rankText=localize('Developer');
   }else
-    $rankText='Visitor';
+    $rankText=localize('Visitor');
   $nous=$db->prepare("SELECT COUNT(id) AS cnt FROM `".$prefix."login` WHERE lti>:lti AND rank!=1000");
   $nous->execute([':lti'=>time()-300]);
   $nou=$nous->fetch(PDO::FETCH_ASSOC);

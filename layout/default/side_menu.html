@@ -2,14 +2,14 @@
 			<controls>
 				<div class="list-group price_side mb-4 d-none d-sm-block">
 					<div class="list-group-item" itemscope itemtype="http://schema.org/Offer">
-						<div class="h4" role="heading"><print content="cost"></div>
+						<div class="h4"><print content="cost"></div>
 						<print content="quantity">
 						<service>
 							<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>" role="link">Book Now</a>
 						</service>
 						<inventory>
 							<choices>
-							<button class="addCart btn btn-success btn-block" data-cartid="<print content=id>" data-cartchoice="0" role="button">Buy Now</button>
+							<button class="addCart btn btn-outline-secondary btn-block" data-cartid="<print content=id>" data-cartchoice="0" role="button">Buy Now</button>
 						</inventory>
 					</div>
 				</div>
@@ -19,21 +19,21 @@
 					<form id="reviewform" target="review" class="list-group-item" method="post" action="core/add_review.php" role="form">
 						<input type="hidden" name="id" value="<print content=id>">
 						<input type="hidden" name="emailtrap" value="none">
-						<div class="h4" role="heading">Add a Review</div>
+						<div class="h4">Add a Review</div>
 						<div class="form-group">
-							<label for="rating5">Rating</label>
+							<div class="h5">Rating</div>
 							<div class="input-group">
 								<span class="starRating">
-					        <input id="rating5" type="radio" name="rating" value="5" checked>
-					        	<label for="rating5" title="Awesome!">5</label>
-					        <input id="rating4" type="radio" name="rating" value="4">
-					        	<label for="rating4" title="Great!">4</label>
-					        <input id="rating3" type="radio" name="rating" value="3">
-					        	<label for="rating3" title="Meh!">3</label>
-					        <input id="rating2" type="radio" name="rating" value="2">
-					        	<label for="rating2" title="So So!">2</label>
-					        <input id="rating1" type="radio" name="rating" value="1">
-					        	<label for="rating1" title="Bad!">1</label>
+									<label for="rating5" title="Awesome!">5</label>
+					        	<input id="rating5" type="radio" name="rating" value="5" checked>
+									<label for="rating4" title="Great!">4</label>
+					        	<input id="rating4" type="radio" name="rating" value="4">
+									<label for="rating3" title="Meh!">3</label>
+					        	<input id="rating3" type="radio" name="rating" value="3">
+									<label for="rating2" title="So So!">2</label>
+					        	<input id="rating2" type="radio" name="rating" value="2">
+									<label for="rating1" title="Bad!">1</label>
+					        	<input id="rating1" type="radio" name="rating" value="1">
 					      </span>
 							</div>
 						</div>
@@ -56,7 +56,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<button type="submit" class="btn btn-success btn-block" role="button">Add Review</button>
+							<button type="submit" class="btn btn-outline-secondary btn-block" role="button">Add Review</button>
 						</div>
 					</form>
 				</div>

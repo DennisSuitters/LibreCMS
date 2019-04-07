@@ -1,14 +1,12 @@
 ![LibreCMS](core/images/librecms.png)  
 a **Free** Open Source [MIT](https://github.com/DiemenDesign/LibreCMS/blob/master/LICENSE) Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/DiemenDesign/LibreICONS). Built to take advantage of HTML5 and CSS3, with necessary SEO attributes that fit in with Google's recommendations, Micro-formats, ARIA (A11Y), and general SEO Markup.
 
-#### We are currently at Version 2.0.1
+#### We are currently at Version 2.0.2
 You can view the [CHANGELOG](https://github.com/DiemenDesign/LibreCMS/blob/master/CHANGELOG.md).
 
 ## NOTE: LibreCMS now only supports PHP 7 and above, and recommend running on PHP 7.2.
 
 ### FAQ
-- Why is English the only Language available?
-  - LibreCMS was, and is targetted towards English Speaking Australian Business's. We may in the future decide, or if someone wants to add Language support, then we may do that, or merge their changes.
 - Why no Plugins?
   - Anybody who's worked on or developed any kind of Content Mangement System in any Programming Language knows that Plugins are a potential security problem. Plugins are something that because third parties can build them, end up being out of the control of the developer, especially if the Plugin Maker disregards the conventions set by the project.
 
@@ -96,7 +94,6 @@ You can now get themes from our Themes GitHub Repository @ [LibreCMS-Themes](htt
 ### TODO:
 - Add Content to the Wiki Pages on how to use LibreCMS and how to create Templates.
 - Add Instructional [Videos to the LibreCMS YouTube Channel](https://www.youtube.com/channel/UC9vFbrBKmnSgf8TNUBvDX2Q).
-- Once at a Stable Platform, create a release candidate, and create a proper gh-page site.
 - Create Free Templates.
 - Testing, and Bug Squashing, as per the usual with ongoing projects.
 

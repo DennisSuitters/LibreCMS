@@ -4,7 +4,7 @@
  *
  * Core - Add Various Data Items
  *
- * add_data.php version 2.0.0
+ * add_data.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,13 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix Notifications.
+ * @changes    v2.0.2 Fix Media Display, adding and removal.
+ * @changes    v2.0.2 Fix Attributes.
  */
 $getcfg=true;
 require'db.php';
@@ -68,25 +72,25 @@ if($act!=''){
 			$e=$db->errorInfo();
 			if(is_null($e[2])){?>
 	window.top.window.$('#rewards').append('<?php
-echo'<tr id="l_'.$id.'">'.
-			'<td class="col-xs-1 text-center"><small>'.$code.'</small></td>'.
-			'<td class="col-xs-4 text-center"><small>'.$title.'</small></td>'.
-			'<td class="col-xs-1 text-center"><small>'.($method==0?'% Off':'$ Off').'</small></td>'.
-			'<td class="col-xs-1 text-center"><small>'.$value.'</small></td>'.
-			'<td class="col-xs-1 text-center"><small>'.$quantity.'</small></td>'.
-			'<td class="col-xs-2 text-center"><small>'.($tis!=0?date($config['dateFormat'],$tis):'').'</small></td>'.
-			'<td class="col-xs-2 text-center"><small>'.($tie!=0?date($config['dateFormat'],$tie):'').'</small></td>'.
-			'<td>'.
-				'<form target="sp" action="core/purge.php">'.
+echo'<tr id="l_'.$id.'" role="row">'.
+			'<td class="col-xs-1 small text-center" role="cell">'.$code.'</td>'.
+			'<td class="col-xs-4 small text-center" role="cell">'.$title.'</td>'.
+			'<td class="col-xs-1 small text-center" role="cell">'.($method==0?'% '.localize('Off'):'$ '.localize('Off')).'</td>'.
+			'<td class="col-xs-1 small text-center" role="cell">'.$value.'</td>'.
+			'<td class="col-xs-1 small text-center" role="cell">'.$quantity.'</td>'.
+			'<td class="col-xs-2 small text-center" role="cell">'.($tis!=0?date($config['dateFormat'],$tis):'').'</td>'.
+			'<td class="col-xs-2 small text-center" role="cell">'.($tie!=0?date($config['dateFormat'],$tie):'').'</td>'.
+			'<td role="cell">'.
+				'<form target="sp" action="core/purge.php" role="form">'.
 					'<input type="hidden" name="id" value="'.$id.'">'.
 					'<input type="hidden" name="t" value="rewards">'.
-					'<button class="btn btn-default btn-sm trash">'.svg2('libre-gui-trash').'</button>'.
+					'<button class="btn btn-default btn-sm trash" data-tooltip="tooltip" title="'.localize('Delete').'" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
 				'</form>'.
 			'</td>'.
 		'</tr>';?>
 ');
 <?php	}else{?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue adding the Reward'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_addreward');?>');
 <?php }
 			break;
     case'add_dashrss':
@@ -103,24 +107,24 @@ echo'<tr id="l_'.$id.'">'.
   window.top.window.$('#rss').append('<?php
 echo'<div id="l_'.$id.'" class="form-group">'.
 			'<div class="input-group col-xs-12">'.
-				'<div class="input-group-addon">URL</div>'.
-				'<form target="sp" method="post" action="core/update.php">'.
+				'<div class="input-group-addon">'.localize('URL').'</div>'.
+				'<form target="sp" method="post" action="core/update.php" role="form">'.
 					'<input type="hidden" name="t" value="choices">'.
 					'<input type="hidden" name="c" value="url">'.
-					'<input type="text"class="form-control" name="da" value="'.$url.'" placeholder="Enter a URL...">'.
+					'<input type="text"class="form-control" name="da" value="'.$url.'" placeholder="'.localize('Enter a ').' '.localize('URL').'..." role="textbox">'.
 				'</form>'.
 				'<div class="input-group-btn">'.
-					'<form target="sp" action="core/purge.php">'.
+					'<form target="sp" action="core/purge.php" role="form">'.
 						'<input type="hidden" name="id" value="'.$id.'">'.
 						'<input type="hidden" name="t" value="choices">'.
-						'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
+						'<button class="btn btn-default trash" data-tooltip="tooltip" title="Delete" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
 					'</form>'.
 				'</div>'.
 			'</div>'.
 		'</div>';?>
 ');
 <?php   }else{?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue adding the RSS URL'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_addrss');?>');
 <?php   }
       }
       break;
@@ -130,7 +134,7 @@ echo'<div id="l_'.$id.'" class="form-group">'.
       $url=filter_input(INPUT_POST,'url',FILTER_SANITIZE_URL);
       if(filter_var($url,FILTER_VALIDATE_URL)){
         if($icon=='none'||$url==''){?>
-  window.top.window.$.notify({type:'danger',icon:'',message:{text:'Data not Entirely Entered'}}).show();
+  window.top.window.$.notify({type:'danger',icon:'',message:text:'<?php echo localize('alert_data_danger_addempty');?>'});
 <?php   }else{
           $q=$db->prepare("INSERT INTO `".$prefix."choices` (uid,contentType,icon,url) VALUES (:uid,'social',:icon,:url)");
           $q->execute([
@@ -144,23 +148,23 @@ echo'<div id="l_'.$id.'" class="form-group">'.
   window.top.window.$('#social').append(`<?php
 echo'<div id="l_'.$id.'" class="form-group row">'.
 			'<div class="input-group col-12">'.
-				'<div class="input-group-text" data-tooltip="tooltip" title="'.ucfirst($icon).'"><span class="libre-social">'.svg2('libre-social-'.$icon).'</span></div>'.
-				'<input type="text" class="form-control" value="'.$url.'" placeholder="Enter a URL..." readonly>'.
+				'<div class="input-group-text" data-tooltip="tooltip" title="'.ucfirst($icon).'"><span class="libre-social" aria-label="'.ucfirst($icon).'">'.svg2('libre-social-'.$icon).'</span></div>'.
+				'<input type="text" class="form-control" value="'.$url.'" placeholder="'.localize('Enter a ').' '.localize('URL').'..." readonly role="textbox">'.
 				'<div class="input-group-append">'.
-					'<form target="sp" action="core/purge.php">'.
+					'<form target="sp" action="core/purge.php" role="form">'.
 						'<input type="hidden" name="id" value="'.$id.'">'.
 						'<input type="hidden" name="t" value="choices">'.
-						'<button class="btn btn-secondary trash" data-tooltip="tooltip" title="Delete">'.svg2('libre-gui-trash').'</button>'.
+						'<button class="btn btn-secondary trash" data-tooltip="tooltip" title="'.localize('Delete').'" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
 					'</form>'.
 				'</div>'.
 			'</div>'.
 		'</div>';?>`);
 <?php     }else{?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue adding the Social Networking Link'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_addsocial');?>');
 <?php     }
       	}
       }else{?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'The URL entered is not valid'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_badurl');?>');
 <?php }
       break;
 		case'add_option':
@@ -168,7 +172,7 @@ echo'<div id="l_'.$id.'" class="form-group row">'.
       $ttl=filter_input(INPUT_POST,'ttl',FILTER_SANITIZE_STRING);
 			$qty=filter_input(INPUT_POST,'qty',FILTER_SANITIZE_NUMBER_INT);
       if($ttl==''){?>
-	window.top.window.$.notify({type:'danger',icon:'',message:'Data not Entirely Entered'});
+	window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_addempty');?>');
 <?php }else{
         $q=$db->prepare("INSERT INTO `".$prefix."choices` (uid,rid,contentType,title,ti) VALUES (:uid,:rid,'option',:title,:ti)");
         $q->execute([
@@ -183,32 +187,32 @@ echo'<div id="l_'.$id.'" class="form-group row">'.
 	window.top.window.$('#itemoptions').append('<?php
 echo'<div id="l_'.$id.'" class="form-group">'.
 			'<div class="input-group col-xs-12">'.
-				'<span class="input-group-addon">Option</span>'.
-				'<form target="sp" method="post">'.
+				'<span class="input-group-addon">'.localize('Option').'</span>'.
+				'<form target="sp" method="post" role="form">'.
 					'<input type="hidden" name="id" value="'.$id.'">'.
 					'<input type="hidden" name="t" value="choices">'.
 					'<input type="hidden" name="c" value="title">'.
-					'<input type="text" class="form-control" name="da" value="'.$ttl.'" placeholder="Enter an Option Title...">'.
+					'<input type="text" class="form-control" name="da" value="'.$ttl.'" placeholder="'.localize('Enter an ').' '.localize('Option').'..." role="textbox">'.
 				'</form>'.
-				'<span class="input-group-addon">Quantity</span>'.
-				'<form target="sp" method="post">'.
+				'<span class="input-group-addon">'.localize('Quantity').'</span>'.
+				'<form target="sp" method="post" role="form">'.
 					'<input type="hidden" name="id" value="'.$id.'">'.
 					'<input type="hidden" name="t" value="choices">'.
 					'<input type="hidden" name="c" value="ti">'.
-					'<input type="text" class="form-control" name="da" value="'.$qty.'" placeholder="Quantity">'.
+					'<input type="text" class="form-control" name="da" value="'.$qty.'" placeholder="'.localize('Quantity').'" role="textbox">'.
 				'</form>'.
 				'<div class="input-group-btn">'.
-					'<form target="sp" action="core/purge.php">'.
+					'<form target="sp" action="core/purge.php" role="form">'.
 						'<input type="hidden" name="id" value="'.$id.'">'.
 						'<input type="hidden" name="t" value="choices">'.
-						'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
+						'<button class="btn btn-default trash" data-tooltip="tooltip" title="'.localize('Delete').'" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
 					'</form>'.
 				'</div>'.
 			'</div>'.
 		'</div>';?>
 ');
 <?php   }else{?>
-	window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue adding the Social Networking Link'});
+	window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_error');?>');
 <?php   }
       }
       break;
@@ -216,7 +220,7 @@ echo'<div id="l_'.$id.'" class="form-group">'.
       $sub=filter_input(INPUT_POST,'sub',FILTER_SANITIZE_STRING);
       $eml=filter_input(INPUT_POST,'eml',FILTER_SANITIZE_STRING);
       if($sub==''){?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'Data not Entirely Entered'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_addempty');?>');
 <?php }else{
         $q=$db->prepare("INSERT INTO `".$prefix."choices` (contentType,title,url) VALUES ('subject',:title,:url)");
         $q->execute([
@@ -229,32 +233,32 @@ echo'<div id="l_'.$id.'" class="form-group">'.
   window.top.window.$('#subjects').append('<?php
 echo'<div id="l_'.$id.'" class="form-group">'.
 			'<div class="input-group col-xs-12">'.
-				'<div class="input-group-addon">Subject</div>'.
-				'<form target="sp" method="post">'.
+				'<div class="input-group-addon">',localize('Subject').'</div>'.
+				'<form target="sp" method="post" role="form">'.
 					'<input type="hidden" name="id" value="'.$id.'">'.
 					'<input type="hidden" name="t" value="choices">'.
 					'<input type="hidden" name="c" value="title">'.
-					'<input type="text" class="form-control" name="da" value="'.$sub.'" placeholder="Enter a Subject...">'.
+					'<input type="text" class="form-control" name="da" value="'.$sub.'" placeholder="'.localize('Enter a ').' '.localize('Subject').'..." role="textbox">'.
 				'</form>'.
-				'<div class="input-group-addon">Email</div>'.
-				'<form target="sp" method="post">'.
+				'<div class="input-group-addon">'.localize('Email').'</div>'.
+				'<form target="sp" method="post" role="textbox">'.
 					'<input type="hidden" name="id" value="'.$id.'">'.
 					'<input type="hidden" name="t" value="choices">'.
 					'<input type="hidden" name="c" value="url">'.
-					'<input type="text" class="form-control" name="da" value="'.$eml.'" placeholder="Enter an Email...">'.
+					'<input type="text" class="form-control" name="da" value="'.$eml.'" placeholder="'.localize('Enter an ').' '.localize('Email').'..." role="textbox">'.
 				'</form>'.
 				'<div class="input-group-btn">'.
-					'<form target="sp" action="core/purge.php">'.
+					'<form target="sp" action="core/purge.php" role="form">'.
 						'<input type="hidden" name="id" value="'.$id.'">'.
 						'<input type="hidden" name="t" value="choices">'.
-						'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
+						'<button class="btn btn-default trash" data-tooltip="tooltip" title="Delete" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
 					'</form>'.
 				'</div>'.
 			'</div>'.
 		'</div>';?>
 ');
 <?php   }else{?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue adding the Social Networking Link'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_error');?>');
 <?php   }
       }
       break;
@@ -272,9 +276,9 @@ echo'<div id="l_'.$id.'" class="form-group">'.
       ]);
       $e=$db->errorInfo();
       if(is_null($e[2])){?>
-  window.top.window.$.notify({type:'success',icon:'',message:'Contact added as Client'});
+  window.top.window.toastr["success"]('<?php echo localize('alert_data_success_contacttoclient');?>');
 <?php }else{?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue Adding new Client'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_error');?>');
 <?php }
       break;
     case'add_comment':
@@ -322,20 +326,20 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
 			'<div class="media-body">'.
 				'<div class="well">'.
 					'<div id="controls-'.$id.'" class="btn-group btn-comments">'.
-						'<button class="btn btn-default btn-sm trash" onclick="purge(`'.$id.'`,`comments`);">'.svg2('libre-gui-trash').'</button>'.
+						'<button class="btn btn-default btn-sm trash" onclick="purge(`'.$id.'`,`comments`);" data-tooltip="tooltip" title="Delete" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
 					'</div>'.
 					'<h6 class="media-heading">'.$name.'</h6>'.
-					'<time><small class="text-muted">'.date($config['dateFormat'],$ti).'</small></time><br>'.
+					'<time><small>'.date($config['dateFormat'],$ti).'</small></time><br>'.
 					$da.
 				'</div>'.
 			'</div>'.
 		'</div>';?>
 ');
 <?php   }else{?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue adding your Comment'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_error');?>');
 <?php   }
       }else{?>
-  window.top.window.$.notify({type:'danger',icon:'',message:'The Email entered is not valid'});
+  window.top.window.toastr["danger"]('<?php echo localize('alert_data_danger_bademail');?>');
 <?php }
       break;
     case'add_avatar':
@@ -403,17 +407,17 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
             ':ord'=>$iid+1
           ]);?>
   window.top.window.$('#mi').append('<?php
-echo'<div id="mi_'.$iid.'" class="media col-6 col-sm-2 animated zoomIn">'.
-			'<img class="card-img" src="'.$fu.'">'.
+echo'<div id="mi_'.$iid.'" class="media col-6 col-sm-3 animated zoomIn">'.
+			'<a href="'.$fu.'" data-lightbox="media"><img class="card-img" src="'.$fu.'" alt="Media"></a>'.
 			'<div class="card-image-overlay position-relative">'.
 				'<div class="controls btn-group">'.
-					'<span class="handle btn btn-secondary btn-xs">'.svg2('libre-gui-drag').'</span>'.
-					'<button class="btn btn-secondary trash btn-xs" onclick="purge(`'.$iid.'`,`media`)">'.svg2('libre-gui-trash').'</button>'.
+					'<span class="handle btn btn-secondary btn-xs" data-tooltip="tooltip" title="'.localize('Drag to ReOrder this item').'" role="button" aria-label="'.localize('aria_drag').'">'.svg2('libre-gui-drag').'</span>'.
+					'<button class="btn btn-secondary trash btn-xs" onclick="purge(`'.$iid.'`,`media`)" data-tooltip="tooltip" title="'.localize('Delete').'" role="button" aria-label="'.localize('aria_drag').'">'.svg2('libre-gui-trash').'</button>'.
 				'</div>'.
 			'</div>'.
 		'</div>';?>
 ');
-  setTimeout(function(){window.top.window.$('#media_items_<?php echo $iid;?>').removeClass('animated zoomIn');},800);
+	window.top.window.$('[data-lightbox="media"]').simpleLightbox();
   window.top.window.Pace.stop();
 <?php   }
       }
@@ -449,25 +453,25 @@ echo'<div id="mi_'.$iid.'" class="media col-6 col-sm-2 animated zoomIn">'.
         $s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
         $s->execute([':id'=>$oi['iid']]);
         $i=$s->fetch(PDO::FETCH_ASSOC);
-        echo'<tr>'.
-							'<td class="text-left">'.$i['code'].'<div class="visible-xs">'.$i['title'].'</div></td>'.
-							'<td class="text-left hidden-xs">'.$i['title'].'</td>'.
-							'<td class="col-md-1 text-center">'.($oi['iid']!=0?'<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'"></form>':'').'</td>'.
-							'<td class="col-md-1 text-right">'.($oi['iid']!=0?'<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" name="da" value="'.$oi['cost'].'"></form>':'').'</td>'.
-							'<td class="text-right">'.($oi['iid']!=0?$oi['cost']*$oi['quantity']:'').'</td>'.
-							'<td class="text-right">'.
-								'<form target="sp" action="core/update.php">'.
+        echo'<tr role="cell">'.
+							'<td class="text-left" role="cell">'.$i['code'].'<div class="visible-xs">'.$i['title'].'</div></td>'.
+							'<td class="text-left hidden-xs" role="cell">'.$i['title'].'</td>'.
+							'<td class="col-md-1 text-center" role="cell">'.($oi['iid']!=0?'<form target="sp" action="core/update.php" role="form"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'" role="textbox"></form>':'').'</td>'.
+							'<td class="col-md-1 text-right" role="cell">'.($oi['iid']!=0?'<form target="sp" action="core/update.php" role="form"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" name="da" value="'.$oi['cost'].'" role="textbox"></form>':'').'</td>'.
+							'<td class="text-right" role="cell">'.($oi['iid']!=0?$oi['cost']*$oi['quantity']:'').'</td>'.
+							'<td class="text-right" role="cell">'.
+								'<form target="sp" action="core/update.php" role="form">'.
 									'<input type="hidden" name="id" value="'.$oi['id'].'">'.
 									'<input type="hidden" name="t" value="orderitems">'.
 									'<input type="hidden" name="c" value="quantity">'.
 									'<input type="hidden" name="da" value="0">'.
-									'<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
+									'<button class="btn btn-default trash" data-tooltip="tooltip" title="'.localize('Delete').'" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
 								'</form>'.
 							'</td>'.
 						'</tr>';
         $total=$total+($oi['cost']*$oi['quantity']);
       }
-      echo'<tr><td colspan="3">&nbsp;</td><td class="text-right"><strong>Total</strong></td><td class="text-right"><strong>'.$total.'</strong></td><td></td></tr>';
+      echo'<tr><td colspan="3" role="cell">&nbsp;</td><td class="text-right" role="cell"><strong>'.localize('Total').'</strong></td><td class="text-right" role="cell"><strong>'.$total.'</strong></td><td role="cell">&nbsp;</td></tr>';
   ?>');
 <?php break;
   }

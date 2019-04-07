@@ -4,7 +4,7 @@
  *
  * Core - Add Comment
  *
- * add_comment.php version 2.0.0
+ * add_comment.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
  */
 $getcfg=true;
 require'db.php';
@@ -122,11 +123,11 @@ if($act=='add_comment'){
             $toname=$config['email'];
             $mail->AddAddress($config['email']);
             $mail->IsHTML(true);
-            $mail->Subject='Comment on '.ucfirst($r['contentType']).': '.$r['title'];
-            $msg='A comment was made on '.ucfirst($r['contentType']).': '.$r['title'].
-                 'Name: '.$name.'<br />'.
-                 'Email: '.$email.'<br />'.
-                 'Comment: '.$notes;
+            $mail->Subject=localize('Comment on').' '.ucfirst($r['contentType']).': '.$r['title'];
+            $msg=localize('A comment was made on').' '.ucfirst($r['contentType']).': '.$r['title'].
+                 localize('Name').': '.$name.'<br />'.
+                 localize('Email').': '.$email.'<br />'.
+                 localize('Comment').': '.$notes;
             $mail->Body=$msg;
             $mail->AltBody=strip_tags(preg_replace('/<br(\s+)?\/?>/i',"\n",$msg));;
             if($mail->Send())

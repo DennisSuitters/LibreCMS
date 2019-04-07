@@ -4,7 +4,7 @@
  *
  * Core - Update
  *
- * update.php version 2.0.1
+ * update.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,10 +17,11 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.1
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
- * @changes    Add Slugification
+ * @changes    v2.0.1 Add Slugification
+ * @changes    v2.0.2 Add i18n.
  */
 echo'<script>';
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
@@ -33,6 +34,25 @@ function svg($svg,$class=null,$size=null){
 }
 function svg2($svg,$class=null,$size=null){
 	return'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
+}
+function localize($t){
+  static $tr=NULL;
+  global $config;
+  if(is_null($tr)){
+    if(file_exists('i18n'.DS.$config['language'].'.txt'))
+      $lf='i18n'.DS.$config['language'].'.txt';
+    else
+      $lf='core'.DS.'i18n'.DS.'en-AU.txt';
+    $lfc=file_get_contents($lf);
+    $tr=json_decode($lfc,true);
+  }
+  if(is_array($tr)){
+    if(!array_key_exists($t,$tr))
+      echo'Error: No "'.$t,'" Key in '.$config['language'];
+    else
+      return$tr[$t];
+  }else
+    echo'Error: '.$config['language'].' is malformed';
 }
 function sluggify($url){
 	$url=strtolower($url);
@@ -179,7 +199,7 @@ if(is_null($e[2])){
 			unlink('..'.DS.'media'.DS.'file_'.$id.'.tif');
 	}
 	if($tbl=='config'&&$col=='php_honeypot'){?>
-	window.top.window.$('#php_honeypot_link').html('<?php echo($da!=''?'<a target="_blank" href="'.$da.'">'.$da.'</a>':'Honey Pot File Not Uploaded.');?>');
+	window.top.window.$('#php_honeypot_link').html('<?php echo($da!=''?'<a target="_blank" href="'.$da.'">'.$da.'</a>':localize('Honey Pot File Not Uploaded'));?>');
 <?php }
 	if($tbl=='orderitems'||$tbl=='cart'){
     if($tbl=='cart'&&$col=='quantity'){
@@ -219,40 +239,40 @@ if(is_null($e[2])){
         $s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
         $s->execute([':id'=>$oi['iid']]);
         $i=$s->fetch(PDO::FETCH_ASSOC);
-        $html.='<tr>'.
-                '<td class="text-left">'.$i['code'].'</td>'.
-                '<td class="text-left">'.
-                  '<form target="sp" action="core/update.php">'.
+        $html.='<tr role="row">'.
+                '<td class="text-left" role="cell">'.$i['code'].'</td>'.
+                '<td class="text-left" role="cell">'.
+                  '<form target="sp" action="core/update.php" role="form">'.
                     '<input type="hidden" name="id" value="'.$oi['id'].'">'.
                     '<input type="hidden" name="t" value="'.$tbl.'">'.
                     '<input type="hidden" name="c" value="title">'.
-                    '<input type="text" class="form-control" name="da" value="'.($oi['title']!=''?$oi['title']:$i['title']).'">'.
+                    '<input type="text" class="form-control" name="da" value="'.($oi['title']!=''?$oi['title']:$i['title']).'" role="textbox">'.
                   '</form>'.
                 '</td>'.
-                '<td class="col-md-1 text-center">'.
-                  ($oi['iid']!=0?'<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'"></form>':'').
+                '<td class="col-md-1 text-center" role="cell">'.
+                  ($oi['iid']!=0?'<form target="sp" action="core/update.php" role="form"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="quantity"><input class="form-control text-center" name="da" value="'.$oi['quantity'].'" role="textbox"></form>':'').
                 '</td>'.
-                '<td class="col-md-1 text-right">'.
-                  ($oi['iid']!=0?'<form target="sp" action="core/update.php"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" name="da" value="'.$oi['cost'].'"></form>':'').
+                '<td class="col-md-1 text-right" role="cell">'.
+                  ($oi['iid']!=0?'<form target="sp" action="core/update.php" role="form"><input type="hidden" name="id" value="'.$oi['id'].'"><input type="hidden" name="t" value="orderitems"><input type="hidden" name="c" value="cost"><input class="form-control text-center" name="da" value="'.$oi['cost'].'" role="textbox"></form>':'').
                 '</td>'.
-                '<td class="text-right">'.($oi['iid'] != 0?$oi['cost']*$oi['quantity']:'').'</td>'.
-                '<td class="text-right">'.
-                  '<form target="sp" action="core/update.php">'.
+                '<td class="text-right" role="cell">'.($oi['iid'] != 0?$oi['cost']*$oi['quantity']:'').'</td>'.
+                '<td class="text-right" role="cell">'.
+                  '<form target="sp" action="core/update.php" role="form">'.
                     '<input type="hidden" name="id" value="'.$oi['id'].'">'.
                     '<input type="hidden" name="t" value="orderitems">'.
                     '<input type="hidden" name="c" value="quantity">'.
                     '<input type="hidden" name="da" value="0">'.
-                    '<button class="btn btn-default trash">'.svg2('libre-gui-trash').'</button>'.
+                    '<button class="btn btn-default trash" data-tooltip="tooltip" title="'.localize('Delete').'" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
                   '</form>'.
                 '</td>'.
               '</tr>';
         if($oi['iid']!=0)$total=$total+($oi['cost']*$oi['quantity']);
       }
-      $html.='<tr>'.
-              '<td colspan="3">&nbsp;</td>'.
-              '<td class="text-right"><strong>Total</strong></td>'.
-              '<td class="text-right"><strong>'.$total.'</strong></td>'.
-              '<td></td>'.
+      $html.='<tr role="row">'.
+              '<td colspan="3" role="cell">&nbsp;</td>'.
+              '<td class="text-right" role="cell"><strong>'.localize('Total').'</strong></td>'.
+              '<td class="text-right" role="cell"><strong>'.$total.'</strong></td>'.
+              '<td role="cell"></td>'.
             '</tr>';?>
 	window.top.window.$('#updateorder').html('<?php echo $html;?>');
 <?php }
@@ -263,8 +283,7 @@ if(is_null($e[2])){
           $av=$sav->fetch(PDO::FETCH_ASSOC);
           if($av['avatar']!=''&&file_exists('..'.DS.'media'.DS.'avatar'.DS.$av['avatar']))$avatar='media'.DS.'avatar'.DS.$av['avatar'];
 					else$avatar='images'.DS.'noavatar.jpg';
-        }else$avatar=$da;
-?>
+        }else$avatar=$da;?>
 	window.top.window.$('#avatar').attr('src','<?php echo$avatar.'?'.time();?>');
 <?php	}
 	}

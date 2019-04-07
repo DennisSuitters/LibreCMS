@@ -4,7 +4,7 @@
  *
  * Administration - Orders
  *
- * orders.php version 2.0.1
+ * orders.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,11 +17,13 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.1
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Move Settings to Header
  * @changes    v2.0.1 Add Indicator to determine if display "All" Orders
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix ARIA Attributes.
  */
 $uid=isset($_SESSION['uid'])?$_SESSION['uid']:$uid=0;
 $error=0;
@@ -122,33 +124,34 @@ else{
   }?>
 <main id="content" class="main">
   <ol class="breadcrumb shadow">
-    <li class="breadcrumb-item"><?php if(isset($args[0])&&$args[0]!='')echo'<a class="text-muted" href="'.URL.$settings['system']['admin'].'/orders">Orders</a>';else echo'Orders';?></li>
-    <li class="breadcrumb-item active"><?php echo$args[0]!=''?ucfirst($args[0]):'All';?></li>
+    <li class="breadcrumb-item"><?php if(isset($args[0])&&$args[0]!='')echo'<a href="'.URL.$settings['system']['admin'].'/orders">'.localize('Orders').'</a>';else echo localize('Orders');?></li>
+    <li class="breadcrumb-item active"><?php echo$args[0]!=''?ucfirst(localize($args[0])):localize('All');?></li>
     <li class="breadcrumb-menu">
-      <div class="btn-group" role="group" aria-label="">
-          <a href="#" class="btn btn-ghost-normal add" id="addorder" onclick="return false;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-tooltip="tooltip" data-placement="left" title="Add Order"><?php svg('libre-gui-plus');?></a>
-          <div class="dropdown-menu" aria-labelledby="addorder">
-            <a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'].'/orders/addquote';?>">Add Quote</a>
-            <a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'].'/orders/addinvoice';?>">Add Invoice</a>
-          </div>
-<?php if($help['orders_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['orders_text'].'" data-tooltip="tooltip" data-placement="left" title="Help" savefrom_lm="false">'.svg2('libre-gui-help').'</a>';
-  if($help['orders_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['orders_video'].'" data-tooltip="tooltip" data-placement="left" title="Watch Video Help" savefrom_lm="false">'.svg2('libre-gui-video').'</a>';?>
+      <div class="btn-group" role="group">
+<?php if($args[0]!=''){
+        if($args[0]=='quotes')echo'<a class="btn btn-ghost-normal add" href="'.URL.$settings['system']['admin'].'/orders/addquote" data-tooltip="tooltip" data-placement="left" title="'.localize('Add').' '.localize('Quote').'" role="button" aria-label="'.localize('aria_add').'">'.svg2('libre-gui-plus').'</a>';
+        if($args[0]=='invoices')echo'<a class="btn btn-ghost-normal add" href="'.URL.$settings['system']['admin'].'/orders/addinvoice" data-tooltip="tooltip" data-placement="left" title="'.localize('Add').' '.localize('Invoice').'" role="button" aria-label="'.localize('aria_add').'">'.svg2('libre-gui-plus').'</a>';
+      }
+        if($help['orders_text']!='')echo'<a target="_blank" class="btn btn-ghost-normal info" href="'.$help['orders_text'].'" data-tooltip="tooltip" data-placement="left" title="'.localize('Help').'" savefrom_lm="false" role="button" aria-label="'.localize('aria_view_texthelp').'">'.svg2('libre-gui-help').'</a>';
+        if($help['orders_video']!='')echo'<a href="#" class="btn btn-ghost-normal info" data-toggle="modal" data-frame="iframe" data-target="#videoModal" data-video="'.$help['orders_video'].'" data-tooltip="tooltip" data-placement="left" title="'.localize('Watch Video Help').'" savefrom_lm="false" role="button" aria-label="'.localize('aria_view_videohelp').'">'.svg2('libre-gui-video').'</a>';?>
       </div>
     </li>
   </ol>
   <div class="container-fluid">
+    <noscript><div class="alert alert-danger" role="alert"><?php echo localize('alert_all_danger_noscript');?></div></noscript>
+    <div class="alert alert-warning d-sm-block d-md-none" role="alert"><?php echo localize('alert_all_warning_smallscreen');?></div>
     <div class="card">
       <div class="card-body">
-        <div id="notifications"></div>
+        <div id="notifications" role="alert"></div>
         <div class="table-responsive">
-          <table id="stupidtable" class="table table-condensed table-hover">
+          <table id="stupidtable" class="table table-condensed table-hover" role="table">
             <thead>
-              <tr>
-                <th>Order #</th>
-                <th>Client</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th></th>
+              <tr role="row">
+                <th role="columnheader"><?php echo localize('Order');?></th>
+                <th role="columnheader"><?php echo localize('Client');?></th>
+                <th role="columnheader"><?php echo localize('Date');?></th>
+                <th role="columnheader"><?php echo localize('Status');?></th>
+                <th role="columnheader"></th>
               </tr>
             </thead>
             <tbody>
@@ -161,33 +164,33 @@ else{
   $cs=$db->prepare("SELECT username,name,email,business FROM `".$prefix."login` WHERE id=:id");
   $cs->execute([':id'=>$r['cid']]);
   $c=$cs->fetch(PDO::FETCH_ASSOC);?>
-              <tr id="l_<?php echo$r['id'];?>"<?php echo($ti>$r['due_ti'])||($r['status']=='overdue')?' class="danger text-danger"':'';?>>
-                <td>
-                  <small><a href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'];?>"><?php echo$r['aid']!=''?$r['aid'].'<br>':'';echo$r['qid'].$r['iid'];?></a><br>
-                  <?php echo$c['username'];echo$c['name']!=''?' ['.$c['name'].']':'';echo$c['business']!=''?' -> '.$c['business']:'';?></small>
+              <tr id="l_<?php echo$r['id'];?>" role="row">
+                <td role="cell">
+                  <a href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'];?>"><?php echo$r['aid']!=''?$r['aid'].'<br>':'';echo$r['qid'].$r['iid'];?></a><br>
+                  <?php echo$c['username'];echo$c['name']!=''?' ['.$c['name'].']':'';echo$c['business']!=''?' -> '.$c['business']:'';?>
                 </td>
-                <td>
-                  <small><?php echo$c['username'].($c['name']!=''?' ['.$c['name'].']':'').($c['name']!=''&&$c['business']!=''?'<br>':'').($c['business']!=''?$c['business']:'');?></small>
+                <td role="cell">
+                  <?php echo$c['username'].($c['name']!=''?' ['.$c['name'].']':'').($c['name']!=''&&$c['business']!=''?'<br>':'').($c['business']!=''?$c['business']:'');?>
                 </td>
-                <td>
-                  <small><?php echo' '.date($config['dateFormat'],($r['iid_ti']==0?$r['qid_ti']:$r['iid_ti']));?><br>
-                  Due: <?php echo date($config['dateFormat'],$r['due_ti']);?></small>
+                <td role="cell">
+                  <?php echo' '.date($config['dateFormat'],($r['iid_ti']==0?$r['qid_ti']:$r['iid_ti']));?><br>
+                  <small><?php echo localize('Due');?>: <?php echo date($config['dateFormat'],$r['due_ti']);?></small>
                 </td>
-                <td>
-                  <small><?php echo$r['status'];?></small>
+                <td role="cell">
+                  <span class="badge badge-<?php echo($ti>$r['due_ti'])||($r['status']=='overdue')?'danger"':'info';?>"><?php echo ucfirst($r['status']);?></span>
                 </td>
-                <td id="controls_<?php echo$r['id'];?>">
-                  <div class="btn-group float-right">
-<?php echo$r['qid']!=''&&$r['aid']==''?'<a class="btn btn-secondary'.($r['status']=='delete'?' hidden':'').'" href="'.URL.$settings['system']['admin'].'/orders/to_invoice/'.$r['id'].'" data-tooltip="tooltip" title="Convert to Invoice...">'.svg2('libre-gui-order-quotetoinvoice').'</a>':'';
-  echo$r['aid']==''?'<button class="btn btn-secondary'.($r['status']=='delete'?' hidden':'').'" onclick="update(\''.$r['id'].'\',\'orders\',\'status\',\'archived\')" data-tooltip="tooltip" title="Archive">'.svg2('libre-gui-archive').'</button>':'';?>
-                    <button class="btn btn-secondary" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');" data-tooltip="tooltip" title="Print Order"><?php svg('libre-gui-print');?></button>
-<?php echo$c['email']!=''?'<button class="btn btn-secondary" onclick="$(\'#sp\').load(\'core/email_order.php?id='.$r['id'].'&act=\');" data-tooltip="tooltip" title="Email Order">'.svg2('libre-gui-email-send').'</button>':'';?>
-                    <a class="btn btn-secondary<?php echo$r['status']=='delete'?' hidden':'';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/duplicate/'.$r['id'];?>" data-tooltip="tooltip" title="Duplicate"'><?php svg('libre-gui-copy');?></a>
-                    <a class="btn btn-secondary<?php echo$r['status']=='delete'?' hidden':'';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'];?>" data-tooltip="tooltip" title="Edit"><?php svg('libre-gui-edit');?></a>
+                <td id="controls_<?php echo$r['id'];?>" role="cell">
+                  <div class="btn-group float-right" role="group">
+                    <?php echo$r['qid']!=''&&$r['aid']==''?'<a class="btn btn-secondary'.($r['status']=='delete'?' hidden':'').'" href="'.URL.$settings['system']['admin'].'/orders/to_invoice/'.$r['id'].'" data-tooltip="tooltip" title="'.localize('Convert to Invoice').'..." role="button" aria-label="'.localize('aria_order_converttoinvoice').'">'.svg2('libre-gui-order-quotetoinvoice').'</a>':'';
+                    echo$r['aid']==''?'<button class="btn btn-secondary'.($r['status']=='delete'?' hidden':'').'" onclick="update(\''.$r['id'].'\',\'orders\',\'status\',\'archived\')" data-tooltip="tooltip" title="'.localize('Archive').'" role="button" aria-label="'.localize('aria_archive').'">'.svg2('libre-gui-archive').'</button>':'';?>
+                    <button class="btn btn-secondary" onclick="$('#sp').load('core/email_order.php?id=<?php echo$r['id'];?>&act=print');" data-tooltip="tooltip" title="<?php echo localize('Print Order');?>" role="button" aria-label="<?php echo localize('aria_print');?>"><?php svg('libre-gui-print');?></button>
+                    <?php echo$c['email']!=''?'<button class="btn btn-secondary" onclick="$(\'#sp\').load(\'core/email_order.php?id='.$r['id'].'&act=\');" data-tooltip="tooltip" title="'.localize('Email Order').'" role="button" aria-label="'.localize('aria_email').'">'.svg2('libre-gui-email-send').'</button>':'';?>
+                    <a class="btn btn-secondary<?php echo$r['status']=='delete'?' hidden':'';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/duplicate/'.$r['id'];?>" data-tooltip="tooltip" title="<?php echo localize('Duplicate');?>" role="button" aria-label="<?php echo localize('aria_duplicate');?>"><?php svg('libre-gui-copy');?></a>
+                    <a class="btn btn-secondary<?php echo$r['status']=='delete'?' hidden':'';?>" href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'];?>" data-tooltip="tooltip" title="<?php echo localize('Edit');?>" role="button" aria-label="<?php echo localize('aria_edit');?>"><?php svg('libre-gui-edit');?></a>
 <?php if($user['rank']>399){?>
-                    <button class="btn btn-secondary<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','')" data-tooltip="tooltip" title="Restore"><?php svg('libre-gui-untrash');?></button>
-                    <button class="btn btn-secondary trash<?php echo$r['status']=='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','delete')" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
-                    <button class="btn btn-secondary trash<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="purge('<?php echo$r['id'];?>','orders')" data-tooltip="tooltip" title="Purge"><?php svg('libre-gui-purge');?></button>
+                    <button class="btn btn-secondary<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','')" data-tooltip="tooltip" title="<?php echo localize('Restore');?>" role="button" aria-label="<?php echo localize('aria_restore');?>"><?php svg('libre-gui-untrash');?></button>
+                    <button class="btn btn-secondary trash<?php echo$r['status']=='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','orders','status','delete')" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
+                    <button class="btn btn-secondary trash<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="purge('<?php echo$r['id'];?>','orders')" data-tooltip="tooltip" title="<?php echo localize('Purge');?>" role="button" aria-label="<?php echo localize('aria_purge');?>"><?php svg('libre-gui-purge');?></button>
 <?php }?>
                   </div>
                 </td>

@@ -4,7 +4,7 @@
  *
  * Core - Add Booking
  *
- * add_booking.php version 2.0.0
+ * add_booking.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
  */
 $getcfg=true;
 require'db.php';
@@ -128,24 +129,31 @@ if($act=='add_booking'){
 						$toname=$config['email'];
 						$mail->AddAddress($config['email']);
 						$mail->IsHTML(true);
-						$mail->Subject='Booking Created by '.$name.' at '.$config['business'];
-						$msg='Booking Date: '.date($config['dateFormat'],$tis).'<br />';
+						$subject=str_replace([
+							'{'.localize('business').'}',
+							'{'.localize('name').'}'
+						],[
+							$name,
+							$business
+						],localize('booking_createdsubject');
+						$mail->Subject=$subject;
+						$msg=localize('Booking Date').': '.date($config['dateFormat'],$tis).'<br />';
 						if($rid!=0){
 							$s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
 							$s->execute([':id'=>$rid]);
 							$r=$s->fetch(PDO::FETCH_ASSOC);
-							$msg.='Booked: '.ucfirst(rtrim($r['contentType'],'s')).' - '.$r['title'];
+							$msg.=localize('Booked').': '.ucfirst(rtrim($r['contentType'],'s')).' - '.$r['title'];
 						}
-						$msg.='Name: '.$name.'<br />'.
-									'Email: '.$email.'<br />'.
-									'Business: '.$business.'<br />'.
-									'Address: '.$address.'<br />'.
-									'Suburb: '.$suburb.'<br />'.
-									'City: '.$city.'<br />'.
-									'State: '.$state.'<br />'.
-									'Postcode: '.$postcode.'<br />'.
-									'Phone: '.$phone.'<br />'.
-									'Notes: '.$notes;
+						$msg.=localize('Name').': '.$name.'<br />'.
+									localize('Email').': '.$email.'<br />'.
+									localize('Business').': '.$business.'<br />'.
+									localize('Address').': '.$address.'<br />'.
+									localize('Suburb').': '.$suburb.'<br />'.
+									localize('City').': '.$city.'<br />'.
+									localize('State').': '.$state.'<br />'.
+									localize('Postcode').': '.$postcode.'<br />'.
+									localize('Phone').': '.$phone.'<br />'.
+									localize('Notes').': '.$notes;
 						$mail->Body=$msg;
 						$mail->AltBody=strip_tags(preg_replace('/<br(\s+)?\/?>/i',"\n",$msg));
 						if($mail->Send())
@@ -161,13 +169,13 @@ if($act=='add_booking'){
 							$mail2->AddAttachment('..'.DS.'media'.DS.basename($config['bookingAttachment']));
 						$mail2->IsHTML(true);
 						$namee=explode(' ',$name);
-						$subject=isset($config['bookingAutoReplySubject'])&&$config['bookingAutoReplySubject']!=''?$config['bookingAutoReplySubject']:'Booking Confirmation from {business}';
+						$subject=isset($config['bookingAutoReplySubject'])&&$config['bookingAutoReplySubject']!=''?$config['bookingAutoReplySubject']:localize('booking_confirmationsubject');
 						$subject=str_replace([
-							'{business}',
-							'{name}',
-							'{first}',
-							'{last}',
-							'{date}'
+							'{'.localize('business').'}',
+							'{'.localize('name').'}',
+							'{'.localize('first').'}',
+							'{'.localize('last').'}',
+							'{'.localize('date').'}'
 						],[
 							$config['business'],
 							$name,
@@ -176,18 +184,18 @@ if($act=='add_booking'){
 							date($config['dateFormat'],$ti)
 						],$subject);
 						$mail2->Subject=$subject;
-						$msg2=isset($config['bookingAutoReplyLayout'])&&$config['bookingAutoReplyLayout']!=''?rawurldecode($config['bookingAutoReplyLayout']):'Thank you for '.($config['business']!=''?' Booking with {business}':'').' your Booking.<br />Someone will be in touch to confirm your Booking time.<br />Regards,<br />{business}';
+						$msg2=isset($config['bookingAutoReplyLayout'])&&$config['bookingAutoReplyLayout']!=''?rawurldecode($config['bookingAutoReplyLayout']):localize('booking_confirmationlayout');
 						$bookingDate=$tis!=0?date($config['dateFormat'],$tis):'';
 						$bookingService=$rid!=0?ucfirst(rtrim($r['contentType'],'s')).' - '.$r['title']:'';
 	          $namee=explode(' ',$name);
 						$msg2=str_replace([
-							'{business}',
-							'{name}',
-							'{first}',
-							'{last}',
-							'{date}',
-							'{booking_date}',
-							'{service}'
+							'{'.localize('business').'}',
+							'{'.localize('name').'}',
+							'{'.localize('first').'}',
+							'{'.localize('last').'}',
+							'{'.localize('date').'}',
+							'{'.localize('booking_date').'}',
+							'{'.localize('service').'}'
 						],[
 							$config['business'],
 							$name,

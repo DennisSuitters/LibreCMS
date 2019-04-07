@@ -4,7 +4,7 @@
  *
  * Core - Restore Backup
  *
- * restorebackup.php version 2.0.0
+ * restorebackup.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,11 +17,14 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix Notifications.
  */
 echo"<script>window.top.window.$('#backup_info').html('');";
+$getcfg=true;
 require'db.php';
 $fu=$_FILES['fu'];
 if(isset($_FILES['fu'])){
@@ -32,9 +35,9 @@ if(isset($_FILES['fu'])){
     $q=$db->exec($sql);
     $e=$db->errorInfo();
     if(is_null($e[2])){?>
-  window.top.window.$('#backup_info').html('<div class="alert alert-success">Restore from Backup Successful!</div>');
+  window.top.window.toastr["success"]('<?php echo localize('alert_restore_success');?>');
 <?php }else{?>
-  window.top.window.$('#backup_info').html('<div class="alert alert-danger">There was an issue Restoring the Backup!<br><?php echo$r[2];?></div>');
+  window.top.window.toastr["danger"]('<?php echo localize('alert_resture_danger').'<br>'.$e[2];?>');
 <?php }
   }
 }?>

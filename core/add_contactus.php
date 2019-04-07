@@ -4,7 +4,7 @@
  *
  * Core - Add Contact Us Message
  *
- * add_contactus.php version 2.0.0
+ * add_contactus.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
  */
 $getcfg=true;
 require'db.php';
@@ -115,12 +116,12 @@ if($act=='add_message'){
   						$toname=$config['email'];
   						$mail->AddAddress($config['email']);
   						$mail->IsHTML(true);
-  						$mail->Subject='Contact Email via '.$config['business'].': '.$subject;
-  						$msg='Message Date: '.date($config['dateFormat'],$ti).'<br />'.
-  								 'Subject: '.$subject.'<br />'.
-  								 'Name: '.$name.'<br />'.
-  								 'Email: '.$email.'<br />'.
-  								 'Message: '.$notes;
+  						$mail->Subject=localize('Contact Email via').' '.$config['business'].': '.$subject;
+  						$msg=localize('Message Date').': '.date($config['dateFormat'],$ti).'<br />'.
+  								 localize('Subject').': '.$subject.'<br />'.
+  								 localize('Name').': '.$name.'<br />'.
+  								 localize('Email').': '.$email.'<br />'.
+  								 localize('Message').': '.$notes;
   						$mail->Body=$msg;
   						$mail->AltBody=strip_tags(preg_replace('/<br(\s+)?\/?>/i',"\n",$msg));
   						if($mail->Send())
@@ -133,26 +134,26 @@ if($act=='add_message'){
   						$toname=$email;
   						$mail2->AddAddress($email);
   						$mail2->IsHTML(true);
-  						$subject=isset($config['contactAutoReplySubject'])&&$config['contactAutoReplySubject']=''?$config['contactAutoReplySubject']:'Thank you for contacting {business}';
+  						$subject=isset($config['contactAutoReplySubject'])&&$config['contactAutoReplySubject']=''?$config['contactAutoReplySubject']:localize('contact_autoreplysubject');
   						$subject=str_replace([
-								'{business}',
-								'{date}'
+								'{'.localize('business').'}',
+								'{'.localize('date').'}'
 							],[
 								$config['business'],
 								date($config['dateFormat'],$ti)
 							],$subject);
   						$mail2->Subject=$subject;
-  						$msg2=isset($config['contactAutoReplyLayout'])&&$config['contactAutoReplyLayout']!=''?rawurldecode($config['contactAutoReplyLayout']):'Thank you for Contacting {business}<br />Someone will be in touch to respond to your request.<br />Kind Regards,<br />{business}';
+  						$msg2=isset($config['contactAutoReplyLayout'])&&$config['contactAutoReplyLayout']!=''?rawurldecode($config['contactAutoReplyLayout']):localize('contact_autoreplylayout');
   						$n=explode(' ',$name);
   						$namefirst=$n[0];
   						$namelast=end($n);
   						$msg2=str_replace([
-								'{business}',
-								'{date}',
-								'{name}',
-								'{first}',
-								'{last}',
-								'{subject}'
+								'{'.localize('business').'}',
+								'{'.localize('date').'}',
+								'{'.localize('name').'}',
+								'{'.localize('first').'}',
+								'{'.localize('last').'}',
+								'{'.localize('subject').'}'
 							],[
 								$config['business']!=''?$config['business']:'us',
 								date($config['dateFormat'],$ti),

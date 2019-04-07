@@ -4,7 +4,7 @@
  *
  * Core - Backup Database
  *
- * backup.php version 2.0.0
+ * backup.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,13 +17,36 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Fix Display Formatting.
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix ARIA Attributes.
  */
 echo'<script>';
 if(session_status()==PHP_SESSION_NONE)session_start();
-require_once'db.php';
+require'db.php';
+$config=$db->query("SELECT language FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+function localize($t){
+	static $tr=NULL;
+	global $config;
+	if(is_null($tr)){
+		if(file_exists('i18n'.DS.$config['language'].'.txt'))
+			$lf='i18n'.DS.$config['language'].'.txt';
+		else
+			$lf='i18n'.DS.'en-AU.txt';
+		$lfc=file_get_contents($lf);
+		$tr=json_decode($lfc,true);
+	}
+	if(is_array($tr)){
+		if(!array_key_exists($t,$tr))
+			echo'Error: No "'.$t,'" Key in '.$config['language'];
+		else
+			return$tr[$t];
+	}else
+		echo'Error: '.$config['language'].' is malformed';
+}
 function svg($svg,$class=null,$size=null){
 	echo'<i class="libre'.($size!=null?' libre-'.$size:'').($class!=null?' '.$class:'').'">'.file_get_contents('svg'.DS.$svg.'.svg').'</i>';
 }
@@ -128,10 +151,10 @@ if(file_exists('..'.DS.'media'.DS.'backup'.DS.$file)){
   $ti=time();
   $q=$db->prepare("UPDATE `".$prefix."config` SET backup_ti=:backup_ti WHERE id='1'");
   $q->execute([':backup_ti'=>$ti]);?>
-  window.top.window.$('#backups').append('<?php echo'<div id="l_'.$fileid.'" class="form-group"><label class="control-label col-xs-5 col-sm-3 col-lg-2">&nbsp;</label><div class="input-group col-xs-7 col-sm-9 col-lg-10"><a class="btn btn-default btn-block" href="media/backup/'.$file.'">Click to Download '.$file.'</a><div class="input-group-btn"><button class="btn btn-default trash" onclick="removeBackup(\''.$fileid.'\',\''.$filename.'\')">'.svg2('libre-gui-trash').'</button></div></div></div>';?>');
-  window.top.window.$('#alert_backup').addClass('hidden');
+  window.top.window.$('#backups').append('<?php echo'<div id="l_'.$fileid.'" class="form-group row"><label class="col-form-label col-sm-2">&nbsp;</label><div class="input-group col-sm-10"><a class="btn btn-secondary col" href="media/backup/'.$file.'">',localize('Click to Download').' '.$file.'</a><div class="input-group-append"><button class="btn btn-secondary trash" onclick="removeBackup(\''.$fileid.'\',\''.$filename.'\')" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button></div></div></div>';?>');
+  window.top.window.$('#alert_backup').addClass('d-none');
 <?php }else{?>
-	window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue performing the backup!'});
+	window.top.window.toastr["danger"]('<?php echo localize('alert_backup_danger_error');?>');
 <?php }?>
   window.top.window.Pace.stop();
 <?php

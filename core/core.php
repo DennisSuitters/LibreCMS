@@ -21,6 +21,7 @@
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Add Manifest
+ * @changes    v2.0.2 Add Functions to get Server Stats for Developers.
  */
 $getcfg=true;
 require'db.php';
@@ -165,10 +166,70 @@ function elapsed_time($b=0,$e=0){
   }else$b=number_format($td,3).'s';
   return trim($b);
 }
-function size_format($s,$p=2){
-    $b=log($s,1024);
-    $s=array('','KB','MB','GB','TB');
-    return round(pow(1024,$b-floor($b)),$p).$s[floor($b)];
+function size_format($f,$p=2){
+  $us=array('','K','M','G','T','P','E','Z','Y');
+  foreach($us as$iU => $u){
+    if($f>1024)
+      $f/=1024;
+    else
+      break;
+  }
+  return round($f,$p).$us[$iU].'B';
+}
+function getmemstats(){
+  $memfree=0;
+  if(shell_exec('cat /proc/meminfo')){
+    $memfree=shell_exec('grep MemFree /proc/meminfo | awk \'{print $2}\'');
+    $membuffers=shell_exec('grep Buffers /proc/meminfo | awk \'{print $2}\'');
+    $memcached=shell_exec('grep Cached /proc/meminfo | awk \'{print $2}\'');
+    $memfree=(int)$memfree+(int)$membuffers+(int)$memcached;
+  }
+  if(!($memtotal=shell_exec('grep MemTotal /proc/meminfo | awk \'{print $2}\'')))$memtotal=0;
+  $memtotal=(int)$memtotal;
+  $memused=$memtotal-$memfree;
+  $mempercent=0;
+  if($memtotal>0)$mempercent=100-(round($memfree/$memtotal*100));
+  $memfree=size_format($memfree*1024);
+  $mem = [
+    'percent'=>$mempercent,
+    'total'=>$memtotal*1024,
+    'used'=>$memused*1024
+  ];
+  return$mem;
+}
+function getload(){
+	$loads=sys_getloadavg();
+	$core_nums=trim(shell_exec("grep -P '^processor' /proc/cpuinfo|wc -l"));
+	$load=round($loads[0]/($core_nums+1)*100,2);
+	return$load;
+}
+function gpc(){
+  static $ver,$runs=0;
+  if(is_null($ver))$ver=version_compare(PHP_VERSION,'5.3.0','>=');
+  if($runs++>0){
+    if($ver)clearstatcache(true,'/proc');
+    else clearstatcache();
+  }
+  $stat=stat('/proc');
+  return((false!==$stat && isset($stat[3]))?$stat[3]:0);
+}
+function num_cpu():int{
+	if(defined('PHP_WINDOWS_VERSION_MAJOR')){
+		$str=trim(shell_exec ('wmic cpu get NumberOfCores 2>&1'));
+		if(!preg_match('/(\d+)/',$str,$matches))throw new \RuntimeException('wmic failed to get number of cpu cores on windows!');
+		return((int)$matches[1]);
+	}
+	$ret=@shell_exec('nproc');
+	if(is_string($ret)){
+		$ret=trim($ret);
+		if(false!==($tmp=filter_var($ret,FILTER_VALIDATE_INT)))return$tmp;
+	}
+	if(is_readable('/proc/cpuinfo')){
+		$cpuinfo=file_get_contents('/proc/cpuinfo');
+		$count=substr_count($cpuinfo,'processor');
+		if($count>0)return$count;
+	}
+	throw new \LogicException('failed to detect number of CPUs!');
 }
 function tomoment($f){
   $r=['d'=>'DD','D'=>'ddd','j'=>'D','l'=>'dddd','N'=>'E','S'=>'o','w'=>'e','z'=>'DDD','W'=>'W','F'=>'MMMM','m'=>'MM','M'=>'MMM','n'=>'M','t'=>'','L'=>'','o'=>'YYYY','Y'=>'YYYY','y'=>'YY','a'=>'a','A'=>'A','B'=>'','g'=>'h','G'=>'H','h'=>'hh','H'=>'HH','i'=>'mm','s'=>'ss','u'=>'SSS','e'=>'zz','I'=>'','O'=>'','P'=>'','T'=>'','Z'=>'','c'=>'','r'=>'','U'=>'X'];

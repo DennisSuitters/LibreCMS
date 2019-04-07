@@ -9,6 +9,9 @@ h2.error{font-size:3em!important}
 .card-img-top.home{height:10rem}
 .account #avatar{max-width:32px;height:32px}
 header .nav-item{position:relative}
+.nav-link{color:#000!important;font-weight:400}
+.nav-link:hover{background-color:#000!important;color:#fff!important;border-radius:5px;-webkit-border-radius:5px}
+.active .nav-link{font-weight:700}
 #cart{position:absolute;display:block;top:-10px;right:-5px}
 #cart:empty{display:none}
 #featured .carousel-image{display:block;height:480px;width:100%;background-size:cover;background-position:center center}
@@ -59,12 +62,12 @@ header .nav-item{position:relative}
 .quote-footer .quote-author-img img{float:left;max-width:90px;width:90px;height:90px;-webkit-border-radius:50%;-moz-border-radius:50%;-ms-border-radius:50%;border-radius:50%;margin-left:-5px;margin-top:-40px;position:relative;z-index:1;padding:5px;background-color:#fff}
 .quote-footer h4{font-size:14px;margin-bottom:4px}
 .quote-footer p{font-weight:400;font-style:italic;font-size:14px}
-footer ul.extras li a{color:#888}
-footer ul.extras li a:hover{color:#888}
-.theme{background:transparent;color:#888}
+footer ul.extras li a{color:#000}
+footer ul.extras li a:hover{color:#000}
+.theme{background:transparent;color:#000}
 .theme a{line-height:0;color:inherit}
 .theme a:hover{color:inherit;text-decoration:underline}
-.theme a .libre{width:auto;color:#18a303}
+.theme a .libre{width:auto;color:#000}
 .theme a .cms{color:#000;font-weight:700}
 @media(min-width:360px){
   .w-50{width:100%!important}

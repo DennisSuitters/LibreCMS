@@ -4,7 +4,7 @@
  *
  * Administration - Meta-Footer containts inline Javascript
  *
- * meta_footer.php version 2.0.1
+ * meta_footer.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,12 +17,13 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.1
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Remove Media Editing Popup
  * @changes    v2.0.1 Fix Media ReOrdering Items
  * @changes    v2.0.1 Make Images Uploading auto-populate thumbnail
+ * @canges     v2.0.2 Add i18n.
  */?>
 <script>
 var unsaved=false;
@@ -38,7 +39,7 @@ window.onbeforeunload = function(e) {
 //    });
 //    e.stopPropogation();
 //  }
-  if (unsaved) return 'You have unsaved changes in the Editor. Do you want to leave this page and discard your changes or stay on this page?';
+  if (unsaved) return '<?php echo localize('warning_unsaved');?>';
 }
 <?php if(file_exists('core'.DS.'sounds'.DS.'notification.mp3')&&$config['notification_volume']!=0){?>
   ion.sound({
@@ -393,10 +394,12 @@ if(isset($r['due_ti'])){?>
     			if(this.checked){
     				$('.switchinput').each(function(){
     					this.checked=true;
+              $(this).attr("aria-checked", "true");
     				});
     			}else{
     				$('.switchinput').each(function(){
     					this.checked=false;
+              $(this).attr("aria-checked", "false");
     				});
     			}
     		}else{
@@ -431,30 +434,30 @@ if(isset($r['due_ti'])){?>
           ion.sound.play("notification");
 <?php }?>
         }
-        var stathtml='<div class="dropdown-header text-center"><strong>Notifications</strong></div>';
-        if(stats[3]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/content"><?php svg('libre-gui-comments');?> Comments<span id="nav-nc" class="badge badge-info">'+stats[3]+'</span></a>';
-        if(stats[4]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/content"><?php svg('libre-gui-review');?> Reviews<span id="nav-nr" class="badge badge-info">'+stats[4]+'</span></a>';
-        if(stats[5]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/messages"><?php svg('libre-gui-inbox');?> Messages<span id="nav-nm" class="badge badge-info">'+stats[5]+'</span></a>';
-        if(stats[6]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/orders/pending"><?php svg('libre-gui-order');?> Orders<span id="nav-po" class="badge badge-info">'+stats[6]+'</span></a>';
-        if(stats[7]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/bookings"><?php svg('libre-gui-calendar');?> Bookings<span id="nav-nb" class="badge badge-info">'+stats[7]+'</span></a>';
-        if(stats[8]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/accounts"><?php svg('libre-gui-users');?> Users<span id="nav-nu" class="badge badge-info">'+stats[8]+'</span></a>';
-        if(stats[9]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/content/type/testimonials"><?php svg('libre-gui-testimonial');?> Testimonials<span id="nav-nt" class="badge badge-info">'+stats[9]+'</span></a>';
-        if(stats[2]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/accounts"><?php svg('libre-gui-users');?> Active Users<span id="nav-nou" class="badge badge-info">'+stats[2]+'</span></a>';
+        var stathtml='<div class="dropdown-header text-center"><strong><?php echo localize('Notifications');?></strong></div>';
+        if(stats[3]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/content"><?php svg('libre-gui-comments');?> <?php echo localize('Comments');?><span id="nav-nc" class="badge badge-info">'+stats[3]+'</span></a>';
+        if(stats[4]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/content"><?php svg('libre-gui-review');?> <?php echo localize('Reviews');?><span id="nav-nr" class="badge badge-info">'+stats[4]+'</span></a>';
+        if(stats[5]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/messages"><?php svg('libre-gui-inbox');?> <?php echo localize('Messages');?><span id="nav-nm" class="badge badge-info">'+stats[5]+'</span></a>';
+        if(stats[6]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/orders/pending"><?php svg('libre-gui-order');?> <?php echo localize('Orders');?><span id="nav-po" class="badge badge-info">'+stats[6]+'</span></a>';
+        if(stats[7]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/bookings"><?php svg('libre-gui-calendar');?> <?php echo localize('Bookings');?><span id="nav-nb" class="badge badge-info">'+stats[7]+'</span></a>';
+        if(stats[8]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/accounts"><?php svg('libre-gui-users');?> <?php echo localize('Users');?><span id="nav-nu" class="badge badge-info">'+stats[8]+'</span></a>';
+        if(stats[9]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/content/type/testimonials"><?php svg('libre-gui-testimonial');?> <?php echo localize('Testimonials');?><span id="nav-nt" class="badge badge-info">'+stats[9]+'</span></a>';
+        if(stats[2]>0)stathtml+='<a class="dropdown-item" href="<?php echo URL.$settings['system']['admin'];?>/accounts"><?php svg('libre-gui-users');?> <?php echo localize('Active Users');?><span id="nav-nou" class="badge badge-info">'+stats[2]+'</span></a>';
         $('#nav-stat').html(stats[0]);
         $('#nav-stat-list').html(stathtml);
         if(stats[1]==0){
-          document.title='Administration - LibreCMS';
+          document.title='<?php echo localize('Administration');?> - LibreCMS';
         }else{
           $("#easyNotify").easyNotify({
-            title:'LibreCMS Administration',
+            title:'<?php echo localize('Administration');?> - LibreCMS',
             options:{
-              body:'('+stats[0]+') New Notifications to view...',
+              body:'('+stats[0]+') <?php echo localize('New Notifications to view');?>...',
               icon:'core/images/favicon.png',
-              lang:'en-US'
+              lang:'<?php echo localize('lang');?>'
             }
           });
         }
-        if(stats[0]>0)document.title='('+stats[0]+') Administration - LibreCMS';
+        if(stats[0]>0)document.title='('+stats[0]+') <?php echo localize('Administration');?> - LibreCMS';
       });
     },30000);
     function autoPlayModal(){
@@ -474,7 +477,7 @@ if(isset($r['due_ti'])){?>
     $('.pathviewer').popover({
       html:true,
       trigger:'manual',
-      title:'Visitor Path <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+      title:'<?php echo localize('Visitor Path');?> <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
       container:'body',
       placement:'auto',
       template:'<div class="popover pathviewer shadow" role="tooltip"><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
@@ -501,7 +504,7 @@ if(isset($r['due_ti'])){?>
     $('.phpviewer').popover({
       html:true,
       trigger:'manual',
-      title:'Project Honey Pot Threat Assessment <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+      title:'<?php echo localize('Project Honey Pot Threat Assessment');?> <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
       container:'body',
       placement:'auto',
       template:'<div class="popover suggestions shadow" role="tooltip"><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
@@ -530,7 +533,7 @@ if(isset($r['due_ti'])){?>
     $('.suggestions').popover({
       html:true,
       trigger:'manual',
-      title:'Editing Suggestions <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+      title:'<?php echo localize('Editing Suggestions');?> <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
       container:'body',
       placement:'auto',
       template:'<div class="popover suggestions shadow" role="tooltip"><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
@@ -563,7 +566,7 @@ if(isset($r['due_ti'])){?>
     $('.fingerprint').popover({
       html:true,
       trigger:'manual',
-      title:'Fingerprint Analysis <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+      title:'<?php echo localize('Fingerprint Analysis');?> <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
       container:'body',
       placement:'auto',
       template:'<div class="popover suggestions shadow" role="tooltip"><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
@@ -595,7 +598,7 @@ if(isset($r['due_ti'])){?>
     $('.addsuggestion').popover({
       html:true,
       trigger:'manual',
-      title:'Add Suggestions <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
+      title:'<?php echo localize('Add Suggestion');?> <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
       container:'body',
       placement:'auto',
       template:'<div class="popover suggestions shadow" role="tooltip"><h3 class="popover-header"></h3><div class="popover-body"></div></div>',

@@ -4,7 +4,7 @@
  *
  * Core - Upgrade
  *
- * upgrade.php version 2.0.0
+ * upgrade.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,17 +17,35 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
- */?>
-<script>
-  window.top.window.$('#updateheading').html('System Updates...');
-  window.top.window.$('#update').html('');
-<?php
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix Notifications.
+ * @changes    v2.0.2 Fix ARIA Attributes.
+ */
 ini_set('max_execution_time',60);
 require'db.php';
-$config=$db->query("SELECT update_url,development FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+$config=$db->query("SELECT language,update_url,development FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+function localize($t){
+  static $tr=NULL;
+  global $config;
+  if(is_null($tr)){
+    if(file_exists('i18n'.DS.$config['language'].'.txt'))
+      $lf='i18n'.DS.$config['language'].'.txt';
+    else
+      $lf='core'.DS.'i18n'.DS.'en-AU.txt';
+    $lfc=file_get_contents($lf);
+    $tr=json_decode($lfc,true);
+  }
+  if(is_array($tr)){
+    if(!array_key_exists($t,$tr))
+      echo'Error: No "'.$t,'" Key in '.$config['language'];
+    else
+      return$tr[$t];
+  }else
+    echo'Error: '.$config['language'].' is malformed';
+}
 if($config['development']==1){
   error_reporting(E_ALL);
   ini_set('display_errors','On');
@@ -37,6 +55,9 @@ if($config['development']==1){
   ini_set('log_errors','On');
   ini_set('error_log','..'.DS.'media'.DS.'cache'.DS.'error.log');
 }
+echo'<script>';
+  'window.top.window.$(`#updateheading`).html(`<?php echo localize('System Updates');?>...`);'.
+  'window.top.window.$(`#update`).html(``);';
 $settings=parse_ini_file('config.ini',TRUE);
 $gV=file_get_contents($config['update_url'].'versions');
 $update=0;
@@ -46,30 +67,27 @@ $vL=explode("\n",$gV);
 foreach($vL as $aV){
   if($aV=='')continue;
   if($aV<$settings['system']['version'])continue;
-  if(!is_file('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip')){?>
-  window.top.window.$('#update').append('<div class="alert alert-info">Downloading New Update...</div>');
-<?php
-   if(false===file_get_contents("https://diemen.design/update/".$aV.".zip",0,null,0,1)){
-    $found=false;?>
-  window.top.window.$('#update').append('<div class="alert alert-danger">File doesn\'t exist on remote server...</div>');
-<?php }else{
-    $newUpdate=file_get_contents('https://diemen.design/update/'.$aV.'.zip');
+  if(!is_file('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip')){
+  echo'window.top.window.$(`#update`).append(`<div class="alert alert-info" role="alert">'.localize('alert_upgrade_info_download').'...</div>`);';
+   if(false===file_get_contents($config['update_url'].$aV.".zip",0,null,0,1)){
+    $found=false;
+    echo'window.top.window.$(`#update`).append(`<div class="alert alert-danger" role="alert">'.localize('alert_upgrade_danger_nofile').'...</div>`);';
+  }else{
+    $newUpdate=file_get_contents($config['update_url'].$aV.'.zip');
     if(!is_dir('..'.DS.'media'.DS.'updates'.DS))
       mkdir('..'.DS.'media'.DS.'updates'.DS);
     $dlHandler=fopen('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip','w');
     if(!fwrite($dlHandler,$newUpdate)){
-      $found=false;?>
-  window.top.window.$('#update').append('<div class="alert alert-danger">Could note save new update. Aborted!!!</div>');
-<?php
+      $found=false;
+      echo'window.top.window.$(`#update`).append(`<div class="alert alert-danger" role="alert">'.localize('alert_upgrade_danger_notsaved').'</div>`);';
       exit();
     }
-    fclose($dlHandler);?>
-  window.top.window.$('#update').append('<div class="alert alert-success">Update Downloaded And Saved...</div>');
-<?php
+    fclose($dlHandler);
+    echo'window.top.window.$(`#update`).append(`<div class="alert alert-success" role="alert">'.localize('alert_upgrade_info_downloaded').'...</div>`);';
     }
-  }else{?>
-  window.top.window.$('#update').append('<div class="alert alert-info">Update already downloaded....</div>');
-<?php }
+  }else{
+    echo'window.top.window.$(`#update`).append(`<div class="alert alert-info" role="alert">'.localize('alert_upgrade_info_alreadydownloaded').'....</div>`);';
+  }
 if($found==true){
   $zipHandle=zip_open('..'.DS.'media'.DS.'updates'.DS.$aV.'.zip');
   $html='<ul>';
@@ -99,23 +117,23 @@ if($found==true){
   				],$sql);
   			$q=$db->exec($sql);
   			$e=$db->errorInfo();        
-/*        $upgradeExec=fopen('doupgrade.php','w');
+        $upgradeExec=fopen('doupgrade.php','w');
         fwrite($upgradeExec,$contents);
         fclose($upgradeExec);
         include('doupgrade.php');
-        unlink('doupgrade.php');*/
-        $html.=' <strong class="text-success">SQL EXECUTED</strong></li>';
+        unlink('doupgrade.php');
+        $html.=' <strong class="text-success">'.localize('SQL EXECUTED').'</strong></li>';
       }else{
         $updateThis=fopen('..'.DS.$thisFileName,'w');
         fwrite($updateThis,$contents);
         fclose($updateThis);
         unset($contents);
-        $html.=' <strong class="text-success">UPDATED</strong></li>';
+        $html.=' <strong class="text-success">'.localize('UPDATED').'</strong></li>';
       }
     }
-  }?>
-  window.top.window.$('#update').append('<?php echo$html;?>');
-<?php $updated=TRUE;
+  }
+  echo'window.top.window.$(`#update`).append(`'.$html.'`);';
+  $updated=TRUE;
   $txt='[database]'.PHP_EOL;
   $txt.='driver = '.$settings['database']['driver'].PHP_EOL;
   $txt.='host = '.$settings['database']['host'].PHP_EOL;
@@ -133,13 +151,13 @@ if($found==true){
   if(file_exists('config.ini'))unlink('config.ini');
   $oFH=fopen("config.ini",'w');
   fwrite($oFH,$txt);
-  fclose($oFH);?>
-  window.top.window.$('#update').append('<div class="alert alert-success">Configuration Updated!</div>');
-<?php }else{?>
-  window.top.window.$('#update').append('<div class="alert alert-danger">Could not find latest Update.</div>');
-<?php }
+  fclose($oFH);
+  echo'window.top.window.$(`#update`).append(`<div class="alert alert-success" role="alert">'.localize('alert_upgrade_success_config').'</div>`);';
+  }else{
+  echo'window.top.window.$(`#update`).append(`<div class="alert alert-danger" role="alert">'.localize('alert_upgrade_danger_noupdate').'</div>`);';
+  }
 }
 $su=$db->prepare("UPDATE config SET uti=:uti WHERE id='1'");
-$su->execute([':uti'=>time()]);?>
-  window.top.window.Pace.stop();
-</script>
+$su->execute([':uti'=>time()]);
+  echo'window.top.window.Pace.stop();'.
+'</script>';

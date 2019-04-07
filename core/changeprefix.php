@@ -4,7 +4,7 @@
  *
  * Core - Change Database Tables Prefix
  *
- * changeprefix.php version 2.0.0
+ * changeprefix.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,15 +17,37 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.2 Fix Notifications.
  */
 echo'<script>';
 if(session_status()==PHP_SESSION_NONE)session_start();
 $dbprefix=isset($_POST['dbprefix'])?filter_input(INPUT_POST,'dbprefix',FILTER_SANITIZE_STRING):'';
 $dbprefix=trim($dbprefix);
 require'db.php';
+$config=$db->query("SELECT language FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);
+function localize($t){
+  static $tr=NULL;
+  global $config;
+  if(is_null($tr)){
+    if(file_exists('core'.DS.'i18n'.DS.$config['language'].'.txt'))
+      $lf='core'.DS.'i18n'.DS.$config['language'].'.txt';
+    else
+      $lf='core'.DS.'i18n'.DS.'en-AU.txt';
+    $lfc=file_get_contents($lf);
+    $tr=json_decode($lfc,true);
+  }
+  if(is_array($tr)){
+    if(!array_key_exists($t,$tr))
+      echo'Error: No "'.$t,'" Key in '.$config['language'];
+    else
+      return$tr[$t];
+  }else
+    echo'Error: '.$config['language'].' is malformed';
+}
 if($settings['database']['prefix']!=$dbprefix){
   $result=$db->query("SHOW TABLES FROM `".$settings['database']['schema']."` LIKE '%".$settings['database']['prefix']."%'");
   $renamed=$failed=0;
@@ -62,7 +84,7 @@ if($settings['database']['prefix']!=$dbprefix){
   $oFH=fopen("config.ini",'w');
   fwrite($oFH,$txt);
   fclose($oFH);
-  echo'window.top.window.$.notify({type:"info",icon:"",message:"'.$error.'});';
+  echo'window.top.window.toastr["danger"]("'.$error.'");';
 }else
-  echo'window.top.window.$.notify({type:"danger",icon:"",message:"Tables are already Prefixed with `'.$dbprefix.'`"});';
+  echo'window.top.window.toastr["danger"]("'.localize('alert_changeprefix_danger_error').' `'.$dbprefix.'`"});';
 echo'window.top.window.$("#blocker").remove();</script>';

@@ -24,6 +24,25 @@
 if(session_status()==PHP_SESSION_NONE)session_start();
 require'db.php';
 $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
+function localize($t){
+  static $tr=NULL;
+  global $config;
+  if(is_null($tr)){
+    if(file_exists('i18n'.DS.$config['language'].'.txt'))
+      $lf='i18n'.DS.$config['language'].'.txt';
+    else
+      $lf='i18n'.DS.'en-AU.txt';
+    $lfc=file_get_contents($lf);
+    $tr=json_decode($lfc,true);
+  }
+  if(is_array($tr)){
+    if(!array_key_exists($t,$tr))
+      echo'Error: No "'.$t,'" Key in '.$config['language'];
+    else
+      return$tr[$t];
+  }else
+    echo'Error: '.$config['language'].' is malformed';
+}
 include'sanitise.php';
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
 $t=isset($_POST['t'])?filter_input(INPUT_POST,'t',FILTER_SANITIZE_STRING):filter_input(INPUT_GET,'t',FILTER_SANITIZE_STRING);
@@ -53,4 +72,4 @@ $s->execute([
 ]);
 $s=$db->prepare("UPDATE ".$prefix.$t." SET suggestions=1 WHERE id=:id");
 $s->execute([':id'=>$id]);
-echo'<div class="alert alert-success">Suggestion Saved.</div>';
+echo'<div class="alert alert-success" role="alert">'.localize('Suggestion Saved').'</div>';

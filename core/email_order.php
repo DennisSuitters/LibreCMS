@@ -4,7 +4,7 @@
  *
  * Core - Email Order
  *
- * email_order.php version 2.0.0
+ * email_order.php version 2.0.2
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,9 +17,10 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.2 Add i18n.
  */
 $getcfg=true;
 require'db.php';
@@ -86,27 +87,27 @@ if($pdflogo!='')
 $html.='<table class="table">'.
           '<tr>'.
             '<td>'.
-              '<h3>From</h3>'.
+              '<h3>'.localize('From').'</h3>'.
               '<p>'.
                 '<strong>'.$config['business'].'</strong><br />'.
-                'ABN: <strong>'.$config['abn'].'</strong><br />'.
+                localize('ABN').': <strong>'.$config['abn'].'</strong><br />'.
                 $config['address'].', '.$config['suburb'].', '.$config['city'].', '.$config['state'].', '.$config['postcode'].
               '</p>'.
             '</td>'.
             '<td>'.
-              '<h3>To</h3>'.
+              '<h3>'.localize('To').'</h3>'.
               '<p>'.
                 '<strong>'.$c['business'] . '</strong><br />'.
                 $c['name'].'<br />'.$c['address'].', '.$c['suburb'].', '.$c['city'].', '.$c['state'].', '.$c['postcode'].
               '</p>'.
             '</td>'.
             '<td>'.
-              '<h3>Details</h3>'.
+              '<h3>'.localize('Details').'</h3>'.
               '<p>'.
-                '<small>Order <strong>#'.$r['qid'] . $r['iid'].'</strong><br />'.
-                'Order Date <strong>'.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']) . '</strong><br />'.
-                'Due Date: <strong class="'.$r['status'].'">'.date($config['dateFormat'], $r['due_ti']) . '</strong><br />'.
-                'Status: <strong class="'.$r['status'].'">'.ucfirst($r['status']).'</strong></small>'.
+                '<small>'.localize('Order').' <strong>#'.$r['qid'] . $r['iid'].'</strong><br />'.
+                localize('Order Date').': <strong>'.date($config['dateFormat'],$r['qid_ti'].$r['iid_ti']) . '</strong><br />'.
+                localize('Due Date').': <strong class="'.$r['status'].'">'.date($config['dateFormat'], $r['due_ti']) . '</strong><br />'.
+                localize('Status').': <strong class="'.$r['status'].'">'.ucfirst($r['status']).'</strong></small>'.
               '</p>'.
             '</td>'.
           '</tr>'.
@@ -116,12 +117,12 @@ $html.='<table class="table">'.
         '<table class="table table-striped">'.
           '<thead>'.
             '<tr>'.
-              '<th class="col-75">Item Code</th>'.
-              '<th class="col-150">Title</th>'.
-              '<th class="col-150">Option</th>'.
-              '<th class="col-50 text-center">Quantity</th>'.
-              '<th class="col-50 text-right">Cost</th>'.
-              '<th class="col-50 text-right">Total</th>'.
+              '<th class="col-75">'.localize('Item Code').'</th>'.
+              '<th class="col-150">'.localize('Title').'</th>'.
+              '<th class="col-150">'.localize('Option').'</th>'.
+              '<th class="col-50 text-center">'.localize('Quantity').'</th>'.
+              '<th class="col-50 text-right">'.localize('Cost').'</th>'.
+              '<th class="col-50 text-right">'.localize('Total').'</th>'.
             '</tr>'.
           '</thead>'.
           '<tbody>';
@@ -156,7 +157,7 @@ $sr->execute([':rid'=>$r['rid']]);
 if($sr->rowCount()>0){
 	$reward=$sr->fetch(PDO::FETCH_ASSOC);
 	$html.='<tr style="background-color:#f0f0f0">'.
-            '<td colspan="3" class="text-right"><small>Rewards</small></td>'.
+            '<td colspan="3" class="text-right"><small>'.localize('Rewards').'</small></td>'.
             '<td class="col-75 text-right"><small>';
 	if($reward['method']==1){
     $html.='$';
@@ -181,7 +182,7 @@ if($r['postage']!=0){
 }
 $html.='<tr style="background-color:#f0f0f0">'.
           '<td colspan="3">&nbsp;</td>'.
-          '<td class="col-75 text-right"><strong>Total</strong></td>'.
+          '<td class="col-75 text-right"><strong>'.localize('Total').'</strong></td>'.
           '<td class="col-75 text-right '.$r['status'].'"><strong>'.$ot.'</strong></td>'.
         '</tr>'.
       '</tfoot>'.
@@ -192,16 +193,16 @@ $html.='<tr style="background-color:#f0f0f0">'.
       '<tbody>'.
         '<tr>'.
           '<td>'.
-            '<h4>Notes</h4>'.
+            '<h4>'.localize('Notes').'</h4>'.
             '<p style="font-size:8px">'.rawurldecode($r['notes']).'</p>'.
           '</td>'.
           '<td>'.
-            '<h4>Banking Details</h4>'.
+            '<h4>'.localize('Banking Details').'</h4>'.
             '<p>'.
-              '<small>Bank: <strong>'.$config['bank'].'</strong><br />'.
-              'Account Name: <strong>'.$config['bankAccountName'].'</strong><br />'.
-              'Account Number: <strong>'.$config['bankAccountNumber'].'</strong><br />'.
-              'BSB: <strong>'.$config['bankBSB'].'</strong></small>'.
+              '<small>'.localize('Bank').': <strong>'.$config['bank'].'</strong><br />'.
+              localize('Account Name').': <strong>'.$config['bankAccountName'].'</strong><br />'.
+              localize('Account Number').': <strong>'.$config['bankAccountNumber'].'</strong><br />'.
+              localize('BSB').': <strong>'.$config['bankBSB'].'</strong></small>'.
             '</p>'.
           '</td>'.
         '</tr>'.
@@ -229,14 +230,14 @@ if($act=='print'){?>
     $mail->ConfirmReadingTo=$config['email'];
   }
   $namee=explode(' ',$c['name']);
-  $subject=isset($config['orderEmailSubject'])&&$config['orderEmailSubject']!=''?$config['orderEmailSubject']:'Order {order_number} from {business}';
+  $subject=isset($config['orderEmailSubject'])&&$config['orderEmailSubject']!=''?$config['orderEmailSubject']:localize('Order {order_number} from {business}';
   $subject=str_replace([
-    '{business}',
-    '{name}',
-    '{first}',
-    '{last}',
-    '{date}',
-    '{order_number}'
+    '{'.localize('business').'}',
+    '{'.localize('name').'}',
+    '{'.localize('first').'}',
+    '{'.localize('last').'}',
+    '{'.localize('date').'}',
+    '{'.localize('order_number').'}'
   ],[
     $config['business'],
     $c['name'],
@@ -246,15 +247,15 @@ if($act=='print'){?>
     $oid
   ],$subject);
 	$mail->Subject=$subject;
-	$msg=isset($config['orderEmailLayout'])&&$config['orderEmailLayout']!=''?rawurldecode($config['orderEmailLayout']):'<p>Hello {first},</p><p>Please find attached Order {order_number}</p><p>Note: {notes}</p>';
+	$msg=isset($config['orderEmailLayout'])&&$config['orderEmailLayout']!=''?rawurldecode($config['orderEmailLayout']):localize('order_emaillayot');
   $msg=str_replace([
-    '{business}',
-    '{name}',
-    '{first}',
-    '{last}',
-    '{date}',
-    '{order_number}',
-    '{notes}'
+    '{'.localize('business').'}',
+    '{'.localize('name').'}',
+    '{'.localize('first').'}',
+    '{'.localize('last').'}',
+    '{'.localize('date').'}',
+    '{'.localize('order_number').'}',
+    '{'.localize('notes').'}'
   ],[
     $config['business'],
     $c['name'],
@@ -267,10 +268,12 @@ if($act=='print'){?>
 	$mail->Body=$msg;
 	$mail->AltBody=strip_tags(preg_replace('/<br(\s+)?\/?>/i',"\n",$msg));
 	$mail->AddAttachment('..'.DS.'media'.DS.'orders'.DS.$oid.'.pdf');
-	if($mail->Send()){?>
-window.top.window.$.notify({type:'success',icon:'',message:'The Order to <?php echo($c['business']!=''?$c['business']:$c['name']);?> was Sent Successfully!'});
-<?php }else{?>
-window.top.window.$.notify({type:'danger',icon:'',message:'There was an issue sending the Order to <?php echo($c['business']!=''?$c['business']:$c['name']);?>!'});
+	if($mail->Send()){
+    $alertmsg=str_replace('{business}',$c['business']!=''?$c['business']:$c['name'],localize('alert_order_success_sent'));?>
+window.top.window.toastr["success"]('<?php echo$alertmsg;?>');
+<?php }else{
+    $alertmsg=str_replace('{business}',$c['business']!=''?$c['business']:$c['name'],localize('alert_order_danger_error'));?>
+window.top.window.toastr["danger"]('<?php echo$alertmsg;?>');
 <?php }
 }?>
   window.top.window.Pace.stop();
