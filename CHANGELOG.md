@@ -1,3 +1,6 @@
+### v2.0.3
+- Fix Social Arial Labels
+
 ### v2.0.2
 - Fix Item Count when displaying number of items using <settings items="">
 - Fix Content Type when retreiving Content when <settings contenttype="all"> is set.

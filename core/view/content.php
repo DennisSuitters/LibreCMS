@@ -453,6 +453,8 @@ if($show=='item'){
 		$shareImage=$r['file'];
 	elseif($r['thumb']!='')
 		$shareImage=$r['thumb'];
+	else
+		$shareImage=URL.NOIMAGE;
 	$seoTitle=empty($r['seoTitle'])?trim(htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8')):trim(htmlspecialchars($r['seoTitle'],ENT_QUOTES,'UTF-8'));
 	$metaRobots=!empty($r['metaRobots'])?htmlspecialchars($r['metaRobots'],ENT_QUOTES,'UTF-8'):'index,follow';
 	$seoCaption=!empty($r['seoCaption'])?htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8'):htmlspecialchars($page['seoCaption'],ENT_QUOTES,'UTF-8');
@@ -481,7 +483,7 @@ if($show=='item'){
 		elseif($r['file'])
 			$html=preg_replace('/<print content=[\"\']?image[\"\']?>/',$r['file'],$html);
 		else
-			$html=preg_replace('/<print content=[\"\']?image[\"\']?>/','',$html);
+			$html=preg_replace('/<print content=[\"\']?image[\"\']?>/',URL.NOIMAGE,$html);
 	}
 	if(stristr($html,'<item')){
 		preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);

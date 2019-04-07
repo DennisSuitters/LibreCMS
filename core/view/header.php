@@ -20,6 +20,7 @@
  * @version    2.0.0
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.3 Fix Social ARIA Label.
  */
 if(isset($_SESSION['rank'])&&$_SESSION['rank']>0){
 	$su=$db->prepare("SELECT avatar,gravatar,rank,name FROM `".$prefix."login` WHERE id=:uid");
@@ -239,10 +240,12 @@ if(stristr($html,'<buildSocial')){
 			$buildSocial=$htmlSocial;
 			$buildSocial=str_replace([
 				'<print sociallink>',
-				'<print socialicon>'
+				'<print socialicon>',
+				'<print rel=label>'
 			],[
 				$r['url'],
-				frontsvg('libre-social-'.$r['icon'])
+				frontsvg('libre-social-'.$r['icon']),
+				ucfirst($r['icon'])
 			],$buildSocial);
 			$socialItems.=$buildSocial;
 		}
