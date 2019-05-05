@@ -45,7 +45,7 @@ echo'<div class="app-body">'.
                 '<li class="nav-item"><a id="menu-inventory" class="nav-link" href="'.URL.$settings['system']['admin'].'/content/type/inventory">'.svg2('libre-gui-shipping','nav-icon ml-2').' '.localize('Inventory').'</a></li>'.
                 '<li class="nav-item"><a class="nav-link" href="'.URL.$settings['system']['admin'].'/rewards">'.svg2('libre-credit-card','nav-icon ml-2').' '.localize('Rewards').'</a></li>'.
                 '<li class="nav-item"><a id="menu-service" class="nav-link" href="'.URL.$settings['system']['admin'].'/content/type/service">'.svg2('libre-gui-service','nav-icon ml-2').' '.localize('Services').'</a></li>'.
-                '<li class="nav-item"><a id="menu-gallery" class="nav-link" href="'.URL.$settings['system']['admin'].'/content/type/gallery">'.svg2('libre-gui-gallery','nav-icon ml-2').' '.localize('Gallery').'</a></li>'.
+/*                '<li class="nav-item"><a id="menu-gallery" class="nav-link" href="'.URL.$settings['system']['admin'].'/content/type/gallery">'.svg2('libre-gui-gallery','nav-icon ml-2').' '.localize('Gallery').'</a></li>'. */
                 '<li class="nav-item"><a id="menu-proofs" class="nav-link" href="'.URL.$settings['system']['admin'].'/content/type/proofs">'.svg2('libre-gui-proof','nav-icon ml-2').' '.localize('Proofs').'</a></li>'.
                 '<li class="nav-item"><a class="nav-link" href="'.URL.$settings['system']['admin'].'/newsletters">'.svg2('libre-gui-newspaper','nav-icon ml-2').' '.localize('Newsletters').'</a></li>'.
               '</ul>'.

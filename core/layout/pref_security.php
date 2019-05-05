@@ -4,7 +4,7 @@
  *
  * Administration - Security Preferences
  *
- * pref_security.php version 2.0.2
+ * pref_security.php version 2.0.3
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,11 +17,12 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.3
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.3 Add Whitelist.
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
@@ -43,6 +44,7 @@
           <li id="nav-security-settings" class="nav-item"><a class="nav-link active" href="#tab-security-settings" aria-controls="tab-security-settings" role="tab" data-toggle="tab"><?php echo localize('Settings');?></a></li>
           <li id="nav-security-filters" class="nav-item"><a class="nav-link" href="#tab-security-filters" aria-controls="tab-security-filter" role="tab" data-toggle="tab"><?php echo localize('Filters');?></a></li>
           <li id="nav-security-blacklist" class="nav-item"><a class="nav-link" href="#tab-security-blacklist" aria-controls="tab-security-blacklist" role="tab" data-toggle="tab"><?php echo localize('Blacklist');?></a></li>
+          <li id="nav-security-whitelist" class="nav-item"><a class="nav-link" href="#tab-security-whitelist" aria-controls="tab-security-whitelist" role="tab" data-toggle="tab"><?php echo localize('Whitelist');?></a></li>
         </ul>
         <div class="tab-content">
           <div id="tab-security-settings" name="tab-security-settings" class="tab-pane active">
@@ -251,6 +253,42 @@ while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                         <a class="btn btn-secondary" target="_blank" href="https://www.projecthoneypot.org/ip_<?php echo$r['ip'];?>" data-tooltip="tooltip" title="Lookup IP using Project Honey Pot (Opens in New Page)." role="button" aria-label="Lookup IP using Project Honey Pot (Open in New Page)"><?php echo svg2('libre-brand-projecthoneypot');?></a>
                         <a class="btn btn-secondary" target="_blank" href="http://www.ipaddress-finder.com/?ip=<?php echo$r['ip'];?>" data-tooltip="tooltip" title="Lookup IP using IP Address Finder .com (Opens in New Page)." role="button" aria-label="Lookup IP using IP Address Finder .com (Opens in New Page)"><?php echo svg2('libre-gui-search');?></a>
                         <button class="btn btn-secondary trash" onclick="purge('<?php echo$r['id'];?>','iplist');return false;" data-tooltip="tooltip" title="<?php echo localize('Purge');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-purge');?></button>
+                      </div>
+                    </td>
+                  </tr>
+<?php }?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div id="tab-security-whitelist" name="tab-security-whitelist" class="tab-pane">
+            <div class="table-responsive">
+              <table class="table table-condensed table-striped table-hover" role="table">
+                <thead>
+                  <tr role="row">
+                    <th class="col-xs-3 text-center" role="columnheader"><?php echo localize('Date Whitelisted');?></th>
+                    <th class="col-xs-3 text-center" role="columnheader"><?php echo localize('Email');?></th>
+                    <th class="col-xs-3 text-center" role="columnheader"><?php echo localize('IP');?></th>
+                    <th class="col-xs-3" role="columnheader">
+                      <div class="btn-group float-right">
+                        <button class="btn btn-secondary btn-sm trash" onclick="purge('0','whitelist');return false;" data-tooltip="tooltip" title="<?php echo localize('Purge All');?>" role="button" aria-label="<?php echo localize('aria_purge');?>"><?php svg('libre-gui-purge');?></button>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="l_whitelist">
+<?php $s=$db->prepare("SELECT * FROM `".$prefix."whitelist` ORDER BY ti DESC");
+$s->execute();
+while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
+                  <tr id="l_<?php echo$r['id'];?>" role="row">
+                    <td class="text-center small" role="cell"><?php echo date($config['dateFormat'],$r['ti']);?></td>
+                    <td class="text-center small" role="cell"><?php echo$r['email'];?></td>
+                    <td class="text-center small" role="cell"><?php echo'<strong>'.$r['ip'].'</strong>';?></td>
+                    <td id="controls_<?php echo$r['id'];?>" row="cell">
+                      <div class="btn-group float-right">
+                        <a class="btn btn-secondary" target="_blank" href="https://www.projecthoneypot.org/ip_<?php echo$r['ip'];?>" data-tooltip="tooltip" title="Lookup IP using Project Honey Pot (Opens in New Page)." role="button" aria-label="Lookup IP using Project Honey Pot (Open in New Page)"><?php echo svg2('libre-brand-projecthoneypot');?></a>
+                        <a class="btn btn-secondary" target="_blank" href="http://www.ipaddress-finder.com/?ip=<?php echo$r['ip'];?>" data-tooltip="tooltip" title="Lookup IP using IP Address Finder .com (Opens in New Page)." role="button" aria-label="Lookup IP using IP Address Finder .com (Opens in New Page)"><?php echo svg2('libre-gui-search');?></a>
+                        <button class="btn btn-secondary trash" onclick="purge('<?php echo$r['id'];?>','whitelist');return false;" data-tooltip="tooltip" title="<?php echo localize('Purge');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-purge');?></button>
                       </div>
                     </td>
                   </tr>

@@ -19,9 +19,9 @@
 				<form id="contactform" method="post" action="core/add_contactus.php" role="form">
 					<input type="hidden" name="emailtrap" value="none">
 					<input type="hidden" name="act" value="add_message">
-					<div class="alert alert-danger">Highlighted Fields are Required</div>
+					<div class="alert alert-danger" role="alert">Highlighted Fields are Required</div>
 					<div class="form-group">
-						<label for="subject" class="text-danger">Subject</label>
+						<label for="subject">Subject</label>
 						<subjectText>
 							<input type="text" id="subject" class="form-control is-invalid" name="subject" value="" placeholder="Enter a Subject..." required aria-required="true" role="textbox">
 						</subjectText>
@@ -33,7 +33,7 @@
 						</subjectSelect>
 					</div>
 					<div class="form-group">
-						<label for="email" class="text-danger">Email</label>
+						<label for="email">Email</label>
 						<input type="email" id="email" class="form-control is-invalid" name="email" value="" placeholder="Enter an Email..." required aria-required="true" role="textbox">
 					</div>
 					<div class="form-group">
@@ -41,19 +41,19 @@
 						<input type="text" id="name" class="form-control" name="name" value="" placeholder="Enter Your Name..." role="textbox">
 					</div>
 					<div class="form-group">
-						<label for="notes" class="text-danger">Message</label>
+						<label for="notes">Message</label>
 						<textarea id="notes" class="form-control is-invalid" name="notes" placeholder="Enter a Message..." required aria-required="true" role="textbox"></textarea>
 					</div>
 					<button type="submit" class="btn btn-outline-secondary btn-lg btn-block" role="button">Send</button>
 				</form>
-				<script>/*<![CDATA[*/
+				<script>
 					$("#contactform").submit(function(){
 						$.post($(this).attr("action"),$(this).serialize(),function(data){
 							$("#contact").html(data);
 						});
 						return false;
 					});
-				/*]]>*/</script>
+				</script>
 			</div>
 		</div>
 	</div>

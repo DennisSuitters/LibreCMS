@@ -27,6 +27,8 @@
  * @changes    v2.0.2 Fix Sortable items for Media breaking other scripts.
  * @changes    v2.0.2 Fix ARIA Attributes.
  * @changes    v2.0.2 Fix Media Display, adding and removal.
+ * @changes    v2.0.3 Add Image ALT.
+ * @changes    v2.0.3 Add Category Choice Selection.
  */
 $r=$s->fetch(PDO::FETCH_ASSOC);?>
 <main id="content" class="main">
@@ -243,7 +245,10 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))
                 <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="category_1" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                 <input id="category_1" list="category_1_options" type="text" class="form-control textinput" value="<?php echo$r['category_1'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="category_1" placeholder="<?php echo localize('Enter a ').' '.localize('Category').'/'.localize('Select from List');?>..."<?php echo$user['options']{1}==0?' readonly':'';?> role="textbox">
                 <datalist id="category_1_options">
-                  <?php $s=$db->query("SELECT DISTINCT category_1 FROM `".$prefix."content` WHERE category_1!='' ORDER BY category_1 ASC");while($rs=$s->fetch(PDO::FETCH_ASSOC))echo'<option value="'.$rs['category_1'].'"/>';?>
+<?php $s=$db->prepare("SELECT DISTINCT (title) as category FROM `".$prefix."choices` WHERE contentType='category' AND url=:contentType AND title!='' ORDER BY title ASC");
+$s->execute([':contentType'=>$r['contentType']]);
+while($rs=$s->fetch(PDO::FETCH_ASSOC))
+echo'<option value="'.$rs['category'].'"/>';?>
                 </datalist>
                 <div class="input-group-append" data-tooltip="tooltip" title="<?php echo localize('Save');?>"><button id="savecategory_1" class="btn btn-secondary save" data-dbid="category_1" data-style="zoom-in" role="button" aria-label="<?php echo localize('aria_save');?>"><?php svg('libre-gui-save');?></button></div>
               </div>
@@ -418,6 +423,14 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))
                   <div class="input-group-append"><button class="btn btn-secondary trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button></div>
                 </div>
               </div>
+              <div id="tab-content-images-7" class="form-group row">
+                <label for="exifFilename" class="col-form-label col-sm-2"><?php echo localize('Image ALT');?></label>
+                <div class="input-group col-sm-10">
+                  <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="fileALT" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+                  <input type="text" id="fileALT" class="form-control textinput" value="<?php echo$r['fileALT'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="fileALT" placeholder="<?php echo localize('Enter an ').localize('Image ALT');?>..." role="textbox">
+                  <div class="input-group-append" data-tooltip="tooltip" title="<?php echo localize('Save');?>" role="button" aria-label="<?php echo localize('aria_save');?>"><button id="savefileALT" class="btn btn-secondary save" data-dbid="fileALT" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                </div>
+              </div>
             </fieldset>
             <script>
               $(document).ready(function(){
@@ -432,7 +445,7 @@ while($rs=$s->fetch(PDO::FETCH_ASSOC))
                 <div class="input-group col-sm-10">
                   <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="exifFilename" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                   <div class="input-group-append"><button class="btn btn-secondary" onclick="getExif('<?php echo$r['id'];?>','content','exifFilename');" role="button" aria-label="<?php echo localize('aria_exif');?>"><?php svg('libre-gui-magic');?></button></div>
-                  <input type="text" id="exifFilename" class="form-control textinput" value="<?php echo$r['exifFilename'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifFilename" placeholder="Original Filename..." role="textbox">
+                  <input type="text" id="exifFilename" class="form-control textinput" value="<?php echo$r['exifFilename'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="exifFilename" placeholder="<?php echo localize('Original Filename');?>..." role="textbox">
                   <div class="input-group-append" data-tooltip="tooltip" title="<?php echo localize('Save');?>" role="button" aria-label="<?php echo localize('aria_save');?>"><button id="saveexifFilename" class="btn btn-secondary save" data-dbid="exifFilename" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
                 </div>
               </div>

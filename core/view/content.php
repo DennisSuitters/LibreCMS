@@ -24,6 +24,9 @@
  * @changes    v2.0.2 Fix Number of Displayed Items
  * @changes    v2.0.2 Fix retreiving any content, when "all" is used as an option for <settings contenttype="all">
  * @changes    v2.0.2 Add Category 3 & 5 Parsing
+ * @changes    v2.0.3 Add Parsing for Image ALT with Fallback to either Title or Attribution Title
+ * @changes    v2.0.3 Add extra Content Template parsing for Dates (Day/Month/Year). <print date="day/month/year">
+ * @changes    v2.0.3 Add Categories Template parsing.
  */
 $rank=0;
 $notification='';
@@ -57,7 +60,7 @@ elseif($view=='search'){
 	$itemCount=4;
 	if(stristr($html,'<settings')){
 		preg_match('/<settings.*items=[\"\'](.+?)[\"\'].*>/',$html,$matches);
-		$itemCount=isset($matches[1])&&$matches[1]!=0?$matches[1]+1:$config['showItems'];
+		$itemCount=isset($matches[1])&&$matches[1]!=0?$matches[1]:$config['showItems'];
 		preg_match('/<settings.*contenttype=[\"\'](.*?)[\"\'].*>/',$html,$matches);
 		$contentType=isset($matches[1])&&($matches[1]!='all')?$matches[1]:'%';
 	}
@@ -206,7 +209,15 @@ if($show=='categories'){
 			$coverHTML.='">';
 		}else
 			$coverHTML='';
-		$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/',$coverHTML,$html);
+		$html=preg_replace(
+			[
+				'/<print page=[\"\']?cover[\"\']?>/',
+				'/<print page=[\"\']?fileALT[\"\']?>/'
+			],[
+				$coverHTML,
+				htmlspecialchars($page['fileALT'],ENT_QUOTES,'UTF-8')
+			],
+			$html);
 	}
 	$html=preg_replace([
 		'/<print page=[\"\']?notes[\"\']?>/',
@@ -237,6 +248,7 @@ if($show=='categories'){
 				}
 				$mediaitems=preg_replace([
 					'/<print media=[\"\']?image[\"\']?>/',
+					'/<print media=[\"\']?fileALT[\"\']?>/',
 					'/<print media=[\"\']?width[\"\']?>/',
 					'/<print media=[\"\']?height[\"\']?>/',
 					'/<print media=[\"\']?title[\"\']?>/',
@@ -260,6 +272,7 @@ if($show=='categories'){
 					'/<print media=[\"\']?description[\"\']?>/'
 				],[
 					htmlspecialchars($rm['file'],ENT_QUOTES,'UTF-8'),
+					htmlspecialchars($rm['fileALT']!=''?$rm['fileALT']:$rm['title'],ENT_QUOTES,'UTF-8'),
 					$width,
 					$height,
 					htmlspecialchars($rm['title'],ENT_QUOTES,'UTF-8'),
@@ -287,6 +300,32 @@ if($show=='categories'){
 			$html=preg_replace('~<mediaimages>.*?<\/mediaimages>~is',$mediaoutput,$html,1);
 		}else
 			$html=preg_replace('~<mediaitems>.*?<\/mediaitems>~is','',$html,1);
+	}
+	if(stristr($html,'<categories')){
+		$sc=$db->prepare("SELECT * FROM choices WHERE contentType='category' ORDER BY title ASC");
+		$sc->execute();
+		if($sc->rowCount()>0){
+			preg_match('/<categories>([\w\W]*?)<\/categories>/',$html,$matches);
+			$catitem=$matches[1];
+			$catoutput='';
+			while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
+				$catitems=$catitem;
+				$catitems=preg_replace([
+					'/<print category=[\"\']?image[\"\']?>/',
+					'/<print category=[\"\']?imageALT[\"\']?>/',
+					'/<print category=[\"\']?link[\"\']?>/',
+					'/<print category=[\"\']?title[\"\']?>/'
+				],[
+					htmlspecialchars($rc['icon'],ENT_QUOTES,'UTF-8'),
+					htmlspecialchars('Category '.$rc['title'],ENT_QUOTES,'UTF-8'),
+					URL.$rc['url'].'/'.str_replace(' ','-',$rc['title']),
+					htmlspecialchars($rc['title'],ENT_QUOTES,'UTF-8')
+				],$catitems);
+				$catoutput.=$catitems;
+			}
+			$html=preg_replace('~<categories>.*?<\/categories>~is',$catoutput,$html,1);
+		}else
+			$html=preg_replace('~<categories>.*?<\/categories>~is','',$html,1);
 	}
 	if(stristr($html,'<items')){
 		preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
@@ -323,6 +362,7 @@ if($show=='categories'){
 			$items=preg_replace([
 				'/<print content=[\"\']?thumb[\"\']?>/',
 				'/<print content=[\"\']?image[\"\']?>/',
+				'/<print content=[\"\']?imageALT[\"\']?>/',
 				'/<print content=[\"\']?file[\"\']?>/',
 				'/<print content=[\"\']?title[\"\']?>/',
 				'/<print profileLink>/',
@@ -331,11 +371,15 @@ if($show=='categories'){
 				'/<print content=[\"\']?dateCreated[\"\']?>/',
 				'/<print content=[\"\']?datePublished[\"\']?>/',
 				'/<print content=[\"\']?dateEdited[\"\']?>/',
+				'/<print date=[\"\']?day[\"\']?>/',
+				'/<print date=[\"\']?month[\"\']?>/',
+				'/<print date=[\"\']?year[\"\']?>/',
 				'/<print content=[\"\']?contentType[\"\']?>/',
 				'/<print content=[\"\']?notes[\"\']?>/'
 			],[
 				$shareImage,
 				$shareImage,
+				htmlspecialchars($r['fileALT']!=''?$r['fileALT']:$r['title'],ENT_QUOTES,'UTF-8'),
 				$shareImage,
 				htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
 				URL.'profile/'.strtolower(str_replace(' ','-',htmlspecialchars($r['login_user'],ENT_QUOTES,'UTF-8'))),
@@ -344,6 +388,9 @@ if($show=='categories'){
 				date($config['dateFormat'],$r['ti']),
 				date($theme['settings']['dateFormat'],$r['pti']),
 				date($theme['settings']['dateFormat'],$r['eti']),
+				date('j',$r['tis']!=0?$r['tis']:$r['ti']),
+				date('M',$r['tis']!=0?$r['tis']:$r['ti']),
+				date('Y',$r['tis']!=0?$r['tis']:$r['ti']),
 				$r['contentType'],
 				($view=='index'?substr(htmlspecialchars(strip_tags($r['notes']),ENT_QUOTES,'UTF-8'),0,300).'...':htmlspecialchars(strip_tags($r['notes']),ENT_QUOTES,'UTF-8'))
 			],$items);
@@ -442,6 +489,11 @@ if($view=='testimonials')$show='';
 if($show=='item'){
 	$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);
 	$r=$s->fetch(PDO::FETCH_ASSOC);
+	$seoTitle=$r['seoTitle']==''?$r['title']:$r['seoTitle'];
+	$metaRobots=$r['metaRobots']==''?$r['metaRobots']:$page['metaRobots'];
+	$seoCaption=$r['seoCaption']==''?$r['seoCaption']:$page['seoCaption'];
+	$seoDescription=$r['seoDescription']==''?$r['seoDescription']:$page['seoDescription'];
+	$seoKeywords=$r['seoKeywords']==''?$r['seoKeywords']:$page['seoKeywords'];
 	$su=$db->prepare("UPDATE `".$prefix."content` SET views=:views WHERE id=:id");
 	$su->execute([
 		':views'=>$r['views']+1,
@@ -455,25 +507,17 @@ if($show=='item'){
 		$shareImage=$r['thumb'];
 	else
 		$shareImage=URL.NOIMAGE;
-	$seoTitle=empty($r['seoTitle'])?trim(htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8')):trim(htmlspecialchars($r['seoTitle'],ENT_QUOTES,'UTF-8'));
-	$metaRobots=!empty($r['metaRobots'])?htmlspecialchars($r['metaRobots'],ENT_QUOTES,'UTF-8'):'index,follow';
-	$seoCaption=!empty($r['seoCaption'])?htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8'):htmlspecialchars($page['seoCaption'],ENT_QUOTES,'UTF-8');
-	$seoCaption=empty($seoCaption)?htmlspecialchars($config['seoCaption'],ENT_QUOTES,'UTF-8'):$seoCaption;
-	$seoDescription=!empty($r['seoDescription'])?htmlspecialchars($r['seoDescription'],ENT_QUOTES,'UTF-8'):htmlspecialchars($page['seoDescription'],ENT_QUOTES,'UTF-8');
-	$seoDescription=empty($seoDescrption)?htmlspecialchars($config['seoDescription'],ENT_QUOTES,'UTF-8'):$seoDescription;
-	$seoKeywords=!empty($r['seoKeywods'])?htmlspecialchars($r['seoKeywords'],ENT_QUOTES,'UTF-8'):htmlspecialchars($page['seoKeywords'],ENT_QUOTES, 'UTF-8');
-	$seoKeywords=empty($seoKeywords)?htmlspecialchars($config['seoKeywords'],ENT_QUOTES,'UTF-8'):$seoKeywords;
 	$canonical=URL.$view.'/'.$r['urlSlug'];
 	$contentTime=isset($r['eti'])&&($r['eti']>$r['ti'])?$r['eti']:isset($r['ti'])?$r['ti']:0;
 	if(preg_match('/<print page=[\"\']?cover[\"\']?>/',$html)){
 		if($r['fileURL'])
-			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-fluid" src="'.$r['fileURL'].'" alt="'.$r['title'].'" role="image">',$html);
+			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-fluid" src="'.$r['fileURL'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'" role="image">',$html);
 		elseif($r['file'])
-			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-fluid" src="'.$r['file'].'" alt="'.$r['title'].'" role="image">',$html);
+			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-fluid" src="'.$r['file'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'" role="image">',$html);
 		elseif($page['cover'])
-			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img src="'.$page['cover'].'" alt="'.$r['title'].'" role="image">',$html);
+			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img src="'.$page['cover'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'" role="image">',$html);
 		elseif($page['coverURL'])
-			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img src="'.$page['coverURL'].'" alt="'.$r['title'].'" role="image">',$html);
+			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img src="'.$page['coverURL'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'" role="image">',$html);
 		else
 			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','',$html);
 	}
@@ -485,6 +529,11 @@ if($show=='item'){
 		else
 			$html=preg_replace('/<print content=[\"\']?image[\"\']?>/',URL.NOIMAGE,$html);
 	}
+	$html=preg_replace([
+			'/<print content=[\"\']?imageALT[\"\']?>/'
+		],[
+			htmlspecialchars($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle'],ENT_QUOTES,'UTF-8')
+		],$html);
 	if(stristr($html,'<item')){
 		preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);
 		$item=$matches[1];
@@ -508,6 +557,7 @@ if($show=='item'){
 					$mediaitems=preg_replace([
 						'/<print media=[\"\']?thumb[\"\']?>/',
 						'/<print media=[\"\']?file[\"\']?>/',
+						'/<print media=[\"\']?fileALT[\"\']?>/',
 						'/<print media=[\"\']?width[\"\']?>/',
 						'/<print media=[\"\']?height[\"\']?>/',
 						'/<print media=[\"\']?title[\"\']?>/',
@@ -532,6 +582,7 @@ if($show=='item'){
 					],[
 						URL.'media/thumbs/'.basename(substr($rm['file'],0,-4)).'.png',
 						htmlspecialchars($rm['file'],ENT_QUOTES,'UTF-8'),
+						htmlspecialchars($rm['fileALT'],ENT_QUOTES,'UTF-8'),
 						$width,
 						$height,
 						htmlspecialchars($rm['title'],ENT_QUOTES,'UTF-8'),
@@ -698,7 +749,6 @@ if($show=='item'){
 		}
 		require'core'.DS.'parser.php';
 		$authorHTML='';
-		$seoTitle=$r['title'].' - '.$config['seoTitle'];
 		if(isset($r['contentType'])&&($r['contentType']=='article'||$r['contentType']=='portfolio'))
 			$item=preg_replace('~<controls>.*?<\/controls>~is','',$item,1);
 		$html=preg_replace([

@@ -4,7 +4,7 @@
  *
  * Administration - Edit Messages
  *
- * edit_messages.php version 2.0.2
+ * edit_messages.php version 2.0.3
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,12 +17,13 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.3
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Change Back Link to Referer
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.3 Fix Iframe display of receieved content to it's height.
  */
 if($args[0]=='view'){
   $q=$db->prepare("UPDATE `".$prefix."messages` SET status='read' WHERE id=:id");
@@ -51,6 +52,7 @@ if($scc->rowCount()<1){?>
   <div class="container-fluid">
     <noscript><div class="alert alert-danger" role="alert"><?php echo localize('alert_all_danger_noscript');?></div></noscript>
     <div class="alert alert-warning d-sm-block d-md-none" role="alert"><?php echo localize('alert_all_warning_smallscreen');?></div>
+    <div class="alert alert-info">At this time only reading email has been built, sending, replying will be in a future version of LibreCMS (Hopefully the next).</div>
     <div class="card col-sm-12">
       <div class="card-body">
         <div class="form-group row">
@@ -77,19 +79,19 @@ if($scc->rowCount()<1){?>
             <input type="text" id="email" class="form-control" value="<?php echo$args[0]=='compose'?$user['name'].' &lt;'.$user['email'].'&gt;':$r['from_name'].' &lt;'.$r['from_email'].'&gt;';?>" readonly role="textbox">
           </div>
         </div>
-        <div id="reply" class="hidden">
-          <div class="form-group">
+        <form target="sp" role="form">
+          <div class="form-group row">
             <label for="order_notes" class="col-form-label col-sm-2"><?php echo localize('Reply');?></label>
             <div class="input-group col-sm-10">
-              <form target="sp" role="form">
-                <textarea name="da" class="form-control summernote" role="textbox"></textarea>
-              </form>
+                <textarea name="da" class="form-control" role="textbox"></textarea>
             </div>
           </div>
-        </div>
+        </form>
         <div class="form-group row">
           <label for="order_notes" class="col-form-label col-sm-2"><?php echo localize('Message');?></label>
-          <iframe class="well col-sm-10" style="" src="core/viewemail.php?id=<?php echo$r['id'];?>"></iframe>
+          <div class="input-group col-sm-10">
+            <iframe src="core/viewemail.php?id=<?php echo$r['id'];?>" width="100%" frameborder="0" scrolling="no" onload="this.style.height=this.contentDocument.body.scrollHeight +'px';" style="background:#fff;color:#000;"></iframe>
+          </div>
         </div>
       </div>
     </div>

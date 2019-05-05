@@ -4,7 +4,7 @@
  *
  * Administration - Messages
  *
- * messages.php version 2.0.2
+ * messages.php version 2.0.3
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,17 +17,19 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.3
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Move Settings to Header
  * @changes    v2.0.2 Add i18n.
+ * @changes    v2.0.3 Add Retrieving and Manipulation of Emails.
  */
 if($args[0]=='settings')
   include'core'.DS.'layout'.DS.'set_messages.php';
 elseif($args[0]=='view'||$args[0]=='compose')
   include'core'.DS.'layout'.DS.'edit_messages.php';
 else{
+
   $folder="INBOX";
   if(isset($args[0])){
     if($args[0]=='unread')$folder='unread';
@@ -49,32 +51,11 @@ else{
     </li>
   </ol>
   <div class="container-fluid">
+<?php // https://github.com/benhall14/php-imap-reader ?>
     <noscript><div class="alert alert-danger" role="alert"><?php echo localize('alert_all_danger_noscript');?></div></noscript>
     <div class="alert alert-warning d-sm-block d-md-none" role="alert"><?php echo localize('alert_all_warning_smallscreen');?></div>
-    <div class="alert alert-info">Not all the Messages Functions are currently working at this time, we are working on it though.</div>
     <div class="card">
       <div class="card-body">
-<?php /*
-    <div class="alert alert-info">
-      The Webmail is currently Under Construction.<br>
-      Simple Mail Reading should work fine, but other manipulation may have adverse consequences.
-    </div>
-// https://github.com/cnizzardini/php-imap
-include_once 'core/imap.class.php';
-$imap = new Imap('mail.studiojunkyard.com','info@studiojunkyard.com','barnibus!2014');
-$imapObj = $imap->returnImapMailBoxmMsgInfoObj();
-echo '<h3>Mailbox Stats <span class="code">imap::returnImapMailBoxmMsgInfoObj()</span></h3><p>Unread: ('.$imapObj->Unread.') Deleted: ('.$imapObj->Deleted.') Emails: ('.$imapObj->Nmsgs.') Size: ('.round($imapObj->Size/1024/1024,1).' MB)</p>';
-echo '<h3>MailBoxes <span class="code">imap::returnMailboxListArr()</span></h3>';
-$mailBoxArr = $imap->returnMailboxListArr();
-
-if(is_array($mailBoxArr)){
-  echo '<ul>';
-  foreach($mailBoxArr as $i){
-    echo '<li><a href="?mailbox='.urlencode($i).'">'.$i.'</a></li>';
-  }
-      echo '</ul>';
-} */
-?>
 <?php
   if($folder=='INBOX'){
     $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE folder='INBOX' ORDER BY ti DESC, subject ASC");
@@ -109,153 +90,143 @@ if(is_array($mailBoxArr)){
         <div class="email-app mb-4">
           <nav>
             <a class="btn btn-secondary btn-block" href="#">Compose</a>
-            <ul class="nav">
-              <li class="nav-item<?php echo$folder=='INBOX'?' active':'';?>">
+            <ul id="messagemenu" class="nav">
+              <li id="nav_1" class="nav-item<?php echo$folder=='INBOX'?' active':'';?>">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages';?>">
                   <?php svg('libre-gui-inbox');?> Inbox
                 </a>
               </li>
-              <li class="nav-item<?php echo$folder=='unread'?' active':'';?>">
+              <li id="nav_2" class="nav-item<?php echo$folder=='unread'?' active':'';?>">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/unread';?>">
                   <?php svg('libre-gui-email');?> Unread
-                  <?php echo$ur['cnt']>0?'<span class="badge badge-danger">'.$ur['cnt'].'</span>':'';?>
+                  <span id="unreadbadge" class="badge badge-warning"><?php echo$ur['cnt']>0?$ur['cnt']:'';?></span>
                 </a>
               </li>
-              <li class="nav-item">
+<?php /*              <li id="nav_3" class="nav-item">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/starred';?>">
                   <?php svg('libre-shape-star');?> Starred
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> */?>
+              <li id="nav_4" class="nav-item<?php echo$folder=='sent'?' active':'';?>">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/sent';?>">
                   <?php svg('libre-gui-email-send');?> Sent
                 </a>
               </li>
-              <li class="nav-item">
+<?php /*              <li id="nav_5" class="nav-item">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/trash';?>">
                   <?php svg('libre-gui-trash');?> Trash
                 </a>
               </li>
-              <li class="nav-item">
+              <li id="nav_6" class="nav-item">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/important';?>">
                   <?php svg('libre-gui-bookmark');?> Important
                 </a>
-              </li>
-              <li class="nav-item">
+              </li> */ ?>
+              <li id="nav_7" class="nav-item<?php echo$folder=='spam'?' active':'';?>">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/spam';?>">
                   <?php svg('libre-gui-email-spam');?> Spam
-                  <?php echo$sp['cnt']>0?'<span class="badge badge-danger">'.$sp['cnt'].'</span>':'';?>
+                  <span id="spambadge" class="badge badge-warning"><?php echo$sp['cnt']>0?$sp['cnt']:'';?></span>
                 </a>
+              </li>
+              <li class="ghost hidden">
+                <div>&nbsp;</div>
               </li>
             </ul>
           </nav>
-          <main class="inbox">
-            <div class="toolbar">
-              <div class="btn-group" role="group">
-                <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email');?></button>
-                <button class="btn btn-secondary" type="button"><?php svg('libre-shape-star');?></button>
-                <button class="btn btn-secondary" type="button"><?php svg('libre-shape-star-o');?></button>
-                <button class="btn btn-secondary" type="button"><?php svg('libre-gui-bookmark');?></button>
-              </div>
-              <div class="btn-group" role="group">
-                <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email-reply');?></button>
-                <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email-reply');/* reply-all */?></button>
-                <button class="btn btn-secondary" type="button"><?php svg('libre-gui-email-forward');?></button>
-              </div>
-              <button class="btn btn-secondary" type="button"><?php svg('libre-gui-trash');?></button>
+          <div class="inbox col">
+            <div style="height:20px;">
+              <div id="checkmessages" class="badge badge-warning col-12 text-center">Checking for new Messages!!!</div>
             </div>
-            <ul class="messages">
+            <ul id="allmessages" class="messages">
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-              <li class="message <?php echo$r['status'];?>">
+              <li id="l_<?php echo$r['id'];?>" class="message animated fadeIn<?php echo' '.$r['status'];?>">
                 <div class="actions">
                   <div class="btn-group-vertical">
-                    <div class="checkbox bg-secondary checkbox-success">
-                      <input type="checkbox" id="message<?php echo$r['id'];?>">
-                      <label for="message<?php echo$r['id'];?>"/>
-                    </div>
-<?php $scc=$db->prepare("SELECT ip FROM `".$prefix."iplist` WHERE ip=:ip");
+<?php   $scc=$db->prepare("SELECT email FROM `".$prefix."whitelist` WHERE email=:email");
+        $scc->execute([
+          ':email'=>$r['from_email']
+        ]);
+        if($scc->rowCount()<1){?>
+                    <form id="whitelist<?php echo$r['id'];?>" target="sp" method="post" action="core/add_messagewhitelist.php" role="form">
+                      <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                      <button class="btn btn-secondary btn-sm" data-tooltip="tooltip" title="<?php echo localize('Add to ').localize('Whitelist');?>" role="button" aria-label="<?php echo localize('aria_add');?>"><?php echo svg2('libre-gui-whitelist');?></button>
+                    </form>
+<?php }
+      $scc=$db->prepare("SELECT ip FROM `".$prefix."iplist` WHERE ip=:ip");
       $scc->execute([':ip'=>$r['ip']]);
-      if($scc->rowCount()<1)echo'<button class="btn btn-secondary btn-sm" data-tooltip="tooltip" title="Add Originators IP to the Blacklist.">'.svg2('libre-gui-security').'</button>';?>
-                    <button class="btn btn-secondary btn-sm trash"><?php svg('libre-gui-trash');?></button>
+      if($scc->rowCount()<1){?>
+                    <form id="blacklist<?php echo$r['id'];?>" target="sp" method="post" action="core/add_messageblacklist.php" role="form">
+                      <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                      <button class="btn btn-secondary btn-sm" data-tooltip="tooltip" title="<?php echo localize('Add to ').localize('Blacklist');?>" role="button" aria-label="<?php echo localize('aria_add');?>"><?php echo svg2('libre-gui-security');?></button>
+                    </form>
+<?php } ?>
+                    <button class="btn btn-secondary btn-sm" onclick="update('<?php echo$r['id'];?>','messages','folder','spam');" data-tooltip="tooltip" title="<?php echo localize('Move to Spam Folder');?>" role="button" aria-label="<?php echo localize('aria_moveemail');?>"><?php svg('libre-gui-email-spam');?></button>
+                    <button class="btn btn-secondary btn-sm trash" onclick="purge('<?php echo$r['id'];?>','messages')" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
                   </div>
                 </div>
                 <a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>">
-                  <div class="header">
-                    <span class="from"><?php echo$r['from_name']!=''?$r['from_name'].'<br><small>&lt;'.$r['from_email'].'&gt;</small>':'&lt;'.$r['from_email'].'&gt;';?></span>
+                  <span class="header">
+                    <span class="to">To: <?php echo$r['to_name']!=''?$r['to_name'].'<small> &lt;'.$r['to_email'].'&gt;</small>':'&lt;'.$r['to_email'].'&gt;';?></span>
                     <span class="date"><?php echo date('M j \a\t G:i',$r['ti']);?></span>
-                  </div>
-                  <span class="title d-block"><?php echo$r['subject'];?></span>
-                  <span class="description d-block"><?php echo strip_tags(substr($r['notes_raw'],0,255));?></span>
+                  </span>
+                  <span class="header">
+                    <span class="from">From: <?php echo$r['from_name']!=''?$r['from_name'].'<small> &lt;'.$r['from_email'].'&gt;</small>':'&lt;'.$r['from_email'].'&gt;';?></span>
+                  </span>
+                  <span class="title d-block">Subject: <?php echo$r['subject'];?></span>
+                  <span class="description d-block text-wrap"><?php echo strip_html_tags($r['notes_html']);?></span>
                 </a>
               </li>
 <?php }?>
             </ul>
-          </main>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
-<?php /*
-?>
-
-    <div class="nav-list col-xs-12 col-sm-2">
-      <a href="" class="btn btn-default add btn-block">Compose</a>
-      <br>
-      <div class="list-group">
-        <a href="" class="list-group-item active"><?php svg('inbox');?> Inbox<span id="email_inbox" class="badge"><?php if($ur['cnt']>0)echo$ur['cnt'];?></span></a>
-        <a href="" class="list-group-item"><?php svg('email-send');?> Sent Mail<span id="email_sent" class="badge"></span></a>
-        <a href="" class="list-group-item"><?php svg('star');?> Important<span id="email_important" class="badge"></span></a>
-        <a href="" class="list-group-item"><?php svg('edit');?> Drafts<span id="email_drafts" class="badge"></span></a>
-        <a href="" class="list-group-item"><?php svg('bug');?> Spam<span id="email_spam" class="badge"></span></a>
-        <a href="" class="list-group-item"><?php svg('trash');?> Trash<span id="email_trash" class="badge"></span></a>
-      </div>
-    </div>
-        <div id="emails" class="">
-          <div class="table-responsive mailbox-messages">
-            <table class="table table-hover table-striped">
-              <thead>
-                <tr>
-                  <th class="">From</th>
-                  <th class="">Subject</th>
-                  <th class="">Name</th>
-                  <th class="">Date</th>
-                  <th class=""></th>
-                </tr>
-              </thead>
-              <tbody>
-              
-
-<?php while($r=$s->fetch(PDO::FETCH_ASSOC)){
-  
-/*?>
-                <tr id="l_<?php echo$r['id'];?>" class="<?php echo$r['status']=='delete'?' danger':'';?>">
-                  <td><?php echo$r['from_name'].'<br><small>&lt;'.$r['from_email'].'&gt;</small>';?></td>
-                  <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>"><?php echo$r['subject'];?></a></td>
-                  <td><a href="<?php echo URL.$settings['system']['admin'].'/messages/view/'.$r['id'];?>" title="<?php echo'&lt;'.$r['from_email'].'&gt;';?>"><?php echo$r['from_name']!=''?$r['from_name']:'&lt;'.$r['from_email'].'&gt;';?></a></td>
-                  <td class="text-center"><?php echo date('M j \a\t G:i',$r['ti']);?></td>
-                  <td id="controls_<?php echo$r['id'];?>">
-                    <div class="btn-group float-right">
-                      <a class="btn btn-secondary" href="<?php echo URL.$settings['system']['admin'];?>/messages/view/<?php echo$r['id'];?>" data-tooltip="tooltip" title="View"><?php svg('libre-gui-view');?></a>
-                      <button class="btn btn-secondary<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','')" data-tooltip="tooltip" title="Restore"><?php svg('libre-gui-untrash');?></button>
-                      <button class="btn btn-secondary trash<?php echo$r['status']=='delete'?' hidden':'';?>" onclick="updateButtons('<?php echo$r['id'];?>','messages','status','delete')" data-tooltip="tooltip" title="Delete"><?php svg('libre-gui-trash');?></button>
-                      <button class="btn btn-secondary trash<?php echo$r['status']!='delete'?' hidden':'';?>" onclick="purge('<?php echo $r['id'];?>','messages')" data-tooltip="tooltip" title="Purge"><?php svg('libre-gui-purge');?></button>
-                    </div>
-                  </td>
-                </tr>
-<?php 
-}
-
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
 </main>
-<?php
-
- }
-*/
+<script>
+<?php if($config['message_check_interval']!=0){?>
+  $(document).ready(function(){
+    var f=function(){
+      $('#checkmessages').removeClass('d-none');
+      $.ajax({
+        url:"core/get_messages.php?folder=<?php echo$folder;?>",  
+        success:function(data){
+          $('#allmessages').append(data);
+          $('#checkmessages').addClass('d-none');
+        }
+      });
+    };
+    window.setInterval(f,<?php echo$config['message_check_interval'];?>*1000);
+    f();
+  });
+<?php }?>
+</script>
+<?php }
+function strip_html_tags($t,$l=400){
+  $t=preg_replace([
+    '@<head[^>]*?>.*?</head>@siu',
+    '@<style[^>]*?>.*?</style>@siu',
+    '@<script[^>]*?.*?</script>@siu',
+    '@<object[^>]*?.*?</object>@siu',
+    '@<embed[^>]*?.*?</embed>@siu',
+    '@<applet[^>]*?.*?</applet>@siu',
+    '@<noframes[^>]*?.*?</noframes>@siu',
+    '@<noscript[^>]*?.*?</noscript>@siu',
+    '@<noembed[^>]*?.*?</noembed>@siu',
+    '@</?((address)|(blockquote)|(center)|(del))@iu',
+    '@</?((div)|(h[1-9])|(ins)|(isindex)|(p)|(pre))@iu',
+    '@</?((dir)|(dl)|(dt)|(dd)|(li)|(menu)|(ol)|(ul))@iu',
+    '@</?((table)|(th)|(td)|(caption))@iu',
+    '@</?((form)|(button)|(fieldset)|(legend)|(input))@iu',
+    '@</?((label)|(select)|(optgroup)|(option)|(textarea))@iu',
+    '@</?((frameset)|(frame)|(iframe))@iu',
+  ],[
+    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+    "\n\$0", "\n\$0", "\n\$0", "\n\$0", "\n\$0", "\n\$0",
+    "\n\$0", "\n\$0",
+  ],$t);
+  $t=strip_tags($t);
+  $t=trim(preg_replace('/[\t\n\r\s]+/',' ',$t));
+  return substr($t,0,$l);
 }

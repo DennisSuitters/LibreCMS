@@ -18,10 +18,15 @@
 							<tbody role="rowgroup">
 								<items>
 									<tr role="row">
-										<td class="text-center" role="cell"><print order="ordernumber"><small class="d-block d-sm-none"><small><print order="date"><br>Due: <print order="duedate"></small></small></td>
+										<td class="text-center" role="cell">
+											<print order="ordernumber"><small class="d-block d-sm-none"><small><print order="date"><br>
+											Due: <print order="duedate"></small></small>
+										</td>
 										<td class="text-center" role="cell"><print order="status"></td>
-										<td class="text-center small d-none d-sm-table-cell" role="cell"><small><print order="date"><br>Due: <print order="duedate"></small></td>
-										<td class="text-right" role="cell"><a class="btn btn-success btn-sm" href="<print link>" role="link">View</a></td>
+										<td class="text-center small d-none d-sm-table-cell" role="cell">
+											<small><print order="date"><br>Due: <print order="duedate"></small>
+										</td>
+										<td class="text-right" role="cell"><a class="btn btn-outline-secondary" href="<print link>" role="link">View</a></td>
 									</tr>
 								</items>
 							</tbody>
@@ -30,14 +35,14 @@
 				</div>
 			</div>
 			<order>
-				<div class="card mt-4">
+				<div class="card col-12 mt-4">
 					<div class="card-body">
 						<ul class="nav justify-content-end">
-							<li class="nav-item"><button class="btn btn-info" onclick="$('#sp').load('core/email_order.php?id=<print order=id>&act=print');" role="button"><i class="libre"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><path d="m 3.76923,11.615385 h 6.46154 V 9.769235 H 3.76923 v 1.84615 z m 0,-4.61538 h 6.46154 V 4.230775 H 9.07692 q -0.28846,0 -0.49038,-0.20193 Q 8.38462,3.826925 8.38462,3.538465 V 2.384615 H 3.76923 v 4.61539 z m 8.30769,0.46154 q 0,-0.1875 -0.13702,-0.32452 -0.13702,-0.13702 -0.32452,-0.13702 -0.1875,0 -0.32451,0.13702 -0.13702,0.13702 -0.13702,0.32452 0,0.1875 0.13702,0.32452 0.13701,0.13702 0.32451,0.13702 0.1875,0 0.32452,-0.13702 0.13702,-0.13702 0.13702,-0.32452 z m 0.92308,0 v 3 q 0,0.0937 -0.0685,0.16226 -0.0685,0.0685 -0.16226,0.0685 h -1.61538 v 1.15384 q 0,0.28846 -0.20193,0.49039 -0.20192,0.20192 -0.49038,0.20192 H 3.53847 q -0.28846,0 -0.49038,-0.20192 -0.20193,-0.20193 -0.20193,-0.49039 v -1.15384 H 1.230779 q -0.09375,0 -0.162259,-0.0685 Q 1,10.555295 1,10.461545 v -3 Q 1,6.891825 1.407452,6.484375 1.814904,6.076925 2.38462,6.076925 h 0.46153 v -3.92308 q 0,-0.28846 0.20193,-0.49038 Q 3.25,1.461545 3.53846,1.461545 h 4.84616 q 0.28846,0 0.63461,0.14423 0.34615,0.14423 0.54808,0.34615 l 1.09615,1.09616 q 0.20192,0.20192 0.34616,0.54807 0.14423,0.34616 0.14423,0.63462 v 1.84615 h 0.46153 q 0.56972,0 0.97717,0.40745 Q 13,6.891825 13,7.461545 z"/></svg></i></button></li>
+							<li class="nav-item"><button class="btn btn-outline-secondary" onclick="$('#sp').load('core/email_order.php?id=<print order=id>&act=print');" role="button" aria-label="Print"><i class="libre"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><path d="m 3.76923,11.615385 h 6.46154 V 9.769235 H 3.76923 v 1.84615 z m 0,-4.61538 h 6.46154 V 4.230775 H 9.07692 q -0.28846,0 -0.49038,-0.20193 Q 8.38462,3.826925 8.38462,3.538465 V 2.384615 H 3.76923 v 4.61539 z m 8.30769,0.46154 q 0,-0.1875 -0.13702,-0.32452 -0.13702,-0.13702 -0.32452,-0.13702 -0.1875,0 -0.32451,0.13702 -0.13702,0.13702 -0.13702,0.32452 0,0.1875 0.13702,0.32452 0.13701,0.13702 0.32451,0.13702 0.1875,0 0.32452,-0.13702 0.13702,-0.13702 0.13702,-0.32452 z m 0.92308,0 v 3 q 0,0.0937 -0.0685,0.16226 -0.0685,0.0685 -0.16226,0.0685 h -1.61538 v 1.15384 q 0,0.28846 -0.20193,0.49039 -0.20192,0.20192 -0.49038,0.20192 H 3.53847 q -0.28846,0 -0.49038,-0.20192 -0.20193,-0.20193 -0.20193,-0.49039 v -1.15384 H 1.230779 q -0.09375,0 -0.162259,-0.0685 Q 1,10.555295 1,10.461545 v -3 Q 1,6.891825 1.407452,6.484375 1.814904,6.076925 2.38462,6.076925 h 0.46153 v -3.92308 q 0,-0.28846 0.20193,-0.49038 Q 3.25,1.461545 3.53846,1.461545 h 4.84616 q 0.28846,0 0.63461,0.14423 0.34615,0.14423 0.54808,0.34615 l 1.09615,1.09616 q 0.20192,0.20192 0.34616,0.54807 0.14423,0.34616 0.14423,0.63462 v 1.84615 h 0.46153 q 0.56972,0 0.97717,0.40745 Q 13,6.891825 13,7.461545 z"/></svg></i></button></li>
 						</ul>
 						<div class="row">
 							<div class="col-12 col-sm-4 mb-4 border-right">
-								<h4 role="heading">From</h4>
+								<h4>From</h4>
 								<div class="small">
 									<print config="business"><br>
 									ABN: <print config="abn"><br>
@@ -48,7 +53,7 @@
 								</div>
 							</div>
 							<div class="col-12 col-sm-4 mb-4 border-right">
-								<h4 role="heading">To</h4>
+								<h4>To</h4>
 								<div class="small">
 									<print user="name"><br>
 									<print user="address">,
@@ -60,7 +65,7 @@
 								</div>
 			  			</div>
 			  			<div class="col-12 col-sm-4 mb-4">
-			  				<h4 role="heading">Details</h4>
+			  				<h4>Details</h4>
 			  				<div class="small">
 									<strong>Order #</strong><print order="ordernumber"><br>
 			  					<strong>Order Date: </strong><print order="date"><br>
@@ -75,7 +80,7 @@
 									<tr role="row">
 										<th role="columnheader">Code</th>
 										<th class="col" role="columnheader">Title</th>
-										<th class="d-none d-sm-block" role="columnheader">Option</th>
+										<th class="text-center" role="columnheader">Option</th>
 			  						<th class="text-center" role="columnheader">Qty</th>
 			  						<th class="text-center" role="columnheader">Cost</th>
 			  						<th class="text-right" role="columnheader">Total</th>
@@ -123,13 +128,13 @@
 			  		</div>
 			  		<div class="row">
 							<div class="col-12 col-sm-6">
-								<h4 role="heading">Notes:</h4>
+								<h4>Notes:</h4>
 								<div class="well small">
 									<print order="notes">
 								</div>
 							</div>
 							<div class="col-12 col-sm-6">
-								<h4 role="heading">Banking Details:</h4>
+								<h4>Banking Details:</h4>
 								<div class="small">
 									<strong>Bank: </strong><print config="bank"><br>
 									<strong>Account Name: </strong><print config="bankAccountName"><br>

@@ -1,5 +1,15 @@
 ### v2.0.3
 - Fix Social Arial Labels
+- Fix Meta Tag Generation and Fallbacks.
+- Fix Robots Meta Head Tag to correctly Allow or Disallow Robots.
+- Add Image ALT with Fallback to Title for Media Images and Attribution Title for Content.
+- Fix Display Name or Business with fall back both ways.
+- Fix RSS Display Errors.
+- Remove unnecessary DB Query from Sitemap
+- Add Category Options in Content Settings, add Categories per contentType and an image per Category.
+- Add Category Option Template Parsing.
+- Add Email Retreiving Emails and Interaction.
+- Add Whitelisting for Messages.
 
 ### v2.0.2
 - Fix Item Count when displaying number of items using <settings items="">

@@ -25,14 +25,14 @@
 						</div>
 					</form>
 				</div>
-				<script>/*<![CDATA[*/
+				<script>
 					$("#newslettersform").submit(function(){
 						$.post($(this).attr("action"),$(this).serialize(),function(data){
 							$("#newsletters").html(data);
 						});
 						return false;
 					});
-				/*]]>*/</script>
+				</script>
 			</aside>
 		</div>
 	</div>
@@ -43,18 +43,19 @@
 	  </div>
 	</div>
 	<settings items="4" contenttype="all">
-	<div class="container">
+	<div class="container mt-5">
+		<h3>Latest Content Additions</h3>
 		<div class="row m-0 p-0">
 			<items>
 				<div class="col-12 col-sm-3 d-flex align-items-stretch mt-2 mb-2">
 					<div class="card" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
-						<img class="card-img-top home" src="<print content=thumb>" alt="<print content=alttitle>" role="img">
-     				<div class="card-body">
+						<img class="card-img-top home" src="<print content=thumb>" alt="<print content=imageALT>" role="img">
+     				<div class="card-body d-flex flex-column">
 							<h1 class="card-title h5 text-uppercase"><a href="<print content=linktitle>" itemprop="url" role="link"><print content="title"></a></h1>
 							<div class="card-text truncate small"><print content="notes"></div>
 							<controls>
 								<view>
-									<div class="content-item-title text-center" itemprop="name">
+									<div class="content-item-title text-center mt-auto" itemprop="name">
 										<a class="btn btn-outline-secondary" href="<print content=linktitle>" itemprop="url" role="link">View</a>
 									</div>
 								</view>
@@ -63,6 +64,23 @@
 	  			</div>
 				</div>
 			</items>
+		</div>
+	</div>
+	<div class="container mt-5">
+		<h3>Shop by Category</h3>
+		<div class="row m-0 p-0">
+			<categories>
+				<div class="col-12 col-sm-3 d-flex align-items-stretch mt-2 mb-2">
+					<div class="card post-slide" itemscope itemtype="http://schema.org/category" role="article">
+						<img class="card-img-top home" src="<print category=image>" alt="<print category=imageALT>" role="img">
+						<div class="card-body d-flex flex-column">
+							<h1 class="card-title h5 text-uppercase">
+								<a href="<print category=link>" itemprop="url" role="link"><print category="title"></a>
+							</h1>
+						</div>
+					</div>
+				</div>
+			</categories>
 		</div>
 	</div>
 </block>

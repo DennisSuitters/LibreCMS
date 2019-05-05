@@ -25,15 +25,19 @@ if(session_status()==PHP_SESSION_NONE)session_start();
 require'db.php';
 $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id='1'")->fetch(PDO::FETCH_ASSOC);
 $id=isset($_POST['id'])?filter_input(INPUT_POST,'id',FILTER_SANITIZE_NUMBER_INT):filter_input(INPUT_GET,'id',FILTER_SANITIZE_NUMBER_INT);
-$s=$db->prepare("SELECT ip,ti FROM `".$prefix."messages` WHERE id=:id");
+$s=$db->prepare("SELECT ip,from_email,ti FROM `".$prefix."messages` WHERE id=:id");
 $s->execute([':id'=>$id]);
 if($s->rowCount()>0){
   $r=$s->fetch(PDO::FETCH_ASSOC);
+  if($r['ip']==''){
+    $address=explode("@",$r['email_from']);
+    $r['ip']=gethostbyname($address[1].'.');
+  }
   $sql=$db->prepare("INSERT INTO `".$prefix."iplist` (ip,oti,ti) VALUES (:ip,:oti,:ti)");
   $sql->execute([
     ':ip'=>$r['ip'],
     ':oti'=>$r['ti'],
     ':ti'=>time()
   ]);
-  echo'<script>window.top.window.$("#blacklist'.$id.'").addClass("hidden");</script>';
+  echo'<script>window.top.window.$("#blacklist'.$id.'").addClass("d-none");</script>';
 }

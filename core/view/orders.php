@@ -20,6 +20,7 @@
  * @version    2.0.0
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.3 Fix Display Name or Business with fall back both ways
  */
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
 if($_SESSION['loggedin']==false)
@@ -89,6 +90,7 @@ else{
         '/<print config=[\"\']?bankAccountNumber[\"\']?>/',
         '/<print config=[\"\']?bankBSB[\"\']?>/',
         '/<print user=[\"\']?name[\"\']?>/',
+        '/<print user=[\"\']?business[\"\']?>/',
         '/<print user=[\"\']?address[\"\']?>/',
         '/<print user=[\"\']?suburb[\"\']?>/',
         '/<print user=[\"\']?city[\"\']?>/',
@@ -116,7 +118,8 @@ else{
         htmlspecialchars($config['bankAccountName'],ENT_QUOTES,'UTF-8'),
         htmlspecialchars($config['bankAccountNumber'],ENT_QUOTES,'UTF-8'),
         htmlspecialchars($config['bankBSB'],ENT_QUOTES,'UTF-8'),
-        htmlspecialchars($ru['name'],ENT_QUOTES,'UTF-8'),
+        htmlspecialchars($ru['name']!=''?$ru['name']:$ru['business'],ENT_QUOTES,'UTF-8'),
+        htmlspecialchars($ru['business']!=''?$ru['business']:$ru['name'],ENT_QUOTES,'UTF-8'),
         htmlspecialchars($ru['address'],ENT_QUOTES,'UTF-8'),
         htmlspecialchars($ru['suburb'],ENT_QUOTES,'UTF-8'),
         htmlspecialchars($ru['city'],ENT_QUOTES,'UTF-8'),
@@ -180,7 +183,7 @@ else{
         ],$order);
       }else
         $order=preg_replace('~<rewards>.*?<\/rewards>~is','',$order,1);
-      if($r['postage']>0){
+      if($r['postageCost']>0){
         $order=preg_replace([
           '/<print order=[\"\']?postage[\"\']?>/',
           '/<postage>/',
@@ -190,7 +193,7 @@ else{
           '',
           ''
         ],$order);
-        $total=$total+$r['postage'];
+        $total=$total+$r['postageCost'];
       }else
         $order=preg_replace('~<postage>.*?<\/postage>~is','',$order,1);
       $order=preg_replace([

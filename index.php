@@ -21,7 +21,10 @@
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.2 Add ROOT_DIR Define to help Installer resolve from any folder location.
+ * @changes    v2.0.3 Add Set UTF-8 Character Encoding.
  */
+mb_internal_encoding("UTF-8");
+mb_http_output( "UTF-8" );
 ini_set('session.use_trans_sid',0);
 ini_set('session.use_cookies',1);
 ini_set('session.use_only_cookies',1);

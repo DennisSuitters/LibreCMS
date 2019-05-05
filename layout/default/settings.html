@@ -5,18 +5,18 @@
 		<div class="row mt-4 mb-4 m-sm-5">
 			<div class="col-12 col-sm-6 m-auto">
 				<div class="form-group">
-					<label for="avatar">Avatar</label>
 					<iframe id="sp" name="sp" class="d-none"></iframe>
 					<form target="sp" method="post" enctype="multipart/form-data" action="core/add_data.php" role="form">
 						<input type="hidden" name="id" value="<print user=id>">
 						<input type="hidden" name="act" value="add_avatar">
+						<label for="avatar">Avatar</label>
 						<div class="input-group">
 							<div class="custom-file">
-								<input type="file" name="fu" class="custom-file-input">
+								<input type="file" name="fu" id="fu" class="custom-file-input">
 								<label class="custom-file-label" for="fu">Choose File</label>
 							</div>
 							<div class="input-group-append">
-								<button class="btn btn-default" role="button">Upload</button>
+								<button class="btn btn-outline-secondary" role="button">Upload</button>
 							</div>
 						</div>
 					</form>
@@ -25,32 +25,34 @@
 					<label for="gravatar">Gravatar</label>
 					<div class="input-group">
 						<input type="text" id="gravatar" class="form-control" value="<print user=gravatar>" placeholder="Enter Gravatar Link..." role="textbox">
-						<div id="gravatarsave" class="input-group-append hidden"><button class="btn btn-danger" role="button">Save</button></div>
+						<div id="gravatarsave" class="input-group-append">
+							<button class="btn btn-outline-secondary" role="button">Save</button>
+						</div>
 					</div>
 				</div>
 				<form method="post" action="settings" role="form">
 					<input type="hidden" name="act" value="updatePassword">
 					<input type="hidden" name="emailtrap" value="">
-					<h4 role="heading">Reset Password</h4>
-					<div class="alert alert-danger<error currentPassHidden>">The Password you entered was incorrect!</div>
-					<div class="alert alert-danger<error matchPassHidden>">The New &amp; Confirm Passwords do NOT match!</div>
-					<div class="alert alert-success<success passUpdated>">Password Successfully Updated!</div>
+					<h4>Reset Password</h4>
+					<div class="alert alert-danger<error currentPassHidden>" role="alert">The Password you entered was incorrect!</div>
+					<div class="alert alert-danger<error matchPassHidden>" role="alert">The New &amp; Confirm Passwords do NOT match!</div>
+					<div class="alert alert-success<success passUpdated>" role="alert">Password Successfully Updated!</div>
 					<div class="form-group">
 						<label for="password">Password</label>
 						<div class="input-group">
 							<input type="password" id="password" class="form-control" name="newPass" value="" placeholder="Enter New Password..." required aria-required="true" role="textbox">
 							<div class="input-group-append">
-								<button class="btn btn-success pull-right" type="submit" role="button">Update Password</button>
+								<button class="btn btn-outline-secondary pull-right" type="submit" role="button">Update Password</button>
 							</div>
 						</div>
-						<div class="form-text small text-muted">Changing Password will Sign you Out</div>
+						<div class="form-text small">Changing Password will Sign you Out</div>
 					</div>
 				</form>
 				<form method="post" action="settings" role="form">
 					<input type="hidden" name="act" value="updateAccount">
 					<input type="hidden" name="emailTrap" value="">
-					<div class="alert alert-success<success accountHidden>">Account Details Updated!</div>
-					<div class="alert alert-danger<error accountHidden>">There was an Issue Updating your Account Details!</div>
+					<div class="alert alert-success<success accountHidden>" role="alert">Account Details Updated!</div>
+					<div class="alert alert-danger<error accountHidden>" role="alert">There was an Issue Updating your Account Details!</div>
 					<div class="form-group">
 						<label for="ti">Created</label>
 						<input type="text" id="ti" class="form-control" value="<print user=ti>" readonly role="textbox">
@@ -61,7 +63,7 @@
 					</div>
 					<div class="form-group">
 						<label for="rank">Rank</label>
-						<input type="text" class="form-control" value="<print user=rank>" readonly role="textbox">
+						<input type="text" id="rank" class="form-control" value="<print user=rank>" readonly role="textbox">
 					</div>
 					<div class="form-group">
 						<label for="email">Email</label>
@@ -112,7 +114,7 @@
 						<input type="text" id="country" class="form-control" name="country" value="<print user=country>" placeholder="Enter a Country..." role="textbox">
 					</div>
 					<div class="form-group">
-						<button class="btn btn-success btn-block" type="submit" role="button">Update Account</button>
+						<button class="btn btn-outline-secondary btn-block" type="submit" role="button">Update Account</button>
 					</div>
 				</form>
 		</div>

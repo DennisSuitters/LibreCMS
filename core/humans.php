@@ -48,7 +48,7 @@ Name: Alan Raycraft, [http://www.raycraft.com.au/]
 For: Patience, Suggestions.
 
 /* SITE */
-Standards: HTML5, CSS3, PHP, jQuery, Vanilla Javascript
+Standards: ARIA/A11Y, HTML5, CSS3, PHP, jQuery, Vanilla Javascript
 Backend Components: PHP, PDO, jQuery, Javascript, Bootstrap (Administration)
 Frontend Componenets: Dependant on theme
 Software: A FOSS Editor

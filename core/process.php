@@ -4,7 +4,7 @@
  *
  * Core - Process Pages
  *
- * process.php version 2.0.0
+ * process.php version 2.0.3
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -20,6 +20,8 @@
  * @version    2.0.0
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
+ * @changes    v2.0.3 Fix wrong Meta Tag Information.
+ * @changes    v2.0.3 Add Theme detail parsing into meta_head.html
  */
 require'core'.DS.'db.php';
 if(isset($headerType))header($headerType);
@@ -48,6 +50,11 @@ if($view=='page'){
   $sp->execute([':contentType'=>$view]);
 }
 $page=$sp->fetch(PDO::FETCH_ASSOC);
+$seoTitle=$page['seoTitle'];
+$metaRobots=$page['metaRobots'];
+$seoCaption=$page['seoCaption'];
+$seoDescription=$page['seoDescription'];
+$seoKeywords=$page['seoKeywords'];
 $pu=$db->prepare("UPDATE `".$prefix."menu` SET views=views+1 WHERE id=:id");
 $pu->execute([':id'=>$page['id']]);
 if(isset($act)&&$act=='logout')
@@ -116,21 +123,54 @@ foreach($tag as$tag1){
     $req=$inbed;
   }
 }
-$metaRobots=!isset($metaRobots)&&empty($page['metaRobots'])?'index,follow':$page['metaRobots'];
-$seoCaption=!isset($seoCaption)&&empty($page['seoCaption'])?$config['seoCaption']:$page['seoCaption'];
-$seoDescription=!isset($seoDescription)&&empty($page['seoDescription'])?$config['seoDescription']:$page['seoDescription'];
-if(isset($args[1])&&$args[1]!=''&&isset($r['seoKeywords']))
-  $seoKeywords=$r['seoKeywords'];
-elseif(!isset($seoKeywords)||$seoKeywords=='')
-  $seoKeywords=empty($page['seoKeywords'])?$config['seoKeywords']:$page['seoKeywords'];
 if(!isset($contentTime))
   $contentTime=($page['eti']>$config['ti']?$page['eti']:$config['ti']);
 if(!isset($canonical)||$canonical=='')
   $canonical=($view=='index'?URL:URL.$view.'/');
+if($seoTitle==''){
+  if($page['seoTitle']=='')
+    $seoTitle=$config['seoTitle'];
+  else
+    $seoTitle=$page['seoTitle'];
+}
+if($seoTitle!=''){
+  $seoTitle.=' - ';
+}
+$seoTitle.=($view=='index'?'Home':ucfirst($view)).($config['business']!=''?' - '.$config['business']:'');
+if($metaRobots==''){
+  if($page['metaRobots']=='')
+    $metaRobots=$config['metaRobots'];
+  elseif(in_array($view,['proofs','orders','settings'],true))
+    $metaRobots='noindex,nofollow';
+  else
+    $metaRobots=$page['metaRobots'];
+}
+if($seoCaption==''){
+  if($page['seoCaption']=='')
+    $seoCaption=$config['seoCaption'];
+  else
+    $seoCaption=$page['seoCaption'];
+}
+if($seoDescription==''){
+  if($page['seoDescription']=='')
+    $seoDescription=$config['seoDescription'];
+  else
+    $seoDescription=$page['seoDescription'];
+}
+if($seoKeywords==''){
+  if($page['seoKeywords']=='')
+    $seoKeywords=$config['seoKeywords'];
+  else
+    $seoKeywords=$page['seoKeywords'];
+}
 $head=preg_replace([
+  '/<print theme=[\"\']?title[\"\']?>/',
+  '/<print theme=[\"\']?creator[\"\']?>/',
+  '/<print theme=[\"\']?creatorurl[\"\']?>/',
   '/<print meta=[\"\']?metaRobots[\"\']?>/',
   '/<print meta=[\"\']?seoTitle[\"\']?>/',
   '/<print meta=[\"\']?seoCaption[\"\']?>/',
+  '/<print meta=[\"\']?seoDescription[\"\']?>/',
   '/<print meta=[\"\']?seoKeywords[\"\']?>/',
   '/<print meta=[\"\']?dateAtom[\"\']?>/',
   '/<print meta=[\"\']?canonical[\"\']?>/',
@@ -154,10 +194,14 @@ $head=preg_replace([
 	'/<print geo_position>/',
   '/<!-- Google Analytics -->/'
 ],[
-  empty($metaRobots)?'index,follow':$page['metaRobots'],
-  empty($seoTitle)?ucfirst($view).' - '.$config['seoTitle'].' - '.$config['business']:$seoTitle.' - '.$config['business'],
-  empty($seoDescription)?$seoDescription:$seoCaption,
-  $seoKeywords,
+  trim(htmlspecialchars($theme['title'],ENT_QUOTES,'UTF-8')),
+  trim(htmlspecialchars($theme['creator'],ENT_QUOTES,'UTF-8')),
+  trim(htmlspecialchars($theme['creator_url'],ENT_QUOTES,'UTF-8')),
+  trim(htmlspecialchars($metaRobots,ENT_QUOTES,'UTF-8')),
+  trim(htmlspecialchars($seoTitle,ENT_QUOTES,'UTF-8')),
+  trim(htmlspecialchars($seoCaption,ENT_QUOTES,'UTF-8')),
+  trim(htmlspecialchars($seoDescription,ENT_QUOTES,'UTF-8')),
+  trim(htmlspecialchars($seoKeywords,ENT_QUOTES,'UTF-8')),
   $contentTime,
   $canonical,
   URL,

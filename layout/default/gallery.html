@@ -79,18 +79,18 @@
 </block>
 <block include="header.html">
 <block inbed="gallery">
-    <div class="container">
-      <div class="row col-12 m-1 mt-sm-5 justify-content-center">
-        <items>
-					<a href="<print media=file>" data-toggle="lightbox" data-gallery="gallery" data-max-width="700" class="card gallery bg-dark text-white col-12 col-sm-3 m-1 m-sm-2 p-0">
-						<img src="<print media=thumb>" class="img-fluid" alt="<print media=title>">
-					</a>
-        </items>
-      </div>
+  <div class="container">
+    <div class="row col-12 m-1 mt-sm-5 justify-content-center">
+      <items>
+				<a href="<print media=file>" data-toggle="lightbox" data-gallery="gallery" data-max-width="700" class="card gallery bg-dark text-white col-12 col-sm-3 m-1 m-sm-2 p-0">
+					<img src="<print media=thumb>" class="img-fluid" alt="<print media=title>">
+				</a>
+      </items>
     </div>
-    <script>
-      $('[data-gallery="gallery"]').simpleLightbox();
-    </script>
+  </div>
+  <script>
+    $('[data-gallery="gallery"]').simpleLightbox();
+  </script>
 </block>
 <block include="footer.html">
 <block include="meta_footer.html">

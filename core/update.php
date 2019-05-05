@@ -40,7 +40,7 @@ function localize($t){
   global $config;
   if(is_null($tr)){
     if(file_exists('i18n'.DS.$config['language'].'.txt'))
-      $lf='i18n'.DS.$config['language'].'.txt';
+      $lf='core'.DS.'i18n'.DS.$config['language'].'.txt';
     else
       $lf='core'.DS.'i18n'.DS.'en-AU.txt';
     $lfc=file_get_contents($lf);

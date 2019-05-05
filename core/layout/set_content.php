@@ -23,6 +23,7 @@
  * @changes    v2.0.1 Change Back Link to Referer
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.3 Add options for adding Categories with Images.
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
@@ -49,6 +50,55 @@
             <div class="input-group-append" data-tooltip="tooltip" title="<?php echo localize('Save');?>"><button id="saveshowItems" class="btn btn-secondary save" data-dbid="showItems" data-style="zoom-in" role="button" aria-label="<?php echo localize('aria_save');?>"><?php svg('libre-gui-save');?></button></div>
           </div>
         </div>
+        <legend><?php echo localize('Categories');?></legend>
+        <form target="sp" method="POST" action="core/add_category.php" role="form">
+          <div class="form-group row">
+            <div class="input-group col">
+              <label for="cat" class="input-group-text"><?php echo localize('Category');?></label>
+              <input type="text" id="cat" class="form-control" name="cat" placeholder="<?php echo localize('Enter a ').' '.localize('Category');?>..." required aria-required="true" role="textbox">
+              <label for="ct" class="input-group-text"><?php echo localize('Content');?></label>
+              <select id="ct" class="form-control" name="ct" role="listbox">
+                <option value="inventory">Inventory</option>
+                <option value="services">Service</option>
+                <option value="article">Article</option>
+                <option value="gallery">Gallery</option>
+                <option value="portfolio">Portfolio</option>
+                <option value="proof">Proof</option>
+                <option value="news">News</option>
+                <option value="event">Event</option>
+              </select>
+              <div class="input-group-text"><?php echo localize('Image');?></div>
+              <input type="text" id="icon" class="form-control" name="icon" value="" readonly role="textbox">
+              <div class="input-group-append"><button class="btn btn-secondary" onclick="elfinderDialog('1','category','icon');return false;" data-tooltip="tooltip" title="<?php echo localize('Open Media Manager');?>" role="button" aria-label="<?php echo localize('aria_file_mediamanager');?>"><?php svg('libre-gui-browse-media');?></button></div>
+              <div class="input-group-append"><button class="btn btn-secondary add" type="submit" data-tooltip="tooltip" title="<?php echo localize('Add');?>" role="button" aria-label="<?php echo localize('aria_add');?>"><?php svg('libre-gui-plus');?></button></div>
+            </div>
+          </div>
+        </form>
+        <div id="category">
+<?php $ss=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE contentType='category' ORDER BY url ASC, title ASC");
+$ss->execute();
+while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
+          <div id="l_<?php echo$rs['id'];?>" class="form-group row">
+            <div class="input-group col">
+              <label for="cat<?php echo$rs['id'];?>" class="input-group-text"><?php echo localize('Category');?></label>
+              <input type="text" id="cat<?php echo$rs['id'];?>" class="form-control" value="<?php echo$rs['title'];?>" readonly role="textbox">
+              <label for="ct<?php echo$rs['id'];?>" class="input-group-text"><?php echo localize('Content');?></label>
+              <input type="text" id="ct<?php echo$rs['id'];?>" class="form-control" value="<?php echo$rs['url'];?>" readonly role="textbox">
+              <div class="input-group-text"><?php echo localize('Image');?></div>
+              <div class="input-group-append img"><?php echo$rs['icon']!=''?'<a href="'.$rs['icon'].'" data-lightbox="lightbox"><img id="thumbimage" src="'.$rs['icon'].'" alt="Thumbnail"></a>':'<img id="thumbimage" src="core/images/noimage.png" alt="No Image">';?></div>
+              <div class="input-group-append">
+                <form target="sp" action="core/purge.php" role="form">
+                  <input type="hidden" name="id" value="<?php echo$rs['id'];?>">
+                  <input type="hidden" name="t" value="choices">
+                  <button class="btn btn-secondary trash" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button"  aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
+                </form>
+              </div>
+            </div>
+          </div>
+<?php }?>
+        </div>
+        <hr>
+  
       </div>
     </div>
   </div>

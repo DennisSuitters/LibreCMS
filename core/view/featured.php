@@ -21,6 +21,7 @@
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Add Sluggification
+ * @changes    v2.0.3 Fix File HTML Carousel Output
  */
 preg_match('/<settings itemcount="([\w\W]*?)" contenttype="([\w\W]*?)" order="([\w\W]*?)">/',$html,$matches);
 $html=preg_replace('~<settings.*?>~is','',$html,1);
@@ -162,7 +163,7 @@ if($ii>0){
 			$item=$r['file']!=''?preg_replace('/<print content=[\"\']?image[\"\']?>/',htmlspecialchars($r['file'],ENT_QUOTES,'UTF-8'),$item):preg_replace('/<print content=[\"\']?image[\"\']?>/','',$item);
 		$item=$r['link']=='nolink'?preg_replace('/<print content=[\"\']?title[\"\']?>/','<span class="hidden">'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'</span>',$item):preg_replace('/<print content=[\"\']?title[\"\']?>/',htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),$item);
 		if($r['contentType']=='carousel')
-			$item=preg_replace('~<caption>.*?<\/caption>~is',htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8'),$item,1);
+			$item=preg_replace('~<caption>.*?<\/caption>~is',$r['seoCaption'],$item,1);
 		else{
 			$r['notes']=strip_tags($r['notes']);
 			$pos=strpos($r['notes'],' ',300);

@@ -42,7 +42,7 @@ function update(id,t,c,da){
 						$('#options0,#options1,#options2,#options3,#options4,#options5,#options6,#options7,#options8').attr('checked',false);
 					});
 				}
-				if(da==400){
+				if(da==400||da==500){
 					$.ajax({
 						type:"GET",
 						url:"core/update.php",
@@ -50,26 +50,11 @@ function update(id,t,c,da){
 							id:id,
 							t:t,
 							c:'options',
-							da:'000000000000000000000000000000000'
+							da:'110000000000000000000000000000000'
 						}
 					}).done(function(msg){
-//						$('').attr('checked',true);
-						$('#options0,#options1,#options2,#options3,#options4,#options5,#options6,#options7,#options8').attr('checked',false);
-					});
-				}
-				if(da==500){
-					$.ajax({
-						type:"GET",
-						url:"core/update.php",
-						data:{
-							id:id,
-							t:t,
-							c:'options',
-							da:'000000000000000000000000000000000'
-						}
-					}).done(function(msg){
-//						$('#options0,#options1,#options2,#options3,#options4,#options5,#options6,#options7').attr('checked',true);
-						$('#options0,#options1,#options2,#options3,#options4,#options5,#options6,#options7,#options8').attr('checked',false);
+						$('#options0,#options1').attr('checked',true);
+						$('#options2,#options3,#options4,#options5,#options6,#options7,#options8').attr('checked',false);
 					});
 				}
 				if(da==600){
@@ -80,44 +65,14 @@ function update(id,t,c,da){
 							id:id,
 							t:t,
 							c:'options',
-							da:'000000000000000000000000000000000'
+							da:'110000100000000000000000000000000'
 						}
 					}).done(function(msg){
-//						$('#options0,#options1,#options2,#options3,#options4,#options5,#options6,#options7').attr('checked',true);
-						$('#options0,#options1,#options2,#options3,#options4,#options5,#options6,#options7,#options8').attr('checked',false);
+						$('#options0,#options1,#options6').attr('checked',true);
+						$('#options2,#options3,#options4,#options5,#options7,#options8').attr('checked',false);
 					});
 				}
-				if(da==700){
-					$.ajax({
-						type:"GET",
-						url:"core/update.php",
-						data:{
-							id:id,
-							t:t,
-							c:'options',
-							da:'000000000000000000000000000000000'
-						}
-					}).done(function(msg){
-//						$('#options0,#options1,#options2,#options3,#options4,#options5,#options6,#options7').attr('checked',true);
-						$('#options0,#options1,#options2,#options3,#options4,#options5,#options6,#options7,#options8').attr('checked',false);
-					});
-				}
-				if(da==800){
-					$.ajax({
-						type:"GET",
-						url:"core/update.php",
-						data:{
-							id:id,
-							t:t,
-							c:'options',
-							da:'000000000000000000000000000000000'
-						}
-					}).done(function(msg){
-//						$('#options0,#options1,#options2,#options3,#options4,#options5,#options6,#options7').attr('checked',true);
-						$('#options0,#options1,#options2,#options3,#options4,#options5,#options6,#options7,#options8').attr('checked',false);
-					});
-				}
-				if(da==900){
+				if(da==700||da==800||da==900){
 					$.ajax({
 						type:"GET",
 						url:"core/update.php",
@@ -150,6 +105,13 @@ function update(id,t,c,da){
 		}
 		if(t=='config'&&c=='language'){
 			location.reload();
+		}
+		if(t=='messages'){
+			if(c=='folder'){
+				$('#l_'+id).addClass('animated zoomOut');
+				setTimeout(function(){$('#l_'+id).remove();},500);
+				$('[data-tooltip="tooltip"], .tooltip').tooltip('hide');
+			}
 		}
 		if(t!='comments'){
 			if(t=='menu'){

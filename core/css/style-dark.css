@@ -16,18 +16,24 @@
 .email-app main{-ms-flex:1;flex:1;min-width:0;padding:1rem}
 .email-app .inbox .toolbar{padding-bottom:1rem;border-bottom:1px solid #23282c}
 .email-app .inbox .messages{padding:0;list-style:none}
-.email-app .inbox .message{position:relative;padding:1rem 1rem 1rem 2.5rem;border-bottom:1px solid #23282c}
+.email-app .inbox .messages .message{position:relative;padding:1rem 1rem 1rem 2.5rem;border-bottom:1px solid #23282c}
 .email-app .inbox .message:nth-of-type(odd){background-color:rgba(0,0,0,.05)}
 .email-app .inbox .message:hover{background-color:rgba(0,0,0,.075)}
 .email-app .inbox .message .actions{position:absolute;top:0;left:0;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column}
 .email-app .inbox .message .actions .action{width:2rem;margin-bottom:.5rem;color:#c8ced3;text-align:center}
 .email-app .inbox .message a{color:inherit}
 .email-app .inbox .message a:hover{text-decoration:none}
-.email-app .inbox .message.unread{background-color:rgba(255,193,7,.25)}
-.email-app .inbox .message.unread:hover{background-color:rgba(255,193,7,.15)}
+.email-app .inbox .message.new{color:#4dbd74}
+.email-app .inbox .message.new:hover{color:#4dbd74}
+.email-app .inbox .message.new .header,
+.email-app .inbox .message.new .title{color:#4dbd74;font-weight:700}
+.email-app .inbox .message.unread{color:#ffc107}
+.email-app .inbox .message.unread:hover{color:#ffc107}
 .email-app .inbox .message.unread .header,
-.email-app .inbox .message.unread .title{font-weight:700}
+.email-app .inbox .message.unread .title{color:#ffc107;font-weight:700}
 .email-app .inbox .message .header{display:-ms-flexbox;display:flex;-ms-flex-direction:row;flex-direction:row;margin-bottom:.5rem}
+.email-app .inbox .message .header .to,
+.email-app .inbox .message .header .from{display:block!important}
 .email-app .inbox .message .header .date{margin-left:auto}
 .email-app .inbox .message .title{margin-bottom:.5rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .email-app .inbox .message .description{font-size:12px}

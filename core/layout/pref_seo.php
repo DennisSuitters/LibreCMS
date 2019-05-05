@@ -22,6 +22,7 @@
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.3 Add metaRobots to Configuration.
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
@@ -50,6 +51,15 @@
           </div>
         </div>
         <hr />
+        <div class="help-block small text-muted text-right"><?php echo localize('help_metarobots');?></div>
+        <div class="form-group row">
+          <label for="metaRobots" class="col-form-label col-sm-2"><?php echo localize('Meta Robots');?></label>
+          <div class="input-group col-sm-10">
+            <?php echo$user['rank']>899?'<div class="input-group-append"><button class="btn btn-secondary fingerprint" data-dbgid="metaRobots" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+            <input type="text" id="metaRobots" class="form-control textinput" value="<?php echo$config['metaRobots'];?>" data-dbid="1" data-dbt="config" data-dbc="metaRobots" placeholder="<?php echo localize('Enter ').' '.localize('Meta Robots').' '.localize('Options');?>..." role="textbox">
+            <div class="input-group-append" data-tooltip="tooltip" title="<?php echo localize('Save');?>"><button id="savemetaRobots" class="btn btn-secondary save" data-dbid="metaRobots" data-style="zoom-in" role="button" aria-label="<?php echo localize('aria_save');?>"><?php svg('libre-gui-save');?></button></div>
+          </div>
+        </div>
         <div class="help-block small text-right"><?php echo localize('help_seotitle');?></div>
         <div class="form-group row">
           <label for="seoTitle" class="col-form-label col-sm-2"><?php echo localize('SEO Title');?></label>

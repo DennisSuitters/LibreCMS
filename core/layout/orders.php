@@ -166,11 +166,10 @@ else{
   $c=$cs->fetch(PDO::FETCH_ASSOC);?>
               <tr id="l_<?php echo$r['id'];?>" role="row">
                 <td role="cell">
-                  <a href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'];?>"><?php echo$r['aid']!=''?$r['aid'].'<br>':'';echo$r['qid'].$r['iid'];?></a><br>
-                  <?php echo$c['username'];echo$c['name']!=''?' ['.$c['name'].']':'';echo$c['business']!=''?' -> '.$c['business']:'';?>
+                  <a href="<?php echo URL.$settings['system']['admin'].'/orders/edit/'.$r['id'];?>"><?php echo$r['aid']!=''?$r['aid'].'<br>':'';echo$r['qid'].$r['iid'];?></a>
                 </td>
                 <td role="cell">
-                  <?php echo$c['username'].($c['name']!=''?' ['.$c['name'].']':'').($c['name']!=''&&$c['business']!=''?'<br>':'').($c['business']!=''?$c['business']:'');?>
+                  <?php echo$c['username'].($c['name']!=''?' ['.$c['name'].']':'').':'.($c['name']!=''&&$c['business']!=''?'<br>':'').($c['business']!=''?$c['business']:'');?>
                 </td>
                 <td role="cell">
                   <?php echo' '.date($config['dateFormat'],($r['iid_ti']==0?$r['qid_ti']:$r['iid_ti']));?><br>

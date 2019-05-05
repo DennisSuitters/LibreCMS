@@ -55,7 +55,7 @@ if($s->rowCount()>0){?>
     <tr id="l_<?php echo$r['id'];?>" role="row">
       <td class="small" role="cell"><a href="<?php echo URL.$settings['system']['admin'].'/accounts/edit/'.$r['uid'];?>"><?php echo$r['username'].':'.$r['name'];?></a></td>
       <td class="text-center small" role="cell"><?php echo$r['refTable'];?></td>
-      <td class="text-center small" role="cell">><?php echo$r['refColumn'];?></td>
+      <td class="text-center small" role="cell"><?php echo$r['refColumn'];?></td>
       <td class="text-center small" role="cell"><?php echo$r['contentType'];?></td>
       <td class="text-center small" role="cell"><?php echo$r['action'];?></td>
       <td class="text-center small" role="cell"><small><?php echo date($config['dateFormat'],$r['ti']);?></small></td>

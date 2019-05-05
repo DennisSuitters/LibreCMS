@@ -50,9 +50,9 @@ else{?>
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="<?php echo URL.$settings['system']['admin'].'/orders';?>"><?php echo localize('Orders');?></a></li>
     <li class="breadcrumb-item">
-<?php if($r['aid']!='')
+<?php if(isset($r['aid'])&&$r['aid']!='')
         echo'<a href="'.URL.$settings['system']['admin'].'/orders/archived">'.localize('Archived').'</a>';
-      elseif($r['iid']!='')
+      elseif(isset($r['iid'])&&$r['iid']!='')
         echo'<a href="'.URL.$settings['system']['admin'].'/orders/invoices">'.localize('Invoices').'</a>';
       elseif($r['qid']!='')
         echo'<a href="'.URL.$settings['system']['admin'].'/orders/quotes">'.localize('Quotes').'</a>';

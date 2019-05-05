@@ -23,14 +23,20 @@
  */
 $html=preg_replace([
   '/<print theme>/',
+  '/<print theme=[\"\']?title[\"\']?>/',
+  '/<print theme=[\"\']?creator[\"\']?>/',
+  '/<print theme=[\"\']?creatorurl[\"\']?>/',
   '/<print url>/',
   '/<print meta=favicon>/',
   '/<print config=[\"\']?business[\"\']?>/'
-],[
+  ],[
   THEME,
+  trim(htmlspecialchars($theme['title'],ENT_QUOTES,'UTF-8')),
+  trim(htmlspecialchars($theme['creator'],ENT_QUOTES,'UTF-8')),
+  trim(htmlspecialchars($theme['creator_url'],ENT_QUOTES,'UTF-8')),
   URL,
   $favicon,
-  htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8')
+  trim(htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'))
 ],$html);
 if(stristr($html,'<buildSocial')){
 	preg_match('/<buildSocial>([\w\W]*?)<\/buildSocial>/',$html,$matches);

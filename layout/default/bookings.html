@@ -9,13 +9,13 @@
 					<form id="bookingform" method="post" action="core/add_booking.php" role="form">
 						<input type="hidden" name="emailtrap" value="none">
 						<input type="hidden" name="act" value="add_booking">
-						<div class="alert alert-danger">Highlighted Fields are Required</div>
+						<div class="alert alert-danger" role="alert">Highlighted Fields are Required</div>
 						<div class="form-group">
-							<label for="email" class="text-danger">Email</label>
+							<label for="email">Email</label>
 							<input type="email" id="email" class="form-control is-invalid" name="email" value="" placeholder="Enter an Email..." required aria-required="true" role="textbox">
 						</div>
 						<div class="form-group">
-							<label for="name" class="text-danger">Name</label>
+							<label for="name">Name</label>
 							<input type="text" id="name" class="form-control is-invalid" name="name" value="" placeholder="Enter a Name..." required aria-required="true" role="textbox">
 						</div>
 						<div class="form-group">
@@ -47,13 +47,13 @@
 							<input type="text" id="postcode" class="form-control" name="postcode" value="" placeholder="Enter a Postcode..." role="textbox">
 						</div>
 						<div class="form-group">
-							<label for="date">Date/Time</label>
 							<div class="form-row">
 								<div class="col">
+									<label for="date">Date</label>
 									<input type="date" id="date" class="form-control" name="tis" value="0">
 								</div>
 								<div class="col">
-									<label for="time" class="d-none">Time</label>
+									<label for="time">Time</label>
 									<input type="time" id="time" class="form-control" name="tim" value="0">
 								</div>
 							</div>
@@ -72,17 +72,17 @@
 							<textarea id="notes" class="form-control" name="notes" placeholder="Enter some Notes..." role="textbox"></textarea>
 						</div>
 						<div class="form-group">
-							<button type="submit" class="btn btn-success btn-block" role="button">Make Booking</button>
+							<button type="submit" class="btn btn-outline-secondary btn-block" role="button">Make Booking</button>
 						</div>
 					</form>
-					<script>/*<![CDATA[*/
+					<script>
 						$("#bookingform").submit(function(){
 							$.post($(this).attr("action"),$(this).serialize(),function(data){
 								$("#booking").html(data);
 							});
 							return false;
 						});
-					/*]]>*/</script>
+					</script>
 				</div>
 			</main>
 		</div>

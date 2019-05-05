@@ -43,8 +43,8 @@
     <link rel="alternate" hreflang="<?php echo$config['language'];?>" href="<?php echo URL;?>">
     <link rel="icon" href="<?php echo URL.$favicon;?>">
     <link rel="apple-touch-icon" href="<?php echo URL.$favicon;?>"><?php
-    echo$view=='media'||$view=='pages'||$args[0]=='edit'||$args[0]=='security'||($view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<link rel="stylesheet" type="text/css" href="'.URL.'core'.DS.'css'.DS.'jquery-ui.min.css">':'';
-    echo$view=='media'||$args[0]=='edit'||$args[0]=='security'||($view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<link rel="stylesheet" type="text/css" href="'.URL.'core'.DS.'elfinder'.DS.'css'.DS.'elfinder.min.css">':'';
+    echo$view=='media'||$view=='pages'||$view=='messages'||$args[0]=='edit'||$args[0]=='settings'||$args[0]=='security'||($view=='content'||$view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<link rel="stylesheet" type="text/css" href="'.URL.'core'.DS.'css'.DS.'jquery-ui.min.css">':'';
+    echo$view=='media'||$args[0]=='edit'||$args[0]=='settings'||$args[0]=='security'||($view=='content'||$view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<link rel="stylesheet" type="text/css" href="'.URL.'core'.DS.'elfinder'.DS.'css'.DS.'elfinder.min.css">':'';
     echo$view=='bookings'||$args[0]=='scheduler'?'<link rel="stylesheet" type="text/css" href="'.URL.'core'.DS.'css'.DS.'fullcalendar.min.css">':'';?>
     <link id="themecss" rel="stylesheet" type="text/css" href="<?php echo URL.'core'.DS.'css'.DS.'style-'.(isset($_COOKIE['adminbg'])?$_COOKIE['adminbg']:'dark').'.css';?>">
     <link rel="stylesheet" type="text/css" href="<?php echo URL.'core'.DS.'css'.DS.'simpleLightbox.min.css';?>">
@@ -53,12 +53,13 @@
     echo$view=='bookings'||$args[0]=='edit'?'<Link rel="stylesheet" type="text/css" href="'.URL.'core'.DS.'css'.DS.'daterangepicker.css">':'';?>
     <Link id="theme2css" rel="stylesheet" type="text/css" href="<?php echo URL.'core'.DS.'css'.DS.'style2-'.(isset($_COOKIE['adminbg'])?$_COOKIE['adminbg']:'dark').'.css';?>">
     <script src="<?php echo URL.'core'.DS.'js'.DS.'jquery.min.js';?>"></script><?php 
-    echo$view=='media'||$view=='pages'||$args[0]=='edit'||$args[0]=='security'||($view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<script src="'.URL.'core'.DS.'js'.DS.'jquery-ui.min.js"></script>':'';?>
+    echo$view=='media'||$view=='pages'||$args[0]=='settings'||$args[0]=='edit'||$args[0]=='security'||($view=='content'||$view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<script src="'.URL.'core'.DS.'js'.DS.'jquery-ui.min.js"></script>':'';
+    echo$view=='messages'?'<script src="'.URL.'core'.DS.'js'.DS.'jquery-sortable.js"></script>':'';?>
     <script src="<?php echo URL.'core'.DS.'js'.DS.'bootstrap.min.js';?>"></script><?php
     echo$args[0]=='edit'||($view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<script src="'.URL.'core'.DS.'js'.DS.'summernote-lite.js"></script>':'';
     echo$args[0]=='edit'||($view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<script src="'.URL.'core'.DS.'js'.DS.'plugin'.DS.'summernote'.DS.'summernote-save-button.js"></script>':'';
     echo$view=='media'||$args[0]=='edit'||$args[0]=='security'||($view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<script src="'.URL.'core'.DS.'js'.DS.'plugin'.DS.'elfinder'.DS.'elfinder.js"></script>':'';
-    echo$view=='media'||$args[0]=='edit'||$args[0]=='security'||($view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<script src="'.URL.'core'.DS.'elfinder'.DS.'js'.DS.'elfinder.min.js"></script>':'';?>
+    echo$view=='media'||$args[0]=='edit'||$args[0]=='settings'||$args[0]=='security'||($view=='content'||$view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')?'<script src="'.URL.'core'.DS.'elfinder'.DS.'js'.DS.'elfinder.min.js"></script>':'';?>
     <script src="<?php echo URL.'core'.DS.'js'.DS.'libre.min.js';?>"></script>
     <script src="<?php echo URL.'core'.DS.'js'.DS.'simpleLightbox.min.js';?>"></script><?php
     echo$view=='bookings'||$args[0]=='scheduler'||$args[0]=='edit'?'<script src="'.URL.'core'.DS.'js'.DS.'moment.min.js"></script>':'';

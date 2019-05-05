@@ -24,6 +24,7 @@
  * @changes    v2.0.2 Add Function to process i18n.
  * @changes    v2.0.2 Add Configuration Timezone Setting.
  * @changes    v2.0.2 Fix resolving Installer from any folder location.
+ * @changes    v2.0.3 Add Set UTF-8 Charsets.
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 if(session_status()==PHP_SESSION_NONE){
@@ -46,6 +47,7 @@ $prefix=$settings['database']['prefix'];
 try{
   $dns=((!empty($settings['database']['driver']))?($settings['database']['driver']):'').((!empty($settings['database']['host']))?(':host='.$settings['database']['host']):'').((!empty($settings['database']['port']))?(';port='.$settings['database']['port']):'').((!empty($settings['database']['schema']))?(';dbname='.$settings['database']['schema']):'');
   $db=new PDO($dns,$settings['database']['username'],$settings['database']['password']);
+  $db->exec("set names utf8");
   $db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
   if(isset($getcfg)&&$getcfg==true){
     $config=$db->query("SELECT * FROM `".$prefix."config` WHERE id=1")->fetch(PDO::FETCH_ASSOC);

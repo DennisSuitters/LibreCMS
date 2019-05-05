@@ -216,7 +216,7 @@ if(isset($r['due_ti'])){?>
     container:"body"
   });
 <?php }
-  if($args[0]=='edit'||$args[0]=='security'||($view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')){?>
+  if($args[0]=='edit'||$args[0]=='settings'||$args[0]=='security'||($view=='content'||$view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')){?>
   function elfinderDialog(id,t,c){
     var fm=$('<div class="shadow light"/>').dialogelfinder({
       url:"<?php echo URL.DS.'core'.DS.'elfinder'.DS.'php'.DS.'connector.php';?>",
@@ -231,8 +231,9 @@ if(isset($r['due_ti'])){?>
           if(t=='content'&&c=='file'){
             $('#thumb').val(file.url.replace('media','media/thumbs'));
           }
-          if(t!='media'){
-            update(id,t,c,file.url);
+          if(t=='category'){
+            
+          }else if(t!='media'||t!='category'){
             if(t=='config'&&c=='php_honeypot'){
               $('#php_honeypot_link').html('<a target="_blank" href="'+file.url+'">'+file.url+'</a>');
             }else{

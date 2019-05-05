@@ -1,4 +1,27 @@
+@media(max-width:480px){
+  html{font-size:12px}
+}
+@media(min-width:480px){
+  html{font-size:13px}
+}
+@media(min-width:768px){
+  html{font-size:14px}
+}
+@media(min-width:992px){
+  html{font-size:15px}
+}
+@media(min-width:1200px){
+  html{font-size:16px}
+}
 body{width:100%;background-color:#fff}
+h1,h2,h3,h4,h5,h6,cite{text-transform:uppercase;font-family:sans-serif;font-weight:300}
+h1{font-weight:400;font-size:2.5rem;font-family:sans-serif}
+h2{font-size:2.25rem}
+h3{font-size:2rem}
+h4{font-size:1.75rem}
+h5{font-size:1.5rem;font-weight:400}
+h6,cite{font-size:1.25rem}
+p{font-weight:300;font-size:1rem;font-family:sans-serif}
 a{color:#000;text-decoration:none;-webkit-transition:.3s all;-o-transition:.3s all;transition:.3s all}
 a:hover{color:#62be1e}
 h1.error{font-size:10em!important}
@@ -9,6 +32,7 @@ h2.error{font-size:3em!important}
 .card-img-top.home{height:10rem}
 .account #avatar{max-width:32px;height:32px}
 header .nav-item{position:relative}
+.navbar-dark .nav-link{color:#ddd!important}
 .navbar-light .nav-link{color:#000!important;font-weight:400}
 .navbar-light .nav-link:hover{background-color:#000!important;color:#fff!important;border-radius:5px;-webkit-border-radius:5px}
 .active .nav-link{font-weight:700}
@@ -24,6 +48,8 @@ header .nav-item{position:relative}
 .jumbotron video{position:absolute;height:auto;width:auto;min-height:100%;min-width:100%;left:50%;top:50%;-webkit-transform:translate3d(-50%,-50%,0);transform:translate3d(-50%,-50%,0);z-index:1}
 .jumbotron.about{height:400px}
 .jumbotron.home-background-1{background-color:transparent;background-image:url(../images/white-wolf.jpg);background-attachment:local;background-repeat:no-repeat;background-size:cover;background-position:bottom center}
+.search-item-title a{color:#00f}
+.search-item-url{color:#080}
 .card-text.truncate{max-height:100px;overflow:hidden}
 .card.default{margin:25px 0 25px 0;border:0;background-color:transparent}
 .card.default-full{margin:25px 0 25px 0}
@@ -54,6 +80,7 @@ header .nav-item{position:relative}
 	.testimonials .carousel-control-next{right:-40px}
  	.testimonials .carousel-indicators{top:400px}
 }
+.quotes{margin:0 0 100px 0}
 .quote{position:relative}
 .quote blockquote{background-color:#ddd;padding:0;border:0;margin:0;font-size:14px;font-style:italic;-webkit-border-radius:8px;-moz-border-radius:8px;-ms-border-radius:8px;border-radius:8px}
 .quote blockquote p{color:#000;padding-top:25px;padding-bottom:45px;padding-left:30px;padding-right:30px}

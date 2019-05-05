@@ -5,7 +5,7 @@
 						<div class="h4"><print content="cost"></div>
 						<print content="quantity">
 						<service>
-							<a class="btn btn-success btn-block" href="bookings/<print content=bookservice>" role="link">Book Now</a>
+							<a class="btn btn-outline-secondary btn-block" href="bookings/<print content=bookservice>" role="link">Book Now</a>
 						</service>
 						<inventory>
 							<choices>
@@ -24,16 +24,16 @@
 							<div class="h5">Rating</div>
 							<div class="input-group">
 								<span class="starRating">
+										<input id="rating5" type="radio" name="rating" value="5" checked>
 									<label for="rating5" title="Awesome!">5</label>
-					        	<input id="rating5" type="radio" name="rating" value="5" checked>
+										<input id="rating4" type="radio" name="rating" value="4">
 									<label for="rating4" title="Great!">4</label>
-					        	<input id="rating4" type="radio" name="rating" value="4">
+										<input id="rating3" type="radio" name="rating" value="3">
 									<label for="rating3" title="Meh!">3</label>
-					        	<input id="rating3" type="radio" name="rating" value="3">
+										<input id="rating2" type="radio" name="rating" value="2">
 									<label for="rating2" title="So So!">2</label>
-					        	<input id="rating2" type="radio" name="rating" value="2">
+										<input id="rating1" type="radio" name="rating" value="1">
 									<label for="rating1" title="Bad!">1</label>
-					        	<input id="rating1" type="radio" name="rating" value="1">
 					      </span>
 							</div>
 						</div>
@@ -60,14 +60,14 @@
 						</div>
 					</form>
 				</div>
-				<script>/*<![CDATA[*/
+				<script>
 					$("#reviewform").submit(function(){
 					    $.post($(this).attr("action"),$(this).serialize(),function(data){
 					        $("#review").html(data);
 					    });
 					    return false;
 					});
-				/*]]>*/</script>
+				</script>
 			</review>
 			<item>
 				<settings items="all" contenttype="current">
@@ -76,7 +76,7 @@
 						<a class="list-group-item" href="<print link>" itemscope role="link">
 							<span class="list-group-item-heading" itemprop="headline"><print content="title"></span>
 							<meta itemprop="datePublished" content="<print metaDate>">
-							<p class="list-group-item-text text-muted">
+							<p class="list-group-item-text">
 								<small><print time></small><br>
 								<small><small><print content="caption"></small></small>
 							</p>
@@ -88,7 +88,7 @@
 										<img class="img-thumbnail side_menu_gallery pull-left" src="<print content=thumb>" role="img">
 									</span>
 									<meta itemprop="datePublished" content="<print metaDate>">
-									<span class="media-body text-muted">
+									<span class="media-body">
 										<span class="media-heading"><print content="title"></span>
 										<small><small><print content="caption"></small></small>
 									</span>

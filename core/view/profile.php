@@ -21,6 +21,7 @@
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Add Sluggification
+ * @changes    v2.0.3 Fix Language Parsing
  */
 $rank=0;
 $notification='';
@@ -164,10 +165,12 @@ if($args[0]!=''){
           $build=$item;
           $build=preg_replace([
             '/<print content=[\"\']?file[\"\']?>/',
+            '/<print content=[\"\']?fileALT[\"\']?>/',
             '/<print content=[\"\']?title[\"\']?>/',
             '/<print content=[\"\']?notes[\"\']?>/'
           ],[
-            htmlspecialchars($rs['fileURL'],ENT_QUOTES,'UTF-8'),
+            htmlspecialchars($rs['file'],ENT_QUOTES,'UTF-8'),
+            htmlspecialchars($rs['fileALT']!=''?$rs['fileALT']:$rs['attributionImageTitle']),
             htmlspecialchars($rs['title'],ENT_QUOTES,'UTF-8'),
             $rs['notes']
           ],$build);
@@ -290,14 +293,22 @@ if($args[0]!=''){
       $ss->execute([':uid'=>$r['id']]);
       if($ss->rowCount()>0){
         while($rs=$ss->fetch(PDO::FETCH_ASSOC)){
+          if($rs['fileURL']!=''&&$rs['file']=='')
+            $rs['file']=$fileURL;
+          elseif($rs['fileURL']==''&&$rs['file']=='')
+            $rs['file']=NOIMAGE;
+          else
+            $rs['file']=NOIMAGE;
           $build=$item;
           $build=preg_replace([
             '/<print content=[\"\']?image[\"\']?>/',
+            '/<print content=[\"\']?fileALT[\"\']?>/',
             '/<print content=[\"\']?title[\"\']?>/',
             '/<print content=[\"\']?notes[\"\']?>/',
             '/<print content=[\"\']?link[\"\']?>/'
           ],[
-            htmlspecialchars($rs['fileURL'],ENT_QUOTES,'UTF-8'),
+            htmlspecialchars($rs['file'],ENT_QUOTES,'UTF-8'),
+            htmlspecialchars($rs['fileALT']!=''?$rs['fileALT']:$rs['attributionImageTitle']),
             htmlspecialchars($rs['title'],ENT_QUOTES,'UTF-8'),
             htmlspecialchars(strip_tags(substr($rs['notes'], 0, strrpos(substr($rs['notes'], 0, 400), ' '))),ENT_QUOTES,'UTF-8'),
             URL.'article/'.$rs['urlSlug']

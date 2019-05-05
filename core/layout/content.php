@@ -24,6 +24,8 @@
  * @changes    v2.0.2 Add Category 3 & 4 Editing
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.3 Fix urlSlug initial content creation.
+ * @changes    v2.0.3 Fix Page Redirect when Creating Content.
  */
 $rank=0;
 $show='categories';
@@ -56,13 +58,17 @@ if($args[0]=='scheduler'){
     $q->execute([':contentType'=>$args[0],':uid'=>$uid,':login_user'=>$login_user,':schemaType'=>$schema,':stockStatus'=>$stockStatus,':ti'=>$ti]);
     $id=$db->lastInsertId();
     $args[0]=ucfirst($args[0]).' '.$id;
-    $s=$db->prepare("UPDATE `".$prefix."content` SET title=:title WHERE id=:id");
-    $s->execute([':title'=>$args[0],':id'=>$id]);
+    $s=$db->prepare("UPDATE `".$prefix."content` SET title=:title,urlSlug=:urlslug WHERE id=:id");
+    $s->execute([
+      ':title'=>$args[0],
+      ':urlslug'=>str_replace(' ','-',$args[0]),
+      ':id'=>$id
+    ]);
     if($view!='bookings')$show='item';
     $rank=0;
     $args[0]='edit';
     $args[1]=$id;
-    echo'<script>/*<![CDATA[*/history.replaceState("","","'.URL.$settings['system']['admin'].'/content/edit/'.$args[1].'");/*]]>*/</script>';
+    echo'<script>/*<![CDATA[*/window.location.replace("'.URL.$settings['system']['admin'].'/content/edit/'.$args[1].'");/*]]>*/</script>';
   }
   if($args[0]=='edit'){
     $s=$db->prepare("SELECT * FROM `".$prefix."content` WHERE id=:id");
@@ -192,12 +198,14 @@ if($args[0]=='scheduler'){
           <span class="card-body card-text text-center"><?php svg('libre-gui-service','libre-5x');?></span>
         </span>
       </a>
+<?php /*
       <a class="preferences col-6 col-sm-2 p-0 m-0" href="<?php echo URL.$settings['system']['admin'].'/content/type/gallery';?>" aria-label="Go to Gallery">
         <span class="card">
           <span class="card-header h3"><?php echo localize('Gallery');?></span>
           <span class="card-body card-text text-center"><?php svg('libre-gui-gallery','libre-5x');?></span>
         </span>
       </a>
+*/ ?>
       <a class="preferences col-6 col-sm-2 p-0 m-0" href="<?php echo URL.$settings['system']['admin'].'/content/type/proofs';?>" aria-label="Go to Proofs">
         <span class="card">
           <span class="card-header h3"><?php echo localize('Proofs');?></span>

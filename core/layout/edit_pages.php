@@ -27,6 +27,7 @@
  * @changes    v2.0.2 Fix Media Display, adding and removal.
  * @changes    v2.0.2 Fix Selection not updating.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.3 Add Image ALT.
  */
 $s=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE id=:id");
 $s->execute([':id'=>$args[1]]);
@@ -154,6 +155,14 @@ if($so->rowCount()>0){
               <script>
                 $('[data-simplelightbox="image"]').simpleLightbox();
               </script>
+              <div id="tab-content-images-7" class="form-group row">
+                <label for="exifFilename" class="col-form-label col-sm-2"><?php echo localize('Image ALT');?></label>
+                <div class="input-group col-sm-10">
+                  <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="fileALT" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
+                  <input type="text" id="fileALT" class="form-control textinput" value="<?php echo$r['fileALT'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="fileALT" placeholder="<?php echo localize('Enter an ').localize('Image ALT');?>..." role="textbox">
+                  <div class="input-group-append" data-tooltip="tooltip" title="<?php echo localize('Save');?>" role="button" aria-label="<?php echo localize('aria_save');?>"><button id="savefileALT" class="btn btn-secondary save" data-dbid="fileALT" data-style="zoom-in"><?php svg('libre-gui-save');?></button></div>
+                </div>
+              </div>
               <div class="form-group row">
                 <label for="coverVideo" class="col-form-label col-sm-2"><?php echo localize('Video URL');?></label>
                 <div class="input-group col-sm-10">
@@ -370,6 +379,15 @@ if($cntc<0){
                 <label class="switch switch-label switch-success"><input type="checkbox" id="active<?php echo$r['id'];?>" class="switch-input" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="active" data-dbb="0" role="checkbox"<?php echo$r['active']==1?' checked aria-checked="true"':' aria-checked="false"';?>><span class="switch-slider" data-checked="<?php echo localize('on');?>" data-unchecked="<?php echo localize('off');?>"></span></label>
               </div>
             </div>
+<?php if($user['rank']==1000){?>
+            <div class="form-group row">
+              <label for="seoKeywords" class="col-form-label col-sm-2"><?php echo localize('contentType');?></label>
+              <div class="input-group col-sm-10">
+                <input type="text" id="seoKeywords" class="form-control textinput" value="<?php echo$r['contentType'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="contentType" placeholder="..." role="textbox">
+                <div class="input-group-append" data-tooltip="tooltip" title="<?php echo localize('Save');?>"><button id="savecontentType" class="btn btn-secondary save" data-dbid="contentType" data-style="zoom-in" role="button" aria-label="<?php echo localize('aria_save');?>"><?php svg('libre-gui-save');?></button></div>
+              </div>
+            </div>
+<?php }?>
             <div class="help-block small text-muted text-right"><?php echo localize('help_urltype-1');?><code class="click" style="cursor:pointer;" onclick="$('#url').val('#<?php echo$r['contentType'];?>');update('<?php echo$r['id'];?>','menu','url',$('#url').val());pace.start();">#<?php echo$r['contentType'];?></code> <?php echo localize('help_urltype-2');?></div>
             <div class="form-group row">
               <label for="url" class="col-form-label col-sm-2"><?php echo localize('URL Type');?></label>

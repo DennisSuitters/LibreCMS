@@ -21,11 +21,11 @@
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Fix Comment Information
+ * @changes    v2.0.3 Fix Display Errors
  */
 header('Content-Type:application/rss+xml;charset=ISO-8859-1');
-$getcfg=true;
 require'db.php';
-define('URL',PROTOCOL.$_SERVER['HTTP_HOST'].$settings['system']['url'].'/');
+$config=$db->query("SELECT seoTitle,seoCaption FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 if($args[0]==''||$args[0]=='index')$args[0]='%_%';
 $ti=time();?>
 <?xml version="1.0"?>

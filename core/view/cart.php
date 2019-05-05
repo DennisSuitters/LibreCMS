@@ -52,7 +52,7 @@ if($args[0]=='confirm'){
 				$phone=filter_input(INPUT_POST,'phone',FILTER_SANITIZE_STRING);
 				$username=explode('@',$email);
 				$q=$db->prepare("INSERT INTO `".$prefix."login` (username,
-					password,email,business,address,suburb,city,state,postcode,country,phone,status,active,rank,ti) VALUES (:username,'',:email,:business,:address,:suburb,:city,:state,:postcode,:country,:phone,'','1','0',:ti)");
+					password,email,business,address,suburb,city,state,postcode,country,phone,status,active,language,timezone,rank,ti) VALUES (:username,'',:email,:business,:address,:suburb,:city,:state,:postcode,:country,:phone,'','1',:language,'default','200',:ti)");
 				$q->execute([
 					':username'=>$username[0],
 					':email'=>$email,
@@ -64,19 +64,15 @@ if($args[0]=='confirm'){
 					':postcode'=>$postcode,
 					':country'=>$country,
 					':phone'=>$phone,
+					':language'=>$config['language'],
 					':ti'=>$ti
 				]);
-				$id=$db->lastInsertId();
-				$uid=$id;
+				$uid=$db->lastInsertId();
 				$q=$db->prepare("UPDATE `".$prefix."login` SET username=:username WHERE id=:id");
 				$q->execute([
-					':id'=>$id,
-					':username'=>$username[0].$id
+					':id'=>$uid,
+					':username'=>$username[0].$uid
 				]);
-				$su=$db->prepare("SELECT id FROM `".$prefix."login` WHERE id=:id");
-				$su->execute([':id'=>$id]);
-				$ru=$su->fetch(PDO::FETCH_ASSOC);
-				$uid=$r['id'];
 			}
 			$r=$db->query("SELECT MAX(id) as id FROM `".$prefix."orders`")->fetch(PDO::FETCH_ASSOC);
 			$sr=$db->prepare("SELECT id,quantity,tis,tie FROM `".$prefix."rewards` WHERE code=:code");
@@ -108,8 +104,8 @@ if($args[0]=='confirm'){
 			}
 			$q=$db->prepare("INSERT INTO `".$prefix."orders` (cid,uid,qid,qid_ti,due_ti,postageOption,postageCost,rid,status,ti) VALUES (:cid,:uid,:qid,:qid_ti,:due_ti,:postageOption,:postageCost,:rid,'pending',:ti)");
 			$q->execute([
-				':cid'=>$ru['id'],
-				':uid'=>$uid,
+				':cid'=>$uid,
+				':uid'=>(isset($uid)?$uid:0),
 				':qid'=>$qid,
 				':qid_ti'=>$ti,
 				':due_ti'=>$dti,
@@ -240,7 +236,7 @@ if($args[0]=='confirm'){
 					''
 				],$html);
 			}else{
-				$html=preg_replace('~<postageoptions>.*?<\/postoptions','<input type="hidden" name="postoption" value="0">',$html,1);
+				$html=preg_replace('~<postageoptions>.*?<\/postoptions>~','<input type="hidden" name="postoption" value="0">',$html,1);
 			}
 			if(isset($user['id'])&&$user['id']>0)
 				$html=preg_replace('~<loggedin>.*?<\/loggedin>~is','<input type="hidden" name="email" value="'.htmlspecialchars($user['email'],ENT_QUOTES,'UTF-8').'">',$html,1);
