@@ -1,7 +1,7 @@
 ![LibreCMS](core/images/librecms.png)  
 a **Free** Open Source [MIT](https://github.com/DiemenDesign/LibreCMS/blob/master/LICENSE) Content Management System, that is built utilising [PHP](http://php.net/), PDO, [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com/), and [LibreICONS](https://github.com/DiemenDesign/LibreICONS). Built to take advantage of HTML5 and CSS3, with necessary SEO attributes that fit in with Google's recommendations, Micro-formats, ARIA (A11Y), and general SEO Markup.
 
-#### We are currently at Version 2.0.2
+#### We are currently at Version 2.0.5
 You can view the [CHANGELOG](https://github.com/DiemenDesign/LibreCMS/blob/master/CHANGELOG.md).
 
 ## NOTE: LibreCMS now only supports PHP 7 and above, and recommend running on PHP 7.2.
@@ -108,8 +108,10 @@ By downloading LibreCMS you hereby agree not to hold Diemen Design liable for an
 - [AAA Earthworx](https://www.aaaearthworx.com.au/)
 - [Anime Excess](https://www.animeexcess.com.au/)
 - [BizzyKnits](https://www.bizzyknits.biz/)
+- [Corner Life Coach](https://corner.net.au/)
 - [Diemen Design](https://diemen.design/)
 - [Fast Track Business Club](https://www.fasttrackbusinessclub.com.au/)
+- [K9FineDining](https://k9finedining.com/)
 - [Live Lightly Centre](https://www.livelightlycentre.com.au/)
 - [Lovely Gardens](https://www.lovelygardens.com.au/)
 - [Powerline Automotive Services](https://www.powerlineauto.com.au/)
