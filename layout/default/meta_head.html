@@ -1,18 +1,9 @@
 <!DOCTYPE HTML>
-<!--
-     LibreCMS - Copyright (C) Diemen Design 2019
-          the MIT Licensed Open Source Content Management System.
-     
-     Project Maintained at https://github.com/DiemenDesign/LibreCMS
-		 
-		 Theme: <print theme="title">
-     Creator: <print theme="creator">
-     Creator URL: <print theme="creatorurl">
--->
-<html lang="en-AU" prefix="og:http://ogp.me/ns#" itemscope itemtype="http://schema.org/WebPage">
+<html lang="en">
 	<head>
+		<title><print meta=seoTitle></title>
+		<base href="<print meta=url>">
 		<meta charset="UTF-8">
-		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2">
 		<meta name="application-name" content="LibreCMS">
 		<meta name="keywords" content="<print meta=seoKeywords>">
@@ -36,9 +27,6 @@
 		<meta name="geo.placename" content="<print geo_placename>">
 		<meta name="geo.position" content="<print geo_position>">
 		<meta name="ICBM" content="<print geo_position>">
-		<title><print meta=seoTitle></title>
-		<base href="<print meta=url>">
-		<link rel="manifest" href="<print meta=url>core/manifest.php">
 		<link rel="alternate" media="all" href="<print meta=canonical>">
 		<link rel="alternate" type="application/rss+xml" title="<print meta=seoTitle>" href="<print meta=rss>">
 		<link rel="canonical" href="<print meta=canonical>">
@@ -60,18 +48,17 @@
 		<meta name="twitter:title" content="<print meta=seoTitle>">
 		<meta name="twitter:description" content="<print meta=seoCaption>">
 		<meta name="twitter:image" content="<print meta=shareImage>">
-		<link rel="publisher" href="<print meta=seoTitle>">
-		<meta itemprop="name" content="<print meta=seoTitle>">
-		<meta itemprop="description" content="<print meta=seoCaption>">
-		<meta itemprop="image" content="<print meta=shareImage>">
+		<link rel="publisher" href="<print meta=url>">
 		<link rel="home" href="<print meta=url>" title="Home page">
 		<link rel="stylesheet" type="text/css" href="<print theme>/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="<print theme>/css/libreicons-svg.css">
+		<link rel="stylesheet" type="text/css" href="<print theme>/css/simpleLightbox.min.css">
 		<link rel="stylesheet" type="text/css" href="<print theme>/css/style.css">
-		<script src="<print theme>/js/jquery-3.3.1.min.js"></script>
+		<meta_helper>
+		<script src="<print theme>/js/jquery.min.js"></script>
 		<script src="<print theme>/js/bootstrap.min.js"></script>
-    <script src="<print theme>/js/simpleLightbox.min.js"></script>
+		<script src="<print theme>/js/simpleLightbox.min.js"></script>
 		<script src="<print theme>/js/js.js"></script>
-		<!-- Google Analytics -->
+		<google_analytics>
 	</head>
-	<body id="top" name="top" itemscope itemtype="http://schema.org/WebPage" role="document">
+	<body id="top" itemscope itemtype="http://schema.org/WebPage">

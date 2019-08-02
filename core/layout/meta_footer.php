@@ -216,7 +216,7 @@ if(isset($r['due_ti'])){?>
     container:"body"
   });
 <?php }
-  if($args[0]=='edit'||$args[0]=='settings'||$args[0]=='security'||($view=='content'||$view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')){?>
+  if($args[0]=='edit'||$args[0]=='compose'||$args[0]=='reply'||$args[0]=='settings'||$args[0]=='security'||($view=='content'||$view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings'||$args[0]=='view')){?>
   function elfinderDialog(id,t,c){
     var fm=$('<div class="shadow light"/>').dialogelfinder({
       url:"<?php echo URL.DS.'core'.DS.'elfinder'.DS.'php'.DS.'connector.php';?>",
@@ -226,10 +226,11 @@ if(isset($r['due_ti'])){?>
       destroyOnClose:true,
       useBrowserHistory:false,
       getFileCallback:function(file,fm){
-        if(id>0){
+        if(id>0||c=='attachments'){
           $('#'+c).val(file.url);
           if(t=='content'&&c=='file'){
-            $('#thumb').val(file.url.replace('media','media/thumbs'));
+            var x=file.url.substring(0,file.url.lastIndexOf('.'));
+            $('#thumb').val(x.replace('media','media/thumbs')+'.png');
           }
           if(t=='category'){
             
@@ -237,18 +238,58 @@ if(isset($r['due_ti'])){?>
             if(t=='config'&&c=='php_honeypot'){
               $('#php_honeypot_link').html('<a target="_blank" href="'+file.url+'">'+file.url+'</a>');
             }else{
-              $('#'+c+'image').attr('src',file.url);
+              if(t=='menu'&&c=='cover'){
+                coverUpdate(id,t,c,file.url);
+                $('#'+c+'image').attr('src',file.url);
+              }else{
+                $('#'+c+'image').attr('src',file.url);
+              }
             }
+          }
+          if(t=='messages'&&c=='attachments'){
+            var path_splitted=file.url.split('.');
+            var fileExt=path_splitted.pop();
+            var filename="core/svg/libre-gui-file.svg";
+            if(fileExt=="jpg"||fileExt=="jpeg"||fileExt=="png"||fileExt=="gif"||fileExt=="bmp"||fileExt=="webp"||fileExt=="svg"){
+              filename=file.url;
+            }
+            if(fileExt=="pdf"){
+              filename='core/svg/libre-gui-file-pdf.svg';
+            }
+            if(fileExt=="zip"||fileExt=="zipx"||fileExt=="tar"||fileExt=="gz"||fileExt=="rar"||fileExt=="7zip"||fileExt=="7z"||fileExt=="bz2"){
+              filename='core/svg/libre-gui-file-archive.svg';
+            }
+            if(fileExt=="doc"||fileExt=="docx"||fileExt=="xls"){
+              filename="core/svg/libre-gui-file-docs.svg";
+            }
+            var timestamp = $.now();
+            $('#attachments').append('<a id="a_'+timestamp+'" target="_blank" class="card col-2 p-0" href="'+file.url+'" title="'+file.url.replace(/^.*[\\\/]/,'')+'"><img class="card-img-top bg-white" src="'+filename+'" alt="'+file.url+'"><span class="card-footer text-truncate p-0 pl-1 pr-1 small">'+file.url.replace(/^.*[\\\/]/,'')+'</span><span class="attbuttons"><button class="btn btn-secondary btn-xs trash" onclick="attRemove(\''+timestamp+'\');return false;"><?php svg('libre-gui-trash');?></button></span></a>');
+            var atts=$('#atts').val();
+            if(atts!='')atts+=',';
+            atts+=file.url;
+            $('#atts').val(atts);
           }
         }else{
           if(file.url.match(/\.(jpeg|jpg|gif|png)$/)){
+<?php if($view=='messages'){?>
+            $('#bod').summernote('editor.insertImage',file.url);
+<?php }else{?>
             $('.summernote').summernote('editor.insertImage',file.url);
+<?php }?>
           }else{
+<?php if($view=='messages'){?>
+            $('#bod').summernote('createLink',{
+              text:file.name,
+              url:file.url,
+              newWindow:true
+            });
+<?php }else{?>
             $('.summernote').summernote('createLink',{
               text:file.name,
               url:file.url,
               newWindow:true
             });
+<?php }?>
           }
         }
       },
@@ -266,9 +307,9 @@ if(isset($r['due_ti'])){?>
     var fm=$('#elfinder').elfinder({
       url:"<?php echo URL.DS.'core'.DS.'elfinder'.DS.'php'.DS.'connector.php';?>",
       lang:'en',
-      width:'100vw',
+      width:'85vw',
       height:$(window).height()-102,
-      resizeable:true,
+      resizeable:false,
       handlers:{
         dblclick:function(e,eI){
           e.preventDefault();
@@ -285,13 +326,13 @@ if(isset($r['due_ti'])){?>
     }).elfinder('instance');
     var $elfinder=$('#elfinder').elfinder();
     $(window).resize(function(){
-        resizeTimer && clearTimeout(resizeTimer);
-        resizeTimer=setTimeout(function(){
-            var h=parseInt($(window).height())-102;
-            if(h!=parseInt($('#elfinder').height())){
-                fm.resize('100%',h);
-            }
-        },200);
+      resizeTimer=setTimeout(function(){
+        var h=parseInt($(window).height())-102;
+        if(h!=parseInt($('#elfinder').height())){
+          fm.resize('100%',h);
+        }
+      },200);
+      resizeTimer && clearTimeout(resizeTimer);
     });
   });
 <?php }?>
@@ -299,7 +340,7 @@ if(isset($r['due_ti'])){?>
     $(document).ajaxComplete(function(){
       Pace.restart();
     });
-<?php if($args[0]=='edit'||($view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')){?>
+<?php if($args[0]=='edit'||$args[0]=='compose'||$args[0]=='reply'||($view=='accounts'||$view=='orders'||$view=='bookings'||$view=='newsletters'||$view=='messages'&&$args[0]=='settings')){?>
     $('.summernote').summernote({
       height:300,
       tabsize:2,
@@ -570,7 +611,7 @@ if(isset($r['due_ti'])){?>
       title:'<?php echo localize('Fingerprint Analysis');?> <button type="button" class="close" data-dismiss="popover" aria-label="Close"><span aria-hidden="true">&times;</span></button>',
       container:'body',
       placement:'auto',
-      template:'<div class="popover suggestions shadow" role="tooltip"><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
+      template:'<div class="popover fingerprint shadow" role="tooltip"><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
       content:function(){
         var el=$(this).data("dbgid");
         var id=$('#'+el).data("dbid"),

@@ -26,12 +26,20 @@ if(stristr($html,'<settings')){
 	$count=$matches[1];
 }else$count=4;
 $html=preg_replace([
-	'/<print page=[\"\']?notes[\"\']?>/',
 	'~<settings.*?>~is'
 ],[
-	rawurldecode($page['notes']),
 	''
 ],$html);
+if($page['notes']!=''){
+	$html=preg_replace([
+		'/<print page=[\"\']?notes[\"\']?>/',
+		'/<\/?pagenotes>/'
+	],[
+		rawurldecode($page['notes']),
+		''
+	],$html);
+}else
+	$html=preg_replace('~<pagenotes>.*?<\/pagenotes>~is','',$html,1);
 preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
 $item=$matches[1];
 $s=$db->query("SELECT * FROM `".$prefix."content` WHERE contentType='testimonials' AND status='published' ORDER BY ti DESC");
@@ -58,7 +66,7 @@ if($s->rowCount()>0){
 				if($ru['avatar']!=''&&file_exists('media'.DS.'avatar'.DS.$ru['avatar']))
 					$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/','media'.DS.'avatar'.DS.$ru['avatar'],$items);
 				elseif($r['file']&&file_exists('media'.DS.'avatar'.DS.basename($r['file'])))
-					$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/','media'.DS.'avatar'.DS.$r['file'],$items);
+					$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/','media'.DS.'avatar'.DS.basename($r['file']),$items);
 				elseif(stristr($ru['gravatar'],'@'))
 					$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/','http://gravatar.com/avatar/'.md5($ru['gravatar']),$items);
 				elseif(stristr($ru['gravatar'],'gravatar.com'))
@@ -66,7 +74,7 @@ if($s->rowCount()>0){
 				else
 					$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$noavatar,$items);
 			}elseif($r['file']&&file_exists('media'.DS.'avatar'.DS.basename($r['file'])))
-				$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/','media'.DS.'avatar'.DS.$r['file'],$items);
+				$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/','media'.DS.'avatar'.DS.basename($r['file']),$items);
 			elseif($r['file']!='')
 				$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$r['file'],$items);
 			else
@@ -78,8 +86,8 @@ if($s->rowCount()>0){
 			'/<print content=[\"\']?name[\"\']?>/'
 		],[
 			($view=='index'?substr(strip_tags(rawurldecode($r['notes'])),0,600):strip_tags(rawurldecode($r['notes']))),
-			$r['business'],
-			$r['name']
+			$r['business']!=''?$r['business']:'Anonymous',
+			$r['name']!=''?$r['name']:'Anonymous'
 		],$items);
 		$testitems.=$items;
 		$i++;
@@ -93,4 +101,25 @@ if($i>0){
 }else
 	$html=preg_replace('~<controls>.*?<\/controls>~is','',$html,1);
 $html=preg_replace('~<items>.*?<\/items>~is',$testitems,$html,1);
+$s=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE contentType='subject' ORDER BY title ASC");
+$s->execute();
+if($s->rowCount()>0){
+	$html=preg_replace([
+		'~<subjectText>.*?<\/subjectText>~is',
+		'/<subjectSelect>/',
+		'/<\/subjectSelect>/'
+	],'',$html);
+	$options='';
+	while($r=$s->fetch(PDO::FETCH_ASSOC))
+		$options.='<option value="'.$r['id'].'">'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'</option>';
+	$html=str_replace('<subjectOptions>',$options,$html);
+}else{
+	$html=preg_replace([
+		'~<subjectSelect>.*?<\/subjectSelect>~is',
+		'/<subjectText>/',
+		'/<\/subjectText>/'
+	],'',$html);
+}
+
 $content.=$html;
+

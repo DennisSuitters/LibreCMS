@@ -84,6 +84,12 @@ foreach($tags as$tag){
 		case'contentType':
 			$parsing.=ucfirst($r['contentType']);
 			break;
+		case'datetime':
+			if($attribute=='comments')
+				$parsing.=date('Y-m-d',$rc['ri']);
+			else
+				$parsing.=date('Y-m-d',$r['ti']);
+			break;
 		case'dateCreated':
 			if($attribute=='comments')
 				$parsing.=date($config['dateFormat'],$rc['ti']);
@@ -117,13 +123,13 @@ foreach($tags as$tag){
 			break;
 		case'categories':
 			if(isset($r['category_1'])&&$r['category_1']!=''){
-				$parsing.=' <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'" rel="tag">'.htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8').'</a>';
+				$parsing.=' <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'">'.htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8').'</a>';
 				if($r['category_2']!='')
-					$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'" rel="tag">'.htmlspecialchars($r['category_2'],ENT_QUOTES,'UTF-8').'</a>';
+					$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'">'.htmlspecialchars($r['category_2'],ENT_QUOTES,'UTF-8').'</a>';
 				if($r['category_3']!='')
-					$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'/'.urlencode(str_replace(' ','-',$r['category_3'])).'" rel="tag">'.htmlspecialchars($r['category_3'],ENT_QUOTES,'UTF-8').'</a>';
+					$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'/'.urlencode(str_replace(' ','-',$r['category_3'])).'">'.htmlspecialchars($r['category_3'],ENT_QUOTES,'UTF-8').'</a>';
 				if($r['category_4']!='')
-					$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'/'.urlencode(str_replace(' ','-',$r['category_3'])).'/'.urlencode(str_replace(' ','-',$r['category_4'])).'" rel="tag">'.htmlspecialchars($r['category_4'],ENT_QUOTES,'UTF-8').'</a>';
+					$parsing.=' / <a href="'.$view.'/'.urlencode(str_replace(' ','-',$r['category_1'])).'/'.urlencode(str_replace(' ','-',$r['category_2'])).'/'.urlencode(str_replace(' ','-',$r['category_3'])).'/'.urlencode(str_replace(' ','-',$r['category_4'])).'">'.htmlspecialchars($r['category_4'],ENT_QUOTES,'UTF-8').'</a>';
 			}else
 				$container=$parsing='';
 			break;
@@ -254,7 +260,7 @@ foreach($tags as$tag){
 						$parsing.=THEME.DS.'images'.DS.'noavatar.jpg';
 				}else
 					$parsing.=THEME.DS.'images'.DS.'noavatar.jpg';
-				$parsing.='" alt="'.$rc['name'].'"';
+				$parsing.='" alt="'.($rc['name']==''?'Anonymous':$rc['name']).'"';
 			}
 			$parsing.='>';
 			break;
@@ -262,7 +268,7 @@ foreach($tags as$tag){
 			if($attribute=='author')
 				$parsing.=$author['name']?htmlspecialchars($author['name'],ENT_QUOTES, 'UTF-8'):htmlspecialchars($author['username'],ENT_QUOTES,'UTF-8');
 			if($attribute=='comments')
-				$parsing.=htmlspecialchars($rc['name'],ENT_QUOTES,'UTF-8');
+				$parsing.=$rc['name']==''?'Anonymous':htmlspecialchars($rc['name'],ENT_QUOTES,'UTF-8');
 			if($attribute=='content')
 				$parsing.=htmlspecialchars($r['name'],ENT_QUOTES,'UTF-8');
 			break;
@@ -286,7 +292,7 @@ foreach($tags as$tag){
 		case'email':
 			if($attribute=='author'){
 				if($author['email'])
-					$parsing.='<a href="mailto:'.$author['email'].'" rel="nofollow">'.($type=='icon'?'<'.$theme['settings']['icon_container'].' class="'.$class.'">'.frontsvg('libre-gui-email').'</'.$theme['settings']['icon_container'].'>':$author['email']).'</a>';
+					$parsing.='<a href="mailto:'.$author['email'].'">'.($type=='icon'?'<'.$theme['settings']['icon_container'].' class="'.$class.'">'.frontsvg('libre-gui-email').'</'.$theme['settings']['icon_container'].'>':$author['email']).'</a>';
 			}
 			break;
 		case'social':
@@ -294,7 +300,7 @@ foreach($tags as$tag){
 				$sa =$db->prepare("SELECT * FROM `".$prefix."choices` WHERE uid=:uid AND contentType='social'");
 				$sa->execute([':uid'=>$r['uid']]);
 				while($sr=$sa->fetch(PDO::FETCH_ASSOC))
-					$parsing.='<a href="'.$sr['url'].'" title="'.$sr['title'].'" rel="me" role="link" aria-label="'.ucfirst($sr['icon']).'">'.($type=='icon'?'<'.$theme['settings']['icon_container'].' class="'.$class.'">'.frontsvg('libre-social-'.$sr['icon']).'</'.$theme['settings']['icon_container'].'>':$sr['title'].' ').'</a>';
+					$parsing.='<a href="'.$sr['url'].'" aria-label="'.ucfirst($sr['icon']).'">'.($type=='icon'?'<'.$theme['settings']['icon_container'].' class="'.$class.'">'.frontsvg('libre-social-'.$sr['icon']).'</'.$theme['settings']['icon_container'].'>':$sr['title'].' ').'</a>';
 			}
 			break;
 		case'time':

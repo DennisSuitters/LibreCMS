@@ -22,6 +22,7 @@
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.4 ReTemplate Acivity Items.
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
@@ -45,7 +46,10 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC))
   <div class="container-fluid">
     <noscript><div class="alert alert-danger" role="alert"><?php echo localize('alert_all_danger_noscript');?></div></noscript>
     <div class="alert alert-warning d-sm-block d-md-none" role="alert"><?php echo localize('alert_all_warning_smallscreen');?></div>
-    <section id="l_logs" class="timeline-container">
+    <div id="l_logs" class="row">
+      <div class="col">
+        <div class="activities card">
+          <div class="card-body no-padding">
 <?php $s=$db->prepare("SELECT * FROM `".$prefix."logs` ORDER BY ti DESC");
   $s->execute();
   $i=1;
@@ -63,9 +67,9 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC))
     }else{
       $u=['id'=>0,'username'=>'Anonymous','avatar'=>'','gravatar'=>'','name'=>'Anonymous','rank'=>1000];
     }
-    if($r['action']=='create')$action.=' '.localize('Created').'<br>';
-    if($r['action']=='update')$action.=' '.localize('Updated').'<br>';
-    if($r['action']=='purge')$action.=' '.localize('Purged').'<br>';
+    if($r['action']=='create')$action.=' <span class="badge badge-success">'.localize('Created').'</span><br>';
+    if($r['action']=='update')$action.=' <span class="badge badge-success">'.localize('Updated').'</span><br>';
+    if($r['action']=='purge')$action.=' <span class="badge badge-danger">'.localize('Purged').'</span><br>';
     if(isset($c['title'])&&$c['title']!=''){
       $action.='<strong>'.localize('Title').':</strong> '.$c['title'].'<br>'.($r['action']=='update'?'<strong>'.localize('Table').':</strong> '.$r['refTable'].'<br>':'').'<strong>'.localize('Column').':</strong> '.$r['refColumn'].'<br>'.'<strong>'.localize('Data').':</strong>'.strip_tags(rawurldecode(substr($r['oldda'],0,300))).'<br>'.'<strong>'.localize('Changed To').':</strong>'.strip_tags(rawurldecode(substr($r['newda'],0,300))).'<br>';
     }
@@ -76,25 +80,31 @@ while($sr=$st->fetch(PDO::FETCH_ASSOC))
       $image=$u['gravatar'];
     else
       $image=NOAVATAR;?>
-      <div id="l_<?php echo$r['id'];?>" class="timeline-block">
-        <div class="timeline-img <?php echo$r['action'];?><?php echo($i>3?' hidden':'');?>">
-          <img class="img-circle" src="<?php echo$image;?>" alt="Picture">
-        </div>
-        <div class="timeline-content card<?php echo($i>3?' hidden':'');?>">
-          <p><?php echo $action;?></p>
-          <span class="read-more">
-            <div class="btn-group">
-              <button class="btn btn-secondary" onclick="activitySpy('<?php echo$r['id'];?>');" data-tooltip="tooltip" title="View Details" role="button" aria-label="<?php echo localize('aria_view');?>"><?php svg('libre-gui-fingerprint');?></button>
-              <?php echo$r['action']=='update'?'<button class="btn btn-secondary" onclick="restore(\''.$r['id'].'\');" data-tooltip="tooltip" title="'.localize('Restore').'" role="button" aria-label="'.localize('aria_restore').'">'.svg2('libre-gui-undo').'</button>':'';?>
-              <button class="btn btn-secondary trash" onclick="purge('<?php echo$r['id'];?>','logs')" data-tooltip="tooltip" title="<?php echo localize('Purge');?>" role="button" aria-label="<?php echo localize('aria_purge');?>"><?php svg('libre-gui-trash');?></button>
+            <div id="l_<?php echo$r['id'];?>" class="item">
+              <div class="row">
+                <div class="col-2 date-holder">
+                  <div class="icon"><img class="img-circle" src="<?php echo$image;?>" alt="Picture"></div>
+                  <div class="date"><?php echo _ago($r['ti']);?></div>
+                </div>
+                <div class="col-10 content">
+                  <h5></h5>
+                  <p>
+                    <?php echo$action;?>
+                  </p>
+                  <div class="btn-group float-right">
+                    <?php echo$r['action']=='update'?'<button class="btn btn-secondary" onclick="restore(\''.$r['id'].'\');" data-tooltip="tooltip" title="'.localize('Restore').'" role="button" aria-label="'.localize('aria_restore').'">'.svg2('libre-gui-undo').'</button>':'';?>
+                    <button class="btn btn-secondary trash" onclick="purge('<?php echo$r['id'];?>','logs')" data-tooltip="tooltip" title="<?php echo localize('Purge');?>" role="button" aria-label="<?php echo localize('aria_purge');?>"><?php svg('libre-gui-trash');?></button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </span>
-          <span class="date"><?php echo _ago($r['ti']);?></span>
-        </div>
-      </div>
+            <hr>
 <?php $i++;
 }?>
-    </section>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </main>
 <script>

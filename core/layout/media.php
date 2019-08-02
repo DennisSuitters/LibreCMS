@@ -38,8 +38,14 @@ else{?>
       </div>
     </li>
   </ol>
-  <div class="m-0 p-0">
-    <div id="elfinder" style="margin-top:45px"></div>
+  <div class="container m-0 p-0">
+    <div class="row m-0 p-0">
+      <div class="card col m-0 p-0">
+        <div class="card-body m-0 p-0">
+          <div id="elfinder" style="margin-top:45px;width:50vw;height:50vh;"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </main>
 <?php }

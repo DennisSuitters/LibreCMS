@@ -23,6 +23,7 @@
  * @changes    v2.0.1 Move Settings to Header
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.4 Fix Dispay Suggestions lightbulb an actual count.
  */
 $rank=0;
 $show='pages';
@@ -75,11 +76,14 @@ else{
           <tbody id="sortable">
 <?php $s=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE mid=0 ORDER BY ord ASC");
 $s->execute();
-while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
+while($r=$s->fetch(PDO::FETCH_ASSOC)){
+  $ss=$db->prepare("SELECT COUNT(id) as cnt FROM `".$prefix."suggestions` WHERE rid=:id");
+  $ss->execute([':id'=>$r['id']]);
+  $rs=$ss->fetch(PDO::FETCH_ASSOC);?>
             <tr id="l_<?php echo$r['id'];?>" class="item subsortable" role="row">
               <td role="cell">
                 <a href="<?php echo URL.$settings['system']['admin'].'/pages/edit/'.$r['id'];?>"><?php echo$r['title'];?></a>
-                <?php echo$r['suggestions']==1?'<span data-tooltip="tooltip" title="'.localize('Editing Suggestions').'" aria-label="'.localize('aria_suggestions').'">'.svg2('libre-gui-lightbulb').'</span>':'';
+                <?php echo$rs['cnt']>0?'<span data-tooltip="tooltip" title="'.localize('Editing Suggestions').'" aria-label="'.localize('aria_suggestions').'">'.svg2('libre-gui-lightbulb').'</span>':'';
 $sm=$db->prepare("SELECT id,title,contentType,views FROM `".$prefix."menu` WHERE mid!=0 AND mid=:mid ORDER BY ord ASC");
   $sm->execute([':mid'=>$r['id']]);
   while($rm=$sm->fetch(PDO::FETCH_ASSOC)){?>

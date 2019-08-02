@@ -1,92 +1,132 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="bookings">
-	<div class="container">
-		<div class="row mt-4 mb-4 m-sm-5">
-			<main id="content" class="col-12 col-sm-6 m-auto" itemscope itemtype="http://schema.org/Booking" role="main">
-				<print page="notes">
-				<div id="booking">
-					<form id="bookingform" method="post" action="core/add_booking.php" role="form">
-						<input type="hidden" name="emailtrap" value="none">
-						<input type="hidden" name="act" value="add_booking">
-						<div class="alert alert-danger" role="alert">Highlighted Fields are Required</div>
-						<div class="form-group">
-							<label for="email">Email</label>
-							<input type="email" id="email" class="form-control is-invalid" name="email" value="" placeholder="Enter an Email..." required aria-required="true" role="textbox">
+	<main class="container">
+		<pagenotes>
+			<div class="row mt-5">
+				<div class="col-12">
+					<div class="card">
+						<div class="card-body">
+							<print page="notes">
 						</div>
-						<div class="form-group">
-							<label for="name">Name</label>
-							<input type="text" id="name" class="form-control is-invalid" name="name" value="" placeholder="Enter a Name..." required aria-required="true" role="textbox">
-						</div>
-						<div class="form-group">
-							<label for="business">Business</label>
-							<input type="text" id="business" class="form-control" name="business" value="" placeholder="Enter a Business..." role="textbox">
-						</div>
-						<div class="form-group">
-							<label for="phone">Phone</label>
-							<input type="tel" id="phone" class="form-control" name="phone" value="" placeholder="Enter a Phone Number..." role="textbox">
-						</div>
-						<div class="form-group">
-							<label for="address">Address</label>
-							<input type="text" id="address" class="form-control" name="address" value="" placeholder="Enter an Address..." role="textbox">
-						</div>
-						<div class="form-group">
-							<label for="suburb">Suburb</label>
-							<input type="text" id="suburb" class="form-control" name="suburb" value="" placeholder="Enter a Suburb..." role="textbox">
-						</div>
-						<div class="form-group">
-							<label for="city">City</label>
-							<input type="text" id="city" class="form-control" name="city" value="" placeholder="Enter a City..." role="textbox">
-						</div>
-						<div class="form-group">
-							<label for="state">State</label>
-							<input type="text" id="state" class="form-control" name="state" value="" placeholder="Enter a State..." role="textbox">
-						</div>
-						<div class="form-group">
-							<label for="postcode">Postcode</label>
-							<input type="text" id="postcode" class="form-control" name="postcode" value="" placeholder="Enter a Postcode..." role="textbox">
-						</div>
-						<div class="form-group">
-							<div class="form-row">
-								<div class="col">
-									<label for="date">Date</label>
-									<input type="date" id="date" class="form-control" name="tis" value="0">
-								</div>
-								<div class="col">
-									<label for="time">Time</label>
-									<input type="time" id="time" class="form-control" name="tim" value="0">
-								</div>
-							</div>
-						</div>
-						<bookservices>
-							<div class="form-group">
-								<label for="rid">Event/Service</label>
-								<select id="rid" class="form-control" name="rid" role="listbox">
-									<option value="0" role="option">Select an Item...</option>
-									<serviceoptions>
-								</select>
-							</div>
-						</bookservices>
-						<div class="form-group">
-							<label for="notes">Notes</label>
-							<textarea id="notes" class="form-control" name="notes" placeholder="Enter some Notes..." role="textbox"></textarea>
-						</div>
-						<div class="form-group">
-							<button type="submit" class="btn btn-outline-secondary btn-block" role="button">Make Booking</button>
-						</div>
-					</form>
-					<script>
-						$("#bookingform").submit(function(){
-							$.post($(this).attr("action"),$(this).serialize(),function(data){
-								$("#booking").html(data);
-							});
-							return false;
-						});
-					</script>
+					</div>
 				</div>
-			</main>
+			</div>
+		</pagenotes>
+		<div class="row my-5">
+			<div class="col-12 col-sm-6 m-auto" itemscope itemtype="http://schema.org/Booking">
+				<div class="card">
+					<div id="booking" class="card-body">
+						<form id="bookingform" method="post" action="core/add_booking.php">
+							<input type="hidden" name="emailtrap" value="none">
+							<input type="hidden" name="act" value="add_booking">
+							<div class="alert alert-danger" role="alert">Highlighted Fields are Required</div>
+							<div class="form-group">
+								<label for="email">Email</label>
+								<div class="input-group">
+									<input type="email" id="email" class="form-control is-invalid" name="email" value="" placeholder="Enter an Email..." required aria-required="true">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="name">Name</label>
+								<div class="input-group">
+									<input type="text" id="name" class="form-control is-invalid" name="name" value="" placeholder="Enter a Name..." required aria-required="true">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="business">Business</label>
+								<div class="input-group">
+									<input type="text" id="business" class="form-control" name="business" value="" placeholder="Enter a Business...">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="phone">Phone</label>
+								<div class="input-group">
+									<input type="tel" id="phone" class="form-control" name="phone" value="" placeholder="Enter a Phone Number...">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="address">Address</label>
+								<div class="input-group">
+									<input type="text" id="address" class="form-control" name="address" value="" placeholder="Enter an Address...">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="suburb">Suburb</label>
+								<div class="input-group">
+									<input type="text" id="suburb" class="form-control" name="suburb" value="" placeholder="Enter a Suburb...">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="city">City</label>
+								<div class="input-group">
+									<input type="text" id="city" class="form-control" name="city" value="" placeholder="Enter a City...">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="state">State</label>
+								<div class="input-group">
+									<input type="text" id="state" class="form-control" name="state" value="" placeholder="Enter a State...">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="postcode">Postcode</label>
+								<div class="input-group">
+									<input type="text" id="postcode" class="form-control" name="postcode" value="" placeholder="Enter a Postcode...">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-row">
+									<div class="col">
+										<label for="date">Date</label>
+										<div class="input-group">
+											<input type="date" id="date" class="form-control" name="tis" min="<print currentdate>" value="<print currentdate>">
+										</div>
+									</div>
+									<div class="col">
+										<label for="time">Time</label>
+										<div class="input-group">
+											<input type="time" id="time" class="form-control" name="tim">
+										</div>
+									</div>
+								</div>
+							</div>
+							<bookservices>
+								<div class="form-group">
+									<label for="rid">Event/Service</label>
+									<div class="input-group">
+										<select id="rid" class="form-control" name="rid">
+											<option value="0">Select an Item...</option>
+											<serviceoptions>
+										</select>
+									</div>
+								</div>
+							</bookservices>
+							<div class="form-group">
+								<label for="notes">Notes</label>
+								<div class="input-group">
+									<textarea id="notes" class="form-control" name="notes" placeholder="Enter some Notes..."></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-group">
+									<button type="submit" class="btn btn-outline-secondary btn-block">Make Booking</button>
+								</div>
+							</div>
+						</form>
+						<script>
+							$("#bookingform").submit(function(){
+								$.post($(this).attr("action"),$(this).serialize(),function(data){
+									$("#booking").html(data);
+								});
+								return false;
+							});
+						</script>
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
+	</main>
 </block>
 <block include="footer.html">
 <block include="meta_footer.html">

@@ -842,7 +842,7 @@ class PHPMailer {
     if (!is_null($this -> Priority))
       $result .= $this -> headerLine('X-Priority', $this -> Priority);
     if ($this -> XMailer == '')
-      $result .= $this -> headerLine( 'X-Mailer', 'PHPMailer ' . $this -> Version . ' (https://github.com/PHPMailer/PHPMailer)');
+      $result .= $this -> headerLine( 'X-Mailer', 'LibreCMS (https://github.com/DiemenDesign/LibreCMS)');
     else {
       $myXmailer = trim($this -> XMailer);
       if ($myXmailer)

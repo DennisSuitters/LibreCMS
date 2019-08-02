@@ -22,6 +22,7 @@
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.3 Fix wrong Meta Tag Information.
  * @changes    v2.0.3 Add Theme detail parsing into meta_head.html
+ * @changes    v2.0.5 Fix URL/IP Tracking.
  */
 require'core'.DS.'db.php';
 if(isset($headerType))header($headerType);
@@ -163,7 +164,10 @@ if($seoKeywords==''){
   else
     $seoKeywords=$page['seoKeywords'];
 }
+$rss='';
+if($args[0]!='index'||$args[0]!='bookings'||$args[0]!='contactus'||$args[0]!='cart'||$args[0]!='proofs'||$args[0]!='settings'||$args[0]!='accounts'){}else{$rss=$view;}
 $head=preg_replace([
+  '/<print config=[\"\']?business[\"\']?>/',
   '/<print theme=[\"\']?title[\"\']?>/',
   '/<print theme=[\"\']?creator[\"\']?>/',
   '/<print theme=[\"\']?creatorurl[\"\']?>/',
@@ -192,8 +196,9 @@ $head=preg_replace([
   '/<print geo_placename>/',
 	'/<print geo_position>/',
 	'/<print geo_position>/',
-  '/<!-- Google Analytics -->/'
+  '/<google_analytics>/'
 ],[
+  trim(htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8')),
   trim(htmlspecialchars($theme['title'],ENT_QUOTES,'UTF-8')),
   trim(htmlspecialchars($theme['creator'],ENT_QUOTES,'UTF-8')),
   trim(htmlspecialchars($theme['creator_url'],ENT_QUOTES,'UTF-8')),
@@ -206,7 +211,7 @@ $head=preg_replace([
   $canonical,
   URL,
   $view,
-  URL.'rss/'.(($args[0]!='')||($args[0]!='index')||($args[0]!='bookings')||($args[0]!='contactus')||($args[0]!='cart')||($args[0]!='proofs')||($args[0]!='settings')||($args[0]!='accounts'))?'':$view,
+  URL.'rss/'.$rss,
   $view=='inventory'?'product':$view,
   $shareImage,
   FAVICON,
@@ -221,8 +226,12 @@ $head=preg_replace([
   $config['geo_region'],
   $config['geo_placename'],
   $config['geo_position'],
-  isset($config['ga_tracking'])?'<script>'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'</script>':''
+  isset($config['ga_tracking'])&&$config['ga_tracking']!=''?'<script>'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'</script>':''
 ],$head);
+if(isset($_SESSION['rank'])&&$_SESSION['rank']>899)
+  $head=str_replace('<meta_helper>','<link rel="stylesheet" type="text/css" href="core/css/seohelper.css">',$head);
+else
+  $head=str_replace('<meta_helper>','',$head);
 if(isset($_SESSION['rank'])&&$_SESSION['rank']>899&&$config['development']==1)
   $content.='<div style="text-align:right;padding:10px;">Page Views: '.$page['views'].' | Memory Used: '.size_format(memory_get_usage()).' | Process Time: '.elapsed_time().'</div>';
 if(MINIFY==1)
@@ -232,21 +241,23 @@ else
 $current_page=PROTOCOL.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 if($config['maintenance']==0||$config['development']==0){
   if(!isset($_SESSION['current_page'])||(isset($_SESSION['current_page'])&&$_SESSION['current_page']!=$current_page)){
-    if(!stristr($current_page,'core')||!stristr($current_page,'admin')||!stristr($current_page,'layout')||!stristr($current_page,'media')&&filter_var($current_page,FILTER_VALIDATE_URL)===TRUE){
-      $s=$db->prepare("INSERT INTO `".$prefix."tracker` (pid,urlDest,urlFrom,userAgent,ip,browser,os,sid,ti) VALUES (:pid,:urlDest,:urlFrom,:userAgent,:ip,:browser,:os,:sid,:ti)");
-      $hr=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
-      $s->execute([
-        ':pid'=>isset($page['id'])?$page['id']:0,
-        ':urlDest'=>$current_page,
-        ':urlFrom'=>$hr,
-        ':userAgent'=>$_SERVER['HTTP_USER_AGENT'],
-        ':ip'=>$_SERVER["REMOTE_ADDR"],
-        ':browser'=>getBrowser(),
-        ':os'=>getOS(),
-        ':sid'=>session_id(),
-        ':ti'=>time()
-      ]);
-      $_SESSION['current_page']=$current_page;
+    if(!stristr($current_page,'core')||!stristr($current_page,'admin')||!stristr($current_page,'layout')||!stristr($current_page,'media')){
+//      if(filter_var($current_page,FILTER_VALIDATE_URL)===TRUE){
+        $s=$db->prepare("INSERT INTO `".$prefix."tracker` (pid,urlDest,urlFrom,userAgent,ip,browser,os,sid,ti) VALUES (:pid,:urlDest,:urlFrom,:userAgent,:ip,:browser,:os,:sid,:ti)");
+        $hr=isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
+        $s->execute([
+          ':pid'=>isset($page['id'])?$page['id']:0,
+          ':urlDest'=>$current_page,
+          ':urlFrom'=>$hr,
+          ':userAgent'=>$_SERVER['HTTP_USER_AGENT'],
+          ':ip'=>$_SERVER["REMOTE_ADDR"],
+          ':browser'=>getBrowser(),
+          ':os'=>getOS(),
+          ':sid'=>session_id(),
+          ':ti'=>time()
+        ]);
+        $_SESSION['current_page']=$current_page;
+//    }
     }
   }
 }

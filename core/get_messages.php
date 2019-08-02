@@ -4,7 +4,7 @@
  *
  * Core - Get Email Messages
  *
- * get_messages.php version 2.0.3
+ * get_messages.php version 2.0.4
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,10 +17,12 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.3
+ * @version    2.0.4
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.3 Create File.
+ * @changes    v2.0.4 Add Detect and Decrypt of Base64 Messages.
+ * @changes    v2.0.4 Move Message Removal from Config to User Options.
  */
 $getcfg=true;
 require'db.php';
@@ -105,6 +107,8 @@ if($config['message_check_interval']!=0){
         }
         if($email->isAnswered()){$status='read';}
         if($email->isDeleted()){$status='trash';}
+				$emailHTML=$email->html()!=''?$email->html():$email->plain();
+				if(is_base64_string($emailHTML))$emailHTML=base64_decode($emailHTML);
         $s=$db->prepare("INSERT INTO `".$prefix."messages` (mid,folder,to_email,to_name,from_email,subject,status,notes_html,attachments,email_date,size,ti) VALUES (:mid,:folder,:to_email,:to_name,:from_email,:subject,:status,:notes_html,:attachments,:email_date,:size,:ti)");
         $s->execute([
           ':mid'=>$email->id(),
@@ -114,13 +118,13 @@ if($config['message_check_interval']!=0){
           ':from_email'=>$email->fromEmail(),
           ':subject'=>$email->subject(),
           ':status'=>$status,
-          ':notes_html'=>$email->html()!=''?$email->html():$email->plain(),
+          ':notes_html'=>$emailHTML,
           ':attachments'=>$attachments,
           ':email_date'=>strtotime($email->date()),
           ':size'=>$email->size(),
           ':ti'=>time()
         ]);
-        if($config['options']{10}==1){
+        if($user['options']{9}==1){
           $imap->deleteEmail($email->id());
         }
       }
@@ -132,7 +136,7 @@ if($config['message_check_interval']!=0){
   $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE folder=:folder AND ti>:tis ORDER BY ti DESC, subject ASC");
   $s->execute([':tis'=>$tis,':folder'=>$fol]);
   while($r=$s->fetch(PDO::FETCH_ASSOC)){
-    echo'<li id="l_'.$r['id'].'" class="message animated fadeIn new">';
+    echo'<li id="l_'.$r['id'].'" class="message animated fadeIn unread">';
 			echo'<div class="actions">';
 				echo'<div class="btn-group-vertical">';
       $scc=$db->prepare("SELECT email FROM `".$prefix."whitelist` WHERE email=:email");
@@ -177,5 +181,16 @@ if($config['message_check_interval']!=0){
 			if($ur['cnt']>0)echo'$(`#unreadbadge`).html("'.$ur['cnt'].'");';
 			if($sp['cnt']>0)echo'$(`#spambadge`).html("'.$sp['cnt'].'");';
 		echo'</script>';
+  }
+}
+function is_base64_string($s) {
+  if (($b = base64_decode($s, TRUE)) === FALSE) {
+    return FALSE;
+  }
+  $e = mb_detect_encoding($b);
+  if (in_array($e, array('UTF-8', 'ASCII'))) { // YMMV
+    return TRUE;
+  } else {
+    return FALSE;
   }
 }

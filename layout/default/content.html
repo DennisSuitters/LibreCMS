@@ -1,116 +1,134 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="content">
-	<div class="container">
-		<div class="row mt-4 mb-4 m-sm-5">
-			<main id="content" class="col-12 col-sm-8" role="main">
+	<main class="container">
+		<pagenotes>
+      <div class="row mt-5">
+        <div class="col-12">
+					<div class="card">
+          	<div class="card-body">
+            	<print page="notes">
+						</div>
+          </div>
+        </div>
+      </div>
+    </pagenotes>
+		<div class="row my-5">
+			<div class="col-12 col-sm-9">
 				<item>
-					<article class="card default-full border-0" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
+					<article class="card mb-5" itemscope itemtype="http://schema.org/<print content=schemaType>">
 						<json-ld>
 						<img class="card-img-top img-fluid" src="<print content=image>" alt="<print content=imageALT>">
 						<div class="card-body">
 							<h1 class="card-title" itemprop="name"><print content="title"></h1>
 							<div class="card-text" itemprop="description">
-							<cost>
-								<div class="price_content mb-4 d-block d-sm-none">
-									<div itemscope itemtype="http://schema.org/Offer">
-										<div class="h4 text-right"><print content="cost"></div>
-										<print content="quantity">
-										<service>
-											<a class="btn btn-outline-secondary btn-block" href="bookings/<print content=bookservice>" role="link">Book Now</a>
-										</service>
-										<inventory>
-											<choices>
-											<button class="addCart btn btn-outline-secondary btn-block" data-cartid="<print content=id>" data-cartchoice="0" role="button">Buy Now</button>
-										</inventory>
+								<cost>
+									<div class="price_content mb-4 d-block d-sm-none">
+										<div itemscope itemtype="http://schema.org/Offer">
+											<div class="h4 text-right"><print content="cost"></div>
+											<print content="quantity">
+											<service>
+												<a class="btn btn-outline-secondary btn-block" href="bookings/<print content=bookservice>">Book Now</a>
+											</service>
+											<inventory>
+												<choices>
+												<button class="addCart btn btn-outline-secondary btn-block" data-cartid="<print content=id>" data-cartchoice="0">Buy Now</button>
+											</inventory>
+										</div>
 									</div>
-								</div>
-							</cost>
-							<print content="dateCreated" userrank="399" class="text-muted small" container="div" leadingtext="Created: ">
-							<print content="datePublished" class="text-muted small" container="div" leadingtext="Published: ">
-							<print content="dateEdited" userrank="399" class="text-muted small" container="div" leadingtext="Edited: ">
-							<print content="dateEvent" class="text-muted small" container="div" leadingtext="Event Date: ">
-							<print content="categories" class="text-muted small" container="div" leadingtext="Categories: ">
-							<print content="tags" class="text-muted small" container="div" leadingtext="Tags: ">
-							<mediaitems>
-								<style>
-									.sl-wrapper .sl-close,.sl-wrapper .sl-navigation button{height:44px;line-height:44px;font-family:Arial,Baskerville,monospace}.sl-wrapper .sl-close:focus,.sl-wrapper .sl-navigation button:focus{outline:0}body.hidden-scroll{overflow:hidden}.sl-overlay{position:fixed;left:0;right:0;top:0;bottom:0;background:#fff;opacity:.7;display:none;z-index:1035}.sl-wrapper .sl-close,.sl-wrapper .sl-counter{top:30px;display:none;color:#000;position:fixed}.sl-wrapper{z-index:1040}.sl-wrapper button{border:0;background:0 0;font-size:28px;padding:0;cursor:pointer}.sl-wrapper button:hover{opacity:.7}.sl-wrapper .sl-close{right:30px;z-index:10060;margin-top:-14px;margin-right:-14px;width:44px;font-size:3rem}.sl-wrapper .sl-counter{left:30px;z-index:1060;font-size:1rem}.sl-wrapper .sl-navigation{width:100%;display:none}.sl-wrapper .sl-navigation button{position:fixed;top:50%;margin-top:-22px;width:22px;text-align:center;display:block;z-index:10060;color:#000}.sl-wrapper .sl-navigation button.sl-next{right:5px;font-size:2rem}.sl-wrapper .sl-navigation button.sl-prev{left:5px;font-size:2rem}@media (min-width:35.5em){.sl-wrapper .sl-navigation button{width:44px}.sl-wrapper .sl-navigation button.sl-next{right:10px;font-size:3rem}.sl-wrapper .sl-navigation button.sl-prev{left:10px;font-size:3rem}.sl-wrapper .sl-image img{border:0}}@media (min-width:50em){.sl-wrapper .sl-navigation button{width:44px}.sl-wrapper .sl-navigation button.sl-next{right:20px;font-size:3rem}.sl-wrapper .sl-navigation button.sl-prev{left:20px;font-size:3rem}.sl-wrapper .sl-image img{border:0}}.sl-wrapper .sl-image{position:fixed;-ms-touch-action:none;touch-action:none;z-index:10000}.sl-wrapper .sl-image img{margin:0;padding:0;display:block;border:0;width:100%;height:auto}.sl-wrapper .sl-image iframe{background:#000;border:0}@media (min-width:35.5em){.sl-wrapper .sl-image iframe{border:0}}@media (min-width:50em){.sl-wrapper .sl-image iframe{border:0}}.sl-wrapper .sl-image .sl-caption{display:none;padding:10px;color:#fff;background:rgba(0,0,0,.8);font-size:1rem;position:absolute;bottom:0;left:0;right:0}.sl-wrapper .sl-image .sl-caption.pos-top{bottom:auto;top:0}.sl-wrapper .sl-image .sl-caption.pos-outside{bottom:auto}.sl-wrapper .sl-image .sl-download{display:none;position:absolute;bottom:5px;right:5px;color:#000;z-index:1060}.sl-spinner{display:none;border:5px solid #333;border-radius:40px;height:40px;left:50%;margin:-20px 0 0 -20px;opacity:0;position:fixed;top:50%;width:40px;z-index:1007;-webkit-animation:pulsate 1s ease-out infinite;-moz-animation:pulsate 1s ease-out infinite;-ms-animation:pulsate 1s ease-out infinite;-o-animation:pulsate 1s ease-out infinite;animation:pulsate 1s ease-out infinite}.sl-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.sl-transition{transition:-moz-transform ease .2s;transition:-ms-transform ease .2s;transition:-o-transform ease .2s;transition:-webkit-transform ease .2s;transition:transform ease .2s}@-webkit-keyframes pulsate{0%{transform:scale(.1);opacity:0}50%{opacity:1}100%{transform:scale(1.2);opacity:0}}@keyframes pulsate{0%{transform:scale(.1);opacity:0}50%{opacity:1}100%{transform:scale(1.2);opacity:0}}@-moz-keyframes pulsate{0%{transform:scale(.1);opacity:0}50%{opacity:1}100%{transform:scale(1.2);opacity:0}}@-o-keyframes pulsate{0%{transform:scale(.1);opacity:0}50%{opacity:1}100%{transform:scale(1.2);opacity:0}}@-ms-keyframes pulsate{0%,100%{opacity:0}0%{transform:scale(.1)}50%{opacity:1}100%{transform:scale(1.2)}}
-								</style>
-								<div class="container">
-									<div class="row col-12 m-1 mt-sm-5 justify-content-center">
-										<mediaimages>
-											<a href="<print media=file>" data-toggle="lightbox" data-gallery="gallery" data-max-width="700" class="card gallery bg-dark text-white col-12 col-sm-3 m-1 m-sm-2 p-0">
-						            <img src="<print media=thumb>" class="img-fluid" alt="<print media=title>">
-											</a>
-										</mediaimages>
+								</cost>
+								<print content="dateCreated" userrank="399" class="text-muted small" container="div" leadingtext="Created: ">
+								<print content="datePublished" class="text-muted small" container="div" leadingtext="Published: ">
+								<print content="dateEdited" userrank="399" class="text-muted small" container="div" leadingtext="Edited: ">
+								<print content="dateEvent" class="text-muted small" container="div" leadingtext="Event Date: ">
+								<print content="categories" class="text-muted small" container="div" leadingtext="Categories: ">
+								<print content="tags" class="text-muted small" container="div" leadingtext="Tags: ">
+								<mediaitems>
+									<div class="container">
+										<div class="row m-0 mt-sm-5 justify-content-center">
+											<mediaimages>
+												<a href="<print media=file>" data-toggle="lightbox" data-gallery="gallery" data-max-width="700" class="card gallery bg-dark text-white col-3 col-sm-2 m-1 m-sm-2 p-0">
+						            	<img src="<print media=thumb>" class="img-fluid" alt="<print media=title>">
+												</a>
+											</mediaimages>
+										</div>
 									</div>
-								</div>
-								<script>
-					      	$('[data-gallery="gallery"]').simpleLightbox();
-						    </script>
-							</mediaitems>
-							<print content="notes">
-						</div>
-						<author>
-							<hr role="separator">
-							<aside class="vcard p-2">
-								<print author="avatar" alt="name" class="col-3 col-sm-2 align-text-top m-0">
-								This article was written by <span class="fn"><a href="<print author=link>"><print author="name"></a></span>.<br>
-								<div class="small p-2"><print author="notes"></div>
-								<print author="social" type="icon" class="libre libre-social libre-2x m-2">
-							</aside>
-						</author>
-						<div class="reviews">
-							<review>
-								<div class="hreview-aggregate media" itemprop="review" itemscope itemtype="http://schema.org/Review">
-									<json-ld-review>
-									<div class="media-body well" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
-										<p>
-											<data class="p-rating" value="<print review=rating>">
-												<meta itemprop="worstRating" content="1">
-												<meta itemprop="ratingValue" content="<print review=rating>">
-												<meta itemprop="bestRating" content="5">
-												<span class="rat">
-													<span class="<print review=set5>">☆</span>
-													<span class="<print review=set4>">☆</span>
-													<span class="<print review=set3>">☆</span>
-													<span class="<print review=set2>">☆</span>
-													<span class="<print review=set1>">☆</span>
-												</span>
-											</data>
-											Published <time class="dt-published" datetime="<print review=datetime>"><print review="date"></time> by <span class="p-author h-card"><print review="name"></span>
-										</p>
-										<div class="e-content summary" itemprop="description"><print review="review"></div>
-									</div>
-								</div>
-							</review>
+									<script>
+						      	$('[data-gallery="gallery"]').simpleLightbox();
+							    </script>
+								</mediaitems>
+								<print content="notes">
+							</div>
 						</div>
 					</article>
+					<author>
+						<div class="card mb-5">
+							<div class="card-header border-0 font-weight-bold">About the Author</div>
+							<div class="card-body">
+								<div class="media mt-4 px-1">
+									<div class="col-4 col-sm-2">
+										<print author="avatar" alt="name" class="img-fluid rounded-circle d-flex z-depth-1 mr-3">
+									</div>
+		  						<div class="media-body">
+						      	<h5 class="font-weight-bold mt-0">
+											<a class="text-default" href="<print author=link>"><print author="name"></a>
+						      	</h5>
+										<div>
+											<print author="social" type="icon" class="libre libre-social libre-2x">
+										</div>
+		    						<print author="notes">
+									</div>
+		  					</div>
+							</div>
+						</div>
+					</author>
+					<review>
+						<div class="card hreview-aggregate" itemprop="review" itemscope itemtype="http://schema.org/Review">
+							<json-ld-review>
+							<div class="card-header border-0 font-weight-bold d-flex justify-content-between" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+								<div>Review by <span class="p-author h-card"><print review="name"></span> on <time class="dt-published" datetime="<print review=datetime>"><print review="date"></time></div>
+								<data class="p-rating" value="<print review=rating>">
+									<meta itemprop="worstRating" content="1">
+									<meta itemprop="ratingValue" content="<print review=rating>">
+									<meta itemprop="bestRating" content="5">
+									<span class="rat">
+										<span class="<print review=set1>"></span>
+										<span class="<print review=set2>"></span>
+										<span class="<print review=set3>"></span>
+										<span class="<print review=set4>"></span>
+										<span class="<print review=set5>"></span>
+									</span>
+								</data>
+							</div>
+							<div class="card-body">
+								<div class="e-content summary" itemprop="description"><print review="review"></div>
+							</div>
+						</div>
+					</review>
 				</item>
-				<print page="notes">
 				<settings itemCount="10">
 				<items>
-					<article class="card default" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
-						<meta itemprop="author" content="<print author=name>">
+					<article class="card mb-3 mb-sm-5" itemscope itemtype="http://schema.org/<print content=schemaType>">
+						<meta itemprop="author" content="<print content=author>">
 						<meta itemprop="datePublished" content="<print content=datePublished>">
 						<meta itemprop="dateModified" content="<print content=dateEdited>">
-						<div class="card-img"><img class="card-img-top img-fluid" src="<print content=thumb>" alt="<print content=alttitle>" itemprop="thumbnail"></div>
+						<a href="<print content=linktitle>"><img class="card-img-top small" src="<print content=thumb>" alt="<print content=title>" itemprop="thumbnail"></a>
         		<div class="card-body text-center" data-contenttype="<print content=contentType>">
 							<div class="card-subtitle mb-2 small text-muted text-center">By <a href="<print profileLink>"><print content="author"></a> on <print content="datePublished"></div>
 							<controls>
 								<view>
-									<h2 class="card-title" itemprop="name headline"><a href="<print content=linktitle>" itemprop="url" role="link"><print content="title"></a></h2>
+									<h2 class="card-title" itemprop="name headline"><a href="<print content=linktitle>" itemprop="url"><print content="title"></a></h2>
 								</view>
 							</controls>
-							<div class="card-text"><print content="notes"></div>
+							<div class="card-text text-truncate"><print content="notes"></div>
 							<a class="btn btn-outline-secondary mt-2" href="<print content=linktitle>">View</a>
 						</div>
 	  			</article>
 				</items>
 				<more>
-					<button id="more<print config=showItems>" class="addMore btn btn-outline-secondary btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
+					<button id="more<print config=showItems>" class="addMore btn btn-outline-secondary btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>">More</button>
 				</more>
-			</main>
+			</div>
 </block>
 <block include="side_menu.html">
 <block include="footer.html">

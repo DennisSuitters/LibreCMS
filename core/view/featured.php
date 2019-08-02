@@ -54,26 +54,28 @@ if($cT=='all'||$cT=='mixed'||$cT=='folder'){
 	if(file_exists('media'.DS.'carousel'.DS)){
 		foreach(glob('media'.DS.'carousel'.DS.'*.*')as$file){
 			$fileinfo=pathinfo($file);
+			$filetime=filemtime($file);
 			if($file=='.')continue;
 			if($file=='..')continue;
-			if($fileinfo['extension']=='html')continue;
-			$filetime=filemtime($file);
-			$fileinfo=pathinfo($file);
 			$filename=basename($file,'.'.$fileinfo['extension']);
-			if(file_exists('media'.DS.'carousel'.DS.$filename.'.html'))
-				$filehtml=file_get_contents('media'.DS.'carousel'.DS.$filename.'.html');
-			else
-				$filehtml='';
-			$featuredfiles[]=[
-				'contentType'=>'carousel',
-				'thumb'=>'',
-				'file'=>$file,
-				'title'=>basename(rtrim($file),3),
-				'link'=>'nolink',
-				'seoCaption'=>$filehtml,
-				'notes'=>'',
-				'ti'=>$filetime
-			];
+			if($fileinfo['extension']=='jpg'||$fileinfo['extension']=='jpeg'||$fileinfo['extension']=='png'){
+				if(!in_array('media'.DS.'carousel'.DS.$filename.'.html',$featuredfiles)){
+					if(file_exists('media'.DS.'carousel'.DS.$filename.'.html'))
+						$filehtml=file_get_contents('media'.DS.'carousel'.DS.$filename.'.html');
+					else
+						$filehtml='';
+					$featuredfiles[]=[
+						'contentType'=>'carousel',
+						'thumb'=>'',
+						'file'=>$file,
+						'title'=>basename(rtrim($file),3),
+						'link'=>'nolink',
+						'seoCaption'=>$filehtml,
+						'notes'=>'',
+						'ti'=>$filetime
+					];
+				}
+			}
 		}
 	}
 }

@@ -37,45 +37,63 @@
   <div class="container-fluid">
     <noscript><div class="alert alert-danger" role="alert"><?php echo localize('alert_all_danger_noscript');?></div></noscript>
     <div class="alert alert-warning d-sm-block d-md-none" role="alert"><?php echo localize('alert_all_warning_smallscreen');?></div>
-    <div class="card">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-condensed table-striped table-hover" role="table">
-            <thead>
-              <tr role="row">
-                <th role="columnheader"><?php echo localize('Page');?></th>
-                <th role="columnheader"><?php echo localize('Origin');?></th>
-                <th class="text-center" role="columnheader"><?php echo localize('IP');?></th>
-                <th class="text-center" role="columnheader"><?php echo localize('Browser');?></th>
-                <th class="text-center" role="columnheader"><?php echo localize('System');?></th>
-                <th class="text-center" role="columnheader"><?php echo localize('Date');?></th>
-                <th role="columnheader"><div class="btn-group float-right" data-tooltip="tooltip" data-placement="left" title="<?php echo localize('Purge All');?>"><button class="btn btn-secondary btn-sm trash" onclick="purge('0','tracker');return false;" role="button" aria-label="<?php echo localize('aria_purge');?>"><?php svg('libre-gui-purge');?></button></th>
-              </tr>
-            </thead>
-            <tbody id="l_tracker">
-<?php  $s=$db->prepare("SELECT * FROM `".$prefix."tracker` ORDER BY ti DESC");
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <div class="table">
+                <table class="table-striped table-hover" role="table">
+                  <thead>
+                    <tr role="row">
+                      <th class="" style="min-width:150px;max-width:200px;"><?php echo localize('Page');?></th>
+                      <th class="" style="min-width:150px;max-width:200px;"><?php echo localize('Origin');?></th>
+                      <th class="text-center"><?php echo localize('IP');?></th>
+                      <th class="text-center"><?php echo localize('Browser');?></th>
+                      <th class="text-center"><?php echo localize('System');?></th>
+                      <th class="text-center"><?php echo localize('Date');?></th>
+                      <th><div class="btn-group float-right" data-tooltip="tooltip" data-placement="left" title="<?php echo localize('Purge All');?>"><button class="btn btn-secondary btn-sm trash" onclick="purge('0','tracker');return false;" role="button" aria-label="<?php echo localize('aria_purge');?>"><?php svg('libre-gui-purge');?></button></th>
+                    </tr>
+                  </thead>
+                  <tbody id="l_tracker">
+<?php  $s=$db->prepare("SELECT * FROM `".$prefix."tracker` ORDER BY ti DESC LIMIT 20");
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
-              <tr id="l_<?php echo$r['id'];?>" class="small align-middle" role="row">
-                <td class="text-nooverflow align-middle" role="cell"><?php echo$r['urlDest'];?></td>
-                <td class="text-nooverflow align-middle" role="cell"><?php if($r['urlFrom']!='')echo$r['urlFrom'];?></td>
-                <td class="text-center align-middle" role="cell"><a target="_blank" href="http://www.ipaddress-finder.com/?ip=<?php echo$r['ip'];?>"><?php echo$r['ip'];?></a></td>
-                <td class="text-center align-middle" role="cell"><?php echo ucfirst($r['browser']);?></td>
-                <td class="text-center align-middle" role="cell"><?php echo ucfirst($r['os']);?></td>
-                <td class="text-center align-middle" role="cell"><?php echo date($config['dateFormat'],$r['ti']);?></td>
-                <td class="align-middle" role="cell">
-                  <div class="btn-group float-right" role="group">
-                    <button class="btn btn-secondary pathviewer" data-tooltip="tooltip" title="<?php echo localize('View Visitor Path');?>" data-toggle="popover" data-dbid="<?php echo$r['id'];?>" role="button" aria-label="<?php echo localize('aria_view');?>"><?php svg('libre-seo-path');?></button>
+                    <tr id="l_<?php echo$r['id'];?>" data-ip="<?php echo$r['ip'];?>" class="small">
+                      <td class="text-wrap align-middle" style="min-width:200px;max-width:250px;"><?php echo$r['id'].': '.trim($r['urlDest']);?></td>
+                      <td class="text-wrap align-middle" style="min-width:200px;max-width:250px;"><?php echo trim($r['urlFrom']);?></td>
+                      <td class="text-center align-middle">
+                        <a target="_blank" href="http://www.ipaddress-finder.com/?ip=<?php echo$r['ip'];?>"><?php echo$r['ip'];?></a>
+                        <button class="btn btn-secondary btn-sm trash" data-tooltip="tooltip" title="Remove all of this IP" onclick="purge('<?php echo$r['ip'];?>','clearip')" aria-label="Remove all of this IP"><?php svg('libre-gui-eraser');?></button>
+                      </td>
+                      <td class="text-center align-middle"><?php echo ucfirst($r['browser']);?></td>
+                      <td class="text-center align-middle"><?php echo ucfirst($r['os']);?></td>
+                      <td class="text-center align-middle"><?php echo date($config['dateFormat'],$r['ti']);?></td>
+                      <td class="align-middle">
+                        <div class="btn-group float-right">
+                          <button class="btn btn-secondary pathviewer" data-tooltip="tooltip" title="<?php echo localize('View Visitor Path');?>" data-toggle="popover" data-dbid="<?php echo$r['id'];?>" aria-label="<?php echo localize('aria_view');?>"><?php svg('libre-seo-path');?></button>
 <?php if($config['php_options']{0}==1){?>
-                    <button class="btn btn-secondary phpviewer" data-tooltip="tooltip" title="<?php echo localize('Check IP with Project Honey Pot');?>" data-toggle="popover" data-dbid="<?php echo$r['id'];?>" data-dbt="tracker" role="button" aria-label="<?php echo localize('aria_check');?>"><?php svg('libre-brand-projecthoneypot');?></button>
+                          <button class="btn btn-secondary phpviewer" data-tooltip="tooltip" title="<?php echo localize('Check IP with Project Honey Pot');?>" data-toggle="popover" data-dbid="<?php echo$r['id'];?>" data-dbt="tracker" aria-label="<?php echo localize('aria_check');?>"><?php svg('libre-brand-projecthoneypot');?></button>
 <?php }?>
-                    <button class="btn btn-secondary trash" onclick="purge('<?php echo$r['id'];?>','tracker')" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
-                  </div>
-                </td>
-              </tr>
+                          <button class="btn btn-secondary trash" onclick="purge('<?php echo$r['id'];?>','tracker')" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
+                        </div>
+                      </td>
+                    </tr>
 <?php }?>
-            </tbody>
-          </table>
+                    <tr id="more_20">
+                      <td colspan="7">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <button class="btn btn-secondary btn-block" onclick="more('tracker','20');">More</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

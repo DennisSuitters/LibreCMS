@@ -45,7 +45,7 @@
           tooltip:  lang.save.tooltip,
           click:function (e) {
             e.preventDefault();
-            $('.note-block').addClass('blocked');
+            $editor.find('.note-block').addClass('blocked');
             if (options.save.encode) {
               var noteText = $note.summernote('code');
               $note.summernote('code', escape(noteText));

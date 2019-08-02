@@ -297,8 +297,8 @@ if($args[0]!=''){
             $rs['file']=$fileURL;
           elseif($rs['fileURL']==''&&$rs['file']=='')
             $rs['file']=NOIMAGE;
-          else
-            $rs['file']=NOIMAGE;
+//          else
+//            $rs['file']=NOIMAGE;
           $build=$item;
           $build=preg_replace([
             '/<print content=[\"\']?image[\"\']?>/',

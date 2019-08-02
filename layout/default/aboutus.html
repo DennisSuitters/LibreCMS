@@ -2,13 +2,17 @@
 <block include="header.html">
 <block inbed="content">
 	<div class="jumbotron about" style="<print page=cover>"><print page="coverVideo"></div>
-	<div class="container">
-		<div class="row mt-4 mb-4 m-sm-5">
-			<main id="content" class="col-12" role="main">
-				<print page="notes">
-			</main>
+	<main class="container">
+		<div class="row my-5">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<print page="notes">
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
+	</main>
 </block>
 <block include="footer.html">
 <block include="meta_footer.html">

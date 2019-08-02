@@ -712,7 +712,7 @@ button.elfinder-info-button{margin:-3.5px 0;cursor:pointer}
 .elfinder-quicklook-title,
 .elfinder-statusbar div{font-size:.7em}
 .elfinder-quicklook-info-data{font-size:.72em}
-.elfinder-quicklook-preview-text-wrapper{font-size:.9em}
+.elfinder-quicklook-preview-text-wrapper{font-size:.9em;color:#000!important}
 .elfinder-button-menu-item{font-size:.72em}
 .elfinder-button-search input{font-size:.8em}
 .elfinder-drag-num{font-size:12px}
@@ -800,9 +800,9 @@ button.elfinder-info-button{margin:-3.5px 0;cursor:pointer}
 .elfinder-quicklook.elfinder-quicklook-fullscreen{position:fixed;top:0;right:0;bottom:0;left:0;margin:0;box-sizing:border-box;width:100%;height:100%;object-fit:contain;border-radius:0;-moz-border-radius:0;-webkit-border-radius:0;-webkit-background-clip:padding-box;padding:0;background:#000;display:block}
 .elfinder-quicklook-fullscreen .elfinder-quicklook-titlebar,
 .elfinder-quicklook-fullscreen.elfinder-quicklook .ui-resizable-handle{display:none}
-.elfinder-quicklook-fullscreen .elfinder-quicklook-preview{border:0 solid}
+.elfinder-quicklook-fullscreen .elfinder-quicklook-preview{border:0 solid;color:#000!important}
 .elfinder-quicklook-cover,.elfinder-quicklook-titlebar{width:100%;height:100%;top:0;left:0;position:absolute}
-.elfinder-quicklook-cover.elfinder-quicklook-coverbg{background-color:#fff;opacity:.000001;filter:Alpha(Opacity=.0001)}
+.elfinder-quicklook-cover.elfinder-quicklook-coverbg{background-color:transparent;opacity:.000001;filter:Alpha(Opacity=.0001)}
 .elfinder-quicklook-titlebar{text-align:center;background:#777;height:20px;-moz-border-radius-topleft:7px;-webkit-border-top-left-radius:7px;border-top-left-radius:7px;-moz-border-radius-topright:7px;-webkit-border-top-right-radius:7px;border-top-right-radius:7px;cursor:move}
 .elfinder-navdock .elfinder-quicklook-titlebar{-moz-border-radius-topleft:0;-webkit-border-top-left-radius:0;border-top-left-radius:0;-moz-border-radius-topright:0;-webkit-border-top-right-radius:0;border-top-right-radius:0;cursor:default}
 .elfinder-touch .elfinder-quicklook-titlebar{height:30px}
@@ -827,8 +827,8 @@ button.elfinder-info-button{margin:-3.5px 0;cursor:pointer}
 .elfinder-rtl .elfinder-quicklook-info{padding:0 112px 0 12px}
 .elfinder-ltr .elfinder-navdock .elfinder-quicklook-info{padding:0 0 0 80px}
 .elfinder-rtl .elfinder-navdock .elfinder-quicklook-info{padding:0 80px 0 0}
-.elfinder-quicklook-info .elfinder-quicklook-info-data:first-child{color:#fff;font-weight:700;padding-bottom:.5em}
-.elfinder-quicklook-info-data{padding-bottom:.2em;color:#fff}
+.elfinder-quicklook-info .elfinder-quicklook-info-data:first-child{color:#000;font-weight:700;padding-bottom:.5em}
+.elfinder-quicklook-info-data{padding-bottom:.2em;color:#000!important}
 .elfinder-quicklook .elfinder-cwd-icon{position:absolute;left:32px;top:50%;margin-top:-20px}
 .elfinder-navdock .elfinder-quicklook .elfinder-cwd-icon{left:16px}
 .elfinder-rtl .elfinder-quicklook .elfinder-cwd-icon{left:auto;right:32px}
@@ -853,22 +853,22 @@ button.elfinder-info-button{margin:-3.5px 0;cursor:pointer}
 .elfinder-quicklook-navbar-icon-close{background-position:0 -128px;display:none}
 .elfinder-quicklook-navbar-separator{width:1px;height:32px;float:left;border-left:1px solid #fff;display:none}
 .elfinder-quicklook-preview-archive-wrapper,
-.elfinder-quicklook-preview-text-wrapper{width:100%;height:100%;background:#fff;color:#222;overflow:auto;-webkit-overflow-scrolling:touch}
+.elfinder-quicklook-preview-text-wrapper{width:100%;height:100%;background:#fff;color:#000!important;overflow:auto;-webkit-overflow-scrolling:touch}
 .elfinder-quicklook-preview-archive-wrapper{font-size:1.5ex}
 .elfinder-quicklook-preview-archive-wrapper strong{padding:0 5px}
 pre.elfinder-quicklook-preview-text,
-pre.elfinder-quicklook-preview-text.prettyprint{width:auto;height:auto;margin:0;padding:3px 9px;border:none;-o-tab-size:4;-moz-tab-size:4;tab-size:4}
+pre.elfinder-quicklook-preview-text.prettyprint{width:auto;color:#000!important;height:auto;margin:0;padding:3px 9px;border:none;-o-tab-size:4;-moz-tab-size:4;tab-size:4}
 .elfinder-quicklook-preview-charsleft hr{border:none;border-top:dashed 1px}
 .elfinder-quicklook-preview-charsleft span{font-size:90%;font-style:italic;cursor:pointer}
 .elfinder-quicklook-preview-html,
 .elfinder-quicklook-preview-iframe,
-.elfinder-quicklook-preview-pdf{width:100%;height:100%;background:#fff;margin:0;border:none;display:block}
+.elfinder-quicklook-preview-pdf{width:100%;height:100%;background:#fff;color:#000!important;margin:0;border:none;display:block}
 .elfinder-quicklook-preview-flash{width:100%;height:100%}
 .elfinder-quicklook-preview-audio{width:100%;position:absolute;bottom:0;left:0}
 embed.elfinder-quicklook-preview-audio{height:30px;background:0 0}
 .elfinder-quicklook-preview-video{width:100%;height:100%}
 .elfinder .elfinder-quicklook .elfinder-quicklook-info *,
-.elfinder .elfinder-quicklook .elfinder-quicklook-preview *{-webkit-user-select:auto;-moz-user-select:text;-khtml-user-select:text;user-select:text}
+.elfinder .elfinder-quicklook .elfinder-quicklook-preview *{color:#000!important;-webkit-user-select:auto;-moz-user-select:text;-khtml-user-select:text;user-select:text}
 .elfinder-statusbar{cursor:default;text-align:center;font-weight:400;padding:.2em .5em;border-right:0 solid transparent;border-bottom:0 solid transparent;border-left:0 solid transparent}
 .elfinder-statusbar span{vertical-align:bottom;overflow:hidden;text-overflow:"..";-o-text-overflow:".."}
 .elfinder-statusbar span.ui-state-active,

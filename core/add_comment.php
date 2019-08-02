@@ -34,7 +34,7 @@ $act=isset($_POST['act'])?filter_input(INPUT_POST,'act',FILTER_SANITIZE_STRING):
 $ip=$_SERVER['REMOTE_ADDR']=='::1'?'127.0.0.1':$_SERVER['REMOTE_ADDR'];
 $spam=FALSE;
 if($act=='add_comment'){
-  if($config['php_options']{3}==1&&$config['php_APIkey']!=''){
+  if($config['php_options']{3}==1&&$config['php_APIkey']!=''&&$ip!='127.0.0.1'){
     $h=new ProjectHoneyPot($ip,$config['php_APIkey']);
     if($h->hasRecord()==1||$h->isSuspicious()==1||$h->isCommentSpammer()==1){
       $blacklisted=$theme['settings']['blacklist'];
@@ -56,9 +56,9 @@ if($act=='add_comment'){
     $contentType=filter_input(INPUT_POST,'ct',FILTER_SANITIZE_STRING);
     $name=filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
     $notes=filter_input(INPUT_POST,'notes',FILTER_SANITIZE_STRING);
-    if($config['spamfilter']{0}==1&&$spam==FALSE){
+    if($config['spamfilter']{0}==1&&$spam==FALSE&&$ip!='127.0.0.1'){
       $filter=new SpamFilter();
-      $result=$filter->check_email($email)
+      $result=$filter->check_email($email);
       if($result){
         $blacklisted=$theme['settings']['blacklist'];
         $spam=TRUE;
@@ -68,7 +68,7 @@ if($act=='add_comment'){
         $blacklisted=$theme['settings']['blacklist'];
         $spam=TRUE;
       }
-      if($config['spamfilter']{1}==1&&$spam==TRUE){
+      if($config['spamfilter']{1}==1&&$spam==TRUE&&$ip!='127.0.0.1'){
         $sc=$db->prepare("SELECT id FROM `".$prefix."iplist` WHERE ip=:ip");
         $sc->execute([':ip'=>$ip]);
         if($sc->rowCount()<1){

@@ -22,7 +22,7 @@
  * @notes      This PHP Script is designed to be executed using PHP 7+
  */
 if(isset($_SESSION['rank'])&&$_SESSION['rank']>0)
-	$link='<li role="listitem"><a href="logout">Logout</a></li>';
+	$link='<li><a href="logout">Logout</a></li>';
 else{
 	if($config['options']{3}==1)
 		$link_x=' or Sign Up';
@@ -30,10 +30,10 @@ else{
 		$link_x='';
 		$html=preg_replace('~<block signup>.*?<\/block signup>~is','',$html,1);
 	}
-	$link='<li role="listitem"><a href="login/">Login'.$link_x.'</a></li>';
+	$link='<li><a href="login/">Login'.$link_x.'</a></li>';
 }
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
-$html=isset($_SESSION['rank'])&&$_SESSION['rank']>899?str_replace('<administration>','<li role="listitem"><a target="_blank" href="'.$settings['system']['admin'].'">Administration</a></li>',$html):str_replace('<administration>','',$html);
+$html=isset($_SESSION['rank'])&&$_SESSION['rank']>899?str_replace('<administration>','<li><a target="_blank" href="'.$settings['system']['admin'].'">Administration</a></li>',$html):str_replace('<administration>','',$html);
 $html=preg_replace([
 	'/<print year>/',
 	'/<print theme=[\"\']?title[\"\']?>/',
@@ -69,10 +69,10 @@ $html=preg_replace([
 	htmlspecialchars($config['postcode'],ENT_QUOTES,'UTF-8'),
 	htmlspecialchars($config['country'],ENT_QUOTES,'UTF-8'),
 	htmlspecialchars($config['email'],ENT_QUOTES,'UTF-8'),
-	htmlspecialchars($config['phone'],ENT_QUOTES,'UTF-8'),
-	htmlspecialchars($config['mobile'],ENT_QUOTES,'UTF-8'),
-	isset($theme['hosting'])&&$theme['hosting']!=''?'Hosting by <a target="_blank" role="link" href="'.$theme['hosting_url'].'">'.$theme['hosting'].'</a><br>':'',
-	$config['php_options']{0}==1?' | Protected by <a href="http://www.projecthoneypot.org?rf=113735"><img src="'.URL.'layout/'.$config['theme'].'/images/phpot.gif" alt="Stop Spam Harvesters, Join Project Honey Pot"></a><br>':'',
+	htmlspecialchars(str_replace(' ','',$config['phone']),ENT_QUOTES,'UTF-8'),
+	htmlspecialchars(str_replace(' ','',$config['mobile']),ENT_QUOTES,'UTF-8'),
+	isset($theme['hosting'])&&$theme['hosting']!=''?'Hosting by <a target="_blank" href="'.$theme['hosting_url'].'">'.$theme['hosting'].'</a><br>':'',
+	$config['php_options']{0}==1?' Protected by <a href="http://www.projecthoneypot.org?rf=113735"><img src="'.URL.'layout/'.$config['theme'].'/images/phpot.gif" alt="Stop Spam Harvesters, Join Project Honey Pot"></a><br>':'',
 	$config['php_options']{0}==1&&$config['php_options']{2}==1&&$config['php_quicklink']!=''?$config['php_quicklink']:''
 ],$html);
 if(stristr($html,'<subjectText>')){
@@ -86,7 +86,7 @@ if(stristr($html,'<subjectText>')){
 		],'',$html);
 		$options='';
 		while($r=$s->fetch(PDO::FETCH_ASSOC))
-			$options.='<option value="'.$r['id'].'" role="option">'.$r['title'].'</option>';
+			$options.='<option value="'.$r['id'].'">'.$r['title'].'</option>';
 		$html=str_replace('<subjectOptions>',$options,$html);
 	}else{
 		$html=preg_replace([

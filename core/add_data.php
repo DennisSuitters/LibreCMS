@@ -24,6 +24,7 @@
  * @changes    v2.0.2 Fix Notifications.
  * @changes    v2.0.2 Fix Media Display, adding and removal.
  * @changes    v2.0.2 Fix Attributes.
+ * @changes    v2.0.5 Fix Media Display in Pages and Content Tabs.
  */
 $getcfg=true;
 require'db.php';
@@ -231,27 +232,17 @@ echo'<div id="l_'.$id.'" class="form-group">'.
         $e=$db->errorInfo();
         if(is_null($e[2])){?>
   window.top.window.$('#subjects').append('<?php
-echo'<div id="l_'.$id.'" class="form-group">'.
-			'<div class="input-group col-xs-12">'.
-				'<div class="input-group-addon">',localize('Subject').'</div>'.
-				'<form target="sp" method="post" role="form">'.
-					'<input type="hidden" name="id" value="'.$id.'">'.
-					'<input type="hidden" name="t" value="choices">'.
-					'<input type="hidden" name="c" value="title">'.
-					'<input type="text" class="form-control" name="da" value="'.$sub.'" placeholder="'.localize('Enter a ').' '.localize('Subject').'..." role="textbox">'.
-				'</form>'.
-				'<div class="input-group-addon">'.localize('Email').'</div>'.
-				'<form target="sp" method="post" role="textbox">'.
-					'<input type="hidden" name="id" value="'.$id.'">'.
-					'<input type="hidden" name="t" value="choices">'.
-					'<input type="hidden" name="c" value="url">'.
-					'<input type="text" class="form-control" name="da" value="'.$eml.'" placeholder="'.localize('Enter an ').' '.localize('Email').'..." role="textbox">'.
-				'</form>'.
-				'<div class="input-group-btn">'.
-					'<form target="sp" action="core/purge.php" role="form">'.
+echo'<div id="l_'.$id.'" class="form-group row">'.
+			'<div class="input-group">'.
+				'<div class="input-group-text">'.localize('Subject').'</div>'.
+				'<input id="sub'.$id.'" type="text" class="form-control" name="da" value="'.$sub.'">'.
+				'<div class="input-group-text">'.localize('Email').'</div>'.
+				'<input id="eml'.$id.'" type="text" class="form-control" name="da" value="'.$eml.'">'.
+				'<div class="input-group-append">'.
+					'<form target="sp" action="core/purge.php">'.
 						'<input type="hidden" name="id" value="'.$id.'">'.
 						'<input type="hidden" name="t" value="choices">'.
-						'<button class="btn btn-default trash" data-tooltip="tooltip" title="Delete" role="button" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
+						'<button class="btn btn-secondary trash" data-tooltip="tooltip" title="Delete" aria-label="'.localize('aria_delete').'">'.svg2('libre-gui-trash').'</button>'.
 					'</form>'.
 				'</div>'.
 			'</div>'.
@@ -407,13 +398,13 @@ echo'<div id="l_'.$id.'" class="media animated zoomIn">'.
             ':ord'=>$iid+1
           ]);?>
   window.top.window.$('#mi').append('<?php
-echo'<div id="mi_'.$iid.'" class="media col-6 col-sm-3 animated zoomIn">'.
-			'<a href="'.$fu.'" data-lightbox="media"><img class="card-img" src="'.$fu.'" alt="Media"></a>'.
-			'<div class="card-image-overlay position-relative">'.
-				'<div class="controls btn-group">'.
-					'<span class="handle btn btn-secondary btn-xs" data-tooltip="tooltip" title="'.localize('Drag to ReOrder this item').'" role="button" aria-label="'.localize('aria_drag').'">'.svg2('libre-gui-drag').'</span>'.
-					'<button class="btn btn-secondary trash btn-xs" onclick="purge(`'.$iid.'`,`media`)" data-tooltip="tooltip" title="'.localize('Delete').'" role="button" aria-label="'.localize('aria_drag').'">'.svg2('libre-gui-trash').'</button>'.
-				'</div>'.
+echo'<div id="mi_'.$iid.'" class="media-gallery d-inline-block col-6 col-sm-2 position-relative p-0 m-1 mt-0 animated zoomIn">'.
+			'<a class="card bg-dark m-0" href="'.$fu.'" data-lightbox="media">'.
+				'<img class="card-img" src="'.$fu.'" alt="Media '.$iid.'">'.
+			'</a>'.
+			'<div class="btn-group float-right">'.
+				'<div class="handle btn btn-secondary btn-sm" data-tooltip="tooltip" title="'.localize('Drag to ReOrder this item').'" aria-label="'.localize('aria_drag').'">'.svg2('libre-gui-drag').'</div>'.
+				'<button class="btn btn-secondary trash btn-sm" onclick="purge(`'.$iid.'`,`media`)" data-tooltip="tooltip" title="'.localize('Delete').'" aria-label="'.localize('aria_drag').'">'.svg2('libre-gui-trash').'</button>'.
 			'</div>'.
 		'</div>';?>
 ');

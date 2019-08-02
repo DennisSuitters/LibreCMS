@@ -28,6 +28,7 @@
  * @changes    v2.0.2 Fix Selection not updating.
  * @changes    v2.0.2 Fix ARIA Attributes.
  * @changes    v2.0.3 Add Image ALT.
+ * @changes    v2.0.5 Fix Media Display in Pages and Content Tabs.
  */
 $s=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE id=:id");
 $s->execute([':id'=>$args[1]]);
@@ -137,7 +138,7 @@ if($so->rowCount()>0){
                 <label for="cover" class="col-form-label col-sm-2"><?php echo localize('Image');?></label>
                 <div class="input-group col-sm-10">
                   <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="cover" data-tooltip="tooltip" title="Fingerprint Analysis" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
-                  <input type="text" id="cover" class="form-control" name="feature_image" value="<?php echo$r['cover'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="cover" readonly role="textbox">
+                  <input type="text" id="cover" class="form-control" name="feature_image" value="<?php echo$r['cover'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="menu" data-dbc="cover" onchange="coverUpdate('<?php echo$r['id'];?>','menu','cover',$(this).val());" readonly role="textbox">
                   <div class="input-group-append"><button class="btn btn-secondary" onclick="elfinderDialog('<?php echo$r['id'];?>','menu','cover');" data-tooltip="tooltip" title="<?php echo localize('Open Media Manager');?>" role="button" aria-label="<?php echo localize('aria_file_mediamanager');?>"><?php svg('libre-gui-browse-media');?></button></div>
                   <div class="input-group-append img">
                     <?php if($r['cover']!='')
@@ -230,19 +231,19 @@ if($sm->rowCount()>0){
       $thumb='media/thumbs/'.substr(basename($rm['file']),0,-4).'.png';
     else
       $thumb=$rm['file'];?>
-                <div id="mi_<?php echo$rm['id'];?>" class="media col-6 col-sm-3">
-                  <a href="<?php echo$rm['file'];?>" data-lightbox="media"><img class="card-img" src="<?php echo$thumb;?>" alt="Media"></a>
-                  <div class="card-image-overlay position-relative">
-                    <div class="controls btn-group">
-                      <span class="handle btn btn-secondary btn-xs" role="button" aria-label="<?php echo localize('aria_drag');?>"><?php svg('libre-gui-drag');?></span>
-                      <button class="btn btn-secondary trash btn-xs" onclick="purge('<?php echo$rm['id'];?>','media')" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
-                    </div>
+                <div id="mi_<?php echo$rm['id'];?>" class="media-gallery d-inline-block col-6 col-sm-2 position-relative p-0 m-1 mt-0">
+                  <a class="card bg-dark m-0" href="<?php echo$rm['file'];?>" data-lightbox="media">
+                    <img src="<?php echo$thumb;?>" class="card-img" alt="Media <?php echo$rm['id'];?>">
+                  </a>
+                  <div class="btn-group float-right">
+                    <div class="handle btn btn-secondary btn-sm" data-tooltip="tooltip" title="<?php echo localize('Drag to ReOrder this item');?>" aria-label="<?php echo localize('aria_drag');?>"><?php svg('libre-gui-drag');?></div>
+                    <button class="btn btn-secondary trash btn-sm" onclick="purge('<?php echo$rm['id'];?>','media')" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
                   </div>
                 </div>
 <?php }?>
                 <script>
                   $('#mi').sortable({
-                    items:".media",
+                    items:".media-gallery",
                     placeholder:".ghost",
                     helper:fixWidthHelper,
                     update:function(e,ui){

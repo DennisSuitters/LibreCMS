@@ -4,7 +4,7 @@
  *
  * Administration - Edit User Account
  *
- * edit_accounts.php version 2.0.2
+ * edit_accounts.php version 2.0.4
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,13 +17,14 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.4
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Change Back Link to Referer
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Add Timezone Option.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.4 Add Messages Settings.
  */
 $q=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
 $q->execute([':id'=>$args[1]]);
@@ -52,6 +53,7 @@ $r=$q->fetch(PDO::FETCH_ASSOC);?>
           <li id="nav-account-proofs" class="nav-item" role="presentation"><a class="nav-link" href="#account-proofs" aria-controls="account-proofs" role="tab" data-toggle="tab"><?php echo localize('Proofs');?></a></li>
           <li id="nav-account-social" class="nav-item" role="presentation"><a class="nav-link" href="#account-social" aria-controls="account-social" role="tab" data-toggle="tab"><?php echo localize('Social');?></a></li>
           <li id="nav-account-profile" class="nav-item" role="presentation"><a class="nav-link" href="#account-profile" aria-controls="account-social" role="tab" data-toggle="tab"><?php echo localize('Profile');?></a></li>
+          <li id="nav-account-messages" class="nav-itm" role="presentation"><a class="nav-link" href="#account-messages" aria-controls="account-messages" role="tab" data-toggle="tab"><?php echo localize('Messages');?></a></li>
           <li id="nav-account-settings" class="nav-item" role="presentation"><a class="nav-link" href="#account-settings" aria-controls="account-settings" role="tab" data-toggle="tab"><?php echo localize('Settings');?></a></li>
         </ul>
         <div class="tab-content">
@@ -650,6 +652,22 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
               </div>
             </div>
           </div>
+          <div role="tabpanel" class="tab-pane" id="account-messages">
+            <div class="form-group row">
+              <label for="email_signature" class="col-form-label col-sm-2"><?php echo localize('Email Signature');?></label>
+              <div class="col-sm-10">
+                <div class="card-header p-0">
+                  <?php echo$user['rank']>899?'<button class="btn btn-secondary btn-sm fingerprint" data-dbgid="da" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button><div id="da" data-dbid="'.$r['id'].'" data-dbt="login" data-dbc="email_signature"></div>':'';?>
+                  <form method="post" target="sp" action="core/update.php" role="form">
+                    <input type="hidden" name="id" value="<?php echo$r['id'];?>">
+                    <input type="hidden" name="t" value="login">
+                    <input type="hidden" name="c" value="email_signature">
+                    <textarea id="email_signature" class="form-control summernote" name="da" role="textbox"><?php echo rawurldecode($r['email_signature']);?></textarea>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
           <div role="tabpanel" class="tab-pane" id="account-settings">
             <div class="form-group row">
               <label for="timezone" class="col-form-label col-sm-2"><?php echo localize('Timezone');?></label>
@@ -667,7 +685,7 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
                           $seconds=$zone->getOffset(new DateTime("now",$zone));
                           $hours=sprintf("%+02d",intval($seconds/3600));
                           $minutes=sprintf("%02d",($seconds%3600)/60);
-                          $t=$a." [ $hours:$minutes ]" ;
+                          $t=$a." [ $hours:$minutes ]";
                           $o[$a]=$t;
                         }
                         catch(Exception $e){}

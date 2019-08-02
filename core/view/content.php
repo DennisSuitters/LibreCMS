@@ -20,13 +20,8 @@
  * @version    2.0.2
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
- * @changes    v2.0.1 Add Sluggification
- * @changes    v2.0.2 Fix Number of Displayed Items
- * @changes    v2.0.2 Fix retreiving any content, when "all" is used as an option for <settings contenttype="all">
- * @changes    v2.0.2 Add Category 3 & 5 Parsing
- * @changes    v2.0.3 Add Parsing for Image ALT with Fallback to either Title or Attribution Title
- * @changes    v2.0.3 Add extra Content Template parsing for Dates (Day/Month/Year). <print date="day/month/year">
- * @changes    v2.0.3 Add Categories Template parsing.
+ * @changes    v2.0.5 Fix comments display with enabled or disabled.
+ * @changes    v2.0.5 Fix Content created by instead of edited.
  */
 $rank=0;
 $notification='';
@@ -220,14 +215,22 @@ if($show=='categories'){
 			$html);
 	}
 	$html=preg_replace([
-		'/<print page=[\"\']?notes[\"\']?>/',
 		'/<print page=[\"\']?contentType[\"\']?>/',
 		'/<notification>/'
 	],[
-		rawurldecode($page['notes']),
 		htmlspecialchars(ucfirst($page['contentType']),ENT_QUOTES,'UTF-8').($page['contentType']=='article'||$page['contentType']=='service'?'s':''),
 		$notification
 	],$html);
+	if($page['notes']!=''){
+		$html=preg_replace([
+			'/<print page=[\"\']?notes[\"\']?>/',
+			'/<\/?pagenotes>/'
+		],[
+			rawurldecode($page['notes']),
+			''
+		],$html);
+	}else
+		$html=preg_replace('~<pagenotes>.*?<\/pagenotes>~is','',$html,1);
 	$html=$config['business']?preg_replace('/<print content=[\"\']?seoTitle[\"\']?>/',htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'),$html):preg_replace('/<print content=[\"\']?seoTitle[\"\']?>/',htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8'),$html);
 	if(stristr($html,'<mediaitems')){
 		$sm=$db->prepare("SELECT * FROM `".$prefix."media` WHERE pid=:pid AND rid=0 ORDER BY ord ASC");
@@ -310,6 +313,7 @@ if($show=='categories'){
 			$catoutput='';
 			while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
 				$catitems=$catitem;
+				if(!$rc['icon']||!file_exists('media'.DS.basename($rc['icon'])))$rc['icon']=$noimage;
 				$catitems=preg_replace([
 					'/<print category=[\"\']?image[\"\']?>/',
 					'/<print category=[\"\']?imageALT[\"\']?>/',
@@ -359,6 +363,9 @@ if($show=='categories'){
 					$shareImage=URL.NOIMAGE;
 			}
 			if($si==1)$si++;
+			$su=$db->prepare("SELECT id,username,name FROM login WHERE id=:id");
+			$su->execute([':id'=>$r['uid']]);
+			$ua=$su->fetch(PDO::FETCH_ASSOC);
 			$items=preg_replace([
 				'/<print content=[\"\']?thumb[\"\']?>/',
 				'/<print content=[\"\']?image[\"\']?>/',
@@ -384,7 +391,7 @@ if($show=='categories'){
 				htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
 				URL.'profile/'.strtolower(str_replace(' ','-',htmlspecialchars($r['login_user'],ENT_QUOTES,'UTF-8'))),
 				URL.$r['contentType'].'/'.$r['urlSlug'],
-				htmlspecialchars($r['login_user'],ENT_QUOTES,'UTF-8'),
+				htmlspecialchars(($ua['name']!=''?$ua['name']:$us['username']),ENT_QUOTES,'UTF-8'),
 				date($config['dateFormat'],$r['ti']),
 				date($theme['settings']['dateFormat'],$r['pti']),
 				date($theme['settings']['dateFormat'],$r['eti']),
@@ -428,10 +435,20 @@ if($show=='categories'){
 								''
 							],$items);
 						}
-					}else
-						$items=preg_replace('~<service.*?>.*?<\/service>~is','',$items,1);
-				}else
-					$items=preg_replace('~<service>.*?<\/service>~is','',$items,1);
+					}else{
+						$items=preg_replace([
+							'/<inventory>/',
+							'/<\/inventory>/',
+							'~<service.*?>.*?<\/service>~is'
+						],'',$items,1);
+					}
+				}else{
+					$items=preg_replace([
+						'/<inventory>/',
+						'/<\/inventory>/',
+						'~<service.*?>.*?<\/service>~is'
+					],'',$items,1);
+				}
 				if($r['contentType']=='inventory'&&is_numeric($r['cost'])){
 					if(stristr($items,'<inventory')){
 						$items=preg_replace([
@@ -443,9 +460,9 @@ if($show=='categories'){
 						$items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
 				}else
 					$items=preg_replace('~<inventory>.*?<\/inventory>~is','',$items,1);
-				$items=str_replace([
-					'<controls>',
-					'</controls>'
+				$items=preg_replace([
+					'/<controls>/',
+					'/<\/controls>/'
 				],'',$items);
 			}
 			require'core'.DS.'parser.php';
@@ -487,7 +504,12 @@ if($show=='categories'){
 }
 if($view=='testimonials')$show='';
 if($show=='item'){
-	$html=preg_replace('~<items>.*?<\/items>~is','',$html,1);
+	$html=preg_replace([
+		'~<items>.*?<\/items>~is',
+		'~<pagenotes>.*?<\/pagenotes>~is'
+	],[
+		''
+	],$html,1);
 	$r=$s->fetch(PDO::FETCH_ASSOC);
 	$seoTitle=$r['seoTitle']==''?$r['title']:$r['seoTitle'];
 	$metaRobots=$r['metaRobots']==''?$r['metaRobots']:$page['metaRobots'];
@@ -511,13 +533,13 @@ if($show=='item'){
 	$contentTime=isset($r['eti'])&&($r['eti']>$r['ti'])?$r['eti']:isset($r['ti'])?$r['ti']:0;
 	if(preg_match('/<print page=[\"\']?cover[\"\']?>/',$html)){
 		if($r['fileURL'])
-			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-fluid" src="'.$r['fileURL'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'" role="image">',$html);
+			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-fluid" src="'.$r['fileURL'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'">',$html);
 		elseif($r['file'])
-			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-fluid" src="'.$r['file'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'" role="image">',$html);
+			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img class="img-fluid" src="'.$r['file'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'">',$html);
 		elseif($page['cover'])
-			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img src="'.$page['cover'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'" role="image">',$html);
+			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img src="'.$page['cover'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'">',$html);
 		elseif($page['coverURL'])
-			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img src="'.$page['coverURL'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'" role="image">',$html);
+			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','<img src="'.$page['coverURL'].'" alt="'.($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle']).'">',$html);
 		else
 			$html=preg_replace('/<print page=[\"\']?cover[\"\']?>/','',$html);
 	}
@@ -532,7 +554,7 @@ if($show=='item'){
 	$html=preg_replace([
 			'/<print content=[\"\']?imageALT[\"\']?>/'
 		],[
-			htmlspecialchars($r['fileALT']!=''?$r['fileALT']:$r['attributionImageTitle'],ENT_QUOTES,'UTF-8')
+			htmlspecialchars($r['fileALT']!=''?$r['fileALT']:$r['title'],ENT_QUOTES,'UTF-8')
 		],$html);
 	if(stristr($html,'<item')){
 		preg_match('/<item>([\w\W]*?)<\/item>/',$html,$matches);
@@ -554,6 +576,8 @@ if($show=='item'){
 						$mediatags=explode(',',$rm['tags']);
 						foreach($mediatags as$mt)$tags.='#'.htmlspecialchars($mt,ENT_QUOTES,'UTF-8').' ';
 					}
+					$bname=basename(substr($rm['file'],0,-4));
+					$bname=rtrim($bname,'.');
 					$mediaitems=preg_replace([
 						'/<print media=[\"\']?thumb[\"\']?>/',
 						'/<print media=[\"\']?file[\"\']?>/',
@@ -580,12 +604,12 @@ if($show=='item'){
 						'/<print media=[\"\']?caption[\"\']?>/',
 						'/<print media=[\"\']?description[\"\']?>/'
 					],[
-						URL.'media/thumbs/'.basename(substr($rm['file'],0,-4)).'.png',
+						URL.'media/thumbs/'.$bname.'.png',
 						htmlspecialchars($rm['file'],ENT_QUOTES,'UTF-8'),
-						htmlspecialchars($rm['fileALT'],ENT_QUOTES,'UTF-8'),
+						htmlspecialchars(($rm['fileALT']!=''?$rm['fileALT']:$bname),ENT_QUOTES,'UTF-8'),
 						$width,
 						$height,
-						htmlspecialchars($rm['title'],ENT_QUOTES,'UTF-8'),
+						htmlspecialchars(($rm['title']!=''?$rm['title']:$bname),ENT_QUOTES,'UTF-8'),
 						htmlspecialchars($rm['category_1'],ENT_QUOTES,'UTF-8'),
 						htmlspecialchars($rm['category_2'],ENT_QUOTES,'UTF-8'),
 						htmlspecialchars($rm['category_3'],ENT_QUOTES,'UTF-8'),
@@ -635,10 +659,18 @@ if($show=='item'){
 						$r['id']
 					],$item);
 				}
-			}else
-				$item=preg_replace('~<service.*?>.*?<\/service>~is','',$item,1);
-		}else
-			$item=preg_replace('~<service>.*?<\/service>~is','',$item,1);
+			}else{
+				$item=preg_replace([
+					'~<service.*?>.*?<\/service>~is',
+					'~<inventory>.*?<\/inventory>~is'
+				],'',$item,1);
+			}
+		}else{
+			$item=preg_replace([
+				'~<service.*?>.*?<\/service>~is',
+				'~<inventory>.*?<\/inventory>~is'
+			],'',$item,1);
+		}
 		$address=$edit=$contentQuantity='';
 		if(isset($r['contentType'])&&($r['contentType']=='inventory')){
 			if(is_numeric($r['quantity'])&&$r['quantity']!=0)
@@ -701,9 +733,11 @@ if($show=='item'){
 			$item=str_replace('<json-ld>',$jsonld,$item);
 		}
 		$item=preg_replace([
-			'/<print author=[\"\']?link[\"\']?>/'
+			'/<print author=[\"\']?link[\"\']?>/',
+			'/<print author=[\"\']?name[\"\']?>/'
 		],[
 			URL.'profile/'.strtolower(str_replace(' ','-',htmlspecialchars($r['login_user'],ENT_QUOTES,'UTF-8'))),
+			$r['login_user']
 		],$item);
 		if($view!='page'&&stristr($item,'<review')){
 			preg_match('/<review>([\w\W]*?)<\/review>/',$item,$matches);
@@ -714,12 +748,10 @@ if($show=='item'){
 			while($rr=$sr->fetch(PDO::FETCH_ASSOC)){
 				$reviewitem=$review;
 				if(stristr($reviewitem,'<json-ld-review>')){
-					$jsonldreview='<script type="application/ld+json">{"@context":"http://schema.org","@type":"Review","author":"'.htmlspecialchars($rr['name'],ENT_QUOTES,'UTF-8').'","datePublished":"'.date('Y-m-d',$rr['ti']).'","description":"'.htmlspecialchars(strip_tags(rawurldecode($r['notes'])),ENT_QUOTES,'UTF-8').'","name":"'.htmlspecialchars($rr['name'],ENT_QUOTES,'UTF-8').'","reviewRating":{"@type":"Rating","bestRating":"5","ratingValue":"'.$rr['cid'].'","worstRating":"1"}}</script>';
+					$jsonldreview='<script type="application/ld+json">{"@context":"http://schema.org","@type":"Review","author":"'.($rr['name']==''?'Anonymous':htmlspecialchars($rr['name'],ENT_QUOTES,'UTF-8')).'","datePublished":"'.date('Y-m-d',$rr['ti']).'","description":"'.htmlspecialchars(strip_tags(rawurldecode($rr['notes'])),ENT_QUOTES,'UTF-8').'","name":"'.($rr['name']==''?'Anonymous':htmlspecialchars($rr['name'],ENT_QUOTES,'UTF-8')).'","reviewRating":{"@type":"Rating","bestRating":"5","ratingValue":"'.$rr['cid'].'","worstRating":"1"}}</script>';
 					$reviewitem=str_replace('<json-ld-review>',$jsonldreview,$reviewitem);
 				}
 				$reviewitem=preg_replace('/<print review=[\"\']?rating[\"\']?>/',$rr['cid'],$reviewitem);
-				$rset=['','','','','',''];
-				$rset[$rr['cid']]='set';
 				$reviewitem=preg_replace([
 					'/<print review=[\"\']?set5[\"\']?>/',
 					'/<print review=[\"\']?set4[\"\']?>/',
@@ -732,12 +764,12 @@ if($show=='item'){
 					'/<print review=[\"\']?date[\"\']?>/',
 					'/<print review=[\"\']?review[\"\']?>/'
 				],[
-					$rset[5],
-					$rset[4],
-					$rset[3],
-					$rset[2],
-					$rset[1],
-					htmlspecialchars($rr['name'],ENT_QUOTES,'UTF-8'),
+					$rr['cid']>=5?'set':'',
+					$rr['cid']>=4?'set':'',
+					$rr['cid']>=3?'set':'',
+					$rr['cid']>=2?'set':'',
+					$rr['cid']>=1?'set':'',
+					$rr['name']==''?'Anonymous':htmlspecialchars($rr['name'],ENT_QUOTES,'UTF-8'),
 					date('Y-m-d',$rr['ti']),
 					date('Y-m-d H:i:s',$rr['ti']),
 					date($config['dateFormat'],$rr['ti']),
@@ -758,36 +790,43 @@ if($show=='item'){
 			'/<print page=[\"\']?notes[\"\']?>/'
 		],'',$html);
 		if($view=='article'||$view=='events'||$view=='news'||$view=='proofs'){
-			if(file_exists(THEME.DS.'comments.html')){
-				$comments=$commentsHTML='';
-				$sc=$db->prepare("SELECT * FROM `".$prefix."comments` WHERE contentType=:contentType AND rid=:rid AND status!='unapproved' ORDER BY ti ASC");
-				$sc->execute([
-					':contentType'=>$view,
-					':rid'=>$r['id']
-				]);
-				$commentsHTML=file_get_contents(THEME.DS.'comments.html');
-				$commentsHTML=preg_replace([
-					'/<print content=[\"\']?id[\"\']?>/',
-					'/<print content=[\"\']?contentType[\"\']?>/',
-				],[
-					$r['id'],
-					$r['contentType']
-				],$commentsHTML);
-				$commentDOC=new DOMDocument();
-				@$commentDOC->loadHTML($commentsHTML);
-				preg_match('/<items>([\w\W]*?)<\/items>/',$commentsHTML,$matches);
-				while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
-					$comment=$matches[1];
-					$rc['notes']=htmlspecialchars(strip_tags(rawurldecode($rc['notes'])),ENT_QUOTES,'UTF-8');
-					require'core'.DS.'parser.php';
-					$comments.=$comment;
-				}
-				$commentsHTML=preg_replace('~<items>.*?<\/items>~is',$comments,$commentsHTML,1);
-				$commentsHTML=$r['options']{1}==1?str_replace(array('<comment>','</comment>'),'',$commentsHTML):preg_replace('~<comment>.*?<\/comment>~is','',$commentsHTML,1);
-				$commentsHTML=preg_replace('~<items>.*?<\/items>~is','',$commentsHTML,1);
-				$item.=$commentsHTML;
-			}else
-				$item.='Comments for this post is Enabled, but no <strong>"'.THEME.DS.'comments.html"</strong> template file exists';
+			$sc=$db->prepare("SELECT * FROM `".$prefix."comments` WHERE contentType=:contentType AND rid=:rid AND status!='unapproved' ORDER BY ti ASC");
+			$sc->execute([
+				':contentType'=>$view,
+				':rid'=>$r['id']
+			]);
+			if($sc->rowCount()>0||$r['options']{1}==1){
+				if(file_exists(THEME.DS.'comments.html')){
+					$comments=$commentsHTML='';
+					$commentsHTML=file_get_contents(THEME.DS.'comments.html');
+					$commentsHTML=preg_replace([
+						'/<print content=[\"\']?id[\"\']?>/',
+						'/<print content=[\"\']?contentType[\"\']?>/',
+					],[
+						$r['id'],
+						$r['contentType']
+					],$commentsHTML);
+					$commentDOC=new DOMDocument();
+					@$commentDOC->loadHTML($commentsHTML);
+					preg_match('/<items>([\w\W]*?)<\/items>/',$commentsHTML,$matches);
+					while($rc=$sc->fetch(PDO::FETCH_ASSOC)){
+						$comment=$matches[1];
+						$rc['notes']=htmlspecialchars(strip_tags(rawurldecode($rc['notes'])),ENT_QUOTES,'UTF-8');
+						$comment=preg_replace([
+							'/<print comments=[\"\']?datetime[\"\']?>/'
+						],[
+							date('Y-m-d',$rc['ti'])
+						],$comment,1);
+						require'core'.DS.'parser.php';
+						$comments.=$comment;
+					}
+					$commentsHTML=preg_replace('~<items>.*?<\/items>~is',$comments,$commentsHTML,1);
+					$commentsHTML=$r['options']{1}==1?preg_replace('/<\/?comment>/','',$commentsHTML):preg_replace('~<comment>.*?<\/comment>~is','',$commentsHTML,1);
+					$commentsHTML=preg_replace('~<items>.*?<\/items>~is','',$commentsHTML,1);
+					$item.=$commentsHTML;
+				}else
+					$item.='Comments for this post is Enabled, but no <strong>"'.THEME.DS.'comments.html"</strong> template file exists';
+			}
 		}
 		$html=preg_replace('~<item>.*?<\/item>~is',$item,$html,1);
 	}
@@ -795,7 +834,7 @@ if($show=='item'){
 if($view=='login'){
 	$html=preg_replace('/<print url>/',URL,$html,1);
 	if($config['options']{3}==1)
-		$html=preg_replace('/<[\/]?signup?>/','',$html,1);
+		$html=preg_replace('/<\/?signup?>/','',$html);
 	else
 		$html=preg_replace('~<signup>.*?<\/signup>~is','',$html,1);
 }

@@ -27,8 +27,8 @@ header('Content-Type:application/rss+xml;charset=ISO-8859-1');
 require'db.php';
 $config=$db->query("SELECT seoTitle,seoCaption FROM config WHERE id=1")->fetch(PDO::FETCH_ASSOC);
 if($args[0]==''||$args[0]=='index')$args[0]='%_%';
-$ti=time();?>
-<?xml version="1.0"?>
+$ti=time();
+echo'<?xml version="1.0"?>';?>
 <rss version="2.0">
   <channel>
     <title><?php echo$config['seoTitle'];?></title>

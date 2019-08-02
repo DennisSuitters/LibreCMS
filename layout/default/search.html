@@ -1,37 +1,39 @@
 <block include="meta_head.html">
 <block include="header.html">
 <block inbed="content">
-	<div class="container">
-		<div class="row mt-4 mb-4 m-sm-5">
-			<main id="content" class="col-12 col-sm-8" role="main">
-				<print page="notes">
-				<settings itemCount="50">
-				<items>
-					<article class="search mb-4" itemscope itemtype="http://schema.org/<print content=schemaType>" role="article">
-		        <div class="search-item">
-		          <div class="search-item-info">
-								<controls>
-									<view>
-										<div class="search-item-title">
-											<a href="<print content=linktitle>" itemprop="name" role="link"><print content="title"></a>
-										</div>
-		                <div class="search-item-url small">
-		                  <print content=linktitle>
-		                </div>
-									</view>
-								</controls>
-		            <small><print content="caption" length="200"></small>
-		          </div>
-		        </div>
-		      </article>
-				</items>
-				<more>
-					<button id="more<print config=showItems>" class="addMore btn btn-default btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>" role="button">More</button>
-				</more>
-			</main>
+	<main class="container">
+		<div class="row my-5">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<settings itemCount="50">
+						<items>
+							<div class="search mb-4" itemscope itemtype="http://schema.org/<print content=schemaType>">
+				        <div class="search-item">
+				          <div class="search-item-info">
+										<controls>
+											<view>
+												<div class="search-item-title">
+													<a href="<print content=linktitle>"><print content="title"></a>
+												</div>
+				                <div class="search-item-url small">
+				                  <print content=linktitle>
+				                </div>
+											</view>
+										</controls>
+				            <small><print content="caption" length="200"></small>
+				          </div>
+				        </div>
+				      </div>
+						</items>
+						<more>
+							<button id="more<print config=showItems>" class="addMore btn btn-outline-secondary btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>">More</button>
+						</more>
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
+	</main>
 </block>
-<block include="side_menu.html">
 <block include="footer.html">
 <block include="meta_footer.html">

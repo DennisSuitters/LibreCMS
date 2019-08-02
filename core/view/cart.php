@@ -23,6 +23,16 @@
  * @changes    Add logic and storage for Postage Options
  */
 $theme=parse_ini_file(THEME.DS.'theme.ini',true);
+if($page['notes']!=''){
+	$html=preg_replace([
+		'/<print page=[\"\']?notes[\"\']?>/',
+		'/<\/?pagenotes>/'
+	],[
+		rawurldecode($page['notes']),
+		''
+	],$html);
+}else
+	$html=preg_replace('~<pagenotes>.*?<\/pagenotes>~is','',$html,1);
 $notification='';
 $ti=time();
 $uid=isset($_SESSION['uid'])?$_SESSION['uid']:0;
@@ -234,12 +244,29 @@ if($args[0]=='confirm'){
 					'',
 					'',
 					''
-				],$html);
+				],$html,1);
 			}else{
-				$html=preg_replace('~<postageoptions>.*?<\/postoptions>~','<input type="hidden" name="postoption" value="0">',$html,1);
+				$html=preg_replace([
+					'~<postageoptions>.*?<\/postageoptions>~',
+					'/<postageoptions>/',
+					'/<\/postageoptions>/',
+					'/<postoptions>/',
+					'/<emptycart>/',
+					'/<\/emptycart>/'
+				],[
+					'<input type="hidden" name="postoption" value="0">',
+					'',
+					'',
+					'',
+					'',
+					''
+				],$html,1);
 			}
-			if(isset($user['id'])&&$user['id']>0)
+			if(isset($user['id'])&&$user['id']>0){
 				$html=preg_replace('~<loggedin>.*?<\/loggedin>~is','<input type="hidden" name="email" value="'.htmlspecialchars($user['email'],ENT_QUOTES,'UTF-8').'">',$html,1);
+			}else{
+				$html=preg_replace(['/<loggedin>/','/<\/loggedin>/'],'',$html);
+			}
 		}else
 			$html=preg_replace('~<emptycart>.*?<\/emptycart>~is',$theme['settings']['cart_empty'],$html,1);
 	}

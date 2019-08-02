@@ -21,6 +21,16 @@
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  */
+if($page['notes']!=''){
+	$html=preg_replace([
+		'/<print page=[\"\']?notes[\"\']?>/',
+		'/<\/?pagenotes>/'
+	],[
+		rawurldecode($page['notes']),
+		''
+	],$html);
+}else
+	$html=preg_replace('~<pagenotes>.*?<\/pagenotes>~is','',$html,1);
 $gals='';
 if(stristr($html,'<items')){
   preg_match('/<items>([\w\W]*?)<\/items>/',$html,$matches);
@@ -30,6 +40,8 @@ if(stristr($html,'<items')){
   $output='';
   while($r=$s->fetch(PDO::FETCH_ASSOC)){
     $items=$gal;
+    $bname=basename(substr($r['file'],0,-4));
+    $bname=rtrim($bname,'.');
     $items=preg_replace([
       '/<print media=[\"\']?thumb[\"\']?>/',
       '/<print media=[\"\']?file[\"\']?>/',
@@ -38,7 +50,7 @@ if(stristr($html,'<items')){
       '/<print media=[\"\']?attributionImageName[\"\']?>/',
       '/<print media=[\"\']?attributionImageURL[\"\']?>/'
     ],[
-      URL.'media/thumbs/'.basename(substr($r['file'],0,-4)).'.png',
+      URL.'media/thumbs/'.$bname.'.png',
       htmlspecialchars($r['file'],ENT_QUOTES,'UTF-8'),
       htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
       htmlspecialchars($r['seoCaption'],ENT_QUOTES,'UTF-8'),

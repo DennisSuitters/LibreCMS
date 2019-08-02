@@ -4,7 +4,7 @@
  *
  * Administration - Displays Edited Data with Options in a Popup
  *
- * dataspy.php version 2.0.2
+ * dataspy.php version 2.0.4
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -12,16 +12,17 @@
  * the MIT License and are unable to obtain it through the web, please
  * check the root folder of the project for a copy.
  *
- * @category   Administration - Accounts
+ * @category   Administration - Dataspy
  * @package    core/layout/dataspy.php
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.4
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.4 Fix i18n.
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 $getcfg=true;
@@ -38,14 +39,14 @@ if($s->rowCount()>0){?>
 <table class="table table-condensed table-striped table-hover" role="table">
   <thead>
     <tr role="row">
-      <th class="col-xs-2 text-center" role="columnheader"><?php echo localize('User');?></th>
-      <th class="col-xs-1 text-center" role="columnheader"><?php echo localize('Table');?></th>
-      <th class="col-xs-1 text-center" role="columnheader"><?php echo localize('Column');?></th>
-      <th class="col-xs-1 text-center" role="columnheader"><?php echo localize('contentType');?></th>
-      <th class="col-xs-1 text-center" role="columnheader"><?php echo localize('Action');?></th>
-      <th class="col-xs-2 text-center" role="columnheader"><?php echo localize('Date');?></th>
-      <th class="col-xs-3 text-center" role="columnheader"><?php echo localize('Data');?></th>
-      <th class="col-xs-1 text-right" role="columnheader"></th>
+      <th class="text-center" role="columnheader"><?php echo localize('User');?></th>
+      <th class="text-center" role="columnheader"><?php echo localize('Table');?></th>
+      <th class="text-center" role="columnheader"><?php echo localize('Column');?></th>
+      <th class="text-center" role="columnheader"><?php echo localize('contentType');?></th>
+      <th class="text-center" role="columnheader"><?php echo localize('Action');?></th>
+      <th class="text-center" role="columnheader"><?php echo localize('Date');?></th>
+      <th class="text-center" role="columnheader"><?php echo localize('Data');?></th>
+      <th class="text-right" role="columnheader"></th>
     </tr>
   </thead>
   <tbody id="l_activity">
@@ -63,8 +64,8 @@ if($s->rowCount()>0){?>
 <?php if($r['refColumn']=='notes'&&strlen($r['oldda'])>400&&strlen($r['newda'])>400){?>
         <div><small><?php echo localize('alert_all_warning_largedata');?></small></div>
 <?php }else{?>
-        <div><small>From: <small><?php if(strlen($r['oldda'])>400)echo localize('alert_all_warning_largedata');else echo htmlspecialchars($r['oldda']);?></small></small></div>
-        <div><small>To: <small><?php if(strlen($r['newda'])>400)echo localize('alert_all_warning_largedata');else echo htmlspecialchars($r['newda']);?></small></small></div>
+        <div><small><?php echo localize('From');?>: <small><?php if(strlen($r['oldda'])>400)echo localize('alert_all_warning_largedata');else echo htmlspecialchars($r['oldda']);?></small></small></div>
+        <div><small><?php echo localize('To');?>: <small><?php if(strlen($r['newda'])>400)echo localize('alert_all_warning_largedata');else echo htmlspecialchars($r['newda']);?></small></small></div>
 <?php }?>
       </td>
       <td class="text-right" role="cell">
@@ -77,4 +78,4 @@ if($s->rowCount()>0){?>
 <?php }?>
   </tbody>
 </table>
-<?php }else echo'<div class="alert alert-info" role="alert">'.localize('alert_all_ino_noresults').'</div>';
+<?php }else echo'<div class="alert alert-info" role="alert">'.localize('alert_all_info_no_results').'</div>';

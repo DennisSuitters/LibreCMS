@@ -62,15 +62,15 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		if($r['contentType']=='service'||$r['contentType']=='events'){
 			if($r['bookable']==1){
 				if(stristr($sideTemp,'<service>')){
-					$sideTemp=str_replace([
-						'/<print content=[\"\']?bookservice[\"\']?>/',
+					$sideTemp=preg_replace([
 						'/<service>/',
 						'/<\/service>/',
+						'/<print content=[\"\']?bookservice[\"\']?>/',
 						'~<inventory>.*?<\/inventory>~is'
 					],[
+						'',
+						'',
 						$r['id'],
-						'',
-						'',
 						''
 					],$sideTemp);
 				}
@@ -157,7 +157,7 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		}else
 			$inside=preg_replace('/<media>([\w\W]*?)<\/media>/','',$insides,1);
 		$items=$inside;
-		$time='<time datetime='.date('Y-m-d',$r['ti']).'">'.date($config['dateFormat'],$r['ti']).'</time>';
+		$time='<time datetime="'.date('Y-m-d',$r['ti']).'">'.date($config['dateFormat'],$r['ti']).'</time>';
 		if($r['contentType']=='events'||$r['contentType']=='news'){
 			if($r['tis']!=0){
 				$time='<time datetime="'.date('Y-m-d',$r['tis']).'">'.date('dS M H:i',$r['tis']).'</time>';

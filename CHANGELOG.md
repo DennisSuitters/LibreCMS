@@ -1,3 +1,20 @@
+### v2.0.5
+- Fix Comments Content display when enabled. Display Comments without Comments form if disabled, or don't add Comments markup if no comments exist.
+- Fix Display Created By on Content rather than edited.
+- Fix SEO not displaying correct information.
+- Fix Fix Media Display in Pages and Content Tabs.
+- Fix Messages reading correct storage of Messages Body.
+- Fix Subjects display when Added.
+- Remove unnecessary role attributes from elements.
+- Fix many ARIA-A11Y issues.
+- Add Clear IP from Visitor Tracker
+- Fix URL/IP Tracking.
+- Add More to Tracker Page to stop loading thousands of results.
+
+### v2.0.4
+- Add Detect and Decrypt of Base64 Email Messages
+- Fix elFinder Theme Styling to suite Dark and Light Administration themes.
+
 ### v2.0.3
 - Fix Social Arial Labels
 - Fix Meta Tag Generation and Fallbacks.

@@ -178,18 +178,44 @@ function restore(id){
 		$('#sp').html(msg);
 	});
 }
-function purge(id,t,c){
-	Pace.restart();
+function more(t,c){
 	$.ajax({
 		type:"GET",
-		url:"core/purge.php",
+		url:"core/more_"+t+".php",
+		data:{
+			t:t,
+			c:c
+		}
+	}).done(function(msg){
+		if(msg=='nomore'){
+			$('#more_'+c).remove();
+		}else{
+			$('#more_'+c).remove();
+			$('#l_tracker').append(msg);
+		}
+		$('[data-tooltip="tooltip"], .tooltip').tooltip('hide');
+	});
+}
+function purge(id,t,c){
+	Pace.restart();
+	if(t=='clearip'){
+		var f='clearip';
+	}else{
+		var f='purge';
+	}
+	$.ajax({
+		type:"GET",
+		url:"core/"+f+".php",
 		data:{
 			id:id,
 			t:t,
 			c:c
 		}
 	}).done(function(msg){
-		if(t=='iplist'||t=='logs'&&id==0){
+		if(t=='clearip'){
+			$('[data-ip="'+id+'"]').addClass('animated zoomOut');
+			setTimeout(function(){$('[data-ip="'+id+'"]').remove();},500);
+		}else if(t=='iplist'||t=='logs'&&id==0){
 			$('#l_'+t).addClass('animated zoomOut');
 			setTimeout(function(){$('#l_'+t).remove();},500);
 		}else if(t=='media'){

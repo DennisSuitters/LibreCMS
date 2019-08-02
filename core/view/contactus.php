@@ -21,6 +21,16 @@
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  */
+if($page['notes']!=''){
+	$html=preg_replace([
+		'/<print page=[\"\']?notes[\"\']?>/',
+		'/<\/?pagenotes>/'
+	],[
+		rawurldecode($page['notes']),
+		''
+	],$html);
+}else
+	$html=preg_replace('~<pagenotes>.*?<\/pagenotes>~is','',$html,1);
 if(stristr($html,'<address')){
 	$html=preg_replace([
 		'/<print config=[\"\']?address[\"\']?>/',
@@ -36,8 +46,8 @@ if(stristr($html,'<address')){
 		htmlspecialchars($config['suburb'],ENT_QUOTES,'UTF-8'),
 		htmlspecialchars($config['country'],ENT_QUOTES,'UTF-8'),
 		htmlspecialchars($config['postcode'],ENT_QUOTES,'UTF-8'),
-		htmlspecialchars($config['phone'],ENT_QUOTES,'UTF-8'),
-		htmlspecialchars($config['mobile'],ENT_QUOTES,'UTF-8')
+		htmlspecialchars(str_replace(' ','',$config['phone']),ENT_QUOTES,'UTF-8'),
+		htmlspecialchars(str_replace(' ','',$config['mobile']),ENT_QUOTES,'UTF-8')
 	],$html);
 }
 $s=$db->prepare("SELECT * FROM `".$prefix."choices` WHERE contentType='subject' ORDER BY title ASC");
@@ -50,7 +60,7 @@ if($s->rowCount()>0){
 	],'',$html);
 	$options='';
 	while($r=$s->fetch(PDO::FETCH_ASSOC))
-		$options.='<option value="'.$r['id'].'" role="option">'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'</option>';
+		$options.='<option value="'.$r['id'].'">'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'</option>';
 	$html=str_replace('<subjectOptions>',$options,$html);
 }else{
 	$html=preg_replace([

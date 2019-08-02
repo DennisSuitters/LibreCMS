@@ -62,7 +62,7 @@ if($config['email']!=''){
         $arr=parse_url($m[1]);
         if(!isset($arr['host'])||!isset($arr['path']))continue;
         $imgname=basename($m[1]);
-        $mail->AddEmbeddedImage('..'.DS.'media'.DS.$imgname,$imgid,$imgname);
+        $mail->addEmbeddedImage('..'.DS.'media'.DS.$imgname,$imgid,$imgname);
         $body=str_replace($img,'<img alt="" src="cid:'.$imgid.'" style="border:none"/>',$body);
       }
     }

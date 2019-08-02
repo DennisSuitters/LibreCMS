@@ -1,14 +1,14 @@
 <block inbed="maintenance">
 <!DOCTYPE html>
 <!--
-     LibreCMS - Copyright (C) Diemen Design 2019
-          the MIT Licensed Open Source Content Management System.
-     
-     Project Maintained at https://github.com/DiemenDesign/LibreCMS
-		 
-     Theme: Default
-     Creator: Diemen Design
-     Creator URL: https://diemen.design
+		LibreCMS - Copyright (C) Diemen Design 2019
+			the MIT Licensed Open Source Content Management System.
+ 
+		Project Maintained at https://github.com/DiemenDesign/LibreCMS
+ 
+		Theme: <print theme="title">
+		Creator: <print theme="creator">
+		Creator URL: <print theme="creatorurl">
 -->
 <html lang="en">
 	<head>
@@ -31,11 +31,14 @@
 				</buildSocial>
 			</ul>
 		</nav>
-		<div id="logo"><print config="business"></div>
-		<section class="content show" id="home">
-			<h1><print config="business"> is currently in Maintenance Mode.<h1>
-			<h5>Please standby while we update, fix, or add more awesomeness to the Site.</h5>
-		</section>
+		<main>
+			<h1 class="text-center"><print config="business"></h1>
+			<h3 class="text-center">is currently in Maintenance Mode.</h3>
+			<p class="text-center">
+				Please standby while we update, fix,<br>
+				and add more awesomeness to the Site.
+			</p>
+		</main>
 	</body>
 </html>
 </block>

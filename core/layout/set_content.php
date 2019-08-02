@@ -85,7 +85,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
               <label for="ct<?php echo$rs['id'];?>" class="input-group-text"><?php echo localize('Content');?></label>
               <input type="text" id="ct<?php echo$rs['id'];?>" class="form-control" value="<?php echo$rs['url'];?>" readonly role="textbox">
               <div class="input-group-text"><?php echo localize('Image');?></div>
-              <div class="input-group-append img"><?php echo$rs['icon']!=''?'<a href="'.$rs['icon'].'" data-lightbox="lightbox"><img id="thumbimage" src="'.$rs['icon'].'" alt="Thumbnail"></a>':'<img id="thumbimage" src="core/images/noimage.png" alt="No Image">';?></div>
+              <div class="input-group-append img"><?php echo$rs['icon']!=''&&file_exists('media'.DS.basename($rs['icon']))?'<a href="'.$rs['icon'].'" data-lightbox="lightbox"><img id="thumbimage" src="'.$rs['icon'].'" alt="Thumbnail"></a>':'<img id="thumbimage" src="core/images/noimage.png" alt="No Image">';?></div>
               <div class="input-group-append">
                 <form target="sp" action="core/purge.php" role="form">
                   <input type="hidden" name="id" value="<?php echo$rs['id'];?>">

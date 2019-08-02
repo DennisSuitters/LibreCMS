@@ -4,7 +4,7 @@
  *
  * Administration - Add Suggestions Popup
  *
- * suggestions-add.php version 2.0.2
+ * suggestions-add.php version 2.0.4
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,11 +17,12 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.4
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
+ * @changes    v2.0.4 Fix i18n.
  */
 if(!defined('DS'))define('DS',DIRECTORY_SEPARATOR);
 $getcfg=true;
@@ -38,25 +39,25 @@ define('UNICODE','UTF-8');?>
     <input type="hidden" name="c" value="<?php echo$c;?>">
 <?php if($c!='notes'){?>
     <div class="form-group">
-      <label for="suggestedit" class="control-label col-xs-4"><?php localize('Suggested Edit');?></label>
-      <div class="input-group col-xs-8">
-        <input id="suggestedit" class="form-control" name="da" value="" placeholder="<?php localize('Enter ').' '.localize('Suggested Edit');?>..." role="textbox">
+      <label for="suggestedit"><?php echo localize('Suggested Edit');?></label>
+      <div class="input-group">
+        <input id="suggestedit" class="form-control" name="da" value="" placeholder="<?php echo localize('Enter a ').' '.localize('Suggestion');?>..." role="textbox">
       </div>
     </div>
 <?php }else{?>
     <div class="form-group">
-      <div class="alert alert-info" role="alert"><?php localize('help_suggestion');?></div>
+      <div class="alert alert-info" role="alert"><?php echo localize('help_suggestion');?></div>
       <textarea id="suggestda" name="da" class="d-none"></textarea>
     </div>
 <?php }?> 
     <div class="form-group">
-      <label for="suggestreason" class="control-label col-xs-4"><?php localize('Reason');?></label>
-      <div class="input-group col-xs-8">
-        <input id="suggestreason" class="form-control" name="dar" value="" placeholder="Enter a reason for the suggested edit..." role="textbox">
+      <label for="suggestreason"><?php echo localize('Reason');?></label>
+      <div class="input-group">
+        <input id="suggestreason" class="form-control" name="dar" value="" placeholder="<?php echo localize('Enter a ').localize('Reason');?>..." role="textbox">
       </div>
     </div>
     <div class="form-group text-right">
-      <button type="submit" class="btn btn-secondary add"><?php localize('Add Suggestion');?></button>
+      <button type="submit" class="btn btn-secondary add" role="button" aria-label="<?php echo localize('Add');?>"><?php echo localize('Add Suggestion');?></button>
     </div>
   </form>
 </div>

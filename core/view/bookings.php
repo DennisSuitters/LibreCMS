@@ -21,16 +21,28 @@
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  */
+if($page['notes']!=''){
+	$html=preg_replace([
+		'/<print page=[\"\']?notes[\"\']?>/',
+		'/<\/?pagenotes>/',
+		'/<print currentdate>/'
+	],[
+		rawurldecode($page['notes']),
+		'',
+		date('Y-m-d',time())
+	],$html);
+}else
+	$html=preg_replace('~<pagenotes>.*?<\/pagenotes>~is','',$html,1);
 $sql=$db->query("SELECT * FROM `".$prefix."content` WHERE bookable='1' AND title!='' AND status='published' AND internal!='1' ORDER BY code ASC, title ASC");
 if($sql->rowCount()>0){
 	$bookable='';
 	while($row=$sql->fetch(PDO::FETCH_ASSOC)){
-		$bookable.='<option value="'.$row['id'].'" role="option"'.($row['id']==$args[0]?' selected':'').'>'.ucfirst(htmlspecialchars($row['contentType'],ENT_QUOTES,'UTF-8')).($row['code']!=''?':'.htmlspecialchars($row['code'],ENT_QUOTES,'UTF-8'):'').':'.htmlspecialchars($row['title'],ENT_QUOTES,'UTF-8').'</option>';
+		$bookable.='<option value="'.$row['id'].'"'.($row['id']==$args[0]?' selected':'').'>'.ucfirst(htmlspecialchars($row['contentType'],ENT_QUOTES,'UTF-8')).($row['code']!=''?':'.htmlspecialchars($row['code'],ENT_QUOTES,'UTF-8'):'').':'.htmlspecialchars($row['title'],ENT_QUOTES,'UTF-8').'</option>';
 	}
-	$html=str_replace([
-		'<serviceoptions>',
-		'<bookservices>',
-		'</bookservices>'
+	$html=preg_replace([
+		'/<serviceoptions>/',
+		'/<bookservices>/',
+		'/<\/bookservices>/'
 	],[
 		$bookable,
 		'',

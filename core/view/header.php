@@ -68,6 +68,11 @@ if(isset($_SESSION['rank'])&&$_SESSION['rank']>0){
 		],$html);
 //	}else
 //		$html=preg_replace('~<profile>.*?<\/profile>~is','',$html,1);
+		if(isset($user['rank'])&&$user['rank']>899){
+			$html=preg_replace(['/<[\/]?seohelper>/'],'',$html);
+		}else{
+			$html=preg_replace('~<seohelper>.*?<\/seohelper>~is','',$html,1);
+		}
 }else
 	$html=preg_replace('~<accountmenu>.*?<\/accountmenu>~is','',$html,1);
 $html=preg_replace([
@@ -126,7 +131,8 @@ if(stristr($html,'<buildMenu')){
 					true)
 				)$menuURL.='/'.str_replace(' ','-',strtolower($r['title']));
 			}
-		}
+		}else
+			$menuURL.=URL;
 		$sm=$db->prepare("SELECT * FROM `".$prefix."menu` WHERE mid=:mid AND active=1 ORDER BY ord ASC");
 		$sm->execute([':mid'=>$r['id']]);
 		$smc=$sm->rowCount();
@@ -225,6 +231,15 @@ if(stristr($html,'<buildMenu')){
 		else{
 			if($config['options']{3}==0)
 				$menuLogin=preg_replace('~<signup>.*?<\/signup>~is','',$menuLogin,1);
+			else
+				$menuLogin=preg_replace(
+					[
+						'/<signup>/',
+						'/<\/signup>/'
+					],
+					'',
+					$menuLogin,1
+				);
 			$htmlMenu.=$menuLogin;
 		}
 	}
@@ -285,7 +300,7 @@ $html=preg_replace([
 	$config['postcode']==0?'':htmlspecialchars($config['postcode'],ENT_QUOTES,'UTF-8'),
 	htmlspecialchars($config['country'],ENT_QUOTES,'UTF-8'),
 	htmlspecialchars($config['email'],ENT_QUOTES,'UTF-8'),
-	htmlspecialchars($config['phone'],ENT_QUOTES,'UTF-8'),
-	htmlspecialchars($config['mobile'],ENT_QUOTES,'UTF-8')
+	$config['phone']!=''?'<a href="tel:'.htmlspecialchars(str_replace(' ','',$config['phone']),ENT_QUOTES,'UTF-8').'">'.htmlspecialchars($config['phone'],ENT_QUOTES,'UTF-8').'</a>':'',
+	$config['mobile']!=''?'<a href="tel:'.htmlspecialchars(str_replace(' ','',$config['mobile']),ENT_QUOTES,'UTF-8').'">'.htmlspecialchars($config['mobile'],ENT_QUOTES,'UTF-8').'</a>':''
 ],$html);
 $content.=$html;

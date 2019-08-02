@@ -58,6 +58,14 @@
       $fileDefault=$file;
     }
     echo'>'.basename($file).'</option>';
+  }
+  foreach(glob("media".DS."carousel".DS."*.{html}",GLOB_BRACE)as$file){
+    echo'<option value="'.$file.'"';
+    if(stristr($file,$fileDefault)){
+      echo' selected';
+      $fileDefault=$file;
+    }
+    echo'>'.basename($file).' (Carousel)</option>';
   }?>
             </select>
             <div class="input-group-append">
@@ -66,7 +74,7 @@
           </div>
           <div class="form-group">
             <div class="input-group card-header p-2 mb-0">
-              <button id="codeSave" class="btn btn-secondary" onclick="populateTextarea();" data-tooltip="tooltip" data-placement="bottom" title="<?php echo localize('Save');?>" role="button" aria-label="<?php echo localize('aria_save');?>"><?php svg('libre-gui-save');?></button>
+              <button id="codeSave" class="btn btn-secondary" onclick="populateTextarea();$(this).removeClass('btn-danger');" data-tooltip="tooltip" data-placement="bottom" title="<?php echo localize('Save');?>" role="button" aria-label="<?php echo localize('aria_save');?>"><?php svg('libre-gui-save');?></button>
             </div>
           </div>
           <div class="form-group" style="margin-top:-15px">
@@ -86,6 +94,9 @@
           });
           var charWidth=editor.defaultCharWidth(),basePadding=4;
           editor.refresh();
+          editor.on('change',function(cMirror){
+            $('#codeSave').addClass('btn-danger');
+          });
           $('#filesEditLoad').on({
             click:function(event){
               event.preventDefault();

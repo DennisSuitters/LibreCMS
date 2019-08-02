@@ -4,7 +4,7 @@
  *
  * Administration - Edit Content
  *
- * edit_content.php version 2.0.2
+ * edit_content.php version 2.0.3
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,7 +17,7 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.3
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Fix Media Item Layouts
@@ -29,6 +29,7 @@
  * @changes    v2.0.2 Fix Media Display, adding and removal.
  * @changes    v2.0.3 Add Image ALT.
  * @changes    v2.0.3 Add Category Choice Selection.
+ * @changes    v2.0.5 Fix Media Display in Pages and Content Tabs.
  */
 $r=$s->fetch(PDO::FETCH_ASSOC);?>
 <main id="content" class="main">
@@ -393,7 +394,7 @@ echo'<option value="'.$rs['category'].'"/>';?>
                 <label fore="file" class="col-form-label col-sm-2"><?php echo localize('Image');?></label>
                 <div class="input-group col-sm-10">
                   <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="file" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
-                  <input id="file" type="text" class="form-control" value="<?php echo$r['file'];?>" readonly role="textbox">
+                  <input id="file" type="text" class="form-control textinput" value="<?php echo$r['file'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="file" readonly role="textbox">
                   <div class="input-group-append"><button class="btn btn-secondary" onclick="elfinderDialog('<?php echo$r['id'];?>','content','file');" data-tooltip="tooltip" title="<?php echo localize('Open Media Manager');?>" role="button" aria-label="<?php echo localize('aria_file_mediamanager');?>"><?php svg('libre-gui-browse-media');?></button></div>
                   <form target="sp" method="post" action="core/magicimage.php" role="form">
                     <input type="hidden" name="id" value="<?php echo$r['id'];?>">
@@ -404,13 +405,14 @@ echo'<option value="'.$rs['category'].'"/>';?>
                     <?php echo$r['file']!=''?'<a href="'.$r['file'].'" data-lightbox="lightbox"><img id="thumbimage" src="'.$r['file'].'" alt="Thumbnail"></a>':'<img id="thumbimage" src="'.ADMINNOIMAGE.'" alt="No Image">';?>
                   </div>
                   <div class="input-group-append"><button class="btn btn-secondary trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','file');" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button></div>
+                  <div class="input-group-append" data-tooltip="tooltip" title="<?php echo localize('Save');?>"><button id="savefile" class="btn btn-secondary save" data-dbid="file" data-style="zoom-in" role="button" aria-label="<?php echo localize('aria_save');?>"><?php svg('libre-gui-save');?></button></div>
                 </div>
               </div>
               <div id="tab-content-images-5" class="form-group row">
                 <label for="thumb" class="col-form-label col-sm-2"><?php echo localize('Thumbnail');?></label>
                 <div class="input-group col-sm-10">
                   <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="thumb" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
-                  <input id="thumb" type="text" class="form-control" value="<?php echo$r['thumb'];?>" readonly role="textbox">
+                  <input id="thumb" type="text" class="form-control textinput" value="<?php echo$r['thumb'];?>" data-dbid="<?php echo$r['id'];?>" data-dbt="content" data-dbc="thumb" readonly role="textbox">
                   <div class="input-group-append"><button class="btn btn-secondary" onclick="elfinderDialog('<?php echo$r['id'];?>','content','thumb');"data-tooltip="tooltip" title="<?php echo localize('Open Media Manager');?>" role="button" aria-label="<?php echo localize('aria_file_mediamanager');?>"><?php svg('libre-gui-browse-media');?></button></div>
                   <form target="sp" method="post" action="core/magicimage.php" role="form">
                     <input type="hidden" name="id" value="<?php echo$r['id'];?>">
@@ -421,6 +423,7 @@ echo'<option value="'.$rs['category'].'"/>';?>
                     <?php echo$r['thumb']!=''?'<a href="'.$r['thumb'].'" data-lightbox="lightbox"><img id="thumbimage" src="'.$r['thumb'].'" alt="Thumbnail"></a>':'<img id="thumbimage" src="'.ADMINNOIMAGE.'" alt="No Image">';?>
                   </div>
                   <div class="input-group-append"><button class="btn btn-secondary trash" onclick="imageUpdate('<?php echo$r['id'];?>','content','thumb');" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button></div>
+                  <div class="input-group-append" data-tooltip="tooltip" title="<?php echo localize('Save');?>"><button id="savethumb" class="btn btn-secondary save" data-dbid="thumb" data-style="zoom-in" role="button" aria-label="<?php echo localize('aria_save');?>"><?php svg('libre-gui-save');?></button></div>
                 </div>
               </div>
               <div id="tab-content-images-7" class="form-group row">
@@ -571,39 +574,39 @@ if($sm->rowCount()>0){
       $thumb='media/thumbs/'.substr(basename($rm['file']),0,-4).'.png';
     else
       $thumb=$rm['file'];?>
-                  <div id="mi_<?php echo$rm['id'];?>" class="media col-6 col-sm-3">
-                    <a href="<?php echo$rm['file'];?>" data-lightbox="media"><img class="card-img" src="<?php echo$thumb;?>" alt="Media <?php echo$rm['id'];?>"></a>
-                    <div class="card-image-overlay position-relative">
-                      <div class="controls btn-group">
-                        <div class="handle btn btn-secondary btn-xs" data-tooltip="tooltip" title="<?php echo localize('Drag to ReOrder this item');?>" role="button" aria-label="<?php echo localize('aria_drag');?>"><?php svg('libre-gui-drag');?></div>
-                        <button class="btn btn-secondary trash btn-xs" onclick="purge('<?php echo$rm['id'];?>','media')" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
-                      </div>
-                    </div>
+                <div id="mi_<?php echo$rm['id'];?>" class="media-gallery d-inline-block col-6 col-sm-2 position-relative p-0 m-1 mt-0">
+                  <a class="card bg-dark m-0" href="<?php echo$rm['file'];?>" data-lightbox="media">
+                    <img src="<?php echo$thumb;?>" class="card-img" alt="Media <?php echo$rm['id'];?>">
+                  </a>
+                  <div class="btn-group float-right">
+                    <div class="handle btn btn-secondary btn-sm" onclick="return false;" data-tooltip="tooltip" title="<?php echo localize('Drag to ReOrder this item');?>" aria-label="<?php echo localize('aria_drag');?>"><?php svg('libre-gui-drag');?></div>
+                    <button class="btn btn-secondary trash btn-sm" onclick="purge('<?php echo$rm['id'];?>','media')" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
                   </div>
+                </div>
 <?php }?>
-                  <script>
-                    $('#mi').sortable({
-                      items:".media",
-                      placeholder:".ghost",
-                      helper:fixWidthHelper,
-                      update:function(e,ui){
-                        var order=$("#mi").sortable("serialize");
-                        $.ajax({
-                          type:"POST",
-                          dataType:"json",
-                          url:"core/reordermedia.php",
-                          data:order
-                        });
-                      }
-                    }).disableSelection();
-                    function fixWidthHelper(e,ui){
-                      ui.children().each(function(){
-                        $(this).width($(this).width());
+                <script>
+                  $('#mi').sortable({
+                    items:".media-gallery",
+                    placeholder:".ghost",
+                    helper:fixWidthHelper,
+                    update:function(e,ui){
+                      var order=$("#mi").sortable("serialize");
+                      $.ajax({
+                        type:"POST",
+                        dataType:"json",
+                        url:"core/reordermedia.php",
+                        data:order
                       });
-                      return ui;
                     }
-                    $('[data-lightbox="media"]').simpleLightbox();
-                  </script>
+                  }).disableSelection();
+                  function fixWidthHelper(e,ui){
+                    ui.children().each(function(){
+                      $(this).width($(this).width());
+                    });
+                    return ui;
+                  }
+                  $('[data-lightbox="media"]').simpleLightbox();
+                </script>
 <?php }?>
               </div>
             </div>
@@ -659,7 +662,7 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
 <?php $sc=$db->prepare("SELECT * FROM `".$prefix."comments` WHERE contentType=:contentType AND rid=:rid ORDER BY ti ASC");
 $sc->execute([':contentType'=>$r['contentType'],':rid'=>$r['id']]);
 while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
-              <div id="l_<?php echo$rc['id'];?>" class="media mb-3 p-3 border-bottom<?php echo$rc['status']=='unapproved'?' danger':'';?>">
+              <div id="l_<?php echo$rc['id'];?>" class="media mb-3 p-3 border-bottom border-dark<?php echo$rc['status']=='unapproved'?' danger':'';?>">
 <?php $su=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:id");
   $su->execute([':id'=>$rc['uid']]);
   $ru=$su->fetch(PDO::FETCH_ASSOC);?>
@@ -677,7 +680,7 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
                     <button id="approve_<?php echo$rc['id'];?>" class="btn btn-secondary btn-sm add<?php echo$rc['status']!='unapproved'?' hidden':'';?>" onclick="update('<?php echo$rc['id'];?>','comments','status','approved')" data-tooltip="tooltip" title="<?php echo localize('Approve');?>" role="button" aria-label="<?php echo localize('aria_approve');?>"><?php svg('libre-gui-approve');?></button>
                     <button class="btn btn-secondary btn-sm trash" onclick="purge('<?php echo$rc['id'];?>','comments')" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
                   </div>
-                  <h6 class="media-heading"><?php echo localize('Name');?>: <?php echo$rc['name'];?></h6>
+                  <h6 class="media-heading"><?php echo localize('Name');?>: <?php echo$rc['name']==''?'Anonymous':$rc['name'].' &lt;'.$rc['email'].'&gt;';?></h6>
                   <time class="small"><?php echo date($config['dateFormat'],$rc['ti']);?></time><br>
                   <?php echo strip_tags($rc['notes']);?>
                 </div>
@@ -717,19 +720,21 @@ while($rc=$sc->fetch(PDO::FETCH_ASSOC)){?>
 $sr->execute([':rid'=>$r['id']]);
 while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
             <div id="l_<?php echo$rr['id'];?>" class="media<?php echo$rr['status']=='unapproved'?' danger':'';?>">
-              <div class="media-body well">
-                <span class="rat">
-                  <span<?php echo($rr['cid']==5?' class="set"':'');?>>☆</span>
-                  <span<?php echo($rr['cid']==4?' class="set"':'');?>>☆</span>
-                  <span<?php echo($rr['cid']==3?' class="set"':'');?>>☆</span>
-                  <span<?php echo($rr['cid']==2?' class="set"':'');?>>☆</span>
-                  <span<?php echo($rr['cid']==1?' class="set"':'');?>>☆</span>
-                </span>
+              <div class="media-body well p-1 p-sm-3 border-top border-dark">
                 <div id="controls-<?php echo$rr['id'];?>" class="btn-group float-right" role="group">
                   <button id="approve_<?php echo$rr['id'];?>" class="btn btn-secondary btn-sm<?php echo$rr['status']=='approved'?' hidden':'';?>" onclick="update('<?php echo$rr['id'];?>','comments','status','approved')" data-tooltip="tooltip" title="<?php echo localize('Approve');?>" role="button" aria-label="<?php echo localize('aria_approve');?>"><?php svg('libre-gui-approve');?></button>
                   <button class="btn btn-secondary btn-sm trash" onclick="purge('<?php echo$rr['id'];?>','comments')" data-tooltip="tooltip" title="<?php echo localize('Delete');?>" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
                 </div>
-                <h6 class="media-heading" role="heading"><?php echo$rr['name'].', '.date($config['dateFormat'],$rr['ti']);?></h6>
+                <h6 class="media-heading" role="heading">
+                  <span class="rat d-block d-sm-inline-block">
+                    <span<?php echo($rr['cid']>=1?' class="set"':'');?>></span>
+                    <span<?php echo($rr['cid']>=2?' class="set"':'');?>></span>
+                    <span<?php echo($rr['cid']>=3?' class="set"':'');?>></span>
+                    <span<?php echo($rr['cid']>=4?' class="set"':'');?>></span>
+                    <span<?php echo($rr['cid']==5?' class="set"':'');?>></span>
+                  </span>
+                  <?php echo$rr['name']==''?'Anonymous':$rr['name'].' &lt;'.$rr['email'].'&gt; on '.date($config['dateFormat'],$rr['ti']);?>
+                </h6>
                 <p><?php echo$rr['notes'];?></p>
               </div>
             </div>
@@ -766,7 +771,7 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
                 <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="schemaType" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                 <select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php echo$user['options']{1}==0?' disabled':'';?> data-tooltip="tooltip" title="<?php echo localize('Schema for Microdata Content');?>" role="listbox">
                   <option value="blogPosting"<?php echo$r['schemaType']=='blogPosting'?' selected':'';?>><?php echo localize('schema_blogposting');?></option>
-                  <option value="Product"<?php echo$r['schemaType']=='Product'?' selected':'';?>><?php echo localize('schema_product');?></option>
+                  <option value="Offer"<?php echo$r['schemaType']=='Offer'?' selected':'';?>><?php echo localize('schema_product');?> (Product/Inventory)</option>
                   <option value="Service"<?php echo$r['schemaType']=='Service'?' selected':'';?>><?php echo localize('schema_service');?></option>
                   <option value="ImageGallery"<?php echo$r['schemaType']=='ImageGallery'?' selected':'';?>><?php echo localize('schema_imagegallery');?></option>
                   <option value="Review"<?php echo$r['schemaType']=='Review'?' selected':'';?>><?php echo localize('schema_review');?></option>

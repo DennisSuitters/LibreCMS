@@ -4,7 +4,7 @@
  *
  * Administration - Messages Settings
  *
- * set_messages.php version 2.0.2
+ * set_messages.php version 2.0.4
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,13 +17,15 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.4
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Change Back Link to Referer
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
  * @changes    v2.0.3 Add Options for Webmail.
+ * @changes    v2.0.4 Move Delete Messages option to Users rather than Config.
+ * @changes    v2.0.5 Fix Subject display when adding Subjects.
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
@@ -43,15 +45,15 @@
     <div class="card">
       <div class="card-body">
         <div class="help-block small text-muted text-right"><?php echo localize('help_messages');?><a href="<?php echo URL.$settings['system']['admin'];?>/preferences/contact#email"><?php echo localize('Preferences');?></a>.</div>
-        <form target="sp" method="post" action="core/add_data.php" role="form">
+        <form target="sp" method="post" action="core/add_data.php">
           <input type="hidden" name="act" value="add_subject">
           <div class="form-group row">
             <div class="input-group">
               <label for="sub" class="input-group-text"><?php echo localize('Subject');?></label>
-              <input type="text" id="sub" class="form-control" name="sub" value="" placeholder="<?php echo localize('Enter a ').localize('Subject');?>..." role="textbox">
+              <input type="text" id="sub" class="form-control" name="sub" value="" placeholder="<?php echo localize('Enter a ').localize('Subject');?>...">
               <label for="eml" class="input-group-text"><?php echo localize('Email');?></label>
-              <input type="text" id="eml" class="form-control" name="eml" value="" placeholder="<?php echo localize('Enter an ').localize('Email');?>..." role="textbox">
-              <div class="input-group-append"><button class="btn btn-secondary add" type="submit" data-tooltip="tooltip" title="<?php echo localize('Add');?>" role="textbox" aria-label="<?php echo localize('aria_add');?>"><?php svg('libre-gui-plus');?></button></div>
+              <input type="text" id="eml" class="form-control" name="eml" value="" placeholder="<?php echo localize('Enter an ').localize('Email');?>...">
+              <div class="input-group-append"><button class="btn btn-secondary add" type="submit" data-tooltip="tooltip" title="<?php echo localize('Add');?>" aria-label="<?php echo localize('aria_add');?>"><?php svg('libre-gui-plus');?></button></div>
             </div>
           </div>
         </form>
@@ -61,15 +63,15 @@ $ss->execute();
 while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
           <div id="l_<?php echo$rs['id'];?>" class="form-group row">
             <div class="input-group">
-              <label for="sub<?php echo$r['id'];?>" class="input-group-text"><?php echo localize('Subject');?></label>
-              <input type="text" id="sub<?php echo$r['id'];?>" class="form-control" value="<?php echo$rs['title'];?>" onchange="update('<?php echo$rs['id'];?>','subject','title',$(this).val());" placeholder="<?php echo localize('Enter a').' '.localize('Subject');?>..." role="textbox">
-              <label for="eml<?php echo$r['id'];?>" class="input-group-text"><?php echo localize('Email');?></label>
-              <input type="text" class="form-control" value="<?php echo$rs['url'];?>" onchange="update('<?php echo$rs['id'];?>','subject','url',$(this).val());" placeholder="<?php echo localize('Enter an').' '.localize('Email');?>..." role="textbox">
+              <div class="input-group-text"><?php echo localize('Subject');?></div>
+              <input type="text" id="sub<?php echo$r['id'];?>" class="form-control" value="<?php echo$rs['title'];?>" onchange="update('<?php echo$rs['id'];?>','subject','title',$(this).val());">
+              <div class="input-group-text"><?php echo localize('Email');?></div>
+              <input type="text" class="form-control" value="<?php echo$rs['url'];?>" onchange="update('<?php echo$rs['id'];?>','subject','url',$(this).val());">
               <div class="input-group-append">
-                <form target="sp" action="core/purge.php" role="form">
+                <form target="sp" action="core/purge.php">
                   <input type="hidden" name="id" value="<?php echo$rs['id'];?>">
                   <input type="hidden" name="t" value="choices">
-                  <button class="btn btn-secondary trash" data-tooltip="tooltip" title="Delete" role="button" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
+                  <button class="btn btn-secondary trash" data-tooltip="tooltip" title="Delete" aria-label="<?php echo localize('aria_delete');?>"><?php svg('libre-gui-trash');?></button>
                 </form>
               </div>
             </div>
@@ -93,9 +95,9 @@ while($rs=$ss->fetch(PDO::FETCH_ASSOC)){?>
           </div>
         </div>
         <div class="form-group row">
-          <label for="options10" class="col-form-label col-sm-3"><?php echo localize('Delete Messages When Retrieved');?></label>
+          <label for="options9" class="col-form-label col-sm-3"><?php echo localize('Delete Messages When Retrieved');?></label>
           <div class="input-group col-sm-3">
-            <label class="switch switch-label switch-success"><input type="checkbox" id="options10" class="switch-input" data-dbid="1" data-dbt="config" data-dbc="options" data-dbb="10" role="checkbox"<?php echo$config['options']{10}==1?' checked aria-checked="true"':' aria-checked="false"';?>><span class="switch-slider" data-checked="<?php echo localize('on');?>" data-unchecked="<?php echo localize('off');?>"></span></label>
+            <label class="switch switch-label switch-success"><input type="checkbox" id="options10" class="switch-input" data-dbid="1" data-dbt="user" data-dbc="options" data-dbb="9" role="checkbox"<?php echo$user['options']{9}==1?' checked aria-checked="true"':' aria-checked="false"';?>><span class="switch-slider" data-checked="<?php echo localize('on');?>" data-unchecked="<?php echo localize('off');?>"></span></label>
           </div>
         </div>
         <h4><?php echo localize('Mailboxes');?></h4>
@@ -212,6 +214,24 @@ while($rm=$sm->fetch(PDO::FETCH_ASSOC)){?>
               <input type="hidden" name="c" value="contactAutoReplyLayout">
               <textarea id="contactAutoReplyLayout" class="form-control summernote" name="da" role="textbox"><?php echo rawurldecode($config['contactAutoReplyLayout']);?></textarea>
             </form>
+          </div>
+        </div>
+        <hr>
+        <legend><?php echo localize('Email Signature');?></legend>
+        <div role="tabpanel" class="tab-pane" id="account-messages">
+          <div class="form-group row">
+            <label for="email_signature" class="col-form-label col-sm-2"><?php echo localize('Signature');?></label>
+            <div class="col-sm-10">
+              <div class="card-header p-0">
+                <?php echo$user['rank']>899?'<button class="btn btn-secondary btn-sm fingerprint" data-dbgid="da" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button><div id="da" data-dbid="1" data-dbt="config" data-dbc="email_signature"></div>':'';?>
+                <form method="post" target="sp" action="core/update.php" role="form">
+                  <input type="hidden" name="id" value="1">
+                  <input type="hidden" name="t" value="config">
+                  <input type="hidden" name="c" value="email_signature">
+                  <textarea id="email_signature" class="form-control summernote" name="da" role="textbox"><?php echo rawurldecode($config['email_signature']);?></textarea>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>

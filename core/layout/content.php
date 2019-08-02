@@ -17,7 +17,7 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.3
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Move Settings to Header
@@ -39,7 +39,7 @@ if($args[0]=='scheduler'){
     $comments=0;
     if($args[0]=='article')$schema='blogPosting';
     if($args[0]=='inventory'){
-      $schema='Product';
+      $schema='Offer';
       $stockStatus='quantity';
     }
     if($args[0]=='service')$schema='Service';

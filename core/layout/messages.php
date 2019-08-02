@@ -17,12 +17,13 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.3
+ * @version    2.0.4
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.1 Move Settings to Header
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.3 Add Retrieving and Manipulation of Emails.
+ * @changes    v2.0.4 Add Display Attachments if included.
  */
 if($args[0]=='settings')
   include'core'.DS.'layout'.DS.'set_messages.php';
@@ -65,14 +66,6 @@ else{
     $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE status='unread' ORDER BY ti DESC, subject ASC");
     $s->execute();
   }
-  if($folder=='trash'){
-    $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE status='trash' ORDER BY ti DESC, subject ASC");
-    $s->execute();
-  }
-  if($folder=='starred'){
-    $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE starred=1 ORDER BY ti DESC, subject ASC");
-    $s->execute();
-  }
   if($folder=='important'){
     $s=$db->prepare("SELECT * FROM `".$prefix."messages` WHERE important=1 ORDER BY ti DESC, subject ASC");
     $s->execute();
@@ -89,7 +82,7 @@ else{
   $sp=$db->query("SELECT COUNT(folder) AS cnt FROM `".$prefix."messages` WHERE folder='spam' AND status='unread'")->fetch(PDO::FETCH_ASSOC);?>
         <div class="email-app mb-4">
           <nav>
-            <a class="btn btn-secondary btn-block" href="#">Compose</a>
+            <a class="btn btn-secondary btn-block" href="<?php echo URL.$settings['system']['admin'].'/messages/compose';?>">Compose</a>
             <ul id="messagemenu" class="nav">
               <li id="nav_1" class="nav-item<?php echo$folder=='INBOX'?' active':'';?>">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages';?>">
@@ -102,40 +95,27 @@ else{
                   <span id="unreadbadge" class="badge badge-warning"><?php echo$ur['cnt']>0?$ur['cnt']:'';?></span>
                 </a>
               </li>
-<?php /*              <li id="nav_3" class="nav-item">
-                <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/starred';?>">
-                  <?php svg('libre-shape-star');?> Starred
-                </a>
-              </li> */?>
               <li id="nav_4" class="nav-item<?php echo$folder=='sent'?' active':'';?>">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/sent';?>">
                   <?php svg('libre-gui-email-send');?> Sent
-                </a>
-              </li>
-<?php /*              <li id="nav_5" class="nav-item">
-                <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/trash';?>">
-                  <?php svg('libre-gui-trash');?> Trash
                 </a>
               </li>
               <li id="nav_6" class="nav-item">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/important';?>">
                   <?php svg('libre-gui-bookmark');?> Important
                 </a>
-              </li> */ ?>
+              </li>
               <li id="nav_7" class="nav-item<?php echo$folder=='spam'?' active':'';?>">
                 <a class="nav-link" href="<?php echo URL.$settings['system']['admin'].'/messages/spam';?>">
                   <?php svg('libre-gui-email-spam');?> Spam
                   <span id="spambadge" class="badge badge-warning"><?php echo$sp['cnt']>0?$sp['cnt']:'';?></span>
                 </a>
               </li>
-              <li class="ghost hidden">
-                <div>&nbsp;</div>
-              </li>
             </ul>
           </nav>
           <div class="inbox col">
             <div style="height:20px;">
-              <div id="checkmessages" class="badge badge-warning col-12 text-center">Checking for new Messages!!!</div>
+              <div id="checkmessages" class="badge badge-warning col-12 text-center d-none">Checking for new Messages!!!</div>
             </div>
             <ul id="allmessages" class="messages">
 <?php while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
@@ -173,6 +153,18 @@ else{
                     <span class="from">From: <?php echo$r['from_name']!=''?$r['from_name'].'<small> &lt;'.$r['from_email'].'&gt;</small>':'&lt;'.$r['from_email'].'&gt;';?></span>
                   </span>
                   <span class="title d-block">Subject: <?php echo$r['subject'];?></span>
+<?php if($r['attachments']!=''){
+  $attachments=explode(',',$r['attachments']);
+  $att='';
+  foreach($attachments as $attachment){
+    $att.='<a target="_blank" href="'.$attachment.'">'.basename($attachment).'</a> ';
+  }?>
+                  <span class="title">Attachments: <?php echo$att;?></span>
+<?php }
+  if($r['notes_html']=='')$r['notes_html']=$r['notes_plain'];
+  if($r['notes_html']=='')$r['notes_html']=$r['notes_raw'];
+  if(is_base64_string($r['notes_html']))$r['notes_html']=base64_decode($r['notes_html']);
+?>
                   <span class="description d-block text-wrap"><?php echo strip_html_tags($r['notes_html']);?></span>
                 </a>
               </li>
@@ -229,4 +221,15 @@ function strip_html_tags($t,$l=400){
   $t=strip_tags($t);
   $t=trim(preg_replace('/[\t\n\r\s]+/',' ',$t));
   return substr($t,0,$l);
+}
+function is_base64_string($s) {
+  if (($b = base64_decode($s, TRUE)) === FALSE) {
+    return FALSE;
+  }
+  $e = mb_detect_encoding($b);
+  if (in_array($e, array('UTF-8', 'ASCII'))) { // YMMV
+    return TRUE;
+  } else {
+    return FALSE;
+  }
 }
