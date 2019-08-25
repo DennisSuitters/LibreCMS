@@ -22,6 +22,7 @@
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.2 Fix incorrect use of / in some directives, which were
  *             creating a malformed output.
+ * @changes    v2.0.6 Remove "Disallow: /search/" directive.
  */
 header('Content-Type:text/plain');?>
 # As always, Asimov\'s Three Laws are in effect:
@@ -34,7 +35,6 @@ Disallow: /harm/to/humans
 Disallow: /ignoring/human/orders
 Disallow: /harm/to/self
 Disallow: /cgi-bin/
-Disallow: /search/
 Disallow: /admin/
 
 User-Agent: Samsung NaviBot

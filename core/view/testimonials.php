@@ -55,7 +55,7 @@ if($s->rowCount()>0){
 			'/<print datePub>/'
 		],[
 			$r['schemaType'],
-			$config['seoTitle'],
+			htmlspecialchars($config['seoTitle'],ENT_QUOTES,'UTF-8'),
 			date('Y-d-m',$r['ti'])
 		],$items);
 		if(preg_match('/<print content=[\"\']?avatar[\"\']?>/',$items)){
@@ -80,14 +80,46 @@ if($s->rowCount()>0){
 			else
 				$items=preg_replace('/<print content=[\"\']?avatar[\"\']?>/',$noavatar,$items);
 		}
+		$jsonld='';
+		if(stristr($items,'<json-ld-testimonial>')){
+			$jsonld='<script type="application/ld+json">{'.
+				'"@context":"https://schema.org/",'.
+				'"@type":"Review",'.
+				'"itemReviewed":{'.
+			    '"@type":"localBusiness",'.
+			    '"image":"'.URL.THEME.'/images/logo.png'.'",'.
+			    '"name":"'.htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8').'",'.
+			    '"telephone":"'.($config['phone']!=''?htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8'):htmlspecialchars($config['mobile'],ENT_QUOTES,'UTF-8')).'",'.
+					'"address":{'.
+						'"@type":"PostalAddress",'.
+						'"streetAddress":"'.htmlspecialchars($config['address'],ENT_QUOTES,'UTF-8').'",'.
+						'"addressLocality":"'.htmlspecialchars($config['suburb'],ENT_QUOTES,'UTF-8').'",'.
+						'"addressRegion":"'.htmlspecialchars($config['state'],ENT_QUOTES,'UTF-8').'",'.
+						'"postalCode":"'.htmlspecialchars($config['postcode'],ENT_QUOTES,'UTF-8').'",'.
+						'"addressCountry":"'.htmlspecialchars($config['country'],ENT_QUOTES,'UTF-8').'"'.
+					'}'.
+			  '},'.
+  			'"author":"'.($r['name']!=''?htmlspecialchars($r['name'],ENT_QUOTES,'UTF-8'):'Anonymous').($r['name']!=''&&$r['business']!=''?' : ':'').($r['business']!=''?htmlspecialchars($r['business'],ENT_QUOTES,'UTF-8'):'').'",'.
+  			'"datePublished":"'.date('Y-m-d',$r['ti']).'",'.
+  			'"reviewBody":"'.htmlspecialchars(strip_tags(rawurldecode($r['notes'])),ENT_QUOTES,'UTF-8').'",'.
+  			'"reviewRating":{'.
+    			'"@type":"Rating",'.
+    			'"bestRating":"5",'.
+    			'"ratingValue":"5",'.
+    			'"worstRating":"1"'.
+  			'}'.
+			'}</script>';
+		}
 		$items=preg_replace([
 			'/<print content=[\"\']?notes[\"\']?>/',
 			'/<print content=[\"\']?business[\"\']?>/',
-			'/<print content=[\"\']?name[\"\']?>/'
+			'/<print content=[\"\']?name[\"\']?>/',
+			'/<json-ld-testimonial>/'
 		],[
 			($view=='index'?substr(strip_tags(rawurldecode($r['notes'])),0,600):strip_tags(rawurldecode($r['notes']))),
-			$r['business']!=''?$r['business']:'Anonymous',
-			$r['name']!=''?$r['name']:'Anonymous'
+			$r['business']!=''?htmlspecialchars($r['business'],ENT_QUOTES,'UTF-8'):'Anonymous',
+			$r['name']!=''?htmlspecialchars($r['name'],ENT_QUOTES,'UTF-8'):'Anonymous',
+			$jsonld
 		],$items);
 		$testitems.=$items;
 		$i++;
@@ -120,6 +152,4 @@ if($s->rowCount()>0){
 		'/<\/subjectText>/'
 	],'',$html);
 }
-
 $content.=$html;
-

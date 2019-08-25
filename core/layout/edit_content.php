@@ -771,7 +771,7 @@ while($rr=$sr->fetch(PDO::FETCH_ASSOC)){?>
                 <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="schemaType" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div>':'';?>
                 <select id="schemaType" class="form-control" onchange="update('<?php echo$r['id'];?>','content','schemaType',$(this).val());"<?php echo$user['options']{1}==0?' disabled':'';?> data-tooltip="tooltip" title="<?php echo localize('Schema for Microdata Content');?>" role="listbox">
                   <option value="blogPosting"<?php echo$r['schemaType']=='blogPosting'?' selected':'';?>><?php echo localize('schema_blogposting');?></option>
-                  <option value="Offer"<?php echo$r['schemaType']=='Offer'?' selected':'';?>><?php echo localize('schema_product');?> (Product/Inventory)</option>
+                  <option value="Product"<?php echo$r['schemaType']=='Product'?' selected':'';?>><?php echo localize('schema_product');?> (Product/Inventory)</option>
                   <option value="Service"<?php echo$r['schemaType']=='Service'?' selected':'';?>><?php echo localize('schema_service');?></option>
                   <option value="ImageGallery"<?php echo$r['schemaType']=='ImageGallery'?' selected':'';?>><?php echo localize('schema_imagegallery');?></option>
                   <option value="Review"<?php echo$r['schemaType']=='Review'?' selected':'';?>><?php echo localize('schema_review');?></option>

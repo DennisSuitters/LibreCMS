@@ -16,15 +16,15 @@
 		<div class="row my-5">
 			<div class="col-12 col-sm-9">
 				<item>
-					<article class="card mb-5" itemscope itemtype="http://schema.org/<print content=schemaType>">
+					<article class="card mb-5">
 						<json-ld>
 						<img class="card-img-top img-fluid" src="<print content=image>" alt="<print content=imageALT>">
 						<div class="card-body">
-							<h1 class="card-title" itemprop="name"><print content="title"></h1>
-							<div class="card-text" itemprop="description">
+							<h1 class="card-title"><print content="title"></h1>
+							<div class="card-text">
 								<cost>
 									<div class="price_content mb-4 d-block d-sm-none">
-										<div itemscope itemtype="http://schema.org/Offer">
+										<div>
 											<div class="h4 text-right"><print content="cost"></div>
 											<print content="quantity">
 											<service>
@@ -53,9 +53,6 @@
 											</mediaimages>
 										</div>
 									</div>
-									<script>
-						      	$('[data-gallery="gallery"]').simpleLightbox();
-							    </script>
 								</mediaitems>
 								<print content="notes">
 							</div>
@@ -83,14 +80,11 @@
 						</div>
 					</author>
 					<review>
-						<div class="card hreview-aggregate" itemprop="review" itemscope itemtype="http://schema.org/Review">
+						<div class="card hreview-aggregate">
 							<json-ld-review>
-							<div class="card-header border-0 font-weight-bold d-flex justify-content-between" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+							<div class="card-header border-0 font-weight-bold d-flex justify-content-between">
 								<div>Review by <span class="p-author h-card"><print review="name"></span> on <time class="dt-published" datetime="<print review=datetime>"><print review="date"></time></div>
 								<data class="p-rating" value="<print review=rating>">
-									<meta itemprop="worstRating" content="1">
-									<meta itemprop="ratingValue" content="<print review=rating>">
-									<meta itemprop="bestRating" content="5">
 									<span class="rat">
 										<span class="<print review=set1>"></span>
 										<span class="<print review=set2>"></span>
@@ -101,30 +95,31 @@
 								</data>
 							</div>
 							<div class="card-body">
-								<div class="e-content summary" itemprop="description"><print review="review"></div>
+								<div class="e-content summary"><print review="review"></div>
 							</div>
 						</div>
 					</review>
 				</item>
 				<settings itemCount="10">
-				<items>
-					<article class="card mb-3 mb-sm-5" itemscope itemtype="http://schema.org/<print content=schemaType>">
-						<meta itemprop="author" content="<print content=author>">
-						<meta itemprop="datePublished" content="<print content=datePublished>">
-						<meta itemprop="dateModified" content="<print content=dateEdited>">
-						<a href="<print content=linktitle>"><img class="card-img-top small" src="<print content=thumb>" alt="<print content=title>" itemprop="thumbnail"></a>
-        		<div class="card-body text-center" data-contenttype="<print content=contentType>">
-							<div class="card-subtitle mb-2 small text-muted text-center">By <a href="<print profileLink>"><print content="author"></a> on <print content="datePublished"></div>
-							<controls>
-								<view>
-									<h2 class="card-title" itemprop="name headline"><a href="<print content=linktitle>" itemprop="url"><print content="title"></a></h2>
-								</view>
-							</controls>
-							<div class="card-text text-truncate"><print content="notes"></div>
-							<a class="btn btn-outline-secondary mt-2" href="<print content=linktitle>">View</a>
+				<div class="row">
+					<items>
+						<div class="col-12 col-sm-6 m-0">
+							<article class="card mb-3 mb-sm-5">
+								<a href="<print content=linktitle>"><img class="card-img-top small" src="<print content=thumb>" alt="<print content=title>"></a>
+		        		<div class="card-body text-center" data-contenttype="<print content=contentType>">
+									<div class="card-subtitle mb-2 small text-muted text-center">By <a href="<print profileLink>"><print content="author"></a> on <print content="datePublished"></div>
+									<controls>
+										<view>
+											<h2 class="card-title"><a href="<print content=linktitle>"><print content="title"></a></h2>
+										</view>
+									</controls>
+									<div class="card-text text-truncate"><print content="notes"></div>
+									<a class="btn btn-outline-secondary mt-2" href="<print content=linktitle>">View</a>
+								</div>
+			  			</article>
 						</div>
-	  			</article>
-				</items>
+					</items>
+				</div>
 				<more>
 					<button id="more<print config=showItems>" class="addMore btn btn-outline-secondary btn-block" data-contenttype="<print contentType>" data-view="<print view>" data-itemcount="<print config=showItems>">More</button>
 				</more>

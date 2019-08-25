@@ -16,12 +16,11 @@
 		<div class="row my-5">
 			<div class="col-12 col-sm-6 mt-n5">
 				<items>
-					<div class="quotes my-5" itemscope itemtype="http://schema.org/Review">
-						<meta itemprop="itemReviewed" content="<print config=title>">
-						<meta itemprop="datePublished" content="<print datePub>">
+					<div class="quotes my-5">
+						<json-ld-testimonial>
 	          <div class="quote">
 	            <blockquote>
-	              <p itemprop="reviewBody">
+	              <p>
 									<print content="notes">
 			          </p>
 			        </blockquote>
@@ -30,8 +29,8 @@
 			        <div class="quote-author-img">
 			          <img src="<print content=avatar>" alt="<print content=name>">
 			      	</div>
-			        <h4 itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><print content="name"></span></h4>
-			        <p itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+			        <h4><span><print content="name"></span></h4>
+			        <p>
 			          <strong itemprop="name"><print content="business"></strong>
 			        </p>
 			      </div>

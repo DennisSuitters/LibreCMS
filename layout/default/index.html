@@ -50,16 +50,16 @@
 		<h1 class="h3">Latest Content Additions</h1>
 		<div class="row m-0 p-0">
 			<items>
-				<article class="col-12 col-sm-3 d-flex align-items-stretch mt-2 mb-2" itemscope itemtype="http://schema.org/<print content=schemaType>">
+				<article class="col-12 col-sm-3 d-flex align-items-stretch mt-2 mb-2">
 					<div class="card w-100 overflow-hidden">
-						<a href="<print content=linktitle>" itemprop="url"><img class="card-img-top home" src="<print content=thumb>" alt="<print content=imageALT>"></a>
+						<a href="<print content=linktitle>"><img class="card-img-top home" src="<print content=thumb>" alt="<print content=imageALT>"></a>
      				<div class="card-body d-flex flex-column">
-							<h2 class="card-title h5 mt-0 text-uppercase"><a href="<print content=linktitle>" itemprop="url"><print content="title"></a></h2>
+							<h2 class="card-title h5 mt-0 text-uppercase"><a href="<print content=linktitle>"><print content="title"></a></h2>
 							<div class="card-text mb-2 text-truncate"><print content="notes"></div>
 							<controls>
 								<view>
-									<div class="content-item-title text-right mt-auto" itemprop="name">
-										<a class="btn btn-secondary" href="<print content=linktitle>" itemprop="url">View</a>
+									<div class="content-item-title text-right mt-auto">
+										<a class="btn btn-secondary" href="<print content=linktitle>">View</a>
 									</div>
 								</view>
 							</controls>
@@ -75,10 +75,10 @@
 		<div class="row m-0 p-0">
 			<categories>
 				<div class="col-12 col-sm-3 d-flex align-items-stretch my-2">
-					<div class="card" itemscope itemtype="http://schema.org/category">
-						<a href="<print category=link>" itemprop="url"><img class="card-img-top home" src="<print category=image>" alt="<print category=title>"></a>
+					<div class="card">
+						<a href="<print category=link>"><img class="card-img-top home" src="<print category=image>" alt="<print category=title>"></a>
 						<div class="card-body d-flex flex-column">
-							<h2 class="card-title h5 mt-0 text-uppercase"><a href="<print category=link>" itemprop="url"><print category="title"></a></h2>
+							<h2 class="card-title h5 mt-0 text-uppercase"><a href="<print category=link>"><print category="title"></a></h2>
 						</div>
 					</div>
 				</div>
@@ -101,14 +101,13 @@
 			    	</ol>
 						<div class="carousel-inner mt-4">
 							<items>
-								<div class="carousel-item text-center <print content=active>" itemscope itemtype="http://schema.org/Review">
-									<meta itemprop="itemReviewed" content="<print config=title>">
-									<meta itemprop="datePublished" content="<print datePub>">
+								<div class="carousel-item text-center <print content=active>">
+									<json-ld-testimonial>
 									<div class="img-box p-1 border rounded-circle m-auto">
 										<img class="d-block rounded-circle m-auto" src="<print content=avatar>" alt="<print content=name>">
 									</div>
-									<h2 class="h5 mt-4 mb-0" itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><print content="name"></span></h2>
-									<h3 class="h6" itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name"><print content="business"></strong></h3>
+									<h2 class="h5 mt-4 mb-0" itemprop="author"><span><print content="name"></span></h2>
+									<h3 class="h6"><strong><print content="business"></strong></h3>
 									<p class="col-8 m-0 pt-3 text-center m-auto"><print content="notes"></p>
 			      		</div>
 							</items>

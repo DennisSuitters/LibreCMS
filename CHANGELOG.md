@@ -1,3 +1,11 @@
+### v2.0.6
+- Fix Schema JSON-LD.
+- Remove blocking "/search/" directive from robots.txt
+- Remove inline MicroFormats in favour of JSON-LD.
+- Fix Content Items not using Thumbnails.
+- Fix Google Analytics tracking code.
+- Build work around for using Google Tracking Code via entering UA code.
+
 ### v2.0.5
 - Fix Comments Content display when enabled. Display Comments without Comments form if disabled, or don't add Comments markup if no comments exist.
 - Fix Display Created By on Content rather than edited.

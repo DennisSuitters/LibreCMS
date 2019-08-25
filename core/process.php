@@ -4,7 +4,7 @@
  *
  * Core - Process Pages
  *
- * process.php version 2.0.3
+ * process.php version 2.0.6
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,12 +17,13 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.0
+ * @version    2.0.6
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.3 Fix wrong Meta Tag Information.
  * @changes    v2.0.3 Add Theme detail parsing into meta_head.html
  * @changes    v2.0.5 Fix URL/IP Tracking.
+ * @changes    v2.0.6 Fix Google Analytics Tracking Script insertion.
  */
 require'core'.DS.'db.php';
 if(isset($headerType))header($headerType);
@@ -195,8 +196,7 @@ $head=preg_replace([
 	'/<print geo_region>/',
   '/<print geo_placename>/',
 	'/<print geo_position>/',
-	'/<print geo_position>/',
-  '/<google_analytics>/'
+	'/<print geo_position>/'
 ],[
   trim(htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8')),
   trim(htmlspecialchars($theme['title'],ENT_QUOTES,'UTF-8')),
@@ -225,13 +225,16 @@ $head=preg_replace([
   $config['seo_domainverify'],
   $config['geo_region'],
   $config['geo_placename'],
-  $config['geo_position'],
-  isset($config['ga_tracking'])&&$config['ga_tracking']!=''?'<script>'.htmlspecialchars_decode($config['ga_tracking'],ENT_QUOTES).'</script>':''
+  $config['geo_position']
 ],$head);
 if(isset($_SESSION['rank'])&&$_SESSION['rank']>899)
   $head=str_replace('<meta_helper>','<link rel="stylesheet" type="text/css" href="core/css/seohelper.css">',$head);
 else
   $head=str_replace('<meta_helper>','',$head);
+if(isset($config['ga_tracking'])&&$config['ga_tracking']!='')
+  $head=str_replace('<google_analytics>','<script async src="https://www.googletagmanager.com/gtag/js?id='.$config['ga_tracking'].'"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag(\'js\',new Date());gtag(\'config\',\''.$config['ga_tracking'].'\');</script>',$head);
+else
+  $head=str_replace('<google_analytics>','',$head);
 if(isset($_SESSION['rank'])&&$_SESSION['rank']>899&&$config['development']==1)
   $content.='<div style="text-align:right;padding:10px;">Page Views: '.$page['views'].' | Memory Used: '.size_format(memory_get_usage()).' | Process Time: '.elapsed_time().'</div>';
 if(MINIFY==1)

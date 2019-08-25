@@ -4,7 +4,7 @@
  *
  * View - Side Menu Renderer
  *
- * side_menu.php version 2.0.1
+ * side_menu.php version 2.0.6
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,15 +17,16 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.1
+ * @version    2.0.6
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    Add Sluggification
+ * @changes    v2.0.6 Remove MicroFormats in favour of JSON-LD
  */
 if(file_exists(THEME.DS.'side_menu.html')){
 	$sideTemp=file_get_contents(THEME.DS.'side_menu.html');
 	if($show=='item'&&($view=='service'||$view=='inventory'||$view=='events')){
-		$sideCost=is_numeric($r['cost'])&&$r['cost']!=0?'<meta itemprop="priceCurrency" content="AUD"><span class="cost" itemprop="price" content="'.$r['cost'].'">'.(is_numeric($r['cost'])?'&#36;':'').htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>':'<span>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
+		$sideCost=is_numeric($r['cost'])&&$r['cost']!=0?'<span class="cost">'.(is_numeric($r['cost'])?'&#36;':'').htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>':'<span>'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'</span>';
 		$sideTemp=preg_replace([
 			'/<print content=[\"\']?stockStatus[\"\']?>/',
 			'/<print content=[\"\']?cost[\"\']?>/',
@@ -38,7 +39,7 @@ if(file_exists(THEME.DS.'side_menu.html')){
 		$sideQuantity='';
 		if($r['contentType']=='inventory'){
 			if(is_numeric($r['quantity'])&&$r['quantity']!=0)
-				$sideQuantity.=$r['stockStatus']=='quantity'?($r['quantity']==0?'<link itemptop="availability" href="http://schema.org/OutOfStock"><div class="quantity">Out Of Stock</div>':'<link itemprop="availability" href="http://schema.org/OutOfStock"><div class="quantity">'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').' <span class="quantity-text">In Stock</span></div>'):($r['stockStatus']=='none'?'<link itemprop="availability" href="http://schema.org/OutOfStock">':'<link itemprop="availability" href="http://schema.org/'.ucwords($r['stockStatus']).'"><div class="quantity">'.ucfirst($r['stockStatus']).'</div>');
+				$sideQuantity.=$r['stockStatus']=='quantity'?($r['quantity']==0?'<div class="quantity">Out Of Stock</div>':'<div class="quantity">'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').' <span class="quantity-text">In Stock</span></div>'):($r['stockStatus']=='none'?'':'<div class="quantity">'.ucfirst($r['stockStatus']).'</div>');
 			$sideTemp=preg_replace([
 				'/<print content=[\"\']?quantity[\"\']?>/'
 			],$r['stockStatus']=='out of stock'?'':$sideQuantity,$sideTemp);

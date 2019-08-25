@@ -60,7 +60,7 @@
 $s->execute();
 while($r=$s->fetch(PDO::FETCH_ASSOC)){?>
                     <tr id="l_<?php echo$r['id'];?>" data-ip="<?php echo$r['ip'];?>" class="small">
-                      <td class="text-wrap align-middle" style="min-width:200px;max-width:250px;"><?php echo$r['id'].': '.trim($r['urlDest']);?></td>
+                      <td class="text-wrap align-middle" style="min-width:200px;max-width:250px;"><?php echo trim($r['urlDest']);?></td>
                       <td class="text-wrap align-middle" style="min-width:200px;max-width:250px;"><?php echo trim($r['urlFrom']);?></td>
                       <td class="text-center align-middle">
                         <a target="_blank" href="http://www.ipaddress-finder.com/?ip=<?php echo$r['ip'];?>"><?php echo$r['ip'];?></a>

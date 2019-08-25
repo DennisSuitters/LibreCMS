@@ -4,7 +4,7 @@
  *
  * View - Content Renderer
  *
- * content.php version 2.0.2
+ * content.php version 2.0.6
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,11 +17,14 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.6
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.5 Fix comments display with enabled or disabled.
  * @changes    v2.0.5 Fix Content created by instead of edited.
+ * @changes    v2.0.6 Fix JSON-LD.
+ * @changes    v2.0.6 Remove MicroFormat markup in favour of JSON-LD
+ * @changes    v2.0.6 Fix Content Items not using Thumbnails
  */
 $rank=0;
 $notification='';
@@ -384,14 +387,14 @@ if($show=='categories'){
 				'/<print content=[\"\']?contentType[\"\']?>/',
 				'/<print content=[\"\']?notes[\"\']?>/'
 			],[
-				$shareImage,
+				$r['thumb']!=''||file_exists(basename('media'.DS.'thumbs'.DS.$r['thumb']))?$r['thumb']:URL.NOIMAGE,
 				$shareImage,
 				htmlspecialchars($r['fileALT']!=''?$r['fileALT']:$r['title'],ENT_QUOTES,'UTF-8'),
 				$shareImage,
 				htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8'),
 				URL.'profile/'.strtolower(str_replace(' ','-',htmlspecialchars($r['login_user'],ENT_QUOTES,'UTF-8'))),
 				URL.$r['contentType'].'/'.$r['urlSlug'],
-				htmlspecialchars(($ua['name']!=''?$ua['name']:$us['username']),ENT_QUOTES,'UTF-8'),
+				htmlspecialchars(($ua['name']!=''?$ua['name']:$ua['username']),ENT_QUOTES,'UTF-8'),
 				date($config['dateFormat'],$r['ti']),
 				date($theme['settings']['dateFormat'],$r['pti']),
 				date($theme['settings']['dateFormat'],$r['eti']),
@@ -521,6 +524,13 @@ if($show=='item'){
 		':views'=>$r['views']+1,
 		':id'=>$r['id']
 	]);
+
+	$us=$db->prepare("SELECT * FROM `".$prefix."login` WHERE id=:uid");
+	$us->execute([
+		':uid'=>$r['uid']
+	]);
+	$ua=$us->fetch(PDO::FETCH_ASSOC);
+
 	if($r['fileURL']!='')
 		$shareImage=$r['fileURL'];
 	elseif($r['file']!='')
@@ -673,8 +683,9 @@ if($show=='item'){
 		}
 		$address=$edit=$contentQuantity='';
 		if(isset($r['contentType'])&&($r['contentType']=='inventory')){
-			if(is_numeric($r['quantity'])&&$r['quantity']!=0)
-				$contentQuantity.=$r['stockStatus']=='quantity'?($r['quantity']==0?'<link itemptop="availability" href="http://schema.org/OutOfStock"><div class="quantity">Out Of Stock</div>':'<link itemprop="availability" href="http://schema.org/OutOfStock"><div class="quantity">'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').' <span class="quantity-text">In Stock</span></div>'):($r['stockStatus']=='none'?'<link itemprop="availability" href="http://schema.org/OutOfStock">':'<link itemprop="availability" href="http://schema.org/'.ucwords($r['stockStatus']).'"><div class="quantity">'.ucwords($r['stockStatus']).'</div>');	
+			if(is_numeric($r['quantity'])&&$r['quantity']!=0){
+				$contentQuantity.=$r['stockStatus']=='quantity'?($r['quantity']==0?'<div class="quantity">Out Of Stock</div>':'<div class="quantity">'.htmlspecialchars($r['quantity'],ENT_QUOTES,'UTF-8').' <span class="quantity-text">In Stock</span></div>'):($r['stockStatus']=='none'?'':'<div class="quantity">'.ucwords($r['stockStatus']).'</div>');
+			}
 			$item=preg_replace([
 				'/<print content=[\"\']?quantity[\"\']?>/'
 			],[
@@ -704,32 +715,128 @@ if($show=='item'){
 			$r['pti']=isset($r['pti'])?$r['pti']:$page['ti'];
 			$r['ti']=isset($r['ti'])?$r['ti']:$page['ti'];
 			$r['eti']=isset($r['eti'])?$r['eti']:$page['eti'];
-			$jsonld='<script type="application/ld+json">{"@context":"http://schema.org/","@type":"'.$r['schemaType'].'","headline":"'.$r['title'].'","alternativeHeadline":"'.$r['title'].'","image":"';
-			if(isset($r['thumb'])&&$r['thumb']!='')
-				$jsonld.=$r['thumb'];
-			elseif(isset($r['file'])&&$r['file']!='')
-				$jsonld.=$r['file'];
-			elseif(isset($r['fileURL'])&&$r['fileURL']!='')
-				$jsonld.=$r['fileURL'];
-			else
-				$jsonld.=NOIMAGE;
-			if(isset($r['author']))
-				$jsonld.='","author":"'.$r['name'].'"';
-			if(isset($r['category_1'])){
-				$jsonld.='","genre":"'.$r['category_1'];
-				if($r['category_2']!='')
-					$jsonld.=" > ".$r['category_2'];
+			$jsonld='<script type="application/ld+json">{'.
+				'"@context":"http://schema.org/",';
+			if($r['schemaType']=='blogPosting'){
+				$jsonld.='"@type":"BlogPosting",'.
+					'"headline":"'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'",'.
+					'"alternativeHeadline":"'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'",'.
+					'"image":{'.
+						'"@type":"ImageObject",'.
+						'"url":"';
+				if($r['file']!=''&&file_exists('media/'.basename($r['file'])))
+					$jsonld.=$r['file'].'"';
+				else
+					$jsonld.=URL.NOIMAGE.'"';
+				$jsonld.='},'.
+					'"editor":"'.htmlspecialchars(($ua['name']!=''?$ua['name']:$ua['username']),ENT_QUOTES,'UTF-8').'",'.
+					'"genre":"'.($r['category_1']!=''?htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8'):'None').($r['category_2']!=''?' > '.htmlspecialchars($r['category_2'],ENT_QUOTES,'UTF-8'):'').($r['category_3']!=''?' > '.htmlspecialchars($r['category_3'],ENT_QUOTES,'UTF-8'):'').($r['category_4']!=''?' > '.htmlspecialchars($r['category_4'],ENT_QUOTES,'UTF-8'):'').'",'.
+					'"mainEntityOfPage":"True",'.
+					'"keywords":"'.htmlspecialchars($seokeywods,ENT_QUOTES,'UTF-8').'",'.
+					'"wordcount":"'.htmlspecialchars(strlen(strip_tags($r['notes'])),ENT_QUOTES,'UTF-8').'",'.
+					'"publisher":{'.
+						'"@type":"Organization",'.
+						'"name":"'.htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8').'",'.
+						'"logo":{'.
+							'"@type":"ImageObject",'.
+							'"url":"'.URL.THEME.'/images/logo.png",'.
+							'"width":"400",'.
+							'"height":"55"'.
+						'}'.
+					'},'.
+					'"url":"'.$canonical.'",'.
+					'"datePublished":"'.date('Y-m-d',$r['pti']).'",'.
+					'"dateCreated":"'.date('Y-m-d',$r['ti']).'",'.
+					'"dateModified":"'.date('Y-m-d',$r['eti']).'",'.
+					'"description":"'.htmlspecialchars($seoDescription,ENT_QUOTES,'UTF-8').'",'.
+					'"articleBody":"'.htmlspecialchars(strip_tags($r['notes']),ENT_QUOTES,'UTF-8').'",'.
+					'"author":{'.
+						'"@type":"Person",'.
+						'"name":"'.($ua['name']!=''?htmlspecialchars($ua['name'],ENT_QUOTES,'UTF-8'):htmlspecialchars($ua['username'],ENT_QUOTES,'UTF-8')).'"'.
+				 	'}';
+			}elseif($r['schemaType']=='Product'){
+				$jsonld.='"@type":"Product",'.
+  				'"name":"'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'",'.
+					'"image":{'.
+						'"@type":"ImageObject",'.
+						'"url":"';
+				if($r['file']!=''&&file_exists('media/'.basename($r['file'])))
+					$jsonld.=$r['file'].'"';
+				else
+					$jsonld.=URL.NOIMAGE.'"';
+				$jsonld.='},'.
+  				'"description":"'.($seoDescription!=''?htmlspecialchars($seoDescription,ENT_QUOTES,'UTF-8'):htmlspecialchars(strip_tags(escaper($r['notes'])),ENT_QUOTES,'UTF-8')).'",'.
+  				'"mpn":"'.($r['barcode']==''?$r['id']:htmlspecialchars($r['barcode'],ENT_QUOTES,'UTF-8')).'",'.
+					'"sku":"'.($r['fccid']==''?$r['id']:htmlspecialchars($r['fccid'],ENT_QUOTES,'UTF-8')).'",'.
+  				'"brand":{'.
+    				'"@type":"Thing",'.
+    				'"name":"'.htmlspecialchars($r['brand'],ENT_QUOTES,'UTF-8').'"'.
+  				'},';
+				$jss=$db->prepare("SELECT AVG(cid) as rate,COUNT(id) as cnt FROM `".$prefix."comments` WHERE contentType='review' AND rid=:rid AND status='approved'");
+				$jss->execute([
+					':rid'=>$r['id']
+				]);
+				$jrr=$jss->fetch(PDO::FETCH_ASSOC);
+  			$jsonld.='"aggregateRating":{'.
+    				'"@type":"aggregateRating",'.
+    				'"ratingValue":"'.($jrr['rate']==''?'1':$jrr['raite']).'",'.
+    				'"reviewCount":"'.($jrr['cnt']==0?'1':$jrr['cnt']).'"'.
+  				'},'.
+  				'"offers":{'.
+    				'"@type":"Offer",'.
+						'"url":"'.$canonical.'",'.
+    				'"priceCurrency":"AUD",'.
+    				'"price":"'.($r['cost']==''?'0':$r['cost']).'",'.
+    				'"priceValidUntil":"'.date('Y-m-d',strtotime('+6 month',time())).'",'.
+    				'"availability":"'.($r['stockStatus']=='quantity'?($r['quantity']==0?'OutOfStock':'In Stock'):($r['stockStatus']=='none'?'OutOfStock':'InStock')).'",'.
+    				'"seller":{'.
+      				'"@type":"Organization",'.
+      				'"name":"'.htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8').'"'.
+    				'}'.
+  				'}';
+			}elseif($r['schemaType']=='Service'){
+					$jsonld.='"@type": "Service",'.
+  				'"serviceType": "'.htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8').'",'.
+  				'"provider": {'.
+    				'"@type": "LocalBusiness",'.
+    				'"name": "'.htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8').'",'.
+						'"address": "'.htmlspecialchars($config['address'],ENT_QUOTES,'UTF-8').', '.htmlspecialchars($config['state'],ENT_QUOTES,'UTF-8').', '.htmlspecialchars($config['postcode'],ENT_QUOTES,'UTF-8').'",'.
+						'"telephone": "'.($config['phone']!=''?htmlspecialchars($config['phone'],ENT_QUOTES,'UTF-8'):htmlspecialchars($config['mobile'],ENT_QUOTES,'UTF-8')).'",'.
+						'"priceRange": "'.htmlspecialchars($r['cost'],ENT_QUOTES,'UTF-8').'",'.
+						'"image": "'.($r['file']!=''?$r['file']:URL.THEME.'/images/logo.png').'"'.
+  				'},'.
+  				'"areaServed": {'.
+    				'"@type": "State",'.
+    				'"name": "All"'.
+  				'}';
+			}else{
+				$jsonld.='"@type":"'.$r['schemaType'].'",'.
+					'"headline":"'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'",'.
+					'"alternativeHeadline":"'.htmlspecialchars($r['title'],ENT_QUOTES,'UTF-8').'",'.
+					'"image":{'.
+						'"@type":"ImageObject",'.
+						'"url":"';
+				if($r['file']!=''&&file_exists('media/'.basename($r['file'])))
+					$jsonld.=$r['file'].'"';
+				else
+					$jsonld.=URL.NOIMAGE.'"';
+				$jsonld.='},'.
+					'"author":"'.($ua['name']!=''?htmlspecialchars($ua['name'],ENT_QUOTES,'UTF-8'):htmlspecialchars($ua['username'],ENT_QUOTES,'UTF-8')).'",'.
+					'"genre":"'.($r['category_1']!=''?htmlspecialchars($r['category_1'],ENT_QUOTES,'UTF-8'):'None').($r['category_2']!=''?' > '.htmlspecialchars($r['category_2'],ENT_QUOTES,'UTF-8'):'').($r['category_3']!=''?' > '.htmlspecialchars($r['category_3'],ENT_QUOTES,'UTF-8'):'').($r['category_4']!=''?' > '.htmlspecialchars($r['category_4'],ENT_QUOTES,'UTF-8'):'').'",'.
+					'"keywords":"'.htmlspecialchars($seoKeywords,ENT_QUOTES,'UTF-8').'",'.
+					'"wordcount":"'.htmlspecialchars(strlen(strip_tags(escaper($r['notes']))),ENT_QUOTES,'UTF-8').'",'.
+					'"publisher":{'.
+						'"@type":"Organization",'.
+						'"name":"'.htmlspecialchars($config['business'],ENT_QUOTES,'UTF-8').'"'.
+					'},'.
+					'"url":"'.$canonical.'/",'.
+					'"datePublished":"'.date('Y-m-d',$r['pti']).'",'.
+					'"dateCreated":"'.date('Y-m-d',$r['ti']).'",'.
+					'"dateModified":"'.date('Y-m-d',$r['eti']).'",'.
+					'"description":"'.htmlspecialchars(strip_tags(rawurldecode($seoDescription)),ENT_QUOTES,'UTF-8').'",'.
+					'"articleBody":"'.htmlspecialchars(strip_tags(escaper($r['notes'])),ENT_QUOTES,'UTF-8').'"';
 			}
-			$jsonld.='","keywords":"'.$seoKeywords;
-			$jsonld.='","wordcount":"'.htmlspecialchars(strlen(strip_tags($r['notes'])),ENT_QUOTES,'UTF-8');
-			$jsonld.='","publisher":"'.htmlspecialchars($r['business'],ENT_QUOTES,'UTF-8');
-			$jsonld.='","url":"'.URL.$view.'/';
-			$jsonld.='","datePublished":"'.date('Y-m-d',$r['pti']);
-			$jsonld.='","dateCreated":"'.date('Y-m-d',$r['ti']);
-			$jsonld.='","dateModified":"'.date('Y-m-d',$r['eti']);
-			$jsonld.='","description":"'.htmlspecialchars(strip_tags(rawurldecode($seoDescription)),ENT_QUOTES,'UTF-8');
-			$jsonld.='","articleBody":"'.htmlspecialchars(strip_tags(escaper($r['notes'])),ENT_QUOTES,'UTF-8');
-			$jsonld.='"}</script>';
+			$jsonld.='}</script>';
 			$item=str_replace('<json-ld>',$jsonld,$item);
 		}
 		$item=preg_replace([
@@ -737,7 +844,7 @@ if($show=='item'){
 			'/<print author=[\"\']?name[\"\']?>/'
 		],[
 			URL.'profile/'.strtolower(str_replace(' ','-',htmlspecialchars($r['login_user'],ENT_QUOTES,'UTF-8'))),
-			$r['login_user']
+			$ua['name']!=''?htmlspecialchars($ua['name'],ENT_QUOTES,'UTF-8'):htmlspecialchars($ua['username'],ENT_QUOTES,'UTF-8')
 		],$item);
 		if($view!='page'&&stristr($item,'<review')){
 			preg_match('/<review>([\w\W]*?)<\/review>/',$item,$matches);
@@ -748,7 +855,30 @@ if($show=='item'){
 			while($rr=$sr->fetch(PDO::FETCH_ASSOC)){
 				$reviewitem=$review;
 				if(stristr($reviewitem,'<json-ld-review>')){
-					$jsonldreview='<script type="application/ld+json">{"@context":"http://schema.org","@type":"Review","author":"'.($rr['name']==''?'Anonymous':htmlspecialchars($rr['name'],ENT_QUOTES,'UTF-8')).'","datePublished":"'.date('Y-m-d',$rr['ti']).'","description":"'.htmlspecialchars(strip_tags(rawurldecode($rr['notes'])),ENT_QUOTES,'UTF-8').'","name":"'.($rr['name']==''?'Anonymous':htmlspecialchars($rr['name'],ENT_QUOTES,'UTF-8')).'","reviewRating":{"@type":"Rating","bestRating":"5","ratingValue":"'.$rr['cid'].'","worstRating":"1"}}</script>';
+					$jsonldreview='<script type="application/ld+json">{'.
+						'"@context": "https://schema.org/",'.
+						'"@type": "Review",'.
+						'"itemReviewed": {'.
+							'"@type": "Product",'.
+							'"image": "'.$r['file'].'",'.
+							'"name": "'.$r['title'].'"'.
+						'},'.
+						'"reviewRating": {'.
+							'"@type": "Rating",'.
+							'"ratingValue": "'.$rr['cid'].'"'.
+						'},'.
+						'"name": "'.$r['title'].'",'.
+						'"author": {'.
+							'"@type": "Person",'.
+							'"name": "'.($rr['name']!=''?$rr['name']:'Anonymous').'"'.
+						'},'.
+						'"datePublished":"'.date('Y-m-d',$rr['ti']).'",'.
+						'"reviewBody": "'.$rr['notes'].'",'.
+						'"publisher": {'.
+							'"@type": "Organization",'.
+							'"name": "'.$config['business'].'"'.
+						'}'.
+					'}</script>';
 					$reviewitem=str_replace('<json-ld-review>',$jsonldreview,$reviewitem);
 				}
 				$reviewitem=preg_replace('/<print review=[\"\']?rating[\"\']?>/',$rr['cid'],$reviewitem);

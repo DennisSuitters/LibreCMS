@@ -4,7 +4,7 @@
  *
  * Administration - Database SEO
  *
- * pref_seo.php version 2.0.2
+ * pref_seo.php version 2.0.6
  *
  * LICENSE: This source file may be modifired and distributed under the terms of
  * the MIT license that is available through the world-wide-web at the following
@@ -17,12 +17,13 @@
  * @author     Dennis Suitters <dennis@diemen.design>
  * @copyright  2014-2019 Diemen Design
  * @license    http://opensource.org/licenses/MIT  MIT License
- * @version    2.0.2
+ * @version    2.0.6
  * @link       https://github.com/DiemenDesign/LibreCMS
  * @notes      This PHP Script is designed to be executed using PHP 7+
  * @changes    v2.0.2 Add i18n.
  * @changes    v2.0.2 Fix ARIA Attributes.
  * @changes    v2.0.3 Add metaRobots to Configuration.
+ * @changes    v2.0.6 Build workaround for Google Tracking ID.
  */?>
 <main id="content" class="main">
   <ol class="breadcrumb">
@@ -150,23 +151,13 @@ if($cntc<0){
             <div class="input-group-append" data-tooltip="tooltip" title="<?php echo localize('Save');?>"><button id="savega_verification" class="btn btn-secondary save" data-dbid="ga_verification" data-style="zoom-in" role="button" aria-label="<?php echo localize('aria_save');?>"><?php svg('libre-gui-save');?></button></div>
           </div>
         </div>
-        <div class="help-block small text-right"><?php echo localize('help_googleanalytics');?></div>
+        <div class="help-block small text-right">Go to <a target="_blank" href="https://analytics.google.com/">Google Analytics</a> to setup a Google Analytics Account, and get your Page Tracking Code.<br>Only the UA code is required to enter below.</div>
         <div class="form-group row">
-          <label for="ga_tracking" class="col-form-label col-sm-2"><?php echo localize('Tracking Code');?></label>
-          <div class="card-header col-sm-10 p-0">
-            <?php echo$user['rank']>899?'<div class="input-group-prepend"><button class="btn btn-secondary fingerprint" data-dbgid="ga_tracking" data-tooltip="tooltip" title="'.localize('Fingerprint Analysis').'" role="button" aria-label="'.localize('aria_fingerprintanalysis').'">'.svg2('libre-gui-fingerprint').'</button></div><div id="da" class="hidden-xs" data-dbid="1" data-dbt="config" data-dbc="ga_tracking"></div>':'';?>
-            <form target="sp" method="post" action="core/update.php" onsubmit="Pace.restart();$('#ga_tracking_save').removeClass('btn-danger');" role="form">
-              <input type="hidden" name="id" value="1">
-              <input type="hidden" name="t" value="config">
-              <input type="hidden" name="c" value="ga_tracking">
-              <div class="input-group col-sm-10 p-2">
-                <button type="submit" id="ga_tracking_save" class="btn btn-secondary btn-sm" data-tooltip="tooltip" data-placement="bottom" title="<?php echo localize('Save');?>" role="button" aria-label="<?php echo localize('aria_save');?>"><?php svg('libre-gui-save');?></button>
-              </div>
-              <div class="input-group col p-0">
-                <textarea id="ga_tracking" class="form-control" style="height:100px" name="da" onkeyup="$('#ga_tracking_save').addClass('btn-danger');" role="textbox"><?php echo $config['ga_tracking'];?></textarea>
-              </div>
-            </div>
-          </form>
+          <label for="ga_tracking" class="col-form-label col-sm-2">Google Tracking Code (UA)</label>
+          <div class="input-group col-sm-10">
+            <input type="text" id="ga_tracking" class="form-control textinput" value="<?php echo$config['ga_tracking'];?>" data-dbid="1" data-dbt="config" data-dbc="ga_tracking" placeholder="Enter Google UA Code..." role="textbox">
+            <div class="input-group-append" data-tooltip="tooltip" title="Save"><button id="savega_tracking" class="btn btn-secondary save" data-dbid="ga_tracking" data-style="zoom-in" role="button" aria-label="Save"><?php svg('libre-gui-save');?></button></div>
+          </div>
         </div>
         <div class="form-group row">
           <label for="seo_msvalidate" class="col-form-label col-sm-2"><?php echo localize('Microsoft Validate');?></label>
